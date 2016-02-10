@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NewProjectViewController" customModule="Tulsi" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="513" height="230"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="x6S-jF-Hz7">
+                    <rect key="frame" x="20" y="61" width="479" height="124"/>
+                    <view key="contentView" id="Il9-Jg-Hvh">
+                        <rect key="frame" x="1" y="1" width="477" height="122"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MZz-Hp-qch">
+                                <rect key="frame" x="38" y="65" width="127" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Project name:" id="ssX-gn-JYr">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r1b-6P-aw2">
+                                <rect key="frame" x="38" y="40" width="127" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Workspace location:" id="4nH-qa-kfB">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZFg-B8-Vl5">
+                                <rect key="frame" x="171" y="39" width="266" height="17"/>
+                                <pathCell key="cell" selectable="YES" editable="YES" alignment="left" placeholderString="Workspace location (default via bindings)" id="yIZ-N5-Zok">
+                                    <font key="font" metaFont="system"/>
+                                </pathCell>
+                                <connections>
+                                    <action selector="didClickWorkspacePathControl:" target="-2" id="k93-ao-3CN"/>
+                                    <action trigger="doubleAction" selector="didDoubleClickWorkspacePathControl:" target="-2" id="CGm-bI-fzY"/>
+                                    <binding destination="-2" name="value" keyPath="self.workspacePath" id="jkM-xa-xVx">
+                                        <dictionary key="options">
+                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                            <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                            <string key="NSNullPlaceholder">Choose the WORKSPACE file for this project...</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </pathControl>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SXg-pS-B9K">
+                                <rect key="frame" x="171" y="62" width="266" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="mQ6-H8-SiS"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="tyK-kg-dAn"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="4jb-dh-fvC">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="self.projectName" id="xKW-Yo-4uP">
+                                        <dictionary key="options">
+                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                            <bool key="NSConditionallySetsEditable" value="NO"/>
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="r1b-6P-aw2" firstAttribute="leading" secondItem="MZz-Hp-qch" secondAttribute="leading" id="2SD-PI-YOQ"/>
+                            <constraint firstItem="r1b-6P-aw2" firstAttribute="width" secondItem="MZz-Hp-qch" secondAttribute="width" id="60K-3K-4u2"/>
+                            <constraint firstItem="ZFg-B8-Vl5" firstAttribute="baseline" secondItem="r1b-6P-aw2" secondAttribute="baseline" id="BmE-aK-SIK"/>
+                            <constraint firstItem="ZFg-B8-Vl5" firstAttribute="width" secondItem="SXg-pS-B9K" secondAttribute="width" id="Oyi-Wr-CJ1"/>
+                            <constraint firstItem="SXg-pS-B9K" firstAttribute="leading" secondItem="MZz-Hp-qch" secondAttribute="trailing" constant="8" symbolic="YES" id="Qdb-cA-Iem"/>
+                            <constraint firstItem="MZz-Hp-qch" firstAttribute="leading" secondItem="Il9-Jg-Hvh" secondAttribute="leading" constant="40" id="Rzy-MH-JKB"/>
+                            <constraint firstAttribute="bottom" secondItem="r1b-6P-aw2" secondAttribute="bottom" constant="40" id="Y5a-ID-9JO"/>
+                            <constraint firstItem="MZz-Hp-qch" firstAttribute="top" secondItem="Il9-Jg-Hvh" secondAttribute="top" constant="40" id="YVR-08-K9l"/>
+                            <constraint firstItem="r1b-6P-aw2" firstAttribute="top" secondItem="MZz-Hp-qch" secondAttribute="bottom" constant="8" symbolic="YES" id="f9D-Oc-SRT"/>
+                            <constraint firstItem="ZFg-B8-Vl5" firstAttribute="leading" secondItem="SXg-pS-B9K" secondAttribute="leading" id="gx2-f5-jhn"/>
+                            <constraint firstAttribute="trailing" secondItem="SXg-pS-B9K" secondAttribute="trailing" constant="40" id="nvZ-TN-wWa"/>
+                            <constraint firstItem="SXg-pS-B9K" firstAttribute="baseline" secondItem="MZz-Hp-qch" secondAttribute="baseline" id="vMZ-cW-Vf3"/>
+                        </constraints>
+                    </view>
+                    <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8cI-FN-Vac">
+                    <rect key="frame" x="18" y="193" width="228" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Choose options for your new project:" id="O6M-c1-Yhw">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PFy-b8-mmS">
+                    <rect key="frame" x="430" y="13" width="69" height="32"/>
+                    <buttonCell key="cell" type="push" title="Next" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IZq-Nh-BOv">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="didClickNextButton:" target="-2" id="p7Z-Ai-egM"/>
+                        <binding destination="-2" name="enabled" keyPath="self.projectName.length" id="jMB-5r-z6K">
+                            <dictionary key="options">
+                                <integer key="NSNullPlaceholder" value="0"/>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="enabled2" keyPath="self.workspacePath" previousBinding="jMB-5r-z6K" id="zou-e3-bhd">
+                            <dictionary key="options">
+                                <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                <integer key="NSNullPlaceholder" value="-1"/>
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iDG-iJ-O3K">
+                    <rect key="frame" x="14" y="13" width="82" height="32"/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mdu-c3-HEj">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="didClickCancelButton:" target="-2" id="11R-3S-Dnf"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="8cI-FN-Vac" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="2k7-22-Z5o"/>
+                <constraint firstItem="x6S-jF-Hz7" firstAttribute="leading" secondItem="8cI-FN-Vac" secondAttribute="leading" id="3gG-3A-d4i"/>
+                <constraint firstAttribute="bottom" secondItem="PFy-b8-mmS" secondAttribute="bottom" constant="20" id="DkS-9x-qBq"/>
+                <constraint firstAttribute="trailing" secondItem="PFy-b8-mmS" secondAttribute="trailing" constant="20" id="d2h-tL-MOm"/>
+                <constraint firstAttribute="bottom" secondItem="iDG-iJ-O3K" secondAttribute="bottom" constant="20" id="dUJ-YP-eZv"/>
+                <constraint firstAttribute="trailing" secondItem="x6S-jF-Hz7" secondAttribute="trailing" constant="14" id="mnZ-Jq-rmp"/>
+                <constraint firstItem="x6S-jF-Hz7" firstAttribute="top" secondItem="8cI-FN-Vac" secondAttribute="bottom" constant="8" symbolic="YES" id="n62-wI-X9N"/>
+                <constraint firstItem="iDG-iJ-O3K" firstAttribute="top" secondItem="x6S-jF-Hz7" secondAttribute="bottom" constant="20" symbolic="YES" id="rXy-ce-03l"/>
+                <constraint firstItem="8cI-FN-Vac" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="vhr-J1-2g8"/>
+                <constraint firstItem="iDG-iJ-O3K" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="xdY-eQ-WGl"/>
+            </constraints>
+            <point key="canvasLocation" x="358.5" y="517.5"/>
+        </customView>
+    </objects>
+</document>

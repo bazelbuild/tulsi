@@ -1,0 +1,84 @@
+/*
+  Strings for the Tulsi application.
+*/
+
+/* Message to show at the top of the Tulsi project save as panel, explaining what to do. */
+"Document_SelectTulsiProjectOutputFolderMessage" = "Select a location to save this Tulsi project.";
+
+/* General error when project does not have a valid Bazel workspace. */
+"Error_BadWorkspace" = "Project does not contain a valid Bazel workspace. Start a new project or ensure that a WORKSPACE file exists.";
+
+/* A general, critical failure during project generation. Details are provided as %1$@. */
+"Error_GeneralProjectGenerationFailure" = "Failed to create Xcode project. Debug info: %1$@";
+
+/* A critical failure message when the Bazel binary could not be located, meaning no useful work may be done. */
+"Error_NoBazel" = "The path to Bazel is invalid but should have been validated previously. This is a fatal error and a Tulsi bug, please report and restart.";
+
+/* Error for a save attempt without a valid target output folder even though one should exist. */
+"Error_NoOutputFolder" = "No output folder selected. This is likely a Tulsi bug, please report.";
+
+/* Error when Tulsi project at %1$@ could not be loaded. Details are provided as %2$@. */
+"Error_ProjectLoadingFailed" = "Failed to load Tulsi project at %1$@. Debug info: %2$@";
+
+/* Message to show at the top of WORKSPACE file selector sheet, explaining what to do. */
+"NewProject_SetProjectWorkspaceMessage" = "Select the location of the Bazel \"WORKSPACE\" for this project.";
+
+/* Label for the button used to confirm the selected WORKSPACE. */
+"NewProject_SetProjectWorkspacePrompt" = "Select";
+
+/* Short header shown before the build file in the options editor's target selector. */
+"OptionsTarget_BUILDFileSectionTitle" = "BUILD FILE";
+
+/* Short header shown before the build targets in the options editor's target selector. */
+"OptionsTarget_TargetSectionTitle" = "TARGETS";
+
+/* String to show in the options editor's 'default' column when there is no default value. */
+"OptionsEditor_NoDefault" = "<none>";
+
+/* String to show in the option editor for group nodes when there are multiple per-config values. */
+"OptionsEditor_MultipleValues" = "<Multiple values>";
+
+/* Value to show when a boolean option is 'true'. This should match Xcode's localization. */
+"OptionsEditor_TrueValue" = "Yes";
+
+/* Value to show when a boolean option is 'false'. This should match Xcode's localization. */
+"OptionsEditor_FalseValue" = "No";
+
+/* "Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
+"ProjectEditor_AddBUILDFilePrompt" = "Add";
+
+/* Message to show at the top of the Bazel RC selector sheet, explaining what to do. */
+"ProjectEditor_SelectBazelRCPathMessage" = "Select your bazelrc file.";
+
+/* Label for the button used to confirm the selected Bazel RC file in the selector sheet. */
+"ProjectEditor_SelectBazelRCPathPrompt" = "Select";
+
+/* Title for open panel through which the user should select where to generate the Xcode project. */
+"ProjectGeneration_SelectProjectOutputFolderTitle" = "Project output folder";
+
+/* Message to show at the top of the Xcode output folder sheet, explaining what to do. */
+"ProjectGeneration_SelectProjectOutputFolderMessage" = "Select the folder into which the Xcode project should be generated.";
+
+/* Label for the button used to confirm the selected output folder for the generated Xcode project. */
+"ProjectGeneration_SelectProjectOutputFolderPrompt" = "Choose";
+
+/* Label for the button used to confirm the selected output folder for the generated Xcode project. */
+"ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt" = "Generate";
+
+/* Label for action button to be used to go to the final page in the project wizard. */
+"Wizard_Generate" = "Generate";
+
+/* Label for action button to be used to go to the next page in the project wizard. */
+"Wizard_Next" = "Next";
+
+
+/* Strings mapping progress item notification names to user-friendly names */
+
+/* Sent when extracting source files from a Bazel project. */
+"sourceFileExtraction" = "Extracting source files";
+
+/* Sent when finding all BUILD files applicable to a Bazel project. */
+"buildFileExtraction" = "Extracting BUILD files";
+
+/* Sent when resolving Bazel labels to files. */
+"labelResolution" = "Resolving labels to files";

@@ -1,0 +1,107 @@
+// Copyright 2016 The Tulsi Authors. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import Cocoa
+import TulsiGenerator
+
+
+/// Controller for the options editor wizard page.
+class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, OptionsTargetSelectorControllerDelegate {
+
+  @IBOutlet weak var targetSelectorView: NSOutlineView!
+  @IBOutlet weak var optionEditorView: NSOutlineView!
+  @IBOutlet weak var outputPathControl: NSPathControl!
+
+  dynamic var targetSelectorController: OptionsTargetSelectorController? = nil
+  dynamic var editorController: OptionsEditorController? = nil
+
+  override var representedObject: AnyObject? {
+    didSet {
+      syncViewsFromDocument()
+    }
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    targetSelectorController = OptionsTargetSelectorController(view: targetSelectorView,
+                                                               delegate: self)
+    editorController = OptionsEditorController(view: optionEditorView, storyboard: storyboard!)
+    syncViewsFromDocument()
+  }
+
+  @IBAction func textFieldDidCompleteEditing(sender: OptionsEditorTextField) {
+    editorController?.stringBasedControlDidCompleteEditing(sender)
+  }
+
+  @IBAction func popUpFieldDidCompleteEditing(sender: NSPopUpButton) {
+    editorController?.popUpFieldDidCompleteEditing(sender)
+  }
+
+  @IBAction func didDoubleClickInEditorView(sender: NSOutlineView) {
+    editorController?.didDoubleClickInEditorView(sender)
+  }
+
+  @IBAction func didClickOutputPathControl(sender: NSPathControl) {
+    if let clickedCell = sender.clickedPathComponentCell() {
+      // Set the value to the clicked folder.
+      sender.URL = clickedCell.URL
+    } else {
+      // The user clicked on the "Choose..." placeholder; treat this as a double click.
+      didDoubleClickOutputPathControl(sender)
+    }
+  }
+
+  @IBAction func didDoubleClickOutputPathControl(sender: NSPathControl) {
+    guard let document = representedObject as? TulsiDocument else { return }
+
+    let initialURL: NSURL?
+    if let clickedCell = sender.clickedPathComponentCell() {
+      initialURL = clickedCell.URL
+    } else {
+      initialURL = document.defaultOutputFolderURL
+    }
+
+    // Pop an NSOpen panel rooted at the double clicked folder's location.
+    ProjectOutputFolderPanel.beginSheetModalForWindow(self.view.window!,
+                                                      document: document,
+                                                      initialURL: initialURL)
+  }
+
+  // MARK: - NSSplitViewDelegate
+
+  func splitView(splitView: NSSplitView,
+                 constrainMinCoordinate proposedMinimumPosition: CGFloat,
+                 ofSubviewAt dividerIndex: Int) -> CGFloat {
+    // Restrict the splitter so it's never less than the target selector's min width.
+    let minWidth = targetSelectorView.tableColumns[0].minWidth + targetSelectorView.intercellSpacing.width
+    return minWidth
+  }
+
+  // MARK: - OptionsTargetSelectorControllerDelegate
+
+  func didSelectOptionsTargetNode(selectedTarget: OptionsTargetNode) {
+    editorController?.prepareEditorForTarget(selectedTarget.entry)
+  }
+
+  // MARK: - Private methods
+
+  private func syncViewsFromDocument() {
+    guard let document = representedObject as? TulsiDocument else { return }
+
+    // Note: the editor's document must be set before the target selector as the target selector
+    // immediately updates selection as a side effect of document modification.
+    editorController?.document = document
+    targetSelectorController?.document = document
+  }
+}

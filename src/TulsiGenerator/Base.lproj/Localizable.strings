@@ -1,0 +1,39 @@
+/*
+  Strings for the Tulsi Xcode project generator.
+*/
+
+/* Bazel response XML element %1$@ was found but was missing an attribute named %2$@. */
+"BazelResponseMissingRequiredAttribute" = "Missing expected attribute named '%12@' on element '%1$@'. This is a Tulsi or Bazel bug, please report.";
+
+/* General error to show when the XML parser returns something other than an NSXMLElement. This should never happen in practice. */
+"BazelResponseXMLNonElementType" = "Non element unexpectedly returned for query. This is a Tulsi bug, please report.";
+
+/* Extracting labels from Bazel query failed (likely a bad response from Bazel). */
+"BazelResponseLabelExtractionFailed" = "Failed to parse Bazel response as labels. This may mean that the contents of a BUILD file are incorrect.";
+
+/* Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file. */
+"BazelResponseXMLParsingFailed" = "Bazel response XML parsing failed with error '%1$@'. This may be a Bazel bug or a BUILD file issue.";
+
+/* bridging_header label cannot be resolved to a file. %1$@ is replaced with the bazel label that was used. */
+"BridgingHeaderResolverFailed" = "Failed to resolve bridging_header label '%1$@' to a file. The bridging header will be ignored, which may lead to broken indexing in Xcode. Please verify that the label is valid and report a bug as appropriate.";
+
+/* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
+"CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
+
+/* A precondition failure that indicates a critical Tulsi programming error in function %1$@ line %2$d and should be reported. */
+"CriticalTulsiBug" = "A critical internal failure occurred at %1$@:%2$d. This is an internal Tulsi bug, please report.";
+
+/* Provides general information about a Bazel command; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@. */
+"DebugInfoForBazelCommand" = "Bazel command info:\n%1$@\n\n(%2$d) %3$@";
+
+/* Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported. */
+"DirectoryCreationFailed" = "Failed to create directory '%1$@'. The generated project will probably malfunction, please report. Error: %2$@";
+
+/* label %1$@ resolved successfully to %2$@ which is unexpectedly not a file path. */
+"LabelResolverResolvedNonFilePath" = "Label '%1$@' resolved successfully to non-file path '%2$@'. This may be a Tulsi bug or a BUILD file issue.";
+
+/* Label resolver Bazel output failed to be parsed as XML with error message %1$@. This may be a Bazel bug or a bad BUILD file. */
+"LabelResolverXMLParsingFailed" = "Label resolver XML parsing failed with error %1$@. This may be a Bazel bug or a BUILD file issue.";
+
+/* The Bazel query for dependencies of rule %1$@ failed XML parsing. As a result, the user won't be able to add affected source files to the project unless they happen to be dependencies of another target that succeeds. */
+"SourceRuleExtractionFailed" = "Failed to resolve bazel source targets for rule %1$@. Source files may be missing from the generated Xcode project.";

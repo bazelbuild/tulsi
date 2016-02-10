@@ -1,0 +1,33 @@
+/*
+  Strings for user-modifiable options in the Tulsi Xcode project generator.
+  Each string key is a user-editable option for the project generator.
+  Each key may have an optional _DESC pairing that provides a detailed description of the option
+    (e.g., to be used in a tooltip or help string)
+*/
+
+"ALWAYS_SEARCH_USER_PATHS" = "Always search user paths";
+"ALWAYS_SEARCH_USER_PATHS_DESC" ="Whether to search for all headers (not just \"\" included ones) in the user header search paths before system paths.";
+
+"BazelBuildOptions" = "'build' options";
+"BazelBuildOptions_DESC" = "Options for bazel 'build' invocations.";
+"BazelBuildOptionsDebug" = "Debug";
+"BazelBuildOptionsFastbuild" = "Fastbuild";
+"BazelBuildOptionsRelease" = "Release";
+
+"BazelBuildStartupOptions" = "'build' startup options";
+"BazelBuildStartupOptions_DESC" = "Startup options for bazel 'build' invocations.";
+"BazelBuildStartupOptionsDebug" = "Debug";
+"BazelBuildStartupOptionsFastbuild" = "Fastbuild";
+"BazelBuildStartupOptionsRelease" = "Release";
+
+"CODE_SIGN_IDENTITY" = "Code signing identity";
+
+"IPHONEOS_DEPLOYMENT_TARGET" = "iOS deployment target";
+
+"SDKROOT" = "Base SDK";
+
+"SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
+"SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
+
+"USER_HEADER_SEARCH_PATHS" = "User header search paths";
+"USER_HEADER_SEARCH_PATHS_DESC" = "Space-separated list of directory paths to be searched when resolving includes using quotation marks (\"\").";
