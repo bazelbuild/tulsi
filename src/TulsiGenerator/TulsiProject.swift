@@ -96,8 +96,8 @@ public final class TulsiProject {
       }
       var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspaceURL,
                                                                           isDirectory: true)
-      // Get rid of any ..'s if possible.
-      if let standardizedWorkspaceRootURL = workspaceRootURL.standardizedURL {
+      // Get rid of any ..'s and //'s if possible.
+      if let standardizedWorkspaceRootURL = workspaceRootURL.URLByStandardizingPath {
         workspaceRootURL = standardizedWorkspaceRootURL
       }
       let bazelPackages = dict[TulsiProject.PackagesKey] as? [String] ?? []

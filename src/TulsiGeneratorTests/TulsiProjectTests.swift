@@ -68,4 +68,22 @@ class TulsiProjectTests: XCTestCase {
       XCTFail("Unexpected assertion")
     }
   }
+
+  func testLoadWithTrailingSlash() {
+    do {
+      let dict = [
+        "packages": bazelPackages,
+        "projectName": projectName,
+        "workspaceRoot": relativeRootPath + "/",
+      ]
+      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      project = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
+
+      XCTAssertEqual(project.bazelPackages, bazelPackages)
+      XCTAssertEqual(project.projectName, projectName)
+      XCTAssertEqual(project.workspaceRootURL, workspaceRootURL)
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
 }
