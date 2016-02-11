@@ -53,15 +53,7 @@ public final class TulsiProject {
   public let projectName: String
 
   /// The path to this project's bundle directory on the filesystem.
-  public var projectBundleURL: NSURL {
-    didSet {
-      // TODO(abaire): Store this as a file artifact instead of via NSUser defaults.
-      let storedRCPath = NSUserDefaults.standardUserDefaults().URLForKey(bazelRCKey)
-      if storedRCPath != nil {
-        bazelRC = storedRCPath
-      }
-    }
-  }
+  public var projectBundleURL: NSURL
 
   /// The directory containing this project's workspace file.
   public let workspaceRootURL: NSURL
@@ -73,20 +65,6 @@ public final class TulsiProject {
 
   /// The Bazel binary to be used for this project.
   public var bazel: NSURL?
-
-  // TODO(abaire): Migrate to a file from NSUserDefaults.
-  /// Prefix used to access the persisted bazelrc for a given BUILD file path.
-  static let BazelRCPathKeyPrefix = "bazelRC_"
-  private var bazelRCKey: String {
-    return TulsiProject.BazelRCPathKeyPrefix + projectBundleURL.absoluteString
-  }
-
-  /// The bazelrc (or blazerc) appropriate for this project's workspace.
-  public var bazelRC: NSURL? {
-    didSet {
-      NSUserDefaults.standardUserDefaults().setURL(bazelRC, forKey: bazelRCKey)
-    }
-  }
 
   public static func load(projectBundleURL: NSURL) throws -> TulsiProject {
     let fileManager = NSFileManager.defaultManager()

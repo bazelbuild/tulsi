@@ -47,12 +47,6 @@
 /* "Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
 "ProjectEditor_AddBUILDFilePrompt" = "Add";
 
-/* Message to show at the top of the Bazel RC selector sheet, explaining what to do. */
-"ProjectEditor_SelectBazelRCPathMessage" = "Select your bazelrc file.";
-
-/* Label for the button used to confirm the selected Bazel RC file in the selector sheet. */
-"ProjectEditor_SelectBazelRCPathPrompt" = "Select";
-
 /* Title for open panel through which the user should select where to generate the Xcode project. */
 "ProjectGeneration_SelectProjectOutputFolderTitle" = "Project output folder";
 

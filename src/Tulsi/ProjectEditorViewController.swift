@@ -167,29 +167,6 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
     document.bazelURL = nil
   }
 
-  @IBAction func selectBazelRCPath(sender: AnyObject?) {
-    let document = representedObject as! TulsiDocument
-
-    let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["bazelrc", "blazerc"])
-    panel.message = NSLocalizedString("ProjectEditor_SelectBazelRCPathMessage",
-                                      comment: "Message to show at the top of the Bazel RC selector sheet, explaining what to do.")
-    panel.prompt = NSLocalizedString("ProjectEditor_SelectBazelRCPathPrompt",
-                                     comment: "Label for the button used to confirm the selected Bazel RC file in the selector sheet.")
-
-    panel.canChooseDirectories = false
-    panel.canChooseFiles = true
-    panel.beginSheetModalForWindow(self.view.window!) { value in
-      if value == NSFileHandlingPanelOKButton {
-        document.bazelRCURL = panel.URL
-      }
-    }
-  }
-
-  @IBAction func didClickClearBazelRCButton(sender: AnyObject) {
-    let document = representedObject as! TulsiDocument
-    document.bazelRCURL = nil
-  }
-
   func document(document: NSDocument, didSave: Bool, contextInfo: AnyObject) {
     if !didSave {
       // Nothing useful can be done if the initial save failed so close this window.

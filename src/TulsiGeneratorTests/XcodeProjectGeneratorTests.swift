@@ -37,7 +37,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
   let additionalFilePaths = ["additionalFile1", "path/to/additionalFile2"]
 
   let bazelURL = NSURL(fileURLWithPath: "/test/dir/testBazel")
-  let bazelRCURL = NSURL(fileURLWithPath: "/test/home/dir/testBazelRC")
 
   let buildScriptURL = NSURL(fileURLWithPath: "/scripts/Build")
   let cleanScriptURL = NSURL(fileURLWithPath: "/scripts/Clean")
@@ -72,8 +71,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                   sourceTargetLabels: sourceTargetLabels,
                                   additionalFilePaths: additionalFilePaths,
                                   options: options,
-                                  bazelURL: bazelURL,
-                                  bazelRCURL: bazelRCURL)
+                                  bazelURL: bazelURL)
 
     mockFileManager = MockFileManager()
     let projectURL = outputFolderURL.URLByAppendingPathComponent("\(projectName).xcodeproj")

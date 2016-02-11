@@ -19,7 +19,6 @@ import XCTest
 // buildSerializerWithRuleEntries modifies a project directly.
 class BazelTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
-  let bazelRCURL: NSURL? = nil
   let rootURL = NSURL.fileURLWithPath("/root", isDirectory: true)
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
@@ -28,7 +27,6 @@ class BazelTargetGeneratorTests: XCTestCase {
     super.setUp()
     project = PBXProject(name: "TestProject")
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
-                                           bazelRCURL: bazelRCURL,
                                            project: project,
                                            buildScriptPath: "",
                                            labelResolver: MockLabelResolver(),
@@ -95,7 +93,6 @@ class BazelTargetGeneratorTests: XCTestCase {
 
 class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
-  let bazelRCURL: NSURL? = nil
   let sdkRoot = "sdkRoot"
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
@@ -119,7 +116,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let options = TulsiOptionSet()
     options[.SDKROOT]!.projectValue = sdkRoot
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
-                                           bazelRCURL: bazelRCURL,
                                            project: project,
                                            buildScriptPath: "",
                                            labelResolver: labelResolver,
@@ -262,7 +258,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, bazelRCURL: bazelRCURL, buildTarget: rule1BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -289,7 +285,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, bazelRCURL: bazelRCURL, buildTarget: rule2BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -343,7 +339,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, bazelRCURL: bazelRCURL, buildTarget: rule1BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -372,7 +368,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, bazelRCURL: bazelRCURL, buildTarget: rule2BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -440,7 +436,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           ],
           expectedBuildPhases: [
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
-                                              bazelRCURL: bazelRCURL,
                                               buildTarget: rule1BuildTarget),
           ]
       )
@@ -481,7 +476,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           expectedBuildPhases: [
               SourcesBuildPhaseDefinition(files: testSources),
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
-                                              bazelRCURL: bazelRCURL,
                                               buildTarget: testRuleBuildTarget)
           ]
       )
@@ -662,12 +656,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   private class ShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
     let bazelURL: NSURL
-    let bazelRCURL: NSURL?
     let buildTarget: String
 
-    init(bazelURL: NSURL, bazelRCURL: NSURL?, buildTarget: String) {
+    init(bazelURL: NSURL, buildTarget: String) {
       self.bazelURL = bazelURL
-      self.bazelRCURL = bazelRCURL
       self.buildTarget = buildTarget
       super.init(isa: "PBXShellScriptBuildPhase", files: [])
     }
@@ -684,10 +676,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       // TODO(abaire): Consider doing deeper validation of the script.
       XCTAssert(script.containsString(bazelURL.path!), file: file, line: line)
       XCTAssert(script.containsString(buildTarget), file: file, line: line)
-
-      if bazelRCURL != nil {
-        XCTAssert(script.containsString(bazelRCURL!.path!), file: file, line: line)
-      }
     }
   }
 

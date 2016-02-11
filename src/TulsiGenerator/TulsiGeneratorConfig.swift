@@ -53,8 +53,6 @@ public class TulsiGeneratorConfig {
 
   /// Path to the Bazel binary.
   public let bazelURL: NSURL
-  /// Path to the bazelRC binary.
-  public let bazelRCURL: NSURL!
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
@@ -81,15 +79,13 @@ public class TulsiGeneratorConfig {
        sourceTargetLabels: [String],
        additionalFilePaths: [String]?,
        options: TulsiOptionSet,
-       bazelURL: NSURL,
-       bazelRCURL: NSURL? = nil) {
+       bazelURL: NSURL) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
     self.sourceTargetLabels = sourceTargetLabels
     self.additionalFilePaths = additionalFilePaths
     self.options = options
     self.bazelURL = bazelURL
-    self.bazelRCURL = bazelRCURL
   }
 
   public convenience init(projectName: String,
@@ -97,8 +93,7 @@ public class TulsiGeneratorConfig {
        sourceTargets: [RuleEntry],
        additionalFilePaths: [String]?,
        options: TulsiOptionSet,
-       bazelURL: NSURL,
-       bazelRCURL: NSURL? = nil) {
+       bazelURL: NSURL) {
     func labelsFromRules(rules: [RuleEntry]) -> [String] {
       return rules.map() { $0.label.value }
     }
@@ -108,8 +103,7 @@ public class TulsiGeneratorConfig {
               sourceTargetLabels: labelsFromRules(sourceTargets),
               additionalFilePaths: additionalFilePaths,
               options: options,
-              bazelURL: bazelURL,
-              bazelRCURL: bazelRCURL)
+              bazelURL: bazelURL)
     self.buildTargets = buildTargets
     self.sourceTargets = sourceTargets
   }
@@ -131,8 +125,7 @@ public class TulsiGeneratorConfig {
                 sourceTargetLabels: sourceTargetLabels,
                 additionalFilePaths: additionalFilePaths,
                 options: options,
-                bazelURL: NSURL(fileURLWithPath: "bazel"),  // TODO(abaire): Wire up to options.
-                bazelRCURL: nil)  // TODO(abaire): Wire up to options.
+                bazelURL: NSURL(fileURLWithPath: "bazel"))  // TODO(abaire): Wire up to options.
     } catch let e as Error {
       throw e
     } catch let e as NSError {

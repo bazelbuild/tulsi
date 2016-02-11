@@ -175,7 +175,6 @@ class XcodeProjectGenerator {
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
 
     let generator = BazelTargetGenerator(bazelURL: config.bazelURL,
-                                         bazelRCURL: config.bazelRCURL,
                                          project: xcodeProject,
                                          buildScriptPath: buildScriptPath,
                                          labelResolver: labelResolver,

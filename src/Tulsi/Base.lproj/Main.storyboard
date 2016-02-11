@@ -468,13 +468,13 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kek-vY-RVz">
-                                <rect key="frame" x="20" y="78" width="581" height="281"/>
+                                <rect key="frame" x="20" y="49" width="581" height="310"/>
                                 <clipView key="contentView" id="QDy-m2-lgv">
-                                    <rect key="frame" x="1" y="0.0" width="579" height="280"/>
+                                    <rect key="frame" x="1" y="0.0" width="579" height="309"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="NmV-w5-Ht5" viewBased="YES" id="dvy-Oa-HvY">
-                                            <rect key="frame" x="0.0" y="0.0" width="579" height="257"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="579" height="286"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -547,26 +547,8 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wIq-pD-t2e" userLabel="Bazelrc path">
-                                <rect key="frame" x="20" y="3" width="232" height="14"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="5mu-kh-IUa"/>
-                                </constraints>
-                                <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" placeholderString="Bazel RC Picker (default set via bindings)" id="yEZ-7I-iC7">
-                                    <font key="font" metaFont="smallSystem"/>
-                                </pathCell>
-                                <connections>
-                                    <binding destination="6Ix-Ro-Er4" name="value" keyPath="selection.bazelRCURL" id="FP5-qn-84f">
-                                        <dictionary key="options">
-                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                            <bool key="NSConditionallySetsEnabled" value="NO"/>
-                                            <string key="NSNullPlaceholder">Choose a Bazel RC File…</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </pathControl>
                             <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-q3-OMc" userLabel="Bazel path">
-                                <rect key="frame" x="20" y="32" width="194" height="14"/>
+                                <rect key="frame" x="20" y="3" width="194" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="1hg-pr-m3y"/>
                                 </constraints>
@@ -583,21 +565,8 @@ Gw
                                     </binding>
                                 </connections>
                             </pathControl>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9SC-cD-azy">
-                                <rect key="frame" x="465" y="-7" width="120" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="108" id="Gr5-pZ-6AF"/>
-                                </constraints>
-                                <buttonCell key="cell" type="push" title="Bazelrc…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1Ka-Nh-DbU">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="selectBazelRCPath:" target="GoM-gR-TmP" id="oZp-Hz-KZ0"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wKJ-4v-qrf" userLabel="Clear Bazel Button">
-                                <rect key="frame" x="587" y="30" width="20" height="20"/>
+                                <rect key="frame" x="587" y="1" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Iia-r7-qOt"/>
                                     <constraint firstAttribute="width" constant="20" id="agM-LF-ayO"/>
@@ -612,24 +581,8 @@ Gw
                                     <action selector="didClickClearBazelButton:" target="GoM-gR-TmP" id="xpu-k4-lBV"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-9w-pwO" userLabel="Clear BazelRC Button">
-                                <rect key="frame" x="587" y="1" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="2xZ-Ja-O4M"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="S5H-XR-QGn"/>
-                                    <constraint firstAttribute="height" constant="20" id="eBi-RR-K8Q"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="vA5-X1-xyo"/>
-                                </constraints>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="udF-sQ-qbm">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="didClickClearBazelRCButton:" target="GoM-gR-TmP" id="lub-RD-97S"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="onV-r2-vl9">
-                                <rect key="frame" x="465" y="22" width="120" height="32"/>
+                                <rect key="frame" x="465" y="-7" width="120" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="108" id="8LH-jR-Tpz"/>
                                 </constraints>
@@ -642,7 +595,7 @@ Gw
                                 </connections>
                             </button>
                             <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P9B-5h-yw2">
-                                <rect key="frame" x="20" y="57" width="67" height="23"/>
+                                <rect key="frame" x="20" y="28" width="67" height="23"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="momentary" id="Yyw-tE-15w">
                                     <font key="font" metaFont="system"/>
                                     <segments>
@@ -660,22 +613,15 @@ Gw
                             <constraint firstItem="P9B-5h-yw2" firstAttribute="top" secondItem="kek-vY-RVz" secondAttribute="bottom" constant="-1" id="7go-k4-cJf" userLabel="Add/Remove to Table View - Y"/>
                             <constraint firstItem="onV-r2-vl9" firstAttribute="centerY" secondItem="wKJ-4v-qrf" secondAttribute="centerY" id="8qw-Vo-8v6"/>
                             <constraint firstItem="onV-r2-vl9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Anc-q3-OMc" secondAttribute="trailing" constant="8" symbolic="YES" id="Bat-h7-wAN"/>
-                            <constraint firstItem="9SC-cD-azy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wIq-pD-t2e" secondAttribute="trailing" constant="8" symbolic="YES" id="H0z-N6-PMc"/>
-                            <constraint firstAttribute="bottom" secondItem="9SC-cD-azy" secondAttribute="bottom" id="ISV-KZ-N23"/>
-                            <constraint firstAttribute="trailing" secondItem="Qwq-9w-pwO" secondAttribute="trailing" constant="13" id="LJR-Om-aDh"/>
+                            <constraint firstAttribute="bottom" secondItem="onV-r2-vl9" secondAttribute="bottom" id="Pyk-OY-3Pe"/>
                             <constraint firstItem="Anc-q3-OMc" firstAttribute="leading" secondItem="qgm-2K-DIz" secondAttribute="leading" constant="20" id="QwM-IV-P35" userLabel="Bazel path - Left"/>
                             <constraint firstItem="onV-r2-vl9" firstAttribute="top" secondItem="P9B-5h-yw2" secondAttribute="bottom" constant="8" id="Tls-ay-jjI"/>
-                            <constraint firstItem="Qwq-9w-pwO" firstAttribute="leading" secondItem="9SC-cD-azy" secondAttribute="trailing" constant="8" id="XO4-q5-JLd"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="leading" secondItem="P9B-5h-yw2" secondAttribute="leading" id="eUo-zh-f7M" userLabel="Add/Remove to Table View - X"/>
-                            <constraint firstItem="wIq-pD-t2e" firstAttribute="baseline" secondItem="9SC-cD-azy" secondAttribute="baseline" id="hl2-qh-xcO"/>
                             <constraint firstItem="Anc-q3-OMc" firstAttribute="baseline" secondItem="onV-r2-vl9" secondAttribute="baseline" id="ijX-8u-hDH"/>
                             <constraint firstAttribute="trailing" secondItem="wKJ-4v-qrf" secondAttribute="trailing" constant="13" id="muD-hN-VY6"/>
-                            <constraint firstItem="9SC-cD-azy" firstAttribute="centerY" secondItem="Qwq-9w-pwO" secondAttribute="centerY" id="nJq-AM-y0C"/>
                             <constraint firstItem="wKJ-4v-qrf" firstAttribute="leading" secondItem="onV-r2-vl9" secondAttribute="trailing" constant="8" id="okH-rf-oM1"/>
-                            <constraint firstItem="wIq-pD-t2e" firstAttribute="leading" secondItem="qgm-2K-DIz" secondAttribute="leading" constant="20" id="pEa-oF-U7k"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="top" secondItem="qgm-2K-DIz" secondAttribute="top" constant="20" id="sOC-Qn-YLr"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="leading" secondItem="qgm-2K-DIz" secondAttribute="leading" constant="20" id="wsg-HO-6RB"/>
-                            <constraint firstItem="9SC-cD-azy" firstAttribute="top" secondItem="onV-r2-vl9" secondAttribute="bottom" constant="8" id="yqf-zT-u3y"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1162,11 +1108,11 @@ Gw
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="97C-ck-8nj">
-                                                                    <rect key="frame" x="1" y="1" width="132" height="17"/>
+                                                                    <rect key="frame" x="1" y="1" width="133" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ypQ-IN-W6z">
-                                                                            <rect key="frame" x="0.0" y="2" width="132" height="14"/>
+                                                                            <rect key="frame" x="0.0" y="2" width="133" height="14"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Setting (via bindings)" id="Caz-sl-MAl">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

@@ -48,17 +48,6 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
     }
   }
 
-  /// Location of a bazelrc file associated with the opened BUILD file.
-  dynamic var bazelRCURL: NSURL? {
-    set {
-      project.bazelRC = newValue
-      updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
-    }
-    get {
-      return project?.bazelRC
-    }
-  }
-
   /// Binding point for the directory containing the project's WORKSPACE file.
   dynamic var workspaceRootURL: NSURL? {
     get {
@@ -134,7 +123,6 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
 
   func createNewProject(projectName: String, workspaceFileURL: NSURL) {
     willChangeValueForKey("bazelURL")
-    willChangeValueForKey("bazelRCURL")
     willChangeValueForKey("bazelPackages")
     willChangeValueForKey("workspaceRootURL")
 
@@ -149,7 +137,6 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
     updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
 
     didChangeValueForKey("bazelURL")
-    didChangeValueForKey("bazelRCURL")
     didChangeValueForKey("bazelPackages")
     didChangeValueForKey("workspaceRootURL")
   }
@@ -337,8 +324,7 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
                                       sourceTargets: selectedSourceRuleEntries,
                                       additionalFilePaths: files,
                                       options: options,
-                                      bazelURL: bazelURL!,
-                                      bazelRCURL: bazelRCURL)
+                                      bazelURL: bazelURL!)
     // TODO(abaire): Refactor the UI and write out the config before kicking off generation.
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: concreteWorkspaceRootURL,
                                                       config: config,

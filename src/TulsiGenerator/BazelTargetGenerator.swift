@@ -116,9 +116,6 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   /// Location of the bazel binary.
   let bazelURL: NSURL
 
-  /// Location of a bazelrc file associated with the opened BUILD file.
-  let bazelRCURL: NSURL?
-
   let project: PBXProject
   let buildScriptPath: String
   let labelResolver: LabelResolverProtocol
@@ -128,14 +125,12 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   var bazelCleanScriptTarget: PBXLegacyTarget? = nil
 
   init(bazelURL: NSURL,
-       bazelRCURL: NSURL?,
        project: PBXProject,
        buildScriptPath: String,
        labelResolver: LabelResolverProtocol,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
-    self.bazelRCURL = bazelRCURL
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.labelResolver = labelResolver
@@ -493,10 +488,6 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     var commandLine = "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
         "--bazel \"\(bazelURL.path!)\" "
-
-    if bazelRCURL?.path != nil {
-      commandLine += "--rc \"\(bazelRCURL!.path!)\" "
-    }
 
     func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey], optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be
