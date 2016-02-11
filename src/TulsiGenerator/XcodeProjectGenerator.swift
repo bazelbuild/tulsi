@@ -32,6 +32,7 @@ class XcodeProjectGenerator {
   /// should be placed.
   private static let TulsiArtifactDirectory = ".tulsi"
   private static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
+  private static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
 
@@ -110,6 +111,7 @@ class XcodeProjectGenerator {
                                       projectURL: projectURL,
                                       projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
+    installGeneratorConfig(projectURL)
 
     return projectURL
   }
@@ -247,7 +249,6 @@ class XcodeProjectGenerator {
   }
 
   private func installTulsiScripts(projectURL: NSURL) {
-    // Install Tulsi scripts.
     let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
     if createDirectory(scriptDirectoryURL) {
@@ -259,38 +260,74 @@ class XcodeProjectGenerator {
     }
   }
 
-  private func createDirectory(resourceDirectoryURL: NSURL) -> Bool {
+  private func installGeneratorConfig(projectURL: NSURL) {
+    let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
+                                                                    isDirectory: true)
+    guard createDirectory(configDirectoryURL, failSilently: true) else { return }
+    localizedMessageLogger.infoMessage("Installing generator config")
+
+    let configURL = configDirectoryURL.URLByAppendingPathComponent(config.filename)
+    let errorInfo: String?
+    do {
+      let data = try config.save()
+      try writeDataHandler(configURL, data)
+      errorInfo = nil
+    } catch let e as NSError {
+      errorInfo = e.localizedDescription
+    } catch {
+      errorInfo = "Unexpected exception"
+    }
+
+    if let errorInfo = errorInfo {
+      localizedMessageLogger.infoMessage("Generator config serialization failed. \(errorInfo)")
+      return
+    }
+  }
+
+  private func createDirectory(resourceDirectoryURL: NSURL, failSilently: Bool = false) -> Bool {
     do {
       try fileManager.createDirectoryAtURL(resourceDirectoryURL,
                                            withIntermediateDirectories: true,
                                            attributes: nil)
     } catch let e as NSError {
-      localizedMessageLogger.error("DirectoryCreationFailed",
-                                   comment: "Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported.",
-                                   values: resourceDirectoryURL, e.localizedDescription)
+      if !failSilently {
+        localizedMessageLogger.error("DirectoryCreationFailed",
+                                     comment: "Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported.",
+                                     values: resourceDirectoryURL, e.localizedDescription)
+      }
       return false
     }
     return true
   }
 
   private func installFiles(files: [(sourceURL: NSURL, filename: String)],
-                            toDirectory directory: NSURL) {
+                            toDirectory directory: NSURL, failSilently: Bool = false) {
     for (sourceURL, filename) in files {
-      if let targetURL = NSURL(string: filename, relativeToURL: directory) {
-        do {
-          if fileManager.fileExistsAtPath(targetURL.path!) {
-            try fileManager.removeItemAtURL(targetURL)
-          }
-          try fileManager.copyItemAtURL(sourceURL, toURL: targetURL)
-        } catch let e as NSError {
+      guard let targetURL = NSURL(string: filename, relativeToURL: directory) else {
+        if !failSilently {
           localizedMessageLogger.error("CopyingResourceFailed",
                                        comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
-                                       values: sourceURL, targetURL.absoluteString, e.localizedDescription)
+                                       values: sourceURL, filename, "Target URL is invalid")
         }
-      } else {
+        continue
+      }
+
+      let errorInfo: String?
+      do {
+        if fileManager.fileExistsAtPath(targetURL.path!) {
+          try fileManager.removeItemAtURL(targetURL)
+        }
+        try fileManager.copyItemAtURL(sourceURL, toURL: targetURL)
+        errorInfo = nil
+      } catch let e as NSError {
+        errorInfo = e.localizedDescription
+      } catch {
+        errorInfo = "Unexpected exception"
+      }
+      if !failSilently, let errorInfo = errorInfo {
         localizedMessageLogger.error("CopyingResourceFailed",
                                      comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
-                                     values: sourceURL, filename, "Target URL is invalid")
+                                     values: sourceURL, targetURL.absoluteString, errorInfo)
       }
     }
   }

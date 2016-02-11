@@ -27,8 +27,15 @@ public class TulsiGeneratorConfig {
     case DeserializationFailed(info: String)
   }
 
+  /// The file extension used when saving generator configs.
+  public static let FileExtension = "tulsigen"
+
   /// The name of the Xcode project.
   public let projectName: String
+
+  public var filename: String {
+    return TulsiGeneratorConfig.filenameForProjectName(projectName)
+  }
 
   /// The Bazel targets to generate Xcode build targets for.
   public let buildTargetLabels: [String]
@@ -56,7 +63,8 @@ public class TulsiGeneratorConfig {
 
   /// The project name sanitized for use as a filesystem path.
   public static func filenameForProjectName(projectName: String) -> String {
-    return projectName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet())!
+    let name = projectName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet())!
+    return "\(name).\(TulsiGeneratorConfig.FileExtension)"
   }
 
   public static func load(inputFile: NSURL) throws -> TulsiGeneratorConfig {
