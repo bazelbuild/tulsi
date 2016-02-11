@@ -30,15 +30,6 @@ class TulsiOptionSetTests: XCTestCase {
 
   // MARK: - Tests
 
-  func testGlobalValuesAreLoaded() {
-    let expectedValues = generateTestValues()
-    persister.globalValuesPerOption = expectedValues
-    let optionSet = TulsiOptionSet(persister: persister)
-    for (key, option) in optionSet.options {
-      XCTAssertEqual(option.globalValue, expectedValues[key.rawValue]!, "Mismatch for option \(key)")
-    }
-  }
-
   func testProjectValuesAreLoaded() {
     let expectedValues = generateTestValues()
     persister.projectValuesPerOption = expectedValues
@@ -70,8 +61,6 @@ class TulsiOptionSetTests: XCTestCase {
   }
 
   func testCommonBuildSettings() {
-    persister.setGlobalValue("NO", forOptionKey: .ALWAYS_SEARCH_USER_PATHS)
-    persister.setGlobalValue("1", forOptionKey: .IPHONEOS_DEPLOYMENT_TARGET)
     persister.setProjectValue("100", forOptionKey: .IPHONEOS_DEPLOYMENT_TARGET)
     persister.setProjectValue("Hello", forOptionKey: .SDKROOT)
     let expectedBuildSettings = [
@@ -92,7 +81,6 @@ class TulsiOptionSetTests: XCTestCase {
   func testBuildSettingsForTarget() {
     let target = "Target"
     persister.setValue("path!", forTarget: target, optionKey: .USER_HEADER_SEARCH_PATHS)
-    persister.setGlobalValue("global path!", forOptionKey: .USER_HEADER_SEARCH_PATHS)
 
     // IPHONEOS_DEPLOYMENT_TARGET is not target-specializable so any persisted target value
     // should be ignored.
@@ -113,13 +101,8 @@ class TulsiOptionSetTests: XCTestCase {
 
   func testDoesNotPersistDefaults() {
     class AssertingPersister: OptionPersisterProtocol {
-      var loadGlobalValuesCalled = false
       var loadProjectValuesCalled = false
       var loadTargetValuesCalled = false
-
-      func saveGlobalValue(value: String?, forStorageKey: String) {
-        XCTFail("saveGlobalValue:forStorageKey: was called")
-      }
 
       func saveProjectValue(value: String?, forStorageKey: String) {
         XCTFail("saveProjectValue:forStorageKey: was called")
@@ -127,11 +110,6 @@ class TulsiOptionSetTests: XCTestCase {
 
       func saveTargetValues(values: [String:String]?, forStorageKey: String) {
         XCTFail("saveTargetValues:forStorageKey: was called")
-      }
-
-      func loadGlobalValueForStorageKey(storageKey: String) -> String? {
-        loadGlobalValuesCalled = true
-        return nil
       }
 
       func loadProjectValueForStorageKey(storageKey: String) -> String? {
@@ -147,7 +125,6 @@ class TulsiOptionSetTests: XCTestCase {
 
     let persister = AssertingPersister()
     let _ = TulsiOptionSet(persister: persister)
-    XCTAssertTrue(persister.loadGlobalValuesCalled, "loadGlobalValueForStorageKey: must be called")
     XCTAssertTrue(persister.loadProjectValuesCalled, "loadProjectValueForStorageKey: must be called")
     XCTAssertTrue(persister.loadTargetValuesCalled, "loadTargetValueForStorageKey: must be called")
   }
@@ -182,13 +159,8 @@ class TulsiOptionSetTests: XCTestCase {
 
 
 class MockPersister: OptionPersisterProtocol{
-  var globalValuesPerOption = [String: String?]()
   var projectValuesPerOption = [String: String?]()
   var targetValuesPerOption = [String: [String: String]?]()
-
-  func setGlobalValue(value: String?, forOptionKey opt: TulsiOptionKey) {
-    globalValuesPerOption[opt.rawValue] = value
-  }
 
   func setProjectValue(value: String?, forOptionKey opt: TulsiOptionKey) {
     projectValuesPerOption[opt.rawValue] = value
@@ -206,20 +178,12 @@ class MockPersister: OptionPersisterProtocol{
 
   // MARK: - OptionPersisterProtocol
 
-  func saveGlobalValue(value: String?, forStorageKey key: String) {
-    globalValuesPerOption[key] = value
-  }
-
   func saveProjectValue(value: String?, forStorageKey key: String) {
     projectValuesPerOption[key] = value
   }
 
   func saveTargetValues(values: [String:String]?, forStorageKey key: String) {
     targetValuesPerOption[key] = values
-  }
-
-  func loadGlobalValueForStorageKey(storageKey: String) -> String? {
-    return globalValuesPerOption[storageKey] ?? nil
   }
 
   func loadProjectValueForStorageKey(storageKey: String) -> String? {

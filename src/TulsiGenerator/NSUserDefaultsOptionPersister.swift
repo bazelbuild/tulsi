@@ -17,9 +17,6 @@ import Foundation
 
 /// Concrete option persister backed by NSUserDefaults storage.
 class NSUserDefaultsOptionPersister: OptionPersisterProtocol {
-  /// The NSUserDefaults key used to store global Tulsi options.
-  static let GLOBAL_OPTIONS_KEY = "!global!"
-
   /// Key used to store Tulsi options assigned to all targets loaded from a particular BUILD file.
   static let PROJECT_VALUE_KEY = "!build!"
 
@@ -35,15 +32,6 @@ class NSUserDefaultsOptionPersister: OptionPersisterProtocol {
 
   // MARK: - OptionPersisterProtocol
 
-  // Persists the given value as a global default. Global defaults are all stored in a single
-  // subdictionary under the GLOBAL_OPTIONS_KEY.
-  func saveGlobalValue(value: String?, forStorageKey key: String) {
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-    var globalOptions = loadDictionaryForKey(NSUserDefaultsOptionPersister.GLOBAL_OPTIONS_KEY)
-    setOrRemoveValue(value, forKey: key, inDictionary: &globalOptions)
-    userDefaults.setObject(globalOptions, forKey: NSUserDefaultsOptionPersister.GLOBAL_OPTIONS_KEY)
-  }
-
   func saveProjectValue(value: String?, forStorageKey key: String) {
     persistSpecializedValue(value,
                             forOptionKey: key,
@@ -54,11 +42,6 @@ class NSUserDefaultsOptionPersister: OptionPersisterProtocol {
     persistSpecializedValue(values,
                             forOptionKey: key,
                             specializationKey: NSUserDefaultsOptionPersister.TARGET_VALUES_KEY)
-  }
-
-  func loadGlobalValueForStorageKey(storageKey: String) -> String? {
-    let globalOptions = loadDictionaryForKey(NSUserDefaultsOptionPersister.GLOBAL_OPTIONS_KEY)
-    return globalOptions[storageKey] as? String
   }
 
   func loadProjectValueForStorageKey(storageKey: String) -> String? {

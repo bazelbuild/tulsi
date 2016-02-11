@@ -17,11 +17,9 @@ import Foundation
 
 /// Protocol for an object that can preserve a TulsiOption's values across application restarts.
 protocol OptionPersisterProtocol: class {
-  func saveGlobalValue(value: String?, forStorageKey: String)
   func saveProjectValue(value: String?, forStorageKey: String)
   func saveTargetValues(values: [String: String]?, forStorageKey: String)
 
-  func loadGlobalValueForStorageKey(storageKey: String) -> String?
   func loadProjectValueForStorageKey(storageKey: String) -> String?
   func loadTargetValueForStorageKey(storageKey: String) -> [String: String]?
 }
@@ -73,12 +71,6 @@ public class TulsiOption {
 
   /// Value of this option if the user does not provide any override.
   public let defaultValue: String?
-  /// User-set value of this option for all Tulsi-generated projects, unless overridden.
-  public var globalValue: String? = nil {
-    didSet {
-      persister?.saveGlobalValue(globalValue, forStorageKey: storageKey)
-    }
-  }
   /// User-set value of this option for all targets within this project, unless overridden.
   public var projectValue: String? = nil {
     didSet {
@@ -95,7 +87,6 @@ public class TulsiOption {
   /// Provides the value of this option with no target specialization.
   public var commonValue: String? {
     if projectValue != nil { return projectValue }
-    if globalValue != nil { return globalValue }
     return defaultValue
   }
 
@@ -165,7 +156,6 @@ public class TulsiOption {
     persister = nil
     defer { persister = concretePersister }
 
-    globalValue = concretePersister.loadGlobalValueForStorageKey(storageKey)
     projectValue = concretePersister.loadProjectValueForStorageKey(storageKey)
 
     if let values = concretePersister.loadTargetValueForStorageKey(storageKey) {

@@ -117,7 +117,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     pchFile = mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     labelResolver = MockLabelResolver()
     let options = TulsiOptionSet()
-    options[.SDKROOT]!.globalValue = sdkRoot
+    options[.SDKROOT]!.projectValue = sdkRoot
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
                                            bazelRCURL: bazelRCURL,
                                            project: project,

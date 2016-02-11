@@ -22,7 +22,6 @@ class OptionsEditorNode: NSObject {
   enum OptionLevel: String {
     case Target = "TargetValue"
     case Project = "ProjectValue"
-    case Global = "GlobalValue"
     case Default = "DefaultValue"
   }
 
@@ -115,7 +114,7 @@ class OptionsEditorGroupNode: OptionsEditorNode {
       mostSpecializedOptions.insert(child.mostSpecializedOptionLevel)
     }
 
-    let orderedOptionLevels: [OptionLevel] = [.Target, .Project, .Global]
+    let orderedOptionLevels: [OptionLevel] = [.Target, .Project]
     for level in orderedOptionLevels {
       if mostSpecializedOptions.contains(level) {
         return level
@@ -227,10 +226,6 @@ class OptionsEditorStringNode: OptionsEditorNode {
       return .Project
     }
 
-    if option.globalValue != nil {
-      return .Global
-    }
-
     return .Default
   }
 
@@ -276,9 +271,6 @@ class OptionsEditorStringNode: OptionsEditorNode {
       case .Project:
         option.projectValue = value
 
-      case .Global:
-        option.globalValue = value
-
       default:
         assertionFailure("Editor node accessed via unknown subscript \(level)")
         return
@@ -300,9 +292,6 @@ class OptionsEditorStringNode: OptionsEditorNode {
 
       case .Project:
         option.projectValue = nil
-
-      case .Global:
-        option.globalValue = nil
     }
   }
 
@@ -327,19 +316,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
       return (value, level != .Project)
     }
 
-    if let value = option.globalValue {
-      return (value, level != .Global)
-    }
-
     return (option.defaultValue, true)
   }
 
   private func mostSpecializedValueBeneathLevel(level: OptionLevel) -> String? {
     if level == .Target, let value = option.projectValue {
-      return value
-    }
-
-    if level != .Global, let value = option.globalValue {
       return value
     }
 

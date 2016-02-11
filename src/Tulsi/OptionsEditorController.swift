@@ -185,7 +185,6 @@ class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPop
   static let settingColumnIdentifier = "Setting"
   static let targetColumnIdentifier = OptionsEditorNode.OptionLevel.Target.rawValue
   static let projectColumnIdentifier = OptionsEditorNode.OptionLevel.Project.rawValue
-  static let globalColumnIdentifier = OptionsEditorNode.OptionLevel.Global.rawValue
   static let defaultColumnIdentifier = OptionsEditorNode.OptionLevel.Default.rawValue
   static let tableCellViewIdentifier = "TableCellView"
   static let popUpButtonCellViewIdentifier = "PopUpButtonCell"
