@@ -18,6 +18,7 @@
 		3D51A7FE1C52BF8200FE90A6 /* NSUserDefaultsOptionPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A7FD1C52BF8200FE90A6 /* NSUserDefaultsOptionPersister.swift */; };
 		3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */; };
 		3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */; };
+		3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D800DE81C6C24C000F4D08C /* BugReporter.swift */; };
 		3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */; };
 		3D8B34C01C4EC86B0090F3AD /* ProjectGenerationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34BF1C4EC86B0090F3AD /* ProjectGenerationProgressViewController.swift */; };
 		3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */; };
@@ -50,10 +51,10 @@
 		3DA65B441C6854EF0055448E /* LocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */; };
 		3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */; };
 		3DA65B481C685BF30055448E /* MockWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B471C685BF30055448E /* MockWorkspaceInfoExtractor.swift */; };
-		3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */; };
-		3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */; };
 		3DA65B5E1C692FA20055448E /* NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B5D1C692FA20055448E /* NSURLExtensions.swift */; };
 		3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */; };
+		3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */; };
+		3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */; };
 		3DB1FBFC1C31DDCB0080198C /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* RootViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
 		3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */; };
@@ -128,6 +129,7 @@
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
 		3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSetTests.swift; sourceTree = "<group>"; };
 		3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGenerator.swift; sourceTree = "<group>"; };
+		3D800DE81C6C24C000F4D08C /* BugReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReporter.swift; sourceTree = "<group>"; };
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34BF1C4EC86B0090F3AD /* ProjectGenerationProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectGenerationProgressViewController.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
@@ -150,10 +152,10 @@
 		3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3DA65B471C685BF30055448E /* MockWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
-		3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigTests.swift; sourceTree = "<group>"; };
-		3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectTests.swift; sourceTree = "<group>"; };
 		3DA65B5D1C692FA20055448E /* NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtensions.swift; sourceTree = "<group>"; };
 		3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtensionsTests.swift; sourceTree = "<group>"; };
+		3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigTests.swift; sourceTree = "<group>"; };
+		3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectTests.swift; sourceTree = "<group>"; };
 		3DB1FBFB1C31DDCB0080198C /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -361,6 +363,8 @@
 			children = (
 				8B8F559A1BE3ECDC0095AF7F /* AppDelegate.swift */,
 				8BEEF96B1BF94FB800247062 /* BazelFileTypeFixer.swift */,
+				3D800DE81C6C24C000F4D08C /* BugReporter.swift */,
+				3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */,
 				3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */,
 				3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */,
 				3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */,
@@ -381,7 +385,6 @@
 				3DF313B31C3488BE00A34C14 /* UIRuleNode.swift */,
 				3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */,
 				8B8F559C1BE3ECDC0095AF7F /* WizardViewController.swift */,
-				3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */,
 			);
 			path = Tulsi;
 			sourceTree = "<group>";
@@ -643,6 +646,7 @@
 				3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */,
 				8B29E2D01BF9386200680E11 /* TulsiDocument.swift in Sources */,
 				3D0C9C181C5A87AF00417963 /* OptionsEditorNode.swift in Sources */,
+				3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */,
 				3D8B34C01C4EC86B0090F3AD /* ProjectGenerationProgressViewController.swift in Sources */,
 				8BEEF97A1BFA397F00247062 /* TulsiWindowController.swift in Sources */,
 				3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */,

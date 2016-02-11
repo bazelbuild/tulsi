@@ -16,14 +16,19 @@ import Cocoa
 
 @NSApplicationMain
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
+
+  @IBAction func fileBugReport(sender: NSMenuItem) {
+    BugReporter.fileBugReport()
+  }
+
+  // MARK: - NSApplicationDelegate
+
   func applicationOpenUntitledFile(sender: NSApplication) -> Bool {
     // Go through openDocument instead of standard new handling as new and open are equivalent.
     NSDocumentController.sharedDocumentController().openDocument(sender)
     return true
   }
-
-  // MARK: - NSApplicationDelegate
 
   func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
     // If the apple event that opened us contains an Xcode URL, we want to treat this as an
@@ -38,5 +43,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
     return true
+  }
+
+  // MARK: - NSUserInterfaceValidations
+
+  func validateUserInterfaceItem(anItem: NSValidatedUserInterfaceItem) -> Bool {
+    // Nothing useful can be done if there is no current document.
+    return NSDocumentController.sharedDocumentController().currentDocument as? TulsiDocument != nil
   }
 }
