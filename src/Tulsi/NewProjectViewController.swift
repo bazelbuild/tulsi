@@ -54,17 +54,7 @@ class NewProjectViewController: NSViewController {
   }
 
   @IBAction func didDoubleClickWorkspacePathControl(sender: NSPathControl) {
-    let panel = FilteredOpenPanel.filteredOpenPanel() {
-      (sender: AnyObject, shouldEnableURL url: NSURL) -> Bool in
-        var value: AnyObject?
-        do {
-          try url.getResourceValue(&value, forKey: NSURLIsDirectoryKey)
-          return url.lastPathComponent == "WORKSPACE";
-        } catch _ {
-        }
-        return false
-    }
-
+    let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["WORKSPACE"])
     if let clickedCell = sender.clickedPathComponentCell() {
       panel.directoryURL = clickedCell.URL
     }
