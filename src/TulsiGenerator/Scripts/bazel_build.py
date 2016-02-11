@@ -72,10 +72,8 @@ class _OptionsParser(object):
     self.sdk_version = sdk_version
 
     if arch:
-      self.build_options[_OptionsParser.ALL_CONFIGS].extend([
-          '--cpu=ios_' + arch,
-          '--ios_cpu=' + arch,
-      ])
+      self.build_options[_OptionsParser.ALL_CONFIGS].append(
+          '--config=ios_' + arch)
 
     self.verbose = True
     self.install_generated_artifacts = False
