@@ -36,6 +36,20 @@ class TargetSelectorViewController: NSViewController, WizardSubviewProtocol {
     }
   }
 
+  override var representedObject: AnyObject? {
+    didSet {
+      unbind("selectedRuleEntryCount")
+      guard let document = representedObject as? TulsiDocument else { return }
+      bind("selectedRuleEntryCount",
+           toObject: document,
+           withKeyPath: "selectedRuleEntryCount",
+           options: nil)
+    }
+  }
+
+  deinit {
+    unbind("selectedRuleEntryCount")
+  }
 
   override func loadView() {
     enableFilter(self)
@@ -53,7 +67,11 @@ class TargetSelectorViewController: NSViewController, WizardSubviewProtocol {
 
   // MARK: - WizardSubviewProtocol
 
-  weak var presentingWizardViewController: WizardViewController? = nil
+  weak var presentingWizardViewController: WizardViewController? = nil {
+    didSet {
+      presentingWizardViewController?.setNextButtonEnabled(selectedRuleEntryCount > 0)
+    }
+  }
 
   func wizardSubviewWillActivateMovingForward() {
     let document = representedObject as! TulsiDocument
