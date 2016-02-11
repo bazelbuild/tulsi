@@ -24,18 +24,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
 
   // MARK: - NSApplicationDelegate
 
-  func applicationOpenUntitledFile(sender: NSApplication) -> Bool {
-    // Go through openDocument instead of standard new handling as new and open are equivalent.
-    NSDocumentController.sharedDocumentController().openDocument(sender)
+  func applicationShouldOpenUntitledFile(sender: NSApplication) -> Bool {
+    if let (_, mode) = GetXcodeURLFromCurrentAppleEvent() where mode == .OpenProject {
+      NSDocumentController.sharedDocumentController().openDocument(sender)
+      return false
+    }
     return true
   }
 
   func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-    // If the apple event that opened us contains an Xcode URL, we want to treat this as an
-    // "Open..." rather than simply restoring focus as it came from the Tulsi Plugin
-    // "Open Tulsi Project…" invocation.
-    if let _ = GetXcodeURLFromCurrentAppleEvent() {
-      NSDocumentController.sharedDocumentController().openDocument(sender)
+    // If the apple event that opened us contains an Xcode URL, we want to treat this as a menu
+    // command rather than simply restoring focus.
+    if let (_, mode) = GetXcodeURLFromCurrentAppleEvent() {
+      switch mode {
+        case .NewProject:
+          NSDocumentController.sharedDocumentController().newDocument(sender)
+        case .OpenProject:
+          NSDocumentController.sharedDocumentController().openDocument(sender)
+      }
       return false
     }
     return true

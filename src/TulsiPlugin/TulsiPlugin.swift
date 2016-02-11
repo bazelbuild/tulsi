@@ -38,41 +38,79 @@ class TulsiPlugin: NSObject {
   func createMenuItems() {
     removeObserver()
 
-    let messageText = "Unable to load Tulsi Xcode Plugin"
-
-    guard let item = NSApp.mainMenu!.itemWithTitle("File") else {
-      let alert = NSAlert()
-      alert.messageText = messageText
-      alert.informativeText = "Unable to find 'File' menu."
-      alert.runModal()
+    guard let fileItem = NSApp.mainMenu!.itemWithTitle("File") else {
+      showInstallationFailureAlert("Unable to find 'File' menu.")
       return
     }
 
-    guard let submenu = item.submenu else {
-      let alert = NSAlert()
-      alert.messageText = messageText
-      alert.informativeText = "Unable to find 'File' submenu."
-      alert.runModal()
+    guard let fileSubmenu = fileItem.submenu else {
+      showInstallationFailureAlert("Unable to find 'File' submenu.")
       return
     }
 
-    let index = submenu.indexOfItemWithTitle("Open…")
-    if index == -1 {
-      let alert = NSAlert()
-      alert.messageText = messageText
-      alert.informativeText = "Unable to find 'Open…' command in File menu."
-      alert.runModal()
+    if !installNewMenuItem(fileSubmenu) {
       return
     }
 
-    let actionMenuItem = NSMenuItem(title:"Open BUILD…", action:"doMenuAction", keyEquivalent:"")
-    actionMenuItem.target = self
-    submenu.insertItem(actionMenuItem, atIndex: index + 1)
+    installOpenMenuItem(fileSubmenu)
   }
 
-  func doMenuAction() {
+  func doNewTulsiProjectMenuAction() {
+    launchTulsiWithMode(.NewProject)
+  }
+
+  func doOpenTulsiProjectMenuAction() {
+    launchTulsiWithMode(.OpenProject)
+  }
+
+  // MARK: - Private methods
+
+  private func showInstallationFailureAlert(informativeText: String) {
+    let alert = NSAlert()
+    alert.messageText = "Unable to load Tulsi Xcode Plugin"
+    alert.informativeText = informativeText
+    alert.runModal()
+  }
+
+  private func installNewMenuItem(fileSubmenu: NSMenu) -> Bool {
+    guard let newItem = fileSubmenu.itemWithTitle("New") else {
+      showInstallationFailureAlert("Unable to find 'New' command in File menu.")
+      return false
+    }
+
+    guard let newSubmenu = newItem.submenu else {
+      showInstallationFailureAlert("Unable to find 'New' submenu.")
+      return false
+    }
+
+    let workspaceIndex = newSubmenu.indexOfItemWithTitle("Workspace…")
+    if workspaceIndex < 0 {
+      showInstallationFailureAlert("Unable to find 'Workspace…' command in File > New menu.")
+      return false
+    }
+
+    let actionMenuItem = NSMenuItem(title:"Tulsi project…", action:"doNewTulsiProjectMenuAction", keyEquivalent:"")
+    actionMenuItem.target = self
+    newSubmenu.insertItem(actionMenuItem, atIndex: workspaceIndex + 1)
+    return true
+  }
+
+  private func installOpenMenuItem(fileSubmenu: NSMenu) -> Bool {
+    let openIndex = fileSubmenu.indexOfItemWithTitle("Open…")
+    if openIndex < 0 {
+      showInstallationFailureAlert("Unable to find 'Open…' command in File menu.")
+      return false
+    }
+
+    let actionMenuItem = NSMenuItem(title:"Open Tulsi project…", action:"doOpenTulsiProjectMenuAction", keyEquivalent:"")
+    actionMenuItem.target = self
+    fileSubmenu.insertItem(actionMenuItem, atIndex: openIndex + 1)
+    return true
+  }
+
+  private func launchTulsiWithMode(mode: TulsiLaunchMode) {
     let url = NSURL(fileURLWithPath:NSBundle.mainBundle().bundlePath)
-    let recordDesc = CreateTulsiAppleEventRecord(url)
+    let recordDesc = CreateTulsiAppleEventRecord(url, mode: mode)
     if (!NSWorkspace.sharedWorkspace().launchAppWithBundleIdentifier(
         "com.google.Tulsi", options: NSWorkspaceLaunchOptions.Default, additionalEventParamDescriptor: recordDesc, launchIdentifier: nil)) {
 

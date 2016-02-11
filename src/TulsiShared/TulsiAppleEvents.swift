@@ -17,35 +17,50 @@
 
 import Foundation
 
-// Apple owns all lower case AEKeyWords.
-let tulsiAEKeyWordXcode = UTGetOSTypeFromString("XCOD")  // An URL to an Xcode.app of typeFileURL.
 
-// Given an URL create the apple event descriptor to wrap it. On 10.11 we could just use
-// init(fileURL: NSURL).
-func CreateTulsiAppleEventRecord(xcodeURL: NSURL) -> NSAppleEventDescriptor {
+/// The mode in which Tulsi should open in response to a launch from the plugin.
+enum TulsiLaunchMode: String {
+  case NewProject, OpenProject
+}
+
+// Apple owns all lower case AEKeywords.
+let TulsiAEKeywordXcode = UTGetOSTypeFromString("XCOD")  // An URL to an Xcode.app of typeFileURL.
+
+// Creates an AppleEvent wrapping the given URL and mode.
+func CreateTulsiAppleEventRecord(xcodeURL: NSURL, mode: TulsiLaunchMode = .OpenProject) -> NSAppleEventDescriptor {
   let recordDesc = NSAppleEventDescriptor.recordDescriptor()
+
   let urlData = CFURLCreateData(nil, xcodeURL as CFURL, CFStringBuiltInEncodings.UTF8.rawValue, true)
   var urlDesc = AEDesc()
   AECreateDesc(DescType(typeFileURL), CFDataGetBytePtr(urlData), CFDataGetLength(urlData), &urlDesc)
-  let desc = NSAppleEventDescriptor(AEDescNoCopy: &urlDesc)
-  recordDesc.setDescriptor(desc, forKeyword: tulsiAEKeyWordXcode)
+  let xcodeDesc = NSAppleEventDescriptor(AEDescNoCopy: &urlDesc)
+  recordDesc.setDescriptor(xcodeDesc, forKeyword: TulsiAEKeywordXcode)
+
+  let directObjectDesc = NSAppleEventDescriptor(string: mode.rawValue)
+  recordDesc.setParamDescriptor(directObjectDesc, forKeyword: AEKeyword(keyDirectObject))
   return recordDesc
 }
 
-// Extract the Xcode URL from the event. On 10.11 we could replace the last couple of lines with
-// xcodeURLData.fileURLValue.
-func GetXcodeURLFromCurrentAppleEvent() -> NSURL? {
-  guard let event = NSAppleEventManager.sharedAppleEventManager().currentAppleEvent else {
+// Extracts the Xcode URL and launch mode from the current AppleEvent.
+func GetXcodeURLFromCurrentAppleEvent() -> (NSURL, TulsiLaunchMode)? {
+  guard let event = NSAppleEventManager.sharedAppleEventManager().currentAppleEvent,
+            propData = event.descriptorForKeyword(AEKeyword(keyAEPropData)),
+            xcodeURLData = propData.descriptorForKeyword(TulsiAEKeywordXcode) else {
     return nil
   }
-  guard let propData = event.descriptorForKeyword(AEKeyword(keyAEPropData)) else {
+
+  let urlData = xcodeURLData.data
+  guard let xcodeURL = CFURLCreateWithBytes(nil,
+                                      UnsafePointer<UInt8>(urlData.bytes),
+                                      urlData.length,
+                                      CFStringBuiltInEncodings.UTF8.rawValue,
+                                      nil) as NSURL? else {
     return nil
   }
-  guard let xcodeURLData = propData.descriptorForKeyword(tulsiAEKeyWordXcode) else {
+
+  guard let launchModeValue = propData.paramDescriptorForKeyword(AEKeyword(keyDirectObject))?.stringValue,
+            launchMode = TulsiLaunchMode(rawValue: launchModeValue) else {
     return nil
   }
-  guard let xcodeURLString = xcodeURLData.stringValue else {
-    return nil
-  }
-  return NSURL(fileURLWithPath: xcodeURLString)
+  return (xcodeURL, launchMode)
 }
