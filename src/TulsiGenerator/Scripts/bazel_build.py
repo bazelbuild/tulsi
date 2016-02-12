@@ -243,6 +243,7 @@ class _OptionsParser(object):
 
     allowed_duplicates = [
         '--copt',
+        '--config',
         '--define',
     ]
 
