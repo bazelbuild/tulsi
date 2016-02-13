@@ -31,9 +31,7 @@ public enum TulsiOptionKey: String {
       // Whether or not to claim Swift code was created at the same version as Tulsi itself.
       // Suppresses the Xcode warning and automated update on first opening of the generated
       // project.
-      SuppressSwiftUpdateCheck,
-      // Additional paths for indexer targets to search when looking for headers.
-      USER_HEADER_SEARCH_PATHS
+      SuppressSwiftUpdateCheck
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -162,7 +160,6 @@ public class TulsiOptionSet {
     addStringOption(.IPHONEOS_DEPLOYMENT_TARGET, .BuildSetting, "8.4")
     addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
-    addStringOption(.USER_HEADER_SEARCH_PATHS, .TargetSpecializableBuildSetting, "$(PROJECT_DIR)")
 
     for (_, option) in options {
       option.load()

@@ -191,6 +191,9 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
     buildSettings["CODE_SIGN_IDENTITY"] = ""
 
+    let sourceDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
+    buildSettings["USER_HEADER_SEARCH_PATHS"] = sourceDirectory
+
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
   }
 
