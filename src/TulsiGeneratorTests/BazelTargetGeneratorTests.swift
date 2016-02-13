@@ -29,6 +29,7 @@ class BazelTargetGeneratorTests: XCTestCase {
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
                                            project: project,
                                            buildScriptPath: "",
+                                           envScriptPath: "",
                                            labelResolver: MockLabelResolver(),
                                            options: TulsiOptionSet(),
                                            localizedMessageLogger: MockLocalizedMessageLogger())
@@ -118,6 +119,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
                                            project: project,
                                            buildScriptPath: "",
+                                           envScriptPath: "",
                                            labelResolver: labelResolver,
                                            options: options,
                                            localizedMessageLogger: MockLocalizedMessageLogger())

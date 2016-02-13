@@ -55,9 +55,9 @@ class BuildLabelTests: XCTestCase {
     XCTAssertEqual(a1.packageName, "test/place")
     XCTAssertEqual(a1.packageName, b.packageName)
     XCTAssertEqual(noLeadingSlash.packageName, "no/leading/slash")
-    XCTAssertNil(emptyLabel.packageName)
-    XCTAssertNil(justSlashLabel.packageName)
-    XCTAssertNil(invalidTrailingSlash.packageName)
+    XCTAssertEqual(emptyLabel.packageName, "")
+    XCTAssertEqual(justSlashLabel.packageName, "")
+    XCTAssertEqual(invalidTrailingSlash.packageName, "")
   }
 
   func testAsFileName() {

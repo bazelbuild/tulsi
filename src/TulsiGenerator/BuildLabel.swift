@@ -40,7 +40,7 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
       package.removeRange(Range(start: package.startIndex, end: package.startIndex.advancedBy(2)))
     }
     if package.isEmpty || package.hasSuffix("/") {
-      return nil
+      return ""
     }
     return package
   }

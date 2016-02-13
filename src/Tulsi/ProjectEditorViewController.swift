@@ -43,7 +43,13 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
 
   dynamic var numBazelPackagesInProject: Int = 0 {
     didSet {
-      presentingWizardViewController?.setNextButtonEnabled(numBazelPackagesInProject > 0)
+      updateNextButtonState()
+    }
+  }
+
+  dynamic var bazelURL: NSURL? {
+    didSet {
+      updateNextButtonState()
     }
   }
 
@@ -55,15 +61,22 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
            toObject: document,
            withKeyPath: "bazelPackages.@count",
            options: nil)
+      bind("bazelURL",
+           toObject: document,
+           withKeyPath: "bazelURL",
+           options: nil)
     }
   }
 
   deinit {
     unbind("numBazelPackagesInProject")
     unbind("numSelectedPackagePaths")
+    unbind("bazelURL")
   }
 
   override func loadView() {
+    NSValueTransformer.setValueTransformer(PackagePathValueTransformer(),
+                                           forName: "PackagePathValueTransformer")
     super.loadView()
     bind("numSelectedPackagePaths",
          toObject: packageArrayController,
@@ -155,8 +168,8 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
       if value == NSFileHandlingPanelOKButton {
         document.bazelURL = panel.URL
         if self.bazelSelectorUseAsDefaultCheckbox.state == NSOnState {
-          NSUserDefaults.standardUserDefaults().setObject(panel.URL!.absoluteString,
-                                                          forKey: TulsiProject.DefaultBazelURLKey)
+          NSUserDefaults.standardUserDefaults().setURL(document.bazelURL!,
+                                                       forKey: TulsiProject.DefaultBazelURLKey)
         }
       }
     }
@@ -201,7 +214,7 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
 
   weak var presentingWizardViewController: WizardViewController? = nil {
     didSet {
-      presentingWizardViewController?.setNextButtonEnabled(numBazelPackagesInProject > 0)
+      updateNextButtonState()
     }
   }
 
@@ -216,5 +229,31 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
       return false
     }
     return true
+  }
+
+  // MARK: - Private methods
+
+  private func updateNextButtonState() {
+    let document = representedObject as? TulsiDocument
+    let enable = bazelURL != nil && numBazelPackagesInProject > 0
+    presentingWizardViewController?.setNextButtonEnabled(enable)
+  }
+}
+
+
+/// Transformer that converts a Bazel package path to an item displayable in the package table view
+/// This is primarily necessary to support BUILD files colocated with the workspace root.
+class PackagePathValueTransformer : NSValueTransformer {
+  override class func transformedValueClass() -> AnyClass {
+    return NSString.self
+  }
+
+  override class func allowsReverseTransformation() -> Bool  {
+    return false
+  }
+
+  override func transformedValue(value: AnyObject?) -> AnyObject? {
+    guard let value = value as? String else { return nil }
+    return "//\(value)"
   }
 }

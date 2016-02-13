@@ -35,6 +35,7 @@ class XcodeProjectGenerator {
   private static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
+  private static let EnvScript = "bazel_env.sh"
 
   private let workspaceRootURL: NSURL
   private let config: TulsiGeneratorConfig
@@ -43,6 +44,7 @@ class XcodeProjectGenerator {
   private let workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
   private let labelResolver: LabelResolverProtocol
   private let buildScriptURL: NSURL
+  private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
 
   /// Dictionary of Bazel targets for which indexers should be generated and the sources to add to
@@ -61,6 +63,7 @@ class XcodeProjectGenerator {
        workspaceInfoExtractor: WorkspaceInfoExtractorProtocol,
        labelResolver: LabelResolverProtocol,
        buildScriptURL: NSURL,
+       envScriptURL: NSURL,
        cleanScriptURL: NSURL) {
     self.workspaceRootURL = workspaceRootURL
     self.config = config
@@ -69,6 +72,7 @@ class XcodeProjectGenerator {
     self.workspaceInfoExtractor = workspaceInfoExtractor
     self.labelResolver = labelResolver
     self.buildScriptURL = buildScriptURL
+    self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
   }
 
@@ -173,10 +177,12 @@ class XcodeProjectGenerator {
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
+    let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
 
     let generator = BazelTargetGenerator(bazelURL: config.bazelURL,
                                          project: xcodeProject,
                                          buildScriptPath: buildScriptPath,
+                                         envScriptPath: envScriptPath,
                                          labelResolver: labelResolver,
                                          options: config.options,
                                          localizedMessageLogger: localizedMessageLogger)
@@ -254,6 +260,7 @@ class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Installing scripts")
       installFiles([(buildScriptURL, XcodeProjectGenerator.BuildScript),
                     (cleanScriptURL, XcodeProjectGenerator.CleanScript),
+                    (envScriptURL, XcodeProjectGenerator.EnvScript),
                    ],
                    toDirectory: scriptDirectoryURL)
     }

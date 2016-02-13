@@ -44,8 +44,14 @@
 /* Value to show when a boolean option is 'false'. This should match Xcode's localization. */
 "OptionsEditor_FalseValue" = "No";
 
-/* "Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
+/* Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
 "ProjectEditor_AddBUILDFilePrompt" = "Add";
+
+/* Message to show at the top of the Bazel selector sheet, explaining what to do. */
+"ProjectEditor_SelectBazelPathMessage" = "Select the bazel binary to use.";
+
+/* Label for the button used to confirm the selected Bazel file in the Bazel selector sheet. */
+"ProjectEditor_SelectBazelPathPrompt" = "Select";
 
 /* Title for open panel through which the user should select where to generate the Xcode project. */
 "ProjectGeneration_SelectProjectOutputFolderTitle" = "Project output folder";

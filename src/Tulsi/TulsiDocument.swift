@@ -172,10 +172,12 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   }
 
   override func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
-    guard let projectFileWrapper = fileWrapper.fileWrappers?[TulsiProject.ProjectFilename] else {
+    guard let concreteFileURL = fileURL,
+              projectFileWrapper = fileWrapper.fileWrappers?[TulsiProject.ProjectFilename],
+              fileContents = projectFileWrapper.regularFileContents else {
       return
     }
-    project = try TulsiProject(data: projectFileWrapper.regularFileContents!, projectBundleURL: fileURL!)
+    project = try TulsiProject(data: fileContents, projectBundleURL: concreteFileURL)
   }
 
   override func makeWindowControllers() {

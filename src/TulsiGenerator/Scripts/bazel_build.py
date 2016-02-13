@@ -51,7 +51,6 @@ class _OptionsParser(object):
 
             'Debug': [
                 '--compilation_mode=dbg',
-                '--objc_generate_debug_symbols',
                 '--copt=-g',
                 '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
                 '--copt=-Xclang', '--copt=%s' % main_group_path,
@@ -70,6 +69,9 @@ class _OptionsParser(object):
         })
 
     self.sdk_version = sdk_version
+
+    if not os.environ.get('TULSI_DISABLE_STUB_DSYM_GENERATOR', None):
+      self.build_options['Debug'].append('--objc_generate_debug_symbols')
 
     if arch:
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
@@ -423,7 +425,7 @@ class BazelBuildBridge(object):
                          '%s' % (output_path, e))
         return 600
 
-    self.build_path = os.path.join('bazel-bin', os.environ['BUILD_PATH'])
+    self.build_path = os.path.join('bazel-bin', os.environ.get('BUILD_PATH', ""))
 
     bundle_artifact = os.environ['WRAPPER_NAME']
     full_bundle_artifact_path = os.path.join(self.build_path, bundle_artifact)

@@ -35,6 +35,7 @@ public final class TulsiXcodeProjectGenerator {
                                                         bundle: bundle)
     let buildScriptURL = bundle.URLForResource("bazel_build", withExtension: "py")!
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
+    let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
 
     let extractor = BazelQueryWorkspaceInfoExtractor(bazelURL: config.bazelURL,
                                                      workspaceRootURL: workspaceRootURL,
@@ -47,6 +48,7 @@ public final class TulsiXcodeProjectGenerator {
                                                   workspaceInfoExtractor: extractor,
                                                   labelResolver: extractor,
                                                   buildScriptURL: buildScriptURL,
+                                                  envScriptURL: envScriptURL,
                                                   cleanScriptURL: cleanScriptURL)
   }
 

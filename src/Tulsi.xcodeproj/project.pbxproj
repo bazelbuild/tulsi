@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		033651E51C6EC8BA00C2C9CA /* bazel_env.sh in Resources */ = {isa = PBXBuildFile; fileRef = 033651E41C6EC8BA00C2C9CA /* bazel_env.sh */; };
 		3D02980F1C63CB7E00779E8E /* ProjectOutputFolderPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D02980E1C63CB7E00779E8E /* ProjectOutputFolderPanel.swift */; };
 		3D029B581C6421B400779E8E /* TaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029B571C6421B400779E8E /* TaskRunner.swift */; };
 		3D029C7E1C650DD100779E8E /* ProjectEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029C7C1C650DD100779E8E /* ProjectEditorViewController.swift */; };
@@ -116,6 +117,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		033651E41C6EC8BA00C2C9CA /* bazel_env.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bazel_env.sh; sourceTree = "<group>"; };
 		3D02980E1C63CB7E00779E8E /* ProjectOutputFolderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectOutputFolderPanel.swift; sourceTree = "<group>"; };
 		3D029B571C6421B400779E8E /* TaskRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskRunner.swift; sourceTree = "<group>"; };
 		3D029C7C1C650DD100779E8E /* ProjectEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorViewController.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			children = (
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
 				3D156AE11C1C8D9C00183439 /* bazel_clean.sh */,
+				033651E41C6EC8BA00C2C9CA /* bazel_env.sh */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -552,6 +555,7 @@
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
+				033651E51C6EC8BA00C2C9CA /* bazel_env.sh in Resources */,
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

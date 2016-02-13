@@ -40,6 +40,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let buildScriptURL = NSURL(fileURLWithPath: "/scripts/Build")
   let cleanScriptURL = NSURL(fileURLWithPath: "/scripts/Clean")
+  let envScriptURL = NSURL(fileURLWithPath: "/scripts/Env")
 
   let outputFolderURL = NSURL(fileURLWithPath: "/dev/null/project")
 
@@ -94,6 +95,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       workspaceInfoExtractor: mockExtractor,
                                       labelResolver: mockLabelResolver,
                                       buildScriptURL: buildScriptURL,
+                                      envScriptURL: envScriptURL,
                                       cleanScriptURL: cleanScriptURL)
     generator.writeDataHandler = {(_, _) in }
   }

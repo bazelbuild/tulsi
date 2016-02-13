@@ -118,6 +118,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
   let project: PBXProject
   let buildScriptPath: String
+  let envScriptPath: String
   let labelResolver: LabelResolverProtocol
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
@@ -127,12 +128,14 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   init(bazelURL: NSURL,
        project: PBXProject,
        buildScriptPath: String,
+       envScriptPath: String,
        labelResolver: LabelResolverProtocol,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.project = project
     self.buildScriptPath = buildScriptPath
+    self.envScriptPath = envScriptPath
     self.labelResolver = labelResolver
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
@@ -457,6 +460,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     }
     let shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
+        ". \(envScriptPath)\n" +
         "exec \(commandLine) --install_generated_artifacts"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")

@@ -142,7 +142,7 @@ public final class TulsiProject {
   private static func findBazelForWorkspaceRoot(workspaceRoot: NSURL?) -> NSURL? {
     // TODO(abaire): Consider removing this as it's unlikley to be a standard for all users.
     guard let bazelURL = workspaceRoot?.URLByAppendingPathComponent("tools/osx/blaze/bazel") else {
-      return nil
+      return NSUserDefaults.standardUserDefaults().URLForKey(TulsiProject.DefaultBazelURLKey)
     }
 
     if NSFileManager.defaultManager().fileExistsAtPath(bazelURL.path!) {
