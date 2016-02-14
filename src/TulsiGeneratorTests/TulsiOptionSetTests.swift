@@ -80,15 +80,15 @@ class TulsiOptionSetTests: XCTestCase {
   /// Returns a dictionary of build settings specialized for the given target.
   func testBuildSettingsForTarget() {
     let target = "Target"
-    persister.setValue("path!", forTarget: target, optionKey: .USER_HEADER_SEARCH_PATHS)
+    persister.setValue("root!", forTarget: target, optionKey: .SDKROOT)
 
     // IPHONEOS_DEPLOYMENT_TARGET is not target-specializable so any persisted target value
     // should be ignored.
     persister.setValue("1000", forTarget: target, optionKey: .IPHONEOS_DEPLOYMENT_TARGET)
 
     let expectedBuildSettings: [String: String?] = [
-        "USER_HEADER_SEARCH_PATHS": "path!",
         "IPHONEOS_DEPLOYMENT_TARGET": nil,
+        "SDKROOT": "root!",
     ]
 
     let optionSet = TulsiOptionSet(persister: persister)

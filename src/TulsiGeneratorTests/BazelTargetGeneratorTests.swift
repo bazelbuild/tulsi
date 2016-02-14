@@ -193,7 +193,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
-        "USER_HEADER_SEARCH_PATHS": "$(PROJECT_DIR)",
+        "USER_HEADER_SEARCH_PATHS": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
