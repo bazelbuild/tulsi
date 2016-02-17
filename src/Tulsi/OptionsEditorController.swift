@@ -226,7 +226,8 @@ class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPop
 
     var newOptionNodes = [OptionsEditorNode]()
     var optionGroupNodes = [TulsiOptionKeyGroup: OptionsEditorGroupNode]()
-    for (key, option) in document!.options.allOptions {
+    guard let visibleOptions = document?.allVisibleOptions else { return }
+    for (key, option) in visibleOptions {
       let newNode: OptionsEditorNode
       switch option.valueType {
         case .Bool:
@@ -235,7 +236,7 @@ class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPop
           newNode = OptionsEditorStringNode(key: key, option: option, target: target)
       }
 
-      if let (group, displayName, description) = document!.options.groupInfoForOptionKey(key) {
+      if let (group, displayName, description) = document?.groupInfoForOptionKey(key) {
         var parent: OptionsEditorGroupNode! = optionGroupNodes[group]
         if parent == nil {
           parent = OptionsEditorGroupNode(key: group,

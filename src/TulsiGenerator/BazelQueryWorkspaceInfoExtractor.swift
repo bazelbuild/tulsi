@@ -21,7 +21,11 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   /// The maximum number of bazel tasks that any logical action may run in parallel.
   // Note that multiple logical actions may execute concurrently, so the actual number of bazel
   // tasks could be higher than this.
-  static let bazelQueryConcurrentChunkSize = 8
+  static let BazelQueryConcurrentChunkSize = 8
+
+  /// The maximum number of labels to attempt to resolve into RuleEntries at one time.
+  static let MaxLabelsToResolvePerBazelQuery = 30
+
 
   /// The location of the bazel binary.
   let bazelURL: NSURL
@@ -120,7 +124,7 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
                                             maxValue: sourceRuleEntries.count)
 
     let queue = dispatch_queue_create("com.google.Tulsi.sourceFilePathExtractor",
-                                      DISPATCH_QUEUE_SERIAL)
+                                      DISPATCH_QUEUE_CONCURRENT)
     let profilingStart = localizedMessageLogger.startProfiling("extract_source_paths",
                                                                message: "Extracting source file paths")
 
@@ -148,7 +152,7 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
 
       // Use barriers to limit the number of concurrent Bazel tasks.
       i += 1
-      if (i & BazelQueryWorkspaceInfoExtractor.bazelQueryConcurrentChunkSize) == 0 {
+      if (i & BazelQueryWorkspaceInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
         dispatch_barrier_async(queue) {}
       }
     }
@@ -159,22 +163,76 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
     return sourcePaths
   }
 
-  func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
-    let query = labels.joinWithSeparator("+")
-    let profilingStart = localizedMessageLogger.startProfiling("reload_rules",
-                                                               message: "Loading \(labels.count) labels")
-    let (_, data, debugInfo) = bazelSynchronousQueryTask(query, outputKind: "xml")
+  func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
+    let profilingStart = localizedMessageLogger.startProfiling("extract_includes",
+                                                               message: "Looking for additional include paths")
 
-    let ruleEntries = self.extractRuleEntriesFromBazelXMLOutput(data)
-    if ruleEntries == nil {
+    let deps = ruleEntries.map({"deps(\($0.label.value))"}).joinWithSeparator("+")
+    let query = "attr(includes, \"\\[.+\\]\", \(deps))"
+    let (_, data, debugInfo) = bazelSynchronousQueryTask(query, outputKind: "xml")
+    guard let includesPaths = extractIncludesAttributesFromBazelXMLOutput(data) else {
       self.localizedMessageLogger.infoMessage(debugInfo)
+      return nil
     }
+
+    localizedMessageLogger.logProfilingEnd(profilingStart)
+
+    return includesPaths
+  }
+
+  func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
+    let numLabels = labels.count
+    let profilingStart = localizedMessageLogger.startProfiling("reload_rules",
+                                                               message: "Loading \(numLabels) labels")
+
+    // Chunk the labels and parallelize the operation.
+    let chunkSize = BazelQueryWorkspaceInfoExtractor.MaxLabelsToResolvePerBazelQuery
+    var queries = [String]()
+    for rangeStart in 0.stride(to:numLabels, by: chunkSize) {
+      let rangeEnd = min(rangeStart + chunkSize, numLabels)
+      let range = rangeStart..<rangeEnd
+      let chunk = labels[range]
+      queries.append(chunk.joinWithSeparator("+"))
+    }
+
+    let progressNotifier = ProgressNotifier(name: RuleEntryResolution,
+                                            maxValue: numLabels)
+    var labelToRuleEntry = [String: RuleEntry]()
+    let labelToRuleEntrySemaphore = dispatch_semaphore_create(1)
+    let queue = dispatch_queue_create("com.google.Tulsi.labelToRuleEntryResolver",
+                                      DISPATCH_QUEUE_CONCURRENT)
+
+    var stopExecution = false
+    var i = 0
+    for query in queries {
+      dispatch_async(queue) {
+        if stopExecution { return }
+        let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+        guard let ruleEntries = self.extractRuleEntriesFromBazelXMLOutput(data) else {
+          self.localizedMessageLogger.infoMessage(debugInfo)
+          stopExecution = true
+          return
+        }
+
+        dispatch_semaphore_wait(labelToRuleEntrySemaphore, DISPATCH_TIME_FOREVER)
+        for entry in ruleEntries {
+          labelToRuleEntry[entry.label.value] = entry
+        }
+        progressNotifier.value = labelToRuleEntry.count
+        dispatch_semaphore_signal(labelToRuleEntrySemaphore)
+      }
+
+      // Use barriers to limit the number of concurrent Bazel tasks.
+      i += 1
+      if (i & BazelQueryWorkspaceInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
+        dispatch_barrier_async(queue) {}
+      }
+    }
+
+    // Wait for all labels to be processed before logging completion and returning.
+    dispatch_barrier_sync(queue) {}
     self.localizedMessageLogger.logProfilingEnd(profilingStart)
 
-    var labelToRuleEntry = [String: RuleEntry]()
-    for entry in ruleEntries! {
-      labelToRuleEntry[entry.label.value] = entry
-    }
     return labelToRuleEntry
   }
 
@@ -413,6 +471,29 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
         ruleEntries.append(entry)
       }
       return ruleEntries
+    } catch let e as NSError {
+      localizedMessageLogger.error("BazelResponseXMLParsingFailed",
+                                   comment: "Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file.",
+                                   values: e.localizedDescription)
+      return nil
+    }
+  }
+
+  private func extractIncludesAttributesFromBazelXMLOutput(bazelOutput: NSData) -> Set<String>? {
+    do {
+      var includes = Set<String>()
+      let doc = try NSXMLDocument(data: bazelOutput, options: 0)
+      let includeNodes = try doc.nodesForXPath("/query/rule/list[@name='includes']/string/@value")
+      for includeNode in includeNodes {
+        guard let include = includeNode.stringValue else {
+          localizedMessageLogger.error("BazelResponseIncludesAttributeInvalid",
+                                       comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
+                                       values: includeNode)
+          continue
+        }
+        includes.insert(include)
+      }
+      return includes
     } catch let e as NSError {
       localizedMessageLogger.error("BazelResponseXMLParsingFailed",
                                    comment: "Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file.",

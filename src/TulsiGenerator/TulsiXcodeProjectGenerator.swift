@@ -25,6 +25,20 @@ public final class TulsiXcodeProjectGenerator {
     case UnsupportedTargetType(String)
   }
 
+  public static let ScriptDirectorySubpath = XcodeProjectGenerator.ScriptDirectorySubpath
+  public static let ConfigDirectorySubpath = XcodeProjectGenerator.ConfigDirectorySubpath
+
+  /// Generates warning messages for source target labels that fail to resolve rather than failing
+  /// project generation.
+  public var treatMissingSourceTargetsAsWarnings: Bool {
+    set {
+      xcodeProjectGenerator.treatMissingSourceTargetsAsWarnings = newValue
+    }
+    get {
+      return xcodeProjectGenerator.treatMissingSourceTargetsAsWarnings
+    }
+  }
+
   let xcodeProjectGenerator: XcodeProjectGenerator
 
   public init(workspaceRootURL: NSURL,

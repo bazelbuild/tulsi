@@ -39,13 +39,13 @@ class LocalizedMessageLogger {
   func infoMessage(message: String) {
     if messageLogger == nil { return }
 
-    doOnMainThread() { self.messageLogger!.info(message) }
+    NSThread.doOnMainThread() { self.messageLogger!.info(message) }
   }
 
   func warning(key: String, comment: String, values: CVarArgType...) {
     if messageLogger == nil || bundle == nil { return }
 
-    doOnMainThread() {
+    NSThread.doOnMainThread() {
       let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
       let message = String(format: formatString, arguments: values)
       self.messageLogger!.warning(message)
@@ -55,20 +55,10 @@ class LocalizedMessageLogger {
   func error(key: String, comment: String, values: CVarArgType...) {
     if messageLogger == nil || bundle == nil { return }
 
-    doOnMainThread() {
+    NSThread.doOnMainThread() {
       let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
       let message = String(format: formatString, arguments: values)
       self.messageLogger!.error(message)
-    }
-  }
-
-  // MARK: - Private methods
-
-  private func doOnMainThread(closure: (Void) -> Void ) {
-    if !NSThread.isMainThread() {
-      dispatch_async(dispatch_get_main_queue(), closure)
-    } else {
-      closure()
     }
   }
 }

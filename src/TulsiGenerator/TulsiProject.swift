@@ -20,11 +20,11 @@ import Foundation
 public final class TulsiProject {
   public enum Error: ErrorType {
     /// Serialization failed with the given debug info.
-    case SerializationFailed(info: String)
+    case SerializationFailed(String)
     /// The give input file does not exist or cannot be read.
     case BadInputFilePath
     /// Deserialization failed with the given debug info.
-    case DeserializationFailed(info: String)
+    case DeserializationFailed(String)
   }
 
   /// NSUserDefaults key for the default Bazel path if one is not found in the opened project's
@@ -61,10 +61,17 @@ public final class TulsiProject {
   /// The Bazel packages contained in this project.
   public var bazelPackages: [String]
 
+  public let options: TulsiOptionSet
+  public let hasExplicitOptions: Bool
+
   // MARK: - Per-user project values.
 
   /// The Bazel binary to be used for this project.
-  public var bazel: NSURL?
+  public var bazelURL: NSURL? {
+    didSet {
+      options[.BazelPath].projectValue = bazelURL?.path
+    }
+  }
 
   public static func load(projectBundleURL: NSURL) throws -> TulsiProject {
     let fileManager = NSFileManager.defaultManager()
@@ -78,21 +85,38 @@ public final class TulsiProject {
   public init(projectName: String,
               projectBundleURL: NSURL,
               workspaceRootURL: NSURL,
-              bazelPackages: [String] = []) {
+              bazelPackages: [String] = [],
+              options: TulsiOptionSet? = nil) {
     self.projectName = projectName
     self.projectBundleURL = projectBundleURL
     self.workspaceRootURL = workspaceRootURL
     self.bazelPackages = bazelPackages
-    bazel = TulsiProject.findBazelForWorkspaceRoot(workspaceRootURL)
+
+    if let options = options {
+      self.options = options
+      hasExplicitOptions = true
+    } else {
+      self.options = TulsiOptionSet()
+      hasExplicitOptions = false
+    }
+    if let bazelPath = self.options[.BazelPath].projectValue {
+      self.bazelURL = NSURL(fileURLWithPath: bazelPath)
+    } else {
+      self.bazelURL = TulsiProject.findBazelForWorkspaceRoot(workspaceRootURL)
+      self.options[.BazelPath].projectValue = self.bazelURL?.path
+    }
+    self.options[.WorkspaceRootPath].projectValue = workspaceRootURL.path
   }
 
   public convenience init(data: NSData, projectBundleURL: NSURL) throws {
     do {
-      let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+      guard let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? [String: AnyObject] else {
+        throw Error.DeserializationFailed("File is not of dictionary type")
+      }
 
       let projectName = dict[TulsiProject.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
       guard let relativeWorkspaceURL = dict[TulsiProject.WorkspaceRootKey] as? String else {
-        throw Error.DeserializationFailed(info: "Missing required value for \(TulsiProject.WorkspaceRootKey)")
+        throw Error.DeserializationFailed("Missing required value for \(TulsiProject.WorkspaceRootKey)")
       }
       var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspaceURL,
                                                                           isDirectory: true)
@@ -102,17 +126,25 @@ public final class TulsiProject {
       }
       let bazelPackages = dict[TulsiProject.PackagesKey] as? [String] ?? []
 
+      let options: TulsiOptionSet?
+      if TulsiOptionSet.areOptionsSerializedInDict(dict) {
+        options = TulsiOptionSet(fromDictionary: dict)
+      } else {
+        options = nil
+      }
+
       self.init(projectName: projectName,
                 projectBundleURL: projectBundleURL,
                 workspaceRootURL: workspaceRootURL,
-                bazelPackages: bazelPackages)
+                bazelPackages: bazelPackages,
+                options: options)
     } catch let e as Error {
       throw e
     } catch let e as NSError {
-      throw Error.DeserializationFailed(info: e.localizedDescription)
+      throw Error.DeserializationFailed(e.localizedDescription)
     } catch {
       assertionFailure("Unexpected exception")
-      throw Error.SerializationFailed(info: "Unexpected exception")
+      throw Error.SerializationFailed("Unexpected exception")
     }
   }
 
@@ -121,19 +153,22 @@ public final class TulsiProject {
   }
 
   public func save() throws -> NSData {
-    let dict: [String: AnyObject] = [
+    var dict: [String: AnyObject] = [
         TulsiProject.ProjectNameKey: projectName,
         TulsiProject.WorkspaceRootKey: projectBundleURL.relativePathTo(workspaceRootURL)!,
         TulsiProject.PackagesKey: bazelPackages
     ]
 
+    // Save the default project options.
+    options.saveToShareableDictionary(&dict)
+
     do {
       return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
     } catch let e as NSError {
-      throw Error.SerializationFailed(info: e.localizedDescription)
+      throw Error.SerializationFailed(e.localizedDescription)
     } catch {
       assertionFailure("Unexpected exception")
-      throw Error.SerializationFailed(info: "Unexpected exception")
+      throw Error.SerializationFailed("Unexpected exception")
     }
   }
 
@@ -141,13 +176,12 @@ public final class TulsiProject {
 
   private static func findBazelForWorkspaceRoot(workspaceRoot: NSURL?) -> NSURL? {
     // TODO(abaire): Consider removing this as it's unlikley to be a standard for all users.
-    guard let bazelURL = workspaceRoot?.URLByAppendingPathComponent("tools/osx/blaze/bazel") else {
-      return NSUserDefaults.standardUserDefaults().URLForKey(TulsiProject.DefaultBazelURLKey)
-    }
-
-    if NSFileManager.defaultManager().fileExistsAtPath(bazelURL.path!) {
+    if let bazelURL = workspaceRoot?.URLByAppendingPathComponent("tools/osx/blaze/bazel")
+        where NSFileManager.defaultManager().fileExistsAtPath(bazelURL.path!) {
       return bazelURL
     }
-    return nil
+
+    // TODO(abaire): Fall back to searching the user's path if no default exists.
+    return NSUserDefaults.standardUserDefaults().URLForKey(TulsiProject.DefaultBazelURLKey)
   }
 }

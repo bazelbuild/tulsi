@@ -39,9 +39,4 @@ public class TulsiProjectInfoExtractor {
   public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
     workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries, callback: callback)
   }
-
-  public func createOptionSetForProjectFile(file: NSURL) -> TulsiOptionSet {
-    let persister = NSUserDefaultsOptionPersister(projectStorageKey: file.absoluteString)
-    return TulsiOptionSet(persister: persister)
-  }
 }

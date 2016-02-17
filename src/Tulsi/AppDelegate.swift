@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import Cocoa
+import TulsiGenerator
 
-@NSApplicationMain
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
 
   @IBAction func fileBugReport(sender: NSMenuItem) {
     BugReporter.fileBugReport()

@@ -15,16 +15,32 @@
 import Cocoa
 import TulsiGenerator
 
+
 final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
 
   /// Prefix used to access the persisted output folder for a given BUILD file path.
   static let ProjectOutputPathKeyPrefix = "projectOutput_"
+
+  /// The subdirectory within a project bundle into which shareable generator configs will be
+  /// stored.
+  static let ProjectConfigsSubpath = "Configs"
 
   /// The project model.
   var project: TulsiProject! = nil
 
   /// Whether or not the document is currently performing a long running operation.
   dynamic var processing: Bool = false
+
+  // The number of tasks that need to complete before processing is finished.
+  private var processingTaskCount = 0 {
+    didSet {
+      assert(NSThread.isMainThread(), "Must be mutated on the main thread")
+      assert(processingTaskCount >= 0, "Processing task count may never be negative")
+      if processingTaskCount == 0 {
+        processing = false
+      }
+    }
+  }
 
   /// The set of Bazel packages associated with this project.
   dynamic var bazelPackages: [String]? {
@@ -40,19 +56,21 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   /// Location of the bazel binary.
   dynamic var bazelURL: NSURL? {
     set {
-      project.bazel = newValue
+      project.bazelURL = newValue
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
     }
     get {
-      return project?.bazel
+      return project?.bazelURL
     }
   }
 
   /// Binding point for the directory containing the project's WORKSPACE file.
   dynamic var workspaceRootURL: NSURL? {
-    get {
-      return project?.workspaceRootURL
-    }
+    return project?.workspaceRootURL
+  }
+
+  var allVisibleOptions: [TulsiOptionKey: TulsiOption]? {
+    return project?.options.allVisibleOptions
   }
 
   private static var KVOContext: Int = 0
@@ -84,7 +102,6 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   }
 
   private var infoExtractor: TulsiProjectInfoExtractor! = nil
-  var options: TulsiOptionSet! = nil
 
   // The folder into which the generated Xcode project will be written.
   dynamic var outputFolderURL: NSURL? = nil {
@@ -103,11 +120,15 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   }
 
   lazy var bundleExtension: String = {
-    let bundle = NSBundle(forClass: self.dynamicType)
+    TulsiDocument.getTulsiBundleExtension()
+  }()
+
+  static func getTulsiBundleExtension() -> String {
+    let bundle = NSBundle(forClass: self)
     let documentTypes = bundle.infoDictionary!["CFBundleDocumentTypes"] as! [[String: AnyObject]]
     let extensions = documentTypes.first!["CFBundleTypeExtensions"] as! [String]
     return extensions.first!
-  }()
+  }
 
   deinit {
     stopObservingRuleEntries()
@@ -168,6 +189,11 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
     let bundleFileWrapper = NSFileWrapper(directoryWithFileWrappers: contents)
     bundleFileWrapper.addRegularFileWithContents(try project.save(),
                                                  preferredFilename: TulsiProject.ProjectFilename)
+
+    // TODO(abaire): Add any generated config documents.
+    let configsFolder = NSFileWrapper(directoryWithFileWrappers: [:])
+    configsFolder.preferredFilename = TulsiDocument.ProjectConfigsSubpath
+    bundleFileWrapper.addFileWrapper(configsFolder)
     return bundleFileWrapper
   }
 
@@ -204,28 +230,26 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
     selectedRuleEntryCount = 0
     ruleEntries.removeAll(keepCapacity: true)
 
-    guard let validBazelURL = bazelURL else {
+    guard let concreteBazelURL = bazelURL else {
       self.error(NSLocalizedString("Error_NoBazel",
                                    comment: "Critical error message when the Bazel binary cannot be found."))
       return
     }
 
-    self.processing = true
-    infoExtractor = TulsiProjectInfoExtractor(bazelURL: validBazelURL,
+    processingTaskStarted()
+    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
                                               project: project,
                                               messageLogger: self)
     infoExtractor.extractTargetRules() {
       (updatedRuleEntries: [RuleEntry]) -> Void in
+        defer { self.processingTaskFinished() }
         let updatedRange = Range(start: self.ruleEntries.startIndex, end: self.ruleEntries.endIndex)
         let updatedUIRuleEntries = updatedRuleEntries.map { UIRuleEntry(ruleEntry: $0) }
         self.ruleEntries.replaceRange(updatedRange, with: updatedUIRuleEntries)
         for entry in self.ruleEntries {
           entry.addObserver(self, forKeyPath: "selected", options: .New, context: &TulsiDocument.KVOContext)
         }
-        self.processing = false
     }
-
-    options = infoExtractor.createOptionSetForProjectFile(fileURL!)
   }
 
   override func observeValueForKeyPath(keyPath: String?,
@@ -248,19 +272,19 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   // Regenerates the sourceRuleEntries array based on the currently selected ruleEntries.
   func updateSourceRuleEntries(callback: ([UIRuleEntry]) -> Void) {
     sourceRuleEntries.removeAll()
-    self.processing = true
+    processingTaskStarted()
 
     infoExtractor.extractSourceRulesForRuleEntries(selectedRuleEntries) {
       (sourceRuleEntries: [RuleEntry]) -> Void in
+        defer { self.processingTaskFinished() }
         self.sourceRuleEntries = sourceRuleEntries.map { UIRuleEntry(ruleEntry: $0) }
-        self.processing = false
         callback(self.sourceRuleEntries)
     }
   }
 
   // Extracts source paths for selected source rules, generates a PBXProject and opens it.
   func generateAndOpenProject() {
-    self.processing = true
+    processingTaskStarted()
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
       let additionalFiles: [String]
       if let bazelPackages = self.bazelPackages {
@@ -270,6 +294,13 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
       }
       self.generateConfigWithAdditionalFiles(additionalFiles)
     }
+
+    // Also store the current options as project defaults if none have been saved yet.
+    self.saveGlobalOptionsIfNecessary()
+  }
+
+  func groupInfoForOptionKey(key: TulsiOptionKey) -> (TulsiOptionKeyGroup, displayName: String, description: String)? {
+    return project.options.groupInfoForOptionKey(key)
   }
 
   // MARK: - MessageLoggerProtocol
@@ -309,6 +340,7 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
   // MARK: - Private methods
 
   private func generateConfigWithAdditionalFiles(files: [String]?) {
+    assert(!NSThread.isMainThread(), "Must not be called from the main thread")
     guard let concreteWorkspaceRootURL = workspaceRootURL else {
       self.error(NSLocalizedString("Error_BadWorkspace",
                                    comment: "General error when project does not have a valid Bazel workspace."))
@@ -325,37 +357,53 @@ final class TulsiDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol {
                                       buildTargets: selectedRuleEntries,
                                       sourceTargets: selectedSourceRuleEntries,
                                       additionalFilePaths: files,
-                                      options: options,
+                                      options: project.options,
                                       bazelURL: bazelURL!)
     // TODO(abaire): Refactor the UI and write out the config before kicking off generation.
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: concreteWorkspaceRootURL,
                                                       config: config,
                                                       messageLogger: self)
-    // Resolve source file paths.
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-      defer { self.processing = false }
+    defer { processingTaskFinished() }
 
-      let errorData: String?
-      do {
-        let projectURL = try projectGenerator.generateXcodeProjectInFolder(concreteOutputFolderURL)
-        NSWorkspace.sharedWorkspace().openURL(projectURL)
-        errorData = nil
-      } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
-        errorData = "Unsupported target type: \(targetType)"
-      } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
-        errorData = "General failure: \(details)"
-      } catch _ {
-        errorData = "Unexpected failure"
-      }
-      if let concreteErrorData = errorData {
-        let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                    comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-        let errorMessage = String(format: fmt, concreteErrorData)
-        dispatch_async(dispatch_get_main_queue()) {
-          self.error(errorMessage)
-        }
+    let errorData: String?
+    do {
+      let projectURL = try projectGenerator.generateXcodeProjectInFolder(concreteOutputFolderURL)
+      NSWorkspace.sharedWorkspace().openURL(projectURL)
+      errorData = nil
+    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
+      errorData = "Unsupported target type: \(targetType)"
+    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
+      errorData = "General failure: \(details)"
+    } catch _ {
+      errorData = "Unexpected failure"
+    }
+    if let concreteErrorData = errorData {
+      let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
+                                  comment: "A general, critical failure during project generation. Details are provided as %1$@.")
+      let errorMessage = String(format: fmt, concreteErrorData)
+      dispatch_async(dispatch_get_main_queue()) {
+        self.error(errorMessage)
       }
     }
+  }
+
+  // Writes out the current project options set as the default.
+  private func saveGlobalOptionsIfNecessary() {
+    if project.hasExplicitOptions { return }
+
+    processingTaskStarted()
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+      self.saveDocument(nil)
+      self.processingTaskFinished()
+    }
+  }
+
+  private func processingTaskStarted() {
+    NSThread.doOnMainThread() { self.processingTaskCount += 1 }
+  }
+
+  private func processingTaskFinished() {
+    NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
   }
 
   private func stopObservingRuleEntries() {

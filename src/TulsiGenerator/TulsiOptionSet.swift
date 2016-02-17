@@ -22,6 +22,8 @@ public enum TulsiOptionKey: String {
   case
       // Whether or not to search user header paths first when resolving angle bracket includes.
       ALWAYS_SEARCH_USER_PATHS,
+      // The path to the Bazel binary.
+      BazelPath,
       // The iPhone deployment target.
       IPHONEOS_DEPLOYMENT_TARGET,
       // The SDK to use.
@@ -31,7 +33,9 @@ public enum TulsiOptionKey: String {
       // Whether or not to claim Swift code was created at the same version as Tulsi itself.
       // Suppresses the Xcode warning and automated update on first opening of the generated
       // project.
-      SuppressSwiftUpdateCheck
+      SuppressSwiftUpdateCheck,
+      // The path from a config file to its associated workspace root.
+      WorkspaceRootPath
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -53,9 +57,14 @@ public enum TulsiOptionKeyGroup: String {
 
 
 /// Models the set of all user-modifiable options supported by Tulsi.
-public class TulsiOptionSet {
+public class TulsiOptionSet: Equatable {
   /// Suffix added to string keys in order to resolve an option's description.
   static let DescriptionStringKeySuffix = "_DESC"
+
+  /// The key under which option sets are serialized.
+  static let PersistenceKey = "optionSet"
+
+  typealias PersistenceType = [String: TulsiOption.PersistenceType]
 
   static let OptionKeyGroups: [TulsiOptionKey: TulsiOptionKeyGroup] = [
       .BazelBuildOptionsDebug: .BazelBuildOptions,
@@ -66,30 +75,60 @@ public class TulsiOptionSet {
       .BazelBuildStartupOptionsRelease: .BazelBuildStartupOptions
   ]
 
-  public var allOptions: [TulsiOptionKey: TulsiOption] {
-    return options
+  public var allVisibleOptions = [TulsiOptionKey: TulsiOption]()
+  var options = [TulsiOptionKey: TulsiOption]() {
+    didSet {
+      allVisibleOptions = [TulsiOptionKey: TulsiOption]()
+      for (key, option) in options {
+        if !option.optionType.contains(.Hidden) {
+          allVisibleOptions[key] = option
+        }
+      }
+    }
   }
-  var options = [TulsiOptionKey: TulsiOption]()
   var optionKeyGroupInfo = [TulsiOptionKeyGroup: (displayName: String, description: String)]()
 
-  let persister: OptionPersisterProtocol?
-
-  // Used to suppress saving values while loading them from storage.
-  var suppressPersistence: Bool = false
-
-  public subscript(optionKey: TulsiOptionKey) -> TulsiOption? {
-    return options[optionKey]
+  public subscript(optionKey: TulsiOptionKey) -> TulsiOption {
+    return options[optionKey]!
   }
 
   public subscript(optionKey: TulsiOptionKey, target: String) -> String? {
     return options[optionKey]?.valueForTarget(target)
   }
 
-  init(persister: OptionPersisterProtocol? = nil) {
+  public static func areOptionsSerializedInDict(dict: [String: AnyObject]) -> Bool {
+    let persistedOptions = dict[TulsiOptionSet.PersistenceKey] as? PersistenceType ?? [:]
+    return !persistedOptions.isEmpty
+  }
+
+  init() {
     let bundle = NSBundle(forClass: self.dynamicType)
-    self.persister = persister
     populateOptionsWithBundle(bundle)
     populateOptionGroupInfoWithBundle(bundle)
+  }
+
+  convenience init(fromDictionary dict: [String: AnyObject]) {
+    self.init()
+
+    let persistedOptions = dict[TulsiOptionSet.PersistenceKey] as? PersistenceType ?? [:]
+    for (key, option) in options {
+      if let value = persistedOptions[key.rawValue] {
+        option.deserialize(value)
+      }
+    }
+  }
+
+  func saveToShareableDictionary(inout dict: [String: AnyObject]) {
+    saveToDictionary(&dict) {
+      !$1.optionType.contains(.PerUserOnly)
+    }
+  }
+
+  func saveToPerUserDictionary(inout dict: [String: AnyObject], perUserOnly: Bool = true) {
+    saveToDictionary(&dict) {
+      if !perUserOnly { return true }
+      return $1.optionType.contains(.PerUserOnly)
+    }
   }
 
   public func groupInfoForOptionKey(key: TulsiOptionKey) -> (TulsiOptionKeyGroup, displayName: String, description: String)? {
@@ -124,6 +163,17 @@ public class TulsiOptionSet {
 
   // MARK: - Private methods.
 
+  private func saveToDictionary(inout dict: [String: AnyObject],
+                                withFilter filter: (TulsiOptionKey, TulsiOption) -> Bool) {
+    var serialized = PersistenceType()
+    for (key, option) in options.filter(filter) {
+      if let value = option.serialize() {
+        serialized[key.rawValue] = value
+      }
+    }
+    dict[TulsiOptionSet.PersistenceKey] = serialized
+  }
+
   private func populateOptionsWithBundle(bundle: NSBundle) {
     func addOption(optionKey: TulsiOptionKey, valueType: TulsiOption.ValueType, optionType: TulsiOption.OptionType, defaultValue: String?) {
       let key = optionKey.rawValue
@@ -132,10 +182,8 @@ public class TulsiOptionSet {
       var description = bundle.localizedStringForKey(descriptionKey, value: nil, table: "Options")
       if description == descriptionKey { description = "" }
 
-      options[optionKey] = TulsiOption(storageKey: key,
-                                       persister: persister,
-                                       displayName: displayName,
-                                       description: description,
+      options[optionKey] = TulsiOption(displayName: displayName,
+                                       userDescription: description,
                                        valueType: valueType,
                                        optionType: optionType,
                                        defaultValue: defaultValue)
@@ -161,9 +209,9 @@ public class TulsiOptionSet {
     addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
 
-    for (_, option) in options {
-      option.load()
-    }
+
+    addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
+    addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])
   }
 
   private func populateOptionGroupInfoWithBundle(bundle: NSBundle) {
@@ -177,4 +225,13 @@ public class TulsiOptionSet {
       }
     }
   }
+}
+
+public func ==(lhs: TulsiOptionSet, rhs: TulsiOptionSet) -> Bool {
+  for (key, option) in lhs.options {
+    if rhs[key] != option {
+      return false
+    }
+  }
+  return true
 }

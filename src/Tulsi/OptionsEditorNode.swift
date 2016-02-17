@@ -202,7 +202,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
   }
 
   override var toolTip: String {
-    return option.description
+    return option.userDescription
   }
 
   override var valueType: TulsiOption.ValueType {

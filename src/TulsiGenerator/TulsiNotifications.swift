@@ -35,3 +35,6 @@ public let BuildFileExtraction = "buildFileExtraction"
 
 /// Sent when the Tulsi generator starts resolving Bazel labels to files.
 public let LabelResolution = "labelResolution"
+
+/// Sent when the Tulsi generator starts resolving labels to RuleEntry instances.
+public let RuleEntryResolution = "ruleEntryResolution"

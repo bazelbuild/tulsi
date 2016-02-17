@@ -28,8 +28,8 @@ protocol TargetGeneratorProtocol {
   /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
 
-  /// Generates top level build configurations.
-  func generateTopLevelBuildConfigurations()
+  /// Generates top level build configurations with an optional set of additional include paths.
+  func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>?)
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules
   /// with corresponding entries in sourcePaths, non-compiling source file linkages are created to
@@ -182,7 +182,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     }
   }
 
-  func generateTopLevelBuildConfigurations() {
+  func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>? = nil) {
     var buildSettings = options.commonBuildSettings()
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
     // Fixes an Xcode "Upgrade to recommended settings" warning. Technically the warning only
@@ -198,7 +198,12 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
     }
-    buildSettings["USER_HEADER_SEARCH_PATHS"] = sourceDirectory
+    var searchPaths = [sourceDirectory]
+    if let additionalIncludePaths = additionalIncludePaths {
+      let rootedPaths = additionalIncludePaths.sort().map({"\(sourceDirectory)/\($0)"})
+      searchPaths.appendContentsOf(rootedPaths)
+    }
+    buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
   }

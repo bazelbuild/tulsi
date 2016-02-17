@@ -54,15 +54,6 @@ public final class TaskRunner {
   public func createTask(launchPath: String,
                          arguments: [String]? = nil,
                          terminationHandler: CompletionHandler) -> NSTask {
-
-    func doOnMainThread(block: () -> Void) {
-      if NSThread.isMainThread() {
-        block()
-      } else {
-        dispatch_sync(dispatch_get_main_queue(), block)
-      }
-    }
-
     let task = NSTask()
     task.launchPath = launchPath
     task.arguments = arguments
@@ -125,7 +116,7 @@ public final class TaskRunner {
                                         stdout: stdoutData,
                                         stderr: stderrData))
 
-      doOnMainThread {
+      NSThread.doOnMainThread {
         notificationCenter.removeObserver(stdoutObserver)
         notificationCenter.removeObserver(stderrObserver)
         assert(self.pendingTasks.contains(task), "terminationHandler called with unexpected task")
@@ -133,7 +124,7 @@ public final class TaskRunner {
       }
     }
 
-    doOnMainThread {
+    NSThread.doOnMainThread {
       self.pendingTasks.insert(task)
     }
     return task

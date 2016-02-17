@@ -28,6 +28,3 @@
 
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
-
-"USER_HEADER_SEARCH_PATHS" = "User header search paths";
-"USER_HEADER_SEARCH_PATHS_DESC" = "Space-separated list of directory paths to be searched when resolving includes using quotation marks (\"\").";

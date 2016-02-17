@@ -15,18 +15,8 @@
 import Foundation
 
 
-/// Protocol for an object that can preserve a TulsiOption's values across application restarts.
-protocol OptionPersisterProtocol: class {
-  func saveProjectValue(value: String?, forStorageKey: String)
-  func saveTargetValues(values: [String: String]?, forStorageKey: String)
-
-  func loadProjectValueForStorageKey(storageKey: String) -> String?
-  func loadTargetValueForStorageKey(storageKey: String) -> [String: String]?
-}
-
-
 /// Models the layered values for a single Tulsi option.
-public class TulsiOption {
+public class TulsiOption: Equatable, CustomStringConvertible {
 
   /// The string serialized for boolean options which are 'true'.
   public static let BooleanTrueValue = "YES"
@@ -58,12 +48,18 @@ public class TulsiOption {
     /// An option that may be automatically encoded into a build setting and overridden on a
     /// per-target basis.
     static let TargetSpecializableBuildSetting = OptionType([BuildSetting, TargetSpecializable])
+
+    /// An option that is not visualized in the UI at all.
+    static let Hidden = OptionType(rawValue: 1 << 16)
+
+    /// An option that may only be persisted into per-user configs.
+    static let PerUserOnly = OptionType(rawValue: 1 << 17)
   }
 
   /// Name of this option as it should be displayed to the user.
   public let displayName: String
   /// Detailed description of what this option does.
-  public let description: String
+  public let userDescription: String
   /// The type of value associated with this option.
   public let valueType: ValueType
   /// How this option is handled within Tulsi.
@@ -72,17 +68,9 @@ public class TulsiOption {
   /// Value of this option if the user does not provide any override.
   public let defaultValue: String?
   /// User-set value of this option for all targets within this project, unless overridden.
-  public var projectValue: String? = nil {
-    didSet {
-      persister?.saveProjectValue(projectValue, forStorageKey: storageKey)
-    }
-  }
+  public var projectValue: String? = nil
   /// Per-target values for this option.
-  public var targetValues: [String: String]? {
-    didSet {
-      persister?.saveTargetValues(targetValues, forStorageKey: storageKey)
-    }
-  }
+  public var targetValues: [String: String]?
 
   /// Provides the value of this option with no target specialization.
   public var commonValue: String? {
@@ -99,20 +87,19 @@ public class TulsiOption {
     return val == TulsiOption.BooleanTrueValue
   }
 
-  /// Opaque key used to persist/load values of this option.
-  let storageKey: String!
-  private weak var persister: OptionPersisterProtocol?
+  /// Key under which this option's project-level value is stored.
+  static let ProjectValueKey = "p"
+  /// Key under which this option's target-level values are stored.
+  static let TargetValuesKey = "t"
+  typealias PersistenceType = [String: AnyObject]
 
-  init(storageKey: String?,
-       persister: OptionPersisterProtocol?,
-       displayName: String,
-       description: String,
+  init(displayName: String,
+       userDescription: String,
        valueType: ValueType,
        optionType: OptionType,
        defaultValue: String? = nil) {
-    self.storageKey = storageKey
     self.displayName = displayName
-    self.description = description
+    self.userDescription = userDescription
     self.valueType = valueType
     self.optionType = optionType
     self.defaultValue = defaultValue
@@ -122,10 +109,6 @@ public class TulsiOption {
     } else {
       self.targetValues = nil
     }
-
-    // Intentionally set last to prevent values set in the initializer from being persisted
-    // needlessly.
-    self.persister = persister
   }
 
   /// Provides the resolved value of this option, potentially specialized for the given target.
@@ -150,20 +133,63 @@ public class TulsiOption {
     return value?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
   }
 
-  func load() {
-    guard let concretePersister = persister else { return }
-    // Nil out the persister during the load to prevent storing values as they're loaded.
-    persister = nil
-    defer { persister = concretePersister }
+  // Generates a serialized form of this option's user-defined values or nil if the value is
+  // the default.
+  func serialize() -> PersistenceType? {
+    var serialized = PersistenceType()
+    if let value = projectValue {
+      serialized[TulsiOption.ProjectValueKey] = value
+    }
 
-    projectValue = concretePersister.loadProjectValueForStorageKey(storageKey)
+    if let values = targetValues where !values.isEmpty {
+      serialized[TulsiOption.TargetValuesKey] = values
+    }
+    if serialized.isEmpty { return nil }
+    return serialized
+  }
 
-    if let values = concretePersister.loadTargetValueForStorageKey(storageKey) {
+  func deserialize(serialized: PersistenceType) {
+    if let value = serialized[TulsiOption.ProjectValueKey] as? String {
+      projectValue = value
+    } else {
+      projectValue = nil
+    }
+
+    if let values = serialized[TulsiOption.TargetValuesKey] as? [String: String] {
       targetValues = values
     } else if optionType.contains(.TargetSpecializable) {
-      targetValues = [String: String]()
+      self.targetValues = [String: String]()
     } else {
-      targetValues = nil
+      self.targetValues = nil
     }
   }
+
+  // MARK: - CustomStringConvertible
+
+  public var description: String {
+    return "\(displayName) - \(commonValue):\(targetValues)"
+  }
+}
+
+public func ==(lhs: TulsiOption, rhs: TulsiOption) -> Bool {
+  if !(lhs.displayName == rhs.displayName &&
+      lhs.userDescription == rhs.userDescription &&
+      lhs.valueType == rhs.valueType &&
+      lhs.optionType == rhs.optionType) {
+    return false
+  }
+
+  func optionalsAreEqual<T where T: Equatable>(a: T?, _ b: T?) -> Bool {
+    if a == nil { return b == nil }
+    if b == nil { return false }
+    return a! == b!
+  }
+  func optionalDictsAreEqual<K, V where K: Equatable, V: Equatable>(a: [K: V]?, _ b: [K: V]?) -> Bool {
+    if a == nil { return b == nil }
+    if b == nil { return false }
+    return a! == b!
+  }
+  return optionalsAreEqual(lhs.defaultValue, rhs.defaultValue) &&
+      optionalsAreEqual(lhs.projectValue, rhs.projectValue) &&
+      optionalDictsAreEqual(lhs.targetValues, rhs.targetValues)
 }

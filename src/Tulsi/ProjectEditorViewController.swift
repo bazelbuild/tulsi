@@ -234,7 +234,6 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
   // MARK: - Private methods
 
   private func updateNextButtonState() {
-    let document = representedObject as? TulsiDocument
     let enable = bazelURL != nil && numBazelPackagesInProject > 0
     presentingWizardViewController?.setNextButtonEnabled(enable)
   }

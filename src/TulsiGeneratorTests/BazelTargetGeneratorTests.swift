@@ -115,7 +115,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     pchFile = mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     labelResolver = MockLabelResolver()
     let options = TulsiOptionSet()
-    options[.SDKROOT]!.projectValue = sdkRoot
+    options[.SDKROOT].projectValue = sdkRoot
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
                                            project: project,
                                            buildScriptPath: "",
@@ -190,10 +190,35 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
+        "HEADER_SEARCH_PATHS": "$(SRCROOT)",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
-        "USER_HEADER_SEARCH_PATHS": "$(SRCROOT)",
+    ]
+    XCTAssertNotNil(topLevelConfigs["Debug"])
+    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertNotNil(topLevelConfigs["Release"])
+    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertNotNil(topLevelConfigs["Fastbuild"])
+    XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
+  }
+
+  func testGenerateTopLevelBuildConfigurationsWithAdditionalIncludes() {
+    let additionalIncludePaths = Set<String>(["additional", "include/paths"])
+    targetGenerator.generateTopLevelBuildConfigurations(additionalIncludePaths)
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 3)
+
+    let topLevelBuildSettings = [
+        "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CODE_SIGN_IDENTITY": "",
+        "CODE_SIGNING_REQUIRED": "NO",
+        "ENABLE_TESTABILITY": "YES",
+        "HEADER_SEARCH_PATHS": "$(SRCROOT) $(SRCROOT)/additional $(SRCROOT)/include/paths",
+        "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
+        "ONLY_ACTIVE_ARCH": "YES",
+        "SDKROOT": sdkRoot,
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)

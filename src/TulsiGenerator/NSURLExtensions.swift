@@ -16,7 +16,7 @@ import Foundation
 
 
 extension NSURL {
-  func relativePathTo(target: NSURL) -> String? {
+  public func relativePathTo(target: NSURL) -> String? {
     guard self.fileURL && target.fileURL,
         let rootComponents = pathComponents, targetComponents = target.pathComponents else {
       return nil

@@ -31,8 +31,8 @@ class XcodeProjectGenerator {
   /// Path relative to PROJECT_FILE_PATH in which Tulsi generated files (scripts, artifacts, etc...)
   /// should be placed.
   private static let TulsiArtifactDirectory = ".tulsi"
-  private static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
-  private static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
+  static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
+  static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let EnvScript = "bazel_env.sh"
@@ -46,6 +46,10 @@ class XcodeProjectGenerator {
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
+
+  /// Generates warning messages for source target labels that fail to resolve rather than failing
+  /// project generation.
+  var treatMissingSourceTargetsAsWarnings = false
 
   /// Dictionary of Bazel targets for which indexers should be generated and the sources to add to
   /// them.
@@ -90,7 +94,15 @@ class XcodeProjectGenerator {
       }
     }
     if !missingSourceTargetPaths.isEmpty {
-      throw Error.SourceTargetResolutionFailed(missingSourceTargetPaths)
+      if treatMissingSourceTargetsAsWarnings {
+        for label in missingSourceTargetPaths {
+          localizedMessageLogger.warning("SourceRuleExtractionFailed",
+                                         comment: "The Bazel query for dependencies of rule %1$@ failed XML parsing. As a result, the user won't be able to add affected source files to the project unless they happen to be dependencies of another target that succeeds.",
+                                         values: label)
+        }
+      } else {
+        throw Error.SourceTargetResolutionFailed(missingSourceTargetPaths)
+      }
     }
 
     let mainGroup = BazelTargetGenerator.mainGroupForOutputFolder(outputFolderURL,
@@ -137,11 +149,11 @@ class XcodeProjectGenerator {
     }
 
     let resolvedLabels = workspaceInfoExtractor.ruleEntriesForLabels(labels)
-    var unresolvedLabels = Set<String>()
 
     // Converts the given array of labels to an array of RuleEntry instances, adding any labels that
     // failed to resolve to the unresolvedLabels set.
-    func ruleEntriesForLabels(labels: [String]) -> [RuleEntry] {
+    func ruleEntriesForLabels(labels: [String]) -> ([RuleEntry], Set<String>) {
+      var unresolvedLabels = Set<String>()
       var ruleEntries = [RuleEntry]()
       for label in labels {
         guard let entry = resolvedLabels[label] else {
@@ -150,18 +162,31 @@ class XcodeProjectGenerator {
         }
         ruleEntries.append(entry)
       }
-      return ruleEntries
+      return (ruleEntries, unresolvedLabels)
     }
 
     if config.buildTargets == nil {
-      config.buildTargets = ruleEntriesForLabels(config.buildTargetLabels)
-    }
-    if config.sourceTargets == nil {
-      config.sourceTargets = ruleEntriesForLabels(config.sourceTargetLabels)
+      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(config.buildTargetLabels)
+      config.buildTargets = ruleEntries
+      if !unresolvedLabels.isEmpty {
+        throw Error.LabelResolutionFailed(unresolvedLabels)
+      }
     }
 
-    if !unresolvedLabels.isEmpty {
-      throw Error.LabelResolutionFailed(unresolvedLabels)
+    if config.sourceTargets == nil {
+      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(config.sourceTargetLabels)
+      config.sourceTargets = ruleEntries
+      if !unresolvedLabels.isEmpty {
+        if treatMissingSourceTargetsAsWarnings {
+          for label in unresolvedLabels {
+            localizedMessageLogger.warning("SourceRuleExtractionFailed",
+                                           comment: "The Bazel query for dependencies of rule %1$@ failed XML parsing. As a result, the user won't be able to add affected source files to the project unless they happen to be dependencies of another target that succeeds.",
+                                           values: label)
+          }
+        } else {
+          throw Error.LabelResolutionFailed(unresolvedLabels)
+        }
+      }
     }
   }
 
@@ -171,7 +196,7 @@ class XcodeProjectGenerator {
 
   private func buildXcodeProjectWithMainGroup(mainGroup: PBXGroup) throws -> PBXProject {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
-    if let enabled = config.options[.SuppressSwiftUpdateCheck]?.commonValueAsBool where enabled {
+    if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool where enabled {
       xcodeProject.lastSwiftUpdateCheck = "0710"
     }
 
@@ -197,7 +222,9 @@ class XcodeProjectGenerator {
 
     let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
     generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
-    generator.generateTopLevelBuildConfigurations()
+
+    let additionalIncludePaths = workspaceInfoExtractor.extractExplicitIncludePathsForRuleEntries(config.buildTargets!)
+    generator.generateTopLevelBuildConfigurations(additionalIncludePaths)
     try generator.generateBuildTargetsForRuleEntries(config.buildTargets!,
                                                      sourcePaths: sourcePaths)
 
@@ -273,19 +300,33 @@ class XcodeProjectGenerator {
     localizedMessageLogger.infoMessage("Installing generator config")
 
     let configURL = configDirectoryURL.URLByAppendingPathComponent(config.filename)
-    let errorInfo: String?
+    var errorInfo: String? = nil
     do {
       let data = try config.save()
       try writeDataHandler(configURL, data)
-      errorInfo = nil
     } catch let e as NSError {
       errorInfo = e.localizedDescription
     } catch {
       errorInfo = "Unexpected exception"
     }
-
     if let errorInfo = errorInfo {
       localizedMessageLogger.infoMessage("Generator config serialization failed. \(errorInfo)")
+      return
+    }
+
+    let perUserConfigURL = configDirectoryURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)
+    errorInfo = nil
+    do {
+      if let data = try config.savePerUserSettings() {
+        try writeDataHandler(perUserConfigURL, data)
+      }
+    } catch let e as NSError {
+      errorInfo = e.localizedDescription
+    } catch {
+      errorInfo = "Unexpected exception"
+    }
+    if let errorInfo = errorInfo {
+      localizedMessageLogger.infoMessage("Generator per-user config serialization failed. \(errorInfo)")
       return
     }
   }
