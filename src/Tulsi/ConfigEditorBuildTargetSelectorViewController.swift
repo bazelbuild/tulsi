@@ -18,10 +18,8 @@ import Cocoa
 /// View controller allowing certain Bazel build targets from the project to be selected for Xcode
 /// project generation.
 final class ConfigEditorBuildTargetSelectorViewController: NSViewController, WizardSubviewProtocol {
-  dynamic var typeFilter: NSPredicate?
-
-  // This list needs to be kept up to date with whatever Bazel does.
-  let filteredFileTypes = [
+  // This list needs to be kept up to date with whatever Bazel supports.
+  static let filteredFileTypes = [
       "objc_binary",
       "objc_library",
       "ios_application",
@@ -29,6 +27,9 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
       "ios_framework_binary",
       "ios_test",
   ]
+
+  dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
+                                                          argumentArray: [filteredFileTypes])
 
   var selectedRuleEntryCount: Int = 0 {
     didSet {
@@ -52,17 +53,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   }
 
   override func loadView() {
-    enableFilter(self)
     super.loadView()
-  }
-
-  @IBAction func enableFilter(sender: AnyObject?) {
-    if typeFilter != nil {
-      typeFilter = nil
-    } else {
-      typeFilter = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
-                                    argumentArray: [filteredFileTypes])
-    }
   }
 
   // MARK: - WizardSubviewProtocol

@@ -907,14 +907,14 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="620" height="384"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBr-Gq-Xkt">
-                                <rect key="frame" x="20" y="42" width="580" height="322"/>
-                                <clipView key="contentView" id="uf5-HF-t1v">
-                                    <rect key="frame" x="1" y="0.0" width="578" height="306"/>
+                            <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBr-Gq-Xkt">
+                                <rect key="frame" x="20" y="20" width="580" height="344"/>
+                                <clipView key="contentView" ambiguous="YES" id="uf5-HF-t1v">
+                                    <rect key="frame" x="1" y="0.0" width="578" height="328"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="19" headerView="69I-Yu-xln" viewBased="YES" id="jzE-ag-Xnt">
-                                            <rect key="frame" x="0.0" y="0.0" width="581" height="283"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="581" height="305"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="3"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1014,7 +1014,7 @@ Gw
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="Wis-qF-tm6"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="P2M-ky-6Ll">
-                                    <rect key="frame" x="1" y="305" width="578" height="16"/>
+                                    <rect key="frame" x="1" y="328" width="578" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="yD9-VN-bwr">
@@ -1026,17 +1026,7 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="gPj-fb-GII">
-                                <rect key="frame" x="18" y="18" width="93" height="18"/>
-                                <buttonCell key="cell" type="check" title="Filter Types" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4rC-TL-h4K">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="enableFilter" target="Yh6-uI-Qqe" id="xtn-fX-Yus"/>
-                                </connections>
-                            </button>
-                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
+                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
                                 <rect key="frame" x="294" y="187" width="32" height="32"/>
                                 <connections>
                                     <binding destination="j9X-DC-afq" name="animate" keyPath="selection.processing" id="OJk-Gn-kho"/>
@@ -1049,13 +1039,10 @@ Gw
                             </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="gPj-fb-GII" firstAttribute="top" secondItem="eBr-Gq-Xkt" secondAttribute="bottom" constant="8" id="2ct-QD-ILb"/>
                             <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerX" secondItem="eBr-Gq-Xkt" secondAttribute="centerX" id="47V-TQ-80J"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="top" secondItem="ZEq-dq-WSj" secondAttribute="top" constant="20" id="La9-Th-WD6"/>
                             <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerY" secondItem="eBr-Gq-Xkt" secondAttribute="centerY" id="PJ4-gZ-XHu"/>
-                            <constraint firstAttribute="bottom" secondItem="gPj-fb-GII" secondAttribute="bottom" constant="20" symbolic="YES" id="SM3-ze-EeM"/>
                             <constraint firstAttribute="trailing" secondItem="eBr-Gq-Xkt" secondAttribute="trailing" constant="20" id="ZeU-3r-3bH"/>
-                            <constraint firstItem="gPj-fb-GII" firstAttribute="leading" secondItem="ZEq-dq-WSj" secondAttribute="leading" constant="20" id="ngp-10-P9H"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="leading" secondItem="ZEq-dq-WSj" secondAttribute="leading" constant="20" id="tpa-ee-fo5"/>
                         </constraints>
                     </view>
