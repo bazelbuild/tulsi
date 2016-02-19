@@ -238,7 +238,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     let configFolderURL = generatorConfigFolderURL
 
     var nameToDoc = [String: TulsiGeneratorConfigDocument]()
-    for doc in configDocuments.allObjects as! [TulsiGeneratorConfigDocument] {
+    for doc in childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument] {
       guard let name = doc.configName else { continue }
       nameToDoc[name] = doc
     }
@@ -247,7 +247,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     for name in configNamesToRemove {
       configNames.remove(name)
       if let doc = nameToDoc[name] {
-        configDocuments.removeObject(doc)
+        childConfigDocuments.removeObject(doc)
         doc.close()
       }
       if let url = TulsiGeneratorConfigDocument.urlForConfigNamed(name,
