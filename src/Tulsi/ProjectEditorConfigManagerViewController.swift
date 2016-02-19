@@ -29,6 +29,14 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
 
+  dynamic var numBazelPackages: Int = 0 {
+    didSet {
+      let enableAddButton = numBazelPackages > 0
+      addRemoveSegmentedControl.setEnabled(enableAddButton,
+                                           forSegment: SegmentedControlButtonIndex.Add.rawValue)
+    }
+  }
+
   dynamic var numSelectedConfigs: Int = 0 {
     didSet {
       let enableRemoveButton = numSelectedConfigs > 0
@@ -37,7 +45,19 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     }
   }
 
+  override var representedObject: AnyObject? {
+    didSet {
+      if let concreteRepresentedObject = representedObject {
+        bind("numBazelPackages",
+             toObject: concreteRepresentedObject,
+             withKeyPath: "bazelPackages.@count",
+             options: nil)
+      }
+    }
+  }
+
   deinit {
+    unbind("numBazelPackages")
     unbind("numSelectedConfigs")
   }
 
@@ -112,15 +132,16 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   func didClickAddConfig(sender: AnyObject?) {
     let projectDocument = representedObject as! TulsiProjectDocument
+
+    // Adding a config to a project with no bazel packages is disallowed.
+    guard let bazelPackages = projectDocument.bazelPackages where !bazelPackages.isEmpty else {
+      NSBeep()
+      return
+    }
+
     let errorInfo: String
     do {
-      let additionalFilePaths: [String]
-      if let bazelPackages = projectDocument.bazelPackages {
-        additionalFilePaths = bazelPackages.map() { "\($0)/BUILD" }
-      } else {
-        additionalFilePaths = []
-      }
-
+      let additionalFilePaths = bazelPackages.map() { "\($0)/BUILD" }
       guard let projectName = projectDocument.projectName,
                 generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
         // TODO(abaire): Force a save.

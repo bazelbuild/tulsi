@@ -412,7 +412,7 @@
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="momentary" id="a7q-3F-v0J">
                                     <font key="font" metaFont="system"/>
                                     <segments>
-                                        <segment image="NSAddTemplate" width="32"/>
+                                        <segment image="NSAddTemplate" width="32" enabled="NO"/>
                                         <segment image="NSRemoveTemplate" width="32" enabled="NO" tag="1"/>
                                     </segments>
                                     <connections>
