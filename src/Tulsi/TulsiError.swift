@@ -52,17 +52,21 @@ class TulsiError: NSError {
   // MARK: - Private methods
 
   private static func localizedErrorMessageForCode(errorCode: ErrorCode) -> String {
-    // TODO(abaire): Localize.
     switch errorCode {
       case .ConfigNotGenerateable:
-        return "Generator config is not fully populated and cannot generate an Xcode project."
+        return NSLocalizedString("TulsiError_ConfigNotGenerateable",
+                                 comment: "Error message for when the user tried to generate an Xcode project from an incomplete config.")
       case .ConfigNotLoadable:
-        return "Generator config could not be loaded from the given location."
+        return NSLocalizedString("TulsiError_ConfigNotLoadable",
+                                 comment: "Error message for when a generator config fails to load for an unspecified reason.")
       case .ConfigNotSaveable:
-        return "Generator config is not fully populated and cannot be saved."
+        return NSLocalizedString("TulsiError_ConfigNotSaveable",
+                                 comment: "Generator config is not fully populated and cannot be saved.")
 
       case .General:
-        return "A general error of type \(errorCode) occurred."
+        let fmt = NSLocalizedString("TulsiError_General",
+                                    comment: "A generic exception was thrown, additional debug data is in %1$@.")
+        return String(format: fmt, "Code: \(errorCode)")
     }
   }
 }

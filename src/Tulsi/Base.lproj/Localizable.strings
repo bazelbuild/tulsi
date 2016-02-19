@@ -80,6 +80,15 @@
 /* Label for the button used to confirm the selected output folder for the generated Xcode project. */
 "ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt" = "Generate";
 
+/* Error message for when the user tried to generate an Xcode project from an incomplete config. */
+"TulsiError_ConfigNotGenerateable" = "Generator config is not fully populated and cannot generate an Xcode project.";
+
+/* Error message for when a generator config fails to load for an unspecified reason. */
+"TulsiError_ConfigNotLoadable" = "Generator config could not be loaded from the given location.";
+
+/* Error message for when a generator config fails to save because it is missing critical information. */
+"TulsiError_ConfigNotSaveable" = "Generator config is not fully populated and cannot be saved.";
+
 /* A generic exception was thrown, additional debug data is in %1$@. */
 "TulsiError_General" = "Error: '%1$@'";
 
