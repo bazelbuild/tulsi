@@ -164,6 +164,10 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   }
 
   func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
+    if ruleEntries.isEmpty {
+      return Set<String>()
+    }
+
     let profilingStart = localizedMessageLogger.startProfiling("extract_includes",
                                                                message: "Looking for additional include paths")
 
