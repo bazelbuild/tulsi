@@ -114,7 +114,7 @@ class XcodeProjectGenerator {
       throw Error.SerializationFailed("OpenStep serialization failed")
     }
 
-    let projectBundleName = config.projectName + ".xcodeproj"
+    let projectBundleName = config.xcodeProjectFilename
     let projectURL = outputFolderURL.URLByAppendingPathComponent(projectBundleName)
     if !createDirectory(projectURL) {
       throw Error.SerializationFailed("Project directory creation failed")
@@ -299,7 +299,7 @@ class XcodeProjectGenerator {
     guard createDirectory(configDirectoryURL, failSilently: true) else { return }
     localizedMessageLogger.infoMessage("Installing generator config")
 
-    let configURL = configDirectoryURL.URLByAppendingPathComponent(config.filename)
+    let configURL = configDirectoryURL.URLByAppendingPathComponent(config.defaultFilename)
     var errorInfo: String? = nil
     do {
       let data = try config.save()

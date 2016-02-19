@@ -468,7 +468,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     }
     let shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
-        ". \(envScriptPath)\n" +
+        ". \"\(envScriptPath)\"\n" +
         "exec \(commandLine) --install_generated_artifacts"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
