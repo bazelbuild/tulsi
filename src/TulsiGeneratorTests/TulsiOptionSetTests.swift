@@ -41,9 +41,10 @@ class TulsiOptionSetTests: XCTestCase {
         target1: "Target-Release-Value1",
     ]
     var dict = [String: AnyObject]()
-    optionSet.saveToPerUserDictionary(&dict, perUserOnly: false)
+    optionSet.saveAllOptionsIntoDictionary(&dict)
 
-    let deserializedSet = TulsiOptionSet(fromDictionary: dict)
+    let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
+    let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
     XCTAssertEqual(deserializedSet, optionSet)
   }
 
@@ -55,9 +56,10 @@ class TulsiOptionSetTests: XCTestCase {
       i += 10
     }
     var dict = [String: AnyObject]()
-    optionSet.saveToShareableDictionary(&dict)
+    optionSet.saveShareableOptionsIntoDictionary(&dict)
 
-    let deserializedSet = TulsiOptionSet(fromDictionary: dict)
+    let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
+    let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
     for (key, option) in optionSet.options.filter({ !$1.optionType.contains(.PerUserOnly) }) {
       XCTAssertEqual(deserializedSet[key], option)
     }
@@ -71,13 +73,14 @@ class TulsiOptionSetTests: XCTestCase {
       i += 10
     }
     var dict = [String: AnyObject]()
-    optionSet.saveToPerUserDictionary(&dict, perUserOnly: true)
+    optionSet.savePerUserOptionsIntoDictionary(&dict)
 
     let perUserOptions = optionSet.options.filter({ $1.optionType.contains(.PerUserOnly) })
     let serializedValues = dict[TulsiOptionSet.PersistenceKey] as! [String: TulsiOption.PersistenceType]
     XCTAssertEqual(serializedValues.count, perUserOptions.count)
 
-    let deserializedSet = TulsiOptionSet(fromDictionary: dict)
+    let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
+    let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
     for (key, option) in perUserOptions {
       XCTAssertEqual(deserializedSet[key], option)
     }

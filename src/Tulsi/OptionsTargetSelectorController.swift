@@ -36,9 +36,9 @@ protocol OptionsTargetSelectorControllerDelegate: class {
 
 // Delegate for the target selector outline view.
 class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
-  static let buildFileSectionTitle =
-      NSLocalizedString("OptionsTarget_BUILDFileSectionTitle",
-                        comment: "Short header shown before the build file in the options editor's target selector.")
+  static let projectSectionTitle =
+      NSLocalizedString("OptionsTarget_ProjectSectionTitle",
+                        comment: "Short header shown before the project in the options editor's target selector.")
   static let targetSectionTitle =
       NSLocalizedString("OptionsTarget_TargetSectionTitle",
                         comment: "Short header shown before the build targets in the options editor's target selector.")
@@ -47,26 +47,27 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
   dynamic var nodes = [OptionsTargetNode]()
 
   weak var delegate: OptionsTargetSelectorControllerDelegate?
-  weak var document: TulsiDocument? = nil {
+  weak var model: OptionsEditorModelProtocol! = nil {
     didSet {
-      guard let concreteDocument = document else { return }
-      let buildFileSection = OptionsTargetNode(name: OptionsTargetSelectorController.buildFileSectionTitle)
-      let buildFilePath = concreteDocument.fileURL!
-      let buildFileRule = OptionsTargetNode(name: buildFilePath.lastPathComponent!)
-      buildFileRule.toolTip = buildFilePath.path!
-      buildFileSection.children.append(buildFileRule)
+      if model == nil || model.projectName == nil || model === oldValue { return }
 
-      let targetSection = OptionsTargetNode(name: OptionsTargetSelectorController.targetSectionTitle)
-      for entry in concreteDocument.selectedUIRuleEntries {
-        let node = OptionsTargetNode(name: entry.targetName!)
-        node.toolTip = entry.fullLabel
-        node.entry = entry
-        targetSection.children.append(node)
+      let projectSection = OptionsTargetNode(name: OptionsTargetSelectorController.projectSectionTitle)
+      projectSection.children.append(OptionsTargetNode(name: model.projectName!))
+      var newNodes = [projectSection]
+
+      if model.shouldShowPerTargetOptions, let targetEntries = model.optionsTargetUIRuleEntries {
+        let targetSection = OptionsTargetNode(name: OptionsTargetSelectorController.targetSectionTitle)
+        for entry in targetEntries {
+          let node = OptionsTargetNode(name: entry.targetName!)
+          node.toolTip = entry.fullLabel
+          node.entry = entry
+          targetSection.children.append(node)
+        }
+        newNodes.append(targetSection)
       }
+      nodes = newNodes
 
-      nodes = [buildFileSection, targetSection]
-
-      // Expand all children in the target selector and select the BUILD file.
+      // Expand all children in the target selector and select the project.
       view.expandItem(nil, expandChildren: true)
       view.selectRowIndexes(NSIndexSet(index: 1), byExtendingSelection: false)
     }

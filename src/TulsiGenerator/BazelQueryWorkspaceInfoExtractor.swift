@@ -47,12 +47,12 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   // MARK: - WorkspaceInfoExtractorProtocol
 
   func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
-    guard let path = workspaceRootURL.path else {
-      dispatch_async(dispatch_get_main_queue()) { callback([]) }
+    let projectPackages = project.bazelPackages
+    guard !projectPackages.isEmpty, let path = workspaceRootURL.path else {
+      NSThread.doOnMainThread { callback([]) }
       return
     }
 
-    let projectPackages = project.bazelPackages
     let query = projectPackages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
     let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
                                                                message: "Fetching rules for packages \(projectPackages)")
@@ -63,8 +63,8 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
           self.localizedMessageLogger.infoMessage(debugInfo)
         }
         self.localizedMessageLogger.logProfilingEnd(profilingStart)
-        dispatch_async(dispatch_get_main_queue()) {
-          assert(ruleEntries != nil, "Extraction failed")
+        NSThread.doOnMainThread {
+          assert(ruleEntries != nil, "Extraction failed for query \(query)")
           callback(ruleEntries!)
         }
     }
@@ -76,7 +76,7 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
     var sourceRuleEntries = [RuleEntry]()
     guard let path = workspaceRootURL.path else {
-      dispatch_async(dispatch_get_main_queue()) { callback(sourceRuleEntries) }
+      NSThread.doOnMainThread { callback(sourceRuleEntries) }
       return
     }
 
@@ -537,7 +537,7 @@ class ProgressNotifier {
 
   var value: Int = 0 {
     didSet {
-      dispatch_async(dispatch_get_main_queue()) {
+      NSThread.doOnMainThread() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.postNotificationName(ProgressUpdatingTaskProgress,
                                                 object: self,
@@ -554,7 +554,7 @@ class ProgressNotifier {
     self.name = name
     self.maxValue = maxValue
 
-    dispatch_async(dispatch_get_main_queue()) {
+    NSThread.doOnMainThread() {
       let notificationCenter = NSNotificationCenter.defaultCenter()
       notificationCenter.postNotificationName(ProgressUpdatingTaskDidStart,
                                               object: self,

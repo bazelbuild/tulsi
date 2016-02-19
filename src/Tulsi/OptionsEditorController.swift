@@ -25,7 +25,7 @@ protocol OptionsEditorOutlineViewDelegate: NSOutlineViewDelegate {
 
 
 /// Outline view containing the options editor.
-class OptionsEditorOutlineView: NSOutlineView {
+final class OptionsEditorOutlineView: NSOutlineView {
   override func keyDown(theEvent: NSEvent) {
     guard let eventCharacters = theEvent.charactersIgnoringModifiers else {
       super.keyDown(theEvent)
@@ -98,13 +98,13 @@ class TextTableCellView: NSTableCellView {
 
 
 /// A table cell view containing a pop up button.
-class PopUpButtonTableCellView: TextTableCellView {
+final class PopUpButtonTableCellView: TextTableCellView {
   @IBOutlet weak var popUpButton: NSPopUpButton!
 }
 
 
 /// A text field within the editor outline view.
-class OptionsEditorTextField: NSTextField {
+final class OptionsEditorTextField: NSTextField {
   override func textDidEndEditing(var notification: NSNotification) {
     // If the text field completed due to a return keypress convert its movement into "other" so
     // that the keypress is not passed up the responder chain causing some other control (e.g., the
@@ -119,7 +119,7 @@ class OptionsEditorTextField: NSTextField {
 
 
 /// View controller for the multiline popup editor displayed when a user double clicks an option.
-class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDelegate {
+final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDelegate {
   dynamic var value: String? = nil
 
   enum CloseReason {
@@ -180,7 +180,7 @@ class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDelegate 
 }
 
 
-class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPopoverDelegate {
+final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPopoverDelegate {
   // Storyboard identifiers.
   static let settingColumnIdentifier = "Setting"
   static let targetColumnIdentifier = OptionsEditorNode.OptionLevel.Target.rawValue
@@ -200,7 +200,7 @@ class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPop
   let targetValueColumn: NSTableColumn
 
   dynamic var nodes = [OptionsEditorNode]()
-  weak var document: TulsiDocument? = nil
+  weak var model: OptionsEditorModelProtocol? = nil
 
   // Popover containing a multiline editor for an option the user double clicked on.
   var popoverEditor: NSPopover! = nil
@@ -226,17 +226,18 @@ class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate, NSPop
 
     var newOptionNodes = [OptionsEditorNode]()
     var optionGroupNodes = [TulsiOptionKeyGroup: OptionsEditorGroupNode]()
-    guard let visibleOptions = document?.allVisibleOptions else { return }
+
+    guard let visibleOptions = model?.optionSet?.allVisibleOptions else { return }
     for (key, option) in visibleOptions {
       let newNode: OptionsEditorNode
       switch option.valueType {
         case .Bool:
-          newNode = OptionsEditorBooleanNode(key: key, option: option, target: target)
+          newNode = OptionsEditorBooleanNode(key: key, option: option, model: model, target: target)
         case .String:
-          newNode = OptionsEditorStringNode(key: key, option: option, target: target)
+          newNode = OptionsEditorStringNode(key: key, option: option, model: model, target: target)
       }
 
-      if let (group, displayName, description) = document?.groupInfoForOptionKey(key) {
+      if let (group, displayName, description) = model?.optionSet?.groupInfoForOptionKey(key) {
         var parent: OptionsEditorGroupNode! = optionGroupNodes[group]
         if parent == nil {
           parent = OptionsEditorGroupNode(key: group,

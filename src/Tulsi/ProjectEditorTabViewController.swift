@@ -14,15 +14,15 @@
 
 import Cocoa
 
-class TulsiWindowController: NSWindowController {
 
-  // Change up the standard window title handling so that they use the package name for the BUILD
-  // file, instead of them all just saying "BUILD". Keep the URL to the build file though so that we
-  // get correct icon, and correct window title path clicking behavior.
-  override func synchronizeWindowTitleWithDocumentName() {
-    if let url = document?.fileURL! {
-      window!.representedURL = url
-      window!.title = (url.URLByDeletingLastPathComponent?.lastPathComponent)!
+/// View controller encapsulating the tabbed portion of the project edtior.
+final class ProjectTabViewController: NSTabViewController {
+
+  override var representedObject: AnyObject? {
+    didSet {
+      for vc in childViewControllers {
+        vc.representedObject = representedObject
+      }
     }
   }
 }

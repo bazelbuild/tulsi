@@ -15,21 +15,20 @@
 import Cocoa
 
 
-/// The reason that a NewProjectViewController exited.
-enum NewProjectViewControllerCompletionReason {
-  case Cancel, Create
-}
-
-
 /// Protocol used to inform receiver of a NewProjectViewController's exit status.
 protocol NewProjectViewControllerDelegate: class {
   func viewController(vc: NewProjectViewController,
-                      didCompleteWithReason: NewProjectViewControllerCompletionReason)
+                      didCompleteWithReason: NewProjectViewController.CompletionReason)
 }
 
 
 /// View controller for the new project sheet.
-class NewProjectViewController: NSViewController {
+final class NewProjectViewController: NSViewController {
+  /// The reason that a NewProjectViewController exited.
+  enum CompletionReason {
+    case Cancel, Create
+  }
+
   dynamic var projectName: String? = nil
   dynamic var workspacePath: NSURL? = nil
 

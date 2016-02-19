@@ -7,14 +7,16 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Tulsi Project</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>tulsiproj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>ProjectIcon</string>
-			<key>CFBundleTypeName</key>
-			<string>Tulsi Project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSIsAppleDefaultForType</key>
@@ -26,10 +28,36 @@
 			<key>LSTypeIsPackage</key>
 			<true/>
 			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).TulsiDocument</string>
+			<string>$(PRODUCT_MODULE_NAME).TulsiProjectDocument</string>
 			<key>NSExportableTypes</key>
 			<array>
 				<string>com.google.tulsi.project</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Tulsi Generator Config</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>tulsigen</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>ProjectIcon</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.google.tulsi.generatorconfig</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>$(PRODUCT_MODULE_NAME).TulsiGeneratorConfigDocument</string>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.google.tulsi.generatorconfig</string>
 			</array>
 		</dict>
 	</array>
@@ -76,6 +104,21 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>tulsiproj</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.google.tulsi.generatorconfig</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>tulsigen</string>
 				</array>
 			</dict>
 		</dict>

@@ -17,7 +17,7 @@ import Cocoa
 
 /// View controller allowing certain Bazel build targets from the project to be selected for Xcode
 /// project generation.
-class TargetSelectorViewController: NSViewController, WizardSubviewProtocol {
+final class ConfigEditorBuildTargetSelectorViewController: NSViewController, WizardSubviewProtocol {
   dynamic var typeFilter: NSPredicate?
 
   // This list needs to be kept up to date with whatever Bazel does.
@@ -39,7 +39,7 @@ class TargetSelectorViewController: NSViewController, WizardSubviewProtocol {
   override var representedObject: AnyObject? {
     didSet {
       unbind("selectedRuleEntryCount")
-      guard let document = representedObject as? TulsiDocument else { return }
+      guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
       bind("selectedRuleEntryCount",
            toObject: document,
            withKeyPath: "selectedRuleEntryCount",
@@ -67,19 +67,18 @@ class TargetSelectorViewController: NSViewController, WizardSubviewProtocol {
 
   // MARK: - WizardSubviewProtocol
 
-  weak var presentingWizardViewController: WizardViewController? = nil {
+  weak var presentingWizardViewController: ConfigEditorWizardViewController? = nil {
     didSet {
       presentingWizardViewController?.setNextButtonEnabled(selectedRuleEntryCount > 0)
     }
   }
 
   func wizardSubviewWillActivateMovingForward() {
-    let document = representedObject as! TulsiDocument
+    guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
     bind("selectedRuleEntryCount",
          toObject: document,
          withKeyPath: "selectedRuleEntryCount",
          options: nil)
-    document.updateRuleEntries()
   }
 
   func wizardSubviewDidDeactivate() {

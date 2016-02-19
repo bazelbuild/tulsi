@@ -153,7 +153,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let components = path.componentsSeparatedByString(":")
     if components.count == 2 {
       var tulsiProj = components[0]
-      let bundleExtension = TulsiDocument.getTulsiBundleExtension()
+      let bundleExtension = TulsiProjectDocument.getTulsiBundleExtension()
       if !tulsiProj.hasSuffix(bundleExtension) {
         tulsiProj += ".\(bundleExtension)"
       }
@@ -163,7 +163,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
         throw Error.InvalidConfigPath("The given Tulsi project does not exist")
       }
 
-      let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiDocument.ProjectConfigsSubpath)
+      let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
       if !isExistingDirectory(configDirectoryURL) {
         throw Error.InvalidConfigPath("The given Tulsi project does not contain any configs")
       }

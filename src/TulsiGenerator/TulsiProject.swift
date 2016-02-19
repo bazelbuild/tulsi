@@ -46,6 +46,7 @@ public final class TulsiProject {
   static let ProjectNameKey = "projectName"
   static let WorkspaceRootKey = "workspaceRoot"
   static let PackagesKey = "packages"
+  static let ConfigDefaultsKey = "configDefaults"
 
   // MARK: - Shared project values.
 
@@ -127,8 +128,9 @@ public final class TulsiProject {
       let bazelPackages = dict[TulsiProject.PackagesKey] as? [String] ?? []
 
       let options: TulsiOptionSet?
-      if TulsiOptionSet.areOptionsSerializedInDict(dict) {
-        options = TulsiOptionSet(fromDictionary: dict)
+      if let configDefaults = dict[TulsiProject.ConfigDefaultsKey] as? [String: AnyObject],
+             optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(configDefaults) {
+        options = TulsiOptionSet(fromDictionary: optionsDict)
       } else {
         options = nil
       }
@@ -153,14 +155,16 @@ public final class TulsiProject {
   }
 
   public func save() throws -> NSData {
-    var dict: [String: AnyObject] = [
+    var configDefaults = [String: AnyObject]()
+    // Save the default project options.
+    options.saveShareableOptionsIntoDictionary(&configDefaults)
+
+    let dict: [String: AnyObject] = [
         TulsiProject.ProjectNameKey: projectName,
         TulsiProject.WorkspaceRootKey: projectBundleURL.relativePathTo(workspaceRootURL)!,
-        TulsiProject.PackagesKey: bazelPackages
+        TulsiProject.PackagesKey: bazelPackages,
+        TulsiProject.ConfigDefaultsKey: configDefaults,
     ]
-
-    // Save the default project options.
-    options.saveToShareableDictionary(&dict)
 
     do {
       return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)

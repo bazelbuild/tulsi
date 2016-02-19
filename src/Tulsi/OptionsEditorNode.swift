@@ -193,6 +193,7 @@ class OptionsEditorGroupNode: OptionsEditorNode {
 class OptionsEditorStringNode: OptionsEditorNode {
   let key: TulsiOptionKey
   let option: TulsiOption
+  let model: OptionsEditorModelProtocol?
 
   // The UIRuleEntry selected in the target picker or nil if the BUILD file is selected.
   let target: UIRuleEntry?
@@ -229,9 +230,10 @@ class OptionsEditorStringNode: OptionsEditorNode {
     return .Default
   }
 
-  init(key: TulsiOptionKey, option: TulsiOption, target: UIRuleEntry?) {
+  init(key: TulsiOptionKey, option: TulsiOption, model: OptionsEditorModelProtocol?, target: UIRuleEntry?) {
     self.key = key
     self.option = option
+    self.model = model
     self.target = target
     super.init()
   }
@@ -267,9 +269,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
           return
         }
         option.targetValues![targetLabel] = value
+        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
 
       case .Project:
         option.projectValue = value
+        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
 
       default:
         assertionFailure("Editor node accessed via unknown subscript \(level)")
@@ -289,9 +293,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
 
       case .Target:
         option.targetValues?.removeValueForKey(target!.fullLabel)
+        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
 
       case .Project:
         option.projectValue = nil
+        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
 

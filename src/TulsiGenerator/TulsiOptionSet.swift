@@ -96,21 +96,24 @@ public class TulsiOptionSet: Equatable {
     return options[optionKey]?.valueForTarget(target)
   }
 
-  public static func areOptionsSerializedInDict(dict: [String: AnyObject]) -> Bool {
-    let persistedOptions = dict[TulsiOptionSet.PersistenceKey] as? PersistenceType ?? [:]
-    return !persistedOptions.isEmpty
+  static func getOptionsFromContainerDictionary(dict: [String: AnyObject]) -> PersistenceType? {
+    return dict[TulsiOptionSet.PersistenceKey] as? PersistenceType
   }
 
-  init() {
+  public init() {
     let bundle = NSBundle(forClass: self.dynamicType)
     populateOptionsWithBundle(bundle)
     populateOptionGroupInfoWithBundle(bundle)
   }
 
-  convenience init(fromDictionary dict: [String: AnyObject]) {
+  public convenience init(fromDictionary dict: [String: AnyObject]) {
     self.init()
 
-    let persistedOptions = dict[TulsiOptionSet.PersistenceKey] as? PersistenceType ?? [:]
+    guard let persistedOptions = dict as? PersistenceType else {
+      assertionFailure("Options dictionary is not of the expected type")
+      return
+    }
+
     for (key, option) in options {
       if let value = persistedOptions[key.rawValue] {
         option.deserialize(value)
@@ -118,17 +121,23 @@ public class TulsiOptionSet: Equatable {
     }
   }
 
-  func saveToShareableDictionary(inout dict: [String: AnyObject]) {
-    saveToDictionary(&dict) {
+  func saveShareableOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+    let serialized = saveToDictionary() {
       !$1.optionType.contains(.PerUserOnly)
     }
+    dict[TulsiOptionSet.PersistenceKey] = serialized
   }
 
-  func saveToPerUserDictionary(inout dict: [String: AnyObject], perUserOnly: Bool = true) {
-    saveToDictionary(&dict) {
-      if !perUserOnly { return true }
+  func savePerUserOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+    let serialized = saveToDictionary() {
       return $1.optionType.contains(.PerUserOnly)
     }
+    dict[TulsiOptionSet.PersistenceKey] = serialized
+  }
+
+  func saveAllOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+    let serialized = saveToDictionary() { (_, _) in return true }
+    dict[TulsiOptionSet.PersistenceKey] = serialized
   }
 
   public func groupInfoForOptionKey(key: TulsiOptionKey) -> (TulsiOptionKeyGroup, displayName: String, description: String)? {
@@ -163,15 +172,14 @@ public class TulsiOptionSet: Equatable {
 
   // MARK: - Private methods.
 
-  private func saveToDictionary(inout dict: [String: AnyObject],
-                                withFilter filter: (TulsiOptionKey, TulsiOption) -> Bool) {
+  private func saveToDictionary(filter: (TulsiOptionKey, TulsiOption) -> Bool) -> PersistenceType {
     var serialized = PersistenceType()
     for (key, option) in options.filter(filter) {
       if let value = option.serialize() {
         serialized[key.rawValue] = value
       }
     }
-    dict[TulsiOptionSet.PersistenceKey] = serialized
+    return serialized
   }
 
   private func populateOptionsWithBundle(bundle: NSBundle) {

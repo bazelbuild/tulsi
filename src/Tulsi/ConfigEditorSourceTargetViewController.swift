@@ -17,17 +17,20 @@ import Cocoa
 
 // Controller for the view allowing users to select a subset of the source files to include in the
 // generated Xcode project.
-class SourceFileViewController: NSViewController, WizardSubviewProtocol {
+final class ConfigEditorSourceTargetViewController: NSViewController, WizardSubviewProtocol {
   dynamic var sourceFileContentArray : [UIRuleNode] = []
 
   // MARK: - WizardSubviewProtocol
 
-  weak var presentingWizardViewController: WizardViewController? = nil
+  weak var presentingWizardViewController: ConfigEditorWizardViewController? = nil
 
   func wizardSubviewWillActivateMovingForward() {
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiGeneratorConfigDocument
     sourceFileContentArray = []
     document.updateSourceRuleEntries(populateOutlineView)
+
+    // TODO(abaire): Set when toggling selection instead.
+    document.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
   }
 
   // MARK: - Private methods

@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// View controller for the editor that allows selection of BUILD files and high level options.
-final class ProjectEditorViewController: NSViewController, NewProjectViewControllerDelegate, WizardSubviewProtocol {
+final class ProjectEditorPackageManagerViewController: NSViewController, NewProjectViewControllerDelegate {
 
   /// Indices into the Add/Remove SegmentedControl (as built by Interface Builder).
   private enum SegmentedControlButtonIndex: Int {
@@ -41,37 +41,8 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
     }
   }
 
-  dynamic var numBazelPackagesInProject: Int = 0 {
-    didSet {
-      updateNextButtonState()
-    }
-  }
-
-  dynamic var bazelURL: NSURL? {
-    didSet {
-      updateNextButtonState()
-    }
-  }
-
-  override var representedObject: AnyObject? {
-    didSet {
-      unbind("numBazelPackagesInProject")
-      guard let document = representedObject as? TulsiDocument else { return }
-      bind("numBazelPackagesInProject",
-           toObject: document,
-           withKeyPath: "bazelPackages.@count",
-           options: nil)
-      bind("bazelURL",
-           toObject: document,
-           withKeyPath: "bazelURL",
-           options: nil)
-    }
-  }
-
   deinit {
-    unbind("numBazelPackagesInProject")
     unbind("numSelectedPackagePaths")
-    unbind("bazelURL")
   }
 
   override func loadView() {
@@ -84,12 +55,12 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
          options: nil)
   }
 
-  @available(OSX 10.10, *) override func viewDidAppear() {
+  override func viewDidAppear() {
     super.viewDidAppear()
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiProjectDocument
 
     // Start the new project flow if the associated document is not linked to a project.
-    if document.fileURL != nil && document.project != nil { return }
+    if document.fileURL != nil || document.project != nil { return }
     newProjectSheet = NewProjectViewController()
     newProjectSheet.delegate = self
     presentViewControllerAsSheet(newProjectSheet)
@@ -112,7 +83,7 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
     }
   }
 
-  @IBAction func didClickAddBUILDFile(sender: AnyObject?) {
+  func didClickAddBUILDFile(sender: AnyObject?) {
     // TODO(abaire): Disallow BUILD files outside of the project's workspace.
     // TODO(abaire): Filter out any BUILD files that are already part of the project.
     let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["BUILD"])
@@ -121,7 +92,7 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
     panel.canChooseDirectories = false
     panel.beginSheetModalForWindow(self.view.window!) { value in
       if value == NSFileHandlingPanelOKButton {
-        guard let URL = panel.URL, document = self.representedObject as? TulsiDocument else {
+        guard let URL = panel.URL, document = self.representedObject as? TulsiProjectDocument else {
           return
         }
         if !document.addBUILDFileURL(URL) {
@@ -131,16 +102,16 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
     }
   }
 
-  @IBAction func didClickRemoveSelectedBUILDFiles(sender: AnyObject?) {
+  func didClickRemoveSelectedBUILDFiles(sender: AnyObject?) {
     packageArrayController.removeObjectsAtArrangedObjectIndexes(packageArrayController.selectionIndexes)
 
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiProjectDocument
     let remainingObjects = packageArrayController.arrangedObjects as! [String]
     document.bazelPackages = remainingObjects
   }
 
   @IBAction func selectBazelPath(sender: AnyObject?) {
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiProjectDocument
     let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["bazel", "blaze"])
     panel.message = NSLocalizedString("ProjectEditor_SelectBazelPathMessage",
                                       comment: "Message to show at the top of the Bazel selector sheet, explaining what to do.")
@@ -176,7 +147,7 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
   }
 
   @IBAction func didClickClearBazelButton(sender: AnyObject) {
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiProjectDocument
     document.bazelURL = nil
   }
 
@@ -186,14 +157,12 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
       self.view.window!.close()
       return
     }
-    // Complete the "next" action that initiated the save.
-    presentingWizardViewController?.next()
   }
 
   // MARK: - NewProjectViewControllerDelegate
 
   func viewController(vc: NewProjectViewController,
-                      didCompleteWithReason reason: NewProjectViewControllerCompletionReason) {
+                      didCompleteWithReason reason: NewProjectViewController.CompletionReason) {
     defer {newProjectSheet = nil}
     dismissViewController(newProjectSheet)
 
@@ -204,45 +173,17 @@ final class ProjectEditorViewController: NSViewController, NewProjectViewControl
       return
     }
 
-    let document = representedObject as! TulsiDocument
+    let document = representedObject as! TulsiProjectDocument
     document.createNewProject(newProjectSheet.projectName!,
                               workspaceFileURL: newProjectSheet.workspacePath!)
     newProjectNeedsSaveAs = true
-  }
-
-  // MARK: - WizardSubviewProtocol
-
-  weak var presentingWizardViewController: WizardViewController? = nil {
-    didSet {
-      updateNextButtonState()
-    }
-  }
-
-  func shouldWizardSubviewDeactivateMovingForward() -> Bool {
-    guard let document = representedObject as? TulsiDocument else { return true }
-    if newProjectNeedsSaveAs {
-      newProjectNeedsSaveAs = false
-      document.runModalSavePanelForSaveOperation(.SaveOperation,
-                                                 delegate: self,
-                                                 didSaveSelector: Selector("document:didSave:contextInfo:"),
-                                                 contextInfo: nil)
-      return false
-    }
-    return true
-  }
-
-  // MARK: - Private methods
-
-  private func updateNextButtonState() {
-    let enable = bazelURL != nil && numBazelPackagesInProject > 0
-    presentingWizardViewController?.setNextButtonEnabled(enable)
   }
 }
 
 
 /// Transformer that converts a Bazel package path to an item displayable in the package table view
 /// This is primarily necessary to support BUILD files colocated with the workspace root.
-class PackagePathValueTransformer : NSValueTransformer {
+final class PackagePathValueTransformer : NSValueTransformer {
   override class func transformedValueClass() -> AnyClass {
     return NSString.self
   }

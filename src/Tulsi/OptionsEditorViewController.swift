@@ -17,18 +17,17 @@ import TulsiGenerator
 
 
 /// Controller for the options editor wizard page.
-class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, OptionsTargetSelectorControllerDelegate {
+final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, OptionsTargetSelectorControllerDelegate {
 
   @IBOutlet weak var targetSelectorView: NSOutlineView!
   @IBOutlet weak var optionEditorView: NSOutlineView!
-  @IBOutlet weak var outputPathControl: NSPathControl!
 
   dynamic var targetSelectorController: OptionsTargetSelectorController? = nil
   dynamic var editorController: OptionsEditorController? = nil
 
   override var representedObject: AnyObject? {
     didSet {
-      syncViewsFromDocument()
+      syncViewsFromModel()
     }
   }
 
@@ -37,7 +36,11 @@ class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, Option
     targetSelectorController = OptionsTargetSelectorController(view: targetSelectorView,
                                                                delegate: self)
     editorController = OptionsEditorController(view: optionEditorView, storyboard: storyboard!)
-    syncViewsFromDocument()
+  }
+
+  override func viewWillAppear() {
+    super.viewWillAppear()
+    syncViewsFromModel()
   }
 
   @IBAction func textFieldDidCompleteEditing(sender: OptionsEditorTextField) {
@@ -50,32 +53,6 @@ class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, Option
 
   @IBAction func didDoubleClickInEditorView(sender: NSOutlineView) {
     editorController?.didDoubleClickInEditorView(sender)
-  }
-
-  @IBAction func didClickOutputPathControl(sender: NSPathControl) {
-    if let clickedCell = sender.clickedPathComponentCell() {
-      // Set the value to the clicked folder.
-      sender.URL = clickedCell.URL
-    } else {
-      // The user clicked on the "Choose..." placeholder; treat this as a double click.
-      didDoubleClickOutputPathControl(sender)
-    }
-  }
-
-  @IBAction func didDoubleClickOutputPathControl(sender: NSPathControl) {
-    guard let document = representedObject as? TulsiDocument else { return }
-
-    let initialURL: NSURL?
-    if let clickedCell = sender.clickedPathComponentCell() {
-      initialURL = clickedCell.URL
-    } else {
-      initialURL = document.defaultOutputFolderURL
-    }
-
-    // Pop an NSOpen panel rooted at the double clicked folder's location.
-    ProjectOutputFolderPanel.beginSheetModalForWindow(self.view.window!,
-                                                      document: document,
-                                                      initialURL: initialURL)
   }
 
   // MARK: - NSSplitViewDelegate
@@ -96,12 +73,12 @@ class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, Option
 
   // MARK: - Private methods
 
-  private func syncViewsFromDocument() {
-    guard let document = representedObject as? TulsiDocument else { return }
+  private func syncViewsFromModel() {
+    guard let model = representedObject as? OptionsEditorModelProtocol else { return }
 
     // Note: the editor's document must be set before the target selector as the target selector
     // immediately updates selection as a side effect of document modification.
-    editorController?.document = document
-    targetSelectorController?.document = document
+    editorController?.model = model
+    targetSelectorController?.model = model
   }
 }

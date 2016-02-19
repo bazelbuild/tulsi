@@ -59,7 +59,7 @@ public class TulsiGeneratorConfig {
   public let options: TulsiOptionSet
 
   /// Path to the Bazel binary.
-  public let bazelURL: NSURL
+  public var bazelURL: NSURL
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
@@ -100,13 +100,21 @@ public class TulsiGeneratorConfig {
        sourceTargetLabels: [String],
        additionalFilePaths: [String]?,
        options: TulsiOptionSet,
-       bazelURL: NSURL) {
+       bazelURL: NSURL?) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
     self.sourceTargetLabels = sourceTargetLabels
     self.additionalFilePaths = additionalFilePaths
     self.options = options
-    self.bazelURL = bazelURL
+
+    if let bazelURL = bazelURL {
+      self.bazelURL = bazelURL
+    } else if let savedBazelPath = options[.BazelPath].commonValue {
+      self.bazelURL = NSURL(fileURLWithPath: savedBazelPath)
+    } else {
+      // TODO(abaire): Flag a fallback to searching for the binary.
+      self.bazelURL = NSURL()
+    }
   }
 
   public convenience init(projectName: String,
@@ -114,7 +122,7 @@ public class TulsiGeneratorConfig {
        sourceTargets: [RuleEntry],
        additionalFilePaths: [String]?,
        options: TulsiOptionSet,
-       bazelURL: NSURL) {
+       bazelURL: NSURL?) {
     func labelsFromRules(rules: [RuleEntry]) -> [String] {
       return rules.map() { $0.label.value }
     }
@@ -129,9 +137,9 @@ public class TulsiGeneratorConfig {
     self.sourceTargets = sourceTargets
   }
 
-  convenience init(data: NSData,
-                   additionalOptionData: NSData? = nil,
-                   bazelURL: NSURL? = nil) throws {
+  public convenience init(data: NSData,
+                          additionalOptionData: NSData? = nil,
+                          bazelURL: NSURL? = nil) throws {
     func extractJSONDict(data: NSData, errorBuilder: (String) -> Error) throws -> [String: AnyObject] {
       do {
         guard let jsonDict = try NSJSONSerialization.JSONObjectWithData(data,
@@ -156,33 +164,25 @@ public class TulsiGeneratorConfig {
     let sourceTargetLabels = dict[TulsiGeneratorConfig.SourceTargetsKey] as? [String] ?? []
     let additionalFilePaths = dict[TulsiGeneratorConfig.AdditionalFilePathsKey] as? [String]
 
-    var optionsDict = dict[TulsiOptionSet.PersistenceKey] as? [String: AnyObject] ?? [:]
+    var optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
     if let additionalOptionData = additionalOptionData {
       let additionalOptions = try extractJSONDict(additionalOptionData) {
         Error.FailedToReadAdditionalOptionsData($0)
       }
       for (key, value) in additionalOptions {
-        optionsDict[key] = value
+        if let value = value as? TulsiOptionSet.PersistenceType {
+          optionsDict[key] = value
+        }
       }
     }
     let options = TulsiOptionSet(fromDictionary: optionsDict)
-
-    let resolvedBazelURL: NSURL
-    if let bazelURL = bazelURL {
-      resolvedBazelURL = bazelURL
-    } else if let savedBazelPath = options[.BazelPath].commonValue {
-      resolvedBazelURL = NSURL(fileURLWithPath: savedBazelPath)
-    } else {
-      // TODO(abaire): Fall back to searching for the binary.
-      resolvedBazelURL = NSURL()
-    }
 
     self.init(projectName: projectName,
               buildTargetLabels: buildTargetLabels,
               sourceTargetLabels: sourceTargetLabels,
               additionalFilePaths: additionalFilePaths,
               options: options,
-              bazelURL: resolvedBazelURL)
+              bazelURL: bazelURL)
   }
 
   public func save() throws -> NSData {
@@ -194,7 +194,7 @@ public class TulsiGeneratorConfig {
     if let additionalFilePaths = additionalFilePaths {
       dict[TulsiGeneratorConfig.AdditionalFilePathsKey] = additionalFilePaths
     }
-    options.saveToShareableDictionary(&dict)
+    options.saveShareableOptionsIntoDictionary(&dict)
 
     do {
       return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
@@ -207,7 +207,7 @@ public class TulsiGeneratorConfig {
 
   public func savePerUserSettings() throws -> NSData? {
     var dict = [String: AnyObject]()
-    options.saveToPerUserDictionary(&dict)
+    options.savePerUserOptionsIntoDictionary(&dict)
     if dict.isEmpty { return nil }
     do {
       return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)

@@ -55,6 +55,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
 
   func validateUserInterfaceItem(anItem: NSValidatedUserInterfaceItem) -> Bool {
     // Nothing useful can be done if there is no current document.
-    return NSDocumentController.sharedDocumentController().currentDocument as? TulsiDocument != nil
+    return NSDocumentController.sharedDocumentController().currentDocument as? TulsiProjectDocument != nil
   }
 }

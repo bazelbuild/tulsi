@@ -18,7 +18,7 @@ import Foundation
 @objc
 protocol WizardSubviewProtocol {
   /// Informs the receiver of the enclosing WizardViewController.
-  weak var presentingWizardViewController: WizardViewController? { get set }
+  weak var presentingWizardViewController: ConfigEditorWizardViewController? { get set }
 
   /// Invoked when the wizard subview is about to become active due to a "next" navigation.
   optional func wizardSubviewWillActivateMovingForward()

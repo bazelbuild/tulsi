@@ -39,4 +39,8 @@ public class TulsiProjectInfoExtractor {
   public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
     workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries, callback: callback)
   }
+
+  public func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
+    return workspaceInfoExtractor.ruleEntriesForLabels(labels)
+  }
 }

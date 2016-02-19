@@ -14,11 +14,13 @@
 
 import Cocoa
 
-class RootViewController: NSSplitViewController {
+
+/// View controller encapsulating the project editor and message window.
+final class ProjectEditorSplitViewController: NSSplitViewController {
 
   override var representedObject: AnyObject? {
     didSet {
-      for vc in self.childViewControllers {
+      for vc in childViewControllers {
         vc.representedObject = representedObject
       }
     }

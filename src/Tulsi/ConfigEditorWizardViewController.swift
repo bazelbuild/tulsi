@@ -14,16 +14,16 @@
 
 import Cocoa
 
-class WizardViewController: NSViewController, NSPageControllerDelegate {
+
+/// View controller encapsulating the Tulsi generator config wizard.
+final class ConfigEditorWizardViewController: NSViewController, NSPageControllerDelegate {
   // The storyboard identifiers for the wizard subpage view controllers.
   static let wizardPageIdentifiers = [
-      "ProjectEditor",
       "BUILDTargetSelect",
       "SourceTargetSelect",
-      "Options",
-      "ProjectGenerationProgress"
+      "Options"
   ]
-  static let generateProgressPageIndex = wizardPageIdentifiers.count - 1
+  static let LastPageIndex = wizardPageIdentifiers.count - 1
   var pageViewController: NSPageController! = nil
 
   @IBOutlet weak var previousButton: NSButton!
@@ -39,7 +39,7 @@ class WizardViewController: NSViewController, NSPageControllerDelegate {
   override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "Embed Wizard PageController" {
       pageViewController = (segue.destinationController as! NSPageController)
-      pageViewController.arrangedObjects = WizardViewController.wizardPageIdentifiers
+      pageViewController.arrangedObjects = ConfigEditorWizardViewController.wizardPageIdentifiers
       pageViewController.delegate = self
     }
     super.prepareForSegue(segue, sender: sender)
@@ -51,7 +51,7 @@ class WizardViewController: NSViewController, NSPageControllerDelegate {
 
   func updateNextButton() {
     if pageViewController.selectedIndex == 0 {
-      let document = representedObject as! TulsiDocument
+      let document = representedObject as! TulsiGeneratorConfigDocument
       nextButton.enabled = document.selectedRuleEntryCount > 0
     }
   }
@@ -63,17 +63,23 @@ class WizardViewController: NSViewController, NSPageControllerDelegate {
     }
 
     var selectedIndex = pageViewController.selectedIndex
-    if selectedIndex < WizardViewController.wizardPageIdentifiers.count - 1 {
-      pageViewController!.navigateForward(sender)
-      previousButton.hidden = false
-      selectedIndex += 1
-
-      if selectedIndex == WizardViewController.generateProgressPageIndex - 1 {
-        nextButton.title = NSLocalizedString("Wizard_Generate",
-                                             comment: "Label for action button to be used to go to the final page in the project wizard.")
-      } else if selectedIndex == WizardViewController.generateProgressPageIndex {
-        nextButton.enabled = false
+    if selectedIndex >= ConfigEditorWizardViewController.LastPageIndex {
+      let document = representedObject as! TulsiGeneratorConfigDocument
+      document.save() { (canceled, error) in
+        if !canceled && error == nil {
+          document.close()
+        }
       }
+      return
+    }
+
+    pageViewController!.navigateForward(sender)
+    selectedIndex += 1
+    previousButton.hidden = false
+
+    if selectedIndex == ConfigEditorWizardViewController.LastPageIndex {
+      nextButton.title = NSLocalizedString("Wizard_SaveConfig",
+                                           comment: "Label for action button to be used to go to the final page in the project wizard.")
     }
   }
 
@@ -90,7 +96,7 @@ class WizardViewController: NSViewController, NSPageControllerDelegate {
       selectedIndex -= 1
       nextButton.enabled = true
 
-      if selectedIndex < WizardViewController.generateProgressPageIndex - 1 {
+      if selectedIndex < ConfigEditorWizardViewController.LastPageIndex {
         nextButton.title = NSLocalizedString("Wizard_Next",
                                              comment: "Label for action button to be used to go to the next page in the project wizard.")
       }
@@ -120,7 +126,7 @@ class WizardViewController: NSViewController, NSPageControllerDelegate {
     // TulsiDocument, so it's set here.
     viewController.representedObject = representedObject
 
-    let newPageIndex = WizardViewController.wizardPageIdentifiers.indexOf(object as! String)
+    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.indexOf(object as! String)
     let subview = viewController as? WizardSubviewProtocol
     subview?.presentingWizardViewController = self
     if pageController.selectedIndex < newPageIndex {
