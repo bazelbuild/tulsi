@@ -86,21 +86,21 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
               "and Bazel workspace at \(workspaceRootPath).\n" +
               "This may take awhile.")
 
-    let errorData: String?
+    let errorInfo: String?
     do {
       let projectURL = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
       NSWorkspace.sharedWorkspace().openURL(projectURL)
-      errorData = nil
+      errorInfo = nil
     } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
-      errorData = "Unsupported target type: \(targetType)"
+      errorInfo = "Unsupported target type: \(targetType)"
     } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
-      errorData = "General failure: \(details)"
+      errorInfo = "General failure: \(details)"
     } catch _ {
-      errorData = "Unexpected failure"
+      errorInfo = "Unexpected failure"
     }
 
-    if let errorData = errorData {
-      throw Error.GenerationFailed(errorData)
+    if let errorInfo = errorInfo {
+      throw Error.GenerationFailed(errorInfo)
     }
   }
 

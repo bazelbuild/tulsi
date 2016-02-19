@@ -64,14 +64,6 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
     }
   }
 
-  func wizardSubviewWillActivateMovingForward() {
-    guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
-    bind("selectedRuleEntryCount",
-         toObject: document,
-         withKeyPath: "selectedRuleEntryCount",
-         options: nil)
-  }
-
   func wizardSubviewDidDeactivate() {
     unbind("selectedRuleEntryCount")
   }

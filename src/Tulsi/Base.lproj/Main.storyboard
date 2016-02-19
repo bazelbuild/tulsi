@@ -382,6 +382,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action trigger="doubleAction" selector="didDoubleClickConfigRow:" target="Pgt-4s-lhO" id="AkK-RQ-9dF"/>
                                                 <binding destination="EPJ-qo-bmN" name="content" keyPath="arrangedObjects" id="Cs2-WY-hIh"/>
                                                 <binding destination="EPJ-qo-bmN" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="Cs2-WY-hIh" id="GB2-cR-VRZ"/>
                                                 <binding destination="EPJ-qo-bmN" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="GB2-cR-VRZ" id="a9u-cM-fUu"/>
@@ -771,6 +772,7 @@ Gw
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action trigger="doubleAction" selector="didDoubleClickPackage:" target="GoM-gR-TmP" id="sxW-aT-sck"/>
                                                 <binding destination="aBB-UK-mZt" name="content" keyPath="arrangedObjects" id="JvR-Dt-nvD"/>
                                                 <binding destination="aBB-UK-mZt" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="JvR-Dt-nvD" id="wzg-Hj-uVn"/>
                                                 <binding destination="aBB-UK-mZt" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="wzg-Hj-uVn" id="HtZ-HN-5Xo"/>

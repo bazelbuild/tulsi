@@ -157,34 +157,20 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     assert(!NSThread.isMainThread(), "Must not be called from the main thread")
     let document = self.representedObject as! TulsiProjectDocument
 
-    guard let configURL = TulsiGeneratorConfigDocument.urlForConfigNamed(name,
-                                                                         inFolderURL: document.generatorConfigFolderURL) else {
-      let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                  comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-      document.error(String(format: fmt, "No URL for config named '\(name)'"))
-      return nil
-    }
-
-    let documentController = NSDocumentController.sharedDocumentController()
-    if let configDocument = documentController.documentForURL(configURL) as? TulsiGeneratorConfigDocument {
-      return configDocument
-    }
-
-    let errorData: String
+    let errorInfo: String
     do {
-      return try TulsiGeneratorConfigDocument.makeDocumentWithContentsOfURL(configURL,
-                                                                            infoExtractor: document.infoExtractor,
-                                                                            messageLogger: document,
-                                                                            bazelURL: document.bazelURL)
-    } catch let e as NSError {
-      errorData = "Failed to load config from '\(configURL.path)' with error \(e.localizedDescription)"
+      return try document.loadConfigDocumentNamed(name)
+    } catch TulsiProjectDocument.Error.NoSuchConfig {
+      errorInfo = "No URL for config named '\(name)'"
+    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
+      errorInfo = info
     } catch {
-      errorData = "Unexpected exception loading config from '\(configURL.path)'"
+      errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
     }
 
     let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                 comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-    document.error(String(format: fmt, errorData))
+    document.error(String(format: fmt, errorInfo))
     return nil
   }
 }

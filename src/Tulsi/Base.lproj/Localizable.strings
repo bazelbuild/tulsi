@@ -11,6 +11,9 @@
 /* Error when a TulsiGeneratorConfig named %1$@ could not be deleted. Details are provided as %2$@. */
 "Error_ConfigDeleteFailed" = "Failed to remove Tulsi generator config '%1$@'. Debug info: %2$@";
 
+/* Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@. */
+"Error_ConfigLoadFailed" = "Failed to reload Tulsi generator config. Debug info: %1$@";
+
 /* Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@. */
 "Error_ConfigSaveFailed" = "Failed to save Tulsi generator config. Debug info: %1$@";
 

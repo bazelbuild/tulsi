@@ -82,6 +82,32 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     }
   }
 
+  @IBAction func didDoubleClickConfigRow(sender: NSTableView) {
+    let projectDocument = representedObject as! TulsiProjectDocument
+    let clickedRow = sender.clickedRow
+    guard clickedRow >= 0,
+        let configName = configArrayController.arrangedObjects[clickedRow] as? String else {
+      return
+    }
+
+    let errorInfo: String
+    do {
+      let configDocument = try projectDocument.loadConfigDocumentNamed(configName)
+      configDocument.makeWindowControllers()
+      configDocument.showWindows()
+      return
+    } catch TulsiProjectDocument.Error.NoSuchConfig {
+      errorInfo = "No URL for config named '\(configName)'"
+    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
+      errorInfo = info
+    } catch {
+      errorInfo = "An unexpected exception occurred while loading config named '\(configName)'"
+    }
+    let fmt = NSLocalizedString("Error_ConfigLoadFailed",
+                                comment: "Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@.")
+    projectDocument.error(String(format: fmt, errorInfo))
+  }
+
   // MARK: - Private methods
 
   func didClickAddConfig(sender: AnyObject?) {

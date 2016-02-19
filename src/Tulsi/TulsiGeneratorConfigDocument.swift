@@ -97,11 +97,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  /// Array of source rules. One per dependency of the ruleEntries selected by the user.
-  private var sourceRuleEntries: [UIRuleEntry] = []
+  /// Array of source rules. One per dependency of selectedUIRuleEntries.
+  private var sourceUIRuleEntries: [UIRuleEntry] = []
+
+  private var selectedSourceUIRuleEntries: [UIRuleEntry] {
+    return sourceUIRuleEntries.filter { $0.selected }
+  }
 
   private var selectedSourceRuleEntries: [RuleEntry] {
-    let selectedSourceUIRuleEntries = sourceRuleEntries.filter { $0.selected }
     return selectedSourceUIRuleEntries.map { $0.ruleEntry }
   }
 
@@ -215,23 +218,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     saveDocument(nil)
   }
 
-  func saveAt(targetURL: NSURL) {
-    saveToURL(targetURL,
-              ofType: TulsiGeneratorConfigDocument.FileType,
-              forSaveOperation: .SaveOperation) { (error: NSError?) in
-      if let error = error {
-        let fmt = NSLocalizedString("Error_ConfigSaveFailed",
-                                    comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
-        self.error(String(format: fmt, error.localizedDescription))
-      }
-
-      if let completionHandler = self.saveCompletionHandler {
-        completionHandler(canceled: false, error: error)
-        self.saveCompletionHandler = nil
-      }
-    }
-  }
-
   override func makeWindowControllers() {
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
     let windowController = storyboard.instantiateControllerWithIdentifier("TulsiGeneratorConfigDocumentWindow") as! NSWindowController
@@ -239,6 +225,28 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     // TODO(abaire): Consider supporting restoration of config subwindows.
     windowController.window?.restorable = false
     addWindowController(windowController)
+  }
+
+  override func saveToURL(url: NSURL,
+                          ofType typeName: String,
+                          forSaveOperation saveOperation: NSSaveOperationType,
+                          completionHandler: (NSError?) -> Void) {
+    super.saveToURL(url,
+                    ofType: typeName,
+                    forSaveOperation: saveOperation) { (error: NSError?) in
+      if let error = error {
+        let fmt = NSLocalizedString("Error_ConfigSaveFailed",
+                                    comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
+        self.error(String(format: fmt, error.localizedDescription))
+      }
+
+      completionHandler(error)
+
+      if let concreteCompletionHandler = self.saveCompletionHandler {
+        concreteCompletionHandler(canceled: false, error: error)
+        self.saveCompletionHandler = nil
+      }
+    }
   }
 
   override func dataOfType(typeName: String) throws -> NSData {
@@ -301,20 +309,26 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   // Regenerates the sourceRuleEntries array based on the currently selected ruleEntries.
   func updateSourceRuleEntries(callback: ([UIRuleEntry]) -> Void) {
-    sourceRuleEntries.removeAll()
+    let selectedRuleLabels = Set<String>(selectedSourceUIRuleEntries.map({ $0.fullLabel }))
+    sourceUIRuleEntries.removeAll()
     processingTaskStarted()
 
     infoExtractor.extractSourceRulesForRuleEntries(selectedRuleEntries) {
       (sourceRuleEntries: [RuleEntry]) -> Void in
         defer { self.processingTaskFinished() }
-        self.sourceRuleEntries = sourceRuleEntries.map { UIRuleEntry(ruleEntry: $0) }
-        callback(self.sourceRuleEntries)
+        self.sourceUIRuleEntries = sourceRuleEntries.map {
+          let entry = UIRuleEntry(ruleEntry: $0)
+          entry.selected = selectedRuleLabels.contains(entry.fullLabel)
+          return entry
+        }
+        callback(self.sourceUIRuleEntries)
     }
   }
 
   @IBAction override func saveDocument(sender: AnyObject?) {
     if fileURL != nil {
       super.saveDocument(sender)
+      return
     }
     saveDocumentAs(sender)
   }
@@ -341,20 +355,20 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
                                                       messageLogger: messageLogger)
-    let errorData: String
+    let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
     } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
-      errorData = "Unsupported target type: \(targetType)"
+      errorInfo = "Unsupported target type: \(targetType)"
     } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
-      errorData = "General failure: \(details)"
+      errorInfo = "General failure: \(details)"
     } catch _ {
-      errorData = "Unexpected failure"
+      errorInfo = "Unexpected failure"
     }
 
     let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                 comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-    let errorMessage = String(format: fmt, errorData)
+    let errorMessage = String(format: fmt, errorInfo)
     self.error(errorMessage)
     return nil
   }
@@ -411,10 +425,22 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       }
       return
     }
+
     configName = vc.configName!
-    let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName!,
-                                                                   inFolderURL: saveFolderURL)
-    saveAt(targetURL!)
+    guard let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName!,
+                                                                         inFolderURL: saveFolderURL) else {
+      if let completionHandler = saveCompletionHandler {
+        completionHandler(canceled: false, error: TulsiError(code: .ConfigNotSaveable))
+        saveCompletionHandler = nil
+      }
+      return
+    }
+
+    saveToURL(targetURL,
+              ofType: TulsiGeneratorConfigDocument.FileType,
+              forSaveOperation: .SaveOperation) { (error: NSError?) in
+      // Note that saveToURL handles invocation/clearning of saveCompletionHandler.
+    }
   }
 
   // MARK: - MessageLoggerProtocol
@@ -505,11 +531,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(concreteBuildTargetLabels)
       uiRuleEntries = ruleEntries
       buildTargetLabels = unresolvedLabels.isEmpty ? nil : [String](unresolvedLabels)
+      selectedRuleEntryCount = selectedRuleEntries.count
     }
 
     if let concreteSourceTargetLabels = sourceTargetLabels {
       let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(concreteSourceTargetLabels)
-      sourceRuleEntries = ruleEntries
+      sourceUIRuleEntries = ruleEntries
       sourceTargetLabels = unresolvedLabels.isEmpty ? nil : [String](unresolvedLabels)
     }
   }

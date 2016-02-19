@@ -167,6 +167,19 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     document.bazelURL = nil
   }
 
+  @IBAction func didDoubleClickPackage(sender: NSTableView) {
+    let clickedRow = sender.clickedRow
+    guard clickedRow >= 0,
+        let package = packageArrayController.arrangedObjects[clickedRow] as? String else {
+      return
+    }
+    let document = representedObject as! TulsiProjectDocument
+    let buildFile = package + "/BUILD"
+    if let url = document.workspaceRootURL?.URLByAppendingPathComponent(buildFile) {
+      NSWorkspace.sharedWorkspace().openURL(url)
+    }
+  }
+
   func document(document: NSDocument, didSave: Bool, contextInfo: AnyObject) {
     if !didSave {
       // Nothing useful can be done if the initial save failed so close this window.

@@ -18,6 +18,13 @@ import TulsiGenerator
 
 final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol, OptionsEditorModelProtocol {
 
+  enum Error: ErrorType {
+    /// No config exists with the given name.
+    case NoSuchConfig
+    /// The config failed to load with the given debug info.
+    case ConfigLoadFailed(String)
+  }
+
   /// Prefix used to access the persisted output folder for a given BUILD file path.
   static let ProjectOutputPathKeyPrefix = "projectOutput_"
 
@@ -235,7 +242,6 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
 
   func deleteConfigsNamed(configNamesToRemove: [String]) {
     let fileManager = NSFileManager.defaultManager()
-    let configFolderURL = generatorConfigFolderURL
 
     var nameToDoc = [String: TulsiGeneratorConfigDocument]()
     for doc in childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument] {
@@ -250,8 +256,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
         childConfigDocuments.removeObject(doc)
         doc.close()
       }
-      if let url = TulsiGeneratorConfigDocument.urlForConfigNamed(name,
-                                                                  inFolderURL: configFolderURL) {
+      if let url = urlForConfigNamed(name) {
         let errorInfo: String?
         do {
           try fileManager.removeItemAtURL(url)
@@ -270,6 +275,37 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     }
 
     generatorConfigNames = configNames.sort()
+  }
+
+  func urlForConfigNamed(name: String) -> NSURL? {
+     return TulsiGeneratorConfigDocument.urlForConfigNamed(name,
+                                                           inFolderURL: generatorConfigFolderURL)
+  }
+
+  /// Loads a previously created config with the given name.
+  func loadConfigDocumentNamed(name: String) throws -> TulsiGeneratorConfigDocument {
+    guard let configURL = urlForConfigNamed(name) else {
+      throw Error.NoSuchConfig
+    }
+
+    let documentController = NSDocumentController.sharedDocumentController()
+    if let configDocument = documentController.documentForURL(configURL) as? TulsiGeneratorConfigDocument {
+      return configDocument
+    }
+
+    do {
+      let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithContentsOfURL(configURL,
+                                                                                          infoExtractor: infoExtractor,
+                                                                                          messageLogger: self,
+                                                                                          bazelURL: bazelURL)
+      configDocument.projectRuleEntries = ruleEntries
+      trackChildConfigDocument(configDocument)
+      return configDocument
+    } catch let e as NSError {
+      throw Error.ConfigLoadFailed("Failed to load config from '\(configURL.path)' with error \(e.localizedDescription)")
+    } catch {
+      throw Error.ConfigLoadFailed("Unexpected exception loading config from '\(configURL.path)'")
+    }
   }
 
   /// Displays a generic critical error message to the user with the given debug message.
