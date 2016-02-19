@@ -49,7 +49,7 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
   weak var delegate: OptionsTargetSelectorControllerDelegate?
   weak var model: OptionsEditorModelProtocol! = nil {
     didSet {
-      if model == nil || model.projectName == nil || model === oldValue { return }
+      if model == nil || model.projectName == nil { return }
 
       let projectSection = OptionsTargetNode(name: OptionsTargetSelectorController.projectSectionTitle)
       projectSection.children.append(OptionsTargetNode(name: model.projectName!))
