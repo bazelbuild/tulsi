@@ -103,17 +103,17 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       }
 
       let optionSet = projectDocument.optionSet ?? TulsiOptionSet()
-      let doc = try TulsiGeneratorConfigDocument.makeDocumentWithProjectRuleEntries(projectDocument.ruleEntries,
-                                                                                    optionSet: optionSet,
-                                                                                    projectName: projectName,
-                                                                                    saveFolderURL: generatorConfigFolderURL,
-                                                                                    infoExtractor: projectDocument.infoExtractor,
-                                                                                    messageLogger: projectDocument,
-                                                                                    additionalFilePaths: additionalFilePaths,
-                                                                                    bazelURL: projectDocument.bazelURL)
-      projectDocument.trackChildConfigDocument(doc)
-      doc.makeWindowControllers()
-      doc.showWindows()
+      let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithProjectRuleEntries(projectDocument.ruleEntries,
+                                                                                               optionSet: optionSet,
+                                                                                               projectName: projectName,
+                                                                                               saveFolderURL: generatorConfigFolderURL,
+                                                                                               infoExtractor: projectDocument.infoExtractor,
+                                                                                               messageLogger: projectDocument,
+                                                                                               additionalFilePaths: additionalFilePaths,
+                                                                                               bazelURL: projectDocument.bazelURL)
+      projectDocument.trackChildConfigDocument(configDocument)
+      configDocument.makeWindowControllers()
+      configDocument.showWindows()
       return
     } catch let e as NSError {
       errorInfo = e.localizedDescription
@@ -127,7 +127,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   func didClickRemoveSelectedConfigs(sender: AnyObject?) {
-    // TODO(abaire): Support deletion of configs.
-    (representedObject as! TulsiProjectDocument).error("Not yet implemented.")
+    let document = representedObject as! TulsiProjectDocument
+    let selectedConfigNames = configArrayController.selectedObjects as! [String]
+    document.deleteConfigsNamed(selectedConfigNames)
   }
 }

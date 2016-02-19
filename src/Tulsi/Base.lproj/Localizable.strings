@@ -8,6 +8,9 @@
 /* General error when project does not have a valid Bazel workspace. */
 "Error_BadWorkspace" = "Project does not contain a valid Bazel workspace. Start a new project or ensure that a WORKSPACE file exists.";
 
+/* Error when a TulsiGeneratorConfig named %1$@ could not be deleted. Details are provided as %2$@. */
+"Error_ConfigDeleteFailed" = "Failed to remove Tulsi generator config '%1$@'. Debug info: %2$@";
+
 /* Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@. */
 "Error_ConfigSaveFailed" = "Failed to save Tulsi generator config. Debug info: %1$@";
 

@@ -200,7 +200,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
         }
       }
 
-      generatorConfigNames = configNames
+      generatorConfigNames = configNames.sort()
     }
 
     updateRuleEntries()
@@ -233,12 +233,51 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     childConfigDocuments.removeAllObjects()
   }
 
+  func deleteConfigsNamed(configNamesToRemove: [String]) {
+    let fileManager = NSFileManager.defaultManager()
+    let configFolderURL = generatorConfigFolderURL
+
+    var nameToDoc = [String: TulsiGeneratorConfigDocument]()
+    for doc in configDocuments.allObjects as! [TulsiGeneratorConfigDocument] {
+      guard let name = doc.configName else { continue }
+      nameToDoc[name] = doc
+    }
+    var configNames = Set<String>(generatorConfigNames)
+
+    for name in configNamesToRemove {
+      configNames.remove(name)
+      if let doc = nameToDoc[name] {
+        configDocuments.removeObject(doc)
+        doc.close()
+      }
+      if let url = TulsiGeneratorConfigDocument.urlForConfigNamed(name,
+                                                                  inFolderURL: configFolderURL) {
+        let errorInfo: String?
+        do {
+          try fileManager.removeItemAtURL(url)
+          errorInfo = nil
+        } catch let e as NSError {
+          errorInfo = "Unexpected exception \(e.localizedDescription)"
+        } catch {
+          errorInfo = "Unexpected exception"
+        }
+        if let errorInfo = errorInfo {
+          let fmt = NSLocalizedString("Error_ConfigDeleteFailed",
+                                      comment: "Error when a TulsiGeneratorConfig named %1$@ could not be deleted. Details are provided as %2$@.")
+          error(String(format: fmt, name, errorInfo))
+        }
+      }
+    }
+
+    generatorConfigNames = configNames.sort()
+  }
+
   /// Displays a generic critical error message to the user with the given debug message.
   /// This should be used sparingly and only for messages that would indicate bugs in Tulsi.
   func generalError(debugMessage: String) {
     let fmt = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message. Details are provided as %1$@.")
-    self.error(String(format: fmt, debugMessage))
+    error(String(format: fmt, debugMessage))
   }
 
   // MARK: - NSUserInterfaceValidations

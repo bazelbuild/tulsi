@@ -106,7 +106,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // The display name for this config.
-  private var configName: String? = nil {
+  var configName: String? = nil {
     didSet {
       setDisplayName(configName)
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
