@@ -26,6 +26,9 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     case Remove = 1
   }
 
+  // Context indicating that a new config should be added after a document save completes.
+  private static var PostSaveContextAddConfig = 0
+
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
 
@@ -128,13 +131,23 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     projectDocument.error(String(format: fmt, errorInfo))
   }
 
+  func document(doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutablePointer<Void>) {
+    if contextInfo == &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig {
+      if didSave {
+        didClickAddConfig(nil)
+      }
+    }
+  }
+
   // MARK: - Private methods
 
-  func didClickAddConfig(sender: AnyObject?) {
+  private func didClickAddConfig(sender: AnyObject?) {
     let projectDocument = representedObject as! TulsiProjectDocument
 
     // Adding a config to a project with no bazel packages is disallowed.
     guard let bazelPackages = projectDocument.bazelPackages where !bazelPackages.isEmpty else {
+      // This should be prevented by the UI, so spawn a bug message and beep.
+      projectDocument.info("Bug: Add config invoked on a project with no packages.")
       NSBeep()
       return
     }
@@ -144,8 +157,9 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       let additionalFilePaths = bazelPackages.map() { "\($0)/BUILD" }
       guard let projectName = projectDocument.projectName,
                 generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
-        // TODO(abaire): Force a save.
-        NSBeep()
+        projectDocument.saveDocumentWithDelegate(self,
+                                                 didSaveSelector: Selector("document:didSave:contextInfo:"),
+                                                 contextInfo: &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig)
         return
       }
 
@@ -173,7 +187,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     projectDocument.error(String(format: fmt, errorInfo))
   }
 
-  func didClickRemoveSelectedConfigs(sender: AnyObject?) {
+  private func didClickRemoveSelectedConfigs(sender: AnyObject?) {
     let document = representedObject as! TulsiProjectDocument
     let selectedConfigNames = configArrayController.selectedObjects as! [String]
     document.deleteConfigsNamed(selectedConfigNames)
