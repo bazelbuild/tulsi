@@ -40,12 +40,17 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     }
   }
 
+  /// Documents controlling the generator configs associated with this project.
+  private var configDocuments = NSHashTable.weakObjectsHashTable()
+
   /// One rule per target in the BUILD files associated with this project.
   var ruleEntries = [RuleEntry]() {
     didSet {
       // Update the associated config documents.
-      let documentController = NSDocumentController.sharedDocumentController()
-      // TODO(abaire): FINISHME.
+      let childDocuments = configDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+      for configDoc in childDocuments {
+        configDoc.projectRuleEntries = ruleEntries
+      }
     }
   }
 
@@ -220,6 +225,11 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
         defer { self.processingTaskFinished() }
         self.ruleEntries = updatedRuleEntries
     }
+  }
+
+  /// Tracks the given document as a child of this project.
+  func trackChildConfigDocument(document: TulsiGeneratorConfigDocument) {
+    configDocuments.addObject(document)
   }
 
   /// Displays a generic critical error message to the user with the given debug message.

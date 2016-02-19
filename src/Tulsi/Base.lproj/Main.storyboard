@@ -1033,8 +1033,8 @@ Gw
                                     <action selector="enableFilter" target="Yh6-uI-Qqe" id="xtn-fX-Yus"/>
                                 </connections>
                             </button>
-                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
-                                <rect key="frame" x="296" y="176" width="32" height="32"/>
+                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
+                                <rect key="frame" x="294" y="187" width="32" height="32"/>
                                 <connections>
                                     <binding destination="j9X-DC-afq" name="animate" keyPath="selection.processing" id="OJk-Gn-kho"/>
                                     <binding destination="j9X-DC-afq" name="hidden" keyPath="selection.processing" id="jgr-Y2-MnA">
@@ -1047,11 +1047,11 @@ Gw
                         </subviews>
                         <constraints>
                             <constraint firstItem="gPj-fb-GII" firstAttribute="top" secondItem="eBr-Gq-Xkt" secondAttribute="bottom" constant="8" id="2ct-QD-ILb"/>
-                            <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerX" secondItem="jzE-ag-Xnt" secondAttribute="centerX" id="J84-af-rbB"/>
+                            <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerX" secondItem="eBr-Gq-Xkt" secondAttribute="centerX" id="47V-TQ-80J"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="top" secondItem="ZEq-dq-WSj" secondAttribute="top" constant="20" id="La9-Th-WD6"/>
+                            <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerY" secondItem="eBr-Gq-Xkt" secondAttribute="centerY" id="PJ4-gZ-XHu"/>
                             <constraint firstAttribute="bottom" secondItem="gPj-fb-GII" secondAttribute="bottom" constant="20" symbolic="YES" id="SM3-ze-EeM"/>
                             <constraint firstAttribute="trailing" secondItem="eBr-Gq-Xkt" secondAttribute="trailing" constant="20" id="ZeU-3r-3bH"/>
-                            <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerY" secondItem="jzE-ag-Xnt" secondAttribute="centerY" id="jqs-tV-eyJ"/>
                             <constraint firstItem="gPj-fb-GII" firstAttribute="leading" secondItem="ZEq-dq-WSj" secondAttribute="leading" constant="20" id="ngp-10-P9H"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="leading" secondItem="ZEq-dq-WSj" secondAttribute="leading" constant="20" id="tpa-ee-fo5"/>
                         </constraints>
@@ -1160,8 +1160,8 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="aD3-hQ-YgP">
-                                <rect key="frame" x="297" y="165" width="32" height="32"/>
+                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="aD3-hQ-YgP">
+                                <rect key="frame" x="294" y="176" width="32" height="32"/>
                                 <connections>
                                     <binding destination="emO-pW-WSj" name="animate" keyPath="selection.processing" id="UKT-8O-0em"/>
                                     <binding destination="emO-pW-WSj" name="hidden" keyPath="selection.processing" id="g6y-jq-x0f">
@@ -1173,12 +1173,12 @@ Gw
                             </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="aD3-hQ-YgP" firstAttribute="centerX" secondItem="qgL-G7-biT" secondAttribute="centerX" id="Qw8-t9-atT"/>
+                            <constraint firstItem="aD3-hQ-YgP" firstAttribute="centerY" secondItem="9Ya-rm-Cis" secondAttribute="centerY" id="KJb-Gh-3tE"/>
                             <constraint firstAttribute="bottom" secondItem="9Ya-rm-Cis" secondAttribute="bottom" constant="20" symbolic="YES" id="SAb-6R-AUy"/>
                             <constraint firstItem="9Ya-rm-Cis" firstAttribute="top" secondItem="qxA-fQ-rQ1" secondAttribute="top" constant="20" symbolic="YES" id="VHC-s9-U2m"/>
-                            <constraint firstItem="aD3-hQ-YgP" firstAttribute="centerY" secondItem="qgL-G7-biT" secondAttribute="centerY" id="ewU-TL-ee9"/>
                             <constraint firstItem="9Ya-rm-Cis" firstAttribute="leading" secondItem="qxA-fQ-rQ1" secondAttribute="leading" constant="20" symbolic="YES" id="hWO-K5-Aof"/>
                             <constraint firstAttribute="trailing" secondItem="9Ya-rm-Cis" secondAttribute="trailing" constant="20" symbolic="YES" id="mnV-0H-7ev"/>
+                            <constraint firstItem="aD3-hQ-YgP" firstAttribute="centerX" secondItem="9Ya-rm-Cis" secondAttribute="centerX" id="zSa-U2-2Xn"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -1524,7 +1524,7 @@ Gw
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="NSK-dd-w7F">
-                                                                    <rect key="frame" x="289.5" y="1" width="148" height="17"/>
+                                                                    <rect key="frame" x="289" y="1" width="148" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 </tableCellView>
                                                             </prototypeCellViews>

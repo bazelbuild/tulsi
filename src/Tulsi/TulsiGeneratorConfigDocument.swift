@@ -32,12 +32,20 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Whether or not the document is currently performing a long running operation.
   dynamic var processing: Bool = false
 
+  // Whether or not this object has any rule entries (used to display a spinner while the parent
+  // TulsiProjectDocument project is loading).
+  private var hasRuleEntries = false {
+    didSet {
+      updateProcessingState()
+    }
+  }
+
   // The number of tasks that need to complete before processing is finished.
   private var processingTaskCount = 0 {
     didSet {
       assert(NSThread.isMainThread(), "Must be mutated on the main thread")
       assert(processingTaskCount >= 0, "Processing task count may never be negative")
-      processing = processingTaskCount > 0
+      updateProcessingState()
     }
   }
 
@@ -55,6 +63,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         entry.selected = selectedEntryLabels.contains(entry.fullLabel)
         return entry
       }
+      hasRuleEntries = !projectRuleEntries.isEmpty
     }
   }
 
@@ -430,6 +439,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   private func processingTaskFinished() {
     NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
+  }
+
+  private func updateProcessingState() {
+    processing = processingTaskCount > 0 || !hasRuleEntries
   }
 
   private func stopObservingRuleEntries() {

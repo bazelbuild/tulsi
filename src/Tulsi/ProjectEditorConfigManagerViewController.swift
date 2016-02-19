@@ -119,6 +119,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
                                                                                     messageLogger: projectDocument,
                                                                                     additionalFilePaths: additionalFilePaths,
                                                                                     bazelURL: projectDocument.bazelURL)
+      projectDocument.trackChildConfigDocument(doc)
       doc.makeWindowControllers()
       doc.showWindows()
       return
