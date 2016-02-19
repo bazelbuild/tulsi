@@ -527,6 +527,9 @@ DQ
 Gw
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="cancel:" target="efG-4Y-QEX" id="FBR-qi-A0T"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>

@@ -56,6 +56,12 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     }
   }
 
+  @IBAction func cancel(sender: AnyObject?) {
+    let document = representedObject as! TulsiGeneratorConfigDocument
+    document.revertDocumentToSaved(nil)
+    document.close()
+  }
+
   @IBAction func next(sender: NSButton? = nil) {
     if let deactivatingSubview = pageViewController.selectedViewController as? WizardSubviewProtocol
         where deactivatingSubview.shouldWizardSubviewDeactivateMovingForward?() == false {
