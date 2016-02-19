@@ -49,14 +49,6 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
          options: nil)
   }
 
-  override func viewWillAppear() {
-    super.viewWillAppear()
-    guard let projectDocument = representedObject as? TulsiProjectDocument else {
-      return
-    }
-    projectDocument.updateRuleEntries()
-  }
-
   @IBAction func didClickAddRemoveSegmentedControl(sender: NSSegmentedCell) {
     // Ignore mouse up messages.
     if sender.selectedSegment < 0 { return }

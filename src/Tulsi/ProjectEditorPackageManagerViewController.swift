@@ -103,9 +103,25 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   }
 
   func didClickRemoveSelectedBUILDFiles(sender: AnyObject?) {
-    packageArrayController.removeObjectsAtArrangedObjectIndexes(packageArrayController.selectionIndexes)
-
     let document = representedObject as! TulsiProjectDocument
+    if document.hasChildConfigDocuments {
+      let alert = NSAlert()
+      alert.messageText = NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsMessage",
+                                            comment: "Message asking the user if they want to continue with an operation that requires that all opened TulsiGeneratorConfig documents be closed.")
+      alert.addButtonWithTitle(NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonOK",
+                                                 comment: "Title for a button that will proceed with an operation that requires that all opened TulsiGeneratorConfig documents be closed."))
+      alert.addButtonWithTitle(NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonCancel",
+                                                 comment: "Title for a button that will cancel an operation that requires that all opened TulsiGeneratorConfig documents be closed."))
+      alert.beginSheetModalForWindow(self.view.window!) { value in
+        if value == NSAlertFirstButtonReturn {
+          document.closeChildConfigDocuments()
+          self.didClickRemoveSelectedBUILDFiles(sender)
+        }
+      }
+      return
+    }
+
+    packageArrayController.removeObjectsAtArrangedObjectIndexes(packageArrayController.selectionIndexes)
     let remainingObjects = packageArrayController.arrangedObjects as! [String]
     document.bazelPackages = remainingObjects
   }

@@ -40,14 +40,23 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     }
   }
 
+  /// Whether or not there are any opened generator config documents associated with this project.
+  var hasChildConfigDocuments: Bool {
+    return childConfigDocuments.count > 0
+  }
+
   /// Documents controlling the generator configs associated with this project.
-  private var configDocuments = NSHashTable.weakObjectsHashTable()
+  private var childConfigDocuments = NSHashTable.weakObjectsHashTable()
 
   /// One rule per target in the BUILD files associated with this project.
-  var ruleEntries = [RuleEntry]() {
+  var ruleEntries: [RuleEntry] {
+    return _ruleEntries
+  }
+
+  private var _ruleEntries = [RuleEntry]() {
     didSet {
       // Update the associated config documents.
-      let childDocuments = configDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+      let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
         configDoc.projectRuleEntries = ruleEntries
       }
@@ -62,6 +71,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     set {
       project!.bazelPackages = newValue ?? [String]()
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateRuleEntries()
     }
     get {
       return project?.bazelPackages
@@ -110,6 +120,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
       return false
     }
     bazelPackages!.append(package)
+    updateRuleEntries()
     return true
   }
 
@@ -191,6 +202,8 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
 
       generatorConfigNames = configNames
     }
+
+    updateRuleEntries()
   }
 
   override func makeWindowControllers() {
@@ -206,30 +219,18 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     return super.willPresentError(error)
   }
 
-  // Fetches target rule entries from the project's BUILD documents.
-  func updateRuleEntries() {
-    ruleEntries.removeAll()
-
-    guard let concreteBazelURL = bazelURL else {
-      self.error(NSLocalizedString("Error_NoBazel",
-                                   comment: "Critical error message when the Bazel binary cannot be found."))
-      return
-    }
-
-    processingTaskStarted()
-    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
-                                              project: project,
-                                              messageLogger: self)
-    infoExtractor.extractTargetRules() {
-      (updatedRuleEntries: [RuleEntry]) -> Void in
-        defer { self.processingTaskFinished() }
-        self.ruleEntries = updatedRuleEntries
-    }
-  }
-
   /// Tracks the given document as a child of this project.
   func trackChildConfigDocument(document: TulsiGeneratorConfigDocument) {
-    configDocuments.addObject(document)
+    childConfigDocuments.addObject(document)
+  }
+
+  /// Closes any generator config documents associated with this project.
+  func closeChildConfigDocuments() {
+    let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+    for configDoc in childDocuments {
+      configDoc.close()
+    }
+    childConfigDocuments.removeAllObjects()
   }
 
   /// Displays a generic critical error message to the user with the given debug message.
@@ -342,5 +343,25 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
       return relativePath
     }
     return nil
+  }
+
+  // Fetches target rule entries from the project's BUILD documents.
+  private func updateRuleEntries() {
+    guard let concreteBazelURL = bazelURL else {
+      self.error(NSLocalizedString("Error_NoBazel",
+                                   comment: "Critical error message when the Bazel binary cannot be found."))
+      return
+    }
+
+    // TODO(abaire): Cancel any outstanding update operations.
+    processingTaskStarted()
+    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
+                                              project: project,
+                                              messageLogger: self)
+    infoExtractor.extractTargetRules() {
+      (updatedRuleEntries: [RuleEntry]) -> Void in
+        defer { self.processingTaskFinished() }
+        self._ruleEntries = updatedRuleEntries
+    }
   }
 }

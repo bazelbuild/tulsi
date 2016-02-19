@@ -50,6 +50,15 @@
 /* Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
 "ProjectEditor_AddBUILDFilePrompt" = "Add";
 
+/* Title for a button that will cancel an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsButtonCancel" = "Cancel";
+
+/* Title for a button that will proceed with an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsButtonOK" = "OK";
+
+/* Message asking the user if they want to continue with an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsMessage" = "All open configuration editors will be closed. Continue?";
+
 /* Message to show at the top of the Bazel selector sheet, explaining what to do. */
 "ProjectEditor_SelectBazelPathMessage" = "Select the bazel binary to use.";
 
