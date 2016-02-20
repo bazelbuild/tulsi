@@ -84,15 +84,38 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   }
 
   func didClickAddBUILDFile(sender: AnyObject?) {
-    // TODO(abaire): Disallow BUILD files outside of the project's workspace.
-    // TODO(abaire): Filter out any BUILD files that are already part of the project.
-    let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["BUILD"])
+    guard let document = self.representedObject as? TulsiProjectDocument,
+              workspacePath = document.workspaceRootURL?.path else {
+      return
+    }
+
+    let panel = FilteredOpenPanel.filteredOpenPanel() {
+      (_: AnyObject, shouldEnableURL url: NSURL) -> Bool in
+        var isDir: AnyObject?
+        var isPackage: AnyObject?
+        do {
+          try url.getResourceValue(&isDir, forKey: NSURLIsDirectoryKey)
+          try url.getResourceValue(&isPackage, forKey: NSURLIsPackageKey)
+          if let isDir = isDir as? NSNumber, isPackage = isPackage as? NSNumber
+              where !isPackage.boolValue {
+            if isDir.boolValue { return true }
+            if let filename = url.lastPathComponent where filename == "BUILD" {
+              // Prevent anything outside of the selected workspace.
+              return url.path!.hasPrefix(workspacePath) && !document.containsBUILDFileURL(url)
+            }
+          }
+        } catch _ {
+          // Treat any exception as an invalid URL.
+        }
+        return false
+    }
+
     panel.prompt = NSLocalizedString("ProjectEditor_AddBUILDFilePrompt",
                                      comment: "Label for the button used to confirm adding the selected BUILD file to the Tulsi project.")
     panel.canChooseDirectories = false
     panel.beginSheetModalForWindow(self.view.window!) { value in
       if value == NSFileHandlingPanelOKButton {
-        guard let URL = panel.URL, document = self.representedObject as? TulsiProjectDocument else {
+        guard let URL = panel.URL else {
           return
         }
         if !document.addBUILDFileURL(URL) {

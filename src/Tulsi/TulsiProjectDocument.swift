@@ -131,6 +131,14 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     return true
   }
 
+  func containsBUILDFileURL(buildFile: NSURL) -> Bool {
+    guard let package = packageForBUILDFile(buildFile),
+              concreteBazelPackages = bazelPackages else {
+      return false
+    }
+    return concreteBazelPackages.contains(package)
+  }
+
   func createNewProject(projectName: String, workspaceFileURL: NSURL) {
     willChangeValueForKey("bazelURL")
     willChangeValueForKey("bazelPackages")
