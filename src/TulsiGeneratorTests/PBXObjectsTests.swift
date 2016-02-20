@@ -186,31 +186,45 @@ class PBXObjectsTests: XCTestCase {
 
   // MARK: - Helper methods
 
-  func assertProjectStructure(expectedStructure: [ExpectedStructure], forGroup group: PBXGroup) {
-    XCTAssertEqual(group.children.count, expectedStructure.count, "Mismatch in child count for group '\(group.name)'")
+  func assertProjectStructure(expectedStructure: [ExpectedStructure],
+                              forGroup group: PBXGroup,
+                              line: UInt = __LINE__) {
+    XCTAssertEqual(group.children.count,
+                   expectedStructure.count,
+                   "Mismatch in child count for group '\(group.name)'",
+                   line: line)
 
     for element in expectedStructure {
       switch element {
         case .FileReference(let name):
-          assertGroup(group, containsSourceTree: .Group, path: name)
+          assertGroup(group, containsSourceTree: .Group, path: name, line: line)
 
         case .Group(let name, let grandChildren):
-          let childGroup = assertGroup(group, containsGroupWithName: name)
-          assertProjectStructure(grandChildren, forGroup: childGroup)
+          let childGroup = assertGroup(group, containsGroupWithName: name, line: line)
+          assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
       }
     }
   }
 
-  func assertGroup(group: PBXGroup, containsSourceTree sourceTree: SourceTree, path: String) -> PBXFileReference {
+  func assertGroup(group: PBXGroup,
+                   containsSourceTree sourceTree: SourceTree,
+                   path: String,
+                   line: UInt = __LINE__) -> PBXFileReference {
     let sourceTreePath = SourceTreePath(sourceTree: sourceTree, path: path)
     let fileRef = group.fileReferencesBySourceTreePath[sourceTreePath]
-    XCTAssertNotNil(fileRef, "Failed to find expected PBXFileReference '\(path)' in group '\(group.name)")
+    XCTAssertNotNil(fileRef,
+                    "Failed to find expected PBXFileReference '\(path)' in group '\(group.name)",
+                    line: line)
     return fileRef!
   }
 
-  func assertGroup(group: PBXGroup, containsGroupWithName name: String) -> PBXGroup {
+  func assertGroup(group: PBXGroup,
+                   containsGroupWithName name: String,
+                   line: UInt = __LINE__) -> PBXGroup {
     let child = group.childGroupsByName[name]
-    XCTAssertNotNil(child, "Failed to find child group '\(name)' in group '\(group.name)'")
+    XCTAssertNotNil(child,
+                    "Failed to find child group '\(name)' in group '\(group.name)'",
+                    line: line)
     return child!
   }
 }

@@ -352,77 +352,87 @@ class PBXProjSerializerTests: XCTestCase {
     return definition
   }
 
-  private func assertDict(dict: StringToObjectDict, isPBXObjectClass pbxClass: String) {
+  private func assertDict(dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = __LINE__) {
     guard let isa = dict["isa"] as? String else {
-      XCTFail("dictionary is not a PBXObject (missing 'isa' member)")
+      XCTFail("dictionary is not a PBXObject (missing 'isa' member)", line: line)
       return
     }
-    XCTAssertEqual(isa, pbxClass, "Serialized dict is not of the expected PBXObject type")
+    XCTAssertEqual(isa, pbxClass, "Serialized dict is not of the expected PBXObject type", line: line)
   }
 
-  private func getProjectFromRoot(dict: StringToObjectDict, objects: StringToObjectDict) -> StringToObjectDict? {
+  private func getProjectFromRoot(dict: StringToObjectDict, objects: StringToObjectDict, line: UInt = __LINE__) -> StringToObjectDict? {
     guard let rootObjectID = dict["rootObject"] as? String else {
-      XCTFail("Root dictionary has no rootObject member")
+      XCTFail("Root dictionary has no rootObject member", line: line)
       return nil
     }
     guard let projectDict = objects[rootObjectID] as? StringToObjectDict else {
-      XCTFail("rootObjectID '\(rootObjectID)' does not reference valid PBXProject")
+      XCTFail("rootObjectID '\(rootObjectID)' does not reference valid PBXProject", line: line)
       return nil
     }
-    assertDict(projectDict, isPBXObjectClass: "PBXProject")
+    assertDict(projectDict, isPBXObjectClass: "PBXProject", line: line)
 
     return projectDict
   }
 
-  private func getBuildConfigurationListFromProject(projectDict: StringToObjectDict, objects: StringToObjectDict) -> StringToObjectDict? {
+  private func getBuildConfigurationListFromProject(projectDict: StringToObjectDict,
+                                                    objects: StringToObjectDict,
+                                                    line: UInt = __LINE__) -> StringToObjectDict? {
     guard let buildConfigListGID = projectDict["buildConfigurationList"] as? String else {
-      XCTFail("Project has no buildConfigurationList")
+      XCTFail("Project has no buildConfigurationList", line: line)
       return nil
     }
     guard let buildConfigList = objects[buildConfigListGID] as? StringToObjectDict else {
-      XCTFail("Project refers to non-existent buildConfigurationList '\(buildConfigListGID)'")
+      XCTFail("Project refers to non-existent buildConfigurationList '\(buildConfigListGID)'", line: line)
       return nil
     }
-    assertDict(buildConfigList, isPBXObjectClass: "XCConfigurationList")
+    assertDict(buildConfigList, isPBXObjectClass: "XCConfigurationList", line: line)
 
     return buildConfigList
   }
 
-  private func getBuildConfigurationsFromBuildConfigurationList(dict: StringToObjectDict) -> [String]? {
+  private func getBuildConfigurationsFromBuildConfigurationList(dict: StringToObjectDict, line: UInt = __LINE__) -> [String]? {
     guard let buildConfigs = dict["buildConfigurations"] as? [String] else {
-      XCTFail("buildConfigurationList invalid (no build configurations member)")
+      XCTFail("buildConfigurationList invalid (no build configurations member)", line: line)
       return nil
     }
     return buildConfigs
   }
 
-  private func getObjectTypeForID(gid: String, fromObjects objects: StringToObjectDict) -> String? {
+  private func getObjectTypeForID(gid: String, fromObjects objects: StringToObjectDict, line: UInt = __LINE__) -> String? {
     guard let dict = objects[gid] as? StringToObjectDict else {
-      XCTFail("Missing object with globalID '\(gid)'")
+      XCTFail("Missing object with globalID '\(gid)'", line: line)
       return nil
     }
 
     guard let isa = dict["isa"] as? String else {
-      XCTFail("dictionary is not a PBXObject (missing 'isa' member)")
+      XCTFail("dictionary is not a PBXObject (missing 'isa' member)", line: line)
       return nil
     }
     return isa
   }
 
-  private func getObjectByID(gid: String, withPBXClass pbxClass: String, fromObjects objects: StringToObjectDict) -> StringToObjectDict? {
+  private func getObjectByID(gid: String,
+                             withPBXClass pbxClass: String,
+                             fromObjects objects: StringToObjectDict,
+                             line: UInt = __LINE__) -> StringToObjectDict? {
     guard let dict = objects[gid] as? StringToObjectDict else {
-      XCTFail("Missing \(pbxClass) with globalID '\(gid)'")
+      XCTFail("Missing \(pbxClass) with globalID '\(gid)'", line: line)
       return nil
     }
-    assertDict(dict, isPBXObjectClass: pbxClass)
+    assertDict(dict, isPBXObjectClass: pbxClass, line: line)
     return dict
   }
 
-  private func assertGroupSerialized(groupDef: GroupDefinition, withObjects objects: StringToObjectDict) {
-    let group: StringToObjectDict! = getObjectByID(groupDef.gid, withPBXClass: "PBXGroup", fromObjects: objects)
-    XCTAssertEqual(group["name"], groupDef.name)
-    XCTAssertEqual(group["sourceTree"], groupDef.sourceTree.rawValue)
-    XCTAssertEqual(group["path"], groupDef.path)
+  private func assertGroupSerialized(groupDef: GroupDefinition,
+                                     withObjects objects: StringToObjectDict,
+                                     line: UInt = __LINE__) {
+    let group: StringToObjectDict! = getObjectByID(groupDef.gid,
+                                                   withPBXClass: "PBXGroup",
+                                                   fromObjects: objects,
+                                                   line: line)
+    XCTAssertEqual(group["name"], groupDef.name, line: line)
+    XCTAssertEqual(group["sourceTree"], groupDef.sourceTree.rawValue, line: line)
+    XCTAssertEqual(group["path"], groupDef.path, line: line)
 
     let numChildren = groupDef.files.count + groupDef.groups.count
     guard numChildren > 0 else {
@@ -430,74 +440,105 @@ class PBXProjSerializerTests: XCTestCase {
     }
 
     guard let children: [String] = group["children"] as? [String] else {
-      XCTFail("Group '\(groupDef.name)' is missing 'children' member")
+      XCTFail("Group '\(groupDef.name)' is missing 'children' member", line: line)
       return
     }
     let childGIDs = Set(children)
 
     for fileDef: FileDefinition in groupDef.files {
-      XCTAssert(childGIDs.contains(fileDef.gid), "Missing expected child file with gid '\(fileDef.gid)'")
-      assertFileReferenceSerialized(fileDef, withObjects: objects)
+      XCTAssert(childGIDs.contains(fileDef.gid),
+                "Missing expected child file with gid '\(fileDef.gid)'",
+                line: line)
+      assertFileReferenceSerialized(fileDef, withObjects: objects, line: line)
     }
     for childGroupDef: GroupDefinition in groupDef.groups {
-      XCTAssert(childGIDs.contains(childGroupDef.gid), "Missing expected child group with gid '\(childGroupDef.gid)'")
-      assertGroupSerialized(childGroupDef, withObjects: objects)
+      XCTAssert(childGIDs.contains(childGroupDef.gid),
+                "Missing expected child group with gid '\(childGroupDef.gid)'",
+                line: line)
+      assertGroupSerialized(childGroupDef, withObjects: objects, line: line)
     }
 
     // Now that all of the expected children have been found, ensure that there are no unexpected
     // ones.
-    XCTAssertEqual(children.count, numChildren)
+    XCTAssertEqual(children.count, numChildren, line: line)
   }
 
-  private func assertFileReferenceSerialized(fileDef: FileDefinition, withObjects objects: StringToObjectDict) {
-    let fileRef: StringToObjectDict! = getObjectByID(fileDef.gid, withPBXClass: "PBXFileReference", fromObjects: objects)
-    XCTAssertEqual(fileRef["path"], fileDef.path)
-    XCTAssertEqual(fileRef["sourceTree"], fileDef.sourceTree.rawValue)
+  private func assertFileReferenceSerialized(fileDef: FileDefinition,
+                                             withObjects objects: StringToObjectDict,
+                                             line: UInt = __LINE__) {
+    let fileRef: StringToObjectDict! = getObjectByID(fileDef.gid,
+                                                     withPBXClass: "PBXFileReference",
+                                                     fromObjects: objects,
+                                                     line: line)
+    XCTAssertEqual(fileRef["path"], fileDef.path, line: line)
+    XCTAssertEqual(fileRef["sourceTree"], fileDef.sourceTree.rawValue, line: line)
 
     if fileDef.isInputFile {
-      XCTAssertEqual(fileRef["lastKnownFileType"], fileDef.uti, "Unexpected lastKnownFileType for path '\(fileDef.path)'")
-      XCTAssertNil(fileRef["explicitFileType"])
+      XCTAssertEqual(fileRef["lastKnownFileType"],
+                     fileDef.uti,
+                     "Unexpected lastKnownFileType for path '\(fileDef.path)'",
+                     line: line)
+      XCTAssertNil(fileRef["explicitFileType"], line: line)
     } else {
-      XCTAssertEqual(fileRef["explicitFileType"], fileDef.uti, "Unexpected explicitFileType for path '\(fileDef.path)'")
-      XCTAssertNil(fileRef["lastKnownFileType"])
+      XCTAssertEqual(fileRef["explicitFileType"],
+                     fileDef.uti,
+                     "Unexpected explicitFileType for path '\(fileDef.path)'",
+                     line: line)
+      XCTAssertNil(fileRef["lastKnownFileType"], line: line)
     }
   }
 
   func assertNativeTargetDict(target: StringToObjectDict,
                               matchesDefinition def: SimpleProjectDefinition.NativeTargetDefinition,
-                              withObjects objects: StringToObjectDict) {
-    XCTAssertEqual(target["name"], def.name)
-    XCTAssertEqual(target["productName"], def.name)
-    XCTAssertEqual(target["productType"], def.targetType.rawValue)
+                              withObjects objects: StringToObjectDict,
+                              line: UInt = __LINE__) {
+    XCTAssertEqual(target["name"], def.name, line: line)
+    XCTAssertEqual(target["productName"], def.name, line: line)
+    XCTAssertEqual(target["productType"], def.targetType.rawValue, line: line)
 
     let buildConfigurationListGID = target["buildConfigurationList"] as! String
-    let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID, withPBXClass: "XCConfigurationList", fromObjects: objects)
-    let buildConfigs: [String]! = getBuildConfigurationsFromBuildConfigurationList(buildConfigList)
-    XCTAssertEqual(buildConfigs.count, 1)
+    let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID,
+                                                             withPBXClass: "XCConfigurationList",
+                                                             fromObjects: objects,
+                                                             line: line)
+    let buildConfigs: [String]! = getBuildConfigurationsFromBuildConfigurationList(buildConfigList,
+                                                                                   line: line)
+    XCTAssertEqual(buildConfigs.count, 1, line: line)
 
-    let buildConfigDict: StringToObjectDict! = getObjectByID(buildConfigs[0], withPBXClass: "XCBuildConfiguration", fromObjects: objects)
-    XCTAssertEqual(buildConfigDict["name"], def.config)
-    XCTAssertEqual(buildConfigDict["buildSettings"], def.settings)
+    let buildConfigDict: StringToObjectDict! = getObjectByID(buildConfigs[0],
+                                                             withPBXClass: "XCBuildConfiguration",
+                                                             fromObjects: objects,
+                                                             line: line)
+    XCTAssertEqual(buildConfigDict["name"], def.config, line: line)
+    XCTAssertEqual(buildConfigDict["buildSettings"], def.settings, line: line)
 
     // TODO(abaire): Validate that the target output information is correct.
     let productReferenceGID = target["productReference"] as! String
-    getObjectByID(productReferenceGID, withPBXClass: "PBXFileReference", fromObjects: objects)
+    getObjectByID(productReferenceGID,
+                  withPBXClass: "PBXFileReference",
+                  fromObjects: objects,
+                  line: line)
   }
 
   func assertLegacyTargetDict(target: StringToObjectDict,
                               matchesDefinition def: SimpleProjectDefinition.LegacyTargetDefinition,
-                              withObjects objects: StringToObjectDict) {
+                              withObjects objects: StringToObjectDict,
+                              line: UInt = __LINE__) {
 
-    XCTAssertEqual(target["name"], def.name)
-    XCTAssertEqual(target["productName"], def.name)
-    XCTAssertEqual(target["buildToolPath"], def.buildToolPath)
-    XCTAssertEqual(target["buildArgumentsString"], def.buildArguments)
-    XCTAssertEqual(target["buildWorkingDirectory"], def.buildWorkingDirectory)
+    XCTAssertEqual(target["name"], def.name, line: line)
+    XCTAssertEqual(target["productName"], def.name, line: line)
+    XCTAssertEqual(target["buildToolPath"], def.buildToolPath, line: line)
+    XCTAssertEqual(target["buildArgumentsString"], def.buildArguments, line: line)
+    XCTAssertEqual(target["buildWorkingDirectory"], def.buildWorkingDirectory, line: line)
 
     let buildConfigurationListGID = target["buildConfigurationList"] as! String
-    let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID, withPBXClass: "XCConfigurationList", fromObjects: objects)
-    let buildConfigs: [String]! = getBuildConfigurationsFromBuildConfigurationList(buildConfigList)
-    XCTAssert(buildConfigs.isEmpty)
+    let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID,
+                                                             withPBXClass: "XCConfigurationList",
+                                                             fromObjects: objects,
+                                                             line: line)
+    let buildConfigs: [String]! = getBuildConfigurationsFromBuildConfigurationList(buildConfigList,
+                                                                                   line: line)
+    XCTAssert(buildConfigs.isEmpty, line: line)
   }
 
   /// Generates predictable GlobalID's for use in tests.
