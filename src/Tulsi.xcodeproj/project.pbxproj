@@ -30,6 +30,7 @@
 		3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */; };
 		3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */; };
 		3D8B37ED1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D8B37EF1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib */; };
+		3D91B4DC1C78CE6B006ED85C /* TulsiDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */; };
 		3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */; };
 		3D9485411C3193F00026CE41 /* Options.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D9485431C3193F00026CE41 /* Options.strings */; };
 		3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
@@ -149,6 +150,7 @@
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
 		3D8B37EE1C4F100F0090F3AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BazelOpenSheetAccessoryView.xib; sourceTree = "<group>"; };
+		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
 		3D9485421C3193F00026CE41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Options.strings; sourceTree = "<group>"; };
 		3D9926631C29F0A20094E098 /* TulsiGenerator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TulsiGenerator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -401,6 +403,7 @@
 				3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */,
 				3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */,
 				3DFAD2691C4FE05900C7D7AF /* Resources */,
+				3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */,
 				3D387BB71C761B8800544AE0 /* TulsiError.swift */,
 				3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */,
 				8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */,
@@ -676,6 +679,7 @@
 				3D0C9C181C5A87AF00417963 /* OptionsEditorNode.swift in Sources */,
 				3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */,
 				3D387BAB1C7500A100544AE0 /* NewGeneratorConfigViewController.swift in Sources */,
+				3D91B4DC1C78CE6B006ED85C /* TulsiDocumentController.swift in Sources */,
 				3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */,
 				3D084A021C73C902005F5ABA /* OptionsEditorModelProtocol.swift in Sources */,
 				3D387BB21C75352E00544AE0 /* XcodeProjectGenerationProgressViewController.swift in Sources */,

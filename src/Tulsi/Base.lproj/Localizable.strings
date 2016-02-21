@@ -35,6 +35,9 @@
 /* Label for the button used to confirm the selected WORKSPACE. */
 "NewProject_SetProjectWorkspacePrompt" = "Select";
 
+/* Message to show at the top of tulsiproj open panel, explaining what to do. */
+"OpenProject_OpenProjectPanelMessage" = "Choose a Tulsi project to open.";
+
 /* Short header shown before the project in the options editor's target selector. */
 "OptionsTarget_ProjectSectionTitle" = "PROJECT";
 

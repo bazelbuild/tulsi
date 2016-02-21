@@ -24,6 +24,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
 
   // MARK: - NSApplicationDelegate
 
+  func applicationWillFinishLaunching(notification: NSNotification) {
+    // Create the shared document controller.
+    let _ = TulsiDocumentController()
+  }
+
   func applicationShouldOpenUntitledFile(sender: NSApplication) -> Bool {
     if let (_, mode) = GetXcodeURLFromCurrentAppleEvent() where mode == .OpenProject {
       NSDocumentController.sharedDocumentController().openDocument(sender)
