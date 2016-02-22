@@ -92,6 +92,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   @IBAction func doGenerate(sender: AnyObject?) {
     // TODO(abaire): Make it clear to the user that only the first selection is generated.
     guard let configName = configArrayController.selectedObjects.first as? String else { return }
+    guard requireValidBazel({ self.doGenerate(sender) }) else { return }
 
     let generatorController = XcodeProjectGenerationProgressViewController()
     generatorController.representedObject = representedObject
@@ -106,6 +107,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   @IBAction func didDoubleClickConfigRow(sender: NSTableView) {
+    guard requireValidBazel({ self.didDoubleClickConfigRow(sender) }) else { return }
+
     let projectDocument = representedObject as! TulsiProjectDocument
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0,
@@ -142,6 +145,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   // MARK: - Private methods
 
   private func didClickAddConfig(sender: AnyObject?) {
+    guard requireValidBazel({ self.didClickAddConfig(sender) }) else { return }
+
     let projectDocument = representedObject as! TulsiProjectDocument
 
     // Adding a config to a project with no bazel packages is disallowed.
@@ -185,6 +190,27 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let fmt = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message. Details are provided as %1$@.")
     projectDocument.error(String(format: fmt, errorInfo))
+  }
+
+
+  /// Verifies that the project's Bazel URL seems valid, forcing the user to select a valid path if
+  /// necessary and invoking the given retryHandler once they've finished selection.
+  /// Returns true if Bazel is already valid, false if the Bazel picker is being shown.
+  private func requireValidBazel(retryHandler: () -> Void) -> Bool {
+    let projectDocument = representedObject as! TulsiProjectDocument
+    guard let bazelURL = projectDocument.bazelURL,
+              bazelPath = bazelURL.path
+        where NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) else {
+      BazelSelectionPanel.beginSheetModalBazelSelectionPanelForWindow(self.view.window!,
+                                                                      document: projectDocument) {
+        (bazelURL: NSURL?) in
+          if bazelURL != nil {
+            retryHandler()
+          }
+      }
+      return false
+    }
+    return true
   }
 
   private func didClickRemoveSelectedConfigs(sender: AnyObject?) {

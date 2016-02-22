@@ -4,9 +4,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ConfigEditorBuildTargetSelectorViewController" customModule="Tulsi" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="BazelSelectionPanel" customModule="Tulsi" customModuleProvider="target">
             <connections>
-                <outlet property="bazelSelectorUseAsDefaultCheckbox" destination="atU-NU-IiP" id="aiM-f3-nC3"/>
+                <outlet property="bazelSelectorUseAsDefaultCheckbox" destination="atU-NU-IiP" id="hRN-2T-WMe"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>

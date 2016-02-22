@@ -93,6 +93,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
         infoExtractor.bazelURL = newValue!
       }
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateRuleEntries()
     }
     get {
       return project?.bazelURL
@@ -434,8 +435,6 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
   // Fetches target rule entries from the project's BUILD documents.
   private func updateRuleEntries() {
     guard let concreteBazelURL = bazelURL else {
-      self.error(NSLocalizedString("Error_NoBazel",
-                                   comment: "Critical error message when the Bazel binary cannot be found."))
       return
     }
 

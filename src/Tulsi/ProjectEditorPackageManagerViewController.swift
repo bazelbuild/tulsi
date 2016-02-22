@@ -25,8 +25,6 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     case Remove = 1
   }
 
-  // Checkbox in the Bazel path open panel's accessory view.
-  @IBOutlet weak var bazelSelectorUseAsDefaultCheckbox: NSButton!
   @IBOutlet var packageArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
 
@@ -151,38 +149,8 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
 
   @IBAction func selectBazelPath(sender: AnyObject?) {
     let document = representedObject as! TulsiProjectDocument
-    let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["bazel", "blaze"])
-    panel.message = NSLocalizedString("ProjectEditor_SelectBazelPathMessage",
-                                      comment: "Message to show at the top of the Bazel selector sheet, explaining what to do.")
-    panel.prompt = NSLocalizedString("ProjectEditor_SelectBazelPathPrompt",
-                                     comment: "Label for the button used to confirm the selected Bazel file in the Bazel selector sheet.")
-
-    var views: NSArray?
-    NSBundle.mainBundle().loadNibNamed("BazelOpenSheetAccessoryView",
-                                       owner: self,
-                                       topLevelObjects: &views)
-    // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
-    // non-deterministic order.
-    views = views?.filter() { $0 is NSView }
-    if let accessoryView = views?.firstObject as? NSView {
-      panel.accessoryView = accessoryView
-      if #available(OSX 10.11, *) {
-        panel.accessoryViewDisclosed = true
-      }
-    } else {
-      assertionFailure("Failed to load accessory view for Bazel open sheet.")
-    }
-    panel.canChooseDirectories = false
-    panel.canChooseFiles = true
-    panel.beginSheetModalForWindow(self.view.window!) { value in
-      if value == NSFileHandlingPanelOKButton {
-        document.bazelURL = panel.URL
-        if self.bazelSelectorUseAsDefaultCheckbox.state == NSOnState {
-          NSUserDefaults.standardUserDefaults().setURL(document.bazelURL!,
-                                                       forKey: TulsiProject.DefaultBazelURLKey)
-        }
-      }
-    }
+    BazelSelectionPanel.beginSheetModalBazelSelectionPanelForWindow(self.view.window!,
+                                                                    document: document)
   }
 
   @IBAction func didClickClearBazelButton(sender: AnyObject) {

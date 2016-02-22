@@ -77,6 +77,7 @@
 		3DD0DE491C656C15008B0CDF /* FilteredOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */; };
 		3DD0EB0E1C40AEC7005C0469 /* OptionsEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */; };
 		3DD0EB101C40AED8005C0469 /* OptionsTargetSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0F1C40AED8005C0469 /* OptionsTargetSelectorController.swift */; };
+		3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */; };
 		3DF313B41C3488BE00A34C14 /* UIRuleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF313B31C3488BE00A34C14 /* UIRuleNode.swift */; };
 		3DF313B71C34898500A34C14 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DF313B91C34898500A34C14 /* Localizable.strings */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift */; };
@@ -188,6 +189,7 @@
 		3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOpenPanel.swift; sourceTree = "<group>"; };
 		3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorController.swift; sourceTree = "<group>"; };
 		3DD0EB0F1C40AED8005C0469 /* OptionsTargetSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsTargetSelectorController.swift; sourceTree = "<group>"; };
+		3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelSelectionPanel.swift; sourceTree = "<group>"; };
 		3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjectsTests.swift; sourceTree = "<group>"; };
 		3DF313B31C3488BE00A34C14 /* UIRuleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRuleNode.swift; sourceTree = "<group>"; };
 		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 			children = (
 				8B8F559A1BE3ECDC0095AF7F /* AppDelegate.swift */,
 				8BEEF96B1BF94FB800247062 /* BazelFileTypeFixer.swift */,
+				3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */,
 				3D800DE81C6C24C000F4D08C /* BugReporter.swift */,
 				8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */,
 				8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift */,
@@ -672,6 +675,7 @@
 				3D387BB81C761B8800544AE0 /* TulsiError.swift in Sources */,
 				3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */,
 				3D0849F11C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift in Sources */,
+				3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */,
 				3DF313B41C3488BE00A34C14 /* UIRuleNode.swift in Sources */,
 				3DD0DE491C656C15008B0CDF /* FilteredOpenPanel.swift in Sources */,
 				3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */,
