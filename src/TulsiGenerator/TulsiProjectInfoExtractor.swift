@@ -21,6 +21,11 @@ public class TulsiProjectInfoExtractor {
   private let localizedMessageLogger: LocalizedMessageLogger
   private var workspaceInfoExtractor: BazelQueryWorkspaceInfoExtractor! = nil
 
+  public var bazelURL: NSURL {
+    get { return workspaceInfoExtractor.bazelURL }
+    set { workspaceInfoExtractor.bazelURL = newValue }
+  }
+
   public init(bazelURL: NSURL,
               project: TulsiProject,
               messageLogger: MessageLoggerProtocol? = nil) {

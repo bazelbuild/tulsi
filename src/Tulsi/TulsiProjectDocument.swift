@@ -89,6 +89,9 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
   dynamic var bazelURL: NSURL? {
     set {
       project.bazelURL = newValue
+      if newValue != nil && infoExtractor != nil {
+        infoExtractor.bazelURL = newValue!
+      }
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
     }
     get {

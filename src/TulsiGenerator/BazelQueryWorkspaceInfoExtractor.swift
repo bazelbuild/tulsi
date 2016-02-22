@@ -28,7 +28,7 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
 
 
   /// The location of the bazel binary.
-  let bazelURL: NSURL
+  var bazelURL: NSURL
   /// The location of the directory in which the workspace enclosing this BUILD file can be found.
   let workspaceRootURL: NSURL
 
