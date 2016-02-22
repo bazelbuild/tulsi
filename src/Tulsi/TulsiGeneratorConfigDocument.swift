@@ -426,6 +426,19 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
+    // Ensure that the output folder exists to prevent saveToURL from freezing.
+    do {
+      try NSFileManager.defaultManager().createDirectoryAtURL(saveFolderURL,
+                                                              withIntermediateDirectories: true,
+                                                              attributes: nil)
+    } catch let e as NSError {
+      if let completionHandler = saveCompletionHandler {
+        completionHandler(canceled: false, error: e)
+        saveCompletionHandler = nil
+      }
+      return
+    }
+
     configName = vc.configName!
     guard let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName!,
                                                                          inFolderURL: saveFolderURL) else {
