@@ -27,14 +27,17 @@ public let ProgressUpdatingTaskMaxValue = "maxValue"
 public let ProgressUpdatingTaskProgress = "progressUpdatingTaskProgress"
 public let ProgressUpdatingTaskProgressValue = "value"
 
-/// Sent when the Tulsi generator starts extracting source files from Bazel rules.
-public let SourceFileExtraction = "sourceFileExtraction"
-
 /// Sent when the Tulsi generator starts finding BUILD file dependencies.
 public let BuildFileExtraction = "buildFileExtraction"
 
 /// Sent when the Tulsi generator starts resolving Bazel labels to files.
 public let LabelResolution = "labelResolution"
 
+/// Sent when the Tulsi extractor starts looking up "defines" attributes for rules.
+public let PreprocessorDefineExtraction = "preprocessorDefineExtraction"
+
 /// Sent when the Tulsi generator starts resolving labels to RuleEntry instances.
 public let RuleEntryResolution = "ruleEntryResolution"
+
+/// Sent when the Tulsi generator starts extracting source files from Bazel rules.
+public let SourceFileExtraction = "sourceFileExtraction"

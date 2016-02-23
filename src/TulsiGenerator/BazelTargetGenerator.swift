@@ -20,8 +20,10 @@ protocol TargetGeneratorProtocol {
   func generateFileReferencesForFilePaths(paths: [String])
 
   /// Generates an indexer target for the given Bazel rule including the given set of source file
-  /// paths.
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry, sourcePaths: [String])
+  /// paths and preprocessor defines.
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
+                                         sourcePaths: [String],
+                                         preprocessorDefines: Set<String>?)
 
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
@@ -147,17 +149,21 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
   }
 
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry, sourcePaths: [String]) {
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
+                                         sourcePaths: [String],
+                                         preprocessorDefines: Set<String>?) {
     if sourcePaths.isEmpty { return }
 
     let targetName = indexerNameForRuleEntry(ruleEntry)
     let indexingTarget = project.createNativeTarget(targetName, targetType: PBXTarget.ProductType.StaticLibrary)
-
     let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
     let (buildPhase, pchFile) = createBuildPhaseForFileReferences(fileReferences)
     indexingTarget.buildPhases.append(buildPhase)
 
-    addConfigsForIndexingTarget(indexingTarget, pchFile: pchFile, ruleEntry: ruleEntry)
+    addConfigsForIndexingTarget(indexingTarget,
+                                pchFile: pchFile,
+                                ruleEntry: ruleEntry,
+                                preprocessorDefines: preprocessorDefines)
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
@@ -277,12 +283,22 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   // MARK: - Private methods
 
   // Adds XCBuildConfigurations to the given indexer PBXTarget.
-  private func addConfigsForIndexingTarget(target: PBXTarget, pchFile: PBXFileReference?, ruleEntry: RuleEntry) {
+  // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
+  // spaces it would be the string: key="value with spaces").
+  private func addConfigsForIndexingTarget(target: PBXTarget,
+                                           pchFile: PBXFileReference?,
+                                           ruleEntry: RuleEntry,
+                                           preprocessorDefines: Set<String>?) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
     if pchFile != nil {
       buildSettings["GCC_PREFIX_HEADER"] = pchFile!.sourceRootRelativePath
+    }
+
+    if let preprocessorDefines = preprocessorDefines {
+      let cflagDefines = preprocessorDefines.sort().map({"-D\($0)"})
+      buildSettings["OTHER_CFLAGS"] = cflagDefines.joinWithSeparator(" ")
     }
 
     // Look for bridging_header attributes in the rule or its binary dependency (e.g., for

@@ -12,7 +12,7 @@
 "BazelResponseLabelExtractionFailed" = "Failed to parse Bazel response as labels. This may mean that the contents of a BUILD file are incorrect.";
 
 /* Bazel response XML element %1$@ should have a valid string value but does not. */
-"BazelResponseIncludesAttributeInvalid" = "Bazel query returned an invalid include list element '%1$@'. This may be a Bazel bug or a BUILD file issue.";
+"BazelResponseListAttributeInvalid" = "Bazel query returned an invalid attribute list element '%1$@'. This may be a Bazel bug or a BUILD file issue.";
 
 /* Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file. */
 "BazelResponseXMLParsingFailed" = "Bazel response XML parsing failed with error '%1$@'. This may be a Bazel bug or a BUILD file issue.";

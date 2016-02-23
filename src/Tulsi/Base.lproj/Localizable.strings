@@ -107,14 +107,17 @@
 
 /* Strings mapping progress item notification names to user-friendly names */
 
-/* Sent when extracting source files from a Bazel project. */
-"sourceFileExtraction" = "Extracting source files";
-
 /* Sent when finding all BUILD files applicable to a Bazel project. */
 "buildFileExtraction" = "Extracting BUILD files";
 
 /* Sent when resolving Bazel labels to files. */
 "labelResolution" = "Resolving labels to files";
 
+/* Sent when the Tulsi extractor starts looking up "defines" attributes for rules. */
+"preprocessorDefineExtraction" = "Looking up preprocessor defines";
+
 /* Sent when reloading RuleEntry instances for saved labels. */
 "ruleEntryResolution" = "Reloading Bazel targets";
+
+/* Sent when extracting source files from a Bazel project. */
+"sourceFileExtraction" = "Extracting source files";

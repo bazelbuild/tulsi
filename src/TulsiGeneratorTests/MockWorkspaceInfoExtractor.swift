@@ -25,6 +25,7 @@ class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
   var invalidLabels = Set<String>()
 
   var explicitIncludePaths: Set<String>? = nil
+  var defines: Set<String>? = nil
 
   func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
   }
@@ -47,6 +48,10 @@ class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
 
   func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
     return explicitIncludePaths
+  }
+
+  func extractDefinesForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
+    return defines
   }
 
   func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {

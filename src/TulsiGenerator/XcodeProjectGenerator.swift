@@ -216,8 +216,12 @@ class XcodeProjectGenerator {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
     }
 
+    // TODO(abaire): Consider doing per-source target defines.
+    let preprocessorDefines = workspaceInfoExtractor.extractDefinesForRuleEntries(config.buildTargets!)
     for (ruleEntry, paths) in sourcePaths {
-      generator.generateIndexerTargetForRuleEntry(ruleEntry, sourcePaths: paths)
+      generator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                  sourcePaths: paths,
+                                                  preprocessorDefines: preprocessorDefines)
     }
 
     let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
@@ -225,8 +229,7 @@ class XcodeProjectGenerator {
 
     let additionalIncludePaths = workspaceInfoExtractor.extractExplicitIncludePathsForRuleEntries(config.buildTargets!)
     generator.generateTopLevelBuildConfigurations(additionalIncludePaths)
-    try generator.generateBuildTargetsForRuleEntries(config.buildTargets!,
-                                                     sourcePaths: sourcePaths)
+    try generator.generateBuildTargetsForRuleEntries(config.buildTargets!, sourcePaths: sourcePaths)
 
     return xcodeProject
   }

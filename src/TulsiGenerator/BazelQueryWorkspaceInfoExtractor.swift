@@ -164,24 +164,17 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   }
 
   func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
-    if ruleEntries.isEmpty {
-      return Set<String>()
-    }
+    return extractAttribute("includes",
+                            fromRuleEntries: ruleEntries,
+                            profilingTag: "extract_includes",
+                            profilingMessage: "Looking for additional include paths")
+  }
 
-    let profilingStart = localizedMessageLogger.startProfiling("extract_includes",
-                                                               message: "Looking for additional include paths")
-
-    let deps = ruleEntries.map({"deps(\($0.label.value))"}).joinWithSeparator("+")
-    let query = "attr(includes, \"\\[.+\\]\", \(deps))"
-    let (_, data, debugInfo) = bazelSynchronousQueryTask(query, outputKind: "xml")
-    guard let includesPaths = extractIncludesAttributesFromBazelXMLOutput(data) else {
-      self.localizedMessageLogger.infoMessage(debugInfo)
-      return nil
-    }
-
-    localizedMessageLogger.logProfilingEnd(profilingStart)
-
-    return includesPaths
+  func extractDefinesForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
+    return extractAttribute("defines",
+                            fromRuleEntries: ruleEntries,
+                            profilingTag: "extract_defines",
+                            profilingMessage: "Looking for preprocessor defines")
   }
 
   func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
@@ -483,21 +476,46 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
     }
   }
 
-  private func extractIncludesAttributesFromBazelXMLOutput(bazelOutput: NSData) -> Set<String>? {
+  private func extractAttribute(attribute: String,
+                                fromRuleEntries ruleEntries: [RuleEntry],
+                                profilingTag: String = "extract_attributes",
+                                profilingMessage: String? = nil) -> Set<String>? {
+    if ruleEntries.isEmpty {
+      return Set<String>()
+    }
+
+    let profilingStart = localizedMessageLogger.startProfiling(profilingTag,
+                                                               message: profilingMessage)
+
+    let deps = ruleEntries.map({"deps(\($0.label.value))"}).joinWithSeparator("+")
+    let query = "attr(\"\(attribute)\", \"\\[.+\\]\", \(deps))"
+    let (_, data, debugInfo) = bazelSynchronousQueryTask(query, outputKind: "xml")
+    guard let includesPaths = extractAttribute(attribute, fromBazelXMLOutput: data) else {
+      self.localizedMessageLogger.infoMessage(debugInfo)
+      return nil
+    }
+
+    localizedMessageLogger.logProfilingEnd(profilingStart)
+
+    return includesPaths
+  }
+
+  private func extractAttribute(attribute: String,
+                                fromBazelXMLOutput bazelOutput: NSData) -> Set<String>? {
     do {
-      var includes = Set<String>()
+      var values = Set<String>()
       let doc = try NSXMLDocument(data: bazelOutput, options: 0)
-      let includeNodes = try doc.nodesForXPath("/query/rule/list[@name='includes']/string/@value")
+      let includeNodes = try doc.nodesForXPath("/query/rule/list[@name='\(attribute)']/string/@value")
       for includeNode in includeNodes {
         guard let include = includeNode.stringValue else {
-          localizedMessageLogger.error("BazelResponseIncludesAttributeInvalid",
+          localizedMessageLogger.error("BazelResponseListAttributeInvalid",
                                        comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
                                        values: includeNode)
           continue
         }
-        includes.insert(include)
+        values.insert(include)
       }
-      return includes
+      return values
     } catch let e as NSError {
       localizedMessageLogger.error("BazelResponseXMLParsingFailed",
                                    comment: "Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file.",
