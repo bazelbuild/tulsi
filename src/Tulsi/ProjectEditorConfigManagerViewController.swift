@@ -178,6 +178,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
                                                                                                additionalFilePaths: additionalFilePaths,
                                                                                                bazelURL: projectDocument.bazelURL)
       projectDocument.trackChildConfigDocument(configDocument)
+      configDocument.delegate = projectDocument
       configDocument.makeWindowControllers()
       configDocument.showWindows()
       return

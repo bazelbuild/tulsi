@@ -16,6 +16,13 @@ import Cocoa
 import TulsiGenerator
 
 
+protocol TulsiGeneratorConfigDocumentDelegate: class {
+  /// Called when the TulsiGeneratorConfigDocument is saved successfully with a new name.
+  func didNameTulsiGeneratorConfigDocument(document: TulsiGeneratorConfigDocument)
+}
+
+
+/// Document encapsulating a Tulsi generator configuration.
 final class TulsiGeneratorConfigDocument: NSDocument,
                                           NSWindowDelegate,
                                           OptionsEditorModelProtocol,
@@ -28,6 +35,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   /// The type for Tulsi generator per-user config documents.
   static let PerUserFileType = "com.google.tulsi.generatorconfig.user"
+
+  weak var delegate: TulsiGeneratorConfigDocumentDelegate? = nil
 
   /// Whether or not the document is currently performing a long running operation.
   dynamic var processing: Bool = false
@@ -245,6 +254,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       if let concreteCompletionHandler = self.saveCompletionHandler {
         concreteCompletionHandler(canceled: false, error: error)
         self.saveCompletionHandler = nil
+      }
+
+      if error == nil {
+        self.delegate?.didNameTulsiGeneratorConfigDocument(self)
       }
     }
   }

@@ -16,7 +16,11 @@ import Cocoa
 import TulsiGenerator
 
 
-final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerProtocol, OptionsEditorModelProtocol {
+final class TulsiProjectDocument: NSDocument,
+                                  NSWindowDelegate,
+                                  MessageLoggerProtocol,
+                                  OptionsEditorModelProtocol,
+                                  TulsiGeneratorConfigDocumentDelegate {
 
   enum Error: ErrorType {
     /// No config exists with the given name.
@@ -47,6 +51,9 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
     }
   }
 
+  /// The display names of generator configs associated with this project.
+  dynamic var generatorConfigNames = [String]()
+
   /// Whether or not there are any opened generator config documents associated with this project.
   var hasChildConfigDocuments: Bool {
     return childConfigDocuments.count > 0
@@ -69,9 +76,6 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
       }
     }
   }
-
-  /// The display names of generator configs associated with this project.
-  dynamic var generatorConfigNames = [String]()
 
   /// The set of Bazel packages associated with this project.
   dynamic var bazelPackages: [String]? {
@@ -311,6 +315,7 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
                                                                                           messageLogger: self,
                                                                                           bazelURL: bazelURL)
       configDocument.projectRuleEntries = ruleEntries
+      configDocument.delegate = self
       trackChildConfigDocument(configDocument)
       return configDocument
     } catch let e as NSError {
@@ -390,6 +395,16 @@ final class TulsiProjectDocument: NSDocument, NSWindowDelegate, MessageLoggerPro
 
     NSThread.doOnMainThread() {
       self.messages.append(UIMessage(text: message, type: .Info))
+    }
+  }
+
+  // MARK: - TulsiGeneratorConfigDocumentDelegate
+
+  func didNameTulsiGeneratorConfigDocument(document: TulsiGeneratorConfigDocument) {
+    guard let configName = document.configName else { return }
+    if !generatorConfigNames.contains(configName) {
+      let configNames = (generatorConfigNames + [configName]).sort()
+      generatorConfigNames = configNames
     }
   }
 
