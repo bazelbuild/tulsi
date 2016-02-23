@@ -909,9 +909,9 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="620" height="384"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBr-Gq-Xkt">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBr-Gq-Xkt">
                                 <rect key="frame" x="20" y="20" width="580" height="344"/>
-                                <clipView key="contentView" ambiguous="YES" id="uf5-HF-t1v">
+                                <clipView key="contentView" id="uf5-HF-t1v">
                                     <rect key="frame" x="1" y="0.0" width="578" height="328"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -1028,8 +1028,8 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
-                                <rect key="frame" x="294" y="187" width="32" height="32"/>
+                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="nNQ-6Q-aBF">
+                                <rect key="frame" x="294" y="176" width="32" height="32"/>
                                 <connections>
                                     <binding destination="j9X-DC-afq" name="animate" keyPath="selection.processing" id="OJk-Gn-kho"/>
                                     <binding destination="j9X-DC-afq" name="hidden" keyPath="selection.processing" id="jgr-Y2-MnA">
@@ -1044,6 +1044,7 @@ Gw
                             <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerX" secondItem="eBr-Gq-Xkt" secondAttribute="centerX" id="47V-TQ-80J"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="top" secondItem="ZEq-dq-WSj" secondAttribute="top" constant="20" id="La9-Th-WD6"/>
                             <constraint firstItem="nNQ-6Q-aBF" firstAttribute="centerY" secondItem="eBr-Gq-Xkt" secondAttribute="centerY" id="PJ4-gZ-XHu"/>
+                            <constraint firstAttribute="bottom" secondItem="eBr-Gq-Xkt" secondAttribute="bottom" constant="20" id="STM-48-2rN"/>
                             <constraint firstAttribute="trailing" secondItem="eBr-Gq-Xkt" secondAttribute="trailing" constant="20" id="ZeU-3r-3bH"/>
                             <constraint firstItem="eBr-Gq-Xkt" firstAttribute="leading" secondItem="ZEq-dq-WSj" secondAttribute="leading" constant="20" id="tpa-ee-fo5"/>
                         </constraints>
