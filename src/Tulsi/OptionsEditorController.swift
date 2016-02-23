@@ -127,10 +127,10 @@ final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDel
   }
   var closeReason: CloseReason = .Cancel
 
-  weak var popover: NSPopover? = nil
+  private weak var popover: NSPopover? = nil
 
-  var optionNode: OptionsEditorNode! = nil
-  var optionLevel: OptionsEditorNode.OptionLevel = .Default
+  private var optionNode: OptionsEditorNode! = nil
+  private var optionLevel: OptionsEditorNode.OptionLevel = .Default
 
   func setRepresentedOptionNode(optionNode: OptionsEditorNode, level: OptionsEditorNode.OptionLevel) {
     self.optionNode = optionNode
@@ -465,6 +465,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   }
 
   private func reloadDataForRow(row: Int) {
+    guard row >= 0 else { return }
     let item = view.itemAtRow(row)!
     let indexes = NSMutableIndexSet(index: row)
     if let parent = view.parentForItem(item) {
@@ -473,11 +474,16 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
       let numChildren = view.numberOfChildrenOfItem(item)
       for i in 0..<numChildren {
         let child = view.child(i, ofItem: item)
-        indexes.addIndex(view.rowForItem(child))
+        let childIndex = view.rowForItem(child)
+        if childIndex >= 0 {
+          indexes.addIndex(childIndex)
+        }
       }
     }
 
-    let columnRange = NSRange(location: 0, length: view.numberOfColumns)
+    // Reload everything in the mutable middle columns. The values in the "setting" and "default"
+    // columns never change.
+    let columnRange = NSRange(location: 1, length: view.numberOfColumns - 2)
     view.reloadDataForRowIndexes(indexes, columnIndexes: NSIndexSet(indexesInRange: columnRange))
   }
 }

@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// Models a Tulsi option as a node suitable for display in the options editor.
-class OptionsEditorNode: NSObject {
+class OptionsEditorNode: NSObject, CustomDebugStringConvertible {
   // Note: The values here are also used as storyboard identifiers for table columns.
   enum OptionLevel: String {
     case Target = "TargetValue"
@@ -90,6 +90,12 @@ class OptionsEditorNode: NSObject {
 
   func removeValueForOptionLevel(level: OptionLevel) {
     assertionFailure("Must be overridden by subclasses")
+  }
+
+  // MARK: - CustomDebugStringConvertible
+
+  override var debugDescription: String {
+    return "\(super.debugDescription) - \(name)"
   }
 }
 
