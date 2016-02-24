@@ -29,6 +29,7 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
   static let BuildTypesWithImplicitIPAs = Set<String>([
       "ios_application",
       "ios_extension",
+      "ios_test",
       "objc_binary",
   ])
 

@@ -382,6 +382,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
+          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
           "BUILD_PATH": rule2BuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": rule2TargetName,
@@ -483,6 +484,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
+          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
           "BUILD_PATH": testRuleBuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": testRuleTargetName,
