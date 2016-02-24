@@ -29,6 +29,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                           NewGeneratorConfigViewControllerDelegate,
                                           MessageLoggerProtocol {
 
+  /// Status of an Xcode project generation action.
+  enum GenerationResult {
+    /// Generation succeeded. The associated URL points at the generated Xcode project.
+    case Success(NSURL)
+    /// Generation failed. The associated String provides error info.
+    case Failure(String)
+  }
+
   /// The type for Tulsi generator config documents.
   // Keep in sync with Info.plist.
   static let FileType = "com.google.tulsi.generatorconfig"
@@ -214,6 +222,30 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return folderURL?.URLByAppendingPathComponent(filename)
   }
 
+  /// Generates an Xcode project.
+  static func generateXcodeProjectInFolder(outputFolderURL: NSURL,
+                                           withGeneratorConfig config: TulsiGeneratorConfig,
+                                           workspaceRootURL: NSURL,
+                                           messageLogger: MessageLoggerProtocol,
+                                           treatMissingSourceTargetsAsWarnings: Bool = false) -> GenerationResult {
+    let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
+                                                      config: config,
+                                                      messageLogger: messageLogger)
+    projectGenerator.treatMissingSourceTargetsAsWarnings = treatMissingSourceTargetsAsWarnings
+    let errorInfo: String
+    do {
+      let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
+      return .Success(url)
+    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
+      errorInfo = "Unsupported target type: \(targetType)"
+    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
+      errorInfo = "General failure: \(details)"
+    } catch _ {
+      errorInfo = "Unexpected failure"
+    }
+    return .Failure(errorInfo)
+  }
+
   deinit {
     unbind("projectRuleEntries")
     stopObservingRuleEntries()
@@ -368,25 +400,20 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return nil
     }
 
-    let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
-                                                      config: config,
-                                                      messageLogger: messageLogger)
-    let errorInfo: String
-    do {
-      return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
-      errorInfo = "Unsupported target type: \(targetType)"
-    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
-      errorInfo = "General failure: \(details)"
-    } catch _ {
-      errorInfo = "Unexpected failure"
+    let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
+                                                                           withGeneratorConfig: config,
+                                                                           workspaceRootURL: workspaceRootURL,
+                                                                           messageLogger: self)
+    switch result {
+      case .Success(let url):
+        return url
+      case .Failure(let errorInfo):
+        let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
+                                    comment: "A general, critical failure during project generation. Details are provided as %1$@.")
+        let errorMessage = String(format: fmt, errorInfo)
+        self.error(errorMessage)
+        return nil
     }
-
-    let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-    let errorMessage = String(format: fmt, errorInfo)
-    self.error(errorMessage)
-    return nil
   }
 
   // MARK: - NSWindowDelegate

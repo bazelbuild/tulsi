@@ -53,8 +53,6 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
       }
       explicitBazelURL = NSURL(fileURLWithPath: bazelPath)
     } else {
-      // TODO(abaire): Make this non-fatal once TulsiGeneratorConfig can load Bazel from elsewhere.
-      throw Error.MissingConfigOption(CommandlineParser.ParamBazel)
       explicitBazelURL = nil
     }
 
@@ -74,33 +72,19 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     }
     let workspaceRootURL = NSURL(fileURLWithPath: workspaceRootPath, isDirectory: true)
 
-    let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
-                                                      config: config,
-                                                      messageLogger: self)
-
-    if arguments.warnMissingSources {
-      projectGenerator.treatMissingSourceTargetsAsWarnings = true
-    }
-
     print("Generating project into \(outputFolderURL.path!) using config at \(configURL.path!) " +
               "and Bazel workspace at \(workspaceRootPath).\n" +
               "This may take awhile.")
-
-    let errorInfo: String?
-    do {
-      let projectURL = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-      NSWorkspace.sharedWorkspace().openURL(projectURL)
-      errorInfo = nil
-    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
-      errorInfo = "Unsupported target type: \(targetType)"
-    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
-      errorInfo = "General failure: \(details)"
-    } catch _ {
-      errorInfo = "Unexpected failure"
-    }
-
-    if let errorInfo = errorInfo {
-      throw Error.GenerationFailed(errorInfo)
+    let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
+                                                                           withGeneratorConfig: config,
+                                                                           workspaceRootURL: workspaceRootURL,
+                                                                           messageLogger: self,
+                                                                           treatMissingSourceTargetsAsWarnings: arguments.warnMissingSources)
+    switch result {
+      case .Success(let url):
+        NSWorkspace.sharedWorkspace().openURL(url)
+      case .Failure(let errorInfo):
+        throw Error.GenerationFailed(errorInfo)
     }
   }
 
@@ -200,9 +184,9 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
   }
 
   private func loadConfig(url: NSURL, bazelURL: NSURL?) throws -> TulsiGeneratorConfig {
+    let config: TulsiGeneratorConfig
     do {
-      let config = try TulsiGeneratorConfig.load(url, bazelURL: bazelURL)
-      return config
+      config = try TulsiGeneratorConfig.load(url, bazelURL: bazelURL)
     } catch TulsiGeneratorConfig.Error.BadInputFilePath {
       throw Error.InvalidConfigFileContents("Failed to read config file at \(url.path!)")
     } catch TulsiGeneratorConfig.Error.FailedToReadAdditionalOptionsData(let info) {
@@ -212,6 +196,11 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     } catch {
       throw Error.InvalidConfigFileContents("Unexpected exception reading config file at \(url.path!)")
     }
+
+    if !config.bazelURL.fileURL {
+      throw Error.InvalidBazelPath
+    }
+    return config
   }
 }
 
