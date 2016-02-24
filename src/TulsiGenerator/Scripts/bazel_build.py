@@ -71,7 +71,9 @@ class _OptionsParser(object):
     self.sdk_version = sdk_version
 
     if not os.environ.get('TULSI_DISABLE_STUB_DSYM_GENERATOR', None):
+      # Fastbuild does not generate a dSYM (to minimize compilation work).
       self.build_options['Debug'].append('--objc_generate_debug_symbols')
+      self.build_options['Release'].append('--objc_generate_debug_symbols')
 
     if arch:
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
