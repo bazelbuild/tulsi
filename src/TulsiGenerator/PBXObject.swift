@@ -841,7 +841,8 @@ class PBXProject: PBXObjectProtocol {
         }
 
         // Create a subgroup for this simple path component.
-        group = group.getOrCreateChildGroupByName(currentComponent, path: currentComponent)
+        let groupName = currentComponent.isEmpty ? "/" : currentComponent
+        group = group.getOrCreateChildGroupByName(groupName, path: currentComponent)
         accessedGroups.append(group)
       }
 

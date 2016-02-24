@@ -36,7 +36,8 @@ class PBXObjectsTests: XCTestCase {
         "root",
         "test/file",
         "deeply/nested/files/1",
-        "deeply/nested/files/2"
+        "deeply/nested/files/2",
+        "/empty/component",
     ]
     let expectedStructure: [ExpectedStructure] = [
         .FileReference("root"),
@@ -49,6 +50,11 @@ class PBXObjectsTests: XCTestCase {
                     .FileReference("1"),
                     .FileReference("2"),
                 ]),
+            ]),
+        ]),
+        .Group("/", contents: [
+            .Group("empty", contents: [
+                .FileReference("component"),
             ]),
         ]),
     ]
