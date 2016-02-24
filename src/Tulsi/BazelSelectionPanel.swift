@@ -50,6 +50,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
     }
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
+    panel.directoryURL = document.bazelURL?.URLByDeletingLastPathComponent
     panel.beginSheetModalForWindow(window) { value in
       if value == NSFileHandlingPanelOKButton {
         document.bazelURL = panel.URL
