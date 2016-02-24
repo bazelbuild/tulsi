@@ -455,6 +455,21 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     buildSettings["BUILD_PATH"] = entry.label.packageName!
     buildSettings["PRODUCT_NAME"] = name
 
+    // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
+    // The build script uses the binary label to find and move the dSYM associated with an
+    // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application
+    // rules, at which point this may be removed.
+    if let binaryLabel = entry.attributes["binary"] {
+      buildSettings["BAZEL_BINARY"] = binaryLabel
+      let buildLabel = BuildLabel(binaryLabel)
+      let binaryPackage = buildLabel.packageName!
+      let binaryTarget = buildLabel.targetName!
+      let (binaryBundle, _) = PBXProject.productNameAndTypeForTargetName(binaryTarget,
+                                                                         targetType: pbxTargetType)
+      let dSYMPath =  "\(binaryPackage)/\(binaryBundle).dSYM"
+      buildSettings["BAZEL_BINARY_DSYM"] = dSYMPath
+    }
+
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
 
     if let buildPhase = createBuildPhaseForRuleEntry(entry) {

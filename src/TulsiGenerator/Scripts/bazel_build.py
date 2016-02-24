@@ -527,11 +527,24 @@ class BazelBuildBridge(object):
                          '%s' % (output_full_path, e))
         return 700
 
-    target_dsym_full_path = os.path.join(self.build_path, target_dsym)
-    if os.path.isdir(target_dsym_full_path):
+    input_dsym_full_path = os.path.join(self.build_path, target_dsym)
+    if os.path.isdir(input_dsym_full_path):
       return self._CopyBundle(target_dsym,
-                              target_dsym_full_path,
+                              input_dsym_full_path,
                               output_full_path)
+    elif 'BAZEL_BINARY_DSYM' in os.environ:
+      # TODO(abaire): Remove this hack once Bazel generates dSYMs for
+      #               ios_application/etc... bundles instead of their
+      #               contained binaries.
+      bazel_dsym_path = os.environ['BAZEL_BINARY_DSYM']
+      build_path_prefix = os.environ.get('BUILD_PATH', '')
+      if bazel_dsym_path.startswith(build_path_prefix):
+        bazel_dsym_path = bazel_dsym_path[len(build_path_prefix) + 1:]
+      input_dsym_full_path = os.path.join(self.build_path, bazel_dsym_path)
+      if os.path.isdir(input_dsym_full_path):
+        return self._CopyBundle(bazel_dsym_path,
+                                input_dsym_full_path,
+                                output_full_path)
     return 0
 
   def _SplitPathComponents(self, path):

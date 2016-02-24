@@ -709,10 +709,10 @@ class PBXProject: PBXObjectProtocol {
     self.name = name
   }
 
-  func createNativeTarget(name: String, targetType: PBXTarget.ProductType) -> PBXTarget {
-    let value = PBXNativeTarget(name: name, productType: targetType)
-    targetByName[name] = value
-
+  /// Returns the product name and explicit file type for a target with the given name and product
+  /// type.
+  static func productNameAndTypeForTargetName(name: String,
+                                              targetType: PBXTarget.ProductType) -> (String, String) {
     let productName: String
     let explicitFileType: String
     switch targetType {
@@ -752,6 +752,16 @@ class PBXProject: PBXObjectProtocol {
         productName = name + ".xpc"
         explicitFileType = "wrapper.xpc-service"
     }
+    return (productName, explicitFileType)
+  }
+
+  func createNativeTarget(name: String, targetType: PBXTarget.ProductType) -> PBXTarget {
+    let value = PBXNativeTarget(name: name, productType: targetType)
+    targetByName[name] = value
+
+    let (productName, explicitFileType) = PBXProject.productNameAndTypeForTargetName(name,
+                                                                                     targetType: targetType)
+
     let productReference = PBXFileReference(name: productName, path: productName, sourceTree: .BuiltProductsDir, parent: nil)
     productReference.fileTypeOverride = explicitFileType
     productReference.isInputFile = false
