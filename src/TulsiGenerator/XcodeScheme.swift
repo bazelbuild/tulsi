@@ -157,7 +157,7 @@ class XcodeScheme {
 
   /// Settings for the Xcode "Profile" action.
   private func profileAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "AnalyzeAction")
+    let element = NSXMLElement(name: "ProfileAction")
     let attributes = [
         "buildConfiguration": profileActionBuildConfig,
         "shouldUseLaunchSchemeArgsEnv": "YES",
