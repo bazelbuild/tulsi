@@ -110,69 +110,94 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let fileManager = NSFileManager.defaultManager()
 
     if path.hasSuffix(".xcodeproj") || path.hasSuffix(".xcodeproj/"){
-      let projectURL = NSURL.fileURLWithPath(path, isDirectory: true)
-      let configDirectoryURL = projectURL.URLByAppendingPathComponent(TulsiXcodeProjectGenerator.ConfigDirectorySubpath)
-      if !isExistingDirectory(configDirectoryURL) {
-        throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config folder.")
-      }
-
-      do {
-        let contents = try fileManager.contentsOfDirectoryAtURL(configDirectoryURL,
-                                                                includingPropertiesForKeys: nil,
-                                                                options: .SkipsHiddenFiles)
-        for url in contents {
-          guard let path = url.path else { continue }
-          if path.hasSuffix(TulsiGeneratorConfig.FileExtension) {
-            return (url, projectURL.URLByDeletingLastPathComponent!)
-          }
-        }
-      } catch let e as NSError {
-        throw Error.InvalidConfigPath("Failed to search the given Xcode project: \(e.localizedDescription)")
-      } catch {
-        throw Error.InvalidConfigPath("Failed to search the given Xcode project")
-      }
-      throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config.")
+      return try resolveXcodeProjConfigPath(path)
     }
 
-    let components = path.componentsSeparatedByString(":")
-    if components.count == 2 {
-      var tulsiProj = components[0]
-      let bundleExtension = TulsiProjectDocument.getTulsiBundleExtension()
-      if !tulsiProj.hasSuffix(bundleExtension) {
-        tulsiProj += ".\(bundleExtension)"
-      }
-
-      let tulsiProjectURL = NSURL(fileURLWithPath: tulsiProj, isDirectory: true)
-      if !isExistingDirectory(tulsiProjectURL) {
-        throw Error.InvalidConfigPath("The given Tulsi project does not exist")
-      }
-
-      let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
-      if !isExistingDirectory(configDirectoryURL) {
-        throw Error.InvalidConfigPath("The given Tulsi project does not contain any configs")
-      }
-
-      let configName = components[1]
-      let configFilename: String
-      if configName.hasSuffix(TulsiGeneratorConfig.FileExtension) {
-        configFilename = configName
-      } else {
-        configFilename = "\(configName).\(TulsiGeneratorConfig.FileExtension)"
-      }
-      let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)
-      if fileManager.isReadableFileAtPath(configFileURL.path!) {
-        return (configFileURL, tulsiProjectURL.URLByDeletingLastPathComponent!)
-      }
-      throw Error.InvalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
-    }
-
-    // If the given path exists, assume it's a config file.
     if path.hasSuffix(TulsiGeneratorConfig.FileExtension) && fileManager.isReadableFileAtPath(path) {
       let configURL = NSURL(fileURLWithPath:path, isDirectory: false)
       return (configURL, nil)
     }
 
+    let tulsiProjExtension = TulsiProjectDocument.getTulsiBundleExtension()
+    let components = path.componentsSeparatedByString(":")
+    if components.count == 2 {
+      var pathString = components[0] as NSString
+      let projectExtension = pathString.pathExtension
+      if projectExtension != tulsiProjExtension {
+        pathString = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
+      }
+      return try resolveConfig(components[1], inTulsiProject: pathString as String)
+    }
+
+    var pathString = path as NSString
+    let pathExtension = pathString.pathExtension
+    var isProject = pathExtension == tulsiProjExtension
+    if !isProject && pathExtension.isEmpty {
+      let projectPath = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
+      let projectURL = NSURL(fileURLWithPath: projectPath, isDirectory: true)
+      if isExistingDirectory(projectURL) {
+        isProject = true
+        pathString = projectPath as NSString
+      }
+    }
+    if isProject {
+      let project = pathString.lastPathComponent as NSString
+      let projectName = project.stringByDeletingPathExtension
+      return try resolveConfig(projectName, inTulsiProject: pathString as String)
+    }
+
     throw Error.InvalidConfigPath("The given config is invalid")
+  }
+
+  private func resolveXcodeProjConfigPath(path: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
+    let fileManager = NSFileManager.defaultManager()
+    let projectURL = NSURL.fileURLWithPath(path, isDirectory: true)
+    let configDirectoryURL = projectURL.URLByAppendingPathComponent(TulsiXcodeProjectGenerator.ConfigDirectorySubpath)
+    if !isExistingDirectory(configDirectoryURL) {
+      throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config folder.")
+    }
+
+    do {
+      let contents = try fileManager.contentsOfDirectoryAtURL(configDirectoryURL,
+                                                              includingPropertiesForKeys: nil,
+                                                              options: .SkipsHiddenFiles)
+      for url in contents {
+        guard let path = url.path else { continue }
+        if path.hasSuffix(TulsiGeneratorConfig.FileExtension) {
+          return (url, projectURL.URLByDeletingLastPathComponent!)
+        }
+      }
+    } catch let e as NSError {
+      throw Error.InvalidConfigPath("Failed to search the given Xcode project: \(e.localizedDescription)")
+    } catch {
+      throw Error.InvalidConfigPath("Failed to search the given Xcode project")
+    }
+    throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config.")
+  }
+
+  private func resolveConfig(configName: String,
+                             inTulsiProject tulsiProj: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
+    let tulsiProjectURL = NSURL(fileURLWithPath: tulsiProj, isDirectory: true)
+    if !isExistingDirectory(tulsiProjectURL) {
+      throw Error.InvalidConfigPath("The given Tulsi project does not exist")
+    }
+
+    let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
+    if !isExistingDirectory(configDirectoryURL) {
+      throw Error.InvalidConfigPath("The given Tulsi project does not contain any configs")
+    }
+
+    let configFilename: String
+    if configName.hasSuffix(TulsiGeneratorConfig.FileExtension) {
+      configFilename = configName
+    } else {
+      configFilename = "\(configName).\(TulsiGeneratorConfig.FileExtension)"
+    }
+    let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)
+    if NSFileManager.defaultManager().isReadableFileAtPath(configFileURL.path!) {
+      return (configFileURL, tulsiProjectURL.URLByDeletingLastPathComponent!)
+    }
+    throw Error.InvalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
   }
 
   private func isExistingDirectory(url: NSURL) -> Bool {
