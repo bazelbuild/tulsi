@@ -267,6 +267,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/app:TestApplication",
+          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -294,6 +296,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
           "BUILD_PATH": rule2BuildPath,
           "PRODUCT_NAME": rule2TargetName,
       ]
@@ -349,6 +352,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/app:TestApplication",
+          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -376,6 +381,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BUILD_PATH": rule2BuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": rule2TargetName,
@@ -437,6 +443,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 2)
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/app:TestApplication",
+          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -474,6 +482,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BUILD_PATH": testRuleBuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": testRuleTargetName,

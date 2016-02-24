@@ -26,6 +26,12 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
       "ios_test": PBXTarget.ProductType.UnitTest,
   ]
 
+  static let BuildTypesWithImplicitIPAs = Set<String>([
+      "ios_application",
+      "ios_extension",
+      "objc_binary",
+  ])
+
   public let label: BuildLabel
   public let type: String
 
@@ -42,6 +48,15 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
       return RuleEntry.BuildTypeToTargetType["ios_application"]
     }
     return RuleEntry.BuildTypeToTargetType[type]
+  }
+
+  /// For rule types that generate an implicit name.ipa target, returns a BuildLabel usable to
+  /// generate the IPA.
+  var implicitIPATarget: BuildLabel? {
+    if RuleEntry.BuildTypesWithImplicitIPAs.contains(type) {
+      return BuildLabel(label.value + ".ipa")
+    }
+    return nil
   }
 
   public var hashValue: Int {
