@@ -246,7 +246,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       if let error = error {
         let fmt = NSLocalizedString("Error_ConfigSaveFailed",
                                     comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
-        self.error(String(format: fmt, error.localizedDescription))
+        self.warning(String(format: fmt, error.localizedDescription))
+
+        let alert = NSAlert(error: error)
+        alert.runModal()
       }
 
       completionHandler(error)
