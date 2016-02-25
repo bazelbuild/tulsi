@@ -195,8 +195,15 @@ final class TulsiProjectDocument: NSDocument,
     bundleFileWrapper.addRegularFileWithContents(try project.save(),
                                                  preferredFilename: TulsiProject.ProjectFilename)
 
-    // TODO(abaire): Add any generated config documents.
-    let configsFolder = NSFileWrapper(directoryWithFileWrappers: [:])
+    let configsFolder: NSFileWrapper
+    if let existingConfigFolderURL = generatorConfigFolderURL {
+      // Preserve any existing config documents.
+      configsFolder = try NSFileWrapper(URL: existingConfigFolderURL,
+                                        options:  NSFileWrapperReadingOptions())
+    } else {
+      // Add a placeholder Configs directory.
+      configsFolder = NSFileWrapper(directoryWithFileWrappers: [:])
+    }
     configsFolder.preferredFilename = TulsiProjectDocument.ProjectConfigsSubpath
     bundleFileWrapper.addFileWrapper(configsFolder)
     return bundleFileWrapper
