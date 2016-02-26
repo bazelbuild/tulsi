@@ -17,15 +17,11 @@ import Foundation
 
 /// Defines an object that can extract information from a Bazel workspace.
 protocol WorkspaceInfoExtractorProtocol {
-  // TODO(abaire): Make all of these synchronous calls and pull the threading up to the app layer.
+  /// Extracts the set of target rule entries from the given project.
+  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry]
 
-  /// Extracts the set of target rule entries from the given project and invokes the given callback
-  /// asynchronously on the main queue.
-  func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void)
-
-  /// Extracts source file RuleEntry's for the given set of target rules and invokes callback
-  /// asynchronously on the main queue.
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void)
+  /// Extracts source file RuleEntry's for the given set of target rules.
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry]
 
   /// Extracts source file paths for the given set of source rules and provides a dictionary mapping
   /// each RuleEntry to the set of source files needed by that rule.

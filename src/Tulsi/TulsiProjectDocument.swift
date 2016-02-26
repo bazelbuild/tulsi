@@ -465,10 +465,13 @@ final class TulsiProjectDocument: NSDocument,
     infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
                                               project: project,
                                               messageLogger: self)
-    infoExtractor.extractTargetRules() {
-      (updatedRuleEntries: [RuleEntry]) -> Void in
-        defer { self.processingTaskFinished() }
+
+    NSThread.doOnQOSUserInitiatedThread() {
+      let updatedRuleEntries = self.infoExtractor.extractTargetRules()
+      NSThread.doOnMainThread() {
         self._ruleEntries = updatedRuleEntries
+        self.processingTaskFinished()
+      }
     }
   }
 }

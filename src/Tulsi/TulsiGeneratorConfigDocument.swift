@@ -361,15 +361,18 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     sourceUIRuleEntries.removeAll()
     processingTaskStarted()
 
-    infoExtractor.extractSourceRulesForRuleEntries(selectedRuleEntries) {
-      (sourceRuleEntries: [RuleEntry]) -> Void in
+    NSThread.doOnQOSUserInitiatedThread() {
+      let sourceRuleEntries = self.infoExtractor.extractSourceRulesForRuleEntries(self.selectedRuleEntries)
+      let sourceUIRuleEntries = sourceRuleEntries.map { (ruleEntry: RuleEntry) -> UIRuleEntry in
+        let uiRuleEntry = UIRuleEntry(ruleEntry: ruleEntry)
+        uiRuleEntry.selected = selectedRuleLabels.contains(uiRuleEntry.fullLabel)
+        return uiRuleEntry
+      }
+      NSThread.doOnMainThread() {
         defer { self.processingTaskFinished() }
-        self.sourceUIRuleEntries = sourceRuleEntries.map {
-          let entry = UIRuleEntry(ruleEntry: $0)
-          entry.selected = selectedRuleLabels.contains(entry.fullLabel)
-          return entry
-        }
+        self.sourceUIRuleEntries = sourceUIRuleEntries
         callback(self.sourceUIRuleEntries)
+      }
     }
   }
 

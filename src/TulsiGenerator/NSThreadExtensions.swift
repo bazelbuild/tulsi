@@ -25,4 +25,11 @@ extension NSThread {
       closure()
     }
   }
+
+  /// Performs the given closure on the system thread reserved for user-initiated activities.
+  public class func doOnQOSUserInitiatedThread(closure: (Void) -> Void ) {
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+      closure()
+    }
+  }
 }

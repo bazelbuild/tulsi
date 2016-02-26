@@ -66,39 +66,40 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
 
   // MARK: - WorkspaceInfoExtractorProtocol
 
-  func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
+  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
     let projectPackages = project.bazelPackages
     guard !projectPackages.isEmpty, let path = workspaceRootURL.path else {
-      NSThread.doOnMainThread { callback([]) }
-      return
+      return []
     }
 
     // TODO(abaire): Figure out multiple package support.
+    let semaphore = dispatch_semaphore_create(0)
     let task = bazelAspectTaskForTarget("\(projectPackages.first!):all",
                                         aspect: "tulsi_supported_targets_aspect") {
       (task: NSTask, data: NSData, debugInfo: String) -> Void in
+        defer{ dispatch_semaphore_signal(semaphore) }
         // TODO(abaire): Implement extraction of data.
         if let stdout = NSString(data: data, encoding: NSUTF8StringEncoding) {
           print("Extraction succeeded: '\(stdout)'\n\n\(debugInfo)\n\n")
         } else {
           print("Extraction failed \(task.terminationStatus): \(debugInfo)")
         }
-        NSThread.doOnMainThread {
-          callback([])
-        }
     }
 
-    if task == nil {
-      NSThread.doOnMainThread { callback([]) }
-      return
+    if let task = task {
+      task.currentDirectoryPath = path
+      task.launch()
+      dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+
+      // TODO(abaire): Extract results and return.
     }
 
-    task!.currentDirectoryPath = path
-    task!.launch()
+    return []
   }
 
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
     assertionFailure("TODO(abaire): Implement")
+    return []
   }
 
   func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry:[String]] {

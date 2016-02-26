@@ -87,7 +87,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       return
     }
 
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+    NSThread.doOnQOSUserInitiatedThread() {
       let projectURL = self.generateXcodeProjectForConfigName(name)
       NSThread.doOnMainThread() {
         completionHandler(projectURL)

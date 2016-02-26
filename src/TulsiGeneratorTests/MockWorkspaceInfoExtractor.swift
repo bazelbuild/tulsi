@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 @testable import TulsiGenerator
 
 
@@ -26,14 +27,17 @@ class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
 
   var explicitIncludePaths: Set<String>? = nil
   var defines: Set<String>? = nil
+  var bazelURL = NSURL()
+
+  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
+    return []
+  }
+
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
+    return []
+  }
 
   func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
-  }
-
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
-  }
-
-  func extractBUILDFilePathsForRules(ruleEntries: [RuleEntry], callback: ([String]) -> Void) {
   }
 
   func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry: [String]] {

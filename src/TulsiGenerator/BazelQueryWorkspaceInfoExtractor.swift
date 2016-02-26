@@ -46,40 +46,33 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
 
   // MARK: - WorkspaceInfoExtractorProtocol
 
-  func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
+  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
     let projectPackages = project.bazelPackages
-    guard !projectPackages.isEmpty, let path = workspaceRootURL.path else {
-      NSThread.doOnMainThread { callback([]) }
-      return
+    guard !projectPackages.isEmpty else {
+      return []
     }
 
+    var ruleEntries = [RuleEntry]()
     let query = projectPackages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
     let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
                                                                message: "Fetching rules for packages \(projectPackages)")
-    let task = bazelQueryTask(query, outputKind: "xml") {
-      (task: NSTask, data: NSData, debugInfo: String) -> Void in
-        let ruleEntries = self.extractRuleEntriesFromBazelXMLOutput(data)
-        if ruleEntries == nil {
-          self.localizedMessageLogger.infoMessage(debugInfo)
-        }
-        self.localizedMessageLogger.logProfilingEnd(profilingStart)
-        NSThread.doOnMainThread {
-          assert(ruleEntries != nil, "Extraction failed for query \(query)")
-          callback(ruleEntries!)
-        }
-    }
 
-    task.currentDirectoryPath = path
-    task.launch()
+    let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    if let entries = self.extractRuleEntriesFromBazelXMLOutput(data) {
+      ruleEntries = entries
+    } else {
+      localizedMessageLogger.infoMessage(debugInfo)
+    }
+    localizedMessageLogger.logProfilingEnd(profilingStart)
+    return ruleEntries
   }
 
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
-    var sourceRuleEntries = [RuleEntry]()
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
     guard let path = workspaceRootURL.path else {
-      NSThread.doOnMainThread { callback(sourceRuleEntries) }
-      return
+      return []
     }
 
+    var sourceRuleEntries = [RuleEntry]()
     let sourceRuleEntriesSempahore = dispatch_semaphore_create(1)
     let dispatchGroup = dispatch_group_create()
     let profilingStart = localizedMessageLogger.startProfiling("extract_source_rules",
@@ -110,11 +103,11 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
       task.launch()
     }
 
-    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-      sourceRuleEntries.sortInPlace {$0.label < $1.label}
-      self.localizedMessageLogger.logProfilingEnd(profilingStart)
-      callback(sourceRuleEntries)
-    }
+    dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER)
+
+    sourceRuleEntries.sortInPlace {$0.label < $1.label}
+    localizedMessageLogger.logProfilingEnd(profilingStart)
+    return sourceRuleEntries
   }
 
   func extractSourceFilePathsForSourceRules(sourceRuleEntries: [RuleEntry]) -> [RuleEntry: [String]] {

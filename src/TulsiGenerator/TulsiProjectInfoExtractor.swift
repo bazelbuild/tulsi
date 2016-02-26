@@ -45,12 +45,12 @@ public class TulsiProjectInfoExtractor {
     }
   }
 
-  public func extractTargetRules(callback: ([RuleEntry]) -> Void) {
-    workspaceInfoExtractor.extractTargetRulesFromProject(project, callback: callback)
+  public func extractTargetRules() -> [RuleEntry] {
+    return workspaceInfoExtractor.extractTargetRulesFromProject(project)
   }
 
-  public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry], callback: ([RuleEntry]) -> Void) {
-    workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries, callback: callback)
+  public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
+    return workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries)
   }
 
   public func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
