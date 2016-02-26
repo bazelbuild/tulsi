@@ -16,8 +16,8 @@ import Foundation
 
 
 // Concrete extractor that utilizes Bazel query (http://bazel.io/docs/query.html) to extract
-// information about a BUILD file.
-class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelResolverProtocol {
+// information from a workspace.
+final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelResolverProtocol {
   /// The maximum number of bazel tasks that any logical action may run in parallel.
   // Note that multiple logical actions may execute concurrently, so the actual number of bazel
   // tasks could be higher than this.
@@ -34,9 +34,9 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
 
   private let localizedMessageLogger: LocalizedMessageLogger
 
-  private typealias BazelQueryCompletionHandler = (bazelTask: NSTask,
-                                                   returnedData: NSData,
-                                                   debugInfo: String) -> Void
+  private typealias CompletionHandler = (bazelTask: NSTask,
+                                         returnedData: NSData,
+                                         debugInfo: String) -> Void
 
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
@@ -281,7 +281,7 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
   private func bazelQueryTask(query: String,
                               outputKind: String? = nil,
                               var message: String = "",
-                              terminationHandler: BazelQueryCompletionHandler) -> NSTask {
+                              terminationHandler: CompletionHandler) -> NSTask {
     var arguments = [
         "--max_idle_secs=60",
         "query",
@@ -548,48 +548,5 @@ class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelRes
     }
 
     return paths
-  }
-}
-
-
-/// Encapsulates posting progress update notifications.
-class ProgressNotifier {
-  let name: String
-  let maxValue: Int
-
-  var value: Int = 0 {
-    didSet {
-      NSThread.doOnMainThread() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(ProgressUpdatingTaskProgress,
-                                                object: self,
-                                                userInfo: [
-                                                    ProgressUpdatingTaskProgressValue: self.value,
-                                                ])
-      }
-    }
-  }
-
-  /// Initializes a new instance with the given name and maximum value. Note that a maxValue <= 0
-  /// indicates an indeterminate progress item.
-  init(name: String, maxValue: Int = 0) {
-    self.name = name
-    self.maxValue = maxValue
-
-    NSThread.doOnMainThread() {
-      let notificationCenter = NSNotificationCenter.defaultCenter()
-      notificationCenter.postNotificationName(ProgressUpdatingTaskDidStart,
-                                              object: self,
-                                              userInfo: [
-                                                  ProgressUpdatingTaskName: name,
-                                                  ProgressUpdatingTaskMaxValue: maxValue,
-                                              ])
-    }
-  }
-
-  /// For progress items that don't have intermediate updates, sends a notification that value =
-  /// maxValue.
-  func notifyCompleted() {
-    value = maxValue
   }
 }

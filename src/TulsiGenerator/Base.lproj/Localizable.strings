@@ -17,6 +17,9 @@
 /* Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file. */
 "BazelResponseXMLParsingFailed" = "Bazel response XML parsing failed with error '%1$@'. This may be a Bazel bug or a BUILD file issue.";
 
+/* Extracting package_path info from bazel failed. The exit code is %1$d. */
+"BazelWorkspaceInfoQueryFailed" = "Failed to query information about the bazel workspace. Bazel exited with code %1$d";
+
 /* bridging_header label cannot be resolved to a file. %1$@ is replaced with the bazel label that was used. */
 "BridgingHeaderResolverFailed" = "Failed to resolve bridging_header label '%1$@' to a file. The bridging header will be ignored, which may lead to broken indexing in Xcode. Please verify that the label is valid and report a bug as appropriate.";
 

@@ -42,4 +42,7 @@ protocol WorkspaceInfoExtractorProtocol {
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).
   func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry]
+
+  /// URL to the Bazel binary used by this extractor.
+  var bazelURL: NSURL {get set}
 }

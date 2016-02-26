@@ -19,7 +19,7 @@ import Foundation
 public class TulsiProjectInfoExtractor {
   private let project: TulsiProject
   private let localizedMessageLogger: LocalizedMessageLogger
-  private var workspaceInfoExtractor: BazelQueryWorkspaceInfoExtractor! = nil
+  private var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol! = nil
 
   public var bazelURL: NSURL {
     get { return workspaceInfoExtractor.bazelURL }
@@ -32,9 +32,17 @@ public class TulsiProjectInfoExtractor {
     self.project = project
     let bundle = NSBundle(forClass: self.dynamicType)
     localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger, bundle: bundle)
-    workspaceInfoExtractor = BazelQueryWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                              workspaceRootURL: project.workspaceRootURL,
-                                                              localizedMessageLogger: localizedMessageLogger)
+
+    // TODO(abaire): Remove this when aspects become the default.
+    if NSUserDefaults.standardUserDefaults().boolForKey("use_aspects") {
+      workspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                                 workspaceRootURL: project.workspaceRootURL,
+                                                                 localizedMessageLogger: localizedMessageLogger)
+    } else {
+      workspaceInfoExtractor = BazelQueryWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                                workspaceRootURL: project.workspaceRootURL,
+                                                                localizedMessageLogger: localizedMessageLogger)
+    }
   }
 
   public func extractTargetRules(callback: ([RuleEntry]) -> Void) {
