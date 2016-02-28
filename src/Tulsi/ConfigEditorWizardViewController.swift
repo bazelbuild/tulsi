@@ -20,8 +20,8 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
   // The storyboard identifiers for the wizard subpage view controllers.
   static let wizardPageIdentifiers = [
       "BUILDTargetSelect",
+      "Options",
       "SourceTargetSelect",
-      "Options"
   ]
   static let LastPageIndex = wizardPageIdentifiers.count - 1
   var pageViewController: NSPageController! = nil
