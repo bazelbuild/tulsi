@@ -20,7 +20,7 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
 
   /// The location of the bazel binary.
   var bazelURL: NSURL
-  /// The location of the directory in which the workspace enclosing this BUILD file can be found.
+  /// The location of the Bazel workspace to be examined.
   let workspaceRootURL: NSURL
 
   /// Additional startup options for the Bazel aspect invocations.
@@ -28,8 +28,8 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
   /// Additional options for the Bazel "build" aspect invocation.
   let bazelBuildOptions: [String]
 
-  /// The Bazel package_path as defined by the target workspace.
-  private var packagePath: String? = nil
+  /// Fetcher object from which a workspace's package_path may be obtained.
+  private let packagePathFetcher: WorkspacePackagePathFetcher
 
   private let bundle: NSBundle
   // Absolute path to the workspace containing the Tulsi aspect bzl file.
@@ -38,9 +38,23 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
   private let aspectFileWorkspaceRelativePath: String
   private let localizedMessageLogger: LocalizedMessageLogger
 
+  static let debugInfoFormatString: String = {
+    NSLocalizedString("DebugInfoForBazelCommand",
+                      bundle: NSBundle(forClass: BazelAspectWorkspaceInfoExtractor.self),
+                      comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
+  }()
+
   private typealias CompletionHandler = (bazelTask: NSTask,
                                          returnedData: NSData,
                                          debugInfo: String) -> Void
+
+  static func debugInfoForTaskCompletion(completionInfo: TaskRunner.CompletionInfo) -> String {
+    let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
+    return String(format: debugInfoFormatString,
+                  completionInfo.commandlineString,
+                  completionInfo.terminationStatus,
+                  stderr ?? "<No STDERR>")
+  }
 
   init(bazelURL: NSURL,
        workspaceRootURL: NSURL,
@@ -52,7 +66,9 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
     self.bazelBuildOptions = bazelBuildOptions
     self.workspaceRootURL = workspaceRootURL
     self.localizedMessageLogger = localizedMessageLogger
-
+    self.packagePathFetcher = WorkspacePackagePathFetcher(bazelURL: bazelURL,
+                                                          workspaceRootURL: workspaceRootURL,
+                                                          localizedMessageLogger: localizedMessageLogger)
     bundle = NSBundle(forClass: self.dynamicType)
 
     let workspaceFilePath = bundle.pathForResource("WORKSPACE", ofType: "")! as NSString
@@ -72,6 +88,8 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
       return []
     }
 
+    let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
+                                                               message: "Fetching rules for packages \(projectPackages)")
     // TODO(abaire): Figure out multiple package support.
     let semaphore = dispatch_semaphore_create(0)
     let task = bazelAspectTaskForTarget("\(projectPackages.first!):all",
@@ -94,6 +112,7 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
       // TODO(abaire): Extract results and return.
     }
 
+    localizedMessageLogger.logProfilingEnd(profilingStart)
     return []
   }
 
@@ -137,9 +156,7 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
                                         aspect: String,
                                         var message: String = "",
                                         terminationHandler: CompletionHandler) -> NSTask? {
-    guard let workspacePackagePath = getWorkspacePackagePath() else {
-      return nil
-    }
+    let workspacePackagePath = packagePathFetcher.getPackagePath()
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
 
     var arguments = bazelStartupOptions
@@ -177,18 +194,56 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
 
     return task
   }
+}
+
+
+/// Handles fetching of a package_path for a Bazel workspace.
+class WorkspacePackagePathFetcher {
+  /// The Bazel package_path as defined by the target workspace.
+  private var packagePath: String? = nil
+
+  /// The location of the bazel binary.
+  private let bazelURL: NSURL
+  /// The location of the Bazel workspace to be examined.
+  private let workspaceRootURL: NSURL
+  private let localizedMessageLogger: LocalizedMessageLogger
+  private let semaphore: dispatch_semaphore_t
+
+  init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
+    self.bazelURL = bazelURL
+    self.workspaceRootURL = workspaceRootURL
+    self.localizedMessageLogger = localizedMessageLogger
+
+    semaphore = dispatch_semaphore_create(0)
+    fetchWorkspacePackagePath()
+  }
+
+  /// Returns the package_path for this fetcher's workspace, blocking until it is available.
+  func getPackagePath() -> String {
+    if let packagePath = packagePath { return packagePath }
+    waitForCompletion()
+    return packagePath!
+  }
+
+  // MARK: - Private methods
+
+  // Waits for the workspace fetcher to signal the
+  private func waitForCompletion() {
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    dispatch_semaphore_signal(semaphore)
+  }
 
   // Fetches Bazel package_path info from the registered workspace URL.
-  private func getWorkspacePackagePath() -> String? {
-    if let packagePath = packagePath { return packagePath }
-
-    localizedMessageLogger.infoMessage("Fetching bazel package_path info")
-
-    let semaphore = dispatch_semaphore_create(0)
+  private func fetchWorkspacePackagePath() {
+    let profilingStart = localizedMessageLogger.startProfiling("get_package_path",
+                                                               message: "Fetching bazel package_path info")
     let task = TaskRunner.standardRunner().createTask(bazelURL.path!,
                                                       arguments: ["info", "package_path"]) {
       completionInfo in
-        defer { dispatch_semaphore_signal(semaphore) }
+        defer {
+          self.localizedMessageLogger.logProfilingEnd(profilingStart)
+          dispatch_semaphore_signal(self.semaphore)
+        }
         if completionInfo.task.terminationStatus == 0 {
           if let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) {
             self.packagePath = stdout.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet()) as String
@@ -196,26 +251,14 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
           }
         }
 
+        self.packagePath = ""
         self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
                                           comment: "Extracting package_path info from bazel failed. The exit code is %1$d.",
                                           values: completionInfo.task.terminationStatus)
-        self.localizedMessageLogger.infoMessage(self.debugInfoForTaskCompletion(completionInfo))
+        let debugInfo = BazelAspectWorkspaceInfoExtractor.debugInfoForTaskCompletion(completionInfo)
+        self.localizedMessageLogger.infoMessage(debugInfo)
     }
     task.currentDirectoryPath = workspaceRootURL.path!
     task.launch()
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-    return packagePath
-  }
-
-  private func debugInfoForTaskCompletion(completionInfo: TaskRunner.CompletionInfo) -> String {
-    let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
-                                                  bundle: bundle,
-                                                  comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
-    let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
-    return String(format: debugInfoFormatString,
-                  completionInfo.commandlineString,
-                  completionInfo.terminationStatus,
-                  stderr ?? "<No STDERR>")
   }
 }
