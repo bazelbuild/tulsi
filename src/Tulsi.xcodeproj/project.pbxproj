@@ -84,6 +84,9 @@
 		3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */; };
 		3DF313B41C3488BE00A34C14 /* UIRuleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF313B31C3488BE00A34C14 /* UIRuleNode.swift */; };
 		3DF313B71C34898500A34C14 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DF313B91C34898500A34C14 /* Localizable.strings */; };
+		3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */; };
+		3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */; };
+		3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift */; };
 		8B29E2D01BF9386200680E11 /* TulsiProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */; };
 		8B8F559B1BE3ECDC0095AF7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F559A1BE3ECDC0095AF7F /* AppDelegate.swift */; };
@@ -203,6 +206,9 @@
 		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
 		3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
+		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
+		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
+		3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitterTests.swift; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceTargetViewController.swift; sourceTree = "<group>"; };
 		8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectDocument.swift; sourceTree = "<group>"; };
 		8B8F1B111BF6BDD50008013B /* BuildLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildLabel.swift; sourceTree = "<group>"; };
@@ -268,12 +274,10 @@
 		3D9926641C29F0A20094E098 /* TulsiGenerator */ = {
 			isa = PBXGroup;
 			children = (
-				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
 				3DA65B421C6854BA0055448E /* Implementation */,
 				3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */,
 				3DA65B1C1C67B9F10055448E /* Models */,
 				3D78698C1C57D6DB0070FCC8 /* Resources */,
-				3D029B571C6421B400779E8E /* TaskRunner.swift */,
 				3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */,
 				3D9926961C29FB180094E098 /* TulsiProjectInfoExtractor.swift */,
 				3DA65B271C67E9720055448E /* TulsiXcodeProjectGenerator.swift */,
@@ -286,6 +290,7 @@
 			children = (
 				3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */,
 				3D9DAF541C23604100955CD5 /* BuildLabelTests.swift */,
+				3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */,
 				3D9926751C29F0A30094E098 /* Info.plist */,
 				3DA65B411C68539F0055448E /* Mocks */,
 				3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */,
@@ -327,6 +332,8 @@
 				3DCFE5DD1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift */,
 				3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */,
 				3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */,
+				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
+				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
 				8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */,
 				3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */,
 				3D9E1A501C6F87670026EE68 /* NSThreadExtensions.swift */,
@@ -335,6 +342,7 @@
 				AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */,
 				3D9F439F1C160AFA00032F32 /* PBXUniformTypeIdentifiers.swift */,
 				3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */,
+				3D029B571C6421B400779E8E /* TaskRunner.swift */,
 				3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */,
 				3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */,
 				3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */,
@@ -348,6 +356,7 @@
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
 				3D156AE11C1C8D9C00183439 /* bazel_clean.sh */,
 				033651E41C6EC8BA00C2C9CA /* bazel_env.sh */,
+				3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -600,6 +609,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
+				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
@@ -657,6 +667,7 @@
 				3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */,
 				3DA65B281C67E9720055448E /* TulsiXcodeProjectGenerator.swift in Sources */,
 				3D250B7F1C5DCE120091C7A5 /* XcodeScheme.swift in Sources */,
+				3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */,
 				3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */,
 				3D9926871C29F10B0094E098 /* BazelQueryWorkspaceInfoExtractor.swift in Sources */,
 				3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */,
@@ -686,6 +697,7 @@
 				3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */,
 				3DA65B3E1C6849140055448E /* XcodeProjectGeneratorTests.swift in Sources */,
 				3DA65B401C6853970055448E /* MockLabelResolver.swift in Sources */,
+				3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */,
 				3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */,
 				3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */,
 				3D9926851C29F0CC0094E098 /* PBXProjSerializerTests.swift in Sources */,
