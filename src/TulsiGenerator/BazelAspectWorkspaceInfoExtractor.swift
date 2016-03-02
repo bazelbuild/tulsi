@@ -126,7 +126,7 @@ final class BazelAspectWorkspaceInfoExtractor {
   // the output data and passing it to the terminationHandler.
   private func bazelAspectTaskForTargets(targets: [String],
                                          aspect: String,
-                                         var message: String = "",
+                                         message: String = "",
                                          terminationHandler: CompletionHandler) -> NSTask? {
     let workspacePackagePath = packagePathFetcher.getPackagePath()
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
@@ -147,6 +147,7 @@ final class BazelAspectWorkspaceInfoExtractor {
     arguments.appendContentsOf(bazelBuildOptions)
     arguments.appendContentsOf(targets)
 
+    var message = message
     if message != "" {
       message = "\(message)\n"
     }

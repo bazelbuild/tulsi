@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// Models a Tulsi option as a node suitable for display in the options editor.
-class OptionsEditorNode: NSObject, CustomDebugStringConvertible {
+class OptionsEditorNode: NSObject {
   // Note: The values here are also used as storyboard identifiers for table columns.
   enum OptionLevel: String {
     case Target = "TargetValue"

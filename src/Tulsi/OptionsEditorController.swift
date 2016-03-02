@@ -105,7 +105,8 @@ final class PopUpButtonTableCellView: TextTableCellView {
 
 /// A text field within the editor outline view.
 final class OptionsEditorTextField: NSTextField {
-  override func textDidEndEditing(var notification: NSNotification) {
+  override func textDidEndEditing(notification: NSNotification) {
+    var notification = notification
     // If the text field completed due to a return keypress convert its movement into "other" so
     // that the keypress is not passed up the responder chain causing some other control (e.g., the
     // default button in the wizard) to handle it as well.
@@ -374,7 +375,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
             let rowView = view.rowViewAtRow(rowIndex, makeIfNecessary: false) else {
         return
       }
-      for i in 0..<rowView.numberOfColumns {
+      for i in 0 ..< rowView.numberOfColumns {
         if let columnView = rowView.viewAtColumn(i) as? TextTableCellView {
           columnView.selected = selected
         }
@@ -472,7 +473,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
       indexes.addIndex(view.rowForItem(parent))
     } else {
       let numChildren = view.numberOfChildrenOfItem(item)
-      for i in 0..<numChildren {
+      for i in 0 ..< numChildren {
         let child = view.child(i, ofItem: item)
         let childIndex = view.rowForItem(child)
         if childIndex >= 0 {

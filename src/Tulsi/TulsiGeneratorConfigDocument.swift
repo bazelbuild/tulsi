@@ -348,9 +348,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
     if keyPath == "selected", let newValue = change?[NSKeyValueChangeNewKey] as? Bool {
       if (newValue) {
-        ++selectedRuleEntryCount
+        selectedRuleEntryCount += 1
       } else {
-        --selectedRuleEntryCount
+        selectedRuleEntryCount -= 1
       }
     }
   }

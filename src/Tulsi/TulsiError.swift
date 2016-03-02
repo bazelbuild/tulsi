@@ -36,7 +36,8 @@ class TulsiError: NSError {
     self.init(code: .General, userInfo: [NSLocalizedDescriptionKey: String(format: fmt, errorMessage)])
   }
 
-  init(code: ErrorCode, var userInfo: [String: AnyObject]? = nil) {
+  init(code: ErrorCode, userInfo: [String: AnyObject]? = nil) {
+    var userInfo = userInfo
     if userInfo == nil {
       userInfo = [NSLocalizedDescriptionKey: TulsiError.localizedErrorMessageForCode(code)]
     } else if userInfo?[NSLocalizedDescriptionKey] == nil {

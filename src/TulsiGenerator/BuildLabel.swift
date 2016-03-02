@@ -37,7 +37,7 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
     }
 
     if package.hasPrefix("//") {
-      package.removeRange(Range(start: package.startIndex, end: package.startIndex.advancedBy(2)))
+      package.removeRange(Range(package.startIndex ..< package.startIndex.advancedBy(2)))
     }
     if package.isEmpty || package.hasSuffix("/") {
       return ""

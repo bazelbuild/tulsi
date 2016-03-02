@@ -88,7 +88,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     }
 
     let panel = FilteredOpenPanel.filteredOpenPanel() {
-      (_: AnyObject, shouldEnableURL url: NSURL) -> Bool in
+      (_: AnyObject, url: NSURL) -> Bool in
         var isDir: AnyObject?
         var isPackage: AnyObject?
         do {
@@ -160,10 +160,8 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
 
   @IBAction func didDoubleClickPackage(sender: NSTableView) {
     let clickedRow = sender.clickedRow
-    guard clickedRow >= 0,
-        let package = packageArrayController.arrangedObjects[clickedRow] as? String else {
-      return
-    }
+    guard clickedRow >= 0 else { return }
+    let package = (packageArrayController.arrangedObjects as! [String])[clickedRow]
     let document = representedObject as! TulsiProjectDocument
     let buildFile = package + "/BUILD"
     if let url = document.workspaceRootURL?.URLByAppendingPathComponent(buildFile) {

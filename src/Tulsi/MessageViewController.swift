@@ -79,7 +79,7 @@ class MessageViewController: NSViewController, NSTableViewDelegate, NSUserInterf
     if let height = rowHeights[row] {
       return height
     }
-    let message = messageArrayController.arrangedObjects[row] as! UIMessage
+    let message = (messageArrayController.arrangedObjects as! [UIMessage])[row]
     let column = tableView.tableColumns.first!
     let cell = column.dataCell as! NSTextFieldCell
     cell.stringValue = message.text

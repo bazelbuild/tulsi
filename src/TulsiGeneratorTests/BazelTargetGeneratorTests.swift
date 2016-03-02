@@ -663,18 +663,16 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       self.fileSet = Set(files)
     }
 
-    func validate(phase: PBXBuildPhase, file: String = __FILE__, line: UInt = __LINE__) {
+    func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
       // Validate the file set.
       XCTAssertEqual(phase.files.count,
                      fileSet.count,
                      "Mismatch in file count in build phase",
-                     file: file,
                      line: line)
       for buildFile in phase.files {
         let path = buildFile.fileRef.path!
         XCTAssert(fileSet.contains(path),
                   "Found unexpected file '\(path)' in build phase",
-                  file: file,
                   line: line)
       }
     }
@@ -688,20 +686,18 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       super.init(isa: "PBXSourcesBuildPhase", files: files)
     }
 
-    override func validate(phase: PBXBuildPhase, file: String = __FILE__, line: UInt = __LINE__) {
-      super.validate(phase, file: file, line: line)
+    override func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
+      super.validate(phase, line: line)
 
       for buildFile in phase.files {
         if settings != nil {
           XCTAssertNotNil(buildFile.settings, "Settings for file \(buildFile) must == \(settings)",
-                          file: file,
                           line: line)
           if buildFile.settings != nil {
-            XCTAssertEqual(buildFile.settings!, settings!, file: file, line: line)
+            XCTAssertEqual(buildFile.settings!, settings!, line: line)
           }
         } else {
           XCTAssertNil(buildFile.settings, "Settings for file \(buildFile) must be nil",
-                       file: file,
                        line: line)
         }
       }
@@ -718,8 +714,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       super.init(isa: "PBXShellScriptBuildPhase", files: [])
     }
 
-    override func validate(phase: PBXBuildPhase, file: String = __FILE__, line: UInt = __LINE__) {
-      super.validate(phase, file: file, line: line)
+    override func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
+      super.validate(phase, line: line)
 
       // Guaranteed by the test infrastructure below, failing this indicates a programming error in
       // the test fixture, not in the code being tested.
@@ -728,8 +724,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let script = scriptBuildPhase.shellScript
 
       // TODO(abaire): Consider doing deeper validation of the script.
-      XCTAssert(script.containsString(bazelURL.path!), file: file, line: line)
-      XCTAssert(script.containsString(buildTarget), file: file, line: line)
+      XCTAssert(script.containsString(bazelURL.path!), line: line)
+      XCTAssert(script.containsString(buildTarget), line: line)
     }
   }
 
@@ -738,7 +734,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                      pchFile: PBXFileReference? = nil,
                                      bridgingHeader: String? = nil,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
-                                     file: String = __FILE__,
                                      line: UInt = __LINE__) {
     var expectedBuildSettings = [
         "PRODUCT_NAME": indexerTargetName,
@@ -773,15 +768,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         ],
         expectedBuildPhases: expectedBuildPhases
     )
-    assertTarget(expectedTarget, inTargets: targets, file: file, line: line)
+    assertTarget(expectedTarget, inTargets: targets, line: line)
   }
 
   private func assertTarget(targetDef: TargetDefinition,
                             inTargets targets: Dictionary<String, PBXTarget>,
-                            file: String = __FILE__,
                             line: UInt = __LINE__) {
     guard let target = targets[targetDef.name] else {
-      XCTFail("Missing expected target '\(targetDef.name)'", file: file, line: line)
+      XCTFail("Missing expected target '\(targetDef.name)'", line: line)
       return
     }
 
@@ -789,42 +783,36 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(buildConfigs.count,
                    targetDef.buildConfigurations.count,
                    "Build config mismatch in target '\(targetDef.name)'",
-                   file: file,
                    line: line)
 
     for buildConfigDef in targetDef.buildConfigurations {
       let config: XCBuildConfiguration? = buildConfigs[buildConfigDef.name]
       XCTAssertNotNil(config,
                       "Missing expected build configuration '\(buildConfigDef.name)' in target '\(targetDef.name)'",
-                      file: file,
                       line: line)
 
       if buildConfigDef.expectedBuildSettings != nil {
         XCTAssertEqual(config!.buildSettings,
                        buildConfigDef.expectedBuildSettings!,
                        "Build config mismatch for configuration '\(buildConfigDef.name)' in target '\(targetDef.name)'",
-                       file: file,
                        line: line)
       } else {
-        XCTAssert(config!.buildSettings.isEmpty, file: file, line: line)
+        XCTAssert(config!.buildSettings.isEmpty, line: line)
       }
     }
 
     validateExpectedBuildPhases(targetDef.expectedBuildPhases,
                                 inTarget: target,
-                                file: file,
                                 line: line)
   }
 
   private func validateExpectedBuildPhases(phaseDefs: [BuildPhaseDefinition],
                                            inTarget target: PBXTarget,
-                                           file: String = __FILE__,
                                            line: UInt = __LINE__) {
     let buildPhases = target.buildPhases
     XCTAssertEqual(buildPhases.count,
                    phaseDefs.count,
                    "Build phase count mismatch in target '\(target.name)'",
-                   file: file,
                    line: line)
 
     for phaseDef in phaseDefs {
@@ -832,7 +820,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         if phase.isa != phaseDef.isa {
           continue
         }
-        phaseDef.validate(phase, file: file, line: line)
+        phaseDef.validate(phase, line: line)
       }
     }
   }

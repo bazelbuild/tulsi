@@ -44,7 +44,7 @@ class FilteredOpenPanel: NSOpenPanel, NSOpenSavePanelDelegate {
   // MARK: - Internal methods
 
   static func filterNonPackageDirectoriesOrFilesMatchingNames(validFiles: [String]) -> FilterFunc {
-    return { (sender: AnyObject, shouldEnableURL url: NSURL) -> Bool in
+    return { (sender: AnyObject, url: NSURL) -> Bool in
       var isDir: AnyObject?
       var isPackage: AnyObject?
       do {

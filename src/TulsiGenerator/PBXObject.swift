@@ -822,7 +822,7 @@ class PBXProject: PBXObjectProtocol {
       // Traverse the directory components of the path, converting them to Xcode
       // PBXGroups.
       let components = path.componentsSeparatedByString("/")
-      for var i = 0; i < components.count - 1; ++i {
+      for i in 0 ..< components.count - 1 {
         // Check to see if this component is actually a bundle that should be treated as a file
         // reference by Xcode (e.g., .xcassets bundles) instead of as a PBXGroup.
         let currentComponent = components[i]

@@ -548,12 +548,16 @@ class PBXProjSerializerTests: XCTestCase {
 
     func generate(item: PBXObjectProtocol) -> String {
       // This test implementation doesn't utilize the object in generating an ID.
-      return gidForCounter(nextID++)
+      let gid = gidForCounter(nextID)
+      nextID += 1
+      return gid
     }
 
     // MARK: - Methods for testing.
     func generateReservedID() -> String {
-      return gidForCounter(nextID++, prefix: 0xBAADF00D)
+      let reservedID = gidForCounter(nextID, prefix: 0xBAADF00D)
+      nextID += 1
+      return reservedID
     }
 
     private func gidForCounter(counter : Int, prefix: Int = 0) -> String {

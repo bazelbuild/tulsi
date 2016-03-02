@@ -111,11 +111,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
     let projectDocument = representedObject as! TulsiProjectDocument
     let clickedRow = sender.clickedRow
-    guard clickedRow >= 0,
-        let configName = configArrayController.arrangedObjects[clickedRow] as? String else {
-      return
-    }
-
+    guard clickedRow >= 0 else { return }
+    let configName = (configArrayController.arrangedObjects as! [String])[clickedRow]
     let errorInfo: String
     do {
       let configDocument = try projectDocument.loadConfigDocumentNamed(configName)

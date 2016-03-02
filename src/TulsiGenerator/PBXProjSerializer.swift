@@ -304,7 +304,8 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     try data.tulsi_appendString("\n/* End \(key) section */\n")
   }
 
-  private func escapeString(var val: String) -> String {
+  private func escapeString(val: String) -> String {
+    var val = val
     // The quotation marks can be omitted if the string is composed strictly of alphanumeric
     // characters and contains no white space (numbers are handled as strings in property lists).
     // Though the property list format uses ASCII for strings, note that Cocoa uses Unicode. Since

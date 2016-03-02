@@ -29,7 +29,8 @@ class ConcreteGIDGenerator: GIDGeneratorProtocol {
     var counter = 0
     var gid: String
     repeat {
-      gid = String(format: "%08X%08X%08X", item.isa.hashValue, item.hashValue, counter++)
+      gid = String(format: "%08X%08X%08X", item.isa.hashValue, item.hashValue, counter)
+      counter += 1
     } while (reservedIDS.contains(gid))
     reservedIDS.insert(gid)
     return gid

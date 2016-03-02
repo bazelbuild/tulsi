@@ -180,7 +180,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
     var queries = [String]()
     for rangeStart in 0.stride(to:numLabels, by: chunkSize) {
       let rangeEnd = min(rangeStart + chunkSize, numLabels)
-      let range = rangeStart..<rangeEnd
+      let range = rangeStart ..< rangeEnd
       let chunk = labels[range]
       queries.append(chunk.joinWithSeparator("+"))
     }
@@ -273,7 +273,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
   // to the terminationHandler.
   private func bazelQueryTask(query: String,
                               outputKind: String? = nil,
-                              var message: String = "",
+                              message: String = "",
                               terminationHandler: CompletionHandler) -> NSTask {
     var arguments = [
         "--max_idle_secs=60",
@@ -289,6 +289,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
       arguments.appendContentsOf(["--output", kind])
     }
 
+    var message = message
     if message != "" {
       message = "\(message)\n"
     }
