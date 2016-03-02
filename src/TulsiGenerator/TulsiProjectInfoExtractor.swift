@@ -19,11 +19,22 @@ import Foundation
 public class TulsiProjectInfoExtractor {
   private let project: TulsiProject
   private let localizedMessageLogger: LocalizedMessageLogger
-  private var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol! = nil
+  private var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
+
+  /// Fetcher object from which a workspace's package_path may be obtained.
+  private let packagePathFetcher: BazelWorkspacePackagePathFetcher!
+
+  // TODO(abaire): Merge into workspaceinfoextractor once aspects are ready to be default enabled.
+  private var aspectWorkspaceInfoExtractor: BazelAspectWorkspaceInfoExtractor! = nil
 
   public var bazelURL: NSURL {
     get { return workspaceInfoExtractor.bazelURL }
-    set { workspaceInfoExtractor.bazelURL = newValue }
+    set {
+      workspaceInfoExtractor.bazelURL = newValue
+      if aspectWorkspaceInfoExtractor != nil {
+        aspectWorkspaceInfoExtractor.bazelURL = newValue
+      }
+    }
   }
 
   public init(bazelURL: NSURL,
@@ -35,14 +46,23 @@ public class TulsiProjectInfoExtractor {
 
     // TODO(abaire): Remove this when aspects become the default.
     if NSUserDefaults.standardUserDefaults().boolForKey("use_aspects") {
-      workspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                                 workspaceRootURL: project.workspaceRootURL,
-                                                                 localizedMessageLogger: localizedMessageLogger)
+      packagePathFetcher = BazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
+                                                            workspaceRootURL: project.workspaceRootURL,
+                                                            localizedMessageLogger: localizedMessageLogger)
+
+      // TODO(abaire): Take TulsiOptions and use the CommandLineSplitter to pull out relevant data.
+      //               This work should be delayed until it's actually needed, however.
+      aspectWorkspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                                       workspaceRootURL: project.workspaceRootURL,
+                                                                       packagePathFetcher: packagePathFetcher,
+                                                                       localizedMessageLogger: localizedMessageLogger)
     } else {
-      workspaceInfoExtractor = BazelQueryWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                                workspaceRootURL: project.workspaceRootURL,
-                                                                localizedMessageLogger: localizedMessageLogger)
+      packagePathFetcher = nil
     }
+
+    workspaceInfoExtractor = BazelQueryWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                              workspaceRootURL: project.workspaceRootURL,
+                                                              localizedMessageLogger: localizedMessageLogger)
   }
 
   public func extractTargetRules() -> [RuleEntry] {

@@ -65,6 +65,10 @@
 		3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */; };
 		3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */; };
 		3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */; };
+		3DAEE45E1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAEE45D1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift */; };
+		3DAEE4681C85EB6100BA1C67 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
+		3DAEE46F1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAEE46E1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift */; };
+		3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3DAEE4701C8600B800BA1C67 /* Simple.BUILD */; };
 		3DB1FBFC1C31DDCB0080198C /* ProjectEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
 		3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */; };
@@ -99,6 +103,7 @@
 		8BEEF9761BF9A5D400247062 /* TulsiAppleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEF9741BF9A5D400247062 /* TulsiAppleEvents.swift */; };
 		8BF4B3711BF6B61400239948 /* TulsiPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4B3701BF6B61400239948 /* TulsiPlugin.swift */; };
 		8BF4B3731BF6B61400239948 /* NSObject_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4B3721BF6B61400239948 /* NSObject_Extension.swift */; };
+		AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +115,13 @@
 			remoteInfo = TulsiGenerator;
 		};
 		3D9926761C29F0A30094E098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B8F558F1BE3ECDC0095AF7F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D9926621C29F0A20094E098;
+			remoteInfo = TulsiGenerator;
+		};
+		3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B8F558F1BE3ECDC0095AF7F /* Project object */;
 			proxyType = 1;
@@ -183,6 +195,11 @@
 		3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtensionsTests.swift; sourceTree = "<group>"; };
 		3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigTests.swift; sourceTree = "<group>"; };
 		3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectTests.swift; sourceTree = "<group>"; };
+		3DAEE45D1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspacePackagePathFetcher.swift; sourceTree = "<group>"; };
+		3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TulsiGeneratorIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DAEE4671C85EB6100BA1C67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DAEE46E1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiSourcesAspectTests.swift; sourceTree = "<group>"; };
+		3DAEE4701C8600B800BA1C67 /* Simple.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Simple.BUILD; sourceTree = "<group>"; };
 		3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorSplitViewController.swift; sourceTree = "<group>"; };
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -229,6 +246,7 @@
 		8BFC8F441BE7CF140066E8BA /* PBXObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObject.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
+		AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelIntegrationTestCase.swift; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -245,6 +263,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DAEE4601C85EB6100BA1C67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DAEE4681C85EB6100BA1C67 /* TulsiGenerator.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +358,7 @@
 				3DCFE5DD1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift */,
 				3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */,
 				3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */,
+				3DAEE45D1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift */,
 				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
 				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
 				8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */,
@@ -359,6 +386,26 @@
 				3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */,
 			);
 			path = Scripts;
+			sourceTree = "<group>";
+		};
+		3DAEE4641C85EB6100BA1C67 /* TulsiGeneratorBazelIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				3DAEE4671C85EB6100BA1C67 /* Info.plist */,
+				3DAEE46E1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift */,
+				AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */,
+				3DAEE4721C8600BE00BA1C67 /* Resources */,
+			);
+			name = TulsiGeneratorBazelIntegrationTests;
+			path = TulsiGeneratorIntegrationTests;
+			sourceTree = "<group>";
+		};
+		3DAEE4721C8600BE00BA1C67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		3DCFE5CE1C80A64600D7F31B /* Bazel */ = {
@@ -392,6 +439,7 @@
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
 				3D9926641C29F0A20094E098 /* TulsiGenerator */,
+				3DAEE4641C85EB6100BA1C67 /* TulsiGeneratorBazelIntegrationTests */,
 				3D9926721C29F0A30094E098 /* TulsiGeneratorTests */,
 				8BF4B36C1BF6B61400239948 /* TulsiPlugin */,
 				8BEEF9731BF9A5AD00247062 /* TulsiShared */,
@@ -406,6 +454,7 @@
 				8BF4B36B1BF6B61400239948 /* TulsiPlugin.xcplugin */,
 				3D9926631C29F0A20094E098 /* TulsiGenerator.framework */,
 				3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */,
+				3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,6 +572,24 @@
 			productReference = 3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3DAEE4621C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DAEE46D1C85EB6100BA1C67 /* Build configuration list for PBXNativeTarget "TulsiGeneratorIntegrationTests" */;
+			buildPhases = (
+				3DAEE45F1C85EB6100BA1C67 /* Sources */,
+				3DAEE4601C85EB6100BA1C67 /* Frameworks */,
+				3DAEE4611C85EB6100BA1C67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3DAEE46A1C85EB6100BA1C67 /* PBXTargetDependency */,
+			);
+			name = TulsiGeneratorIntegrationTests;
+			productName = TulsiGeneratorIntegrationTests;
+			productReference = 3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8B8F55961BE3ECDC0095AF7F /* Tulsi */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B8F55BC1BE3ECDC0095AF7F /* Build configuration list for PBXNativeTarget "Tulsi" */;
@@ -574,6 +641,9 @@
 					3D99266B1C29F0A20094E098 = {
 						CreatedOnToolsVersion = 7.2;
 					};
+					3DAEE4621C85EB6100BA1C67 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
 					8B8F55961BE3ECDC0095AF7F = {
 						CreatedOnToolsVersion = 7.1;
 					};
@@ -599,6 +669,7 @@
 				8BF4B36A1BF6B61400239948 /* TulsiPlugin */,
 				3D9926621C29F0A20094E098 /* TulsiGenerator */,
 				3D99266B1C29F0A20094E098 /* TulsiGeneratorTests */,
+				3DAEE4621C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -623,6 +694,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DAEE4611C85EB6100BA1C67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,6 +741,7 @@
 				3D99268F1C29F1100094E098 /* PBXProjSerializer.swift in Sources */,
 				3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */,
 				3DBEFACA1C2A168C00119556 /* MessageLoggerProtocol.swift in Sources */,
+				3DAEE45E1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift in Sources */,
 				3DCFE5DE1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift in Sources */,
 				3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */,
 				3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */,
@@ -701,6 +781,15 @@
 				3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */,
 				3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */,
 				3D9926851C29F0CC0094E098 /* PBXProjSerializerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DAEE45F1C85EB6100BA1C67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DAEE46F1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift in Sources */,
+				AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +853,11 @@
 			isa = PBXTargetDependency;
 			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
 			targetProxy = 3D9926761C29F0A30094E098 /* PBXContainerItemProxy */;
+		};
+		3DAEE46A1C85EB6100BA1C67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
+			targetProxy = 3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -889,6 +983,33 @@
 				INFOPLIST_FILE = TulsiGeneratorTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.google.devinfra.${PRODUCT_NAME}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3DAEE46B1C85EB6100BA1C67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				INFOPLIST_FILE = TulsiGeneratorIntegrationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TulsiGeneratorIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3DAEE46C1C85EB6100BA1C67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TulsiGeneratorIntegrationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TulsiGeneratorIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1072,6 +1193,15 @@
 			buildConfigurations = (
 				3D99267C1C29F0A30094E098 /* Debug */,
 				3D99267D1C29F0A30094E098 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DAEE46D1C85EB6100BA1C67 /* Build configuration list for PBXNativeTarget "TulsiGeneratorIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DAEE46B1C85EB6100BA1C67 /* Debug */,
+				3DAEE46C1C85EB6100BA1C67 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -16,7 +16,7 @@ import Foundation
 
 
 // Concrete extractor that utilizes Bazel aspects to extract information from a workspace.
-final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelResolverProtocol {
+final class BazelAspectWorkspaceInfoExtractor {
   enum Error: ErrorType {
     /// Parsing an aspect's output failed with the given debug info.
     case ParsingFailed(String)
@@ -28,12 +28,12 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
   let workspaceRootURL: NSURL
 
   /// Additional startup options for the Bazel aspect invocations.
-  let bazelStartupOptions: [String]
+  var bazelStartupOptions: [String]
   /// Additional options for the Bazel "build" aspect invocation.
-  let bazelBuildOptions: [String]
+  var bazelBuildOptions: [String]
 
   /// Fetcher object from which a workspace's package_path may be obtained.
-  private let packagePathFetcher: WorkspacePackagePathFetcher
+  private let packagePathFetcher: BazelWorkspacePackagePathFetcher
 
   private let bundle: NSBundle
   // Absolute path to the workspace containing the Tulsi aspect bzl file.
@@ -62,17 +62,17 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
 
   init(bazelURL: NSURL,
        workspaceRootURL: NSURL,
+       packagePathFetcher: BazelWorkspacePackagePathFetcher,
        localizedMessageLogger: LocalizedMessageLogger,
        bazelStartupOptions: [String] = [],
        bazelBuildOptions: [String] = []) {
     self.bazelURL = bazelURL
+    self.workspaceRootURL = workspaceRootURL
+    self.packagePathFetcher = packagePathFetcher
+    self.localizedMessageLogger = localizedMessageLogger
     self.bazelStartupOptions = bazelStartupOptions
     self.bazelBuildOptions = bazelBuildOptions
-    self.workspaceRootURL = workspaceRootURL
-    self.localizedMessageLogger = localizedMessageLogger
-    self.packagePathFetcher = WorkspacePackagePathFetcher(bazelURL: bazelURL,
-                                                          workspaceRootURL: workspaceRootURL,
-                                                          localizedMessageLogger: localizedMessageLogger)
+
     bundle = NSBundle(forClass: self.dynamicType)
 
     let workspaceFilePath = bundle.pathForResource("WORKSPACE", ofType: "")! as NSString
@@ -84,25 +84,25 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
     aspectFileWorkspaceRelativePath = aspectFilePath.substringFromIndex(startIndex)
   }
 
-  // MARK: - WorkspaceInfoExtractorProtocol
-
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
-    let projectPackages = project.bazelPackages
-    guard !projectPackages.isEmpty, let path = workspaceRootURL.path else {
+  /// Builds dependency trees with information extracted from the Bazel workspace for the given set
+  /// of rules.
+  func extractInfoForTargetRules(ruleEntries: [RuleEntry]) -> [RuleEntry] {
+    guard !ruleEntries.isEmpty, let path = workspaceRootURL.path else {
       return []
     }
 
-    let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
-                                                               message: "Fetching rules for packages \(projectPackages)")
-    // TODO(abaire): Figure out multiple package support.
+    let profilingStart = localizedMessageLogger.startProfiling("extract_source_info",
+                                                               message: "Extracting info for \(ruleEntries.count) rules")
+
     let semaphore = dispatch_semaphore_create(0)
-    var ruleEntries = [RuleEntry]()
-    let task = bazelAspectTaskForTarget("\(projectPackages.first!):all",
-                                        aspect: "tulsi_supported_targets_aspect") {
+    var extractedEntries = [RuleEntry]()
+    let targets = ruleEntries.map() { $0.label.value }
+    let task = bazelAspectTaskForTargets(targets,
+                                         aspect: "tulsi_sources_aspect") {
       (task: NSTask, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer{ dispatch_semaphore_signal(semaphore) }
-        if let artifacts = generatedArtifacts {
-          ruleEntries = self.extractRuleEntriesFromArtifacts(artifacts)
+        if let artifacts = generatedArtifacts where !artifacts.isEmpty {
+          extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts)
         } else {
           self.localizedMessageLogger.error("BazelAspectFailed",
                                             comment: "Error message for when a Bazel aspect did not complete successfully.")
@@ -116,53 +116,22 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
       dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
-    return ruleEntries
-  }
 
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
-    assertionFailure("TODO(abaire): Implement")
-    return []
-  }
-
-  func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry:[String]] {
-    assertionFailure("TODO(abaire): Implement")
-    return [:]
-  }
-
-  func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
-    assertionFailure("TODO(abaire): Implement")
-    return nil
-  }
-
-  func extractDefinesForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
-    assertionFailure("TODO(abaire): Implement")
-    return nil
-  }
-
-  func ruleEntriesForLabels(labels: [String]) -> [String:RuleEntry] {
-    assertionFailure("TODO(abaire): Implement")
-    return [:]
-  }
-
-  // MARK: - LabelResolverProtocol
-
-  func resolveFilesForLabels(labels: [String]) -> [String:BazelFileTarget?]? {
-    assertionFailure("TODO(abaire): Implement")
-    return nil
+    return extractedEntries
   }
 
   // MARK: - Private methods
 
-  // Generates an NSTask that will run the given aspect against the given Bazel target, capturing
+  // Generates an NSTask that will run the given aspect against the given Bazel targets, capturing
   // the output data and passing it to the terminationHandler.
-  private func bazelAspectTaskForTarget(target: String,
-                                        aspect: String,
-                                        var message: String = "",
-                                        terminationHandler: CompletionHandler) -> NSTask? {
+  private func bazelAspectTaskForTargets(targets: [String],
+                                         aspect: String,
+                                         var message: String = "",
+                                         terminationHandler: CompletionHandler) -> NSTask? {
     let workspacePackagePath = packagePathFetcher.getPackagePath()
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
 
-    var arguments = bazelStartupOptions
+    var arguments = bazelStartupOptions ?? []
     arguments.appendContentsOf([
         "build",
         "--keep_going",  // Continue as much as possible after errors.
@@ -170,13 +139,13 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
         "--no_show_loading_progress",  // Don't show Bazel's loading progress.
         "--no_show_progress",  // Don't show Bazel's build progress.
         "--package_path=\(augmentedPackagePath)",
-        target,
         "--aspects",
         "//\(aspectFileWorkspaceRelativePath)%\(aspect)",
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
         "--experimental_show_artifacts"  // Print the artifacts generated by the aspect.
     ])
     arguments.appendContentsOf(bazelBuildOptions)
+    arguments.appendContentsOf(targets)
 
     if message != "" {
       message = "\(message)\n"
@@ -224,7 +193,7 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
     return artifacts
   }
 
-  /// Builds a list of RuleEntry instances using the data in the given set of .tulsitarget files.
+  /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
   private func extractRuleEntriesFromArtifacts(files: [String]) -> [RuleEntry] {
     let fileManager = NSFileManager.defaultManager()
 
@@ -278,72 +247,5 @@ final class BazelAspectWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, L
     // Wait for everything to be processed.
     dispatch_barrier_sync(queue) {}
     return ruleEntries
-  }
-}
-
-
-/// Handles fetching of a package_path for a Bazel workspace.
-class WorkspacePackagePathFetcher {
-  /// The Bazel package_path as defined by the target workspace.
-  private var packagePath: String? = nil
-
-  /// The location of the bazel binary.
-  private let bazelURL: NSURL
-  /// The location of the Bazel workspace to be examined.
-  private let workspaceRootURL: NSURL
-  private let localizedMessageLogger: LocalizedMessageLogger
-  private let semaphore: dispatch_semaphore_t
-
-  init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
-    self.bazelURL = bazelURL
-    self.workspaceRootURL = workspaceRootURL
-    self.localizedMessageLogger = localizedMessageLogger
-
-    semaphore = dispatch_semaphore_create(0)
-    fetchWorkspacePackagePath()
-  }
-
-  /// Returns the package_path for this fetcher's workspace, blocking until it is available.
-  func getPackagePath() -> String {
-    if let packagePath = packagePath { return packagePath }
-    waitForCompletion()
-    return packagePath!
-  }
-
-  // MARK: - Private methods
-
-  // Waits for the workspace fetcher to signal the
-  private func waitForCompletion() {
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-    dispatch_semaphore_signal(semaphore)
-  }
-
-  // Fetches Bazel package_path info from the registered workspace URL.
-  private func fetchWorkspacePackagePath() {
-    let profilingStart = localizedMessageLogger.startProfiling("get_package_path",
-                                                               message: "Fetching bazel package_path info")
-    let task = TaskRunner.standardRunner().createTask(bazelURL.path!,
-                                                      arguments: ["info", "package_path"]) {
-      completionInfo in
-        defer {
-          self.localizedMessageLogger.logProfilingEnd(profilingStart)
-          dispatch_semaphore_signal(self.semaphore)
-        }
-        if completionInfo.task.terminationStatus == 0 {
-          if let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) {
-            self.packagePath = stdout.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet()) as String
-            return
-          }
-        }
-
-        self.packagePath = ""
-        self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
-                                          comment: "Extracting package_path info from bazel failed. The exit code is %1$d.",
-                                          values: completionInfo.task.terminationStatus)
-        let debugInfo = BazelAspectWorkspaceInfoExtractor.debugInfoForTaskCompletion(completionInfo)
-        self.localizedMessageLogger.infoMessage(debugInfo)
-    }
-    task.currentDirectoryPath = workspaceRootURL.path!
-    task.launch()
   }
 }
