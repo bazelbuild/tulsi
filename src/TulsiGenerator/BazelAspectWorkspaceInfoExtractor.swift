@@ -194,11 +194,20 @@ final class BazelAspectWorkspaceInfoExtractor {
     return artifacts
   }
 
+  /// Encapsulates metadata about rules extracted from the aspect.
+  private struct BazelRuleInfo {
+    let ruleEntry: RuleEntry
+    /// List of labels on which this rule depends.
+    let dependencies: [BuildLabel]
+
+    var label: BuildLabel { return ruleEntry.label }
+  }
+
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
   private func extractRuleEntriesFromArtifacts(files: [String]) -> [RuleEntry] {
     let fileManager = NSFileManager.defaultManager()
 
-    func parseTulsiTargetFile(filename: String) throws -> RuleEntry {
+    func parseTulsiTargetFile(filename: String) throws -> BazelRuleInfo {
       guard let data = fileManager.contentsAtPath(filename) else {
         throw Error.ParsingFailed("The file could not be read")
       }
@@ -215,11 +224,23 @@ final class BazelAspectWorkspaceInfoExtractor {
 
       let ruleLabel = try getRequiredField("label")
       let ruleType = try getRequiredField("type")
-      let attributes = dict["attributes"] as? [String: String] ?? [:]
-      return RuleEntry(label: BuildLabel(ruleLabel), type: ruleType, attributes: attributes)
+      let attributes = dict["attr"] as? [String: String] ?? [:]
+      let sourceInfos = dict["srcs"] as? [[String: AnyObject]] ?? []
+      var sources = [String]()
+      for info in sourceInfos {
+        if let path = info["path"] as? String {
+          sources.append(path)
+        }
+      }
+      let ruleEntry = RuleEntry(label: BuildLabel(ruleLabel),
+                                type: ruleType,
+                                attributes: attributes,
+                                sourceFiles: sources)
+      let dependencies = dict["deps"] as? [String] ?? []
+      return BazelRuleInfo(ruleEntry: ruleEntry, dependencies: dependencies.map({BuildLabel($0)}))
     }
 
-    var ruleEntries = [RuleEntry]()
+    var ruleInfoMap = [BuildLabel: BazelRuleInfo]()
     let semaphore = dispatch_semaphore_create(1)
     let queue = dispatch_queue_create("com.google.Tulsi.ruleEntryArtifactExtractor",
                                       DISPATCH_QUEUE_CONCURRENT)
@@ -227,9 +248,9 @@ final class BazelAspectWorkspaceInfoExtractor {
       dispatch_async(queue) {
         let errorInfo: String
         do {
-          let ruleEntry = try parseTulsiTargetFile(filename)
+          let ruleInfo = try parseTulsiTargetFile(filename)
           dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-          ruleEntries.append(ruleEntry)
+          ruleInfoMap[ruleInfo.label] = ruleInfo
           dispatch_semaphore_signal(semaphore)
           return
         } catch Error.ParsingFailed(let info) {
@@ -247,6 +268,25 @@ final class BazelAspectWorkspaceInfoExtractor {
 
     // Wait for everything to be processed.
     dispatch_barrier_sync(queue) {}
+
+    return ruleEntryGraphForInfo(ruleInfoMap)
+  }
+
+  /// Resolves dependency linkage for the given rule info.
+  private func ruleEntryGraphForInfo(ruleInfoMap: [BuildLabel: BazelRuleInfo]) -> [RuleEntry] {
+    var ruleEntries = [RuleEntry]()
+    for (_, value) in ruleInfoMap {
+      var dependencies = [RuleEntry]()
+      for dependency in value.dependencies {
+        // TODO(abaire): Decide how to handle missing dependencies.
+        if let dependencyInfo = ruleInfoMap[dependency] {
+          dependencies.append(dependencyInfo.ruleEntry)
+        }
+      }
+      value.ruleEntry.addDependencies(dependencies)
+
+      ruleEntries.append(value.ruleEntry)
+    }
     return ruleEntries
   }
 }

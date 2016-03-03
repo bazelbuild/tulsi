@@ -100,7 +100,7 @@ class BazelIntegrationTestCase: XCTestCase {
     if let tempDirectory = directoryToCleanOnTeardown {
       let userDefaults = NSUserDefaults.standardUserDefaults()
       if userDefaults.boolForKey("keep_test_output") {
-        print("Retaining working directory at '\(tempDirectory.path)' for test \(name)")
+        print("Retaining working directory at '\(tempDirectory.path!)' for test \(name)")
       } else {
         do {
           try NSFileManager.defaultManager().removeItemAtURL(tempDirectory)

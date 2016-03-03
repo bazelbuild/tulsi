@@ -26,7 +26,7 @@ objc_binary(
     ],
     deps = [
         ":Library",
-    ]
+    ],
 )
 
 objc_library(
@@ -45,6 +45,9 @@ objc_library(
 
 ios_test(
     name = "XCTest",
+    srcs = [
+        "test/src1.mm",
+    ],
     xctest = 1,
     xctest_app = ":Application",
     deps = [

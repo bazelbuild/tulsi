@@ -39,6 +39,9 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
   let attributes: [String: String]
 
+  /// Source files associated with this rule.
+  let sourceFiles: [String]
+
   /// Map of this rule's build dependencies, indexed by their labels.
   var dependencies = [String: RuleEntry]()
 
@@ -64,14 +67,24 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
     return label.hashValue ^ type.hashValue
   }
 
-  init(label: BuildLabel, type: String, attributes: [String: String] = [String: String]()) {
+  init(label: BuildLabel,
+       type: String,
+       attributes: [String: String] = [:],
+       sourceFiles: [String] = []) {
     self.label = label
     self.type = type
     self.attributes = attributes
+    self.sourceFiles = sourceFiles
   }
 
-  convenience init(label: String, type: String, attributes: [String: String] = [String: String]()) {
-    self.init(label: BuildLabel(label), type: type, attributes: attributes)
+  convenience init(label: String,
+                   type: String,
+                   attributes: [String: String] = [:],
+                   sourceFiles: [String] = []) {
+    self.init(label: BuildLabel(label),
+              type: type,
+              attributes: attributes,
+              sourceFiles: sourceFiles)
   }
 
   func addDependencies(ruleEntries: [RuleEntry]) {
