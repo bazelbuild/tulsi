@@ -18,7 +18,7 @@ import XCTest
 
 // Tests for the tulsi_sources_aspect aspect.
 class TulsiSourcesAspectTests: BazelIntegrationTestCase {
-  var aspectWorkspaceInfoExtractor: BazelAspectWorkspaceInfoExtractor! = nil
+  var aspectWorkspaceInfoExtractor: BazelAspectInfoExtractor! = nil
 
   override func setUp() {
     super.setUp()
@@ -30,8 +30,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let applicationRuleEntry = RuleEntry(label: "//tulsi_test:Application", type: "ios_application")
     let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
 
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetRules([applicationRuleEntry,
-                                                                             testRuleEntry])
+    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([applicationRuleEntry,
+                                                                               testRuleEntry])
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -63,8 +63,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let applicationRuleEntry = RuleEntry(label: "//tulsi_test:Application", type: "ios_application")
     let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
 
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetRules([applicationRuleEntry,
-                                                                             testRuleEntry])
+    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([applicationRuleEntry,
+                                                                               testRuleEntry])
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -105,7 +105,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
     let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
 
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetRules([testRuleEntry])
+    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([testRuleEntry])
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -119,12 +119,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   // MARK: - Private methods
   private func makeAspectWorkspaceInfoExtractor() {
-    aspectWorkspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                                     workspaceRootURL: workspaceRootURL!,
-                                                                     packagePathFetcher: packagePathFetcher,
-                                                                     localizedMessageLogger: localizedMessageLogger,
-                                                                     bazelStartupOptions: bazelStartupOptions,
-                                                                     bazelBuildOptions: bazelBuildOptions)
+    aspectWorkspaceInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
+                                                            workspaceRootURL: workspaceRootURL!,
+                                                            packagePathFetcher: packagePathFetcher,
+                                                            localizedMessageLogger: localizedMessageLogger,
+                                                            bazelStartupOptions: bazelStartupOptions,
+                                                            bazelBuildOptions: bazelBuildOptions)
   }
 
 

@@ -148,7 +148,9 @@ class XcodeProjectGenerator {
       return
     }
 
-    let resolvedLabels = workspaceInfoExtractor.ruleEntriesForLabels(labels)
+    let resolvedLabels = workspaceInfoExtractor.ruleEntriesForLabels(labels,
+                                                                     startupOptions: config.options[.BazelBuildStartupOptionsDebug],
+                                                                     buildOptions: config.options[.BazelBuildOptionsDebug])
 
     // Converts the given array of labels to an array of RuleEntry instances, adding any labels that
     // failed to resolve to the unresolvedLabels set.
@@ -190,6 +192,7 @@ class XcodeProjectGenerator {
     }
   }
 
+  // TODO(abaire): This can be removed/simplified when aspects are the default.
   private func resolveSourceFilePaths() {
     sourcePaths = workspaceInfoExtractor.extractSourceFilePathsForSourceRules(config.sourceTargets!)
   }

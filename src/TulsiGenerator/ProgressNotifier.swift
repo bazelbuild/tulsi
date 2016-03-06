@@ -17,8 +17,8 @@ import Foundation
 
 /// Encapsulates posting progress update notifications.
 final class ProgressNotifier {
-  let name: String
-  let maxValue: Int
+  private let name: String
+  private let maxValue: Int
 
   var value: Int = 0 {
     didSet {
@@ -34,7 +34,7 @@ final class ProgressNotifier {
   }
 
   /// Initializes a new instance with the given name and maximum value.
-  init(name: String, maxValue: Int) {
+  init(name: String, maxValue: Int, startIndeterminate: Bool = false) {
     self.name = name
     self.maxValue = maxValue
 
@@ -45,7 +45,14 @@ final class ProgressNotifier {
                                               userInfo: [
                                                   ProgressUpdatingTaskName: name,
                                                   ProgressUpdatingTaskMaxValue: maxValue,
+                                                  ProgressUpdatingTaskStartIndeterminate: startIndeterminate,
                                               ])
+    }
+  }
+
+  func incrementValue() {
+    NSThread.doOnMainThread() {
+      self.value += 1
     }
   }
 }

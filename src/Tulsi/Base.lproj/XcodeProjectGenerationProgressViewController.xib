@@ -93,6 +93,16 @@
                                                     <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="NfU-Ln-yWK">
                                                         <rect key="frame" x="20" y="-1" width="318" height="20"/>
                                                         <connections>
+                                                            <binding destination="AQy-J0-j5x" name="animate" keyPath="objectValue.indeterminate" id="DWy-gm-HFE">
+                                                                <dictionary key="options">
+                                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                            <binding destination="AQy-J0-j5x" name="isIndeterminate" keyPath="objectValue.indeterminate" previousBinding="DWy-gm-HFE" id="mtF-CS-xqY">
+                                                                <dictionary key="options">
+                                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                                </dictionary>
+                                                            </binding>
                                                             <binding destination="AQy-J0-j5x" name="maxValue" keyPath="objectValue.maxValue" id="Ems-gK-WkX"/>
                                                             <binding destination="AQy-J0-j5x" name="value" keyPath="objectValue.value" previousBinding="Ems-gK-WkX" id="9gi-7D-eD2"/>
                                                         </connections>

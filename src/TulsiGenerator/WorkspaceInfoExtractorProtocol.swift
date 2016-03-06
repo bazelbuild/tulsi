@@ -21,7 +21,9 @@ protocol WorkspaceInfoExtractorProtocol {
   func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry]
 
   /// Extracts source file RuleEntry's for the given set of target rules.
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry]
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
+                                        startupOptions: TulsiOption,
+                                        buildOptions: TulsiOption) -> [RuleEntry]
 
   /// Extracts source file paths for the given set of source rules and provides a dictionary mapping
   /// each RuleEntry to the set of source files needed by that rule.
@@ -37,7 +39,9 @@ protocol WorkspaceInfoExtractorProtocol {
   /// Retrieves RuleEntry information for the given list of labels, returning a dictionary mapping
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).
-  func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry]
+  func ruleEntriesForLabels(labels: [String],
+                            startupOptions: TulsiOption,
+                            buildOptions: TulsiOption) -> [String: RuleEntry]
 
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: NSURL {get set}

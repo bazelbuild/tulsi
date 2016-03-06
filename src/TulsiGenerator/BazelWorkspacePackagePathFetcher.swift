@@ -73,7 +73,7 @@ class BazelWorkspacePackagePathFetcher {
         self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
                                           comment: "Extracting package_path info from bazel failed. The exit code is %1$d.",
                                           values: completionInfo.task.terminationStatus)
-        let debugInfo = BazelAspectWorkspaceInfoExtractor.debugInfoForTaskCompletion(completionInfo)
+        let debugInfo = BazelAspectInfoExtractor.debugInfoForTaskCompletion(completionInfo)
         self.localizedMessageLogger.infoMessage(debugInfo)
     }
     task.currentDirectoryPath = workspaceRootURL.path!

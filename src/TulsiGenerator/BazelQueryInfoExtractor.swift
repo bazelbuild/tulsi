@@ -17,7 +17,7 @@ import Foundation
 
 // Concrete extractor that utilizes Bazel query (http://bazel.io/docs/query.html) to extract
 // information from a workspace.
-final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, LabelResolverProtocol {
+final class BazelQueryInfoExtractor: LabelResolverProtocol {
   /// The maximum number of bazel tasks that any logical action may run in parallel.
   // Note that multiple logical actions may execute concurrently, so the actual number of bazel
   // tasks could be higher than this.
@@ -145,7 +145,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
 
       // Use barriers to limit the number of concurrent Bazel tasks.
       i += 1
-      if (i & BazelQueryWorkspaceInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
+      if (i & BazelQueryInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
         dispatch_barrier_async(queue) {}
       }
     }
@@ -176,7 +176,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
                                                                message: "Loading \(numLabels) labels")
 
     // Chunk the labels and parallelize the operation.
-    let chunkSize = BazelQueryWorkspaceInfoExtractor.MaxLabelsToResolvePerBazelQuery
+    let chunkSize = BazelQueryInfoExtractor.MaxLabelsToResolvePerBazelQuery
     var queries = [String]()
     for rangeStart in 0.stride(to:numLabels, by: chunkSize) {
       let rangeEnd = min(rangeStart + chunkSize, numLabels)
@@ -214,7 +214,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
 
       // Use barriers to limit the number of concurrent Bazel tasks.
       i += 1
-      if (i & BazelQueryWorkspaceInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
+      if (i & BazelQueryInfoExtractor.BazelQueryConcurrentChunkSize) == 0 {
         dispatch_barrier_async(queue) {}
       }
     }
@@ -524,7 +524,7 @@ final class BazelQueryWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol, La
     }
 
     let labels = output.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
-    return BazelQueryWorkspaceInfoExtractor.convertLabelsToPaths(labels)
+    return BazelQueryInfoExtractor.convertLabelsToPaths(labels)
   }
 
   // Convert Bazel labels to relative paths.

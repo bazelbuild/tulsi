@@ -21,20 +21,9 @@ public class TulsiProjectInfoExtractor {
   private let localizedMessageLogger: LocalizedMessageLogger
   private var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
 
-  /// Fetcher object from which a workspace's package_path may be obtained.
-  private let packagePathFetcher: BazelWorkspacePackagePathFetcher!
-
-  // TODO(abaire): Merge into workspaceinfoextractor once aspects are ready to be default enabled.
-  private var aspectWorkspaceInfoExtractor: BazelAspectWorkspaceInfoExtractor! = nil
-
   public var bazelURL: NSURL {
     get { return workspaceInfoExtractor.bazelURL }
-    set {
-      workspaceInfoExtractor.bazelURL = newValue
-      if aspectWorkspaceInfoExtractor != nil {
-        aspectWorkspaceInfoExtractor.bazelURL = newValue
-      }
-    }
+    set { workspaceInfoExtractor.bazelURL = newValue }
   }
 
   public init(bazelURL: NSURL,
@@ -44,36 +33,29 @@ public class TulsiProjectInfoExtractor {
     let bundle = NSBundle(forClass: self.dynamicType)
     localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger, bundle: bundle)
 
-    // TODO(abaire): Remove this when aspects become the default.
-    if NSUserDefaults.standardUserDefaults().boolForKey("use_aspects") {
-      packagePathFetcher = BazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
-                                                            workspaceRootURL: project.workspaceRootURL,
-                                                            localizedMessageLogger: localizedMessageLogger)
-
-      // TODO(abaire): Take TulsiOptions and use the CommandLineSplitter to pull out relevant data.
-      //               This work should be delayed until it's actually needed, however.
-      aspectWorkspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                                       workspaceRootURL: project.workspaceRootURL,
-                                                                       packagePathFetcher: packagePathFetcher,
-                                                                       localizedMessageLogger: localizedMessageLogger)
-    } else {
-      packagePathFetcher = nil
-    }
-
-    workspaceInfoExtractor = BazelQueryWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                              workspaceRootURL: project.workspaceRootURL,
-                                                              localizedMessageLogger: localizedMessageLogger)
+    workspaceInfoExtractor = BazelWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                         workspaceRootURL: project.workspaceRootURL,
+                                                         localizedMessageLogger: localizedMessageLogger)
   }
 
   public func extractTargetRules() -> [RuleEntry] {
     return workspaceInfoExtractor.extractTargetRulesFromProject(project)
   }
 
-  public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
-    return workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries)
+  // TODO(abaire): Remove this method in favor of ruleEntriesForLabels when aspects are the default.
+  public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
+                                               startupOptions: TulsiOption,
+                                               buildOptions: TulsiOption) -> [RuleEntry] {
+    return workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries,
+                                                                   startupOptions: startupOptions,
+                                                                   buildOptions: buildOptions)
   }
 
-  public func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
-    return workspaceInfoExtractor.ruleEntriesForLabels(labels)
+  public func ruleEntriesForLabels(labels: [String],
+                                   startupOptions: TulsiOption,
+                                   buildOptions: TulsiOption) -> [String: RuleEntry] {
+    return workspaceInfoExtractor.ruleEntriesForLabels(labels,
+                                                       startupOptions: startupOptions,
+                                                       buildOptions: buildOptions)
   }
 }

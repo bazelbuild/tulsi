@@ -362,7 +362,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     processingTaskStarted()
 
     NSThread.doOnQOSUserInitiatedThread() {
-      let sourceRuleEntries = self.infoExtractor.extractSourceRulesForRuleEntries(self.selectedRuleEntries)
+      let sourceRuleEntries = self.infoExtractor.extractSourceRulesForRuleEntries(self.selectedRuleEntries,
+                                                                                  startupOptions: self.optionSet![.BazelBuildStartupOptionsDebug],
+                                                                                  buildOptions: self.optionSet![.BazelBuildOptionsDebug])
       let sourceUIRuleEntries = sourceRuleEntries.map { (ruleEntry: RuleEntry) -> UIRuleEntry in
         let uiRuleEntry = UIRuleEntry(ruleEntry: ruleEntry)
         uiRuleEntry.selected = selectedRuleLabels.contains(uiRuleEntry.fullLabel)
@@ -567,7 +569,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
-    let resolvedLabels = infoExtractor.ruleEntriesForLabels(labels)
+    let resolvedLabels = infoExtractor.ruleEntriesForLabels(labels,
+                                                            startupOptions: self.optionSet![.BazelBuildStartupOptionsDebug],
+                                                            buildOptions: self.optionSet![.BazelBuildOptionsDebug])
 
     // Converts the given array of labels to an array of selected UIRuleEntry instances, adding any
     // labels that failed to resolve to the unresolvedLabels set.

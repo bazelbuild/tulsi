@@ -21,6 +21,7 @@ class ProgressItem: NSObject {
   dynamic let label: String
   dynamic let maxValue: Int
   dynamic var value: Int
+  dynamic var indeterminate: Bool
 
   init(notifier: AnyObject?, values: [NSObject: AnyObject]) {
     let taskName = values[ProgressUpdatingTaskName] as! String
@@ -29,6 +30,7 @@ class ProgressItem: NSObject {
                               comment: "User friendly version of \(taskName)")
     maxValue = values[ProgressUpdatingTaskMaxValue] as! Int
     value = 0
+    indeterminate = values[ProgressUpdatingTaskStartIndeterminate] as? Bool ?? false
 
     super.init()
 
@@ -44,6 +46,7 @@ class ProgressItem: NSObject {
   }
 
   func progressUpdate(notification: NSNotification) {
+    indeterminate = false
     if let newValue = notification.userInfo?[ProgressUpdatingTaskProgressValue] as? Int {
       value = newValue
     }

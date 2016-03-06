@@ -51,9 +51,9 @@ public final class TulsiXcodeProjectGenerator {
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
     let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
 
-    let extractor = BazelQueryWorkspaceInfoExtractor(bazelURL: config.bazelURL,
-                                                     workspaceRootURL: workspaceRootURL,
-                                                     localizedMessageLogger: localizedMessageLogger)
+    let extractor = BazelWorkspaceInfoExtractor(bazelURL: config.bazelURL,
+                                                workspaceRootURL: workspaceRootURL,
+                                                localizedMessageLogger: localizedMessageLogger)
 
     xcodeProjectGenerator = XcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                   config: config,

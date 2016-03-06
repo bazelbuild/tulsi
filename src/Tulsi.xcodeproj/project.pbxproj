@@ -26,6 +26,7 @@
 		3D387BB81C761B8800544AE0 /* TulsiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BB71C761B8800544AE0 /* TulsiError.swift */; };
 		3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */; };
 		3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */; };
+		3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */; };
 		3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D800DE81C6C24C000F4D08C /* BugReporter.swift */; };
 		3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */; };
 		3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */; };
@@ -41,7 +42,7 @@
 		3D9926821C29F0CC0094E098 /* BuildLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9DAF541C23604100955CD5 /* BuildLabelTests.swift */; };
 		3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */; };
 		3D9926851C29F0CC0094E098 /* PBXProjSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */; };
-		3D9926871C29F10B0094E098 /* BazelQueryWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */; };
+		3D9926871C29F10B0094E098 /* BazelQueryInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */; };
 		3D9926881C29F10B0094E098 /* BazelTargetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */; };
 		3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F1B111BF6BDD50008013B /* BuildLabel.swift */; };
 		3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */; };
@@ -79,7 +80,7 @@
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
 		3DCFE5DC1C80A9A700D7F31B /* tulsi in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DB1C80A9A700D7F31B /* tulsi */; };
-		3DCFE5DE1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift */; };
+		3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */; };
 		3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */; };
 		3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */; };
 		3DD0DE451C65404F008B0CDF /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */; };
@@ -167,6 +168,7 @@
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
 		3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSetTests.swift; sourceTree = "<group>"; };
 		3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGenerator.swift; sourceTree = "<group>"; };
+		3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
 		3D800DE81C6C24C000F4D08C /* BugReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReporter.swift; sourceTree = "<group>"; };
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
@@ -211,7 +213,7 @@
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
 		3DCFE5DB1C80A9A700D7F31B /* tulsi */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tulsi; sourceTree = "<group>"; };
-		3DCFE5DD1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
+		3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectInfoExtractor.swift; sourceTree = "<group>"; };
 		3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressNotifier.swift; sourceTree = "<group>"; };
 		3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
@@ -223,7 +225,7 @@
 		3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjectsTests.swift; sourceTree = "<group>"; };
 		3DF313B31C3488BE00A34C14 /* UIRuleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRuleNode.swift; sourceTree = "<group>"; };
 		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
+		3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryInfoExtractor.swift; sourceTree = "<group>"; };
 		3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
 		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
@@ -357,9 +359,10 @@
 		3DA65B421C6854BA0055448E /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				3DCFE5DD1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift */,
-				3DFAB53A1C17764A0090CC6F /* BazelQueryWorkspaceInfoExtractor.swift */,
+				3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */,
+				3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */,
 				3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */,
+				3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */,
 				3DAEE45D1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift */,
 				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
 				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
@@ -741,19 +744,20 @@
 				3D99268B1C29F1100094E098 /* PBXObject.swift in Sources */,
 				3D123A531C659688002BEBA2 /* TulsiProject.swift in Sources */,
 				3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */,
+				3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */,
 				3D029B581C6421B400779E8E /* TaskRunner.swift in Sources */,
 				3D99268F1C29F1100094E098 /* PBXProjSerializer.swift in Sources */,
 				3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */,
 				3DBEFACA1C2A168C00119556 /* MessageLoggerProtocol.swift in Sources */,
 				3DAEE45E1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift in Sources */,
-				3DCFE5DE1C80B70700D7F31B /* BazelAspectWorkspaceInfoExtractor.swift in Sources */,
+				3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */,
 				3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */,
 				3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */,
 				3DA65B281C67E9720055448E /* TulsiXcodeProjectGenerator.swift in Sources */,
 				3D250B7F1C5DCE120091C7A5 /* XcodeScheme.swift in Sources */,
 				3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */,
 				3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */,
-				3D9926871C29F10B0094E098 /* BazelQueryWorkspaceInfoExtractor.swift in Sources */,
+				3D9926871C29F10B0094E098 /* BazelQueryInfoExtractor.swift in Sources */,
 				3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */,
 				3DA65B5E1C692FA20055448E /* NSURLExtensions.swift in Sources */,
 				3D9926951C29F1E80094E098 /* RuleEntry.swift in Sources */,

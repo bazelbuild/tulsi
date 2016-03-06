@@ -16,7 +16,7 @@ import Foundation
 
 
 // Concrete extractor that utilizes Bazel aspects to extract information from a workspace.
-final class BazelAspectWorkspaceInfoExtractor {
+final class BazelAspectInfoExtractor {
   enum Error: ErrorType {
     /// Parsing an aspect's output failed with the given debug info.
     case ParsingFailed(String)
@@ -26,11 +26,6 @@ final class BazelAspectWorkspaceInfoExtractor {
   var bazelURL: NSURL
   /// The location of the Bazel workspace to be examined.
   let workspaceRootURL: NSURL
-
-  /// Additional startup options for the Bazel aspect invocations.
-  var bazelStartupOptions: [String]
-  /// Additional options for the Bazel "build" aspect invocation.
-  var bazelBuildOptions: [String]
 
   /// Fetcher object from which a workspace's package_path may be obtained.
   private let packagePathFetcher: BazelWorkspacePackagePathFetcher
@@ -44,7 +39,7 @@ final class BazelAspectWorkspaceInfoExtractor {
 
   static let debugInfoFormatString: String = {
     NSLocalizedString("DebugInfoForBazelCommand",
-                      bundle: NSBundle(forClass: BazelAspectWorkspaceInfoExtractor.self),
+                      bundle: NSBundle(forClass: BazelAspectInfoExtractor.self),
                       comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
   }()
 
@@ -63,15 +58,11 @@ final class BazelAspectWorkspaceInfoExtractor {
   init(bazelURL: NSURL,
        workspaceRootURL: NSURL,
        packagePathFetcher: BazelWorkspacePackagePathFetcher,
-       localizedMessageLogger: LocalizedMessageLogger,
-       bazelStartupOptions: [String] = [],
-       bazelBuildOptions: [String] = []) {
+       localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
     self.packagePathFetcher = packagePathFetcher
     self.localizedMessageLogger = localizedMessageLogger
-    self.bazelStartupOptions = bazelStartupOptions
-    self.bazelBuildOptions = bazelBuildOptions
 
     bundle = NSBundle(forClass: self.dynamicType)
 
@@ -85,24 +76,32 @@ final class BazelAspectWorkspaceInfoExtractor {
   }
 
   /// Builds dependency trees with information extracted from the Bazel workspace for the given set
-  /// of rules.
-  func extractInfoForTargetRules(ruleEntries: [RuleEntry]) -> [RuleEntry] {
-    guard !ruleEntries.isEmpty, let path = workspaceRootURL.path else {
+  /// of Bazel targets.
+  func extractInfoForTargetLabels(targets: [String],
+                                  startupOptions: [String] = [],
+                                  buildOptions: [String] = []) -> [RuleEntry] {
+    guard !targets.isEmpty, let path = workspaceRootURL.path else {
       return []
     }
 
+    let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
+                                            maxValue: targets.count,
+                                            startIndeterminate: true)
+
     let profilingStart = localizedMessageLogger.startProfiling("extract_source_info",
-                                                               message: "Extracting info for \(ruleEntries.count) rules")
+                                                               message: "Extracting info for \(targets.count) rules")
 
     let semaphore = dispatch_semaphore_create(0)
     var extractedEntries = [RuleEntry]()
-    let targets = ruleEntries.map() { $0.label.value }
     let task = bazelAspectTaskForTargets(targets,
-                                         aspect: "tulsi_sources_aspect") {
+                                         aspect: "tulsi_sources_aspect",
+                                         startupOptions: startupOptions,
+                                         buildOptions: buildOptions) {
       (task: NSTask, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer{ dispatch_semaphore_signal(semaphore) }
         if let artifacts = generatedArtifacts where !artifacts.isEmpty {
-          extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts)
+          extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
+                                                                  progressNotifier: progressNotifier)
         } else {
           self.localizedMessageLogger.error("BazelAspectFailed",
                                             comment: "Error message for when a Bazel aspect did not complete successfully.")
@@ -126,12 +125,13 @@ final class BazelAspectWorkspaceInfoExtractor {
   // the output data and passing it to the terminationHandler.
   private func bazelAspectTaskForTargets(targets: [String],
                                          aspect: String,
-                                         message: String = "",
+                                         startupOptions: [String] = [],
+                                         buildOptions: [String] = [],
                                          terminationHandler: CompletionHandler) -> NSTask? {
     let workspacePackagePath = packagePathFetcher.getPackagePath()
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
 
-    var arguments = bazelStartupOptions ?? []
+    var arguments = startupOptions
     arguments.appendContentsOf([
         "build",
         "--show_result=0",  // Don't bother printing the build results.
@@ -143,14 +143,9 @@ final class BazelAspectWorkspaceInfoExtractor {
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
         "--experimental_show_artifacts"  // Print the artifacts generated by the aspect.
     ])
-    arguments.appendContentsOf(bazelBuildOptions)
+    arguments.appendContentsOf(buildOptions)
     arguments.appendContentsOf(targets)
-
-    var message = message
-    if message != "" {
-      message = "\(message)\n"
-    }
-    localizedMessageLogger.infoMessage("\(message)Running bazel command with arguments: \(arguments)")
+    localizedMessageLogger.infoMessage("Running bazel command with arguments: \(arguments)")
 
     let task = TaskRunner.standardRunner().createTask(bazelURL.path!, arguments: arguments) {
       completionInfo in
@@ -163,7 +158,7 @@ final class BazelAspectWorkspaceInfoExtractor {
                                completionInfo.terminationStatus,
                                stderr)
 
-        let artifacts = BazelAspectWorkspaceInfoExtractor.extractBuildArtifactsFromOutput(stderr)
+        let artifacts = BazelAspectInfoExtractor.extractBuildArtifactsFromOutput(stderr)
         terminationHandler(bazelTask: completionInfo.task,
                            generatedArtifacts: artifacts,
                            debugInfo: debugInfo)
@@ -203,7 +198,8 @@ final class BazelAspectWorkspaceInfoExtractor {
   }
 
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
-  private func extractRuleEntriesFromArtifacts(files: [String]) -> [RuleEntry] {
+  private func extractRuleEntriesFromArtifacts(files: [String],
+                                               progressNotifier: ProgressNotifier? = nil) -> [RuleEntry] {
     let fileManager = NSFileManager.defaultManager()
 
     func parseTulsiTargetFile(filename: String) throws -> BazelRuleInfo {
@@ -236,6 +232,7 @@ final class BazelAspectWorkspaceInfoExtractor {
                                 attributes: attributes,
                                 sourceFiles: sources)
       let dependencies = dict["deps"] as? [String] ?? []
+      progressNotifier?.incrementValue()
       return BazelRuleInfo(ruleEntry: ruleEntry, dependencies: dependencies.map({BuildLabel($0)}))
     }
 

@@ -16,11 +16,14 @@
 /// The userInfo dictionary contains:
 ///   "name": String - The name of the task.
 ///   "maxValue": Int - The maximum value of the task
-///   "progressNotificationName": The name of the notification that will be sent when progress
+///   "progressNotificationName" - The name of the notification that will be sent when progress
 ///       changes.
+///   "startIndeterminate" - Whether or not there might be an indeterminate delay before the first
+///       update (for instance if a long initialization is required before actual work is begun).
 public let ProgressUpdatingTaskDidStart = "progressUpdatingTaskDidStart"
 public let ProgressUpdatingTaskName = "name"
 public let ProgressUpdatingTaskMaxValue = "maxValue"
+public let ProgressUpdatingTaskStartIndeterminate = "startIndeterminate"
 
 /// Sent when a task's progress changes.
 /// The userInfo dictionary contains "value": Int - the new progress

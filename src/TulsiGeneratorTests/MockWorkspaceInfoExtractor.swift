@@ -16,6 +16,7 @@ import Foundation
 @testable import TulsiGenerator
 
 
+// TODO(abaire): Update this and associated tests when aspects are the default.
 class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
 
   var ruleEntryToSourcePaths = [RuleEntry: [String]]()
@@ -33,11 +34,10 @@ class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
     return []
   }
 
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry]) -> [RuleEntry] {
+  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
+                                        startupOptions: TulsiOption,
+                                        buildOptions: TulsiOption) -> [RuleEntry] {
     return []
-  }
-
-  func extractTargetRulesFromProject(project: TulsiProject, callback: ([RuleEntry]) -> Void) {
   }
 
   func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry: [String]] {
@@ -58,7 +58,9 @@ class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
     return defines
   }
 
-  func ruleEntriesForLabels(labels: [String]) -> [String: RuleEntry] {
+  func ruleEntriesForLabels(labels: [String],
+                            startupOptions: TulsiOption,
+                            buildOptions: TulsiOption) -> [String: RuleEntry] {
     invalidLabels.removeAll(keepCapacity: true)
     var ret = [String: RuleEntry]()
     for label in labels {
