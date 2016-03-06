@@ -221,7 +221,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     for entry: RuleEntry in ruleEntries {
       let target = try createBuildTargetForRuleEntry(entry)
 
-      if let hostLabelString = entry.attributes["xctest_app"] {
+      if let hostLabelString = entry.attributes["xctest_app"] as? String {
         let hostLabel = BuildLabel(hostLabelString)
         guard let hostTargetName = hostLabel.targetName else {
           throw ProjectSerializationError.GeneralFailure("Test target \(entry.label) has an invalid host label \(hostLabel)")
@@ -304,10 +304,10 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     // Look for bridging_header attributes in the rule or its binary dependency (e.g., for
     // ios_application).
     var bridgingHeaderLabel: String? = nil
-    if let headerSetting = ruleEntry.attributes["bridging_header"] {
+    if let headerSetting = ruleEntry.attributes["bridging_header"] as? String {
       bridgingHeaderLabel = headerSetting
-    } else if let binaryLabel = ruleEntry.attributes["binary"],
-              headerSetting = ruleEntry.dependencies[binaryLabel]?.attributes["bridging_header"] {
+    } else if let binaryLabel = ruleEntry.attributes["binary"] as? String,
+              headerSetting = ruleEntry.dependencies[binaryLabel]?.attributes["bridging_header"] as? String {
       bridgingHeaderLabel = headerSetting
     }
     if let concreteBridgingHeaderLabel = bridgingHeaderLabel {
@@ -465,7 +465,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     // The build script uses the binary label to find and move the dSYM associated with an
     // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application
     // rules, at which point this may be removed.
-    if let binaryLabel = entry.attributes["binary"] {
+    if let binaryLabel = entry.attributes["binary"] as? String {
       buildSettings["BAZEL_BINARY_TARGET"] = binaryLabel
       let buildLabel = BuildLabel(binaryLabel)
       let binaryPackage = buildLabel.packageName!

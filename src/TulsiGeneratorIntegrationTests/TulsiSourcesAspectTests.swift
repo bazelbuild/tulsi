@@ -22,12 +22,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   override func setUp() {
     super.setUp()
-    aspectWorkspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                                     workspaceRootURL: workspaceRootURL!,
-                                                                     packagePathFetcher: packagePathFetcher,
-                                                                     localizedMessageLogger: localizedMessageLogger,
-                                                                     bazelStartupOptions: bazelStartupOptions,
-                                                                     bazelBuildOptions: bazelBuildOptions)
+    makeAspectWorkspaceInfoExtractor()
   }
 
   func testSimple() {
@@ -54,11 +49,82 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/path/to/src3.m",
                      "tulsi_test/path/to/src4.m",
                         ])
+        .hasAttribute("pch", value: ["path": "tulsi_test/src/PCHFile.pch", "src": true])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
+        .hasAttribute("xctest", value: true)
         .hasSources(["tulsi_test/test/src1.mm"])
+  }
+
+  func testComplexSingle_DefaultConfig() {
+    installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
+    let applicationRuleEntry = RuleEntry(label: "//tulsi_test:Application", type: "ios_application")
+    let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
+
+    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetRules([applicationRuleEntry,
+                                                                             testRuleEntry])
+    XCTAssertEqual(ruleEntries.count, 4)
+
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Binary")
+
+    checker.assertThat("//tulsi_test:Binary")
+        .dependsOn("//tulsi_test:Library")
+        .hasSources(["tulsi_test/main.m",
+                     "tulsi_test/path/to/output.m"
+                    ])
+
+    checker.assertThat("//tulsi_test:Library")
+        .hasSources(["tulsi_test/path/to/src1.m",
+                     "tulsi_test/path/to/src2.m",
+                     "tulsi_test/path/to/src3.m",
+                     "tulsi_test/path/to/src4.m",
+                     "tulsi_test/path/to/src5.mm",
+                     ])
+        .hasAttribute("copts", value: ["-DCOPT_DEFINE"])
+        .hasAttribute("defines", value: ["DEFINES_DEFINE=1", "SECOND_DEFINE=2"])
+        .hasAttribute("pch", value: ["path": "tulsi_test/PCHFile.pch",
+                                     "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                                     "src": false])
+
+    checker.assertThat("//tulsi_test:XCTest")
+        .dependsOn("//tulsi_test:Library")
+        .hasTestHost("//tulsi_test:Application")
+        .hasAttribute("xctest", value: true)
+        .hasSources(["tulsi_test/test/defaultTestSource.m"])
+  }
+
+  func testComplexSingle_ConfigTestEnabled() {
+    bazelBuildOptions = ["--define=TEST=1"]
+    makeAspectWorkspaceInfoExtractor()
+
+    installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
+    let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
+
+    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetRules([testRuleEntry])
+    XCTAssertEqual(ruleEntries.count, 4)
+
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//tulsi_test:XCTest")
+        .dependsOn("//tulsi_test:Library")
+        .hasTestHost("//tulsi_test:Application")
+        .hasAttribute("xctest", value: true)
+        .hasSources(["tulsi_test/test/configTestSource.m"])
+  }
+
+  // MARK: - Private methods
+  private func makeAspectWorkspaceInfoExtractor() {
+    aspectWorkspaceInfoExtractor = BazelAspectWorkspaceInfoExtractor(bazelURL: bazelURL,
+                                                                     workspaceRootURL: workspaceRootURL!,
+                                                                     packagePathFetcher: packagePathFetcher,
+                                                                     localizedMessageLogger: localizedMessageLogger,
+                                                                     bazelStartupOptions: bazelStartupOptions,
+                                                                     bazelBuildOptions: bazelBuildOptions)
   }
 
 
@@ -113,7 +179,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         guard let ruleEntry = ruleEntry else { return self }
         for s in sources {
           XCTAssert(ruleEntry.sourceFiles.contains(s),
-                    "\(ruleEntry) missing expected source file '\(s)'",
+                    "\(ruleEntry) missing expected source file '\(s)' from \(ruleEntry.sourceFiles)",
                     line: line)
         }
         return self
@@ -134,11 +200,26 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       /// given label.
       func hasTestHost(targetLabel: String, line: UInt = __LINE__) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
-        let hostLabelString = ruleEntry.attributes["xctest_app"]
+        let hostLabelString = ruleEntry.attributes["xctest_app"] as? String
         XCTAssertEqual(hostLabelString,
                        targetLabel,
                        "\(ruleEntry) expected to have an xctest_app of \(targetLabel)",
                        line: line)
+        return self
+      }
+
+      /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
+      func hasAttribute<T where T: Equatable>(name: String, value: T, line: UInt = __LINE__) -> Context {
+        guard let ruleEntry = ruleEntry else { return self }
+        if let attributeValue = ruleEntry.attributes[name] as? T {
+          XCTAssertEqual(attributeValue, value, line: line)
+        } else if let attributeValue = ruleEntry.attributes[name] {
+          XCTFail("\(ruleEntry) expected to have an attribute named '\(name)' of type \(T.self) " +
+                      "but it is of type \(attributeValue.dynamicType)",
+                  line: line)
+        } else {
+          XCTFail("\(ruleEntry) expected to have an attribute named '\(name)'", line: line)
+        }
         return self
       }
     }

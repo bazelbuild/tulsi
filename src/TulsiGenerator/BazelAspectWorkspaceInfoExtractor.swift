@@ -134,7 +134,6 @@ final class BazelAspectWorkspaceInfoExtractor {
     var arguments = bazelStartupOptions ?? []
     arguments.appendContentsOf([
         "build",
-        "--keep_going",  // Continue as much as possible after errors.
         "--show_result=0",  // Don't bother printing the build results.
         "--no_show_loading_progress",  // Don't show Bazel's loading progress.
         "--no_show_progress",  // Don't show Bazel's build progress.
@@ -224,7 +223,7 @@ final class BazelAspectWorkspaceInfoExtractor {
 
       let ruleLabel = try getRequiredField("label")
       let ruleType = try getRequiredField("type")
-      let attributes = dict["attr"] as? [String: String] ?? [:]
+      let attributes = dict["attr"] as? [String: AnyObject] ?? [:]
       let sourceInfos = dict["srcs"] as? [[String: AnyObject]] ?? []
       var sources = [String]()
       for info in sourceInfos {

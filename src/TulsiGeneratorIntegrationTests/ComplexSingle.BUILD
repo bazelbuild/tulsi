@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Simple mock BUILD file for aspect testing.
+# Complex mock BUILD file for aspect testing.
+
+config_setting(
+    name = "config_test_enabled",
+    values = {"define": "TEST=1"},
+)
 
 ios_application(
     name = "Application",
@@ -23,6 +28,7 @@ objc_binary(
     name = "Binary",
     srcs = [
         "main.m",
+        ":SrcGenerator",
     ],
     deps = [
         ":Library",
@@ -32,28 +38,51 @@ objc_binary(
 objc_library(
     name = "Library",
     srcs = [
-        "path/to/src1.m",
-        "path/to/src2.m",
-        "path/to/src3.m",
-        "path/to/src4.m",
+        "path/to/src5.mm",
+        ":LibrarySources",
     ],
     hdrs = [
         "path/to/header.h",
     ],
     copts = ["-DCOPT_DEFINE"],
-    defines = ["DEFINES_DEFINE=1"],
-    pch = "src/PCHFile.pch",
+    defines = ["DEFINES_DEFINE=1", "SECOND_DEFINE=2"],
+    pch = ":PCHGenerator",
     xibs = ["path/to/xib.xib"],
 )
 
 ios_test(
     name = "XCTest",
-    srcs = [
-        "test/src1.mm",
-    ],
+    srcs = select({
+        ":config_test_enabled": ["test/configTestSource.m"],
+        "//conditions:default": ["test/defaultTestSource.m"],
+    }),
     xctest = 1,
     xctest_app = ":Application",
     deps = [
         ":Library",
     ],
+)
+
+filegroup(
+    name = "LibrarySources",
+    srcs = [
+        "path/to/src1.m",
+        "path/to/src2.m",
+        "path/to/src3.m",
+        "path/to/src4.m",
+    ],
+)
+
+genrule(
+    name = "PCHGenerator",
+    srcs = ["path/to/pch.h"],
+    outs = ["PCHFile.pch"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "SrcGenerator",
+    srcs = ["path/to/input.m"],
+    outs = ["path/to/output.m"],
+    cmd = "cp $< $@",
 )

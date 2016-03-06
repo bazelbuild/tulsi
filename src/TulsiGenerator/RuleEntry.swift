@@ -37,7 +37,7 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
   public let type: String
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
-  let attributes: [String: String]
+  let attributes: [String: AnyObject]
 
   /// Source files associated with this rule.
   let sourceFiles: [String]
@@ -48,7 +48,7 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
   var pbxTargetType: PBXTarget.ProductType? {
     // ios_test rules with the xctest attribute set to false are actually applications.
     if type == "ios_test",
-       let xctestOpt = self.attributes["xctest"] where xctestOpt == String(false) {
+       let xctestOpt = self.attributes["xctest"] where String(xctestOpt) == String(false) {
       return RuleEntry.BuildTypeToTargetType["ios_application"]
     }
     return RuleEntry.BuildTypeToTargetType[type]
@@ -69,7 +69,7 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
 
   init(label: BuildLabel,
        type: String,
-       attributes: [String: String] = [:],
+       attributes: [String: AnyObject] = [:],
        sourceFiles: [String] = []) {
     self.label = label
     self.type = type
@@ -79,7 +79,7 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
 
   convenience init(label: String,
                    type: String,
-                   attributes: [String: String] = [:],
+                   attributes: [String: AnyObject] = [:],
                    sourceFiles: [String] = []) {
     self.init(label: BuildLabel(label),
               type: type,
