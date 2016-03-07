@@ -308,6 +308,8 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       bridgingHeaderLabel = headerSetting
     } else if let binaryLabel = ruleEntry.attributes["binary"] as? String,
               headerSetting = ruleEntry.dependencies[binaryLabel]?.attributes["bridging_header"] as? String {
+      // TODO(abaire): Remove this else clause once aspects are the default.
+      // The aspect pulls interesting data up into the top level rule.
       bridgingHeaderLabel = headerSetting
     }
     if let concreteBridgingHeaderLabel = bridgingHeaderLabel {
