@@ -18,20 +18,22 @@ import XCTest
 
 // Tests for the tulsi_sources_aspect aspect.
 class TulsiSourcesAspectTests: BazelIntegrationTestCase {
-  var aspectWorkspaceInfoExtractor: BazelAspectInfoExtractor! = nil
+  var aspectInfoExtractor: BazelAspectInfoExtractor! = nil
 
   override func setUp() {
     super.setUp()
-    makeAspectWorkspaceInfoExtractor()
+    aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
+                                                   workspaceRootURL: workspaceRootURL!,
+                                                   packagePathFetcher: packagePathFetcher,
+                                                   localizedMessageLogger: localizedMessageLogger)
   }
 
   func testSimple() {
     installBUILDFile("Simple", inSubdirectory: "tulsi_test")
-    let applicationRuleEntry = RuleEntry(label: "//tulsi_test:Application", type: "ios_application")
-    let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
-
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([applicationRuleEntry,
-                                                                               testRuleEntry])
+    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:Application",
+                                                                      "//tulsi_test:XCTest"],
+                                                                     startupOptions: bazelStartupOptions,
+                                                                     buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -60,11 +62,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   func testComplexSingle_DefaultConfig() {
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
-    let applicationRuleEntry = RuleEntry(label: "//tulsi_test:Application", type: "ios_application")
-    let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
-
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([applicationRuleEntry,
-                                                                               testRuleEntry])
+    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:Application",
+                                                                      "//tulsi_test:XCTest"],
+                                                                     startupOptions: bazelStartupOptions,
+                                                                     buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -99,13 +100,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   }
 
   func testComplexSingle_ConfigTestEnabled() {
-    bazelBuildOptions = ["--define=TEST=1"]
-    makeAspectWorkspaceInfoExtractor()
+    bazelBuildOptions.append("--define=TEST=1")
 
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
-    let testRuleEntry = RuleEntry(label: "//tulsi_test:XCTest", type: "ios_test")
-
-    let ruleEntries = aspectWorkspaceInfoExtractor.extractInfoForTargetLabels([testRuleEntry])
+    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:XCTest"],
+                                                                     startupOptions: bazelStartupOptions,
+                                                                     buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -116,17 +116,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute("xctest", value: true)
         .hasSources(["tulsi_test/test/configTestSource.m"])
   }
-
-  // MARK: - Private methods
-  private func makeAspectWorkspaceInfoExtractor() {
-    aspectWorkspaceInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
-                                                            workspaceRootURL: workspaceRootURL!,
-                                                            packagePathFetcher: packagePathFetcher,
-                                                            localizedMessageLogger: localizedMessageLogger,
-                                                            bazelStartupOptions: bazelStartupOptions,
-                                                            bazelBuildOptions: bazelBuildOptions)
-  }
-
 
   private class InfoChecker {
     let ruleEntries: [BuildLabel: RuleEntry]
