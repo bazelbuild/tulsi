@@ -61,9 +61,7 @@ class XcodeScheme {
     rootElement.setAttributesWithDictionary(rootAttributes)
 
     rootElement.addChild(buildAction())
-    if let testActionNode = testAction() {
-      rootElement.addChild(testActionNode)
-    }
+    rootElement.addChild(testAction())
     rootElement.addChild(launchAction())
     rootElement.addChild(profileAction())
     rootElement.addChild(analyzeAction())
@@ -102,11 +100,8 @@ class XcodeScheme {
   }
 
   /// Settings for the Xcode "Test" action.
-  private func testAction() -> NSXMLElement? {
+  private func testAction() -> NSXMLElement {
     let testTargets = project.linkedTestTargetsForHost(target)
-    if testTargets.isEmpty {
-      return nil
-    }
 
     let element = NSXMLElement(name: "TestAction")
     let testActionAttributes = [

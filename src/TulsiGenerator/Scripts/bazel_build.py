@@ -356,8 +356,9 @@ class BazelBuildBridge(object):
 
     configuration = os.environ['CONFIGURATION']
     # Treat the special testrunner build config as a Debug compile.
-    if configuration == '__TulsiTestRunnerConfig_DO_NOT_USE_MANUALLY':
-      configuration = 'Debug'
+    test_runner_config_prefix = '__TulsiTestRunner_'
+    if configuration.startswith(test_runner_config_prefix):
+      configuration = configuration[len(test_runner_config_prefix):]
     if configuration not in _OptionsParser.KNOWN_CONFIGS:
       print ('Warning: Unknown build configuration "%s", building in '
              'fastbuild mode' % configuration)

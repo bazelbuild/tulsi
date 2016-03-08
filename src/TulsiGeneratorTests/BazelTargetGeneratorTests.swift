@@ -438,7 +438,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     // Configs will be minimally generated for Debug and the test runner dummy.
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 2)
+    XCTAssertEqual(topLevelConfigs.count, 4)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 2)
@@ -470,7 +470,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
-                  name: "__TulsiTestRunnerConfig_DO_NOT_USE_MANUALLY",
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: testRunnerExpectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
                   expectedBuildSettings: testRunnerExpectedBuildSettings
               ),
           ],
@@ -511,7 +515,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
-                  name: "__TulsiTestRunnerConfig_DO_NOT_USE_MANUALLY",
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: testRunnerExpectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
                   expectedBuildSettings: testRunnerExpectedBuildSettings
               ),
           ],

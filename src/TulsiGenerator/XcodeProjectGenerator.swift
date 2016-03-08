@@ -265,19 +265,13 @@ class XcodeProjectGenerator {
           continue
         }
 
-        // If this target happens to be a test host, update the test action to allow tests to be run
-        // without Xcode attempting to compile code.
+        // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
+        // attempting to compile code.
         let target = xcodeProject.targetByName(targetName)!
-        let testActionBuildConfig: String
-        if !xcodeProject.linkedTestTargetsForHost(target).isEmpty {
-          testActionBuildConfig = BazelTargetGenerator.runTestTargetBuildConfigName
-        } else {
-          testActionBuildConfig = "Debug"
-        }
         let scheme = XcodeScheme(target: target,
                                  project: xcodeProject,
                                  projectBundleName: projectBundleName,
-                                 testActionBuildConfig: testActionBuildConfig)
+                                 testActionBuildConfig: BazelTargetGenerator.runTestTargetBuildConfigPrefix + "Debug")
         let xmlDocument = scheme.toXML()
 
         let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
