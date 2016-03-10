@@ -15,7 +15,7 @@
 import Foundation
 
 
-// Concrete extractor that utilizes Bazel aspects to extract information from a workspace.
+// Provides methods utilizing Bazel aspects to extract information from a workspace.
 final class BazelAspectInfoExtractor {
   enum Error: ErrorType {
     /// Parsing an aspect's output failed with the given debug info.

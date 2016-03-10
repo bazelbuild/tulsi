@@ -30,6 +30,14 @@ objc_binary(
         "main.m",
         ":SrcGenerator",
     ],
+    bridging_header = ":BridgingHeaderGenerator",
+    defines = [
+        "A=DEFINE",
+    ],
+    includes = [
+        "additional/include",
+        "another/include",
+    ],
     deps = [
         ":Library",
     ],
@@ -45,7 +53,10 @@ objc_library(
         "path/to/header.h",
     ],
     copts = ["-DCOPT_DEFINE"],
-    defines = ["DEFINES_DEFINE=1", "SECOND_DEFINE=2"],
+    defines = [
+        "DEFINES_DEFINE=1",
+        "SECOND_DEFINE=2",
+    ],
     pch = ":PCHGenerator",
     xibs = ["path/to/xib.xib"],
 )
@@ -71,6 +82,13 @@ filegroup(
         "path/to/src3.m",
         "path/to/src4.m",
     ],
+)
+
+genrule(
+    name = "BridgingHeaderGenerator",
+    srcs = ["path/to/bridging_header.h"],
+    outs = ["bridging_header.h"],
+    cmd = "cp $< $@",
 )
 
 genrule(

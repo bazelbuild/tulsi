@@ -59,7 +59,6 @@
 		3DA65B1B1C67B9DE0055448E /* TulsiGeneratorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B1A1C67B9DE0055448E /* TulsiGeneratorConfig.swift */; };
 		3DA65B281C67E9720055448E /* TulsiXcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B271C67E9720055448E /* TulsiXcodeProjectGenerator.swift */; };
 		3DA65B3E1C6849140055448E /* XcodeProjectGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B3D1C6849140055448E /* XcodeProjectGeneratorTests.swift */; };
-		3DA65B401C6853970055448E /* MockLabelResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B3F1C6853970055448E /* MockLabelResolver.swift */; };
 		3DA65B441C6854EF0055448E /* LocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */; };
 		3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */; };
 		3DA65B481C685BF30055448E /* MockWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B471C685BF30055448E /* MockWorkspaceInfoExtractor.swift */; };
@@ -191,7 +190,6 @@
 		3DA65B1A1C67B9DE0055448E /* TulsiGeneratorConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfig.swift; sourceTree = "<group>"; };
 		3DA65B271C67E9720055448E /* TulsiXcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiXcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3DA65B3D1C6849140055448E /* XcodeProjectGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeProjectGeneratorTests.swift; sourceTree = "<group>"; };
-		3DA65B3F1C6853970055448E /* MockLabelResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLabelResolver.swift; sourceTree = "<group>"; };
 		3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3DA65B471C685BF30055448E /* MockWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
@@ -350,7 +348,6 @@
 			isa = PBXGroup;
 			children = (
 				3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */,
-				3DA65B3F1C6853970055448E /* MockLabelResolver.swift */,
 				3DA65B471C685BF30055448E /* MockWorkspaceInfoExtractor.swift */,
 			);
 			name = Mocks;
@@ -784,7 +781,6 @@
 				3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */,
 				3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */,
 				3DA65B3E1C6849140055448E /* XcodeProjectGeneratorTests.swift in Sources */,
-				3DA65B401C6853970055448E /* MockLabelResolver.swift in Sources */,
 				3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */,
 				3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */,
 				3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */,

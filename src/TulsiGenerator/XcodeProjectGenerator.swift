@@ -42,7 +42,6 @@ class XcodeProjectGenerator {
   private let localizedMessageLogger: LocalizedMessageLogger
   private let fileManager: NSFileManager
   private let workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
-  private let labelResolver: LabelResolverProtocol
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
@@ -50,10 +49,6 @@ class XcodeProjectGenerator {
   /// Generates warning messages for source target labels that fail to resolve rather than failing
   /// project generation.
   var treatMissingSourceTargetsAsWarnings = false
-
-  /// Dictionary of Bazel targets for which indexers should be generated and the sources to add to
-  /// them.
-  private var sourcePaths = [RuleEntry: [String]]()
 
   // Exposed for testing. Simply writes the given NSData to the given NSURL.
   var writeDataHandler: (NSURL, NSData) throws -> Void = { (outputFileURL: NSURL, data: NSData) in
@@ -65,7 +60,6 @@ class XcodeProjectGenerator {
        localizedMessageLogger: LocalizedMessageLogger,
        fileManager: NSFileManager,
        workspaceInfoExtractor: WorkspaceInfoExtractorProtocol,
-       labelResolver: LabelResolverProtocol,
        buildScriptURL: NSURL,
        envScriptURL: NSURL,
        cleanScriptURL: NSURL) {
@@ -74,7 +68,6 @@ class XcodeProjectGenerator {
     self.localizedMessageLogger = localizedMessageLogger
     self.fileManager = fileManager
     self.workspaceInfoExtractor = workspaceInfoExtractor
-    self.labelResolver = labelResolver
     self.buildScriptURL = buildScriptURL
     self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
@@ -84,27 +77,6 @@ class XcodeProjectGenerator {
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
     try resolveConfigReferences()
-    resolveSourceFilePaths()
-
-    var missingSourceTargetPaths = Set<String>()
-    for entry in config.sourceTargets! {
-      guard let _ = sourcePaths[entry] else {
-        missingSourceTargetPaths.insert(entry.label.value)
-        continue
-      }
-    }
-    if !missingSourceTargetPaths.isEmpty {
-      if treatMissingSourceTargetsAsWarnings {
-        for label in missingSourceTargetPaths {
-          localizedMessageLogger.warning("SourceRuleExtractionFailed",
-                                         comment: "The Bazel query for dependencies of rule %1$@ failed XML parsing. As a result, the user won't be able to add affected source files to the project unless they happen to be dependencies of another target that succeeds.",
-                                         values: label)
-        }
-      } else {
-        throw Error.SourceTargetResolutionFailed(missingSourceTargetPaths)
-      }
-    }
-
     let mainGroup = BazelTargetGenerator.mainGroupForOutputFolder(outputFolderURL,
                                                                   workspaceRootURL: workspaceRootURL)
     let xcodeProject = try buildXcodeProjectWithMainGroup(mainGroup)
@@ -192,11 +164,6 @@ class XcodeProjectGenerator {
     }
   }
 
-  // TODO(abaire): This can be removed/simplified when aspects are the default.
-  private func resolveSourceFilePaths() {
-    sourcePaths = workspaceInfoExtractor.extractSourceFilePathsForSourceRules(config.sourceTargets!)
-  }
-
   private func buildXcodeProjectWithMainGroup(mainGroup: PBXGroup) throws -> PBXProject {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool where enabled {
@@ -211,7 +178,6 @@ class XcodeProjectGenerator {
                                          project: xcodeProject,
                                          buildScriptPath: buildScriptPath,
                                          envScriptPath: envScriptPath,
-                                         labelResolver: labelResolver,
                                          options: config.options,
                                          localizedMessageLogger: localizedMessageLogger)
 
@@ -219,20 +185,28 @@ class XcodeProjectGenerator {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
     }
 
-    // TODO(abaire): Consider doing per-source target defines.
-    let preprocessorDefines = workspaceInfoExtractor.extractDefinesForRuleEntries(config.buildTargets!)
-    for (ruleEntry, paths) in sourcePaths {
-      generator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                  sourcePaths: paths,
-                                                  preprocessorDefines: preprocessorDefines)
+    for ruleEntry in config.buildTargets! {
+      generator.generateIndexerTargetForRuleEntry(ruleEntry)
     }
 
     let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
     generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
 
-    let additionalIncludePaths = workspaceInfoExtractor.extractExplicitIncludePathsForRuleEntries(config.buildTargets!)
+    var additionalIncludePaths = Set<String>()
+    func extractIncludePaths(ruleEntry: RuleEntry) {
+      for (_, dependency) in ruleEntry.dependencies {
+        extractIncludePaths(dependency)
+      }
+
+      if let includes = ruleEntry.attributes["includes"] as? [String] {
+        additionalIncludePaths.unionInPlace(includes)
+      }
+    }
+    for ruleEntry in config.buildTargets! {
+      extractIncludePaths(ruleEntry)
+    }
     generator.generateTopLevelBuildConfigurations(additionalIncludePaths)
-    try generator.generateBuildTargetsForRuleEntries(config.buildTargets!, sourcePaths: sourcePaths)
+    try generator.generateBuildTargetsForRuleEntries(config.buildTargets!)
 
     return xcodeProject
   }

@@ -19,11 +19,8 @@ protocol TargetGeneratorProtocol {
   /// them to an indexer target. The paths must be relative to the workspace root.
   func generateFileReferencesForFilePaths(paths: [String])
 
-  /// Generates an indexer target for the given Bazel rule including the given set of source file
-  /// paths and preprocessor defines.
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         sourcePaths: [String],
-                                         preprocessorDefines: Set<String>?)
+  /// Generates an indexer target for the given Bazel rule and its transitive dependencies.
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry)
 
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
@@ -33,12 +30,10 @@ protocol TargetGeneratorProtocol {
   /// Generates top level build configurations with an optional set of additional include paths.
   func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>?)
 
-  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules
-  /// with corresponding entries in sourcePaths, non-compiling source file linkages are created to
-  /// facilitate indexing of XCTests.
+  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
+  /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry],
-                                          sourcePaths: [RuleEntry: [String]]?) throws
+  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws
 }
 
 
@@ -49,8 +44,17 @@ struct BazelFileTarget {
     case GeneratedFile
   }
 
-  /// This file's bazel build label.
-  let label: BuildLabel
+  static func fileTargetFromAspectFileInfo(info: AnyObject?) -> BazelFileTarget? {
+    guard let info = info as? [String: AnyObject] else { return nil }
+
+    guard let path = info["path"] as? String,
+              isSourceFile = info["src"] as? Bool else {
+      assertionFailure("Aspect provided a file info dictionary but was missing required keys")
+      return nil
+    }
+    return BazelFileTarget(path: path,
+                           targetType: isSourceFile ? .SourceFile : .GeneratedFile)
+  }
 
   /// The path to this file relative to the bazel workspace root or generated files root.
   let path: String
@@ -65,23 +69,6 @@ struct BazelFileTarget {
       case .GeneratedFile:
         return "bazel-genfiles/\(path)"
     }
-  }
-}
-
-
-protocol LabelResolverProtocol {
-  /// Resolves a list of labels to a map of label to file targets.
-  func resolveFilesForLabels(labels: [String]) -> [String: BazelFileTarget?]?
-}
-
-extension LabelResolverProtocol {
-  /// Resolves a single label to a file target.
-  func resolveFileForLabel(label: String) -> BazelFileTarget? {
-    guard let files = resolveFilesForLabels([label]) else {
-      return nil
-    }
-
-    return files[label]!
   }
 }
 
@@ -121,7 +108,6 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   let project: PBXProject
   let buildScriptPath: String
   let envScriptPath: String
-  let labelResolver: LabelResolverProtocol
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
 
@@ -131,14 +117,12 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
        project: PBXProject,
        buildScriptPath: String,
        envScriptPath: String,
-       labelResolver: LabelResolverProtocol,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.envScriptPath = envScriptPath
-    self.labelResolver = labelResolver
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
   }
@@ -149,21 +133,34 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
   }
 
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         sourcePaths: [String],
-                                         preprocessorDefines: Set<String>?) {
-    if sourcePaths.isEmpty { return }
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry) {
 
-    let targetName = indexerNameForRuleEntry(ruleEntry)
-    let indexingTarget = project.createNativeTarget(targetName, targetType: PBXTarget.ProductType.StaticLibrary)
-    let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
-    let (buildPhase, pchFile) = createBuildPhaseForFileReferences(fileReferences)
-    indexingTarget.buildPhases.append(buildPhase)
+    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> Set<String> {
+      var defines = Set<String>()
+      for (_, dependency) in ruleEntry.dependencies {
+        defines.unionInPlace(generateIndexerTargetGraphForRuleEntry(dependency))
+      }
 
-    addConfigsForIndexingTarget(indexingTarget,
-                                pchFile: pchFile,
-                                ruleEntry: ruleEntry,
-                                preprocessorDefines: preprocessorDefines)
+      let sourcePaths = ruleEntry.sourceFiles
+      if sourcePaths.isEmpty {
+        return defines
+      }
+
+      let targetName = indexerNameForRuleEntry(ruleEntry)
+      let indexingTarget = project.createNativeTarget(targetName,
+                                                      targetType: PBXTarget.ProductType.StaticLibrary)
+      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
+      let buildPhase = createBuildPhaseForFileReferences(fileReferences)
+      indexingTarget.buildPhases.append(buildPhase)
+
+      addConfigsForIndexingTarget(indexingTarget,
+                                  pchFilePath: ruleEntry.attributes["pch"] as? String,
+                                  ruleEntry: ruleEntry,
+                                  preprocessorDefines: defines)
+      return defines
+    }
+
+    generateIndexerTargetGraphForRuleEntry(ruleEntry)
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
@@ -214,8 +211,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
   }
 
-  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry],
-                                          sourcePaths: [RuleEntry: [String]]?) throws {
+  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws {
     var testTargetLinkages = [(PBXTarget, String, RuleEntry)]()
 
     for entry: RuleEntry in ruleEntries {
@@ -233,7 +229,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     for (testTarget, hostTargetName, entry) in testTargetLinkages {
       updateTestTarget(testTarget,
                        withLinkageToHostTargetNamed: hostTargetName,
-                       sourcePaths: sourcePaths?[entry])
+                       ruleEntry: entry)
     }
   }
 
@@ -286,40 +282,23 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
   // spaces it would be the string: key="value with spaces").
   private func addConfigsForIndexingTarget(target: PBXTarget,
-                                           pchFile: PBXFileReference?,
+                                           pchFilePath: String?,
                                            ruleEntry: RuleEntry,
                                            preprocessorDefines: Set<String>?) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
-    if pchFile != nil {
-      buildSettings["GCC_PREFIX_HEADER"] = pchFile!.sourceRootRelativePath
+    if let pchFilePath = pchFilePath {
+      buildSettings["GCC_PREFIX_HEADER"] = pchFilePath
     }
 
-    if let preprocessorDefines = preprocessorDefines {
+    if let preprocessorDefines = preprocessorDefines where !preprocessorDefines.isEmpty {
       let cflagDefines = preprocessorDefines.sort().map({"-D\($0)"})
       buildSettings["OTHER_CFLAGS"] = cflagDefines.joinWithSeparator(" ")
     }
 
-    // Look for bridging_header attributes in the rule or its binary dependency (e.g., for
-    // ios_application).
-    var bridgingHeaderLabel: String? = nil
-    if let headerSetting = ruleEntry.attributes["bridging_header"] as? String {
-      bridgingHeaderLabel = headerSetting
-    } else if let binaryLabel = ruleEntry.attributes["binary"] as? String,
-              headerSetting = ruleEntry.dependencies[binaryLabel]?.attributes["bridging_header"] as? String {
-      // TODO(abaire): Remove this else clause once aspects are the default.
-      // The aspect pulls interesting data up into the top level rule.
-      bridgingHeaderLabel = headerSetting
-    }
-    if let concreteBridgingHeaderLabel = bridgingHeaderLabel {
-      if let file = labelResolver.resolveFileForLabel(concreteBridgingHeaderLabel) {
-        buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = file.fullPath
-      } else {
-        localizedMessageLogger.warning("BridgingHeaderResolverFailed",
-                                       comment: "bridging_header label cannot be resolved to a file. %1$@ is replaced with the bazel label that was used.",
-                                       values: concreteBridgingHeaderLabel)
-      }
+    if let bridgingHeader = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes["bridging_header"]) {
+      buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader.fullPath
     }
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
@@ -329,7 +308,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   // bundle target.
   private func updateTestTarget(target: PBXTarget,
                                 withLinkageToHostTargetNamed hostTargetName: String,
-                                sourcePaths: [String]?) {
+                                ruleEntry: RuleEntry) {
     guard let hostTarget = project.targetByName(hostTargetName) as? PBXNativeTarget else {
       // If the user did not choose to include the host target it won't be available so the
       // linkage can be skipped silently.
@@ -350,9 +329,10 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
                                        withBuildSettings: testSettings)
     }
 
-    if let concreteSourcePaths = sourcePaths {
-      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(concreteSourcePaths)
-      let (buildPhase, _) = createBuildPhaseForFileReferences(fileReferences)
+    let sourcePaths = ruleEntry.sourceFiles
+    if !sourcePaths.isEmpty {
+      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
+      let buildPhase = createBuildPhaseForFileReferences(fileReferences)
       target.buildPhases.append(buildPhase)
 
       // Add configurations that will allow the tests to be run but not compiled. Note that the
@@ -425,21 +405,9 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   // Creates a PBXSourcesBuildPhase with the given files, optionally applying the given per-file
   // settings to each file.
   private func createBuildPhaseForFileReferences(fileRefs: [PBXFileReference],
-                                                 withPerFileSettings settings: [String: String]? = nil) -> (PBXSourcesBuildPhase, PBXFileReference?) {
+                                                 withPerFileSettings settings: [String: String]? = nil) -> PBXSourcesBuildPhase {
     let buildPhase = PBXSourcesBuildPhase()
-    var pchFile: PBXFileReference?
-
     for file in fileRefs {
-      guard let fileExtension = file.fileExtension else {
-        continue
-      }
-
-      if fileExtension == "pch" {
-        assert(pchFile == nil)
-        pchFile = file
-        continue
-      }
-
       guard let fileUTI = file.uti else {
         continue
       }
@@ -449,7 +417,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
         buildPhase.files.append(PBXBuildFile(fileRef: file, settings: settings))
       }
     }
-    return (buildPhase, pchFile)
+    return buildPhase
   }
 
   private func createBuildTargetForRuleEntry(entry: RuleEntry) throws -> PBXTarget {

@@ -48,7 +48,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
   var config: TulsiGeneratorConfig! = nil
   var mockFileManager: MockFileManager! = nil
   var mockExtractor: MockWorkspaceInfoExtractor! = nil
-  var mockLabelResolver: MockLabelResolver! = nil
   var generator: XcodeProjectGenerator! = nil
 
   override func setUp() {
@@ -85,15 +84,12 @@ class XcodeProjectGeneratorTests: XCTestCase {
     mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
 
     mockExtractor = MockWorkspaceInfoExtractor()
-    mockExtractor.ruleEntryToSourcePaths = ruleEntryToSourceFiles
     mockExtractor.labelToRuleEntry = buildAndSourceTargetLabelToRuleEntries
-    mockLabelResolver = MockLabelResolver()
     generator = XcodeProjectGenerator(workspaceRootURL: workspaceRoot,
                                       config: config,
                                       localizedMessageLogger: MockLocalizedMessageLogger(),
                                       fileManager: mockFileManager,
                                       workspaceInfoExtractor: mockExtractor,
-                                      labelResolver: mockLabelResolver,
                                       buildScriptURL: buildScriptURL,
                                       envScriptURL: envScriptURL,
                                       cleanScriptURL: cleanScriptURL)
@@ -109,20 +105,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
       let expectedMissingLabels = sourceTargetLabels.filter() { !buildTargetLabels.contains($0) }
       for label in expectedMissingLabels {
         XCTAssert(missingLabels.contains(label), "Expected missing label \(label) not found")
-      }
-    } catch let e {
-      XCTFail("Unexpected exception \(e)")
-    }
-  }
-
-  func testInvalidSourceLabelsThrows() {
-    mockExtractor.ruleEntryToSourcePaths.removeAll()
-    do {
-      try generator.generateXcodeProjectInFolder(outputFolderURL)
-      XCTFail("Generation succeeded unexpectedly")
-    } catch XcodeProjectGenerator.Error.SourceTargetResolutionFailed(let missingLabels) {
-      for label in sourceTargetLabels {
-        XCTAssert(missingLabels.contains(label), "Expected invalid source label \(label) not found")
       }
     } catch let e {
       XCTFail("Unexpected exception \(e)")

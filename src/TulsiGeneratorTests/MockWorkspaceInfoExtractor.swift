@@ -16,46 +16,17 @@ import Foundation
 @testable import TulsiGenerator
 
 
-// TODO(abaire): Update this and associated tests when aspects are the default.
 class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
-
-  var ruleEntryToSourcePaths = [RuleEntry: [String]]()
 
   var labelToRuleEntry = [String: RuleEntry]()
   /// The set of labels passed to ruleEntriesForLabels that could not be found in the
   /// labelToRuleEntry dictionary.
   var invalidLabels = Set<String>()
 
-  var explicitIncludePaths: Set<String>? = nil
-  var defines: Set<String>? = nil
   var bazelURL = NSURL()
 
   func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
     return []
-  }
-
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
-                                        startupOptions: TulsiOption,
-                                        buildOptions: TulsiOption) -> [RuleEntry] {
-    return []
-  }
-
-  func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry: [String]] {
-    var ret = [RuleEntry: [String]]()
-    for entry in ruleEntries {
-      if let paths = ruleEntryToSourcePaths[entry] {
-        ret[entry] = paths
-      }
-    }
-    return ret
-  }
-
-  func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
-    return explicitIncludePaths
-  }
-
-  func extractDefinesForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>? {
-    return defines
   }
 
   func ruleEntriesForLabels(labels: [String],

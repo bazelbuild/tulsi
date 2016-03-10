@@ -60,7 +60,6 @@ public final class TulsiXcodeProjectGenerator {
                                                   localizedMessageLogger: localizedMessageLogger,
                                                   fileManager: NSFileManager.defaultManager(),
                                                   workspaceInfoExtractor: extractor,
-                                                  labelResolver: extractor,
                                                   buildScriptURL: buildScriptURL,
                                                   envScriptURL: envScriptURL,
                                                   cleanScriptURL: cleanScriptURL)

@@ -20,22 +20,6 @@ protocol WorkspaceInfoExtractorProtocol {
   /// Extracts the set of target rule entries from the given project.
   func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry]
 
-  /// Extracts source file RuleEntry's for the given set of target rules.
-  func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
-                                        startupOptions: TulsiOption,
-                                        buildOptions: TulsiOption) -> [RuleEntry]
-
-  /// Extracts source file paths for the given set of source rules and provides a dictionary mapping
-  /// each RuleEntry to the set of source files needed by that rule.
-  func extractSourceFilePathsForSourceRules(ruleEntries: [RuleEntry]) -> [RuleEntry: [String]]
-
-  /// Extracts any explicit include paths set via attributes for the given rules or their
-  /// dependencies.
-  func extractExplicitIncludePathsForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>?
-
-  /// Extracts any "defines" set via attributes for the given rules or their dependencies.
-  func extractDefinesForRuleEntries(ruleEntries: [RuleEntry]) -> Set<String>?
-
   /// Retrieves RuleEntry information for the given list of labels, returning a dictionary mapping
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).

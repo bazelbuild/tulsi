@@ -46,9 +46,12 @@ public class TulsiProjectInfoExtractor {
   public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
                                                startupOptions: TulsiOption,
                                                buildOptions: TulsiOption) -> [RuleEntry] {
-    return workspaceInfoExtractor.extractSourceRulesForRuleEntries(ruleEntries,
-                                                                   startupOptions: startupOptions,
-                                                                   buildOptions: buildOptions)
+
+    let labels: [String] = ruleEntries.map() { $0.label.value }
+    let labelToRuleEntry = ruleEntriesForLabels(labels,
+                                                startupOptions: startupOptions,
+                                                buildOptions: buildOptions)
+    return labelToRuleEntry.map() { $0.1 }
   }
 
   public func ruleEntriesForLabels(labels: [String],

@@ -44,6 +44,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/main.m"])
+        .hasAttribute("bridging_header", value: ["path": "tulsi_test/bridging_header.h", "src": true])
+        .hasAttribute("includes", value: ["additional/include"])
+        .hasAttribute("defines", value: ["ADDITIONAL_DEFINE", "ANOTHER_DEFINE=2"])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/path/to/src1.m",
@@ -78,6 +81,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/main.m",
                      "tulsi_test/path/to/output.m"
                     ])
+        .hasAttribute("bridging_header", value: ["path": "tulsi_test/bridging_header.h",
+                                                 "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                                                 "src": false])
+        .hasAttribute("includes", value: ["additional/include", "another/include"])
+        .hasAttribute("defines", value: ["A=DEFINE"])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/path/to/src1.m",

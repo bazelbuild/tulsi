@@ -24,6 +24,12 @@ objc_binary(
     srcs = [
         "main.m",
     ],
+    bridging_header = "bridging_header.h",
+    defines = [
+        "ADDITIONAL_DEFINE",
+        "ANOTHER_DEFINE=2",
+    ],
+    includes = ["additional/include"],
     deps = [
         ":Library",
     ],
