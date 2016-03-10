@@ -19,8 +19,11 @@ protocol TargetGeneratorProtocol {
   /// them to an indexer target. The paths must be relative to the workspace root.
   func generateFileReferencesForFilePaths(paths: [String])
 
-  /// Generates an indexer target for the given Bazel rule and its transitive dependencies.
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry)
+  /// Generates an indexer target for the given Bazel rule and its transitive dependencies, adding
+  /// source files whose directories are present in pathFilters.
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
+                                         ruleEntryMap: [BuildLabel: RuleEntry],
+                                         pathFilters: Set<String>)
 
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
@@ -133,15 +136,26 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
   }
 
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry) {
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
+                                         ruleEntryMap: [BuildLabel: RuleEntry],
+                                         pathFilters: Set<String>) {
 
     func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> Set<String> {
       var defines = Set<String>()
-      for (_, dependency) in ruleEntry.dependencies {
-        defines.unionInPlace(generateIndexerTargetGraphForRuleEntry(dependency))
+      for dep in ruleEntry.dependencies {
+        guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
+          localizedMessageLogger.error("UnknownTargetRule",
+                                       comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                       values: dep)
+          continue
+        }
+        defines.unionInPlace(generateIndexerTargetGraphForRuleEntry(depEntry))
       }
 
-      let sourcePaths = ruleEntry.sourceFiles
+      let sourcePaths = ruleEntry.sourceFiles.filter() {
+        let dir = ($0 as NSString).stringByDeletingLastPathComponent
+        return pathFilters.contains(dir)
+      }
       if sourcePaths.isEmpty {
         return defines
       }

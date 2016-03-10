@@ -202,7 +202,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
   let model: OptionsEditorModelProtocol?
 
   // The UIRuleEntry selected in the target picker or nil if the BUILD file is selected.
-  let target: UIRuleEntry?
+  let target: UIRuleInfo?
 
   override var name: String {
     return option.displayName
@@ -236,7 +236,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
     return .Default
   }
 
-  init(key: TulsiOptionKey, option: TulsiOption, model: OptionsEditorModelProtocol?, target: UIRuleEntry?) {
+  init(key: TulsiOptionKey, option: TulsiOption, model: OptionsEditorModelProtocol?, target: UIRuleInfo?) {
     self.key = key
     self.option = option
     self.model = model

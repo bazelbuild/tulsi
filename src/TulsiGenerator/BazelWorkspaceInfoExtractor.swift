@@ -33,6 +33,9 @@ final class BazelWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
   private let aspectExtractor: BazelAspectInfoExtractor
   private let queryExtractor: BazelQueryInfoExtractor
 
+  // Cache of all RuleEntry instances loaded for the associated project.
+  private var ruleEntryCache = [BuildLabel: RuleEntry]()
+
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
 
     packagePathFetcher = BazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
@@ -49,13 +52,16 @@ final class BazelWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
 
   // MARK: - WorkspaceInfoExtractorProtocol
 
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
+  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
     return queryExtractor.extractTargetRulesFromProject(project)
   }
 
-  func ruleEntriesForLabels(labels: [String],
+  func ruleEntriesForLabels(labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) -> [String:RuleEntry] {
+                            buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
+    let missingLabels = labels.filter() { ruleEntryCache[$0] == nil }
+    if missingLabels.isEmpty { return ruleEntryCache }
+
     let commandLineSplitter = CommandLineSplitter()
     func splitOptionString(options: String?) -> [String] {
       guard let options = options else { return [] }
@@ -65,13 +71,12 @@ final class BazelWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
     // TODO(abaire): Support per-target and per-config options during aspect lookups.
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
-    let ruleEntries = aspectExtractor.extractInfoForTargetLabels(labels,
-                                                                 startupOptions: startupOptions,
-                                                                 buildOptions: buildOptions)
-    var labelMap = [String: RuleEntry]()
-    for entry in ruleEntries {
-      labelMap[entry.label.value] = entry
+    let ruleEntries = aspectExtractor.extractRuleEntriesForLabels(labels,
+                                                                  startupOptions: startupOptions,
+                                                                  buildOptions: buildOptions)
+    for (label, entry) in ruleEntries {
+      ruleEntryCache[label] = entry
     }
-    return labelMap
+    return ruleEntryCache
   }
 }

@@ -20,19 +20,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
   let workspaceRoot = NSURL(fileURLWithPath: "/path/to/workspace")
   let projectName = "ProjectName"
 
-  let buildTargetLabels = ["target", "path/to/target"]
-  let sourceTargetLabels = ["target", "path/to/target", "sourceTarget"]
-  let sourceTargetToSources = [
-      "target": ["targetSource1", "targetSource2"],
-      "path/to/target": [],
-      "sourceTarget": ["path/to/source1", "path/to/source2"],
-  ]
-
-  var buildTargetLabelToRuleEntries = [String: RuleEntry]()
-  var sourceTargetLabelToRuleEntries = [String: RuleEntry]()
-  var buildAndSourceTargetLabelToRuleEntries = [String: RuleEntry]()
-
-  var ruleEntryToSourceFiles = [RuleEntry: [String]]()
+  let buildTargetLabels = ["target", "path/to/target"].map({ BuildLabel($0) })
+  let pathFilters = Set<String>(["target", "path/to/target", "sourceTarget"])
+  var buildTargetLabelToRuleEntries = [BuildLabel: RuleEntry]()
 
   let additionalFilePaths = ["additionalFile1", "path/to/additionalFile2"]
 
@@ -54,21 +44,11 @@ class XcodeProjectGeneratorTests: XCTestCase {
     super.setUp()
 
     buildTargetLabelToRuleEntries = XcodeProjectGeneratorTests.labelToRuleEntryMapForLabels(buildTargetLabels)
-    sourceTargetLabelToRuleEntries = XcodeProjectGeneratorTests.labelToRuleEntryMapForLabels(sourceTargetLabels)
-    buildAndSourceTargetLabelToRuleEntries = buildTargetLabelToRuleEntries
-    for (key, value) in sourceTargetLabelToRuleEntries {
-      buildAndSourceTargetLabelToRuleEntries[key] = value
-    }
-
-    for label in sourceTargetLabels {
-      let ruleEntry = buildAndSourceTargetLabelToRuleEntries[label]!
-      ruleEntryToSourceFiles[ruleEntry] = sourceTargetToSources[label]!
-    }
 
     options = TulsiOptionSet()
     config = TulsiGeneratorConfig(projectName: projectName,
                                   buildTargetLabels: buildTargetLabels,
-                                  sourceTargetLabels: sourceTargetLabels,
+                                  pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
                                   options: options,
                                   bazelURL: bazelURL)
@@ -84,7 +64,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
 
     mockExtractor = MockWorkspaceInfoExtractor()
-    mockExtractor.labelToRuleEntry = buildAndSourceTargetLabelToRuleEntries
+    mockExtractor.labelToRuleEntry = buildTargetLabelToRuleEntries
     generator = XcodeProjectGenerator(workspaceRootURL: workspaceRoot,
                                       config: config,
                                       localizedMessageLogger: MockLocalizedMessageLogger(),
@@ -97,13 +77,12 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testUnresolvedLabelsThrows() {
-    mockExtractor.labelToRuleEntry = buildTargetLabelToRuleEntries
+    mockExtractor.labelToRuleEntry = [:]
     do {
       try generator.generateXcodeProjectInFolder(outputFolderURL)
       XCTFail("Generation succeeded unexpectedly")
     } catch XcodeProjectGenerator.Error.LabelResolutionFailed(let missingLabels) {
-      let expectedMissingLabels = sourceTargetLabels.filter() { !buildTargetLabels.contains($0) }
-      for label in expectedMissingLabels {
+      for label in buildTargetLabels {
         XCTAssert(missingLabels.contains(label), "Expected missing label \(label) not found")
       }
     } catch let e {
@@ -121,10 +100,14 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   // MARK: - Private methods
 
-  private static func labelToRuleEntryMapForLabels(labels: [String]) -> [String: RuleEntry] {
-    var ret = [String: RuleEntry]()
+  private static func labelToRuleEntryMapForLabels(labels: [BuildLabel]) -> [BuildLabel: RuleEntry] {
+    var ret = [BuildLabel: RuleEntry]()
     for label in labels {
-      ret[label] = RuleEntry(label: label, type: "ios_application")
+      ret[label] = RuleEntry(label: label,
+                             type: "ios_application",
+                             attributes: [:],
+                             sourceFiles: [],
+                             dependencies: Set<String>())
     }
     return ret
   }

@@ -78,8 +78,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLogger: self,
-                                                                           treatMissingSourceTargetsAsWarnings: arguments.warnMissingSources)
+                                                                           messageLogger: self)
     switch result {
       case .Success(let url):
         NSWorkspace.sharedWorkspace().openURL(url)
@@ -239,7 +238,6 @@ class CommandlineParser {
   static let ParamHelpLong = "--help"
   static let ParamVerboseShort = "-v"
   static let ParamVerboseLong = "--verbose"
-  static let ParamWarnMissingSources = "--warn-missing-sources"
 
   static let ParamBazel = "--bazel"
   static let ParamGeneratorConfigShort = "-c"
@@ -257,7 +255,6 @@ class CommandlineParser {
     let generatorConfig: String?
     let outputFolder: String?
     let workspaceRoot: String?
-    let warnMissingSources: Bool
     let verbose: Bool
 
     init() {
@@ -265,7 +262,6 @@ class CommandlineParser {
       generatorConfig = nil
       outputFolder = nil
       workspaceRoot = nil
-      warnMissingSources = false
       verbose = false
     }
 
@@ -274,7 +270,6 @@ class CommandlineParser {
       generatorConfig = dict[CommandlineParser.ParamGeneratorConfigLong] as? String
       outputFolder = dict[CommandlineParser.ParamOutputFolderLong] as? String
       workspaceRoot = dict[CommandlineParser.ParamWorkspaceRootLong] as? String
-      warnMissingSources = dict[CommandlineParser.ParamWarnMissingSources] as? Bool == true
       verbose = dict[CommandlineParser.ParamVerboseLong] as? Bool == true
     }
   }
@@ -314,10 +309,6 @@ class CommandlineParser {
           fallthrough
         case CommandlineParser.ParamVerboseLong:
           parsedArguments[CommandlineParser.ParamVerboseLong] = true
-
-        case CommandlineParser.ParamWarnMissingSources:
-          parsedArguments[CommandlineParser.ParamWarnMissingSources] = true
-
 
         case CommandlineParser.ParamBazel:
           i += 1
@@ -370,7 +361,6 @@ class CommandlineParser {
         "    Path to the folder containing the Bazel WORKSPACE file.",
         "  \(ParamHelpLong): Show this help message.",
         "  \(ParamVerboseLong): Show verbose info messages.",
-        "  \(ParamWarnMissingSources): Treat missing source rules as warnings rather than errors.",
     ]
     print(usage.joinWithSeparator("\n") + "\n")
   }

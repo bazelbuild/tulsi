@@ -17,15 +17,15 @@ import Foundation
 
 /// Defines an object that can extract information from a Bazel workspace.
 protocol WorkspaceInfoExtractorProtocol {
-  /// Extracts the set of target rule entries from the given project.
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry]
+  /// Extracts information about the set of top level target rules from the given project.
+  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo]
 
   /// Retrieves RuleEntry information for the given list of labels, returning a dictionary mapping
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).
-  func ruleEntriesForLabels(labels: [String],
+  func ruleEntriesForLabels(labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) -> [String: RuleEntry]
+                            buildOptions: TulsiOption) -> [BuildLabel: RuleEntry]
 
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: NSURL {get set}

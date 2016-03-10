@@ -12,29 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
-import TulsiGenerator
+import Cocoa
 
-// Wraps a TulsiGenerator::RuleInfo with functionality to allow it to track selection and be
-// accessed via bindings in the UI.
-class UIRuleInfo: NSObject, Selectable {
-  dynamic var targetName: String? {
-    return ruleInfo.label.targetName
-  }
 
-  dynamic var type: String {
-    return ruleInfo.type
-  }
+/// Models a path containing source files and a user selection state.
+class UISourcePath: NSObject, Selectable {
+  dynamic let path: String
+  dynamic var selected: Bool
 
-  dynamic var selected: Bool = false
-
-  var fullLabel: String {
-    return ruleInfo.label.value
-  }
-
-  let ruleInfo: RuleInfo
-
-  init(ruleInfo: RuleInfo) {
-    self.ruleInfo = ruleInfo
+  init(path: String, selected: Bool = false) {
+    self.path = path
+    self.selected = selected
   }
 }

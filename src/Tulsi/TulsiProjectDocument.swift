@@ -63,16 +63,16 @@ final class TulsiProjectDocument: NSDocument,
   private var childConfigDocuments = NSHashTable.weakObjectsHashTable()
 
   /// One rule per target in the BUILD files associated with this project.
-  var ruleEntries: [RuleEntry] {
-    return _ruleEntries
+  var ruleInfos: [RuleInfo] {
+    return _ruleInfos
   }
 
-  private var _ruleEntries = [RuleEntry]() {
+  private var _ruleInfos = [RuleInfo]() {
     didSet {
       // Update the associated config documents.
       let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
-        configDoc.projectRuleEntries = ruleEntries
+        configDoc.projectRuleInfos = ruleInfos
       }
     }
   }
@@ -321,7 +321,7 @@ final class TulsiProjectDocument: NSDocument,
                                                                                           infoExtractor: infoExtractor,
                                                                                           messageLogger: self,
                                                                                           bazelURL: bazelURL)
-      configDocument.projectRuleEntries = ruleEntries
+      configDocument.projectRuleInfos = ruleInfos
       configDocument.delegate = self
       trackChildConfigDocument(configDocument)
       return configDocument
@@ -427,7 +427,7 @@ final class TulsiProjectDocument: NSDocument,
     return concreteProject.options
   }
 
-  var optionsTargetUIRuleEntries: [UIRuleEntry]? {
+  var optionsTargetUIRuleEntries: [UIRuleInfo]? {
     return nil
   }
 
@@ -469,7 +469,7 @@ final class TulsiProjectDocument: NSDocument,
     NSThread.doOnQOSUserInitiatedThread() {
       let updatedRuleEntries = self.infoExtractor.extractTargetRules()
       NSThread.doOnMainThread() {
-        self._ruleEntries = updatedRuleEntries
+        self._ruleInfos = updatedRuleEntries
         self.processingTaskFinished()
       }
     }

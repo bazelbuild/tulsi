@@ -18,22 +18,22 @@ import Foundation
 
 class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
 
-  var labelToRuleEntry = [String: RuleEntry]()
+  var labelToRuleEntry = [BuildLabel: RuleEntry]()
   /// The set of labels passed to ruleEntriesForLabels that could not be found in the
   /// labelToRuleEntry dictionary.
-  var invalidLabels = Set<String>()
+  var invalidLabels = Set<BuildLabel>()
 
   var bazelURL = NSURL()
 
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
+  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
     return []
   }
 
-  func ruleEntriesForLabels(labels: [String],
+  func ruleEntriesForLabels(labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) -> [String: RuleEntry] {
+                            buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
     invalidLabels.removeAll(keepCapacity: true)
-    var ret = [String: RuleEntry]()
+    var ret = [BuildLabel: RuleEntry]()
     for label in labels {
       guard let entry = labelToRuleEntry[label] else {
         invalidLabels.insert(label)

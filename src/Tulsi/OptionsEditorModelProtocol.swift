@@ -25,7 +25,7 @@ protocol OptionsEditorModelProtocol: class {
   var optionSet: TulsiOptionSet? { get }
 
   /// The set of UIRuleEntries for which options may be set.
-  var optionsTargetUIRuleEntries: [UIRuleEntry]? { get }
+  var optionsTargetUIRuleEntries: [UIRuleInfo]? { get }
 
   /// Notifies the receiver that a change has been made to an option.
   func updateChangeCount(change: NSDocumentChangeType)

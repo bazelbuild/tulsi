@@ -16,10 +16,10 @@ import Foundation
 
 
 // Provides functionality to generate a TulsiGeneratorConfig from a TulsiProject.
-public class TulsiProjectInfoExtractor {
+public final class TulsiProjectInfoExtractor {
   private let project: TulsiProject
   private let localizedMessageLogger: LocalizedMessageLogger
-  private var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
+  var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
 
   public var bazelURL: NSURL {
     get { return workspaceInfoExtractor.bazelURL }
@@ -38,25 +38,21 @@ public class TulsiProjectInfoExtractor {
                                                          localizedMessageLogger: localizedMessageLogger)
   }
 
-  public func extractTargetRules() -> [RuleEntry] {
-    return workspaceInfoExtractor.extractTargetRulesFromProject(project)
+  public func extractTargetRules() -> [RuleInfo] {
+    return workspaceInfoExtractor.extractRuleInfoFromProject(project)
   }
 
-  // TODO(abaire): Remove this method in favor of ruleEntriesForLabels when aspects are the default.
-  public func extractSourceRulesForRuleEntries(ruleEntries: [RuleEntry],
-                                               startupOptions: TulsiOption,
-                                               buildOptions: TulsiOption) -> [RuleEntry] {
-
-    let labels: [String] = ruleEntries.map() { $0.label.value }
-    let labelToRuleEntry = ruleEntriesForLabels(labels,
-                                                startupOptions: startupOptions,
-                                                buildOptions: buildOptions)
-    return labelToRuleEntry.map() { $0.1 }
+  public func ruleEntriesForInfos(infos: [RuleInfo],
+                                  startupOptions: TulsiOption,
+                                  buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
+    return ruleEntriesForLabels(infos.map({ $0.label }),
+                                startupOptions: startupOptions,
+                                buildOptions: buildOptions)
   }
 
-  public func ruleEntriesForLabels(labels: [String],
+  public func ruleEntriesForLabels(labels: [BuildLabel],
                                    startupOptions: TulsiOption,
-                                   buildOptions: TulsiOption) -> [String: RuleEntry] {
+                                   buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
     return workspaceInfoExtractor.ruleEntriesForLabels(labels,
                                                        startupOptions: startupOptions,
                                                        buildOptions: buildOptions)

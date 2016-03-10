@@ -15,14 +15,18 @@
 import Cocoa
 
 
+protocol Selectable: class {
+  var selected: Bool { get set }
+}
+
 /// Models a UIRuleEntry as a node suitable for an outline view controller.
-class UIRuleNode: NSObject {
+class UISelectableOutlineViewNode: NSObject {
 
   /// The display name for this node.
   let name: String
 
-  /// The UIRuleEntry modeled by this node (only valid for leaf nodes).
-  var entry: UIRuleEntry? {
+  /// The object contained by this node (only valid for leaf nodes).
+  var entry: Selectable? {
     didSet {
       if entry != nil {
         selected = entry!.selected
@@ -31,10 +35,10 @@ class UIRuleNode: NSObject {
   }
 
   /// This node's children.
-  var children = [UIRuleNode]()
+  var children = [UISelectableOutlineViewNode]()
 
   /// This node's parent.
-  weak var parent: UIRuleNode?
+  weak var parent: UISelectableOutlineViewNode?
 
   /// Whether or not this node is selected in the UI.
   var selected: Bool {

@@ -68,7 +68,7 @@ final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, 
   // MARK: - OptionsTargetSelectorControllerDelegate
 
   func didSelectOptionsTargetNode(selectedTarget: OptionsTargetNode) {
-    editorController?.prepareEditorForTarget(selectedTarget.entry)
+    editorController?.prepareEditorForTarget(selectedTarget.entry as? UIRuleInfo)
   }
 
   // MARK: - Private methods

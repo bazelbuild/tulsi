@@ -1062,7 +1062,7 @@ Gw
                 </objectController>
                 <arrayController objectClassName="RuleEntry" editable="NO" automaticallyRearrangesObjects="YES" id="je2-ke-udW" userLabel="RuleEntriesArray">
                     <connections>
-                        <binding destination="j9X-DC-afq" name="contentArray" keyPath="selection.uiRuleEntries" id="OVY-KY-btO">
+                        <binding destination="j9X-DC-afq" name="contentArray" keyPath="selection.uiRuleInfos" id="OVY-KY-btO">
                             <dictionary key="options">
                                 <bool key="NSConditionallySetsEditable" value="NO"/>
                             </dictionary>
@@ -1076,7 +1076,7 @@ Gw
         <!--Source Target Selector-->
         <scene sceneID="n8m-FQ-B0W">
             <objects>
-                <viewController storyboardIdentifier="SourceTargetSelect" id="Siq-Ra-ce7" userLabel="Source Target Selector" customClass="ConfigEditorSourceTargetViewController" customModule="Tulsi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SourceTargetSelect" id="Siq-Ra-ce7" userLabel="Source Target Selector" customClass="ConfigEditorSourceFilterViewController" customModule="Tulsi" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qxA-fQ-rQ1">
                         <rect key="frame" x="0.0" y="0.0" width="620" height="384"/>
                         <autoresizingMask key="autoresizingMask"/>

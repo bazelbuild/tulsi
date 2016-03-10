@@ -23,9 +23,6 @@
 /* A general, critical failure during project generation. Details are provided as %1$@. */
 "Error_GeneralProjectGenerationFailure" = "Failed to create Xcode project. Debug info: %1$@";
 
-/* A critical failure message when the Bazel binary could not be located, meaning no useful work may be done. */
-"Error_NoBazel" = "The path to Bazel is invalid but should have been validated previously. This is a fatal error and a Tulsi bug, please report and restart.";
-
 /* Error for a generation attempt without a valid target output folder even though one should exist. */
 "Error_NoOutputFolder" = "No output folder selected. This is likely a Tulsi bug, please report.";
 

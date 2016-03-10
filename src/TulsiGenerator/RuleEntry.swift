@@ -14,8 +14,29 @@
 
 import Foundation
 
-/// Models a single supported Bazel target (http://bazel.io/docs/build-ref.html#targets).
-public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
+/// Models the label and type of a single supported Bazel target.
+/// See http://bazel.io/docs/build-ref.html#targets.
+public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
+  public let label: BuildLabel
+  public let type: String
+
+  public var hashValue: Int {
+    return label.hashValue ^ type.hashValue
+  }
+
+  public var debugDescription: String {
+    return "\(self.dynamicType)(\(label) \(type))"
+  }
+
+  init(label: BuildLabel, type: String) {
+    self.label = label
+    self.type = type
+  }
+}
+
+/// Models the full metadata of a single supported Bazel target.
+/// See http://bazel.io/docs/build-ref.html#targets.
+public final class RuleEntry: RuleInfo {
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
       "objc_binary": PBXTarget.ProductType.Application,
@@ -33,22 +54,18 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
       "objc_binary",
   ])
 
-  public let label: BuildLabel
-  public let type: String
-
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
-  let attributes: [String: AnyObject]
+  public let attributes: [String: AnyObject]
 
   /// Source files associated with this rule.
-  let sourceFiles: [String]
+  public let sourceFiles: [String]
 
-  /// Map of this rule's build dependencies, indexed by their labels.
-  var dependencies = [String: RuleEntry]()
+  /// Set of the labels that this rule depends on.
+  public let dependencies: Set<String>
 
   var pbxTargetType: PBXTarget.ProductType? {
-    // ios_test rules with the xctest attribute set to false are actually applications.
     if type == "ios_test",
-       let xctestOpt = self.attributes["xctest"] where String(xctestOpt) == String(false) {
+       let xctestOpt = attributes["xctest"] as? Bool where !xctestOpt {
       return RuleEntry.BuildTypeToTargetType["ios_application"]
     }
     return RuleEntry.BuildTypeToTargetType[type]
@@ -63,45 +80,33 @@ public class RuleEntry: Equatable, Hashable, CustomStringConvertible {
     return nil
   }
 
-  public var hashValue: Int {
-    return label.hashValue ^ type.hashValue
-  }
-
   init(label: BuildLabel,
        type: String,
-       attributes: [String: AnyObject] = [:],
-       sourceFiles: [String] = []) {
-    self.label = label
-    self.type = type
+       attributes: [String: AnyObject],
+       sourceFiles: [String],
+       dependencies: Set<String>) {
     self.attributes = attributes
     self.sourceFiles = sourceFiles
+    self.dependencies = dependencies
+
+    super.init(label: label, type: type)
   }
 
   convenience init(label: String,
                    type: String,
-                   attributes: [String: AnyObject] = [:],
-                   sourceFiles: [String] = []) {
+                   attributes: [String: AnyObject],
+                   sourceFiles: [String],
+                   dependencies: Set<String>) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
-              sourceFiles: sourceFiles)
-  }
-
-  func addDependencies(ruleEntries: [RuleEntry]) {
-    for rule in ruleEntries {
-      dependencies[rule.label.value] = rule
-    }
-  }
-
-  // MARK: - CustomStringConvertible
-
-  public var description: String {
-    return "\(NSStringFromClass(self.dynamicType))(\(self.label) \(self.type))"
+              sourceFiles: sourceFiles,
+              dependencies: dependencies)
   }
 }
 
 // MARK: - Equatable
 
-public func ==(lhs: RuleEntry, rhs: RuleEntry) -> Bool {
+public func ==(lhs: RuleInfo, rhs: RuleInfo) -> Bool {
   return lhs.type == rhs.type && lhs.label == rhs.label
 }

@@ -35,25 +35,25 @@ final class BazelQueryInfoExtractor {
     self.localizedMessageLogger = localizedMessageLogger
   }
 
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleEntry] {
+  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleInfo] {
     let projectPackages = project.bazelPackages
     guard !projectPackages.isEmpty else {
       return []
     }
 
-    var ruleEntries = [RuleEntry]()
+    var infos = [RuleInfo]()
     let query = projectPackages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
     let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
                                                                message: "Fetching rules for packages \(projectPackages)")
 
     let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
-    if let entries = self.extractRuleEntriesFromBazelXMLOutput(data) {
-      ruleEntries = entries
+    if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
+      infos = entries
     } else {
       localizedMessageLogger.infoMessage(debugInfo)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
-    return ruleEntries
+    return infos
   }
 
   // MARK: - Private methods
@@ -127,9 +127,9 @@ final class BazelQueryInfoExtractor {
     return (task, data, info)
   }
 
-  private func extractRuleEntriesFromBazelXMLOutput(bazelOutput: NSData) -> [RuleEntry]? {
+  private func extractRuleInfosFromBazelXMLOutput(bazelOutput: NSData) -> [RuleInfo]? {
     do {
-      var ruleEntries = [RuleEntry]()
+      var infos = [RuleInfo]()
       let doc = try NSXMLDocument(data: bazelOutput, options: 0)
       let rules = try doc.nodesForXPath("/query/rule")
       for ruleNode in rules {
@@ -152,33 +152,10 @@ final class BazelQueryInfoExtractor {
           continue
         }
 
-        var attributes = [String: String]()
-        let topLevelRuleAttributes = try ruleElement.nodesForXPath("./(label|boolean)[@value]")
-        for labelNode in topLevelRuleAttributes {
-          guard let labelElement = labelNode as? NSXMLElement else {
-            localizedMessageLogger.error("BazelResponseXMLNonElementType",
-                                         comment: "General error to show when the XML parser returns something other " +
-                                                 "than an NSXMLElement. This should never happen in practice.")
-            continue
-          }
-          guard let attributeName = labelElement.attributeForName("name")?.stringValue else {
-            localizedMessageLogger.error("BazelResponseMissingRequiredAttribute",
-                                         comment: "Bazel response XML element %1$@ was found but was missing an attribute named %2$@.",
-                                         values: labelElement, "name")
-            continue
-          }
-          guard let attributeValue = labelElement.attributeForName("value")?.stringValue else {
-            localizedMessageLogger.error("BazelResponseMissingRequiredAttribute",
-                                         comment: "Bazel response XML element %1$@ was found but was missing an attribute named %2$@.",
-                                         values: ruleElement, "value")
-            continue
-          }
-          attributes[attributeName] = attributeValue
-        }
-        let entry = RuleEntry(label: BuildLabel(ruleLabel), type: ruleType, attributes: attributes)
-        ruleEntries.append(entry)
+        let entry = RuleInfo(label: BuildLabel(ruleLabel), type: ruleType)
+        infos.append(entry)
       }
-      return ruleEntries
+      return infos
     } catch let e as NSError {
       localizedMessageLogger.error("BazelResponseXMLParsingFailed",
                                    comment: "Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file.",

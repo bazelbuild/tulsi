@@ -30,10 +30,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   func testSimple() {
     installBUILDFile("Simple", inSubdirectory: "tulsi_test")
-    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:Application",
-                                                                      "//tulsi_test:XCTest"],
-                                                                     startupOptions: bazelStartupOptions,
-                                                                     buildOptions: bazelBuildOptions)
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
+                                                                       BuildLabel("//tulsi_test:XCTest")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -65,10 +65,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   func testComplexSingle_DefaultConfig() {
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
-    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:Application",
-                                                                      "//tulsi_test:XCTest"],
-                                                                     startupOptions: bazelStartupOptions,
-                                                                     buildOptions: bazelBuildOptions)
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
+                                                                       BuildLabel("//tulsi_test:XCTest")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -111,9 +111,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     bazelBuildOptions.append("--define=TEST=1")
 
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
-    let ruleEntries = aspectInfoExtractor.extractInfoForTargetLabels(["//tulsi_test:XCTest"],
-                                                                     startupOptions: bazelStartupOptions,
-                                                                     buildOptions: bazelBuildOptions)
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -128,12 +128,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   private class InfoChecker {
     let ruleEntries: [BuildLabel: RuleEntry]
 
-    init(ruleEntries: [RuleEntry]) {
-      var map = [BuildLabel: RuleEntry]()
-      for entry in ruleEntries {
-        map[entry.label] = entry
-      }
-      self.ruleEntries = map
+    init(ruleEntries: [BuildLabel: RuleEntry]) {
+      self.ruleEntries = ruleEntries
     }
 
     func assertThat(targetLabel: String, line: UInt = __LINE__) -> Context {
@@ -164,7 +160,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       /// targetLabel as a dependency.
       func dependsOn(targetLabel: String, line: UInt = __LINE__) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
-        XCTAssertNotNil(ruleEntry.dependencies[targetLabel],
+        XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
                         "\(ruleEntry) must depend on \(targetLabel)",
                         line: line)
         return self

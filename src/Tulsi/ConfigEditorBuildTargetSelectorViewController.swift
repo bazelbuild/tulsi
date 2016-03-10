@@ -31,25 +31,25 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
                                                           argumentArray: [filteredFileTypes])
 
-  var selectedRuleEntryCount: Int = 0 {
+  var selectedRuleInfoCount: Int = 0 {
     didSet {
-      presentingWizardViewController?.setNextButtonEnabled(selectedRuleEntryCount > 0)
+      presentingWizardViewController?.setNextButtonEnabled(selectedRuleInfoCount > 0)
     }
   }
 
   override var representedObject: AnyObject? {
     didSet {
-      unbind("selectedRuleEntryCount")
+      unbind("selectedRuleInfoCount")
       guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
-      bind("selectedRuleEntryCount",
+      bind("selectedRuleInfoCount",
            toObject: document,
-           withKeyPath: "selectedRuleEntryCount",
+           withKeyPath: "selectedRuleInfoCount",
            options: nil)
     }
   }
 
   deinit {
-    unbind("selectedRuleEntryCount")
+    unbind("selectedRuleInfoCount")
   }
 
   override func loadView() {
@@ -60,11 +60,11 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
 
   weak var presentingWizardViewController: ConfigEditorWizardViewController? = nil {
     didSet {
-      presentingWizardViewController?.setNextButtonEnabled(selectedRuleEntryCount > 0)
+      presentingWizardViewController?.setNextButtonEnabled(selectedRuleInfoCount > 0)
     }
   }
 
   func wizardSubviewDidDeactivate() {
-    unbind("selectedRuleEntryCount")
+    unbind("selectedRuleInfoCount")
   }
 }

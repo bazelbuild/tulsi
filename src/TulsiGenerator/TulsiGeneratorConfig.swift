@@ -50,13 +50,10 @@ public class TulsiGeneratorConfig {
   }
 
   /// The Bazel targets to generate Xcode build targets for.
-  public let buildTargetLabels: [String]
-  /// The resolved build target labels.
-  var buildTargets: [RuleEntry]? = nil
+  public let buildTargetLabels: [BuildLabel]
 
-  /// The Bazel targets to generate Xcode indexer targets for.
-  public let sourceTargetLabels: [String]
-  var sourceTargets: [RuleEntry]? = nil
+  /// The directory paths for which source files should be included in the generated Xcode project.
+  public let pathFilters: Set<String>
 
   /// Additional file paths to add to the Xcode project (e.g., BUILD file paths).
   public let additionalFilePaths: [String]?
@@ -68,7 +65,9 @@ public class TulsiGeneratorConfig {
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
+  // TODO(abaire): Remove after a reasonable migration period (after April 15th, 2016).
   static let SourceTargetsKey = "sourceTargets"
+  static let PathFiltersKey = "sourceFilters"
   static let AdditionalFilePathsKey = "additionalFilePaths"
 
   /// Returns a copy of the given filename sanitized by replacing path separators.
@@ -100,14 +99,14 @@ public class TulsiGeneratorConfig {
   }
 
   public init(projectName: String,
-       buildTargetLabels: [String],
-       sourceTargetLabels: [String],
-       additionalFilePaths: [String]?,
-       options: TulsiOptionSet,
-       bazelURL: NSURL?) {
+              buildTargetLabels: [BuildLabel],
+              pathFilters: Set<String>,
+              additionalFilePaths: [String]?,
+              options: TulsiOptionSet,
+              bazelURL: NSURL?) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
-    self.sourceTargetLabels = sourceTargetLabels
+    self.pathFilters = pathFilters
     self.additionalFilePaths = additionalFilePaths
     self.options = options
 
@@ -122,23 +121,17 @@ public class TulsiGeneratorConfig {
   }
 
   public convenience init(projectName: String,
-       buildTargets: [RuleEntry],
-       sourceTargets: [RuleEntry],
-       additionalFilePaths: [String]?,
-       options: TulsiOptionSet,
-       bazelURL: NSURL?) {
-    func labelsFromRules(rules: [RuleEntry]) -> [String] {
-      return rules.map() { $0.label.value }
-    }
-
+                          buildTargets: [RuleInfo],
+                          pathFilters: Set<String>,
+                          additionalFilePaths: [String]?,
+                          options: TulsiOptionSet,
+                          bazelURL: NSURL?) {
     self.init(projectName: projectName,
-              buildTargetLabels: labelsFromRules(buildTargets),
-              sourceTargetLabels: labelsFromRules(sourceTargets),
+              buildTargetLabels: buildTargets.map({ $0.label }),
+              pathFilters: pathFilters,
               additionalFilePaths: additionalFilePaths,
               options: options,
               bazelURL: bazelURL)
-    self.buildTargets = buildTargets
-    self.sourceTargets = sourceTargets
   }
 
   public convenience init(data: NSData,
@@ -165,8 +158,22 @@ public class TulsiGeneratorConfig {
 
     let projectName = dict[TulsiGeneratorConfig.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
     let buildTargetLabels = dict[TulsiGeneratorConfig.BuildTargetsKey] as? [String] ?? []
-    let sourceTargetLabels = dict[TulsiGeneratorConfig.SourceTargetsKey] as? [String] ?? []
     let additionalFilePaths = dict[TulsiGeneratorConfig.AdditionalFilePathsKey] as? [String]
+
+    // TODO(abaire): Clean up after a reasonable migration period (after April 15th, 2016).
+    let pathFilters: Set<String>
+    if let sourceTargetLabels = dict[TulsiGeneratorConfig.SourceTargetsKey] as? [String] {
+      // Convert the build labels to their package paths.
+      var filterSet = Set<String>()
+      for sourceTarget in sourceTargetLabels {
+        if let packageName = BuildLabel(sourceTarget).packageName {
+          filterSet.insert(packageName)
+        }
+      }
+      pathFilters = filterSet
+    } else {
+      pathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
+    }
 
     var optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
     if let additionalOptionData = additionalOptionData {
@@ -182,8 +189,8 @@ public class TulsiGeneratorConfig {
     let options = TulsiOptionSet(fromDictionary: optionsDict)
 
     self.init(projectName: projectName,
-              buildTargetLabels: buildTargetLabels,
-              sourceTargetLabels: sourceTargetLabels,
+              buildTargetLabels: buildTargetLabels.map({ BuildLabel($0) }),
+              pathFilters: pathFilters,
               additionalFilePaths: additionalFilePaths,
               options: options,
               bazelURL: bazelURL)
@@ -192,8 +199,8 @@ public class TulsiGeneratorConfig {
   public func save() throws -> NSData {
     var dict: [String: AnyObject] = [
         TulsiGeneratorConfig.ProjectNameKey: projectName,
-        TulsiGeneratorConfig.BuildTargetsKey: buildTargetLabels,
-        TulsiGeneratorConfig.SourceTargetsKey: sourceTargetLabels,
+        TulsiGeneratorConfig.BuildTargetsKey: buildTargetLabels.map({ $0.value }),
+        TulsiGeneratorConfig.PathFiltersKey: [String](pathFilters),
     ]
     if let additionalFilePaths = additionalFilePaths {
       dict[TulsiGeneratorConfig.AdditionalFilePathsKey] = additionalFilePaths

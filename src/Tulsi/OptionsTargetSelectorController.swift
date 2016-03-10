@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// Models a UIRuleEntry as a node suitable for display in the options target selector.
-class OptionsTargetNode: UIRuleNode {
+class OptionsTargetNode: UISelectableOutlineViewNode {
 
   /// Tooltip to be displayed for this node.
   var toolTip: String? = nil

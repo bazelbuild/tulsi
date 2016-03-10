@@ -17,8 +17,8 @@ import Cocoa
 
 // Controller for the view allowing users to select a subset of the source files to include in the
 // generated Xcode project.
-final class ConfigEditorSourceTargetViewController: NSViewController, WizardSubviewProtocol {
-  dynamic var sourceFileContentArray : [UIRuleNode] = []
+final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubviewProtocol {
+  dynamic var sourceFileContentArray : [UISelectableOutlineViewNode] = []
 
   // MARK: - WizardSubviewProtocol
 
@@ -27,7 +27,7 @@ final class ConfigEditorSourceTargetViewController: NSViewController, WizardSubv
   func wizardSubviewWillActivateMovingForward() {
     let document = representedObject as! TulsiGeneratorConfigDocument
     sourceFileContentArray = []
-    document.updateSourceRuleEntries(populateOutlineView)
+    document.updateSourcePaths(populateOutlineView)
 
     // TODO(abaire): Set when toggling selection instead.
     document.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
@@ -35,17 +35,16 @@ final class ConfigEditorSourceTargetViewController: NSViewController, WizardSubv
 
   // MARK: - Private methods
 
-  private func populateOutlineView(sourceRuleEntries: [UIRuleEntry]) {
-    var splitSourceRulesEntries: [[String]] = []
-
+  private func populateOutlineView(sourcePaths: [UISourcePath]) {
     // Decompose each rule and merge into a tree of subelements.
-    let componentDelimiters = NSCharacterSet(charactersInString:"/:")
-    for sourceRule in sourceRuleEntries {
-      splitSourceRulesEntries.append(sourceRule.fullLabel.componentsSeparatedByCharactersInSet(componentDelimiters))
+    let componentDelimiters = NSCharacterSet(charactersInString: "/:")
+    let splitSourcePaths = sourcePaths.map() {
+      $0.path.componentsSeparatedByCharactersInSet(componentDelimiters)
     }
-    let topNode = UIRuleNode(name:"")
-    for var i = 0; i < splitSourceRulesEntries.count; ++i {
-      let label = splitSourceRulesEntries[i]
+
+    let topNode = UISelectableOutlineViewNode(name: "")
+    for var i = 0; i < splitSourcePaths.count; ++i {
+      let label = splitSourcePaths[i]
       var node = topNode
       elementLoop: for element in label {
         if element == "" {
@@ -57,11 +56,11 @@ final class ConfigEditorSourceTargetViewController: NSViewController, WizardSubv
             continue elementLoop
           }
         }
-        let newNode = UIRuleNode(name: element)
+        let newNode = UISelectableOutlineViewNode(name: element)
         node.children.append(newNode)
         node = newNode
       }
-      node.entry = sourceRuleEntries[i]
+      node.entry = sourcePaths[i]
     }
     sourceFileContentArray = topNode.children
   }

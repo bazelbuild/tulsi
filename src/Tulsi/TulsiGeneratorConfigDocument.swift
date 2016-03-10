@@ -51,7 +51,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   // Whether or not this object has any rule entries (used to display a spinner while the parent
   // TulsiProjectDocument project is loading).
-  private var hasRuleEntries = false {
+  private var hasRuleInfos = false {
     didSet {
       updateProcessingState()
     }
@@ -69,23 +69,23 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // The folder into which the generated Xcode project will be written.
   dynamic var outputFolderURL: NSURL? = nil
 
-  /// The set of all RuleEntry instances from which the user can select build targets.
-  // Maps the given RuleEntry instances to UIRuleEntry's, preserving this config's selections if
+  /// The set of all RuleInfo instances from which the user can select build targets.
+  // Maps the given RuleInfo instances to UIRuleInfo's, preserving this config's selections if
   // possible.
-  var projectRuleEntries = [RuleEntry]() {
+  var projectRuleInfos = [RuleInfo]() {
     didSet {
-      let selectedEntryLabels = Set<String>(selectedUIRuleEntries.map({ $0.fullLabel }))
-      uiRuleEntries = projectRuleEntries.map() {
-        let entry = UIRuleEntry(ruleEntry: $0)
-        entry.selected = selectedEntryLabels.contains(entry.fullLabel)
-        return entry
+      let selectedEntryLabels = Set<String>(selectedUIRuleInfos.map({ $0.fullLabel }))
+      uiRuleInfos = projectRuleInfos.map() {
+        let info = UIRuleInfo(ruleInfo: $0)
+        info.selected = selectedEntryLabels.contains(info.fullLabel)
+        return info
       }
-      hasRuleEntries = !projectRuleEntries.isEmpty
+      hasRuleInfos = !projectRuleInfos.isEmpty
     }
   }
 
   /// The UIRuleEntry instances that are acted on by the associated UI.
-  dynamic var uiRuleEntries = [UIRuleEntry]() {
+  dynamic var uiRuleInfos = [UIRuleInfo]() {
     willSet {
       stopObservingRuleEntries()
 
@@ -99,30 +99,30 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// The currently selected UIRuleEntry's. Computed in linear time.
-  var selectedUIRuleEntries: [UIRuleEntry] {
-    return uiRuleEntries.filter { $0.selected }
+  var selectedUIRuleInfos: [UIRuleInfo] {
+    return uiRuleInfos.filter { $0.selected }
   }
 
-  private var selectedRuleEntries: [RuleEntry] {
-    return selectedUIRuleEntries.map { $0.ruleEntry }
+  private var selectedRuleInfos: [RuleInfo] {
+    return selectedUIRuleInfos.map { $0.ruleInfo }
   }
 
   /// The number of selected items in ruleEntries.
-  dynamic var selectedRuleEntryCount: Int = 0 {
+  dynamic var selectedRuleInfoCount: Int = 0 {
     didSet {
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
 
-  /// Array of source rules. One per dependency of selectedUIRuleEntries.
-  private var sourceUIRuleEntries: [UIRuleEntry] = []
+  /// Array of paths containing source files related to the selectedUIRuleEntries.
+  private var sourcePaths: [UISourcePath] = []
 
-  private var selectedSourceUIRuleEntries: [UIRuleEntry] {
-    return sourceUIRuleEntries.filter { $0.selected }
+  private var selectedSourcePaths: [UISourcePath] {
+    return sourcePaths.filter { $0.selected }
   }
 
-  private var selectedSourceRuleEntries: [RuleEntry] {
-    return selectedSourceUIRuleEntries.map { $0.ruleEntry }
+  private var selectedSourceFilters: Set<String> {
+    return Set<String>(selectedSourcePaths.map({ $0.path }))
   }
 
   // The display name for this config.
@@ -141,8 +141,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   var messageLogger: MessageLoggerProtocol? = nil
 
   // Labels from a serialized config that must be resolved in order to fully load this config.
-  private var buildTargetLabels: [String]? = nil
-  private var sourceTargetLabels: [String]? = nil
+  private var buildTargetLabels: [BuildLabel]? = nil
 
   // Closure to be invoked when a save operation completes.
   private var saveCompletionHandler: ((canceled: Bool, error: NSError?) -> Void)? = nil
@@ -155,7 +154,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   /// Builds a new TulsiGeneratorConfigDocument from the given data and adds it to the document
   /// controller.
-  static func makeDocumentWithProjectRuleEntries(ruleEntries: [RuleEntry],
+  static func makeDocumentWithProjectRuleEntries(ruleInfos: [RuleInfo],
                                                  optionSet: TulsiOptionSet,
                                                  projectName: String,
                                                  saveFolderURL: NSURL,
@@ -169,7 +168,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       throw TulsiError(errorMessage: "Document for type \(TulsiGeneratorConfigDocument.FileType) was not the expected type.")
     }
 
-    doc.projectRuleEntries = ruleEntries
+    doc.projectRuleInfos = ruleInfos
     doc.additionalFilePaths = additionalFilePaths
     doc.optionSet = optionSet
     doc.projectName = projectName
@@ -200,18 +199,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     doc.bazelURL = bazelURL
 
     // Resolve labels to UIRuleEntries, warning on any failures.
-    func warnUnresolvedLabels(labels: [String]) {
-      let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
-                                  comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-      doc.warning(String(format: fmt, labels))
-    }
-
     doc.resolveLabelReferences()
     if let concreteBuildTargetLabels = doc.buildTargetLabels {
-      warnUnresolvedLabels(concreteBuildTargetLabels)
-    }
-    if let concreteSourceTargetLabels = doc.sourceTargetLabels {
-      warnUnresolvedLabels(concreteSourceTargetLabels)
+      let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
+                                  comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
+      doc.warning(String(format: fmt, concreteBuildTargetLabels))
     }
 
     return doc
@@ -227,11 +219,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                            withGeneratorConfig config: TulsiGeneratorConfig,
                                            workspaceRootURL: NSURL,
                                            messageLogger: MessageLoggerProtocol,
-                                           treatMissingSourceTargetsAsWarnings: Bool = false) -> GenerationResult {
+                                           projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
-                                                      messageLogger: messageLogger)
-    projectGenerator.treatMissingSourceTargetsAsWarnings = treatMissingSourceTargetsAsWarnings
+                                                      messageLogger: messageLogger,
+                                                      projectInfoExtractor: projectInfoExtractor)
     let errorInfo: String
     do {
       let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
@@ -321,10 +313,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     projectName = config.projectName
     buildTargetLabels = config.buildTargetLabels
-    sourceTargetLabels = config.sourceTargetLabels
     additionalFilePaths = config.additionalFilePaths
     optionSet = config.options
     bazelURL = config.bazelURL
+
+    sourcePaths = []
+    for sourceFilter in config.pathFilters {
+      sourcePaths.append(UISourcePath(path: sourceFilter, selected: true))
+    }
   }
 
   override class func autosavesInPlace() -> Bool {
@@ -348,32 +344,72 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
     if keyPath == "selected", let newValue = change?[NSKeyValueChangeNewKey] as? Bool {
       if (newValue) {
-        selectedRuleEntryCount += 1
+        selectedRuleInfoCount += 1
       } else {
-        selectedRuleEntryCount -= 1
+        selectedRuleInfoCount -= 1
       }
     }
   }
 
-  // Regenerates the sourceRuleEntries array based on the currently selected ruleEntries.
-  func updateSourceRuleEntries(callback: ([UIRuleEntry]) -> Void) {
-    let selectedRuleLabels = Set<String>(selectedSourceUIRuleEntries.map({ $0.fullLabel }))
-    sourceUIRuleEntries.removeAll()
+  // Regenerates the sourcePaths array based on the currently selected ruleEntries.
+  func updateSourcePaths(callback: ([UISourcePath]) -> Void) {
+    let existingFilters = Set<String>(selectedSourceFilters)
+    sourcePaths.removeAll()
     processingTaskStarted()
 
+    let selectedLabels = self.selectedRuleInfos.map() { $0.label }
+    let optionSet = self.optionSet!
     NSThread.doOnQOSUserInitiatedThread() {
-      let sourceRuleEntries = self.infoExtractor.extractSourceRulesForRuleEntries(self.selectedRuleEntries,
-                                                                                  startupOptions: self.optionSet![.BazelBuildStartupOptionsDebug],
-                                                                                  buildOptions: self.optionSet![.BazelBuildOptionsDebug])
-      let sourceUIRuleEntries = sourceRuleEntries.map { (ruleEntry: RuleEntry) -> UIRuleEntry in
-        let uiRuleEntry = UIRuleEntry(ruleEntry: ruleEntry)
-        uiRuleEntry.selected = selectedRuleLabels.contains(uiRuleEntry.fullLabel)
-        return uiRuleEntry
+      let resolvedLabels = self.infoExtractor.ruleEntriesForLabels(selectedLabels,
+                                                                   startupOptions: optionSet[.BazelBuildStartupOptionsDebug],
+                                                                   buildOptions: optionSet[.BazelBuildOptionsDebug])
+
+      var unresolvedLabels = Set<BuildLabel>()
+      var sourceRuleEntries = [RuleEntry]()
+      for label in selectedLabels {
+        if let entry = resolvedLabels[label] {
+          sourceRuleEntries.append(entry)
+        } else {
+          unresolvedLabels.insert(label)
+        }
       }
+
+      if !unresolvedLabels.isEmpty {
+        let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
+                                    comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
+        self.warning(String(format: fmt, "Missing labels: \(unresolvedLabels)"))
+      }
+
+      var selectedRuleEntries = [RuleEntry]()
+      for selectedRuleInfo in self.selectedRuleInfos {
+        if let entry = resolvedLabels[selectedRuleInfo.label] {
+          selectedRuleEntries.append(entry)
+        }
+      }
+
+      var sourcePathSet = Set<UISourcePath>()
+      func extractSourcePaths(ruleEntry: RuleEntry) {
+        for dep in ruleEntry.dependencies {
+          guard let depRuleEntry = resolvedLabels[BuildLabel(dep)] else {
+            assertionFailure("Rule dependencies must already be loaded")
+            continue
+          }
+          extractSourcePaths(depRuleEntry)
+        }
+        for sourceFile in ruleEntry.sourceFiles {
+          let path = (sourceFile as NSString).stringByDeletingLastPathComponent
+          if path.isEmpty { continue }
+          sourcePathSet.insert(UISourcePath(path: path, selected: existingFilters.contains(path)))
+        }
+      }
+      for entry in sourceRuleEntries {
+        extractSourcePaths(entry)
+      }
+
       NSThread.doOnMainThread() {
         defer { self.processingTaskFinished() }
-        self.sourceUIRuleEntries = sourceUIRuleEntries
-        callback(self.sourceUIRuleEntries)
+        self.sourcePaths = [UISourcePath](sourcePathSet)
+        callback(self.sourcePaths)
       }
     }
   }
@@ -408,7 +444,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLogger: self)
+                                                                           messageLogger: self,
+                                                                           projectInfoExtractor: infoExtractor)
     switch result {
       case .Success(let url):
         return url
@@ -433,8 +470,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   var optionSet: TulsiOptionSet? = TulsiOptionSet()
 
-  var optionsTargetUIRuleEntries: [UIRuleEntry]? {
-    return selectedUIRuleEntries
+  var optionsTargetUIRuleEntries: [UIRuleInfo]? {
+    return selectedUIRuleInfos
   }
 
   // MARK: - NSUserInterfaceValidations
@@ -529,11 +566,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   private func updateProcessingState() {
-    processing = processingTaskCount > 0 || !hasRuleEntries
+    processing = processingTaskCount > 0 || !hasRuleInfos
   }
 
   private func stopObservingRuleEntries() {
-    for entry in uiRuleEntries {
+    for entry in uiRuleInfos {
       entry.removeObserver(self, forKeyPath: "selected", context: &TulsiGeneratorConfigDocument.KVOContext)
     }
   }
@@ -545,62 +582,37 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
 
     return TulsiGeneratorConfig(projectName: concreteProjectName,
-                                buildTargets: selectedRuleEntries,
-                                sourceTargets: selectedSourceRuleEntries,
+                                buildTargets: selectedRuleInfos,
+                                pathFilters: selectedSourceFilters,
                                 additionalFilePaths: additionalFilePaths,
                                 options: concreteOptionSet,
                                 bazelURL: bazelURL)
   }
 
-  /// Resolves buildTargetLabels and sourceTargetLabels, leaving them populated with any labels that
-  /// failed to be resolved.
+  /// Resolves buildTargetLabels, leaving them populated with any labels that failed to be resolved.
   private func resolveLabelReferences() {
-    var labels = [String]()
-    if let concreteBuildTargetLabels = buildTargetLabels {
-      labels += concreteBuildTargetLabels
-    }
-    if let concreteSourceTargetLabels = sourceTargetLabels {
-      labels += concreteSourceTargetLabels
-    }
-
-    if labels.isEmpty {
+    guard let concreteBuildTargetLabels = buildTargetLabels
+        where !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
-      sourceTargetLabels = nil
       return
     }
 
-    let resolvedLabels = infoExtractor.ruleEntriesForLabels(labels,
-                                                            startupOptions: self.optionSet![.BazelBuildStartupOptionsDebug],
-                                                            buildOptions: self.optionSet![.BazelBuildOptionsDebug])
-
-    // Converts the given array of labels to an array of selected UIRuleEntry instances, adding any
-    // labels that failed to resolve to the unresolvedLabels set.
-    func ruleEntriesForLabels(labels: [String]) -> ([UIRuleEntry], Set<String>) {
-      var unresolvedLabels = Set<String>()
-      var ruleEntries = [UIRuleEntry]()
-      for label in labels {
-        guard let entry = resolvedLabels[label] else {
-          unresolvedLabels.insert(label)
-          continue
-        }
-        let uiRuleEntry = UIRuleEntry(ruleEntry: entry)
-        uiRuleEntry.selected = true
-        ruleEntries.append(uiRuleEntry)
+    let resolvedLabels = infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
+                                                            startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
+                                                            buildOptions: optionSet![.BazelBuildOptionsDebug])
+    var unresolvedLabels = Set<BuildLabel>()
+    var ruleInfos = [UIRuleInfo]()
+    for label in concreteBuildTargetLabels {
+      guard let info = resolvedLabels[label] else {
+        unresolvedLabels.insert(label)
+        continue
       }
-      return (ruleEntries, unresolvedLabels)
+      let uiRuleEntry = UIRuleInfo(ruleInfo: info)
+      uiRuleEntry.selected = true
+      ruleInfos.append(uiRuleEntry)
     }
-
-    if let concreteBuildTargetLabels = buildTargetLabels {
-      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(concreteBuildTargetLabels)
-      uiRuleEntries = ruleEntries
-      buildTargetLabels = unresolvedLabels.isEmpty ? nil : [String](unresolvedLabels)
-      selectedRuleEntryCount = selectedRuleEntries.count
-    }
-
-    if let concreteSourceTargetLabels = sourceTargetLabels {
-      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(concreteSourceTargetLabels)
-      sourceUIRuleEntries = ruleEntries
-      sourceTargetLabels = unresolvedLabels.isEmpty ? nil : [String](unresolvedLabels)
-    }
+    uiRuleInfos = ruleInfos
+    buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)
+    selectedRuleInfoCount = selectedRuleInfos.count
   }
 }

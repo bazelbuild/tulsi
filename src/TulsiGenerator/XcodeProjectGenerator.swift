@@ -22,10 +22,7 @@ class XcodeProjectGenerator {
     case SerializationFailed(String)
 
     /// The given labels failed to resolve to valid targets.
-    case LabelResolutionFailed(Set<String>)
-
-    /// The given labels were specified as source targets but could not be resolved.
-    case SourceTargetResolutionFailed(Set<String>)
+    case LabelResolutionFailed(Set<BuildLabel>)
   }
 
   /// Path relative to PROJECT_FILE_PATH in which Tulsi generated files (scripts, artifacts, etc...)
@@ -45,10 +42,6 @@ class XcodeProjectGenerator {
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
-
-  /// Generates warning messages for source target labels that fail to resolve rather than failing
-  /// project generation.
-  var treatMissingSourceTargetsAsWarnings = false
 
   // Exposed for testing. Simply writes the given NSData to the given NSURL.
   var writeDataHandler: (NSURL, NSData) throws -> Void = { (outputFileURL: NSURL, data: NSData) in
@@ -108,59 +101,10 @@ class XcodeProjectGenerator {
 
   /// Invokes Bazel to load any missing information in the config file.
   private func resolveConfigReferences() throws {
-    var labels = [String]()
-    if config.buildTargets == nil {
-      labels += config.buildTargetLabels
-    }
-    if config.sourceTargets == nil {
-      labels += config.sourceTargetLabels
-    }
-
-    if labels.isEmpty {
-      return
-    }
-
-    let resolvedLabels = workspaceInfoExtractor.ruleEntriesForLabels(labels,
-                                                                     startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                                     buildOptions: config.options[.BazelBuildOptionsDebug])
-
-    // Converts the given array of labels to an array of RuleEntry instances, adding any labels that
-    // failed to resolve to the unresolvedLabels set.
-    func ruleEntriesForLabels(labels: [String]) -> ([RuleEntry], Set<String>) {
-      var unresolvedLabels = Set<String>()
-      var ruleEntries = [RuleEntry]()
-      for label in labels {
-        guard let entry = resolvedLabels[label] else {
-          unresolvedLabels.insert(label)
-          continue
-        }
-        ruleEntries.append(entry)
-      }
-      return (ruleEntries, unresolvedLabels)
-    }
-
-    if config.buildTargets == nil {
-      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(config.buildTargetLabels)
-      config.buildTargets = ruleEntries
-      if !unresolvedLabels.isEmpty {
-        throw Error.LabelResolutionFailed(unresolvedLabels)
-      }
-    }
-
-    if config.sourceTargets == nil {
-      let (ruleEntries, unresolvedLabels) = ruleEntriesForLabels(config.sourceTargetLabels)
-      config.sourceTargets = ruleEntries
-      if !unresolvedLabels.isEmpty {
-        if treatMissingSourceTargetsAsWarnings {
-          for label in unresolvedLabels {
-            localizedMessageLogger.warning("SourceRuleExtractionFailed",
-                                           comment: "The Bazel query for dependencies of rule %1$@ failed XML parsing. As a result, the user won't be able to add affected source files to the project unless they happen to be dependencies of another target that succeeds.",
-                                           values: label)
-          }
-        } else {
-          throw Error.LabelResolutionFailed(unresolvedLabels)
-        }
-      }
+    let resolvedLabels = loadRuleEntryMap()
+    let unresolvedLabels = config.buildTargetLabels.filter() { resolvedLabels[$0] == nil }
+    if !unresolvedLabels.isEmpty {
+      throw Error.LabelResolutionFailed(Set<BuildLabel>(unresolvedLabels))
     }
   }
 
@@ -185,28 +129,43 @@ class XcodeProjectGenerator {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
     }
 
-    for ruleEntry in config.buildTargets! {
-      generator.generateIndexerTargetForRuleEntry(ruleEntry)
-    }
-
-    let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
-    generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
-
+    let ruleEntryMap = loadRuleEntryMap()
     var additionalIncludePaths = Set<String>()
     func extractIncludePaths(ruleEntry: RuleEntry) {
-      for (_, dependency) in ruleEntry.dependencies {
-        extractIncludePaths(dependency)
+      for dep in ruleEntry.dependencies {
+        guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
+          localizedMessageLogger.error("UnknownTargetRule",
+                                       comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                       values: dep)
+          continue
+        }
+        extractIncludePaths(depEntry)
       }
 
       if let includes = ruleEntry.attributes["includes"] as? [String] {
         additionalIncludePaths.unionInPlace(includes)
       }
     }
-    for ruleEntry in config.buildTargets! {
+
+    var targetRuleEntries = [RuleEntry]()
+    for label in config.buildTargetLabels {
+      guard let ruleEntry = ruleEntryMap[label] else {
+        localizedMessageLogger.error("UnknownTargetRule",
+                                     comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                     values: label.value)
+        continue
+      }
+      targetRuleEntries.append(ruleEntry)
+      generator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                  ruleEntryMap: ruleEntryMap,
+                                                  pathFilters: config.pathFilters)
       extractIncludePaths(ruleEntry)
     }
+
+    let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
+    generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
     generator.generateTopLevelBuildConfigurations(additionalIncludePaths)
-    try generator.generateBuildTargetsForRuleEntries(config.buildTargets!)
+    try generator.generateBuildTargetsForRuleEntries(targetRuleEntries)
 
     return xcodeProject
   }
@@ -225,13 +184,21 @@ class XcodeProjectGenerator {
     }
   }
 
+  private func loadRuleEntryMap() -> [BuildLabel: RuleEntry] {
+    return workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
+                                                       startupOptions: config.options[.BazelBuildStartupOptionsDebug],
+                                                       buildOptions: config.options[.BazelBuildOptionsDebug])
+  }
+
   // Writes Xcode schemes for non-indexer targets if they don't already exist.
   private func installXcodeSchemesForProject(xcodeProject: PBXProject,
                                              projectURL: NSURL,
                                              projectBundleName: String) throws {
     let xcschemesURL = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
     if createDirectory(xcschemesURL) {
-      for entry in config.buildTargets! {
+      let ruleEntryMap = loadRuleEntryMap()
+      let targetRuleEntries = config.buildTargetLabels.map({ ruleEntryMap[$0]! })
+      for entry in targetRuleEntries {
         let targetName = entry.label.targetName!
         let filename = targetName + ".xcscheme"
         let url = xcschemesURL.URLByAppendingPathComponent(filename)

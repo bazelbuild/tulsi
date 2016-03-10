@@ -28,22 +28,12 @@ public final class TulsiXcodeProjectGenerator {
   public static let ScriptDirectorySubpath = XcodeProjectGenerator.ScriptDirectorySubpath
   public static let ConfigDirectorySubpath = XcodeProjectGenerator.ConfigDirectorySubpath
 
-  /// Generates warning messages for source target labels that fail to resolve rather than failing
-  /// project generation.
-  public var treatMissingSourceTargetsAsWarnings: Bool {
-    set {
-      xcodeProjectGenerator.treatMissingSourceTargetsAsWarnings = newValue
-    }
-    get {
-      return xcodeProjectGenerator.treatMissingSourceTargetsAsWarnings
-    }
-  }
-
   let xcodeProjectGenerator: XcodeProjectGenerator
 
   public init(workspaceRootURL: NSURL,
               config: TulsiGeneratorConfig,
-              messageLogger: MessageLoggerProtocol? = nil) {
+              messageLogger: MessageLoggerProtocol? = nil,
+              projectInfoExtractor: TulsiProjectInfoExtractor? = nil) {
     let bundle = NSBundle(forClass: self.dynamicType)
     let localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger,
                                                         bundle: bundle)
@@ -51,9 +41,14 @@ public final class TulsiXcodeProjectGenerator {
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
     let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
 
-    let extractor = BazelWorkspaceInfoExtractor(bazelURL: config.bazelURL,
-                                                workspaceRootURL: workspaceRootURL,
-                                                localizedMessageLogger: localizedMessageLogger)
+    let extractor: WorkspaceInfoExtractorProtocol
+    if let projectInfoExtractor = projectInfoExtractor {
+      extractor = projectInfoExtractor.workspaceInfoExtractor
+    } else {
+      extractor = BazelWorkspaceInfoExtractor(bazelURL: config.bazelURL,
+                                              workspaceRootURL: workspaceRootURL,
+                                              localizedMessageLogger: localizedMessageLogger)
+    }
 
     xcodeProjectGenerator = XcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                   config: config,
@@ -78,8 +73,6 @@ public final class TulsiXcodeProjectGenerator {
       throw Error.SerializationFailed(info)
     } catch XcodeProjectGenerator.Error.LabelResolutionFailed(let labels) {
       throw Error.SerializationFailed("Failed to resolve labels: \(labels)")
-    } catch XcodeProjectGenerator.Error.SourceTargetResolutionFailed(let labels) {
-      throw Error.SerializationFailed("Failed to resolve source targets: \(labels)")
     } catch let e as NSError {
       throw Error.SerializationFailed("Unexpected exception \(e.localizedDescription)")
     } catch let e {

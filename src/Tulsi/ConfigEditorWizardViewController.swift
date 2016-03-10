@@ -52,7 +52,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
   func updateNextButton() {
     if pageViewController.selectedIndex == 0 {
       let document = representedObject as! TulsiGeneratorConfigDocument
-      nextButton.enabled = document.selectedRuleEntryCount > 0
+      nextButton.enabled = document.selectedRuleInfoCount > 0
     }
   }
 

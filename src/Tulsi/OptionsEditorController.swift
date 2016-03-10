@@ -217,7 +217,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
   /// Prepares the editor view to edit options with the most specialized column set to the given
   /// target rule.
-  func prepareEditorForTarget(target: UIRuleEntry?) {
+  func prepareEditorForTarget(target: UIRuleInfo?) {
     if target == nil {
       targetValueColumn.hidden = true
     } else {

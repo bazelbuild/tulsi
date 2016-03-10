@@ -98,6 +98,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   var targetGenerator: BazelTargetGenerator! = nil
 
   var sourceFileNames = ["test.swift", "test.cc"]
+  var pathFilters = Set<String>([""])
   var sourceFileReferences = [PBXFileReference]()
   var pchFile: PBXFileReference! = nil
 
@@ -142,7 +143,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateBazelCleanTargetAppliesToRulesAddedBeforeAndAfter() {
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([RuleEntry(label: BuildLabel("before"), type: "ios_application")])
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("before", type: "ios_application")])
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -150,7 +151,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateBazelCleanTarget("scriptPath")
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([RuleEntry(label: BuildLabel("after"), type: "ios_application")])
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("after", type: "ios_application")])
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -241,8 +242,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "ObjectiveCLibrary"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rules = [
-      RuleEntry(label: BuildLabel(rule1BuildTarget), type: "ios_application"),
-      RuleEntry(label: BuildLabel(rule2BuildTarget), type: "objc_library"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule2BuildTarget, type: "objc_library"),
     ]
 
     do {
@@ -325,8 +326,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = ["xctest_app": rule1BuildTarget]
     let rules = [
-      RuleEntry(label: BuildLabel(rule1BuildTarget), type: "ios_application"),
-      RuleEntry(label: BuildLabel(rule2BuildTarget), type: "ios_test", attributes: rule2Attributes),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_test", attributes: rule2Attributes),
     ]
 
     do {
@@ -412,12 +413,12 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = ["xctest_app": rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
-    let testRule = RuleEntry(label: BuildLabel(testRuleBuildTarget),
-                             type: "ios_test",
-                             attributes: testRuleAttributes,
-                             sourceFiles: testSources)
+    let testRule = makeTestRuleEntry(testRuleBuildTarget,
+                                     type: "ios_test",
+                                     attributes: testRuleAttributes,
+                                     sourceFiles: testSources)
     let rules = [
-      RuleEntry(label: BuildLabel(rule1BuildTarget), type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       testRule,
     ]
     do {
@@ -524,20 +525,20 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateIndexerWithNoSources() {
-    let ruleEntry = RuleEntry(label: BuildLabel("test/app:TestApp"), type: "ios_application")
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry)
+    let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
     let targets = project.targetByName
     XCTAssert(targets.isEmpty)
   }
 
   func testGenerateIndexerWithNoPCHFile() {
     let buildLabel = BuildLabel("test/app:TestApp")
-    let ruleEntry = RuleEntry(label: buildLabel,
-                              type: "ios_application",
-                              sourceFiles: sourceFileNames)
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -546,14 +547,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateIndexer() {
     let buildLabel = BuildLabel("test/app:TestApp")
-    let sourcesAndPCHFile = sourceFileNames + [pchFile.path!]
-    let ruleEntry = RuleEntry(label: BuildLabel("test/app:TestApp"),
-                              type: "ios_application",
-                              attributes: ["pch": pchFile.path!],
-                              sourceFiles: sourceFileNames)
+    let ruleEntry = makeTestRuleEntry("test/app:TestApp",
+                                      type: "ios_application",
+                                      attributes: ["pch": pchFile.path!],
+                                      sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -565,13 +565,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleAttributes = ["bridging_header": ["path": bridgingHeaderFilePath, "src": true]]
 
     let buildLabel = BuildLabel("test/app:TestApp")
-    let ruleEntry = RuleEntry(label: buildLabel,
-                              type: "ios_binary",
-                              attributes: ruleAttributes,
-                              sourceFiles: sourceFileNames)
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_binary",
+                                      attributes: ruleAttributes,
+                                      sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -589,13 +589,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleAttributes = ["bridging_header": bridgingHeaderInfo]
 
     let buildLabel = BuildLabel("test/app:TestApp")
-    let ruleEntry = RuleEntry(label: buildLabel,
-                              type: "ios_binary",
-                              attributes: ruleAttributes,
-                              sourceFiles: sourceFileNames)
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_binary",
+                                      attributes: ruleAttributes,
+                                      sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -606,6 +606,30 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   // MARK: - Helper methods
+
+  private func makeTestRuleEntry(label: String,
+                                 type: String,
+                                 attributes: [String: AnyObject] = [:],
+                                 sourceFiles: [String] = [],
+                                 dependencies: Set<String> = Set<String>()) -> RuleEntry {
+    return makeTestRuleEntry(BuildLabel(label),
+                             type: type,
+                             attributes: attributes,
+                             sourceFiles: sourceFiles,
+                             dependencies: dependencies)
+  }
+
+  private func makeTestRuleEntry(label: BuildLabel,
+                                 type: String,
+                                 attributes: [String: AnyObject] = [:],
+                                 sourceFiles: [String] = [],
+                                 dependencies: Set<String> = Set<String>()) -> RuleEntry {
+    return RuleEntry(label: label,
+                     type: type,
+                     attributes: attributes,
+                     sourceFiles: sourceFiles,
+                     dependencies: dependencies)
+  }
 
   private struct TargetDefinition {
     let name: String

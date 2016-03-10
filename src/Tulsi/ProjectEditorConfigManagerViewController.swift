@@ -166,7 +166,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       }
 
       let optionSet = projectDocument.optionSet ?? TulsiOptionSet()
-      let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithProjectRuleEntries(projectDocument.ruleEntries,
+      let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithProjectRuleEntries(projectDocument.ruleInfos,
                                                                                                optionSet: optionSet,
                                                                                                projectName: projectName,
                                                                                                saveFolderURL: generatorConfigFolderURL,

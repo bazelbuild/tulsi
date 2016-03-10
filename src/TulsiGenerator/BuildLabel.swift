@@ -56,7 +56,7 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
     return value.hashValue
   }
 
-  init(_ label: String) {
+  public init(_ label: String) {
     self.value = label
   }
 
