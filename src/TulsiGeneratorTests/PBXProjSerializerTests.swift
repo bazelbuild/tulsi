@@ -449,7 +449,7 @@ class PBXProjSerializerTests: XCTestCase {
     return definition
   }
 
-  private func assertDict(dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = __LINE__) {
+  private func assertDict(dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = #line) {
     guard let isa = dict["isa"] as? String else {
       XCTFail("dictionary is not a PBXObject (missing 'isa' member)", line: line)
       return
@@ -457,7 +457,7 @@ class PBXProjSerializerTests: XCTestCase {
     XCTAssertEqual(isa, pbxClass, "Serialized dict is not of the expected PBXObject type", line: line)
   }
 
-  private func getProjectFromRoot(dict: StringToObjectDict, objects: StringToObjectDict, line: UInt = __LINE__) -> StringToObjectDict? {
+  private func getProjectFromRoot(dict: StringToObjectDict, objects: StringToObjectDict, line: UInt = #line) -> StringToObjectDict? {
     guard let rootObjectID = dict["rootObject"] as? String else {
       XCTFail("Root dictionary has no rootObject member", line: line)
       return nil
@@ -473,7 +473,7 @@ class PBXProjSerializerTests: XCTestCase {
 
   private func getBuildConfigurationListFromProject(projectDict: StringToObjectDict,
                                                     objects: StringToObjectDict,
-                                                    line: UInt = __LINE__) -> StringToObjectDict? {
+                                                    line: UInt = #line) -> StringToObjectDict? {
     guard let buildConfigListGID = projectDict["buildConfigurationList"] as? String else {
       XCTFail("Project has no buildConfigurationList", line: line)
       return nil
@@ -487,7 +487,7 @@ class PBXProjSerializerTests: XCTestCase {
     return buildConfigList
   }
 
-  private func getBuildConfigurationsFromBuildConfigurationList(dict: StringToObjectDict, line: UInt = __LINE__) -> [String]? {
+  private func getBuildConfigurationsFromBuildConfigurationList(dict: StringToObjectDict, line: UInt = #line) -> [String]? {
     guard let buildConfigs = dict["buildConfigurations"] as? [String] else {
       XCTFail("buildConfigurationList invalid (no build configurations member)", line: line)
       return nil
@@ -495,7 +495,7 @@ class PBXProjSerializerTests: XCTestCase {
     return buildConfigs
   }
 
-  private func getObjectTypeForID(gid: String, fromObjects objects: StringToObjectDict, line: UInt = __LINE__) -> String? {
+  private func getObjectTypeForID(gid: String, fromObjects objects: StringToObjectDict, line: UInt = #line) -> String? {
     guard let dict = objects[gid] as? StringToObjectDict else {
       XCTFail("Missing object with globalID '\(gid)'", line: line)
       return nil
@@ -511,7 +511,7 @@ class PBXProjSerializerTests: XCTestCase {
   private func getObjectByID(gid: String,
                              withPBXClass pbxClass: String,
                              fromObjects objects: StringToObjectDict,
-                             line: UInt = __LINE__) -> StringToObjectDict? {
+                             line: UInt = #line) -> StringToObjectDict? {
     guard let dict = objects[gid] as? StringToObjectDict else {
       XCTFail("Missing \(pbxClass) with globalID '\(gid)'", line: line)
       return nil
@@ -522,7 +522,7 @@ class PBXProjSerializerTests: XCTestCase {
 
   private func assertGroupSerialized(groupDef: GroupDefinition,
                                      withObjects objects: StringToObjectDict,
-                                     line: UInt = __LINE__) {
+                                     line: UInt = #line) {
     let group: StringToObjectDict! = getObjectByID(groupDef.gid,
                                                    withPBXClass: groupDef.expectedPBXClass,
                                                    fromObjects: objects,
@@ -569,7 +569,7 @@ class PBXProjSerializerTests: XCTestCase {
 
   private func assertFileReferenceSerialized(fileDef: FileDefinition,
                                              withObjects objects: StringToObjectDict,
-                                             line: UInt = __LINE__) {
+                                             line: UInt = #line) {
     let fileRef: StringToObjectDict! = getObjectByID(fileDef.gid,
                                                      withPBXClass: "PBXFileReference",
                                                      fromObjects: objects,
@@ -595,7 +595,7 @@ class PBXProjSerializerTests: XCTestCase {
   func assertNativeTargetDict(target: StringToObjectDict,
                               matchesDefinition def: SimpleProjectDefinition.NativeTargetDefinition,
                               withObjects objects: StringToObjectDict,
-                              line: UInt = __LINE__) {
+                              line: UInt = #line) {
     XCTAssertEqual(target["name"], def.name, line: line)
     XCTAssertEqual(target["productName"], def.name, line: line)
     XCTAssertEqual(target["productType"], def.targetType.rawValue, line: line)
@@ -627,7 +627,7 @@ class PBXProjSerializerTests: XCTestCase {
   func assertLegacyTargetDict(target: StringToObjectDict,
                               matchesDefinition def: SimpleProjectDefinition.LegacyTargetDefinition,
                               withObjects objects: StringToObjectDict,
-                              line: UInt = __LINE__) {
+                              line: UInt = #line) {
 
     XCTAssertEqual(target["name"], def.name, line: line)
     XCTAssertEqual(target["productName"], def.name, line: line)

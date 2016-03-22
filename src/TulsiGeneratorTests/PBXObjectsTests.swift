@@ -195,7 +195,7 @@ class PBXObjectsTests: XCTestCase {
 
   func assertProjectStructure(expectedStructure: [ExpectedStructure],
                               forGroup group: PBXGroup,
-                              line: UInt = __LINE__) {
+                              line: UInt = #line) {
     XCTAssertEqual(group.children.count,
                    expectedStructure.count,
                    "Mismatch in child count for group '\(group.name)'",
@@ -216,7 +216,7 @@ class PBXObjectsTests: XCTestCase {
   func assertGroup(group: PBXGroup,
                    containsSourceTree sourceTree: SourceTree,
                    path: String,
-                   line: UInt = __LINE__) -> PBXFileReference {
+                   line: UInt = #line) -> PBXFileReference {
     let sourceTreePath = SourceTreePath(sourceTree: sourceTree, path: path)
     let fileRef = group.fileReferencesBySourceTreePath[sourceTreePath]
     XCTAssertNotNil(fileRef,
@@ -227,7 +227,7 @@ class PBXObjectsTests: XCTestCase {
 
   func assertGroup(group: PBXGroup,
                    containsGroupWithName name: String,
-                   line: UInt = __LINE__) -> PBXGroup {
+                   line: UInt = #line) -> PBXGroup {
     let child = group.childGroupsByName[name]
     XCTAssertNotNil(child,
                     "Failed to find child group '\(name)' in group '\(group.name)'",
