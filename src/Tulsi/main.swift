@@ -297,8 +297,10 @@ class CommandlineParser {
       parsedArguments[argumentName] = value
     }
 
-    for var i = 0; i < args.count; i += 1 {
+    var i = 0
+    while i < args.count {
       let arg = args[i]
+      i += 1
       switch arg {
         case CommandlineParser.ParamHelpShort:
           fallthrough
@@ -312,26 +314,26 @@ class CommandlineParser {
           parsedArguments[CommandlineParser.ParamVerboseLong] = true
 
         case CommandlineParser.ParamBazel:
-          i += 1
           storeValueAt(i, forArgument: CommandlineParser.ParamBazel)
+          i += 1
 
         case CommandlineParser.ParamGeneratorConfigShort:
           fallthrough
         case CommandlineParser.ParamGeneratorConfigLong:
-          i += 1
           storeValueAt(i, forArgument: CommandlineParser.ParamGeneratorConfigLong)
+          i += 1
 
         case CommandlineParser.ParamOutputFolderShort:
           fallthrough
         case CommandlineParser.ParamOutputFolderLong:
-          i += 1
           storeValueAt(i, forArgument: CommandlineParser.ParamOutputFolderLong)
+          i += 1
 
         case CommandlineParser.ParamWorkspaceRootShort:
           fallthrough
         case CommandlineParser.ParamWorkspaceRootLong:
-          i += 1
           storeValueAt(i, forArgument: CommandlineParser.ParamWorkspaceRootLong)
+          i += 1
 
         default:
           print("Ignoring unknown option \"\(arg)\"")

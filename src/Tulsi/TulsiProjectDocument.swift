@@ -202,7 +202,7 @@ final class TulsiProjectDocument: NSDocument,
     }
 
     let configsFolder: NSFileWrapper
-    let reachableError = NSErrorPointer()
+    let reachableError: NSErrorPointer = nil
     if let existingConfigFolderURL = generatorConfigFolderURL
         where existingConfigFolderURL.checkResourceIsReachableAndReturnError(reachableError) {
       // Preserve any existing config documents.

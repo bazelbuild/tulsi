@@ -80,7 +80,7 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
     var recursiveNodes = [SourcePathNode]()
 
     let topNode = SourcePathNode(name: "")
-    for var i = 0; i < splitSourcePaths.count; ++i {
+    for i in 0 ..< splitSourcePaths.count {
       let label = splitSourcePaths[i]
       var node = topNode
       elementLoop: for element in label {
