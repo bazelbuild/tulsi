@@ -113,6 +113,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   let envScriptPath: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
+  let workspaceRootURL: NSURL
 
   var bazelCleanScriptTarget: PBXLegacyTarget? = nil
 
@@ -121,13 +122,15 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
        buildScriptPath: String,
        envScriptPath: String,
        options: TulsiOptionSet,
-       localizedMessageLogger: LocalizedMessageLogger) {
+       localizedMessageLogger: LocalizedMessageLogger,
+       workspaceRootURL: NSURL) {
     self.bazelURL = bazelURL
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.envScriptPath = envScriptPath
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
+    self.workspaceRootURL = workspaceRootURL
   }
 
   // MARK: - TargetGeneratorProtocol
@@ -385,8 +388,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
   /// Adds the given file targets to a versioned group.
   private func createReferencesForVersionedFileTargets(fileTargets: [BazelFileTarget]) -> [XCVersionGroup] {
-    var groupPaths = Set<String>()
-    var groups = [XCVersionGroup]()
+    var groups = [String: XCVersionGroup]()
 
     for target in fileTargets {
       let path = target.path as NSString
@@ -394,14 +396,57 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       let type = target.path.pbPathUTI ?? ""
       let versionedGroup = project.getOrCreateVersionGroupForPath(versionedGroupPath,
                                                                   versionGroupType: type)
-      if !groupPaths.contains(versionedGroupPath) {
-        groupPaths.insert(versionedGroupPath)
-        groups.append(versionedGroup)
+      if groups[versionedGroupPath] == nil {
+        groups[versionedGroupPath] = versionedGroup
       }
-      let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group, path: path.lastPathComponent)
+      let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group,
+                                                                    path: path.lastPathComponent)
       ref.isInputFile = target.targetType == .SourceFile
     }
-    return groups
+
+    for (sourcePath, group) in groups {
+      setCurrentVersionForXCVersionGroup(group, atPath: sourcePath)
+    }
+    return Array(groups.values)
+  }
+
+  // Attempt to read the .xccurrentversion plists in the xcdatamodeld's and sync up the
+  // currentVersion in the XCVersionGroup instances. Failure to specify the currentVersion will
+  // result in Xcode picking an arbitrary version.
+  private func setCurrentVersionForXCVersionGroup(group: XCVersionGroup,
+                                                  atPath sourcePath: String) {
+    let versionedBundleURL = workspaceRootURL.URLByAppendingPathComponent(sourcePath,
+                                                                          isDirectory: true)
+    let currentVersionPlistURL = versionedBundleURL.URLByAppendingPathComponent(".xccurrentversion",
+                                                                                isDirectory: false)
+    let path = currentVersionPlistURL.path!
+    guard let data = NSFileManager.defaultManager().contentsAtPath(path) else {
+      self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",
+                                          comment: "Message to show when loading a .xccurrentversion file fails.",
+                                          values: group.name, "Version file at '\(path)' could not be read")
+      return
+    }
+
+    do {
+      let plist = try NSPropertyListSerialization.propertyListWithData(data,
+                                                                       options: .Immutable,
+                                                                       format: nil) as! [String: AnyObject]
+      if let currentVersion = plist["_XCCurrentVersionName"] as? String {
+        if !group.setCurrentVersionByName(currentVersion) {
+          self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",
+                                              comment: "Message to show when loading a .xccurrentversion file fails.",
+                                              values: group.name, "Version '\(currentVersion)' specified by file at '\(path)' was not found")
+        }
+      }
+    } catch let e as NSError {
+      self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",
+                                          comment: "Message to show when loading a .xccurrentversion file fails.",
+                                          values: group.name, "Version file at '\(path)' is invalid: \(e)")
+    } catch {
+      self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",
+                                          comment: "Message to show when loading a .xccurrentversion file fails.",
+                                          values: group.name, "Version file at '\(path)' is invalid.")
+    }
   }
 
   // Adds XCBuildConfigurations to the given indexer PBXTarget.

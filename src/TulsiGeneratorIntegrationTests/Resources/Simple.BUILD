@@ -25,7 +25,7 @@ objc_binary(
         "Binary/srcs/main.m",
     ],
     bridging_header = "Binary/bridging_header/bridging_header.h",
-    datamodels = glob(["Test.xcdatamodeld/**"]),
+    datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
         "BINARY_ADDITIONAL_DEFINE",
         "BINARY_ANOTHER_DEFINE=2",

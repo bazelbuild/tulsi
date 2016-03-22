@@ -32,5 +32,8 @@
 /* Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported. */
 "DirectoryCreationFailed" = "Failed to create directory '%1$@'. The generated project will probably malfunction, please report. Error: %2$@";
 
+/* Message to show when loading a .xccurrentversion file fails. */
+"LoadingXCCurrentVersionFailed" = "Failed to determine the current version for a versioned group %1$@. The generated project may malfunction. Error: %2$@";
+
 /* Failure to look up a Bazel target that was expected to be present. The target label is %1$@ */
 "UnknownTargetRule" = "Failed to load information for Bazel target '%1$@'. This may be a Bazel bug or a BUILD file issue.";

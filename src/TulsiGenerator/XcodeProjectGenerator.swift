@@ -123,7 +123,8 @@ class XcodeProjectGenerator {
                                          buildScriptPath: buildScriptPath,
                                          envScriptPath: envScriptPath,
                                          options: config.options,
-                                         localizedMessageLogger: localizedMessageLogger)
+                                         localizedMessageLogger: localizedMessageLogger,
+                                         workspaceRootURL: workspaceRootURL)
 
     if let additionalFilePaths = config.additionalFilePaths {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)

@@ -30,8 +30,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   func testSimple() {
     installBUILDFile("Simple", inSubdirectory: "tulsi_test")
-    makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
-    makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
+    makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
+    makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
@@ -49,9 +49,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
-        .hasAttribute(.datamodels, value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
+        .hasAttribute(.datamodels, value: [["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel",
                                             "src": true],
-                                           ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
+                                           ["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
                                             "src": true],])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])

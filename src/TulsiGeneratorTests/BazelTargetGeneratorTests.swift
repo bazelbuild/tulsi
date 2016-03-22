@@ -19,7 +19,7 @@ import XCTest
 // buildSerializerWithRuleEntries modifies a project directly.
 class BazelTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
-  let rootURL = NSURL.fileURLWithPath("/root", isDirectory: true)
+  let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
 
@@ -31,7 +31,8 @@ class BazelTargetGeneratorTests: XCTestCase {
                                            buildScriptPath: "",
                                            envScriptPath: "",
                                            options: TulsiOptionSet(),
-                                           localizedMessageLogger: MockLocalizedMessageLogger())
+                                           localizedMessageLogger: MockLocalizedMessageLogger(),
+                                           workspaceRootURL: workspaceRootURL)
 
   }
 
@@ -64,7 +65,7 @@ class BazelTargetGeneratorTests: XCTestCase {
                             workspace: String,
                             generatesSourceTree sourceTree: SourceTree,
                             path: String?,
-                            line: UInt = __LINE__) {
+                            line: UInt = #line) {
       let outputURL = NSURL(fileURLWithPath: output, isDirectory: true)
       let workspaceURL = NSURL(fileURLWithPath: workspace, isDirectory: true)
       let group = BazelTargetGenerator.mainGroupForOutputFolder(outputURL,
@@ -93,6 +94,7 @@ class BazelTargetGeneratorTests: XCTestCase {
 
 class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
+  let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
@@ -117,7 +119,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                            buildScriptPath: "",
                                            envScriptPath: "",
                                            options: options,
-                                           localizedMessageLogger: MockLocalizedMessageLogger())
+                                           localizedMessageLogger: MockLocalizedMessageLogger(),
+                                           workspaceRootURL: workspaceRootURL)
   }
 
   // MARK: - Tests
@@ -779,22 +782,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       self.mainGroup = mainGroup
     }
 
-    func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
+    func validate(phase: PBXBuildPhase, line: UInt = #line) {
       // Validate the file set.
       XCTAssertEqual(phase.files.count,
                      fileSet.count,
                      "Mismatch in file count in build phase",
                      line: line)
       for buildFile in phase.files {
-        // Grab the full path of the file. Note that this assumes all groups used in the test are
-        // group relative.
-        var pathElements = [String]()
-        var node: PBXReference! = buildFile.fileRef
-        while node != nil && node !== mainGroup {
-          pathElements.append(node.path!)
-          node = node.parent
-        }
-        let path = pathElements.reverse().joinWithSeparator("/")
+        let path = buildFile.fileRef.sourceRootRelativePath
         XCTAssert(fileSet.contains(path),
                   "Found unexpected file '\(path)' in build phase",
                   line: line)
@@ -810,7 +805,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       super.init(isa: "PBXSourcesBuildPhase", files: files, mainGroup: mainGroup)
     }
 
-    override func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
+    override func validate(phase: PBXBuildPhase, line: UInt = #line) {
       super.validate(phase, line: line)
 
       for buildFile in phase.files {
@@ -838,7 +833,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       super.init(isa: "PBXShellScriptBuildPhase", files: [])
     }
 
-    override func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
+    override func validate(phase: PBXBuildPhase, line: UInt = #line) {
       super.validate(phase, line: line)
 
       // Guaranteed by the test infrastructure below, failing this indicates a programming error in
@@ -878,7 +873,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                      pchFile: PBXFileReference? = nil,
                                      bridgingHeader: String? = nil,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
-                                     line: UInt = __LINE__) {
+                                     line: UInt = #line) {
     var expectedBuildSettings = [
         "PRODUCT_NAME": indexerTargetName,
     ]
@@ -918,7 +913,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   private func assertTarget(targetDef: TargetDefinition,
                             inTargets targets: Dictionary<String, PBXTarget>,
-                            line: UInt = __LINE__) {
+                            line: UInt = #line) {
     guard let target = targets[targetDef.name] else {
       XCTFail("Missing expected target '\(targetDef.name)'", line: line)
       return
@@ -954,7 +949,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   private func validateExpectedBuildPhases(phaseDefs: [BuildPhaseDefinition],
                                            inTarget target: PBXTarget,
-                                           line: UInt = __LINE__) {
+                                           line: UInt = #line) {
     let buildPhases = target.buildPhases
     XCTAssertEqual(buildPhases.count,
                    phaseDefs.count,

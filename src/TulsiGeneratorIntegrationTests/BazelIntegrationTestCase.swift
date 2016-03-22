@@ -131,7 +131,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
   /// Creates a file in the test workspace with the given contents.
   func makeFileNamed(name: String,
-                     withContent content: String = "",
+                     withData data: NSData,
                      inSubdirectory subdirectory: String? = nil,
                      file: StaticString = #file,
                      line: UInt = #line) -> NSURL? {
@@ -141,19 +141,44 @@ class BazelIntegrationTestCase: XCTestCase {
       return nil
     }
     let fileURL = directoryURL.URLByAppendingPathComponent(name, isDirectory: false)
-    guard let data = (content as NSString).dataUsingEncoding(NSUTF8StringEncoding) else {
-      XCTFail("Failed to convert file contents '\(content)' to UTF8-encoded NSData",
-              file: file,
-              line: line)
-      return nil
-    }
-
     XCTAssertTrue(data.writeToURL(fileURL, atomically: true),
                   "Failed to write to file at '\(fileURL.path!)'",
                   file: file,
                   line: line)
     pathsToCleanOnTeardown.insert(fileURL)
     return fileURL
+  }
+
+  /// Creates a file in the test workspace with the given contents.
+  func makeFileNamed(name: String,
+                     withContent content: String = "",
+                     inSubdirectory subdirectory: String? = nil,
+                     file: StaticString = #file,
+                     line: UInt = #line) -> NSURL? {
+    guard let data = (content as NSString).dataUsingEncoding(NSUTF8StringEncoding) else {
+      XCTFail("Failed to convert file contents '\(content)' to UTF8-encoded NSData",
+              file: file,
+              line: line)
+      return nil
+    }
+    return makeFileNamed(name, withData: data, inSubdirectory: subdirectory, file: file, line: line)
+  }
+
+  /// Creates a plist file in the test workspace with the given contents.
+  func makePlistFileNamed(name: String,
+                          withContent content: [String: AnyObject],
+                          inSubdirectory subdirectory: String? = nil,
+                          file: StaticString = #file,
+                          line: UInt = #line) -> NSURL? {
+    do {
+      let data = try NSPropertyListSerialization.dataWithPropertyList(content,
+                                                                      format: .XMLFormat_v1_0,
+                                                                      options: 0)
+      return makeFileNamed(name, withData: data, inSubdirectory: subdirectory, file: file, line: line)
+    } catch let e {
+      XCTFail("Failed to serialize content: \(e)", file: file, line: line)
+      return nil
+    }
   }
 
   /// Creates a mock xcdatamodel bundle in the given subdirectory.

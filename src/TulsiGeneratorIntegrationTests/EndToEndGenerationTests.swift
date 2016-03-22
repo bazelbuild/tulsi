@@ -18,7 +18,6 @@ import XCTest
 
 // End to end tests that generate xcodeproj bundles and validate them against golden versions.
 class EndToEndGenerationTests: BazelIntegrationTestCase {
-
   let testDir = "tulsi_e2e_test"
   lazy var outputDir: String = { [unowned self] in
     "\(self.testDir)/output"
@@ -27,8 +26,11 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
 
   func testGenerationSimple() {
     installBUILDFile("Simple", inSubdirectory: testDir)
-    makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
-    makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
+    makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
+    makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
+    makePlistFileNamed(".xccurrentversion",
+                       withContent: ["_XCCurrentVersionName": "SimpleDataModelsTestv1.xcdatamodel"],
+                       inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
 
     let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test")]
