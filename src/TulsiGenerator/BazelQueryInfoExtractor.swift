@@ -46,11 +46,15 @@ final class BazelQueryInfoExtractor {
     let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
                                                                message: "Fetching rules for packages \(projectPackages)")
 
-    let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    let (task, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
     if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
       infos = entries
-    } else {
+    }
+
+    if task.terminationStatus != 0 {
       localizedMessageLogger.infoMessage(debugInfo)
+      self.localizedMessageLogger.error("BazelInfoExtractionFailed",
+                                        comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.")
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
     return infos
@@ -67,7 +71,6 @@ final class BazelQueryInfoExtractor {
     var arguments = [
         "--max_idle_secs=60",
         "query",
-        "--keep_going",
         "--noimplicit_deps",
         "--order_output=no",
         "--noshow_loading_progress",

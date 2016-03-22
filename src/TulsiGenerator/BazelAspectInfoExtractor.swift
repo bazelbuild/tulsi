@@ -105,8 +105,8 @@ final class BazelAspectInfoExtractor {
                                                                   progressNotifier: progressNotifier)
         } else {
           self.localizedMessageLogger.infoMessage(debugInfo)
-          self.localizedMessageLogger.error("BazelAspectFailed",
-                                            comment: "Error message for when a Bazel aspect did not complete successfully.")
+          self.localizedMessageLogger.error("BazelInfoExtractionFailed",
+                                            comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.")
         }
     }
 
