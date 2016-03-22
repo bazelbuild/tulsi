@@ -43,7 +43,7 @@ class TulsiGeneratorConfigTests: XCTestCase {
       XCTAssertEqual(dict["additionalFilePaths"], additionalFilePaths)
       XCTAssertEqual(dict["buildTargets"], buildTargetLabels)
       XCTAssertEqual(dict["projectName"], projectName)
-      XCTAssertEqual(dict["sourceFilters"], [String](pathFilters))
+      XCTAssertEqual(dict["sourceFilters"], [String](pathFilters).sort())
     } catch {
       XCTFail("Unexpected assertion")
     }

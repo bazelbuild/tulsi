@@ -1,0 +1,16 @@
+{
+  "additionalFilePaths" : [
+    "tulsi_e2e_test\/BUILD"
+  ],
+  "projectName" : "SimpleProject",
+  "buildTargets" : [
+    "\/\/tulsi_e2e_test:Application",
+    "\/\/tulsi_e2e_test:XCTest"
+  ],
+  "optionSet" : {
+
+  },
+  "sourceFilters" : [
+    "tulsi_e2e_test\/..."
+  ]
+}

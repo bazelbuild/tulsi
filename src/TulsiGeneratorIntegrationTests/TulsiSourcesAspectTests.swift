@@ -30,6 +30,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
   func testSimple() {
     installBUILDFile("Simple", inSubdirectory: "tulsi_test")
+    makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
+    makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
@@ -43,33 +45,46 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
-        .hasSources(["tulsi_test/main.m"])
-        .hasAttribute("bridging_header", value: ["path": "tulsi_test/bridging_header.h", "src": true])
-        .hasAttribute("includes", value: ["additional/include"])
-        .hasAttribute("defines", value: ["ADDITIONAL_DEFINE", "ANOTHER_DEFINE=2"])
+        .hasSources(["tulsi_test/Binary/srcs/main.m"])
+        .hasAttribute(.bridging_header,
+                      value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
+                              "src": true])
+        .hasAttribute(.datamodels, value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
+                                            "src": true],
+                                           ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
+                                            "src": true],])
+        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
+        .hasAttribute(.includes, value: ["Binary/includes"])
 
     checker.assertThat("//tulsi_test:Library")
-        .hasSources(["tulsi_test/path/to/src1.m",
-                     "tulsi_test/path/to/src2.m",
-                     "tulsi_test/path/to/src3.m",
-                     "tulsi_test/path/to/src4.m",
-                        ])
-        .hasAttribute("pch", value: ["path": "tulsi_test/src/PCHFile.pch", "src": true])
+        .hasSources(["tulsi_test/Library/srcs/src1.m",
+                     "tulsi_test/Library/srcs/src2.m",
+                     "tulsi_test/Library/srcs/src3.m",
+                     "tulsi_test/Library/srcs/src4.m",
+                     "tulsi_test/Library/srcs/SrcsHeader.h",
+                     "tulsi_test/Library/hdrs/HdrsHeader.h"])
+        .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE",
+                                      "-I/Library/absolute/include/path",
+                                      "-Irelative/Library/include/path"])
+        .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"])
+        .hasAttribute(.pch, value: ["path": "tulsi_test/Library/pch/PCHFile.pch", "src": true])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
-        .hasAttribute("xctest", value: true)
-        .hasSources(["tulsi_test/test/src1.mm"])
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["tulsi_test/XCTest/srcs/src1.mm"])
   }
 
   func testComplexSingle_DefaultConfig() {
     installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
+    makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
+    makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 4)
+    XCTAssertEqual(ruleEntries.count, 8)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -78,33 +93,68 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
-        .hasSources(["tulsi_test/main.m",
-                     "tulsi_test/path/to/output.m"
+        .hasSources(["tulsi_test/Binary/srcs/main.m",
+                     "tulsi_test/SrcGenerator/outs/output.m"
                     ])
-        .hasAttribute("bridging_header", value: ["path": "tulsi_test/bridging_header.h",
-                                                 "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
-                                                 "src": false])
-        .hasAttribute("includes", value: ["additional/include", "another/include"])
-        .hasAttribute("defines", value: ["A=DEFINE"])
+        .hasAttribute(.bridging_header, value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
+                                                "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                                                "src": false])
+        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
+        .hasAttribute(.includes, value: ["Binary/includes/first/include",
+                                         "Binary/includes/second/include"])
+
+    checker.assertThat("//tulsi_test:CoreDataResources")
+        .hasAttribute(.datamodels, value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
+                                            "src": true],
+                                           ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
+                                            "src": true],])
 
     checker.assertThat("//tulsi_test:Library")
-        .hasSources(["tulsi_test/path/to/src1.m",
-                     "tulsi_test/path/to/src2.m",
-                     "tulsi_test/path/to/src3.m",
-                     "tulsi_test/path/to/src4.m",
-                     "tulsi_test/path/to/src5.mm",
-                     ])
-        .hasAttribute("copts", value: ["-DCOPT_DEFINE"])
-        .hasAttribute("defines", value: ["DEFINES_DEFINE=1", "SECOND_DEFINE=2"])
-        .hasAttribute("pch", value: ["path": "tulsi_test/PCHFile.pch",
-                                     "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
-                                     "src": false])
+        .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",
+                     "tulsi_test/LibrarySources/srcs/src2.m",
+                     "tulsi_test/LibrarySources/srcs/src3.m",
+                     "tulsi_test/LibrarySources/srcs/src4.m",
+                     "tulsi_test/Library/srcs/src5.mm",
+                     "tulsi_test/Library/srcs/SrcsHeader.h",
+                     "tulsi_test/Library/hdrs/HdrsHeader.h"])
+        .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE"])
+        .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1",
+                                        "'LIBRARY SECOND DEFINE'=2",
+                                        "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
+        .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
+                                    "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                                    "src": false])
+
+    checker.assertThat("//tulsi_test:SubLibrary")
+        .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])
+        .hasAttribute(.pch, value: ["path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
+                                    "src": true])
+
+    checker.assertThat("//tulsi_test:SubLibraryWithDefines")
+        .hasSources(["tulsi_test/SubLibraryWithDefines/srcs/src.mm"])
+        .hasAttribute(.copts, value: ["-menable-no-nans",
+                                      "-menable-no-infs",
+                                      "-I/SubLibraryWithDefines/local/includes",
+                                      "-Irelative/SubLibraryWithDefines/local/includes"])
+        .hasAttribute(.defines, value: ["SubLibraryWithDefines=1",
+                                        "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines"])
+
+    checker.assertThat("//tulsi_test:SubLibraryWithDifferentDefines")
+        .hasSources(["tulsi_test/SubLibraryWithDifferentDefines/srcs/src.mm"])
+        .hasAttribute(.copts, value: ["-DSubLibraryWithDifferentDefines_LocalDefine",
+                                      "-DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1",
+                                      "-DSubLibraryWithDifferentDefines_STRING_DEFINE=Test",
+                                      "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'",
+                                      "-D'SubLibraryWithDifferentDefines Define with spaces'",
+                                      "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1"])
+        .hasAttribute(.defines, value: ["SubLibraryWithDifferentDefines=1"])
+        .hasAttribute(.includes, value: ["SubLibraryWithDifferentDefines/includes"])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
-        .hasAttribute("xctest", value: true)
-        .hasSources(["tulsi_test/test/defaultTestSource.m"])
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["tulsi_test/XCTest/srcs/defaultTestSource.m"])
   }
 
   func testComplexSingle_ConfigTestEnabled() {
@@ -114,15 +164,15 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 4)
+    XCTAssertEqual(ruleEntries.count, 8)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
-        .hasAttribute("xctest", value: true)
-        .hasSources(["tulsi_test/test/configTestSource.m"])
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["tulsi_test/XCTest/srcs/configTestSource.m"])
   }
 
   private class InfoChecker {
@@ -132,7 +182,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       self.ruleEntries = ruleEntries
     }
 
-    func assertThat(targetLabel: String, line: UInt = __LINE__) -> Context {
+    func assertThat(targetLabel: String, line: UInt = #line) -> Context {
       let ruleEntry = ruleEntries[BuildLabel(targetLabel)]
       XCTAssertNotNil(ruleEntry,
                       "No rule entry with the label \(targetLabel) was found",
@@ -158,7 +208,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
       /// Asserts that the contextual RuleEntry is linked to a rule identified by the given
       /// targetLabel as a dependency.
-      func dependsOn(targetLabel: String, line: UInt = __LINE__) -> Context {
+      func dependsOn(targetLabel: String, line: UInt = #line) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
         XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
                         "\(ruleEntry) must depend on \(targetLabel)",
@@ -168,7 +218,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
       /// Asserts that the contextual RuleEntry contains the given list of sources (but may have
       /// others as well).
-      func containsSources(sources: [String], line: UInt = __LINE__) -> Context {
+      func containsSources(sources: [String], line: UInt = #line) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
         for s in sources {
           XCTAssert(ruleEntry.sourceFiles.contains(s),
@@ -179,7 +229,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       }
 
       /// Asserts that the contextual RuleEntry has exactly the given list of sources.
-      func hasSources(sources: [String], line: UInt = __LINE__) -> Context {
+      func hasSources(sources: [String], line: UInt = #line) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
         containsSources(sources, line: line)
         XCTAssertEqual(ruleEntry.sourceFiles.count,
@@ -191,9 +241,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
       /// Asserts that the contextual RuleEntry is an ios_test with an xctest_app identified by the
       /// given label.
-      func hasTestHost(targetLabel: String, line: UInt = __LINE__) -> Context {
+      func hasTestHost(targetLabel: String, line: UInt = #line) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
-        let hostLabelString = ruleEntry.attributes["xctest_app"] as? String
+        let hostLabelString = ruleEntry.attributes[.xctest_app] as? String
         XCTAssertEqual(hostLabelString,
                        targetLabel,
                        "\(ruleEntry) expected to have an xctest_app of \(targetLabel)",
@@ -202,16 +252,16 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       }
 
       /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
-      func hasAttribute<T where T: Equatable>(name: String, value: T, line: UInt = __LINE__) -> Context {
+      func hasAttribute<T where T: Equatable>(attribute: RuleEntry.Attribute, value: T, line: UInt = #line) -> Context {
         guard let ruleEntry = ruleEntry else { return self }
-        if let attributeValue = ruleEntry.attributes[name] as? T {
+        if let attributeValue = ruleEntry.attributes[attribute] as? T {
           XCTAssertEqual(attributeValue, value, line: line)
-        } else if let attributeValue = ruleEntry.attributes[name] {
-          XCTFail("\(ruleEntry) expected to have an attribute named '\(name)' of type \(T.self) " +
+        } else if let attributeValue = ruleEntry.attributes[attribute] {
+          XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type \(T.self) " +
                       "but it is of type \(attributeValue.dynamicType)",
                   line: line)
         } else {
-          XCTFail("\(ruleEntry) expected to have an attribute named '\(name)'", line: line)
+          XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)
         }
         return self
       }

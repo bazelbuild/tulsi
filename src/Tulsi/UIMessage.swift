@@ -14,8 +14,14 @@
 
 import Cocoa
 
+/// Defines an object that holds an array of UIMessages.
+protocol MessageLogProtocol: class {
+  var messages: [UIMessage] { get }
+}
+
+
 /// Models a single user-facing message.
-class UIMessage: NSObject, NSPasteboardWriting {
+final class UIMessage: NSObject, NSPasteboardWriting {
   @objc
   enum MessageType: Int {
     case Info, Warning, Error

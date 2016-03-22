@@ -214,16 +214,78 @@ class PBXProjSerializerTests: XCTestCase {
     let uti: String?
     let gid: String
     let isInputFile: Bool
+
+    init(sourceTree: SourceTree, path: String, uti: String?, gid: String, isInputFile: Bool = true) {
+      self.sourceTree = sourceTree
+      self.path = path
+      self.uti = uti
+      self.gid = gid
+      self.isInputFile = isInputFile
+    }
+
+    init(sourceTree: SourceTree, path: String, gid: String, isInputFile: Bool = true) {
+      let uti = FileExtensionToUTI[(path as NSString).pathExtension]
+      self.init(sourceTree: sourceTree,
+                path: path,
+                uti: uti,
+                gid: gid,
+                isInputFile: isInputFile)
+    }
   }
 
   // Captures the testable values in defining a PBXGroup.
-  struct GroupDefinition {
+  class GroupDefinition {
     let name: String
     let sourceTree: SourceTree
     let path: String?
     let gid: String
     let files: [FileDefinition]
     let groups: [GroupDefinition]
+    let expectedPBXClass: String
+
+    init(name: String,
+         sourceTree: SourceTree,
+         path: String?,
+         gid: String,
+         files: [FileDefinition],
+         groups: [GroupDefinition],
+         expectedPBXClass: String = "PBXGroup") {
+      self.name = name
+      self.sourceTree = sourceTree
+      self.path = path
+      self.gid = gid
+      self.files = files
+      self.groups = groups
+      self.expectedPBXClass = expectedPBXClass
+    }
+  }
+
+  class VersionGroupDefinition: GroupDefinition {
+    let currentVersion: FileDefinition
+    let versionGroupType: String
+
+    init(name: String,
+         sourceTree: SourceTree,
+         path: String?,
+         gid: String,
+         files: [FileDefinition],
+         groups: [GroupDefinition],
+         currentVersion: FileDefinition,
+         versionGroupType: String? = nil) {
+      self.currentVersion = currentVersion
+      if let versionGroupType = versionGroupType {
+        self.versionGroupType = versionGroupType
+      } else {
+        self.versionGroupType = FileExtensionToUTI[(name as NSString).pathExtension] ?? ""
+      }
+      super.init(name: name,
+                 sourceTree: sourceTree,
+                 path: path,
+                 gid: gid,
+                 files: files,
+                 groups: groups,
+                 expectedPBXClass: "XCVersionGroup")
+    }
   }
 
   // Captures the testable values used when defining a simple PBXProject.
@@ -274,34 +336,55 @@ class PBXProjSerializerTests: XCTestCase {
     let mainGroupDefinition: GroupDefinition
     do {
       let mainGroupFiles = [
-          FileDefinition(sourceTree: .Group, path: "GroupFile.swift", uti: FileExtensionToUTI["swift"], gid: generator.generateReservedID(), isInputFile: true),
-          FileDefinition(sourceTree: .Absolute, path: "/fake/path/AbsoluteFile.swift", uti: FileExtensionToUTI["swift"], gid: generator.generateReservedID(), isInputFile: true),
+          FileDefinition(sourceTree: .Group, path: "GroupFile.swift", gid: generator.generateReservedID()),
+          FileDefinition(sourceTree: .Absolute, path: "/fake/path/AbsoluteFile.swift", gid: generator.generateReservedID()),
       ]
+      let activeDatamodelVersion = FileDefinition(sourceTree: .Group,
+                                                  path: "v2.xcdatamodel",
+                                                  uti: DirExtensionToUTI["xcdatamodel"],
+                                                  gid: generator.generateReservedID(),
+                                                  isInputFile: true)
       let mainGroupGroups = [
           GroupDefinition(name: "ChildGroup",
               sourceTree: .Group,
               path: "child_group_path",
               gid: generator.generateReservedID(),
               files: [
-                  FileDefinition(sourceTree: .Group, path: "ChildRelativeFile.swift", uti: FileExtensionToUTI["swift"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.a", uti: FileExtensionToUTI["a"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.dylib", uti: FileExtensionToUTI["dylib"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.framework", uti: FileExtensionToUTI["framework"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.jpg", uti: FileExtensionToUTI["jpg"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.m", uti: FileExtensionToUTI["m"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.mm", uti: FileExtensionToUTI["mm"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.pch", uti: FileExtensionToUTI["pch"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.plist", uti: FileExtensionToUTI["plist"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.png", uti: FileExtensionToUTI["png"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.rtf", uti: FileExtensionToUTI["rtf"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.storyboard", uti: FileExtensionToUTI["storyboard"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.xcassets", uti: DirExtensionToUTI["xcassets"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "t.xib", uti: FileExtensionToUTI["xib"], gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "Test", uti: nil, gid: generator.generateReservedID(), isInputFile: true),
-                  FileDefinition(sourceTree: .Group, path: "Output.app", uti: "wrapper.application", gid: generator.generateReservedID(), isInputFile: false),
+                  FileDefinition(sourceTree: .Group, path: "ChildRelativeFile.swift", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.a", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.dylib", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.framework", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.jpg", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.m", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.mm", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.pch", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.plist", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.png", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.rtf", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.storyboard", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.xcassets", uti: DirExtensionToUTI["xcassets"], gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "t.xib", gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "Test", uti: nil, gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "Output.app", gid: generator.generateReservedID(), isInputFile: false),
               ],
               groups: []
           ),
+          VersionGroupDefinition(name: "DataModel.xcdatamodeld",
+                                 sourceTree: .Group,
+                                 path: "DataModel.xcdatamodeld",
+                                 gid: generator.generateReservedID(),
+                                 files: [
+                                     FileDefinition(sourceTree: .Group,
+                                                    path: "v1.xcdatamodel",
+                                                    uti: DirExtensionToUTI["xcdatamodel"],
+                                                    gid: generator.generateReservedID(),
+                                                    isInputFile: true),
+                                     activeDatamodelVersion,
+                                 ],
+                                 groups: [],
+                                 currentVersion: activeDatamodelVersion,
+                                 versionGroupType: DirExtensionToUTI["xcdatamodeld"]
+          )
       ]
       mainGroupDefinition = GroupDefinition(name: "mainGroup",
           sourceTree: .SourceRoot,
@@ -340,7 +423,21 @@ class PBXProjSerializerTests: XCTestCase {
           fileRef.isInputFile = file.isInputFile
         }
         for childDef in groupDefinition.groups {
-          let childGroup = group.getOrCreateChildGroupByName(childDef.name, path: childDef.path)
+          let childGroup: PBXGroup
+          if let versionedChildDef = childDef as? VersionGroupDefinition {
+            let versionGroup = group.getOrCreateChildVersionGroupByName(versionedChildDef.name,
+                                                                        path: versionedChildDef.path)
+            versionGroup.versionGroupType = versionedChildDef.versionGroupType
+            let currentVersionDef = versionedChildDef.currentVersion
+            let currentFileRef = versionGroup.getOrCreateFileReferenceBySourceTree(currentVersionDef.sourceTree,
+                                                                                   path: currentVersionDef.path)
+            currentFileRef.globalID = currentVersionDef.gid
+            currentFileRef.isInputFile = currentVersionDef.isInputFile
+            versionGroup.currentVersion = currentFileRef
+            childGroup = versionGroup
+          } else {
+            childGroup = group.getOrCreateChildGroupByName(childDef.name, path: childDef.path)
+          }
           populateGroup(childGroup, groupDefinition: childDef)
         }
       }
@@ -427,7 +524,7 @@ class PBXProjSerializerTests: XCTestCase {
                                      withObjects objects: StringToObjectDict,
                                      line: UInt = __LINE__) {
     let group: StringToObjectDict! = getObjectByID(groupDef.gid,
-                                                   withPBXClass: "PBXGroup",
+                                                   withPBXClass: groupDef.expectedPBXClass,
                                                    fromObjects: objects,
                                                    line: line)
     XCTAssertEqual(group["name"], groupDef.name, line: line)
@@ -456,6 +553,13 @@ class PBXProjSerializerTests: XCTestCase {
                 "Missing expected child group with gid '\(childGroupDef.gid)'",
                 line: line)
       assertGroupSerialized(childGroupDef, withObjects: objects, line: line)
+    }
+
+    if let versionedGroupDef = groupDef as? VersionGroupDefinition {
+      assertFileReferenceSerialized(versionedGroupDef.currentVersion,
+                                    withObjects: objects,
+                                    line: line)
+      XCTAssertEqual(group["versionGroupType"], versionedGroupDef.versionGroupType, line: line)
     }
 
     // Now that all of the expected children have been found, ensure that there are no unexpected

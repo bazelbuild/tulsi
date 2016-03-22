@@ -28,62 +28,78 @@ class UISelectableOutlineViewNode: NSObject {
   /// The object contained by this node (only valid for leaf nodes).
   var entry: Selectable? {
     didSet {
-      if entry != nil {
-        selected = entry!.selected
+      if let entry = entry {
+        state = entry.selected ? NSOnState : NSOffState
       }
     }
   }
 
   /// This node's children.
-  var children = [UISelectableOutlineViewNode]()
+  var children: [UISelectableOutlineViewNode] {
+    return _children
+  }
+  private var _children = [UISelectableOutlineViewNode]()
 
   /// This node's parent.
-  weak var parent: UISelectableOutlineViewNode?
+  private weak var parent: UISelectableOutlineViewNode?
 
-  /// Whether or not this node is selected in the UI.
-  var selected: Bool {
-    didSet {
-      entry?.selected = selected
+  /// This node's checkbox state in the UI (NSOnState/NSOffState/NSMixedState)
+  dynamic var state: Int {
+    get {
+      if children.isEmpty {
+        return (entry?.selected ?? false) ? NSOnState : NSOffState
+      }
+
+      var stateIsValid = false
+      var state = NSOffState
+      for node in children {
+        if !stateIsValid {
+          state = node.state
+          stateIsValid = true
+          continue
+        }
+        if state != node.state {
+          return NSMixedState
+        }
+      }
+      return state
+    }
+
+    set {
+      let newSelectionState = (newValue == NSOnState)
+      let selected = entry?.selected
+      if selected == newSelectionState {
+        return
+      }
+
+      willChangeValueForKey("state")
+      if let entry = entry {
+        entry.selected = newSelectionState
+      }
+
+      for node in children {
+        node.state = newValue
+      }
+      didChangeValueForKey("state")
+
+      // Notify KVO that this node's ancestors have also changed state.
+      var ancestor = parent
+      while ancestor != nil {
+        ancestor!.willChangeValueForKey("state")
+        ancestor!.didChangeValueForKey("state")
+        ancestor = ancestor!.parent
+      }
     }
   }
 
   init(name: String) {
-    self.selected = false
     self.name = name
     super.init()
   }
 
-  func state() -> Int {
-    if children.isEmpty {
-      return selected ? NSOnState : NSOffState
-    }
-
-    var stateIsValid = false
-    var state = NSOffState
-    for node in children {
-      if !stateIsValid {
-        state = node.state()
-        stateIsValid = true
-        continue
-      }
-      if state != node.state() {
-        return NSMixedState
-      }
-    }
-    return state
-  }
-
-  func setState(state: Int) {
-    let newSelected = (state == NSOnState)
-    if selected == newSelected {
-      return
-    }
-    willChangeValueForKey("state")
-    selected = newSelected
-    for node in children {
-      node.setState(state)
-    }
-    didChangeValueForKey("state")
+  func addChild(child: UISelectableOutlineViewNode) {
+    _children.append(child)
+    child.parent = self
   }
 
   // TODO(abaire): Look into whether or not there's a way to prevent the system from setting the

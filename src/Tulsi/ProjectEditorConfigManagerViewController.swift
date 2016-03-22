@@ -101,6 +101,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     generatorController.generateProjectForConfigName(configName) { (projectURL: NSURL?) in
       self.dismissViewController(generatorController)
       if let projectURL = projectURL {
+        let projectDocument = self.representedObject as! TulsiProjectDocument
+        projectDocument.info("Opening generated project in Xcode")
         NSWorkspace.sharedWorkspace().openURL(projectURL)
       }
     }
@@ -115,7 +117,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let configName = (configArrayController.arrangedObjects as! [String])[clickedRow]
     let errorInfo: String
     do {
-      let configDocument = try projectDocument.loadConfigDocumentNamed(configName)
+      let configDocument = try projectDocument.loadConfigDocumentNamed(configName) { (_) in
+        // Nothing in particular has to be done when the config doc is loaded, the editor UI already
+        // handles this via the document's processing state.
+      }
       configDocument.makeWindowControllers()
       configDocument.showWindows()
       return
@@ -172,6 +177,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
                                                                                                saveFolderURL: generatorConfigFolderURL,
                                                                                                infoExtractor: projectDocument.infoExtractor,
                                                                                                messageLogger: projectDocument,
+                                                                                               messageLog: projectDocument,
                                                                                                additionalFilePaths: additionalFilePaths,
                                                                                                bazelURL: projectDocument.bazelURL)
       projectDocument.trackChildConfigDocument(configDocument)

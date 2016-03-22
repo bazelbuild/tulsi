@@ -15,6 +15,7 @@
 import Foundation
 
 
+/// Provides functionality to log messages using a localized string table.
 class LocalizedMessageLogger {
   let messageLogger: MessageLoggerProtocol?
   let bundle: NSBundle?

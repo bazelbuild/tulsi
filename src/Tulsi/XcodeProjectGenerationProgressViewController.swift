@@ -90,11 +90,8 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       return
     }
 
-    NSThread.doOnQOSUserInitiatedThread() {
-      let projectURL = self.generateXcodeProjectForConfigName(name)
-      NSThread.doOnMainThread() {
-        completionHandler(projectURL)
-      }
+    generateXcodeProjectForConfigName(name) { (projectURL: NSURL?) in
+      completionHandler(projectURL)
     }
   }
 
@@ -130,39 +127,55 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     }
   }
 
-  private func generateXcodeProjectForConfigName(name: String) -> NSURL? {
-    assert(!NSThread.isMainThread(), "Must not be called from the main thread")
-
+  /// Asynchronously generates an Xcode project, invoking the given completionHandler on the main
+  /// thread with an URL to the generated project (or nil to indicate failure).
+  private func generateXcodeProjectForConfigName(name: String, completionHandler: (NSURL? -> Void)) {
     let document = self.representedObject as! TulsiProjectDocument
     guard let workspaceRootURL = document.workspaceRootURL else {
       document.error(NSLocalizedString("Error_BadWorkspace",
                                        comment: "General error when project does not have a valid Bazel workspace."))
-      return nil
+      NSThread.doOnMainThread() {
+        completionHandler(nil)
+      }
+      return
     }
     guard let concreteOutputFolderURL = outputFolderURL else {
       // This should never actually happen and indicates an unexpected path through the UI.
       document.error(NSLocalizedString("Error_NoOutputFolder",
                                        comment: "Error for a generation attempt without a valid target output folder"))
-      return nil
+      NSThread.doOnMainThread() {
+        completionHandler(nil)
+      }
+      return
     }
 
-    guard let configDocument = getConfigDocumentNamed(name) else {
-      // Error messages have already been displayed.
-      return nil
-    }
+    getConfigDocumentNamed(name) { (configDocument: TulsiGeneratorConfigDocument?) in
+      assert(NSThread.isMainThread())
+      guard let configDocument = configDocument else {
+        // Error messages have already been displayed.
+        completionHandler(nil)
+        return
+      }
 
-    return configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
-                                                       withWorkspaceRootURL: workspaceRootURL)
+      NSThread.doOnQOSUserInitiatedThread() {
+        let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
+                                                              withWorkspaceRootURL: workspaceRootURL)
+        NSThread.doOnMainThread() {
+          completionHandler(url)
+        }
+      }
+    }
   }
 
-  /// Loads a previously created config with the given name.
-  private func getConfigDocumentNamed(name: String) -> TulsiGeneratorConfigDocument? {
-    assert(!NSThread.isMainThread(), "Must not be called from the main thread")
+  /// Loads a previously created config with the given name. The given completionHandler is invoked
+  /// on the main thread when the document is fully loaded.
+  private func getConfigDocumentNamed(name: String,
+                                      completionHandler: (TulsiGeneratorConfigDocument? -> Void)) -> TulsiGeneratorConfigDocument? {
     let document = self.representedObject as! TulsiProjectDocument
 
     let errorInfo: String
     do {
-      return try document.loadConfigDocumentNamed(name)
+      return try document.loadConfigDocumentNamed(name, completionHandler: completionHandler)
     } catch TulsiProjectDocument.Error.NoSuchConfig {
       errorInfo = "No URL for config named '\(name)'"
     } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {

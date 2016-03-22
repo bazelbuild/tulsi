@@ -22,14 +22,15 @@ ios_application(
 objc_binary(
     name = "Binary",
     srcs = [
-        "main.m",
+        "Binary/srcs/main.m",
     ],
-    bridging_header = "bridging_header.h",
+    bridging_header = "Binary/bridging_header/bridging_header.h",
+    datamodels = glob(["Test.xcdatamodeld/**"]),
     defines = [
-        "ADDITIONAL_DEFINE",
-        "ANOTHER_DEFINE=2",
+        "BINARY_ADDITIONAL_DEFINE",
+        "BINARY_ANOTHER_DEFINE=2",
     ],
-    includes = ["additional/include"],
+    includes = ["Binary/includes"],
     deps = [
         ":Library",
     ],
@@ -38,24 +39,29 @@ objc_binary(
 objc_library(
     name = "Library",
     srcs = [
-        "path/to/src1.m",
-        "path/to/src2.m",
-        "path/to/src3.m",
-        "path/to/src4.m",
+        "Library/srcs/SrcsHeader.h",
+        "Library/srcs/src1.m",
+        "Library/srcs/src2.m",
+        "Library/srcs/src3.m",
+        "Library/srcs/src4.m",
     ],
     hdrs = [
-        "path/to/header.h",
+        "Library/hdrs/HdrsHeader.h",
     ],
-    copts = ["-DCOPT_DEFINE"],
-    defines = ["DEFINES_DEFINE=1"],
-    pch = "src/PCHFile.pch",
-    xibs = ["path/to/xib.xib"],
+    copts = [
+        "-DLIBRARY_COPT_DEFINE",
+        "-I/Library/absolute/include/path",
+        "-Irelative/Library/include/path",
+    ],
+    defines = ["LIBRARY_DEFINES_DEFINE=1"],
+    pch = "Library/pch/PCHFile.pch",
+    xibs = ["Library/xibs/xib.xib"],
 )
 
 ios_test(
     name = "XCTest",
     srcs = [
-        "test/src1.mm",
+        "XCTest/srcs/src1.mm",
     ],
     xctest = 1,
     xctest_app = ":Application",

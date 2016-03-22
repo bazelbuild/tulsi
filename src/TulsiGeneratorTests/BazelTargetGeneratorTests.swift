@@ -97,7 +97,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
 
-  var sourceFileNames = ["test.swift", "test.cc"]
+  var sourceFileNames = [String]()
   var pathFilters = Set<String>([""])
   var sourceFileReferences = [PBXFileReference]()
   var pchFile: PBXFileReference! = nil
@@ -106,12 +106,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     super.setUp()
 
     project = PBXProject(name: "TestProject")
-    let mainGroup = project.mainGroup
-    sourceFileReferences = []
-    for file in sourceFileNames {
-      sourceFileReferences.append(mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: file))
-    }
-    pchFile = mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
+    sourceFileNames = ["test.swift", "test.cc"]
+    pathFilters = Set<String>([""])
+    rebuildSourceFileReferences()
+    pchFile = project.mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     let options = TulsiOptionSet()
     options[.SDKROOT].projectValue = sdkRoot
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
@@ -515,7 +513,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              SourcesBuildPhaseDefinition(files: testSources),
+              SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: testRuleBuildTarget)
           ]
@@ -549,7 +547,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel = BuildLabel("test/app:TestApp")
     let ruleEntry = makeTestRuleEntry("test/app:TestApp",
                                       type: "ios_application",
-                                      attributes: ["pch": pchFile.path!],
+                                      attributes: ["pch": ["path": pchFile.path!, "src": true]],
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
@@ -576,9 +574,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
-        sourceFileNames: sourceFileNames,
-        bridgingHeader: "$(SRCROOT)/\(bridgingHeaderFilePath)",
-        inTargets: targets)
+                          sourceFileNames: sourceFileNames,
+                          bridgingHeader: "$(SRCROOT)/\(bridgingHeaderFilePath)",
+                          inTargets: targets)
   }
 
   func testGenerateIndexerWithGeneratedBridgingHeader() {
@@ -600,35 +598,161 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
-        sourceFileNames: sourceFileNames,
-        bridgingHeader: "bazel-genfiles/\(bridgingHeaderFilePath)",
-        inTargets: targets)
+                          sourceFileNames: sourceFileNames,
+                          bridgingHeader: "bazel-genfiles/\(bridgingHeaderFilePath)",
+                          inTargets: targets)
+  }
+
+  func testGenerateIndexerWithXCDataModel() {
+    let dataModel = "test.xcdatamodeld"
+    let ruleAttributes = ["datamodels": [["path": "\(dataModel)/v1.xcdatamodel", "src": true],
+                                         ["path": "\(dataModel)/v2.xcdatamodel", "src": true]]]
+
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_binary",
+                                      attributes: ruleAttributes,
+                                      sourceFiles: sourceFileNames)
+    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+
+    var allSourceFiles = sourceFileNames
+    allSourceFiles.append(dataModel)
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: allSourceFiles,
+                          inTargets: targets)
+  }
+
+  func testGenerateIndexerWithSourceFilter() {
+    sourceFileNames.append("this/file/should/appear.m")
+    pathFilters.insert("this/file/should")
+    rebuildSourceFileReferences()
+
+    var allSourceFiles = sourceFileNames
+    allSourceFiles.append("filtered/file.m")
+    allSourceFiles.append("this/file/should/not/appear.m")
+
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: allSourceFiles)
+    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName, sourceFileNames: sourceFileNames, inTargets: targets)
+  }
+
+  func testGenerateIndexerWithRecursiveSourceFilter() {
+    sourceFileNames.append("this/file/should/appear.m")
+    sourceFileNames.append("this/file/should/also/appear.m")
+    pathFilters.insert("this/file/should/...")
+    rebuildSourceFileReferences()
+
+    var allSourceFiles = sourceFileNames
+    allSourceFiles.append("filtered/file.m")
+
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: allSourceFiles)
+    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName, sourceFileNames: sourceFileNames, inTargets: targets)
+  }
+
+  func testGenerateBUILDRefsWithoutSourceFilter() {
+    let buildFilePath = "this/file/should/not/BUILD"
+    pathFilters.insert("this/file/should")
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: sourceFileNames,
+                                      buildFilePath: buildFilePath)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+    XCTAssertNil(fileRefForPath(buildFilePath))
+  }
+
+  func testGenerateBUILDRefsWithSourceFilter() {
+    let buildFilePath = "this/file/should/BUILD"
+    pathFilters.insert("this/file/should")
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: sourceFileNames,
+                                      buildFilePath: buildFilePath)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+    XCTAssertNotNil(fileRefForPath(buildFilePath))
+  }
+
+  func testGenerateBUILDRefsWithRecursiveSourceFilter() {
+    let buildFilePath = "this/file/should/BUILD"
+    pathFilters.insert("this/file/...")
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let ruleEntry = makeTestRuleEntry(buildLabel,
+                                      type: "ios_application",
+                                      sourceFiles: sourceFileNames,
+                                      buildFilePath: buildFilePath)
+    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
+                                                      ruleEntryMap: [:],
+                                                      pathFilters: pathFilters)
+    XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 
   // MARK: - Helper methods
+
+  private func rebuildSourceFileReferences() {
+    sourceFileReferences = []
+    for file in sourceFileNames {
+      sourceFileReferences.append(project.mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: file))
+    }
+  }
 
   private func makeTestRuleEntry(label: String,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set<String>()) -> RuleEntry {
+                                 dependencies: Set<String> = Set<String>(),
+                                 buildFilePath: String? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
                              type: type,
                              attributes: attributes,
                              sourceFiles: sourceFiles,
-                             dependencies: dependencies)
+                             dependencies: dependencies,
+                             buildFilePath: buildFilePath)
   }
 
   private func makeTestRuleEntry(label: BuildLabel,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set<String>()) -> RuleEntry {
+                                 dependencies: Set<String> = Set<String>(),
+                                 buildFilePath: String? = nil) -> RuleEntry {
     return RuleEntry(label: label,
                      type: type,
                      attributes: attributes,
                      sourceFiles: sourceFiles,
-                     dependencies: dependencies)
+                     dependencies: dependencies,
+                     buildFilePath: buildFilePath)
   }
 
   private struct TargetDefinition {
@@ -646,11 +770,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let isa: String
     let files: [String]
     let fileSet: Set<String>
+    let mainGroup: PBXReference?
 
-    init (isa: String, files: [String]) {
+    init (isa: String, files: [String], mainGroup: PBXReference? = nil) {
       self.isa = isa
       self.files = files
       self.fileSet = Set(files)
+      self.mainGroup = mainGroup
     }
 
     func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
@@ -660,7 +786,15 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                      "Mismatch in file count in build phase",
                      line: line)
       for buildFile in phase.files {
-        let path = buildFile.fileRef.path!
+        // Grab the full path of the file. Note that this assumes all groups used in the test are
+        // group relative.
+        var pathElements = [String]()
+        var node: PBXReference! = buildFile.fileRef
+        while node != nil && node !== mainGroup {
+          pathElements.append(node.path!)
+          node = node.parent
+        }
+        let path = pathElements.reverse().joinWithSeparator("/")
         XCTAssert(fileSet.contains(path),
                   "Found unexpected file '\(path)' in build phase",
                   line: line)
@@ -671,9 +805,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   private class SourcesBuildPhaseDefinition: BuildPhaseDefinition {
     let settings: [String: String]?
 
-    init(files: [String], settings: [String: String]? = nil) {
+    init(files: [String], mainGroup: PBXReference, settings: [String: String]? = nil) {
       self.settings = settings
-      super.init(isa: "PBXSourcesBuildPhase", files: files)
+      super.init(isa: "PBXSourcesBuildPhase", files: files, mainGroup: mainGroup)
     }
 
     override func validate(phase: PBXBuildPhase, line: UInt = __LINE__) {
@@ -719,6 +853,26 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  private func fileRefForPath(path: String) -> PBXReference? {
+    let components = path.componentsSeparatedByString("/")
+    var node = project.mainGroup
+    componentLoop: for component in components {
+      for child in node.children {
+        if child.name == component {
+          if let childGroup = child as? PBXGroup {
+            node = childGroup
+            continue componentLoop
+          } else if component == components.last! {
+            return child
+          } else {
+            return nil
+          }
+        }
+      }
+    }
+    return nil
+  }
+
   private func validateIndexerTarget(indexerTargetName: String,
                                      sourceFileNames: [String]?,
                                      pchFile: PBXFileReference? = nil,
@@ -729,7 +883,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": indexerTargetName,
     ]
     if pchFile != nil {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = pchFile!.path!
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(SRCROOT)/\(pchFile!.path!)"
     }
     if bridgingHeader != nil {
         expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!
@@ -737,7 +891,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     var expectedBuildPhases = [BuildPhaseDefinition]()
     if sourceFileNames != nil {
-      expectedBuildPhases.append(SourcesBuildPhaseDefinition(files: sourceFileNames!))
+      expectedBuildPhases.append(SourcesBuildPhaseDefinition(files: sourceFileNames!,
+                                                             mainGroup: project.mainGroup))
     }
 
     let expectedTarget = TargetDefinition(

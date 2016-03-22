@@ -130,23 +130,6 @@ class XcodeProjectGenerator {
     }
 
     let ruleEntryMap = loadRuleEntryMap()
-    var additionalIncludePaths = Set<String>()
-    func extractIncludePaths(ruleEntry: RuleEntry) {
-      for dep in ruleEntry.dependencies {
-        guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
-          localizedMessageLogger.error("UnknownTargetRule",
-                                       comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
-                                       values: dep)
-          continue
-        }
-        extractIncludePaths(depEntry)
-      }
-
-      if let includes = ruleEntry.attributes["includes"] as? [String] {
-        additionalIncludePaths.unionInPlace(includes)
-      }
-    }
-
     var targetRuleEntries = [RuleEntry]()
     for label in config.buildTargetLabels {
       guard let ruleEntry = ruleEntryMap[label] else {
@@ -159,12 +142,11 @@ class XcodeProjectGenerator {
       generator.generateIndexerTargetForRuleEntry(ruleEntry,
                                                   ruleEntryMap: ruleEntryMap,
                                                   pathFilters: config.pathFilters)
-      extractIncludePaths(ruleEntry)
     }
 
     let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
     generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
-    generator.generateTopLevelBuildConfigurations(additionalIncludePaths)
+    generator.generateTopLevelBuildConfigurations()
     try generator.generateBuildTargetsForRuleEntries(targetRuleEntries)
 
     return xcodeProject

@@ -180,10 +180,11 @@ public class TulsiGeneratorConfig {
       let additionalOptions = try extractJSONDict(additionalOptionData) {
         Error.FailedToReadAdditionalOptionsData($0)
       }
-      for (key, value) in additionalOptions {
-        if let value = value as? TulsiOptionSet.PersistenceType {
-          optionsDict[key] = value
-        }
+      guard let newOptions = TulsiOptionSet.getOptionsFromContainerDictionary(additionalOptions) else {
+        throw Error.FailedToReadAdditionalOptionsData("Invalid per-user options file")
+      }
+      for (key, value) in newOptions {
+        optionsDict[key] = value
       }
     }
     let options = TulsiOptionSet(fromDictionary: optionsDict)
@@ -197,10 +198,12 @@ public class TulsiGeneratorConfig {
   }
 
   public func save() throws -> NSData {
+    let sortedBuildTargetLabels = buildTargetLabels.map({ $0.value }).sort()
+    let sortedPathFilters = [String](pathFilters).sort()
     var dict: [String: AnyObject] = [
         TulsiGeneratorConfig.ProjectNameKey: projectName,
-        TulsiGeneratorConfig.BuildTargetsKey: buildTargetLabels.map({ $0.value }),
-        TulsiGeneratorConfig.PathFiltersKey: [String](pathFilters),
+        TulsiGeneratorConfig.BuildTargetsKey: sortedBuildTargetLabels,
+        TulsiGeneratorConfig.PathFiltersKey: sortedPathFilters,
     ]
     if let additionalFilePaths = additionalFilePaths {
       dict[TulsiGeneratorConfig.AdditionalFilePathsKey] = additionalFilePaths

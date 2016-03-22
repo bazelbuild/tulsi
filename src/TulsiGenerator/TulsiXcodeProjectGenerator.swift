@@ -30,10 +30,20 @@ public final class TulsiXcodeProjectGenerator {
 
   let xcodeProjectGenerator: XcodeProjectGenerator
 
-  public init(workspaceRootURL: NSURL,
-              config: TulsiGeneratorConfig,
-              messageLogger: MessageLoggerProtocol? = nil,
-              projectInfoExtractor: TulsiProjectInfoExtractor? = nil) {
+  public convenience init(workspaceRootURL: NSURL,
+                          config: TulsiGeneratorConfig,
+                          messageLogger: MessageLoggerProtocol? = nil,
+                          projectInfoExtractor: TulsiProjectInfoExtractor? = nil) {
+    self.init(workspaceRootURL: workspaceRootURL,
+              config: config,
+              messageLogger: messageLogger,
+              workspaceInfoExtractor: projectInfoExtractor?.workspaceInfoExtractor)
+  }
+
+  init (workspaceRootURL: NSURL,
+        config: TulsiGeneratorConfig,
+        messageLogger: MessageLoggerProtocol? = nil,
+        workspaceInfoExtractor: WorkspaceInfoExtractorProtocol? = nil) {
     let bundle = NSBundle(forClass: self.dynamicType)
     let localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger,
                                                         bundle: bundle)
@@ -42,8 +52,8 @@ public final class TulsiXcodeProjectGenerator {
     let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
 
     let extractor: WorkspaceInfoExtractorProtocol
-    if let projectInfoExtractor = projectInfoExtractor {
-      extractor = projectInfoExtractor.workspaceInfoExtractor
+    if let workspaceInfoExtractor = workspaceInfoExtractor {
+      extractor = workspaceInfoExtractor
     } else {
       extractor = BazelWorkspaceInfoExtractor(bazelURL: config.bazelURL,
                                               workspaceRootURL: workspaceRootURL,

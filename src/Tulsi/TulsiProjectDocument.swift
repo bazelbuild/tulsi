@@ -19,6 +19,7 @@ import TulsiGenerator
 final class TulsiProjectDocument: NSDocument,
                                   NSWindowDelegate,
                                   MessageLoggerProtocol,
+                                  MessageLogProtocol,
                                   OptionsEditorModelProtocol,
                                   TulsiGeneratorConfigDocumentDelegate {
 
@@ -195,8 +196,15 @@ final class TulsiProjectDocument: NSDocument,
     bundleFileWrapper.addRegularFileWithContents(try project.save(),
                                                  preferredFilename: TulsiProject.ProjectFilename)
 
+    if let perUserData = try project.savePerUserSettings() {
+      bundleFileWrapper.addRegularFileWithContents(perUserData,
+                                                   preferredFilename: TulsiProject.perUserFilename)
+    }
+
     let configsFolder: NSFileWrapper
-    if let existingConfigFolderURL = generatorConfigFolderURL {
+    let reachableError = NSErrorPointer()
+    if let existingConfigFolderURL = generatorConfigFolderURL
+        where existingConfigFolderURL.checkResourceIsReachableAndReturnError(reachableError) {
       // Preserve any existing config documents.
       configsFolder = try NSFileWrapper(URL: existingConfigFolderURL,
                                         options:  NSFileWrapperReadingOptions())
@@ -215,7 +223,16 @@ final class TulsiProjectDocument: NSDocument,
               fileContents = projectFileWrapper.regularFileContents else {
       return
     }
-    project = try TulsiProject(data: fileContents, projectBundleURL: concreteFileURL)
+
+    let additionalOptionData: NSData?
+    if let perUserDataFileWrapper = fileWrapper.fileWrappers?[TulsiProject.perUserFilename] {
+      additionalOptionData = perUserDataFileWrapper.regularFileContents
+    } else {
+      additionalOptionData = nil
+    }
+    project = try TulsiProject(data: fileContents,
+                               projectBundleURL: concreteFileURL,
+                               additionalOptionData: additionalOptionData)
 
     if let configsDir = fileWrapper.fileWrappers?[TulsiProjectDocument.ProjectConfigsSubpath],
            configFileWrappers = configsDir.fileWrappers
@@ -305,14 +322,19 @@ final class TulsiProjectDocument: NSDocument,
                                                            inFolderURL: generatorConfigFolderURL)
   }
 
-  /// Loads a previously created config with the given name.
-  func loadConfigDocumentNamed(name: String) throws -> TulsiGeneratorConfigDocument {
+  /// Asynchronously loads a previously created config with the given name, invoking the given
+  /// completionHandler on the main thread when the document is fully loaded.
+  func loadConfigDocumentNamed(name: String,
+                               completionHandler: (TulsiGeneratorConfigDocument? -> Void)) throws -> TulsiGeneratorConfigDocument {
     guard let configURL = urlForConfigNamed(name) else {
       throw Error.NoSuchConfig
     }
 
     let documentController = NSDocumentController.sharedDocumentController()
     if let configDocument = documentController.documentForURL(configURL) as? TulsiGeneratorConfigDocument {
+      NSThread.doOnMainThread() {
+        completionHandler(configDocument)
+      }
       return configDocument
     }
 
@@ -320,7 +342,9 @@ final class TulsiProjectDocument: NSDocument,
       let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithContentsOfURL(configURL,
                                                                                           infoExtractor: infoExtractor,
                                                                                           messageLogger: self,
-                                                                                          bazelURL: bazelURL)
+                                                                                          messageLog: self,
+                                                                                          bazelURL: bazelURL,
+                                                                                          completionHandler: completionHandler)
       configDocument.projectRuleInfos = ruleInfos
       configDocument.delegate = self
       trackChildConfigDocument(configDocument)
@@ -386,9 +410,9 @@ final class TulsiProjectDocument: NSDocument,
 
       // TODO(abaire): Implement better error handling, allowing recovery of a good state.
       let alert = NSAlert()
-      alert.messageText = "A fatal error occurred. Please check the message window and file a bug " +
-          "if appropriate. You should restart Tulsi, but if you're feeling lucky you could " +
-          "navigate back one step and retry this one."
+      alert.messageText = "\(message)\n\nA fatal error occurred. Please check the message window " +
+          "and file a bug if appropriate. You should restart Tulsi, but if you're feeling lucky " +
+          "you could navigate back one step and retry this one."
       alert.informativeText = "TODO(abaire): finish error handling."
       alert.alertStyle = .CriticalAlertStyle
       alert.runModal()
@@ -435,10 +459,18 @@ final class TulsiProjectDocument: NSDocument,
 
   private func processingTaskStarted() {
     NSThread.doOnMainThread() { self.processingTaskCount += 1 }
+    let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+    for configDoc in childDocuments {
+      configDoc.processingTaskStarted()
+    }
   }
 
   private func processingTaskFinished() {
     NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
+    let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+    for configDoc in childDocuments {
+      configDoc.processingTaskFinished()
+    }
   }
 
   private func packageForBUILDFile(buildFile: NSURL) -> String? {

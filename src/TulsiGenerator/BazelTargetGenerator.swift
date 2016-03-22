@@ -140,38 +140,129 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
                                          ruleEntryMap: [BuildLabel: RuleEntry],
                                          pathFilters: Set<String>) {
 
-    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> Set<String> {
+    var sourceDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
+    if sourceDirectory.isEmpty {
+      sourceDirectory = "$(SRCROOT)"
+    }
+
+    let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
+      $0.substringToIndex($0.endIndex.advancedBy(-3))
+    })
+
+    func includePathInProject(path: String) -> Bool {
+      let dir = (path as NSString).stringByDeletingLastPathComponent
+      if pathFilters.contains(dir) { return true }
+      let terminatedDir = dir + "/"
+      for filter in recursiveFilters {
+        if terminatedDir.hasPrefix(filter) { return true }
+      }
+      return false
+    }
+
+    func addBuildFileForRule(ruleEntry: RuleEntry) {
+      guard let buildFilePath = ruleEntry.buildFilePath where includePathInProject(buildFilePath) else {
+        return
+      }
+      project.getOrCreateGroupsAndFileReferencesForPaths([buildFilePath])
+    }
+
+    // Map of build label to cumulative preprocessor defines and include paths.
+    var processedEntries = [BuildLabel: (Set<String>, [String])]()
+    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>, [String]) {
+      if let data = processedEntries[ruleEntry.label] {
+        return data
+      }
       var defines = Set<String>()
+      var includes = [String]()
+      var includesSet = Set<String>()
+
+      defer { processedEntries[ruleEntry.label] = (defines, includes) }
+
       for dep in ruleEntry.dependencies {
         guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
-          localizedMessageLogger.error("UnknownTargetRule",
-                                       comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
-                                       values: dep)
+          localizedMessageLogger.warning("UnknownTargetRule",
+                                         comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                         values: dep)
           continue
         }
-        defines.unionInPlace(generateIndexerTargetGraphForRuleEntry(depEntry))
+
+        let (inheritedDefines, inheritedIncludes) = generateIndexerTargetGraphForRuleEntry(depEntry)
+        defines.unionInPlace(inheritedDefines)
+        for include in inheritedIncludes {
+          if !includesSet.contains(include) {
+            includes.append(include)
+            includesSet.insert(include)
+          }
+        }
       }
 
-      let sourcePaths = ruleEntry.sourceFiles.filter() {
-        let dir = ($0 as NSString).stringByDeletingLastPathComponent
-        return pathFilters.contains(dir)
+      if let ruleDefines = ruleEntry.attributes[.defines] as? [String] where !ruleDefines.isEmpty {
+        defines.unionInPlace(ruleDefines)
       }
-      if sourcePaths.isEmpty {
-        return defines
+
+      if let ruleIncludes = ruleEntry.attributes[.includes] as? [String] {
+        let rootedPaths = ruleIncludes.map({"\(sourceDirectory)/\($0)"})
+        for include in rootedPaths {
+          if !includesSet.contains(include) {
+            includes.append(include)
+            includesSet.insert(include)
+          }
+        }
+      }
+
+      let sourcePaths = ruleEntry.sourceFiles.filter(includePathInProject)
+      var buildPhaseReferences = [PBXReference]()
+      if let datamodelDescriptions = ruleEntry.attributes[.datamodels] as? [[String: AnyObject]] {
+        var fileTargets = [BazelFileTarget]()
+        for description in datamodelDescriptions {
+          guard let target = BazelFileTarget.fileTargetFromAspectFileInfo(description) else {
+            assertionFailure("Failed to resolve datamodel file description to a file target")
+            continue
+          }
+          fileTargets.append(target)
+        }
+        let versionedFileReferences = createReferencesForVersionedFileTargets(fileTargets)
+        buildPhaseReferences.appendContentsOf(versionedFileReferences as [PBXReference])
+      }
+
+      if sourcePaths.isEmpty && buildPhaseReferences.isEmpty {
+        return (defines, includes)
+      }
+
+      var localPreprocessorDefines = defines
+      var localIncludes = includes
+      if let copts = ruleEntry.attributes[.copts] as? [String] where !copts.isEmpty {
+        for opt in copts {
+          // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
+          //     encyclopedia.
+          if opt.hasPrefix("-D") {
+            localPreprocessorDefines.insert(opt.substringFromIndex(opt.startIndex.advancedBy(2)))
+          } else  if opt.hasPrefix("-I") {
+            var path = opt.substringFromIndex(opt.startIndex.advancedBy(2))
+            if !path.hasPrefix("/") {
+              path = "\(sourceDirectory)/\(path)"
+            }
+            if !includesSet.contains(path) {
+              localIncludes.append(path)
+              includesSet.insert(path)
+            }
+          }
+        }
       }
 
       let targetName = indexerNameForRuleEntry(ruleEntry)
       let indexingTarget = project.createNativeTarget(targetName,
                                                       targetType: PBXTarget.ProductType.StaticLibrary)
       let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
-      let buildPhase = createBuildPhaseForFileReferences(fileReferences)
+      buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
+      addBuildFileForRule(ruleEntry)
+      let buildPhase = createBuildPhaseForReferences(buildPhaseReferences)
       indexingTarget.buildPhases.append(buildPhase)
-
       addConfigsForIndexingTarget(indexingTarget,
-                                  pchFilePath: ruleEntry.attributes["pch"] as? String,
                                   ruleEntry: ruleEntry,
-                                  preprocessorDefines: defines)
-      return defines
+                                  preprocessorDefines: localPreprocessorDefines,
+                                  includes: localIncludes)
+      return (defines, includes)
     }
 
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
@@ -231,7 +322,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     for entry: RuleEntry in ruleEntries {
       let target = try createBuildTargetForRuleEntry(entry)
 
-      if let hostLabelString = entry.attributes["xctest_app"] as? String {
+      if let hostLabelString = entry.attributes[.xctest_app] as? String {
         let hostLabel = BuildLabel(hostLabelString)
         guard let hostTargetName = hostLabel.targetName else {
           throw ProjectSerializationError.GeneralFailure("Test target \(entry.label) has an invalid host label \(hostLabel)")
@@ -292,18 +383,39 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
   // MARK: - Private methods
 
+  /// Adds the given file targets to a versioned group.
+  private func createReferencesForVersionedFileTargets(fileTargets: [BazelFileTarget]) -> [XCVersionGroup] {
+    var groupPaths = Set<String>()
+    var groups = [XCVersionGroup]()
+
+    for target in fileTargets {
+      let path = target.path as NSString
+      let versionedGroupPath = path.stringByDeletingLastPathComponent
+      let type = target.path.pbPathUTI ?? ""
+      let versionedGroup = project.getOrCreateVersionGroupForPath(versionedGroupPath,
+                                                                  versionGroupType: type)
+      if !groupPaths.contains(versionedGroupPath) {
+        groupPaths.insert(versionedGroupPath)
+        groups.append(versionedGroup)
+      }
+      let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group, path: path.lastPathComponent)
+      ref.isInputFile = target.targetType == .SourceFile
+    }
+    return groups
+  }
+
   // Adds XCBuildConfigurations to the given indexer PBXTarget.
   // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
   // spaces it would be the string: key="value with spaces").
   private func addConfigsForIndexingTarget(target: PBXTarget,
-                                           pchFilePath: String?,
                                            ruleEntry: RuleEntry,
-                                           preprocessorDefines: Set<String>?) {
+                                           preprocessorDefines: Set<String>?,
+                                           includes: [String]) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
-    if let pchFilePath = pchFilePath {
-      buildSettings["GCC_PREFIX_HEADER"] = pchFilePath
+    if let pchFile = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.pch]) {
+      buildSettings["GCC_PREFIX_HEADER"] = pchFile.fullPath
     }
 
     if let preprocessorDefines = preprocessorDefines where !preprocessorDefines.isEmpty {
@@ -311,8 +423,12 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       buildSettings["OTHER_CFLAGS"] = cflagDefines.joinWithSeparator(" ")
     }
 
-    if let bridgingHeader = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes["bridging_header"]) {
+    if let bridgingHeader = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.bridging_header]) {
       buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader.fullPath
+    }
+
+    if !includes.isEmpty {
+      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includes.joinWithSeparator(" ")
     }
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
@@ -339,14 +455,18 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(hostProduct)/\(hostProductName)",
       ]
-      updateBuildConfigurationsForList(target.buildConfigurationList,
-                                       withBuildSettings: testSettings)
+
+      // Inherit the resolved values from the indexer.
+      let indexerTarget = project.targetByName(indexerNameForRuleEntry(ruleEntry))
+      updateMissingBuildConfigurationsForList(target.buildConfigurationList,
+                                              withBuildSettings: testSettings,
+                                              inheritingFromConfigurationList: indexerTarget?.buildConfigurationList)
     }
 
     let sourcePaths = ruleEntry.sourceFiles
     if !sourcePaths.isEmpty {
       let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
-      let buildPhase = createBuildPhaseForFileReferences(fileReferences)
+      let buildPhase = createBuildPhaseForReferences(fileReferences)
       target.buildPhases.append(buildPhase)
 
       // Add configurations that will allow the tests to be run but not compiled. Note that the
@@ -390,23 +510,32 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     createTestConfigForBaseConfig("Release")
   }
 
-  private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList, buildSettings: Dictionary<String, String>) {
+  private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
+                                                buildSettings: Dictionary<String, String>) {
     for configName in BazelTargetGenerator.buildConfigNames {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
       config.buildSettings = buildSettings
     }
   }
 
-  private func updateBuildConfigurationsForList(buildConfigurationList: XCConfigurationList, withBuildSettings newSettings: Dictionary<String, String>) {
-    func updateDictionary(inout old: [String: String], withContentsOfDictionary new: [String: String]) {
+  private func updateMissingBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
+                                                       withBuildSettings newSettings: Dictionary<String, String>,
+                                                       inheritingFromConfigurationList baseConfigurationList: XCConfigurationList? = nil) {
+    func mergeDictionary(inout old: [String: String],
+                         withContentsOfDictionary new: [String: String]) {
       for (key, value) in new {
+        if let _ = old[key] { continue }
         old.updateValue(value, forKey: key)
       }
     }
 
     for configName in BazelTargetGenerator.buildConfigNames {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
-      updateDictionary(&config.buildSettings, withContentsOfDictionary: newSettings)
+      mergeDictionary(&config.buildSettings, withContentsOfDictionary: newSettings)
+
+      if let baseSettings = baseConfigurationList?.getOrCreateBuildConfiguration(configName).buildSettings {
+        mergeDictionary(&config.buildSettings, withContentsOfDictionary: baseSettings)
+      }
     }
   }
 
@@ -416,20 +545,22 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     return BazelTargetGenerator.IndexerTargetPrefix + "\(targetName)_\(hash)"
   }
 
-  // Creates a PBXSourcesBuildPhase with the given files, optionally applying the given per-file
-  // settings to each file.
-  private func createBuildPhaseForFileReferences(fileRefs: [PBXFileReference],
-                                                 withPerFileSettings settings: [String: String]? = nil) -> PBXSourcesBuildPhase {
+  // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given
+  // per-file settings to each.
+  private func createBuildPhaseForReferences(refs: [PBXReference],
+                                             withPerFileSettings settings: [String: String]? = nil) -> PBXSourcesBuildPhase {
     let buildPhase = PBXSourcesBuildPhase()
-    for file in fileRefs {
-      guard let fileUTI = file.uti else {
-        continue
+
+    for ref in refs {
+      if let file = ref as? PBXFileReference {
+        // Do not add header files to the build phase.
+        guard let fileUTI = file.uti
+            where fileUTI.hasPrefix("sourcecode.") && !fileUTI.hasSuffix(".h") else {
+          continue
+        }
       }
 
-      // Add any non-header files to the phase.
-      if fileUTI.hasPrefix("sourcecode.") && !fileUTI.hasSuffix(".h") {
-        buildPhase.files.append(PBXBuildFile(fileRef: file, settings: settings))
-      }
+      buildPhase.files.append(PBXBuildFile(fileRef: ref, settings: settings))
     }
     return buildPhase
   }
@@ -456,7 +587,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     // The build script uses the binary label to find and move the dSYM associated with an
     // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application
     // rules, at which point this may be removed.
-    if let binaryLabel = entry.attributes["binary"] as? String {
+    if let binaryLabel = entry.attributes[.binary] as? String {
       buildSettings["BAZEL_BINARY_TARGET"] = binaryLabel
       let buildLabel = BuildLabel(binaryLabel)
       let binaryPackage = buildLabel.packageName!

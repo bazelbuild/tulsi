@@ -82,7 +82,7 @@ final class BazelQueryInfoExtractor {
     if message != "" {
       message = "\(message)\n"
     }
-    localizedMessageLogger.infoMessage("\(message)Running bazel command with arguments: \(arguments)")
+    localizedMessageLogger.infoMessage("\(message)Running \(bazelURL.path!) with arguments: \(arguments)")
 
     let task = TaskRunner.standardRunner().createTask(bazelURL.path!, arguments: arguments) {
       completionInfo in

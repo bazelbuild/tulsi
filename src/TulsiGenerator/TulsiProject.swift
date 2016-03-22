@@ -25,6 +25,8 @@ public final class TulsiProject {
     case BadInputFilePath
     /// Deserialization failed with the given debug info.
     case DeserializationFailed(String)
+    /// A per-user config was found but could not be read.
+    case FailedToReadAdditionalOptionsData(String)
   }
 
   /// NSUserDefaults key for the default Bazel path if one is not found in the opened project's
@@ -74,6 +76,11 @@ public final class TulsiProject {
     }
   }
 
+  /// Filename to be used when writing out user-specific values.
+  public static var perUserFilename: String {
+    return "\(NSUserName()).tulsiconf-user"
+  }
+
   public static func load(projectBundleURL: NSURL) throws -> TulsiProject {
     let fileManager = NSFileManager.defaultManager()
     let projectFileURL = projectBundleURL.URLByAppendingPathComponent(TulsiProject.ProjectFilename)
@@ -109,7 +116,9 @@ public final class TulsiProject {
     self.options[.WorkspaceRootPath].projectValue = workspaceRootURL.path
   }
 
-  public convenience init(data: NSData, projectBundleURL: NSURL) throws {
+  public convenience init(data: NSData,
+                          projectBundleURL: NSURL,
+                          additionalOptionData: NSData? = nil) throws {
     do {
       guard let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? [String: AnyObject] else {
         throw Error.DeserializationFailed("File is not of dictionary type")
@@ -128,8 +137,12 @@ public final class TulsiProject {
       let bazelPackages = dict[TulsiProject.PackagesKey] as? [String] ?? []
 
       let options: TulsiOptionSet?
-      if let configDefaults = dict[TulsiProject.ConfigDefaultsKey] as? [String: AnyObject],
-             optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(configDefaults) {
+      if let configDefaults = dict[TulsiProject.ConfigDefaultsKey] as? [String: AnyObject] {
+        var optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(configDefaults) ?? [:]
+        if let additionalOptionData = additionalOptionData {
+          try TulsiProject.updateOptionsDict(&optionsDict,
+                                             withAdditionalOptionData: additionalOptionData)
+        }
         options = TulsiOptionSet(fromDictionary: optionsDict)
       } else {
         options = nil
@@ -176,6 +189,19 @@ public final class TulsiProject {
     }
   }
 
+  public func savePerUserSettings() throws -> NSData? {
+    var dict = [String: AnyObject]()
+    options.savePerUserOptionsIntoDictionary(&dict)
+    if dict.isEmpty { return nil }
+    do {
+      return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+    } catch let e as NSError {
+      throw Error.SerializationFailed(e.localizedDescription)
+    } catch {
+      throw Error.SerializationFailed("Unexpected exception")
+    }
+  }
+
   // MARK: - Private methods
 
   private static func findBazelForWorkspaceRoot(workspaceRoot: NSURL?) -> NSURL? {
@@ -187,5 +213,28 @@ public final class TulsiProject {
 
     // TODO(abaire): Fall back to searching the user's path if no default exists.
     return NSUserDefaults.standardUserDefaults().URLForKey(TulsiProject.DefaultBazelURLKey)
+  }
+
+  private static func updateOptionsDict(inout optionsDict: TulsiOptionSet.PersistenceType,
+                                        withAdditionalOptionData data: NSData) throws {
+    do {
+      guard let jsonDict = try NSJSONSerialization.JSONObjectWithData(data,
+                                                                      options: NSJSONReadingOptions()) as? [String: AnyObject] else {
+        throw Error.FailedToReadAdditionalOptionsData("File contents are invalid")
+      }
+      guard let newOptions = TulsiOptionSet.getOptionsFromContainerDictionary(jsonDict) else {
+        return
+      }
+      for (key, value) in newOptions {
+        optionsDict[key] = value
+      }
+    } catch let e as Error {
+      throw e
+    } catch let e as NSError {
+      throw Error.FailedToReadAdditionalOptionsData(e.localizedDescription)
+    } catch {
+      assertionFailure("Unexpected exception")
+      throw Error.FailedToReadAdditionalOptionsData("Unexpected exception")
+    }
   }
 }

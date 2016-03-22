@@ -33,8 +33,9 @@ protocol PBXProjFieldSerializer {
   func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws
   func addField(name: String, _ values: [String]) throws
 
-  // Serializes an object if it has not already been serialized and returns its globalID.
-  func serializeObject(object: PBXObjectProtocol) throws -> String
+  // Serializes an object if it has not already been serialized and returns its globalID, optionally
+  // with a comment string attached unless returnRawID is true.
+  func serializeObject(object: PBXObjectProtocol, returnRawID: Bool) throws -> String
 }
 
 
@@ -137,7 +138,7 @@ class DictionarySerializer: PBXProjFieldSerializer {
 
   // MARK: - XcodeProjFieldSerializer
 
-  func serializeObject(obj: PBXObjectProtocol) -> String {
+  func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) -> String {
     if objects[obj.globalID] != nil {
       return obj.globalID
     }
@@ -221,6 +222,9 @@ class OpenStepSerializer: PBXProjFieldSerializer {
   private let rootObject: PBXProject
   private let gidGenerator: GIDGeneratorProtocol
   private var objects = [String: NSData]()
+  // Map of GID's to comments that should be placed alongside any references to that GID in the
+  // serialized file.
+  private var objectComments = [String: String]()
 
   // Maps PBXObject types to arrays of keys in the objects array. This allows serialization in the
   // same OpenStep format as Xcode.
@@ -265,6 +269,7 @@ class OpenStepSerializer: PBXProjFieldSerializer {
       try encodeSerializedPBXObjectArray("PBXTargetDependency")
       try encodeSerializedPBXObjectArray("XCBuildConfiguration")
       try encodeSerializedPBXObjectArray("XCConfigurationList")
+      try encodeSerializedPBXObjectArray("XCVersionGroup")
 
       assert(typedObjectIndex.isEmpty, "Failed to encode objects of type(s) \(typedObjectIndex.keys)")
       indent = oldIndent
@@ -324,8 +329,11 @@ class OpenStepSerializer: PBXProjFieldSerializer {
 
   // MARK: - XcodeProjFieldSerializer
 
-  func serializeObject(obj: PBXObjectProtocol) throws -> String {
+  func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
     if objects[obj.globalID] != nil {
+      if !returnRawID, let comment = objectComments[obj.globalID] {
+        return "\(obj.globalID)\(comment)"
+      }
       return obj.globalID
     }
 
@@ -342,8 +350,16 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     let globalID = obj.globalID
     objects[globalID] = currentObjectData
 
+    let comment: String
+    if let rawComment = obj.comment {
+      comment = " /* \(rawComment) */"
+      objectComments[globalID] = comment
+    } else {
+      comment = ""
+    }
+
     let isa = obj.isa
-    try currentObjectData.tulsi_appendString("\(indent)\(obj.globalID) = { isa = \(isa); ")
+    try currentObjectData.tulsi_appendString("\(indent)\(obj.globalID)\(comment) = { isa = \(isa); ")
 
     try obj.serializeInto(self)
 
@@ -358,7 +374,10 @@ class OpenStepSerializer: PBXProjFieldSerializer {
 
     currentObjectData = stack
 
-    return globalID
+    if returnRawID {
+      return globalID
+    }
+    return "\(globalID)\(comment)"
   }
 
   func addField(name: String, _ obj: PBXObjectProtocol?) throws {
@@ -414,12 +433,13 @@ class OpenStepSerializer: PBXProjFieldSerializer {
   }
 
   func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws {
-    var gids = [String]()
+    try currentObjectData.tulsi_appendString("\(name) = ( ")
+
     for val in values {
-      let gid = try serializeObject(val)
-      gids.append(gid)
+      let objectReference = try serializeObject(val)
+      try currentObjectData.tulsi_appendString("\(objectReference), ")
     }
-    try addField(name, gids)
+    try currentObjectData.tulsi_appendString("); ")
   }
 
   func addField(name: String, _ values: [String]) throws {

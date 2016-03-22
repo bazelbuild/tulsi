@@ -19,9 +19,11 @@ import Cocoa
 class UISourcePath: NSObject, Selectable {
   dynamic let path: String
   dynamic var selected: Bool
+  dynamic var recursive: Bool
 
-  init(path: String, selected: Bool = false) {
+  init(path: String, selected: Bool = false, recursive: Bool = false) {
     self.path = path
     self.selected = selected
+    self.recursive = recursive
   }
 }

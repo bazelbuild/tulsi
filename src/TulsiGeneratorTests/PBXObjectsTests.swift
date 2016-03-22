@@ -15,6 +15,7 @@
 import XCTest
 @testable import TulsiGenerator
 
+
 class PBXObjectsTests: XCTestCase {
   enum ExpectedStructure {
     case FileReference(String)

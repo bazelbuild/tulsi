@@ -27,7 +27,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                           NSWindowDelegate,
                                           OptionsEditorModelProtocol,
                                           NewGeneratorConfigViewControllerDelegate,
-                                          MessageLoggerProtocol {
+                                          MessageLoggerProtocol,
+                                          MessageLogProtocol {
 
   /// Status of an Xcode project generation action.
   enum GenerationResult {
@@ -49,20 +50,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Whether or not the document is currently performing a long running operation.
   dynamic var processing: Bool = false
 
-  // Whether or not this object has any rule entries (used to display a spinner while the parent
-  // TulsiProjectDocument project is loading).
-  private var hasRuleInfos = false {
-    didSet {
-      updateProcessingState()
-    }
-  }
-
   // The number of tasks that need to complete before processing is finished.
   private var processingTaskCount = 0 {
     didSet {
       assert(NSThread.isMainThread(), "Must be mutated on the main thread")
       assert(processingTaskCount >= 0, "Processing task count may never be negative")
-      updateProcessingState()
+      processing = processingTaskCount > 0
     }
   }
 
@@ -80,7 +73,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         info.selected = selectedEntryLabels.contains(info.fullLabel)
         return info
       }
-      hasRuleInfos = !projectRuleInfos.isEmpty
     }
   }
 
@@ -115,14 +107,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// Array of paths containing source files related to the selectedUIRuleEntries.
-  private var sourcePaths: [UISourcePath] = []
+  private var sourcePaths = [UISourcePath]()
 
   private var selectedSourcePaths: [UISourcePath] {
-    return sourcePaths.filter { $0.selected }
-  }
-
-  private var selectedSourceFilters: Set<String> {
-    return Set<String>(selectedSourcePaths.map({ $0.path }))
+    return sourcePaths.filter { $0.selected || $0.recursive }
   }
 
   // The display name for this config.
@@ -133,12 +121,20 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
+  var messages: [UIMessage] {
+    if let messageLog = messageLog {
+      return messageLog.messages
+    }
+    return []
+  }
+
   // Information inherited from the project.
   var bazelURL: NSURL? = nil
   var additionalFilePaths: [String]? = nil
   var saveFolderURL: NSURL! = nil
   var infoExtractor: TulsiProjectInfoExtractor! = nil
   var messageLogger: MessageLoggerProtocol? = nil
+  var messageLog: MessageLogProtocol? = nil
 
   // Labels from a serialized config that must be resolved in order to fully load this config.
   private var buildTargetLabels: [BuildLabel]? = nil
@@ -160,6 +156,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                  saveFolderURL: NSURL,
                                                  infoExtractor: TulsiProjectInfoExtractor,
                                                  messageLogger: MessageLoggerProtocol,
+                                                 messageLog: MessageLogProtocol?,
                                                  additionalFilePaths: [String]? = nil,
                                                  bazelURL: NSURL? = nil,
                                                  name: String? = nil) throws -> TulsiGeneratorConfigDocument {
@@ -175,6 +172,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     doc.saveFolderURL = saveFolderURL
     doc.infoExtractor = infoExtractor
     doc.messageLogger = messageLogger
+    doc.messageLog = messageLog
     doc.bazelURL = bazelURL
     doc.configName = name
 
@@ -183,11 +181,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// Builds a TulsiGeneratorConfigDocument by loading data from the given persisted config and adds
-  /// it to the document controller.
+  /// it to the document controller. The returned document may be incomplete; completionHandler is
+  /// invoked on the main thread when the document is fully loaded.
   static func makeDocumentWithContentsOfURL(url: NSURL,
                                             infoExtractor: TulsiProjectInfoExtractor,
                                             messageLogger: MessageLoggerProtocol,
-                                            bazelURL: NSURL? = nil) throws -> TulsiGeneratorConfigDocument {
+                                            messageLog: MessageLogProtocol?,
+                                            bazelURL: NSURL? = nil,
+                                            completionHandler: (TulsiGeneratorConfigDocument -> Void)) throws -> TulsiGeneratorConfigDocument {
     let documentController = NSDocumentController.sharedDocumentController()
     guard let doc = try documentController.makeDocumentWithContentsOfURL(url,
                                                                          ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
@@ -196,14 +197,22 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     doc.infoExtractor = infoExtractor
     doc.messageLogger = messageLogger
+    doc.messageLog = messageLog
     doc.bazelURL = bazelURL
 
-    // Resolve labels to UIRuleEntries, warning on any failures.
-    doc.resolveLabelReferences()
-    if let concreteBuildTargetLabels = doc.buildTargetLabels {
-      let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
-                                  comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-      doc.warning(String(format: fmt, concreteBuildTargetLabels))
+    doc.processingTaskStarted()
+    NSThread.doOnQOSUserInitiatedThread() {
+      // Resolve labels to UIRuleEntries, warning on any failures.
+      doc.resolveLabelReferences() {
+        assert(NSThread.isMainThread())
+        if let concreteBuildTargetLabels = doc.buildTargetLabels {
+          let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
+                                      comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
+          doc.warning(String(format: fmt, concreteBuildTargetLabels.map({ $0.description })))
+        }
+        doc.processingTaskFinished()
+        completionHandler(doc)
+      }
     }
 
     return doc
@@ -219,6 +228,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                            withGeneratorConfig config: TulsiGeneratorConfig,
                                            workspaceRootURL: NSURL,
                                            messageLogger: MessageLoggerProtocol,
+                                           messageLog: MessageLogProtocol?,
                                            projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
@@ -319,7 +329,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     sourcePaths = []
     for sourceFilter in config.pathFilters {
-      sourcePaths.append(UISourcePath(path: sourceFilter, selected: true))
+      let sourcePath: UISourcePath
+      if sourceFilter.hasSuffix("/...") {
+        let path = sourceFilter.substringToIndex(sourceFilter.endIndex.advancedBy(-4))
+        sourcePath = UISourcePath(path: path, selected: false, recursive: true)
+      } else {
+        sourcePath = UISourcePath(path: sourceFilter, selected: true, recursive: false)
+      }
+      sourcePaths.append(sourcePath)
     }
   }
 
@@ -353,7 +370,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   // Regenerates the sourcePaths array based on the currently selected ruleEntries.
   func updateSourcePaths(callback: ([UISourcePath]) -> Void) {
-    let existingFilters = Set<String>(selectedSourceFilters)
+    var sourcePathMap = [String: UISourcePath]()
+    selectedSourcePaths.forEach() { sourcePathMap[$0.path] = $0 }
     sourcePaths.removeAll()
     processingTaskStarted()
 
@@ -377,7 +395,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       if !unresolvedLabels.isEmpty {
         let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
                                     comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-        self.warning(String(format: fmt, "Missing labels: \(unresolvedLabels)"))
+        self.warning(String(format: fmt, "Missing labels: \(unresolvedLabels.map({$0.description}))"))
       }
 
       var selectedRuleEntries = [RuleEntry]()
@@ -387,19 +405,38 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         }
       }
 
-      var sourcePathSet = Set<UISourcePath>()
+      var processedEntries = Set<BuildLabel>()
+
       func extractSourcePaths(ruleEntry: RuleEntry) {
+        if processedEntries.contains(ruleEntry.label) {
+          // Rules that have already been processed will already have all of their transitive
+          // sources captured.
+          return
+        }
+        processedEntries.insert(ruleEntry.label)
         for dep in ruleEntry.dependencies {
           guard let depRuleEntry = resolvedLabels[BuildLabel(dep)] else {
-            assertionFailure("Rule dependencies must already be loaded")
+            // Some dependencies are expected to be unresolved, e.g., those that rely on implicit
+            // outputs of other rules.
             continue
           }
           extractSourcePaths(depRuleEntry)
         }
+
+        let componentDelimiters = NSCharacterSet(charactersInString: "/:")
         for sourceFile in ruleEntry.sourceFiles {
           let path = (sourceFile as NSString).stringByDeletingLastPathComponent
           if path.isEmpty { continue }
-          sourcePathSet.insert(UISourcePath(path: path, selected: existingFilters.contains(path)))
+
+          let pathComponents = path.componentsSeparatedByCharactersInSet(componentDelimiters)
+          var cumulativePathComponents = [String]()
+          for component in pathComponents {
+            cumulativePathComponents.append(component)
+            let componentPath = cumulativePathComponents.joinWithSeparator("/")
+            if sourcePathMap[componentPath] == nil {
+              sourcePathMap[componentPath] = UISourcePath(path: componentPath)
+            }
+          }
         }
       }
       for entry in sourceRuleEntries {
@@ -408,7 +445,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
       NSThread.doOnMainThread() {
         defer { self.processingTaskFinished() }
-        self.sourcePaths = [UISourcePath](sourcePathSet)
+        self.sourcePaths = [UISourcePath](sourcePathMap.values)
         callback(self.sourcePaths)
       }
     }
@@ -445,6 +482,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
                                                                            messageLogger: self,
+                                                                           messageLog: self,
                                                                            projectInfoExtractor: infoExtractor)
     switch result {
       case .Success(let url):
@@ -456,6 +494,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         self.error(errorMessage)
         return nil
     }
+  }
+
+  func processingTaskStarted() {
+    NSThread.doOnMainThread() { self.processingTaskCount += 1 }
+  }
+
+  func processingTaskFinished() {
+    NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
   }
 
   // MARK: - NSWindowDelegate
@@ -556,19 +602,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // MARK: - Private methods
-
-  private func processingTaskStarted() {
-    NSThread.doOnMainThread() { self.processingTaskCount += 1 }
-  }
-
-  private func processingTaskFinished() {
-    NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
-  }
-
-  private func updateProcessingState() {
-    processing = processingTaskCount > 0 || !hasRuleInfos
-  }
-
   private func stopObservingRuleEntries() {
     for entry in uiRuleInfos {
       entry.removeObserver(self, forKeyPath: "selected", context: &TulsiGeneratorConfigDocument.KVOContext)
@@ -581,19 +614,29 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return nil
     }
 
+    let pathFilters = Set<String>(selectedSourcePaths.map() {
+      if $0.recursive {
+        return $0.path + "/..."
+      }
+      return $0.path
+    })
     return TulsiGeneratorConfig(projectName: concreteProjectName,
                                 buildTargets: selectedRuleInfos,
-                                pathFilters: selectedSourceFilters,
+                                pathFilters: pathFilters,
                                 additionalFilePaths: additionalFilePaths,
                                 options: concreteOptionSet,
                                 bazelURL: bazelURL)
   }
 
   /// Resolves buildTargetLabels, leaving them populated with any labels that failed to be resolved.
-  private func resolveLabelReferences() {
+  /// The given completion handler is invoked on the main thread once the labels are fully resolved.
+  private func resolveLabelReferences(completionHandler: (Void -> Void)) {
     guard let concreteBuildTargetLabels = buildTargetLabels
         where !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
+      NSThread.doOnMainThread() {
+        completionHandler()
+      }
       return
     }
 
@@ -611,8 +654,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       uiRuleEntry.selected = true
       ruleInfos.append(uiRuleEntry)
     }
-    uiRuleInfos = ruleInfos
-    buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)
-    selectedRuleInfoCount = selectedRuleInfos.count
+    NSThread.doOnMainThread() {
+      self.uiRuleInfos = ruleInfos
+      self.buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)
+      self.selectedRuleInfoCount = self.selectedRuleInfos.count
+      completionHandler()
+    }
   }
 }

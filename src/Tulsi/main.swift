@@ -78,7 +78,8 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLogger: self)
+                                                                           messageLogger: self,
+                                                                           messageLog: nil)
     switch result {
       case .Success(let url):
         NSWorkspace.sharedWorkspace().openURL(url)

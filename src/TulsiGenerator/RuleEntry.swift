@@ -54,8 +54,23 @@ public final class RuleEntry: RuleInfo {
       "objc_binary",
   ])
 
+  /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
+  /// Encyclopedia (see http://bazel.io/docs/be/overview.html).
+  // Note: This set of must be kept in sync with the tulsi_aspects aspect.
+  public enum Attribute: String {
+    case binary
+    case bridging_header
+    case copts
+    case datamodels
+    case defines
+    case includes
+    case pch
+    case xctest
+    case xctest_app
+  }
+
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
-  public let attributes: [String: AnyObject]
+  public let attributes: [Attribute: AnyObject]
 
   /// Source files associated with this rule.
   public let sourceFiles: [String]
@@ -63,9 +78,12 @@ public final class RuleEntry: RuleInfo {
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
 
+  /// The BUILD file that this rule was defined in.
+  public let buildFilePath: String?
+
   var pbxTargetType: PBXTarget.ProductType? {
     if type == "ios_test",
-       let xctestOpt = attributes["xctest"] as? Bool where !xctestOpt {
+       let xctestOpt = attributes[.xctest] as? Bool where !xctestOpt {
       return RuleEntry.BuildTypeToTargetType["ios_application"]
     }
     return RuleEntry.BuildTypeToTargetType[type]
@@ -84,10 +102,23 @@ public final class RuleEntry: RuleInfo {
        type: String,
        attributes: [String: AnyObject],
        sourceFiles: [String],
-       dependencies: Set<String>) {
-    self.attributes = attributes
+       dependencies: Set<String>,
+       buildFilePath: String? = nil) {
+
+    var checkedAttributes = [Attribute: AnyObject]()
+    for (key, value) in attributes {
+      guard let checkedKey = Attribute(rawValue: key) else {
+        print("Tulsi rule \(label.value) - Ignoring unknown attribute key \(key)")
+        assertionFailure("Unknown attribute key \(key)")
+        continue
+      }
+      checkedAttributes[checkedKey] = value
+    }
+    self.attributes = checkedAttributes
+
     self.sourceFiles = sourceFiles
     self.dependencies = dependencies
+    self.buildFilePath = buildFilePath
 
     super.init(label: label, type: type)
   }
@@ -96,12 +127,14 @@ public final class RuleEntry: RuleInfo {
                    type: String,
                    attributes: [String: AnyObject],
                    sourceFiles: [String],
-                   dependencies: Set<String>) {
+                   dependencies: Set<String>,
+                   buildFilePath: String? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
               sourceFiles: sourceFiles,
-              dependencies: dependencies)
+              dependencies: dependencies,
+              buildFilePath: buildFilePath)
   }
 }
 

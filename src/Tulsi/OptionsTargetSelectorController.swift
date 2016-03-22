@@ -52,7 +52,7 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
       if model == nil || model.projectName == nil { return }
 
       let projectSection = OptionsTargetNode(name: OptionsTargetSelectorController.projectSectionTitle)
-      projectSection.children.append(OptionsTargetNode(name: model.projectName!))
+      projectSection.addChild(OptionsTargetNode(name: model.projectName!))
       var newNodes = [projectSection]
 
       if model.shouldShowPerTargetOptions, let targetEntries = model.optionsTargetUIRuleEntries {
@@ -61,7 +61,7 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
           let node = OptionsTargetNode(name: entry.targetName!)
           node.toolTip = entry.fullLabel
           node.entry = entry
-          targetSection.children.append(node)
+          targetSection.addChild(node)
         }
         newNodes.append(targetSection)
       }
