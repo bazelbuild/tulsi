@@ -264,7 +264,8 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       addConfigsForIndexingTarget(indexingTarget,
                                   ruleEntry: ruleEntry,
                                   preprocessorDefines: localPreprocessorDefines,
-                                  includes: localIncludes)
+                                  includes: localIncludes,
+                                  sourceFilter: includePathInProject)
       return (defines, includes)
     }
 
@@ -455,12 +456,20 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   private func addConfigsForIndexingTarget(target: PBXTarget,
                                            ruleEntry: RuleEntry,
                                            preprocessorDefines: Set<String>?,
-                                           includes: [String]) {
+                                           includes: [String],
+                                           sourceFilter: (String) -> Bool) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
+    func addFilteredSourceReference(target: BazelFileTarget) {
+      if target.targetType == .SourceFile && sourceFilter(target.path) {
+        project.getOrCreateGroupsAndFileReferencesForPaths([target.path])
+      }
+    }
+
     if let pchFile = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.pch]) {
       buildSettings["GCC_PREFIX_HEADER"] = pchFile.fullPath
+      addFilteredSourceReference(pchFile)
     }
 
     if let preprocessorDefines = preprocessorDefines where !preprocessorDefines.isEmpty {
@@ -470,6 +479,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
     if let bridgingHeader = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.bridging_header]) {
       buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader.fullPath
+      addFilteredSourceReference(bridgingHeader)
     }
 
     if !includes.isEmpty {
