@@ -79,6 +79,7 @@
 		3DBEFACA1C2A168C00119556 /* MessageLoggerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */; };
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
+		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
 		3DCFE5DC1C80A9A700D7F31B /* tulsi in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DB1C80A9A700D7F31B /* tulsi */; };
@@ -214,6 +215,7 @@
 		3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLoggerProtocol.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
+		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
 		3DCFE5DB1C80A9A700D7F31B /* tulsi */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tulsi; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */,
 				3D7B77C61C9098A4004786EF /* GoldenProjects */,
 				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
+				3DC463B71CA2DAAB00DD8A42 /* TestSuite */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -715,6 +718,7 @@
 			files = (
 				3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */,
 				3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */,
+				3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */,
 				3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

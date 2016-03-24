@@ -98,12 +98,14 @@ class BazelIntegrationTestCase: XCTestCase {
 
   /// Copies the .BUILD file bundled under the given name into the test workspace.
   func installBUILDFile(fileResourceName: String,
-                        inSubdirectory subdirectory: String? = nil,
+                        intoSubdirectory subdirectory: String? = nil,
+                        fromResourceDirectory resourceDirectory: String? = nil,
                         file: StaticString = #file,
                         line: UInt = #line) -> NSURL? {
     let bundle = NSBundle(forClass: self.dynamicType)
     guard let buildFileURL = bundle.URLForResource(fileResourceName,
-                                                   withExtension: "BUILD") else {
+                                                   withExtension: "BUILD",
+                                                   subdirectory: resourceDirectory) else {
       XCTFail("Missing required test resource file \(fileResourceName).BUILD",
               file: file,
               line: line)

@@ -29,7 +29,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   }
 
   func testSimple() {
-    installBUILDFile("Simple", inSubdirectory: "tulsi_test")
+    installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
     makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
@@ -52,7 +52,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.datamodels, value: [["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel",
                                             "src": true],
                                            ["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
-                                            "src": true],])
+                                            "src": true], ])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
 
@@ -77,7 +77,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   }
 
   func testComplexSingle_DefaultConfig() {
-    installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
+    installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
     makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
@@ -107,7 +107,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.datamodels, value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
                                             "src": true],
                                            ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
-                                            "src": true],])
+                                            "src": true], ])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",
@@ -160,7 +160,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   func testComplexSingle_ConfigTestEnabled() {
     bazelBuildOptions.append("--define=TEST=1")
 
-    installBUILDFile("ComplexSingle", inSubdirectory: "tulsi_test")
+    installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
@@ -174,97 +174,181 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.xctest, value: true)
         .hasSources(["tulsi_test/XCTest/srcs/configTestSource.m"])
   }
+}
 
-  private class InfoChecker {
+// Tests for test_suite support.
+class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
+  var aspectInfoExtractor: BazelAspectInfoExtractor! = nil
+  let testDir = "TestSuite"
+
+  override func setUp() {
+    super.setUp()
+    aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
+                                                   workspaceRootURL: workspaceRootURL!,
+                                                   packagePathFetcher: packagePathFetcher,
+                                                   localizedMessageLogger: localizedMessageLogger)
+    installBUILDFile("TestSuiteRoot",
+                     intoSubdirectory: testDir,
+                     fromResourceDirectory: "TestSuite")
+    installBUILDFile("TestOne",
+                     intoSubdirectory: "\(testDir)/One",
+                     fromResourceDirectory: "TestSuite/One")
+    installBUILDFile("TestTwo",
+                     intoSubdirectory: "\(testDir)/Two",
+                     fromResourceDirectory: "TestSuite/Two")
+    installBUILDFile("TestThree",
+                     intoSubdirectory: "\(testDir)/Three",
+                     fromResourceDirectory: "TestSuite/Three")
+  }
+
+  func testTestSuite_ExplicitXCTests() {
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    XCTAssertEqual(ruleEntries.count, 5)
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//\(testDir)/One:XCTest")
+        .hasTestHost("//\(testDir):TestApplication")
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["\(testDir)/One/XCTest.m"])
+    checker.assertThat("//\(testDir)/Two:XCTest")
+        .hasTestHost("//\(testDir):TestApplication")
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["\(testDir)/Two/XCTest.m"])
+    checker.assertThat("//\(testDir)/Three:XCTest")
+        .hasTestHost("//\(testDir):TestApplication")
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["\(testDir)/Three/XCTest.m"])
+
+  }
+
+  func testTestSuite_ExplicitNonXCTests() {
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_NonXCTests")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    XCTAssertEqual(ruleEntries.count, 3)
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//\(testDir)/One:NonXCTest")
+        .hasAttribute(.xctest, value: false)
+        .hasSources(["\(testDir)/One/nonXCTest.m"])
+    checker.assertThat("//\(testDir)/Two:NonXCTest")
+        .hasAttribute(.xctest, value: false)
+        .hasSources(["\(testDir)/Two/nonXCTest.m"])
+    checker.assertThat("//\(testDir)/Three:NonXCTest")
+        .hasAttribute(.xctest, value: false)
+        .hasSources(["\(testDir)/Three/nonXCTest.m"])
+  }
+
+  func testTestSuite_TaggedTests() {
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    XCTAssertEqual(ruleEntries.count, 4)
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//\(testDir):TestSuiteXCTest")
+        .hasTestHost("//\(testDir):TestApplication")
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["\(testDir)/TestSuite/TestSuiteXCTest.m"])
+
+    checker.assertThat("//\(testDir):TestSuiteNonXCTest")
+        .hasAttribute(.xctest, value: false)
+        .hasSources(["\(testDir)/TestSuite/TestSuiteNonXCTest.m"])
+  }
+}
+
+
+private class InfoChecker {
+  let ruleEntries: [BuildLabel: RuleEntry]
+
+  init(ruleEntries: [BuildLabel: RuleEntry]) {
+    self.ruleEntries = ruleEntries
+  }
+
+  func assertThat(targetLabel: String, line: UInt = #line) -> Context {
+    let ruleEntry = ruleEntries[BuildLabel(targetLabel)]
+    XCTAssertNotNil(ruleEntry,
+                    "No rule entry with the label \(targetLabel) was found",
+                    line: line)
+
+    return Context(ruleEntry: ruleEntry, ruleEntries: ruleEntries)
+  }
+
+  /// Context allowing checks against a single rule entry instance.
+  class Context {
+    let ruleEntry: RuleEntry?
     let ruleEntries: [BuildLabel: RuleEntry]
 
-    init(ruleEntries: [BuildLabel: RuleEntry]) {
+    init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
+      self.ruleEntry = ruleEntry
       self.ruleEntries = ruleEntries
     }
 
-    func assertThat(targetLabel: String, line: UInt = #line) -> Context {
-      let ruleEntry = ruleEntries[BuildLabel(targetLabel)]
-      XCTAssertNotNil(ruleEntry,
-                      "No rule entry with the label \(targetLabel) was found",
-                      line: line)
-
-      return Context(ruleEntry: ruleEntry, ruleEntries: ruleEntries)
+    // Does nothing as "assertThat" already asserted the existence of the associated ruleEntry.
+    func exists() -> Context {
+      return self
     }
 
-    /// Context allowing checks against a single rule entry instance.
-    class Context {
-      let ruleEntry: RuleEntry?
-      let ruleEntries: [BuildLabel: RuleEntry]
+    /// Asserts that the contextual RuleEntry is linked to a rule identified by the given
+    /// targetLabel as a dependency.
+    func dependsOn(targetLabel: String, line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
+                      "\(ruleEntry) must depend on \(targetLabel)",
+                      line: line)
+      return self
+    }
 
-      init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
-        self.ruleEntry = ruleEntry
-        self.ruleEntries = ruleEntries
-      }
-
-      // Does nothing as "assertThat" already asserted the existence of the associated ruleEntry.
-      func exists() -> Context {
-        return self
-      }
-
-      /// Asserts that the contextual RuleEntry is linked to a rule identified by the given
-      /// targetLabel as a dependency.
-      func dependsOn(targetLabel: String, line: UInt = #line) -> Context {
-        guard let ruleEntry = ruleEntry else { return self }
-        XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
-                        "\(ruleEntry) must depend on \(targetLabel)",
-                        line: line)
-        return self
-      }
-
-      /// Asserts that the contextual RuleEntry contains the given list of sources (but may have
-      /// others as well).
-      func containsSources(sources: [String], line: UInt = #line) -> Context {
-        guard let ruleEntry = ruleEntry else { return self }
-        for s in sources {
-          XCTAssert(ruleEntry.sourceFiles.contains(s),
-                    "\(ruleEntry) missing expected source file '\(s)' from \(ruleEntry.sourceFiles)",
-                    line: line)
-        }
-        return self
-      }
-
-      /// Asserts that the contextual RuleEntry has exactly the given list of sources.
-      func hasSources(sources: [String], line: UInt = #line) -> Context {
-        guard let ruleEntry = ruleEntry else { return self }
-        containsSources(sources, line: line)
-        XCTAssertEqual(ruleEntry.sourceFiles.count,
-                       sources.count,
-                       "\(ruleEntry) expected to have exactly \(sources.count) source files but has \(ruleEntry.sourceFiles.count)",
-                       line: line)
-        return self
-      }
-
-      /// Asserts that the contextual RuleEntry is an ios_test with an xctest_app identified by the
-      /// given label.
-      func hasTestHost(targetLabel: String, line: UInt = #line) -> Context {
-        guard let ruleEntry = ruleEntry else { return self }
-        let hostLabelString = ruleEntry.attributes[.xctest_app] as? String
-        XCTAssertEqual(hostLabelString,
-                       targetLabel,
-                       "\(ruleEntry) expected to have an xctest_app of \(targetLabel)",
-                       line: line)
-        return self
-      }
-
-      /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
-      func hasAttribute<T where T: Equatable>(attribute: RuleEntry.Attribute, value: T, line: UInt = #line) -> Context {
-        guard let ruleEntry = ruleEntry else { return self }
-        if let attributeValue = ruleEntry.attributes[attribute] as? T {
-          XCTAssertEqual(attributeValue, value, line: line)
-        } else if let attributeValue = ruleEntry.attributes[attribute] {
-          XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type \(T.self) " +
-                      "but it is of type \(attributeValue.dynamicType)",
+    /// Asserts that the contextual RuleEntry contains the given list of sources (but may have
+    /// others as well).
+    func containsSources(sources: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      for s in sources {
+        XCTAssert(ruleEntry.sourceFiles.contains(s),
+                  "\(ruleEntry) missing expected source file '\(s)' from \(ruleEntry.sourceFiles)",
                   line: line)
-        } else {
-          XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)
-        }
-        return self
       }
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has exactly the given list of sources.
+    func hasSources(sources: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      containsSources(sources, line: line)
+      XCTAssertEqual(ruleEntry.sourceFiles.count,
+                     sources.count,
+                     "\(ruleEntry) expected to have exactly \(sources.count) source files but has \(ruleEntry.sourceFiles.count)",
+                     line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry is an ios_test with an xctest_app identified by the
+    /// given label.
+    func hasTestHost(targetLabel: String, line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      let hostLabelString = ruleEntry.attributes[.xctest_app] as? String
+      XCTAssertEqual(hostLabelString,
+                     targetLabel,
+                     "\(ruleEntry) expected to have an xctest_app of \(targetLabel)",
+                     line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
+    func hasAttribute<T where T: Equatable>(attribute: RuleEntry.Attribute, value: T, line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      if let attributeValue = ruleEntry.attributes[attribute] as? T {
+        XCTAssertEqual(attributeValue, value, line: line)
+      } else if let attributeValue = ruleEntry.attributes[attribute] {
+        XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type \(T.self) " +
+                    "but it is of type \(attributeValue.dynamicType)",
+                line: line)
+      } else {
+        XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)
+      }
+      return self
     }
   }
 }

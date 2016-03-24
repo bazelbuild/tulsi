@@ -1,16 +1,16 @@
 {
   "additionalFilePaths" : [
-    "tulsi_e2e_test\/BUILD"
+    "tulsi_e2e_complex\/BUILD"
   ],
   "projectName" : "ComplexSingleProject",
   "buildTargets" : [
-    "\/\/tulsi_e2e_test:Application",
-    "\/\/tulsi_e2e_test:XCTest"
+    "\/\/tulsi_e2e_complex:Application",
+    "\/\/tulsi_e2e_complex:XCTest"
   ],
   "optionSet" : {
 
   },
   "sourceFilters" : [
-    "tulsi_e2e_test\/..."
+    "tulsi_e2e_complex\/..."
   ]
 }

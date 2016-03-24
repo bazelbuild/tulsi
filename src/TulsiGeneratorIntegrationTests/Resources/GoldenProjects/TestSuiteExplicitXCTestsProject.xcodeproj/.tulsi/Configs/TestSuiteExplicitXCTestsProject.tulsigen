@@ -1,0 +1,15 @@
+{
+  "additionalFilePaths" : [
+
+  ],
+  "projectName" : "TestSuiteExplicitXCTestsProject",
+  "buildTargets" : [
+    "\/\/TestSuite:TestApplication"
+  ],
+  "optionSet" : {
+
+  },
+  "sourceFilters" : [
+    "TestSuite\/..."
+  ]
+}

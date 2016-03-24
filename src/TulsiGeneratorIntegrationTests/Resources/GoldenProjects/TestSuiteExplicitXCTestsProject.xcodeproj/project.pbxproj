@@ -1,0 +1,79 @@
+// !$*UTF8*$!
+{
+  archiveVersion = 1;
+  classes = {
+  };
+  objectVersion = 46;
+  objects = {
+/* Begin PBXBuildFile section */
+    E6AF49471B08EDE700000000 /* main.m in srcs */ = { isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
+
+/* End PBXBuildFile section */
+/* Begin PBXContainerItemProxy section */
+    81936672B490EC1B00000000 /* PBXContainerItemProxy */ = { isa = PBXContainerItemProxy; containerPortal = 7E7BD0EA68854BB100000000 /* Project object */; remoteGlobalIDString = ECCC9594B490EC1A00000000 /* _bazel_clean_ */; proxyType = 1; };
+
+/* End PBXContainerItemProxy section */
+/* Begin PBXFileReference section */
+    43D68C281B08EDE700000000 /* main.m */ = { isa = PBXFileReference; name = "main.m"; path = "main.m"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.objc"; };
+    43D68C285BF5223400000000 /* BUILD */ = { isa = PBXFileReference; name = BUILD; path = BUILD; sourceTree = "<group>"; };
+    43D68C28AD17C5B700000000 /* TestApplication.app */ = { isa = PBXFileReference; name = "TestApplication.app"; path = "TestApplication.app"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "wrapper.application"; };
+    43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = { isa = PBXFileReference; name = "lib_indexer_Binary_-4799450061102981736.a"; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
+
+/* End PBXFileReference section */
+/* Begin PBXGroup section */
+    966FB6DE5B9D018E00000000 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C281B08EDE700000000 /* main.m */, ); };
+    966FB6DE97D5C89200000000 /* TestSuite */ = { isa = PBXGroup; name = TestSuite; path = TestSuite; sourceTree = "<group>"; children = ( 43D68C285BF5223400000000 /* BUILD */, 966FB6DEE2E4E10A00000000 /* Binary */, ); };
+    966FB6DEE2E4E10A00000000 /* Binary */ = { isa = PBXGroup; name = Binary; path = Binary; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000000 /* srcs */, ); };
+    966FB6DEE342F69A00000000 /* mainGroup */ = { isa = PBXGroup; name = mainGroup; path = "../.."; sourceTree = "SOURCE_ROOT"; children = ( 966FB6DE97D5C89200000000 /* TestSuite */, ); };
+
+/* End PBXGroup section */
+/* Begin PBXLegacyTarget section */
+    ECCC9594B490EC1A00000000 /* _bazel_clean_ */ = { isa = PBXLegacyTarget; name = "_bazel_clean_"; productName = "_bazel_clean_"; dependencies = ( ); buildPhases = ( ); buildConfigurationList = DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */; buildArgumentsString = "\"/fake/tulsi_test_bazel\""; buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh"; buildWorkingDirectory = "${SRCROOT}/../.."; passBuildSettingsInEnvironment = 1; };
+
+/* End PBXLegacyTarget section */
+/* Begin PBXNativeTarget section */
+    3D31C5E67632380200000000 /* TestApplication */ = { isa = PBXNativeTarget; name = TestApplication; productName = TestApplication; dependencies = ( 4DAD0B42B490EC1B00000000 /* PBXTargetDependency */, ); buildPhases = ( 84B422710D652B1700000000 /* ShellScript */, ); buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */; productType = "com.apple.product-type.application"; productReference = 43D68C28AD17C5B700000000 /* TestApplication.app */; };
+    3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */ = { isa = PBXNativeTarget; name = "_indexer_Binary_-4799450061102981736"; productName = "_indexer_Binary_-4799450061102981736"; dependencies = ( 4DAD0B42B490EC1B00000000 /* PBXTargetDependency */, ); buildPhases = ( 605793E20000000000000000 /* Sources */, ); buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */; productType = "com.apple.product-type.library.static"; productReference = 43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */; };
+
+/* End PBXNativeTarget section */
+/* Begin PBXProject section */
+    7E7BD0EA68854BB100000000 /* Project object */ = { isa = PBXProject; attributes = { LastSwiftUpdateCheck = 0710; LastUpgradeCheck = 0610; }; buildConfigurationList = DE4755830000000000000000; compatibilityVersion = "Xcode 3.2"; mainGroup = 966FB6DEE342F69A00000000 /* mainGroup */; targets = ( 3D31C5E67632380200000000 /* TestApplication */, ECCC9594B490EC1A00000000 /* _bazel_clean_ */, 3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */, ); };
+
+/* End PBXProject section */
+/* Begin PBXShellScriptBuildPhase section */
+    84B422710D652B1700000000 /* ShellScript */ = { isa = PBXShellScriptBuildPhase; files = ( ); inputPaths = ( ); outputPaths = ( ); shellPath = "/bin/bash"; shellScript = "set -e
+cd \"${SRCROOT}/../..\"
+. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts"; showEnvVarsInLog = 1; };
+
+/* End PBXShellScriptBuildPhase section */
+/* Begin PBXSourcesBuildPhase section */
+    605793E20000000000000000 /* Sources */ = { isa = PBXSourcesBuildPhase; files = ( E6AF49471B08EDE700000000 /* main.m in srcs */, ); };
+
+/* End PBXSourcesBuildPhase section */
+/* Begin PBXTargetDependency section */
+    4DAD0B42B490EC1B00000000 /* PBXTargetDependency */ = { isa = PBXTargetDependency; targetProxy = 81936672B490EC1B00000000 /* PBXContainerItemProxy */; };
+
+/* End PBXTargetDependency section */
+/* Begin XCBuildConfiguration section */
+    44936BD63008588600000000 /* Fastbuild */ = { isa = XCBuildConfiguration; name = Fastbuild; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CODE_SIGNING_REQUIRED = NO; CODE_SIGN_IDENTITY = ""; ENABLE_TESTABILITY = YES; HEADER_SEARCH_PATHS = "${SRCROOT}/../.."; IPHONEOS_DEPLOYMENT_TARGET = "8.4"; ONLY_ACTIVE_ARCH = YES; SDKROOT = iphoneos; }; };
+    44936BD63008588600000001 /* Fastbuild */ = { isa = XCBuildConfiguration; name = Fastbuild; buildSettings = { BAZEL_BINARY_DSYM = "TestSuite/Binary.app.dSYM"; BAZEL_BINARY_TARGET = "//TestSuite:Binary"; BAZEL_TARGET = "//TestSuite:TestApplication"; BAZEL_TARGET_IPA = "TestSuite/TestApplication.ipa"; BUILD_PATH = TestSuite; PRODUCT_NAME = TestApplication; }; };
+    44936BD63008588600000002 /* Fastbuild */ = { isa = XCBuildConfiguration; name = Fastbuild; buildSettings = { PRODUCT_NAME = "_indexer_Binary_-4799450061102981736"; }; };
+    44936BD67EED3C4D00000000 /* Debug */ = { isa = XCBuildConfiguration; name = Debug; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CODE_SIGNING_REQUIRED = NO; CODE_SIGN_IDENTITY = ""; ENABLE_TESTABILITY = YES; HEADER_SEARCH_PATHS = "${SRCROOT}/../.."; IPHONEOS_DEPLOYMENT_TARGET = "8.4"; ONLY_ACTIVE_ARCH = YES; SDKROOT = iphoneos; }; };
+    44936BD67EED3C4D00000001 /* Debug */ = { isa = XCBuildConfiguration; name = Debug; buildSettings = { BAZEL_BINARY_DSYM = "TestSuite/Binary.app.dSYM"; BAZEL_BINARY_TARGET = "//TestSuite:Binary"; BAZEL_TARGET = "//TestSuite:TestApplication"; BAZEL_TARGET_IPA = "TestSuite/TestApplication.ipa"; BUILD_PATH = TestSuite; PRODUCT_NAME = TestApplication; }; };
+    44936BD67EED3C4D00000002 /* Debug */ = { isa = XCBuildConfiguration; name = Debug; buildSettings = { PRODUCT_NAME = "_indexer_Binary_-4799450061102981736"; }; };
+    44936BD6A3D45CE900000000 /* Release */ = { isa = XCBuildConfiguration; name = Release; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CODE_SIGNING_REQUIRED = NO; CODE_SIGN_IDENTITY = ""; ENABLE_TESTABILITY = YES; HEADER_SEARCH_PATHS = "${SRCROOT}/../.."; IPHONEOS_DEPLOYMENT_TARGET = "8.4"; ONLY_ACTIVE_ARCH = YES; SDKROOT = iphoneos; }; };
+    44936BD6A3D45CE900000001 /* Release */ = { isa = XCBuildConfiguration; name = Release; buildSettings = { BAZEL_BINARY_DSYM = "TestSuite/Binary.app.dSYM"; BAZEL_BINARY_TARGET = "//TestSuite:Binary"; BAZEL_TARGET = "//TestSuite:TestApplication"; BAZEL_TARGET_IPA = "TestSuite/TestApplication.ipa"; BUILD_PATH = TestSuite; PRODUCT_NAME = TestApplication; }; };
+    44936BD6A3D45CE900000002 /* Release */ = { isa = XCBuildConfiguration; name = Release; buildSettings = { PRODUCT_NAME = "_indexer_Binary_-4799450061102981736"; }; };
+
+/* End XCBuildConfiguration section */
+/* Begin XCConfigurationList section */
+    DE4755830000000000000000 = { isa = XCConfigurationList; buildConfigurations = ( 44936BD67EED3C4D00000000 /* Debug */, 44936BD63008588600000000 /* Fastbuild */, 44936BD6A3D45CE900000000 /* Release */, ); };
+    DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = { isa = XCConfigurationList; buildConfigurations = ( ); };
+    DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */ = { isa = XCConfigurationList; buildConfigurations = ( 44936BD67EED3C4D00000001 /* Debug */, 44936BD63008588600000001 /* Fastbuild */, 44936BD6A3D45CE900000001 /* Release */, ); };
+    DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */ = { isa = XCConfigurationList; buildConfigurations = ( 44936BD67EED3C4D00000002 /* Debug */, 44936BD63008588600000002 /* Fastbuild */, 44936BD6A3D45CE900000002 /* Release */, ); };
+
+/* End XCConfigurationList section */
+  };
+  rootObject = 7E7BD0EA68854BB100000000 /* Project object */;
+}

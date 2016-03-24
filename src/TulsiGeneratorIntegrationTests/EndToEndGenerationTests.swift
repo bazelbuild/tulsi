@@ -18,14 +18,11 @@ import XCTest
 
 // End to end tests that generate xcodeproj bundles and validate them against golden versions.
 class EndToEndGenerationTests: BazelIntegrationTestCase {
-  let testDir = "tulsi_e2e_test"
-  lazy var outputDir: String = { [unowned self] in
-    "\(self.testDir)/output"
-  }()
   let fakeBazelURL = NSURL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
 
-  func testGenerationSimple() {
-    installBUILDFile("Simple", inSubdirectory: testDir)
+  func testGeneration_SimpleProject() {
+    let testDir = "tulsi_e2e_simple"
+    installBUILDFile("Simple", intoSubdirectory: testDir)
     makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
     makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
     makePlistFileNamed(".xccurrentversion",
@@ -34,12 +31,13 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
 
     let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test")]
-    let additionalFilePaths = ["tulsi_e2e_test/BUILD"]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("SimpleProject",
                                                 buildTargets: buildTargets,
-                                                pathFilters: ["tulsi_e2e_test/..."],
-                                                additionalFilePaths: additionalFilePaths) else {
+                                                pathFilters: ["\(testDir)/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
       return
     }
 
@@ -47,23 +45,54 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
     validateDiff(diffLines)
   }
 
-  func testGenerationComplex() {
-    installBUILDFile("ComplexSingle", inSubdirectory: testDir)
+  func testGeneration_ComplexSingleProject() {
+    let testDir = "tulsi_e2e_complex"
+    installBUILDFile("ComplexSingle", intoSubdirectory: testDir)
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
     makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
 
     let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test")]
-    let additionalFilePaths = ["tulsi_e2e_test/BUILD"]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("ComplexSingleProject",
                                                 buildTargets: buildTargets,
-                                                pathFilters: ["tulsi_e2e_test/..."],
-                                                additionalFilePaths: additionalFilePaths) else {
+                                                pathFilters: ["\(testDir)/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
       return
     }
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: "ComplexSingleProject")
+    validateDiff(diffLines)
+  }
+
+  func testGeneration_TestSuiteExplicitXCTestsProject() {
+    let testDir = "TestSuite"
+    installBUILDFile("TestSuiteRoot",
+                     intoSubdirectory: testDir,
+                     fromResourceDirectory: "TestSuite")
+    installBUILDFile("TestOne",
+                     intoSubdirectory: "\(testDir)/One",
+                     fromResourceDirectory: "TestSuite/One")
+    installBUILDFile("TestTwo",
+                     intoSubdirectory: "\(testDir)/Two",
+                     fromResourceDirectory: "TestSuite/Two")
+    installBUILDFile("TestThree",
+                     intoSubdirectory: "\(testDir)/Three",
+                     fromResourceDirectory: "TestSuite/Three")
+
+    // TODO(abaire): Add the test suite target(s).
+    let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):TestApplication"), type: "ios_application")]
+
+    guard let projectURL = generateProjectNamed("TestSuiteExplicitXCTestsProject",
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/..."],
+                                                outputDir: "tulsi_e2e_output/") else {
+      return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: "TestSuiteExplicitXCTestsProject")
     validateDiff(diffLines)
   }
 
@@ -117,7 +146,8 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
   private func generateProjectNamed(projectName: String,
                                     buildTargets: [RuleInfo],
                                     pathFilters: [String],
-                                    additionalFilePaths: [String] = []) -> NSURL? {
+                                    additionalFilePaths: [String] = [],
+                                    outputDir: String) -> NSURL? {
     let options = TulsiOptionSet()
     let userDefaults = NSUserDefaults.standardUserDefaults()
     if let startupOptions = userDefaults.stringForKey("testBazelStartupOptions") {
