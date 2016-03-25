@@ -182,16 +182,23 @@ class XcodeProjectGenerator {
       let ruleEntryMap = loadRuleEntryMap()
       let targetRuleEntries = config.buildTargetLabels.map({ ruleEntryMap[$0]! })
       for entry in targetRuleEntries {
-        let targetName = entry.label.targetName!
-        let filename = targetName + ".xcscheme"
+        // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
+        // attempting to compile code.
+        let target: PBXTarget
+        if let pbxTarget = xcodeProject.targetByName(entry.label.targetName!) {
+          target = pbxTarget
+        } else if let pbxTarget = xcodeProject.targetByName(entry.label.asFullTargetName!) {
+          target = pbxTarget
+        } else {
+          localizedMessageLogger.infoMessage("Failed to resolve target '\(entry.label.value)', skipping scheme generation.")
+          continue
+        }
+
+        let filename = target.name + ".xcscheme"
         let url = xcschemesURL.URLByAppendingPathComponent(filename)
         if fileManager.fileExistsAtPath(url.path!) {
           continue
         }
-
-        // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
-        // attempting to compile code.
-        let target = xcodeProject.targetByName(targetName)!
         let scheme = XcodeScheme(target: target,
                                  project: xcodeProject,
                                  projectBundleName: projectBundleName,

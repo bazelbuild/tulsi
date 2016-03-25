@@ -321,10 +321,10 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws {
+    let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, String, RuleEntry)]()
-
-    for entry: RuleEntry in ruleEntries {
-      let target = try createBuildTargetForRuleEntry(entry)
+    for (name, entry) in namedRuleEntries {
+      let target = try createBuildTargetForRuleEntry(entry, named: name)
 
       if let hostLabelString = entry.attributes[.xctest_app] as? String {
         let hostLabel = BuildLabel(hostLabelString)
@@ -386,6 +386,35 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   }
 
   // MARK: - Private methods
+
+  private func generateUniqueNamesForRuleEntries(ruleEntries: [RuleEntry]) -> [String: RuleEntry] {
+    // Build unique names for the target rules.
+    var collidingRuleEntries = [String: [RuleEntry]]()
+    for entry: RuleEntry in ruleEntries {
+      let shortName = entry.label.targetName!
+      if var existingRules = collidingRuleEntries[shortName] {
+        existingRules.append(entry)
+        collidingRuleEntries[shortName] = existingRules
+      } else {
+        collidingRuleEntries[shortName] = [entry]
+      }
+    }
+
+    var namedRuleEntries = [String: RuleEntry]()
+    for (name, entries) in collidingRuleEntries {
+      guard entries.count > 1 else {
+        namedRuleEntries[name] = entries.first!
+        continue
+      }
+
+      for entry in entries {
+        let fullName = entry.label.asFullTargetName!
+        namedRuleEntries[fullName] = entry
+      }
+    }
+
+    return namedRuleEntries
+  }
 
   /// Adds the given file targets to a versioned group.
   private func createReferencesForVersionedFileTargets(fileTargets: [BazelFileTarget]) -> [XCVersionGroup] {
@@ -620,12 +649,11 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     return buildPhase
   }
 
-  private func createBuildTargetForRuleEntry(entry: RuleEntry) throws -> PBXTarget {
+  private func createBuildTargetForRuleEntry(entry: RuleEntry,
+                                             named name: String) throws -> PBXTarget {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.UnsupportedTargetType(entry.type)
     }
-
-    let name = entry.label.targetName!
     let target = project.createNativeTarget(name, targetType: pbxTargetType)
 
     var buildSettings = options.buildSettingsForTarget(name)

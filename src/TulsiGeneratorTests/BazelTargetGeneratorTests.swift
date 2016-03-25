@@ -525,6 +525,89 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateTargetsForRuleEntriesWithTheSameName() {
+    let targetName = "SameName"
+    let rule1BuildPath = "test/test1"
+    let rule1BuildTarget = "\(rule1BuildPath):\(targetName)"
+    let rule2BuildPath = "test/test2"
+    let rule2BuildTarget = "\(rule2BuildPath):\(targetName)"
+    let rules = [
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application"),
+    ]
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules)
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/test1:\(targetName)",
+          "BAZEL_TARGET_IPA": "test/test1/\(targetName).ipa",
+          "BUILD_PATH": rule1BuildPath,
+          "PRODUCT_NAME": "test-test1-SameName",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: "test-test1-SameName",
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+          ],
+          expectedBuildPhases: [
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/test2:\(targetName)",
+          "BAZEL_TARGET_IPA": "test/test2/\(targetName).ipa",
+          "BUILD_PATH": rule2BuildPath,
+          "PRODUCT_NAME": "test-test2-SameName",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: "test-test2-SameName",
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+          ],
+          expectedBuildPhases: [
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
     targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)

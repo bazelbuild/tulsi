@@ -4,6 +4,9 @@
   ],
   "projectName" : "TestSuiteExplicitXCTestsProject",
   "buildTargets" : [
+    "\/\/TestSuite\/One:XCTest",
+    "\/\/TestSuite\/Three:XCTest",
+    "\/\/TestSuite\/Two:XCTest",
     "\/\/TestSuite:TestApplication"
   ],
   "optionSet" : {

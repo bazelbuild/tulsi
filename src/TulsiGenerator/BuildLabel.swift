@@ -52,6 +52,15 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
     return "\(package)/\(target)"
   }
 
+  public var asFullPBXTargetName: String? {
+    guard let package = packageName, target = targetName else {
+      return nil
+    }
+    // Note: The replacement must be done with a value that is not supported in Bazel packages in
+    // order to prevent collisions, but is still supported by Xcode (for scheme filenames, etc...).
+    return "\(package)/\(target)".stringByReplacingOccurrencesOfString("/", withString: "-")
+  }
+
   public var hashValue: Int {
     return value.hashValue
   }

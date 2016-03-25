@@ -83,7 +83,12 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                      fromResourceDirectory: "TestSuite/Three")
 
     // TODO(abaire): Add the test suite target(s).
-    let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):TestApplication"), type: "ios_application")]
+    let buildTargets = [
+        RuleInfo(label: BuildLabel("//\(testDir):TestApplication"), type: "ios_application"),
+        RuleInfo(label: BuildLabel("//\(testDir)/One:XCTest"), type: "ios_test"),
+        RuleInfo(label: BuildLabel("//\(testDir)/Two:XCTest"), type: "ios_test"),
+        RuleInfo(label: BuildLabel("//\(testDir)/Three:XCTest"), type: "ios_test"),
+    ]
 
     guard let projectURL = generateProjectNamed("TestSuiteExplicitXCTestsProject",
                                                 buildTargets: buildTargets,
