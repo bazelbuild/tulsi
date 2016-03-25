@@ -93,7 +93,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
-        .hasSources(["tulsi_test/Binary/srcs/main.m",
+        .hasSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm",
+                     "tulsi_test/Binary/srcs/main.m",
                      "tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasAttribute(.bridging_header, value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",

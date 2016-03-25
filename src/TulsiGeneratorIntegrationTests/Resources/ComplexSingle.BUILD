@@ -38,6 +38,9 @@ objc_binary(
         "Binary/includes/first/include",
         "Binary/includes/second/include",
     ],
+    non_arc_srcs = [
+        "Binary/non_arc_srcs/NonARCFile.mm",
+    ],
     deps = [
         ":CoreDataResources",
         ":Library",
