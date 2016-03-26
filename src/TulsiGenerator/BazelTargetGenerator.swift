@@ -408,7 +408,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       }
 
       for entry in entries {
-        let fullName = entry.label.asFullTargetName!
+        let fullName = entry.label.asFullPBXTargetName!
         namedRuleEntries[fullName] = entry
       }
     }

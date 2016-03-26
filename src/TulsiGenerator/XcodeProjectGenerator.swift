@@ -185,9 +185,9 @@ class XcodeProjectGenerator {
         // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
         // attempting to compile code.
         let target: PBXTarget
-        if let pbxTarget = xcodeProject.targetByName(entry.label.targetName!) {
+        if let pbxTarget = xcodeProject.targetByName[entry.label.targetName!] {
           target = pbxTarget
-        } else if let pbxTarget = xcodeProject.targetByName(entry.label.asFullTargetName!) {
+        } else if let pbxTarget = xcodeProject.targetByName[entry.label.asFullPBXTargetName!] {
           target = pbxTarget
         } else {
           localizedMessageLogger.infoMessage("Failed to resolve target '\(entry.label.value)', skipping scheme generation.")
