@@ -82,7 +82,6 @@
 		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
-		3DCFE5DC1C80A9A700D7F31B /* tulsi in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DB1C80A9A700D7F31B /* tulsi */; };
 		3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */; };
 		3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */; };
 		3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */; };
@@ -212,13 +211,14 @@
 		3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorSplitViewController.swift; sourceTree = "<group>"; };
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
+		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; };
 		3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLoggerProtocol.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
-		3DCFE5DB1C80A9A700D7F31B /* tulsi */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tulsi; sourceTree = "<group>"; };
 		3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectInfoExtractor.swift; sourceTree = "<group>"; };
 		3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressNotifier.swift; sourceTree = "<group>"; };
 		3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
@@ -422,10 +422,19 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		3DB8F6C41CA9E1060045B0CF /* tulsi */ = {
+			isa = PBXGroup;
+			children = (
+				3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */,
+				3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */,
+			);
+			name = tulsi;
+			sourceTree = "<group>";
+		};
 		3DCFE5CE1C80A64600D7F31B /* Bazel */ = {
 			isa = PBXGroup;
 			children = (
-				3DCFE5DB1C80A9A700D7F31B /* tulsi */,
+				3DB8F6C41CA9E1060045B0CF /* tulsi */,
 				3DCFE5D21C80A64600D7F31B /* WORKSPACE */,
 			);
 			path = Bazel;
@@ -559,6 +568,7 @@
 				3D99265F1C29F0A20094E098 /* Frameworks */,
 				3D9926601C29F0A20094E098 /* Headers */,
 				3D9926611C29F0A20094E098 /* Resources */,
+				3DB8F6C71CA9E3440045B0CF /* Copy Tulsi aspect bundle resources */,
 			);
 			buildRules = (
 			);
@@ -700,7 +710,6 @@
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
 				033651E51C6EC8BA00C2C9CA /* bazel_env.sh in Resources */,
-				3DCFE5DC1C80A9A700D7F31B /* tulsi in Resources */,
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -746,6 +755,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3DB8F6C71CA9E3440045B0CF /* Copy Tulsi aspect bundle resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/TulsiGenerator/Bazel/tulsi/aspect.BUILD",
+				"$(SRCROOT)/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl",
+			);
+			name = "Copy Tulsi aspect bundle resources";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi/BUILD",
+				"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi/tulsi_aspects.bzl",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -eux\nreadonly target_dir=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi\"\nmkdir -p \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl\" \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/aspect.BUILD\" \"${target_dir}/BUILD\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3D99265E1C29F0A20094E098 /* Sources */ = {
