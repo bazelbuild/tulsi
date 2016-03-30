@@ -69,3 +69,11 @@ ios_test(
         ":Library",
     ],
 )
+
+ios_test(
+    name = "XCTestWithDefaultHost",
+    srcs = [
+        "XCTestWithDefaultHost/srcs/src1.mm",
+    ],
+    xctest = 1,
+)
