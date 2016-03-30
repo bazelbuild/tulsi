@@ -35,5 +35,8 @@
 /* Message to show when loading a .xccurrentversion file fails. */
 "LoadingXCCurrentVersionFailed" = "Failed to determine the current version for a versioned group %1$@. The generated project may malfunction. Error: %2$@";
 
+/* Warning to show when a user has selected an XCTest but not its host application. */
+"MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
+
 /* Failure to look up a Bazel target that was expected to be present. The target label is %1$@ */
 "UnknownTargetRule" = "Failed to load information for Bazel target '%1$@'. This may be a Bazel bug or a BUILD file issue.";

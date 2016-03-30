@@ -17,7 +17,23 @@ import Foundation
 
 // Stub LocalizedMessageLogger that does nothing.
 class MockLocalizedMessageLogger: LocalizedMessageLogger {
+  var infoMessages = [String]()
+  var warningMessageKeys = [String]()
+  var errorMessageKeys = [String]()
+
   init() {
     super.init(messageLogger: nil, bundle: nil)
+  }
+
+  override func infoMessage(message: String) {
+    infoMessages.append(message)
+  }
+
+  override func warning(key: String, comment: String, values: CVarArgType...) {
+    warningMessageKeys.append(key)
+  }
+
+  override func error(key: String, comment: String, values: CVarArgType...) {
+    errorMessageKeys.append(key)
   }
 }

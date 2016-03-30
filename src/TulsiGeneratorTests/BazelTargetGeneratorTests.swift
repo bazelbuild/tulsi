@@ -98,6 +98,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   let sdkRoot = "sdkRoot"
   var project: PBXProject! = nil
   var targetGenerator: BazelTargetGenerator! = nil
+  var messageLogger: MockLocalizedMessageLogger! = nil
 
   var sourceFileNames = [String]()
   var pathFilters = Set<String>([""])
@@ -114,12 +115,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     pchFile = project.mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     let options = TulsiOptionSet()
     options[.SDKROOT].projectValue = sdkRoot
+    messageLogger = MockLocalizedMessageLogger()
     targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
                                            project: project,
                                            buildScriptPath: "",
                                            envScriptPath: "",
                                            options: options,
-                                           localizedMessageLogger: MockLocalizedMessageLogger(),
+                                           localizedMessageLogger: messageLogger,
                                            workspaceRootURL: workspaceRootURL)
   }
 
@@ -517,6 +519,66 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           ],
           expectedBuildPhases: [
               SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+                                              buildTarget: testRuleBuildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns() {
+    let rule1BuildPath = "test/app"
+    let rule1TargetName = "TestApplication"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let testRuleBuildPath = "test/testbundle"
+    let testRuleTargetName = "TestBundle"
+    let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
+    let testRuleAttributes = ["xctest_app": rule1BuildTarget]
+    let testSources = ["sourceFile1.m", "sourceFile2.mm"]
+    let testRule = makeTestRuleEntry(testRuleBuildTarget,
+                                     type: "ios_test",
+                                     attributes: testRuleAttributes,
+                                     sourceFiles: testSources)
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries([testRule])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+      return
+    }
+
+    XCTAssert(messageLogger.warningMessageKeys.contains("MissingTestHost"))
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    do {
+      let expectedBuildSettings = [
+          "BAZEL_TARGET": "test/testbundle:TestBundle",
+          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
+          "BUILD_PATH": testRuleBuildPath,
+          "PRODUCT_NAME": testRuleTargetName,
+      ]
+      var testRunnerExpectedBuildSettings = expectedBuildSettings
+      testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
+      testRunnerExpectedBuildSettings["ONLY_ACTIVE_ARCH"] = "YES"
+      testRunnerExpectedBuildSettings["OTHER_CFLAGS"] = "-help"
+      testRunnerExpectedBuildSettings["OTHER_LDFLAGS"] = "-help"
+      let expectedTarget = TargetDefinition(
+          name: testRuleTargetName,
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+          ],
+          expectedBuildPhases: [
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: testRuleBuildTarget)
           ]

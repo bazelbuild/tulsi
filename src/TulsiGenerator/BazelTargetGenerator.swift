@@ -524,8 +524,11 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
                                 withLinkageToHostTargetNamed hostTargetName: String,
                                 ruleEntry: RuleEntry) {
     guard let hostTarget = project.targetByName(hostTargetName) as? PBXNativeTarget else {
-      // If the user did not choose to include the host target it won't be available so the
-      // linkage can be skipped silently.
+      // If the user did not choose to include the host target it won't be available so the linkage
+      // can be skipped, but the test won't be runnable in Xcode.
+      localizedMessageLogger.warning("MissingTestHost",
+                                     comment: "Warning to show when a user has selected an XCTest but not its host application.",
+                                     values: ruleEntry.label.value, hostTargetName)
       return
     }
 
