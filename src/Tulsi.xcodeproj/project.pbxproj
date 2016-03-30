@@ -773,7 +773,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -eux\nreadonly target_dir=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi\"\nmkdir -p \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl\" \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/aspect.BUILD\" \"${target_dir}/BUILD\"\n";
+			shellScript = "set -eu\nreadonly target_dir=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi\"\nmkdir -p \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl\" \"${target_dir}\"\ncp \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/aspect.BUILD\" \"${target_dir}/BUILD\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
