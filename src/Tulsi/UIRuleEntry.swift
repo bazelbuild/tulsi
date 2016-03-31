@@ -15,8 +15,8 @@
 import Foundation
 import TulsiGenerator
 
-// Wraps a TulsiGenerator::RuleInfo with functionality to allow it to track selection and be
-// accessed via bindings in the UI.
+/// Wraps a TulsiGenerator::RuleInfo with functionality to allow it to track selection and be
+/// accessed via bindings in the UI.
 class UIRuleInfo: NSObject, Selectable {
   dynamic var targetName: String? {
     return ruleInfo.label.targetName
@@ -26,7 +26,15 @@ class UIRuleInfo: NSObject, Selectable {
     return ruleInfo.type
   }
 
-  dynamic var selected: Bool = false
+  dynamic var selected: Bool = false {
+    didSet {
+      if !selected { return }
+      let linkedInfos = linkedRuleInfos.allObjects as! [UIRuleInfo]
+      for linkedInfo in linkedInfos {
+        linkedInfo.selected = true
+      }
+    }
+  }
 
   var fullLabel: String {
     return ruleInfo.label.value
@@ -34,7 +42,17 @@ class UIRuleInfo: NSObject, Selectable {
 
   let ruleInfo: RuleInfo
 
+  /// RuleInfo instances for targets that must be selected if this target is selected.
+  private var linkedRuleInfos = NSHashTable.weakObjectsHashTable()
+
   init(ruleInfo: RuleInfo) {
     self.ruleInfo = ruleInfo
+  }
+
+  func resolveLinkages(ruleInfoMap: [BuildLabel: UIRuleInfo]) {
+    for label in ruleInfo.linkedTargetLabels {
+      guard let linkedUIRuleInfo = ruleInfoMap[label] else { continue }
+      linkedRuleInfos.addObject(linkedUIRuleInfo)
+    }
   }
 }

@@ -145,8 +145,8 @@ class XcodeProjectGenerator {
         continue
       }
       targetRuleEntries.append(ruleEntry)
-      if let hostLabelString = ruleEntry.attributes[.xctest_app] as? String {
-        hostTargetLabels[BuildLabel(hostLabelString)] = ruleEntry.label
+      for hostTargetLabel in ruleEntry.linkedTargetLabels {
+        hostTargetLabels[hostTargetLabel] = ruleEntry.label
       }
       generator.generateIndexerTargetForRuleEntry(ruleEntry,
                                                   ruleEntryMap: ruleEntryMap,

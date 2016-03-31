@@ -68,10 +68,20 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   var projectRuleInfos = [RuleInfo]() {
     didSet {
       let selectedEntryLabels = Set<String>(selectedUIRuleInfos.map({ $0.fullLabel }))
+      var uiRuleInfoMap = [BuildLabel: UIRuleInfo]()
+      var infosWithLinkages = [UIRuleInfo]()
       uiRuleInfos = projectRuleInfos.map() {
         let info = UIRuleInfo(ruleInfo: $0)
         info.selected = selectedEntryLabels.contains(info.fullLabel)
+        uiRuleInfoMap[info.ruleInfo.label] = info
+        if !info.ruleInfo.linkedTargetLabels.isEmpty {
+          infosWithLinkages.append(info)
+        }
         return info
+      }
+
+      for info in infosWithLinkages {
+        info.resolveLinkages(uiRuleInfoMap)
       }
     }
   }

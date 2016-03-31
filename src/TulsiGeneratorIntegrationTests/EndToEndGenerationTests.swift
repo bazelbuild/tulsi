@@ -29,9 +29,11 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                        withContent: ["_XCCurrentVersionName": "SimpleDataModelsTestv1.xcdatamodel"],
                        inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
 
-    let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test"),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTestWithDefaultHost"), type: "ios_test")]
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let hostLabels = Set<BuildLabel>([appLabel])
+    let buildTargets = [RuleInfo(label: appLabel, type: "ios_application", linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test", linkedTargetLabels: hostLabels),
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTestWithDefaultHost"), type: "ios_test", linkedTargetLabels: Set<BuildLabel>())]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("SimpleProject",
@@ -52,8 +54,10 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
     makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
 
-    let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test")]
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let hostLabels = Set<BuildLabel>([appLabel])
+    let buildTargets = [RuleInfo(label: appLabel, type: "ios_application", linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test", linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("ComplexSingleProject",
@@ -84,11 +88,13 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                      fromResourceDirectory: "TestSuite/Three")
 
     // TODO(abaire): Add the test suite target(s).
+    let appLabel = BuildLabel("//\(testDir):TestApplication")
+    let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [
-        RuleInfo(label: BuildLabel("//\(testDir):TestApplication"), type: "ios_application"),
-        RuleInfo(label: BuildLabel("//\(testDir)/One:XCTest"), type: "ios_test"),
-        RuleInfo(label: BuildLabel("//\(testDir)/Two:XCTest"), type: "ios_test"),
-        RuleInfo(label: BuildLabel("//\(testDir)/Three:XCTest"), type: "ios_test"),
+        RuleInfo(label: appLabel, type: "ios_application", linkedTargetLabels: Set<BuildLabel>()),
+        RuleInfo(label: BuildLabel("//\(testDir)/One:XCTest"), type: "ios_test", linkedTargetLabels: hostLabels),
+        RuleInfo(label: BuildLabel("//\(testDir)/Two:XCTest"), type: "ios_test", linkedTargetLabels: hostLabels),
+        RuleInfo(label: BuildLabel("//\(testDir)/Three:XCTest"), type: "ios_test", linkedTargetLabels: hostLabels),
     ]
 
     guard let projectURL = generateProjectNamed("TestSuiteExplicitXCTestsProject",

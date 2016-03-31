@@ -155,7 +155,21 @@ final class BazelQueryInfoExtractor {
           continue
         }
 
-        let entry = RuleInfo(label: BuildLabel(ruleLabel), type: ruleType)
+        var linkedTargetLabels = Set<BuildLabel>()
+        let xctestAppNodes = try ruleElement.nodesForXPath("./label[@name='xctest_app']/@value")
+        for node in xctestAppNodes {
+          guard let label = node.stringValue else {
+            localizedMessageLogger.error("BazelResponseLabelAttributeInvalid",
+                                         comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
+                                         values: node)
+            continue
+          }
+          linkedTargetLabels.insert(BuildLabel(label))
+        }
+
+        let entry = RuleInfo(label: BuildLabel(ruleLabel),
+                             type: ruleType,
+                             linkedTargetLabels: linkedTargetLabels)
         infos.append(entry)
       }
       return infos

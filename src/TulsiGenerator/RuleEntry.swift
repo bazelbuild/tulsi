@@ -19,6 +19,9 @@ import Foundation
 public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   public let label: BuildLabel
   public let type: String
+  /// Set of BuildLabels referencing targets that are required by this RuleInfo. For example, test
+  /// hosts for XCTest targets.
+  public let linkedTargetLabels: Set<BuildLabel>
 
   public var hashValue: Int {
     return label.hashValue ^ type.hashValue
@@ -28,9 +31,10 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
     return "\(self.dynamicType)(\(label) \(type))"
   }
 
-  init(label: BuildLabel, type: String) {
+  init(label: BuildLabel, type: String, linkedTargetLabels: Set<BuildLabel>) {
     self.label = label
     self.type = type
+    self.linkedTargetLabels = linkedTargetLabels
   }
 }
 
@@ -124,7 +128,12 @@ public final class RuleEntry: RuleInfo {
     self.dependencies = dependencies
     self.buildFilePath = buildFilePath
 
-    super.init(label: label, type: type)
+    var linkedTargetLabels = Set<BuildLabel>()
+    if let hostLabelString = self.attributes[.xctest_app] as? String {
+      linkedTargetLabels.insert(BuildLabel(hostLabelString))
+    }
+
+    super.init(label: label, type: type, linkedTargetLabels: linkedTargetLabels)
   }
 
   convenience init(label: String,
