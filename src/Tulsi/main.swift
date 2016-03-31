@@ -82,6 +82,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
                                                                            messageLog: nil)
     switch result {
       case .Success(let url):
+        print("Opening generated project in Xcode")
         NSWorkspace.sharedWorkspace().openURL(url)
       case .Failure(let errorInfo):
         throw Error.GenerationFailed(errorInfo)
