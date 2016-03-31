@@ -523,7 +523,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   private func updateTestTarget(target: PBXTarget,
                                 withLinkageToHostTargetNamed hostTargetName: String,
                                 ruleEntry: RuleEntry) {
-    guard let hostTarget = project.targetByName(hostTargetName) as? PBXNativeTarget else {
+    guard let hostTarget = project.targetByName[hostTargetName] as? PBXNativeTarget else {
       // If the user did not choose to include the host target it won't be available so the linkage
       // can be skipped, but the test won't be runnable in Xcode.
       localizedMessageLogger.warning("MissingTestHost",
@@ -544,7 +544,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       ]
 
       // Inherit the resolved values from the indexer.
-      let indexerTarget = project.targetByName(indexerNameForRuleEntry(ruleEntry))
+      let indexerTarget = project.targetByName[indexerNameForRuleEntry(ruleEntry)]
       updateMissingBuildConfigurationsForList(target.buildConfigurationList,
                                               withBuildSettings: testSettings,
                                               inheritingFromConfigurationList: indexerTarget?.buildConfigurationList)

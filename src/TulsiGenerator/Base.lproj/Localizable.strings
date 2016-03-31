@@ -32,6 +32,9 @@
 /* Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported. */
 "DirectoryCreationFailed" = "Failed to create directory '%1$@'. The generated project will probably malfunction, please report. Error: %2$@";
 
+/* Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues. */
+"GeneratingTestHost" = "Generating target for test host '%1$@' needed by '%2$@'. Generated targets will not include sources and will use project default options to build.";
+
 /* Message to show when loading a .xccurrentversion file fails. */
 "LoadingXCCurrentVersionFailed" = "Failed to determine the current version for a versioned group %1$@. The generated project may malfunction. Error: %2$@";
 
@@ -40,3 +43,6 @@
 
 /* Failure to look up a Bazel target that was expected to be present. The target label is %1$@ */
 "UnknownTargetRule" = "Failed to load information for Bazel target '%1$@'. This may be a Bazel bug or a BUILD file issue.";
+
+/* "Warning shown when generation of an Xcode scheme failed for build target %1$@ */
+"XCSchemeGenerationFailed" = "Failed to resolve target '%1$@', skipping scheme generation.";

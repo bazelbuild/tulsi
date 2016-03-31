@@ -30,7 +30,8 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                        inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
 
     let buildTargets = [RuleInfo(label: BuildLabel("//\(testDir):Application"), type: "ios_application"),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test")]
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test"),
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTestWithDefaultHost"), type: "ios_test")]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("SimpleProject",

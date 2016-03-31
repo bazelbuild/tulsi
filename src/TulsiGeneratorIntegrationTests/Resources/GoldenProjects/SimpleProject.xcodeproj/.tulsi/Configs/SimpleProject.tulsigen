@@ -5,7 +5,8 @@
   "projectName" : "SimpleProject",
   "buildTargets" : [
     "\/\/tulsi_e2e_simple:Application",
-    "\/\/tulsi_e2e_simple:XCTest"
+    "\/\/tulsi_e2e_simple:XCTest",
+    "\/\/tulsi_e2e_simple:XCTestWithDefaultHost"
   ],
   "optionSet" : {
 

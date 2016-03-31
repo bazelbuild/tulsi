@@ -45,6 +45,10 @@ public final class RuleEntry: RuleInfo {
       "ios_extension_binary": PBXTarget.ProductType.AppExtension,
       "ios_framework_binary": PBXTarget.ProductType.Framework,
       "ios_test": PBXTarget.ProductType.UnitTest,
+
+      // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
+      // XCTest test rules.
+      "_test_host_": PBXTarget.ProductType.Application,
   ]
 
   static let BuildTypesWithImplicitIPAs = Set<String>([
