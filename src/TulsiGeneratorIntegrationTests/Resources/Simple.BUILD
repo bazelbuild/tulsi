@@ -31,6 +31,7 @@ objc_binary(
         "BINARY_ANOTHER_DEFINE=2",
     ],
     includes = ["Binary/includes"],
+    storyboards = ["Binary/Base.lproj/One.storyboard"],
     deps = [
         ":Library",
     ],

@@ -42,6 +42,13 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
+        .hasAttribute(.bridging_header,
+                      value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
+                              "src": true])
+        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
+        .hasAttribute(.includes, value: ["Binary/includes"])
+        .hasAttribute(.storyboards, value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                                            "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -55,6 +62,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                             "src": true], ])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
+        .hasAttribute(.storyboards, value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                                            "src": true]])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/Library/srcs/src1.m",
@@ -102,6 +111,19 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
+        .hasAttribute(.bridging_header,
+                      value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
+                              "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                              "src": false])
+        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
+        .hasAttribute(.includes, value: ["Binary/includes/first/include",
+                                         "Binary/includes/second/include"])
+        .hasAttribute(.storyboards,
+                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                               "src": true],
+                              ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
+                               "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                               "src": false]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -109,18 +131,26 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Binary/srcs/main.m",
                      "tulsi_test/SrcGenerator/outs/output.m"
                     ])
-        .hasAttribute(.bridging_header, value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                                                "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
-                                                "src": false])
+        .hasAttribute(.bridging_header,
+                      value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
+                              "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                              "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
+        .hasAttribute(.storyboards,
+                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                               "src": true],
+                              ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
+                               "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                               "src": false]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
-        .hasAttribute(.datamodels, value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
-                                            "src": true],
-                                           ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
-                                            "src": true], ])
+        .hasAttribute(.datamodels,
+                      value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
+                               "src": true],
+                              ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
+                               "src": true], ])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",

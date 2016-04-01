@@ -42,6 +42,7 @@
     43D68C2841BB402A00000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */ = { isa = PBXFileReference; name = "lib_indexer_SubLibrary_-4799450061059093063.a"; path = "lib_indexer_SubLibrary_-4799450061059093063.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
     43D68C284C75FE0B00000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */ = { isa = PBXFileReference; name = "lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a"; path = "lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
     43D68C284DBD1B7500000000 /* output.m */ = { isa = PBXFileReference; name = "output.m"; path = "output.m"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.objc"; };
+    43D68C285901749E00000000 /* Two.storyboard */ = { isa = PBXFileReference; name = "Two.storyboard"; path = "Two.storyboard"; sourceTree = "<group>"; explicitFileType = "file.storyboard"; };
     43D68C285BF5223400000000 /* BUILD */ = { isa = PBXFileReference; name = BUILD; path = BUILD; sourceTree = "<group>"; };
     43D68C2862A61A8600000000 /* AnotherPCHFile.pch */ = { isa = PBXFileReference; name = "AnotherPCHFile.pch"; path = "AnotherPCHFile.pch"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.h"; };
     43D68C2863CB365D00000000 /* HdrsHeader.h */ = { isa = PBXFileReference; name = "HdrsHeader.h"; path = "HdrsHeader.h"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.h"; };
@@ -53,15 +54,18 @@
     43D68C28B91EE1B700000000 /* NonARCFile.mm */ = { isa = PBXFileReference; name = "NonARCFile.mm"; path = "NonARCFile.mm"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.cpp.objcpp"; };
     43D68C28BA5D07EF00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = { isa = PBXFileReference; name = "lib_indexer_CoreDataResources_-4799450060412742337.a"; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
     43D68C28C08351D300000000 /* lib_indexer_Library_-4799450060931977398.a */ = { isa = PBXFileReference; name = "lib_indexer_Library_-4799450060931977398.a"; path = "lib_indexer_Library_-4799450060931977398.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
+    43D68C28C9CA518600000000 /* One.storyboard */ = { isa = PBXFileReference; name = "One.storyboard"; path = "One.storyboard"; sourceTree = "<group>"; lastKnownFileType = "file.storyboard"; };
     43D68C28DBBEB27100000000 /* lib_indexer_XCTest_-4799450059344870159.a */ = { isa = PBXFileReference; name = "lib_indexer_XCTest_-4799450059344870159.a"; path = "lib_indexer_XCTest_-4799450059344870159.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
     43D68C28FA482AD300000000 /* Application.app */ = { isa = PBXFileReference; name = "Application.app"; path = "Application.app"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "wrapper.application"; };
 
 /* End PBXFileReference section */
 /* Begin PBXGroup section */
     966FB6DE0675459E00000000 /* outs */ = { isa = PBXGroup; name = outs; path = outs; sourceTree = "<group>"; children = ( 43D68C284DBD1B7500000000 /* output.m */, ); };
+    966FB6DE0675459E00000001 /* outs */ = { isa = PBXGroup; name = outs; path = outs; sourceTree = "<group>"; children = ( 43D68C285901749E00000000 /* Two.storyboard */, ); };
     966FB6DE144879E600000000 /* LibrarySources */ = { isa = PBXGroup; name = LibrarySources; path = LibrarySources; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000002 /* srcs */, ); };
     966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */ = { isa = PBXGroup; name = SubLibraryWithDefines; path = SubLibraryWithDefines; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000004 /* srcs */, ); };
     966FB6DE3FFB782800000000 /* SubLibrary */ = { isa = PBXGroup; name = SubLibrary; path = SubLibrary; sourceTree = "<group>"; children = ( 966FB6DE97917B0F00000000 /* pch */, 966FB6DE5B9D018E00000003 /* srcs */, ); };
+    966FB6DE56C029FB00000000 /* Base.lproj */ = { isa = PBXGroup; name = "Base.lproj"; path = "Base.lproj"; sourceTree = "<group>"; children = ( 43D68C28C9CA518600000000 /* One.storyboard */, ); };
     966FB6DE5B9D018E00000000 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C281B08EDE700000000 /* main.m */, ); };
     966FB6DE5B9D018E00000001 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C28A872D4A700000000 /* SrcsHeader.h */, 43D68C2822A915AD00000000 /* src5.mm */, ); };
     966FB6DE5B9D018E00000002 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C282A00A0BB00000000 /* src1.m */, 43D68C282BC322FA00000000 /* src2.m */, 43D68C282BBDBD3D00000000 /* src3.m */, 43D68C282B7C3F7C00000000 /* src4.m */, ); };
@@ -69,15 +73,16 @@
     966FB6DE5B9D018E00000004 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C282AF538F700000001 /* src.mm */, ); };
     966FB6DE5B9D018E00000005 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C282AF538F700000002 /* src.mm */, ); };
     966FB6DE5B9D018E00000006 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C286A95148500000000 /* defaultTestSource.m */, ); };
+    966FB6DE65EA9DC200000000 /* StoryboardGenerator */ = { isa = PBXGroup; name = StoryboardGenerator; path = StoryboardGenerator; sourceTree = "<group>"; children = ( 966FB6DE0675459E00000001 /* outs */, ); };
     966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */ = { isa = PBXGroup; name = SubLibraryWithDifferentDefines; path = SubLibraryWithDifferentDefines; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000005 /* srcs */, ); };
     966FB6DE77973FA000000000 /* XCTest */ = { isa = PBXGroup; name = XCTest; path = XCTest; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000006 /* srcs */, ); };
-    966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */ = { isa = PBXGroup; name = "tulsi_e2e_complex"; path = "tulsi_e2e_complex"; sourceTree = "<group>"; children = ( 43D68C285BF5223400000000 /* BUILD */, 966FB6DEE2E4E10A00000000 /* Binary */, 966FB6DE94E444FD00000000 /* Library */, 966FB6DE144879E600000000 /* LibrarySources */, 966FB6DEA04342FA00000000 /* SrcGenerator */, 966FB6DE3FFB782800000000 /* SubLibrary */, 966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */, 966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */, C517CBBD06F127E800000000 /* Test.xcdatamodeld */, 966FB6DE77973FA000000000 /* XCTest */, ); };
+    966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */ = { isa = PBXGroup; name = "tulsi_e2e_complex"; path = "tulsi_e2e_complex"; sourceTree = "<group>"; children = ( 43D68C285BF5223400000000 /* BUILD */, 966FB6DEE2E4E10A00000000 /* Binary */, 966FB6DE94E444FD00000000 /* Library */, 966FB6DE144879E600000000 /* LibrarySources */, 966FB6DEA04342FA00000000 /* SrcGenerator */, 966FB6DE65EA9DC200000000 /* StoryboardGenerator */, 966FB6DE3FFB782800000000 /* SubLibrary */, 966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */, 966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */, C517CBBD06F127E800000000 /* Test.xcdatamodeld */, 966FB6DE77973FA000000000 /* XCTest */, ); };
     966FB6DE94E444FD00000000 /* Library */ = { isa = PBXGroup; name = Library; path = Library; sourceTree = "<group>"; children = ( 966FB6DE9DC3732400000000 /* hdrs */, 966FB6DE5B9D018E00000001 /* srcs */, ); };
     966FB6DE97917B0F00000000 /* pch */ = { isa = PBXGroup; name = pch; path = pch; sourceTree = "<group>"; children = ( 43D68C2862A61A8600000000 /* AnotherPCHFile.pch */, ); };
     966FB6DE9DC3732400000000 /* hdrs */ = { isa = PBXGroup; name = hdrs; path = hdrs; sourceTree = "<group>"; children = ( 43D68C2863CB365D00000000 /* HdrsHeader.h */, ); };
     966FB6DEA04342FA00000000 /* SrcGenerator */ = { isa = PBXGroup; name = SrcGenerator; path = SrcGenerator; sourceTree = "<group>"; children = ( 966FB6DE0675459E00000000 /* outs */, ); };
     966FB6DEAA96F52700000000 /* non_arc_srcs */ = { isa = PBXGroup; name = "non_arc_srcs"; path = "non_arc_srcs"; sourceTree = "<group>"; children = ( 43D68C28B91EE1B700000000 /* NonARCFile.mm */, ); };
-    966FB6DEE2E4E10A00000000 /* Binary */ = { isa = PBXGroup; name = Binary; path = Binary; sourceTree = "<group>"; children = ( 966FB6DEAA96F52700000000 /* non_arc_srcs */, 966FB6DE5B9D018E00000000 /* srcs */, ); };
+    966FB6DEE2E4E10A00000000 /* Binary */ = { isa = PBXGroup; name = Binary; path = Binary; sourceTree = "<group>"; children = ( 966FB6DE56C029FB00000000 /* Base.lproj */, 966FB6DEAA96F52700000000 /* non_arc_srcs */, 966FB6DE5B9D018E00000000 /* srcs */, ); };
     966FB6DEE342F69A00000000 /* mainGroup */ = { isa = PBXGroup; name = mainGroup; path = "../.."; sourceTree = "SOURCE_ROOT"; children = ( 966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */, ); };
 
 /* End PBXGroup section */

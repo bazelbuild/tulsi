@@ -73,6 +73,7 @@ public final class RuleEntry: RuleInfo {
     case defines
     case includes
     case pch
+    case storyboards
     case xctest
     case xctest_app
   }

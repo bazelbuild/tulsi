@@ -41,6 +41,10 @@ objc_binary(
     non_arc_srcs = [
         "Binary/non_arc_srcs/NonARCFile.mm",
     ],
+    storyboards = [
+        "Binary/Base.lproj/One.storyboard",
+        ":StoryboardGenerator",
+    ],
     deps = [
         ":CoreDataResources",
         ":Library",
@@ -162,5 +166,12 @@ genrule(
     name = "SrcGenerator",
     srcs = ["SrcGenerator/srcs/input.m"],
     outs = ["SrcGenerator/outs/output.m"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "StoryboardGenerator",
+    srcs = ["StoryboardGenerator/srcs/storyboard_input.file"],
+    outs = ["StoryboardGenerator/outs/Two.storyboard"],
     cmd = "cp $< $@",
 )

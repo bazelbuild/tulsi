@@ -213,17 +213,25 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
         }
       }
 
-      let sourcePaths = ruleEntry.sourceFiles.filter(includePathInProject)
-      var buildPhaseReferences = [PBXReference]()
-      if let datamodelDescriptions = ruleEntry.attributes[.datamodels] as? [[String: AnyObject]] {
+      func parseFileDescriptionAttribute(attribute: RuleEntry.Attribute) -> [BazelFileTarget]? {
+        guard let descriptions = ruleEntry.attributes[attribute] as? [[String: AnyObject]] else {
+          return nil
+        }
+
         var fileTargets = [BazelFileTarget]()
-        for description in datamodelDescriptions {
+        for description in descriptions {
           guard let target = BazelFileTarget.fileTargetFromAspectFileInfo(description) else {
-            assertionFailure("Failed to resolve datamodel file description to a file target")
+            assertionFailure("Failed to resolve file description to a file target")
             continue
           }
           fileTargets.append(target)
         }
+        return fileTargets
+      }
+
+      let sourcePaths = ruleEntry.sourceFiles.filter(includePathInProject)
+      var buildPhaseReferences = [PBXReference]()
+      if let fileTargets = parseFileDescriptionAttribute(.datamodels) {
         let versionedFileReferences = createReferencesForVersionedFileTargets(fileTargets)
         buildPhaseReferences.appendContentsOf(versionedFileReferences as [PBXReference])
       }
@@ -250,6 +258,16 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
               includesSet.insert(path)
             }
           }
+        }
+      }
+
+      if let fileTargets = parseFileDescriptionAttribute(.storyboards) {
+        for target in fileTargets {
+          let path = target.path as NSString
+          let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
+          let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
+                                                               path: path.lastPathComponent)
+          ref.isInputFile = target.targetType == .SourceFile
         }
       }
 
