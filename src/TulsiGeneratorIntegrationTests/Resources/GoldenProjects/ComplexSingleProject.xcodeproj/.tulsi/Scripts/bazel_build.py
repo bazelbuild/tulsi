@@ -26,7 +26,23 @@ import shutil
 import subprocess
 import sys
 import textwrap
+import time
 import zipfile
+
+
+class Timer:
+  """Simple profiler."""
+  def __init__(self, action_name):
+    self.action_name = action_name
+
+  def start(self):
+    self._start = time.time()
+    return self
+
+  def end(self):
+    end = time.time()
+    seconds = end - self._start
+    print '<*> %s completed in %0.3f ms' % (self.action_name, seconds * 1000)
 
 
 class _OptionsParser(object):
@@ -313,7 +329,9 @@ class BazelBuildBridge(object):
     arch = os.environ.get('CURRENT_ARCH', None)
     main_group_path = os.getcwd()
     parser = _OptionsParser(sdk_version, arch, main_group_path)
+    timer = Timer('Parsing options').start()
     message, exit_code = parser.ParseOptions(args[1:])
+    timer.end()
     if exit_code:
       self._PrintError('error: Option parsing failed: %s' % message)
       return exit_code
@@ -326,9 +344,11 @@ class BazelBuildBridge(object):
       return retval
 
     project_dir = os.environ['PROJECT_DIR']
+    timer = Timer('Running Bazel').start()
     exit_code = self._RunBazelAndPatchOutput(command,
                                              main_group_path,
                                              project_dir)
+    timer.end()
     if exit_code:
       self._PrintError('Bazel build failed.')
       return exit_code
@@ -340,11 +360,15 @@ class BazelBuildBridge(object):
 
     if parser.install_generated_artifacts:
       bundle_output_path = os.environ['CODESIGNING_FOLDER_PATH']
+      timer = Timer('Installing bundle artifacts').start()
       exit_code = self._InstallBundleArtifact(bundle_output_path)
+      timer.end()
       if exit_code:
         return exit_code
 
+      timer = Timer('Installing DSYM bundles').start()
       exit_code = self._InstallDSYMBundles(os.environ['BUILT_PRODUCTS_DIR'])
+      timer.end()
       if exit_code:
         return exit_code
 
@@ -591,4 +615,7 @@ class BazelBuildBridge(object):
 
 
 if __name__ == '__main__':
-  sys.exit(BazelBuildBridge().Run(sys.argv))
+  timer = Timer('Everything').start()
+  exit_code = BazelBuildBridge().Run(sys.argv)
+  timer.end()
+  sys.exit(exit_code)
