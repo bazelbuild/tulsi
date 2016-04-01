@@ -66,12 +66,14 @@ public final class RuleEntry: RuleInfo {
   /// Encyclopedia (see http://bazel.io/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.
   public enum Attribute: String {
+    case asset_catalogs
     case binary
     case bridging_header
     case copts
     case datamodels
     case defines
     case includes
+    case launch_storyboard
     case pch
     case storyboards
     case xctest

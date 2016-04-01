@@ -190,6 +190,7 @@ def _tulsi_sources_aspect(target, ctx):
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
+    asset_catalogs = _collect_files(rule_attr, 'asset_catalogs'),
     binary = _get_label_attr(rule_attr, 'binary.label'),
     copts = _get_opt_attr(rule_attr, 'copts'),
     datamodels = _collect_xcdatamodeld_files(rule_attr, 'datamodels'),
@@ -205,6 +206,7 @@ def _tulsi_sources_aspect(target, ctx):
       bridging_header = _collect_first_file(rule_attr, 'bridging_header'),
       defines = _getattr_as_list(rule_attr, 'defines'),
       includes = _getattr_as_list(rule_attr, 'includes'),
+      launch_storyboard = _collect_first_file(rule_attr, 'launch_storyboard'),
       pch = _collect_first_file(rule_attr, 'pch'),
       storyboards = _collect_files(rule_attr, 'storyboards'),
   )

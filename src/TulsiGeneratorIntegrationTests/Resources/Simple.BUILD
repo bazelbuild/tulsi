@@ -17,6 +17,8 @@
 ios_application(
     name = "Application",
     binary = ":Binary",
+    launch_image = "Binary_Assets_LaunchImage",
+    launch_storyboard = "Application/Launch.storyboard",
 )
 
 objc_binary(
@@ -24,6 +26,7 @@ objc_binary(
     srcs = [
         "Binary/srcs/main.m",
     ],
+    asset_catalogs = ["Binary/Assets.xcassets"],
     bridging_header = "Binary/bridging_header/bridging_header.h",
     datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [

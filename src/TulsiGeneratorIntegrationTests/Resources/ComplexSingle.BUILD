@@ -30,6 +30,10 @@ objc_binary(
         "Binary/srcs/main.m",
         ":SrcGenerator",
     ],
+    asset_catalogs = [
+        "Binary/AssetsOne.xcassets",
+        "Binary/AssetsTwo.xcassets",
+    ],
     bridging_header = ":BridgingHeaderGenerator",
     defines = [
         "A=BINARY_DEFINE",

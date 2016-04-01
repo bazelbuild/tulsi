@@ -25,6 +25,7 @@
 
 /* End PBXContainerItemProxy section */
 /* Begin PBXFileReference section */
+    43D68C280889203F00000000 /* Assets.xcassets */ = { isa = PBXFileReference; name = "Assets.xcassets"; path = "Assets.xcassets"; sourceTree = "<group>"; lastKnownFileType = "folder.assetcatalog"; };
     43D68C281B08EDE700000000 /* main.m */ = { isa = PBXFileReference; name = "main.m"; path = "main.m"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.objc"; };
     43D68C281D64CDC300000000 /* lib_indexer_Library_-4799450061039509283.a */ = { isa = PBXFileReference; name = "lib_indexer_Library_-4799450061039509283.a"; path = "lib_indexer_Library_-4799450061039509283.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
     43D68C2828BF07A900000000 /* src1.mm */ = { isa = PBXFileReference; name = "src1.mm"; path = "src1.mm"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.cpp.objcpp"; };
@@ -39,6 +40,7 @@
     43D68C2863CB365D00000000 /* HdrsHeader.h */ = { isa = PBXFileReference; name = "HdrsHeader.h"; path = "HdrsHeader.h"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.h"; };
     43D68C28654F659900000000 /* xctest_app.app */ = { isa = PBXFileReference; name = "xctest_app.app"; path = "xctest_app.app"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "wrapper.application"; };
     43D68C2898C9BD4600000000 /* lib_indexer_XCTestWithDefaultHost_-4799450059966181298.a */ = { isa = PBXFileReference; name = "lib_indexer_XCTestWithDefaultHost_-4799450059966181298.a"; path = "lib_indexer_XCTestWithDefaultHost_-4799450059966181298.a"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "archive.ar"; };
+    43D68C28A3088CC200000000 /* Launch.storyboard */ = { isa = PBXFileReference; name = "Launch.storyboard"; path = "Launch.storyboard"; sourceTree = "<group>"; lastKnownFileType = "file.storyboard"; };
     43D68C28A872D4A700000000 /* SrcsHeader.h */ = { isa = PBXFileReference; name = "SrcsHeader.h"; path = "SrcsHeader.h"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.h"; };
     43D68C28AF13353000000000 /* XCTest.xctest */ = { isa = PBXFileReference; name = "XCTest.xctest"; path = "XCTest.xctest"; sourceTree = "BUILT_PRODUCTS_DIR"; explicitFileType = "wrapper.cfbundle"; };
     43D68C28C03B40EE00000000 /* PCHFile.pch */ = { isa = PBXFileReference; name = "PCHFile.pch"; path = "PCHFile.pch"; sourceTree = "<group>"; lastKnownFileType = "sourcecode.c.h"; };
@@ -56,14 +58,15 @@
     966FB6DE5B9D018E00000001 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C28A872D4A700000000 /* SrcsHeader.h */, 43D68C282A00A0BB00000000 /* src1.m */, 43D68C282BC322FA00000000 /* src2.m */, 43D68C282BBDBD3D00000000 /* src3.m */, 43D68C282B7C3F7C00000000 /* src4.m */, ); };
     966FB6DE5B9D018E00000002 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C2828BF07A900000000 /* src1.mm */, ); };
     966FB6DE5B9D018E00000003 /* srcs */ = { isa = PBXGroup; name = srcs; path = srcs; sourceTree = "<group>"; children = ( 43D68C2828BF07A900000001 /* src1.mm */, ); };
-    966FB6DE61BF2DA400000000 /* tulsi_e2e_simple */ = { isa = PBXGroup; name = "tulsi_e2e_simple"; path = "tulsi_e2e_simple"; sourceTree = "<group>"; children = ( 43D68C285BF5223400000000 /* BUILD */, 966FB6DEE2E4E10A00000000 /* Binary */, 966FB6DE94E444FD00000000 /* Library */, C517CBBDBA33721800000000 /* SimpleTest.xcdatamodeld */, 966FB6DE77973FA000000000 /* XCTest */, 966FB6DECC8BDD6E00000000 /* XCTestWithDefaultHost */, ); };
+    966FB6DE61BF2DA400000000 /* tulsi_e2e_simple */ = { isa = PBXGroup; name = "tulsi_e2e_simple"; path = "tulsi_e2e_simple"; sourceTree = "<group>"; children = ( 966FB6DEB58A255E00000000 /* Application */, 43D68C285BF5223400000000 /* BUILD */, 966FB6DEE2E4E10A00000000 /* Binary */, 966FB6DE94E444FD00000000 /* Library */, C517CBBDBA33721800000000 /* SimpleTest.xcdatamodeld */, 966FB6DE77973FA000000000 /* XCTest */, 966FB6DECC8BDD6E00000000 /* XCTestWithDefaultHost */, ); };
     966FB6DE77973FA000000000 /* XCTest */ = { isa = PBXGroup; name = XCTest; path = XCTest; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000002 /* srcs */, ); };
     966FB6DE94E444FD00000000 /* Library */ = { isa = PBXGroup; name = Library; path = Library; sourceTree = "<group>"; children = ( 966FB6DE9DC3732400000000 /* hdrs */, 966FB6DE97917B0F00000000 /* pch */, 966FB6DE5B9D018E00000001 /* srcs */, ); };
     966FB6DE97917B0F00000000 /* pch */ = { isa = PBXGroup; name = pch; path = pch; sourceTree = "<group>"; children = ( 43D68C28C03B40EE00000000 /* PCHFile.pch */, ); };
     966FB6DE9DC3732400000000 /* hdrs */ = { isa = PBXGroup; name = hdrs; path = hdrs; sourceTree = "<group>"; children = ( 43D68C2863CB365D00000000 /* HdrsHeader.h */, ); };
+    966FB6DEB58A255E00000000 /* Application */ = { isa = PBXGroup; name = Application; path = Application; sourceTree = "<group>"; children = ( 43D68C28A3088CC200000000 /* Launch.storyboard */, ); };
     966FB6DEC73D2F3C00000000 /* bridging_header */ = { isa = PBXGroup; name = "bridging_header"; path = "bridging_header"; sourceTree = "<group>"; children = ( 43D68C28DA72219400000000 /* bridging_header.h */, ); };
     966FB6DECC8BDD6E00000000 /* XCTestWithDefaultHost */ = { isa = PBXGroup; name = XCTestWithDefaultHost; path = XCTestWithDefaultHost; sourceTree = "<group>"; children = ( 966FB6DE5B9D018E00000003 /* srcs */, ); };
-    966FB6DEE2E4E10A00000000 /* Binary */ = { isa = PBXGroup; name = Binary; path = Binary; sourceTree = "<group>"; children = ( 966FB6DE56C029FB00000000 /* Base.lproj */, 966FB6DEC73D2F3C00000000 /* bridging_header */, 966FB6DE5B9D018E00000000 /* srcs */, ); };
+    966FB6DEE2E4E10A00000000 /* Binary */ = { isa = PBXGroup; name = Binary; path = Binary; sourceTree = "<group>"; children = ( 43D68C280889203F00000000 /* Assets.xcassets */, 966FB6DE56C029FB00000000 /* Base.lproj */, 966FB6DEC73D2F3C00000000 /* bridging_header */, 966FB6DE5B9D018E00000000 /* srcs */, ); };
     966FB6DEE342F69A00000000 /* mainGroup */ = { isa = PBXGroup; name = mainGroup; path = "../.."; sourceTree = "SOURCE_ROOT"; children = ( 966FB6DE61BF2DA400000000 /* tulsi_e2e_simple */, ); };
 
 /* End PBXGroup section */

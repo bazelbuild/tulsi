@@ -213,7 +213,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
         }
       }
 
-      func parseFileDescriptionAttribute(attribute: RuleEntry.Attribute) -> [BazelFileTarget]? {
+      func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileTarget]? {
         guard let descriptions = ruleEntry.attributes[attribute] as? [[String: AnyObject]] else {
           return nil
         }
@@ -231,9 +231,31 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
       let sourcePaths = ruleEntry.sourceFiles.filter(includePathInProject)
       var buildPhaseReferences = [PBXReference]()
-      if let fileTargets = parseFileDescriptionAttribute(.datamodels) {
+      if let fileTargets = parseFileDescriptionListAttribute(.datamodels) {
         let versionedFileReferences = createReferencesForVersionedFileTargets(fileTargets)
         buildPhaseReferences.appendContentsOf(versionedFileReferences as [PBXReference])
+      }
+
+      var additionalFileTargets = [BazelFileTarget]()
+      if let description = ruleEntry.attributes[.launch_storyboard] as? [String: AnyObject],
+             fileTarget = BazelFileTarget.fileTargetFromAspectFileInfo(description) {
+        additionalFileTargets.append(fileTarget)
+      }
+
+      if let fileTargets = parseFileDescriptionListAttribute(.storyboards) {
+        additionalFileTargets.appendContentsOf(fileTargets)
+      }
+
+      if let fileTargets = parseFileDescriptionListAttribute(.asset_catalogs) {
+        additionalFileTargets.appendContentsOf(fileTargets)
+      }
+
+      for target in additionalFileTargets {
+        let path = target.path as NSString
+        let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
+        let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
+                                                             path: path.lastPathComponent)
+        ref.isInputFile = target.targetType == .SourceFile
       }
 
       if sourcePaths.isEmpty && buildPhaseReferences.isEmpty {
@@ -258,16 +280,6 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
               includesSet.insert(path)
             }
           }
-        }
-      }
-
-      if let fileTargets = parseFileDescriptionAttribute(.storyboards) {
-        for target in fileTargets {
-          let path = target.path as NSString
-          let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
-          let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
-                                                               path: path.lastPathComponent)
-          ref.isInputFile = target.targetType == .SourceFile
         }
       }
 

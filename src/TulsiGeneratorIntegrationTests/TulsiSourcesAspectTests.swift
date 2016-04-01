@@ -47,12 +47,17 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                               "src": true])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
+        .hasAttribute(.launch_storyboard, value: ["path": "tulsi_test/Application/Launch.storyboard",
+                                                  "src": true])
         .hasAttribute(.storyboards, value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                             "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/Binary/srcs/main.m"])
+        .hasAttribute(.asset_catalogs,
+                      value: [["path": "tulsi_test/Binary/Assets.xcassets",
+                               "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
@@ -131,6 +136,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Binary/srcs/main.m",
                      "tulsi_test/SrcGenerator/outs/output.m"
                     ])
+        .hasAttribute(.asset_catalogs,
+                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
                               "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
