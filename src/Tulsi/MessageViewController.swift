@@ -64,6 +64,10 @@ class MessageViewController: NSViewController, NSTableViewDelegate, NSUserInterf
     pasteboard.writeObjects(selectedItems)
   }
 
+  @IBAction func clearMessages(sender: AnyObject?) {
+    (self.representedObject as! TulsiProjectDocument).clearMessages()
+  }
+
   // MARK: - NSUserInterfaceValidations
 
   func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {

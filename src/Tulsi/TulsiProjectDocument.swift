@@ -131,6 +131,10 @@ final class TulsiProjectDocument: NSDocument,
     return extensions.first!
   }
 
+  func clearMessages() {
+    messages.removeAll(keepCapacity: true)
+  }
+
   func addBUILDFileURL(buildFile: NSURL) -> Bool {
     guard let package = packageForBUILDFile(buildFile) else {
       return false
