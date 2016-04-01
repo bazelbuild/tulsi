@@ -181,13 +181,10 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
       return nil
     }
 
-    let extractor = BazelWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                workspaceRootURL: workspaceRootURL,
-                                                localizedMessageLogger: localizedMessageLogger)
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
-                                                      messageLogger: localizedMessageLogger.messageLogger,
-                                                      workspaceInfoExtractor: extractor)
+                                                      extractorBazelURL: bazelURL,
+                                                      messageLogger: localizedMessageLogger.messageLogger)
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

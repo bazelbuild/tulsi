@@ -30,20 +30,19 @@ public final class TulsiXcodeProjectGenerator {
 
   let xcodeProjectGenerator: XcodeProjectGenerator
 
-  public convenience init(workspaceRootURL: NSURL,
-                          config: TulsiGeneratorConfig,
-                          messageLogger: MessageLoggerProtocol? = nil,
-                          projectInfoExtractor: TulsiProjectInfoExtractor? = nil) {
+  public convenience init (workspaceRootURL: NSURL,
+                           config: TulsiGeneratorConfig,
+                           messageLogger: MessageLoggerProtocol? = nil) {
     self.init(workspaceRootURL: workspaceRootURL,
               config: config,
-              messageLogger: messageLogger,
-              workspaceInfoExtractor: projectInfoExtractor?.workspaceInfoExtractor)
+              extractorBazelURL: config.bazelURL,
+              messageLogger: messageLogger)
   }
 
-  init (workspaceRootURL: NSURL,
-        config: TulsiGeneratorConfig,
-        messageLogger: MessageLoggerProtocol? = nil,
-        workspaceInfoExtractor: WorkspaceInfoExtractorProtocol? = nil) {
+  init(workspaceRootURL: NSURL,
+       config: TulsiGeneratorConfig,
+       extractorBazelURL: NSURL,
+       messageLogger: MessageLoggerProtocol? = nil) {
     let bundle = NSBundle(forClass: self.dynamicType)
     let localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger,
                                                         bundle: bundle)
@@ -51,14 +50,11 @@ public final class TulsiXcodeProjectGenerator {
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
     let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
 
-    let extractor: WorkspaceInfoExtractorProtocol
-    if let workspaceInfoExtractor = workspaceInfoExtractor {
-      extractor = workspaceInfoExtractor
-    } else {
-      extractor = BazelWorkspaceInfoExtractor(bazelURL: config.bazelURL,
-                                              workspaceRootURL: workspaceRootURL,
-                                              localizedMessageLogger: localizedMessageLogger)
-    }
+    // Note: A new extractor is created on each generate in order to allow users to modify their
+    // BUILD files (or add new files to glob's) and regenerate without restarting Tulsi.
+    let extractor = BazelWorkspaceInfoExtractor(bazelURL: extractorBazelURL,
+                                                workspaceRootURL: workspaceRootURL,
+                                                localizedMessageLogger: localizedMessageLogger)
 
     xcodeProjectGenerator = XcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                   config: config,

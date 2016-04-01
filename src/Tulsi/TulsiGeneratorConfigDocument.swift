@@ -242,8 +242,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                            projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
-                                                      messageLogger: messageLogger,
-                                                      projectInfoExtractor: projectInfoExtractor)
+                                                      messageLogger: messageLogger)
     let errorInfo: String
     do {
       let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
