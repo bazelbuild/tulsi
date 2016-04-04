@@ -16,7 +16,7 @@ import Foundation
 
 
 /// Defines an object that can extract information from a Bazel workspace.
-protocol WorkspaceInfoExtractorProtocol {
+protocol BazelWorkspaceInfoExtractorProtocol {
   /// Extracts information about the set of top level target rules from the given project.
   func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo]
 

@@ -46,12 +46,12 @@
 		3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */; };
 		3D9926851C29F0CC0094E098 /* PBXProjSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */; };
 		3D9926871C29F10B0094E098 /* BazelQueryInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */; };
-		3D9926881C29F10B0094E098 /* BazelTargetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */; };
+		3D9926881C29F10B0094E098 /* PBXTargetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7830051C17918D00AF67A4 /* PBXTargetGenerator.swift */; };
 		3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F1B111BF6BDD50008013B /* BuildLabel.swift */; };
 		3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */; };
-		3D99268B1C29F1100094E098 /* PBXObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFC8F441BE7CF140066E8BA /* PBXObject.swift */; };
+		3D99268B1C29F1100094E098 /* PBXObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */; };
 		3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9F439F1C160AFA00032F32 /* PBXUniformTypeIdentifiers.swift */; };
-		3D99268E1C29F1100094E098 /* WorkspaceInfoExtractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */; };
+		3D99268E1C29F1100094E098 /* BazelWorkspaceInfoExtractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */; };
 		3D99268F1C29F1100094E098 /* PBXProjSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */; };
 		3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3D156AE11C1C8D9C00183439 /* bazel_clean.sh */; };
 		3D9926931C29F1BC0094E098 /* UIRuleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9926921C29F1BC0094E098 /* UIRuleEntry.swift */; };
@@ -169,7 +169,7 @@
 		3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGeneratorTests.swift; sourceTree = "<group>"; };
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
 		3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSetTests.swift; sourceTree = "<group>"; };
-		3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGenerator.swift; sourceTree = "<group>"; };
+		3D7830051C17918D00AF67A4 /* PBXTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXTargetGenerator.swift; sourceTree = "<group>"; };
 		3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
 		3D7B77421C8F2DD3004786EF /* UISourcePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISourcePath.swift; sourceTree = "<group>"; };
 		3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndToEndGenerationTests.swift; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 		3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISelectableOutlineViewNode.swift; sourceTree = "<group>"; };
 		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryInfoExtractor.swift; sourceTree = "<group>"; };
-		3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
+		3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
 		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
 		3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitterTests.swift; sourceTree = "<group>"; };
@@ -253,7 +253,7 @@
 		8BF4B3701BF6B61400239948 /* TulsiPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiPlugin.swift; sourceTree = "<group>"; };
 		8BF4B3721BF6B61400239948 /* NSObject_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject_Extension.swift; sourceTree = "<group>"; };
 		8BF4B3741BF6B61400239948 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BFC8F441BE7CF140066E8BA /* PBXObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObject.swift; sourceTree = "<group>"; };
+		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
 		AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelIntegrationTestCase.swift; sourceTree = "<group>"; };
@@ -314,6 +314,7 @@
 				3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */,
 				3DA65B1C1C67B9F10055448E /* Models */,
 				3D78698C1C57D6DB0070FCC8 /* Resources */,
+				3D029B571C6421B400779E8E /* TaskRunner.swift */,
 				3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */,
 				3D9926961C29FB180094E098 /* TulsiProjectInfoExtractor.swift */,
 				3DA65B271C67E9720055448E /* TulsiXcodeProjectGenerator.swift */,
@@ -343,11 +344,14 @@
 		3DA65B1C1C67B9F10055448E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
+				8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */,
 				3D9926941C29F1E80094E098 /* RuleEntry.swift */,
 				3DA65B1A1C67B9DE0055448E /* TulsiGeneratorConfig.swift */,
 				3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */,
 				3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */,
 				3DD0DE461C654E79008B0CDF /* TulsiProject.swift */,
+				3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -366,23 +370,19 @@
 			children = (
 				3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */,
 				3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */,
-				3D7830051C17918D00AF67A4 /* BazelTargetGenerator.swift */,
 				3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */,
+				3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */,
 				3DAEE45D1C85128600BA1C67 /* BazelWorkspacePackagePathFetcher.swift */,
-				8B8F1B111BF6BDD50008013B /* BuildLabel.swift */,
 				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
 				8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */,
 				3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */,
 				3D9E1A501C6F87670026EE68 /* NSThreadExtensions.swift */,
 				3DA65B5D1C692FA20055448E /* NSURLExtensions.swift */,
-				8BFC8F441BE7CF140066E8BA /* PBXObject.swift */,
 				AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */,
+				3D7830051C17918D00AF67A4 /* PBXTargetGenerator.swift */,
 				3D9F439F1C160AFA00032F32 /* PBXUniformTypeIdentifiers.swift */,
 				3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */,
-				3D029B571C6421B400779E8E /* TaskRunner.swift */,
-				3DFAB53C1C1778640090CC6F /* WorkspaceInfoExtractorProtocol.swift */,
 				3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */,
-				3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -783,7 +783,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D99268B1C29F1100094E098 /* PBXObject.swift in Sources */,
+				3D99268B1C29F1100094E098 /* PBXObjects.swift in Sources */,
 				3D123A531C659688002BEBA2 /* TulsiProject.swift in Sources */,
 				3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */,
 				3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */,
@@ -808,8 +808,8 @@
 				3D9926971C29FB180094E098 /* TulsiProjectInfoExtractor.swift in Sources */,
 				3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */,
 				3D9E1A511C6F87670026EE68 /* NSThreadExtensions.swift in Sources */,
-				3D99268E1C29F1100094E098 /* WorkspaceInfoExtractorProtocol.swift in Sources */,
-				3D9926881C29F10B0094E098 /* BazelTargetGenerator.swift in Sources */,
+				3D99268E1C29F1100094E098 /* BazelWorkspaceInfoExtractorProtocol.swift in Sources */,
+				3D9926881C29F10B0094E098 /* PBXTargetGenerator.swift in Sources */,
 				3DA65B1B1C67B9DE0055448E /* TulsiGeneratorConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

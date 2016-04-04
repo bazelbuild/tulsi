@@ -16,7 +16,7 @@ import Foundation
 @testable import TulsiGenerator
 
 
-class MockWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
+class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   var labelToRuleEntry = [BuildLabel: RuleEntry]()
   /// The set of labels passed to ruleEntriesForLabels that could not be found in the

@@ -16,7 +16,7 @@ import Foundation
 
 
 /// Provides functionality to generate an Xcode project from a TulsiGeneratorConfig.
-class XcodeProjectGenerator {
+final class XcodeProjectGenerator {
   enum Error: ErrorType {
     /// General Xcode project creation failure with associated debug info.
     case SerializationFailed(String)
@@ -38,7 +38,7 @@ class XcodeProjectGenerator {
   private let config: TulsiGeneratorConfig
   private let localizedMessageLogger: LocalizedMessageLogger
   private let fileManager: NSFileManager
-  private let workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
+  private let workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
@@ -52,7 +52,7 @@ class XcodeProjectGenerator {
        config: TulsiGeneratorConfig,
        localizedMessageLogger: LocalizedMessageLogger,
        fileManager: NSFileManager,
-       workspaceInfoExtractor: WorkspaceInfoExtractorProtocol,
+       workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol,
        buildScriptURL: NSURL,
        envScriptURL: NSURL,
        cleanScriptURL: NSURL) {
@@ -70,8 +70,8 @@ class XcodeProjectGenerator {
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
     try resolveConfigReferences()
-    let mainGroup = BazelTargetGenerator.mainGroupForOutputFolder(outputFolderURL,
-                                                                  workspaceRootURL: workspaceRootURL)
+    let mainGroup = PBXTargetGenerator.mainGroupForOutputFolder(outputFolderURL,
+                                                                workspaceRootURL: workspaceRootURL)
     let (xcodeProject, buildTargetRuleEntries) = try buildXcodeProjectWithMainGroup(mainGroup)
 
     let serializer = PBXProjSerializer(rootObject: xcodeProject, gidGenerator: ConcreteGIDGenerator())
@@ -122,13 +122,13 @@ class XcodeProjectGenerator {
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
     let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
 
-    let generator = BazelTargetGenerator(bazelURL: config.bazelURL,
-                                         project: xcodeProject,
-                                         buildScriptPath: buildScriptPath,
-                                         envScriptPath: envScriptPath,
-                                         options: config.options,
-                                         localizedMessageLogger: localizedMessageLogger,
-                                         workspaceRootURL: workspaceRootURL)
+    let generator = PBXTargetGenerator(bazelURL: config.bazelURL,
+                                       project: xcodeProject,
+                                       buildScriptPath: buildScriptPath,
+                                       envScriptPath: envScriptPath,
+                                       options: config.options,
+                                       localizedMessageLogger: localizedMessageLogger,
+                                       workspaceRootURL: workspaceRootURL)
 
     if let additionalFilePaths = config.additionalFilePaths {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
@@ -167,7 +167,7 @@ class XcodeProjectGenerator {
                                          dependencies: Set<String>()))
     }
 
-    let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
+    let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
     generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
     generator.generateTopLevelBuildConfigurations()
     try generator.generateBuildTargetsForRuleEntries(targetRuleEntries)
@@ -226,7 +226,7 @@ class XcodeProjectGenerator {
       let scheme = XcodeScheme(target: target,
                                project: xcodeProject,
                                projectBundleName: projectBundleName,
-                               testActionBuildConfig: BazelTargetGenerator.runTestTargetBuildConfigPrefix + "Debug")
+                               testActionBuildConfig: PBXTargetGenerator.runTestTargetBuildConfigPrefix + "Debug")
       let xmlDocument = scheme.toXML()
 
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)

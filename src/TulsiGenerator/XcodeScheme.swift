@@ -16,7 +16,7 @@ import Foundation
 
 
 /// Models an xcscheme file, providing information to Xcode on how to build targets.
-class XcodeScheme {
+final class XcodeScheme {
   let version: String
   let target: PBXTarget
   let project: PBXProject

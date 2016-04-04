@@ -21,18 +21,18 @@ class BazelTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   var project: PBXProject! = nil
-  var targetGenerator: BazelTargetGenerator! = nil
+  var targetGenerator: PBXTargetGenerator! = nil
 
   override func setUp() {
     super.setUp()
     project = PBXProject(name: "TestProject")
-    targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
-                                           project: project,
-                                           buildScriptPath: "",
-                                           envScriptPath: "",
-                                           options: TulsiOptionSet(),
-                                           localizedMessageLogger: MockLocalizedMessageLogger(),
-                                           workspaceRootURL: workspaceRootURL)
+    targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+                                         project: project,
+                                         buildScriptPath: "",
+                                         envScriptPath: "",
+                                         options: TulsiOptionSet(),
+                                         localizedMessageLogger: MockLocalizedMessageLogger(),
+                                         workspaceRootURL: workspaceRootURL)
 
   }
 
@@ -68,8 +68,8 @@ class BazelTargetGeneratorTests: XCTestCase {
                             line: UInt = #line) {
       let outputURL = NSURL(fileURLWithPath: output, isDirectory: true)
       let workspaceURL = NSURL(fileURLWithPath: workspace, isDirectory: true)
-      let group = BazelTargetGenerator.mainGroupForOutputFolder(outputURL,
-                                                                workspaceRootURL: workspaceURL)
+      let group = PBXTargetGenerator.mainGroupForOutputFolder(outputURL,
+                                                              workspaceRootURL: workspaceURL)
       XCTAssertEqual(group.sourceTree, sourceTree, line: line)
       XCTAssertEqual(group.path, path, line: line)
     }
@@ -97,7 +97,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   var project: PBXProject! = nil
-  var targetGenerator: BazelTargetGenerator! = nil
+  var targetGenerator: PBXTargetGenerator! = nil
   var messageLogger: MockLocalizedMessageLogger! = nil
 
   var sourceFileNames = [String]()
@@ -116,13 +116,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let options = TulsiOptionSet()
     options[.SDKROOT].projectValue = sdkRoot
     messageLogger = MockLocalizedMessageLogger()
-    targetGenerator = BazelTargetGenerator(bazelURL: bazelURL,
-                                           project: project,
-                                           buildScriptPath: "",
-                                           envScriptPath: "",
-                                           options: options,
-                                           localizedMessageLogger: messageLogger,
-                                           workspaceRootURL: workspaceRootURL)
+    targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+                                         project: project,
+                                         buildScriptPath: "",
+                                         envScriptPath: "",
+                                         options: options,
+                                         localizedMessageLogger: messageLogger,
+                                         workspaceRootURL: workspaceRootURL)
   }
 
   // MARK: - Tests
@@ -134,8 +134,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
 
-    XCTAssertNotNil(targets[BazelTargetGenerator.BazelCleanTarget] as? PBXLegacyTarget)
-    let target = targets[BazelTargetGenerator.BazelCleanTarget] as! PBXLegacyTarget
+    XCTAssertNotNil(targets[PBXTargetGenerator.BazelCleanTarget] as? PBXLegacyTarget)
+    let target = targets[PBXTargetGenerator.BazelCleanTarget] as! PBXLegacyTarget
 
     XCTAssertEqual(target.buildToolPath, scriptPath)
 
@@ -162,8 +162,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 3)
 
-    XCTAssertNotNil(targets[BazelTargetGenerator.BazelCleanTarget] as? PBXLegacyTarget)
-    let integrationTarget = targets[BazelTargetGenerator.BazelCleanTarget] as! PBXLegacyTarget
+    XCTAssertNotNil(targets[PBXTargetGenerator.BazelCleanTarget] as? PBXLegacyTarget)
+    let integrationTarget = targets[PBXTargetGenerator.BazelCleanTarget] as! PBXLegacyTarget
 
     for target in project.allTargets {
       if target === integrationTarget { continue }

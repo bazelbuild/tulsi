@@ -19,7 +19,7 @@ import Foundation
 public final class TulsiProjectInfoExtractor {
   private let project: TulsiProject
   private let localizedMessageLogger: LocalizedMessageLogger
-  var workspaceInfoExtractor: WorkspaceInfoExtractorProtocol
+  var workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
 
   public var bazelURL: NSURL {
     get { return workspaceInfoExtractor.bazelURL }

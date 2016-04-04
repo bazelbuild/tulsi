@@ -18,7 +18,7 @@ import Foundation
 // Concrete extractor that utilizes Bazel query (http://bazel.io/docs/query.html) and aspects to
 // extract information from a workspace.
 // TODO(abaire): Add link to aspect documentation when it becomes available.
-final class BazelWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
+final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   var bazelURL: NSURL {
     get { return queryExtractor.bazelURL }
     set {
@@ -50,7 +50,7 @@ final class BazelWorkspaceInfoExtractor: WorkspaceInfoExtractorProtocol {
                                              localizedMessageLogger: localizedMessageLogger)
   }
 
-  // MARK: - WorkspaceInfoExtractorProtocol
+  // MARK: - BazelWorkspaceInfoExtractorProtocol
 
   func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
     return queryExtractor.extractTargetRulesFromProject(project)

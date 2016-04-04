@@ -71,9 +71,9 @@ public final class TulsiXcodeProjectGenerator {
   public func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
     do {
       return try xcodeProjectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-    } catch BazelTargetGenerator.ProjectSerializationError.UnsupportedTargetType(let targetType) {
+    } catch PBXTargetGenerator.ProjectSerializationError.UnsupportedTargetType(let targetType) {
       throw Error.UnsupportedTargetType(targetType)
-    } catch BazelTargetGenerator.ProjectSerializationError.GeneralFailure(let info) {
+    } catch PBXTargetGenerator.ProjectSerializationError.GeneralFailure(let info) {
       throw Error.SerializationFailed(info)
     } catch XcodeProjectGenerator.Error.SerializationFailed(let info) {
       throw Error.SerializationFailed(info)

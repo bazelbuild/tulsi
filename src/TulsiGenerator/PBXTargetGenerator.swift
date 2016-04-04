@@ -14,31 +14,6 @@
 
 import Foundation
 
-protocol TargetGeneratorProtocol {
-  /// Generates file references for the given file paths in the associated project without adding
-  /// them to an indexer target. The paths must be relative to the workspace root.
-  func generateFileReferencesForFilePaths(paths: [String])
-
-  /// Generates an indexer target for the given Bazel rule and its transitive dependencies, adding
-  /// source files whose directories are present in pathFilters.
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         ruleEntryMap: [BuildLabel: RuleEntry],
-                                         pathFilters: Set<String>)
-
-  /// Generates a legacy target that is added as a dependency of all build targets and invokes
-  /// the given script. The build action may be accessed by the script via the ACTION environment
-  /// variable.
-  func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
-
-  /// Generates top level build configurations with an optional set of additional include paths.
-  func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>?)
-
-  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
-  /// non-compiling source file linkages are created to facilitate indexing of XCTests.
-  /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws
-}
-
 
 /// Encapsulates a file that may be a bazel input or output.
 struct BazelFileTarget {
@@ -77,7 +52,7 @@ struct BazelFileTarget {
 
 
 // Concrete PBXProject target generator.
-class BazelTargetGenerator: TargetGeneratorProtocol {
+class PBXTargetGenerator {
 
   enum ProjectSerializationError: ErrorType {
     case BUILDFileIsNotContainedByProjectRoot
@@ -133,17 +108,19 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     self.workspaceRootURL = workspaceRootURL
   }
 
-  // MARK: - TargetGeneratorProtocol
-
+  /// Generates file references for the given file paths in the associated project without adding
+  /// them to an indexer target. The paths must be relative to the workspace root.
   func generateFileReferencesForFilePaths(paths: [String]) {
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
   }
 
+  /// Generates an indexer target for the given Bazel rule and its transitive dependencies, adding
+  /// source files whose directories are present in pathFilters.
   func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
                                          ruleEntryMap: [BuildLabel: RuleEntry],
                                          pathFilters: Set<String>) {
 
-    var sourceDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
+    var sourceDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
     }
@@ -302,15 +279,18 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
   }
 
+  /// Generates a legacy target that is added as a dependency of all build targets and invokes
+  /// the given script. The build action may be accessed by the script via the ACTION environment
+  /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
     let bazelPath = bazelURL.path!
     bazelCleanScriptTarget = project.createLegacyTarget(
-        BazelTargetGenerator.BazelCleanTarget,
-        buildToolPath: "\(scriptPath)",
-        buildArguments: "\"\(bazelPath)\"",
-        buildWorkingDirectory: workingDirectory)
+    PBXTargetGenerator.BazelCleanTarget,
+    buildToolPath: "\(scriptPath)",
+    buildArguments: "\"\(bazelPath)\"",
+    buildWorkingDirectory: workingDirectory)
 
     for target: PBXTarget in project.allTargets {
       if target === bazelCleanScriptTarget {
@@ -324,6 +304,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     }
   }
 
+  /// Generates top level build configurations with an optional set of additional include paths.
   func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>? = nil) {
     var buildSettings = options.commonBuildSettings()
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
@@ -336,7 +317,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
     buildSettings["CODE_SIGN_IDENTITY"] = ""
 
-    var sourceDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
+    var sourceDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
     }
@@ -350,6 +331,9 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
   }
 
+  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
+  /// non-compiling source file linkages are created to facilitate indexing of XCTests.
+  /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, String, RuleEntry)]()
@@ -605,7 +589,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
     func createTestConfigForBaseConfig(configurationName: String) {
       let baseConfig = list.getOrCreateBuildConfiguration(configurationName)
-      let testConfigName = BazelTargetGenerator.runTestTargetBuildConfigPrefix + configurationName
+      let testConfigName = PBXTargetGenerator.runTestTargetBuildConfigPrefix + configurationName
       let config = list.getOrCreateBuildConfiguration(testConfigName)
 
       var runTestTargetBuildSettings = baseConfig.buildSettings
@@ -629,7 +613,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
 
   private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
                                                 buildSettings: Dictionary<String, String>) {
-    for configName in BazelTargetGenerator.buildConfigNames {
+    for configName in PBXTargetGenerator.buildConfigNames {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
       config.buildSettings = buildSettings
     }
@@ -646,7 +630,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
       }
     }
 
-    for configName in BazelTargetGenerator.buildConfigNames {
+    for configName in PBXTargetGenerator.buildConfigNames {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
       mergeDictionary(&config.buildSettings, withContentsOfDictionary: newSettings)
 
@@ -659,7 +643,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
   private func indexerNameForRuleEntry(ruleEntry: RuleEntry) -> String {
     let targetName = ruleEntry.label.targetName!
     let hash = ruleEntry.label.hashValue
-    return BazelTargetGenerator.IndexerTargetPrefix + "\(targetName)_\(hash)"
+    return PBXTargetGenerator.IndexerTargetPrefix + "\(targetName)_\(hash)"
   }
 
   // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given
@@ -734,7 +718,7 @@ class BazelTargetGenerator: TargetGeneratorProtocol {
     let buildLabel = entry.label.value
     let commandLine = buildScriptCommandlineForBuildLabels(buildLabel,
                                                            withOptionsForTargetLabel: entry.label)
-    let workingDirectory = BazelTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
+    let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     let changeDirectoryAction: String
     if workingDirectory.isEmpty {
       changeDirectoryAction = ""
