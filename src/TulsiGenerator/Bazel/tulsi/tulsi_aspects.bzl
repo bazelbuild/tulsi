@@ -168,7 +168,39 @@ def _getattr_as_list(obj, attr_path):
   return [val]
 
 
+def _extract_defines_from_option_list(lst):
+  """Extracts preprocessor defines from a list of -D strings."""
+  defines = []
+  for item in lst:
+    if item.startswith('-D'):
+      defines.append(item[2:])
+  return defines
+
+
+def _extract_compiler_defines(ctx):
+  """Extracts preprocessor defines from compiler fragments."""
+  cpp_fragment = _get_opt_attr(ctx.fragments, 'cpp')
+  if not cpp_fragment:
+    return []
+
+  defines = []
+
+  c_options = _get_opt_attr(cpp_fragment, 'c_options')
+  defines += _extract_defines_from_option_list(c_options)
+
+  compiler_options = cpp_fragment.compiler_options([])
+  defines += _extract_defines_from_option_list(compiler_options)
+
+  unfiltered = cpp_fragment.unfiltered_compiler_options([])
+  defines += _extract_defines_from_option_list(unfiltered)
+
+  cxx = cpp_fragment.cxx_options([])
+  defines += _extract_defines_from_option_list(cxx)
+  return defines
+
+
 def _tulsi_sources_aspect(target, ctx):
+  """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
@@ -182,20 +214,19 @@ def _tulsi_sources_aspect(target, ctx):
 
   srcs = (_collect_files(rule, 'attr.srcs') +
           _collect_files(rule, 'attr.hdrs') +
-          _collect_files(rule, 'attr.non_arc_srcs')
-  )
+          _collect_files(rule, 'attr.non_arc_srcs'))
   compile_deps = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
-    asset_catalogs = _collect_files(rule_attr, 'asset_catalogs'),
-    binary = _get_label_attr(rule_attr, 'binary.label'),
-    copts = _get_opt_attr(rule_attr, 'copts'),
-    datamodels = _collect_xcdatamodeld_files(rule_attr, 'datamodels'),
-    xctest = _get_opt_attr(rule_attr, 'xctest'),
-    xctest_app = _get_label_attr(rule_attr, 'xctest_app.label'),
+      asset_catalogs = _collect_files(rule_attr, 'asset_catalogs'),
+      binary = _get_label_attr(rule_attr, 'binary.label'),
+      copts = _get_opt_attr(rule_attr, 'copts'),
+      datamodels = _collect_xcdatamodeld_files(rule_attr, 'datamodels'),
+      xctest = _get_opt_attr(rule_attr, 'xctest'),
+      xctest_app = _get_label_attr(rule_attr, 'xctest_app.label'),
   )
 
   # Inheritable attributes are pulled up through dependencies of type 'binary'
@@ -204,7 +235,8 @@ def _tulsi_sources_aspect(target, ctx):
   # example).
   inheritable_attributes = _dict_omitting_none(
       bridging_header = _collect_first_file(rule_attr, 'bridging_header'),
-      defines = _getattr_as_list(rule_attr, 'defines'),
+      defines = (_getattr_as_list(rule_attr, 'defines') +
+                 _extract_compiler_defines(ctx)),
       includes = _getattr_as_list(rule_attr, 'includes'),
       launch_storyboard = _collect_first_file(rule_attr, 'launch_storyboard'),
       pch = _collect_first_file(rule_attr, 'pch'),
@@ -249,4 +281,5 @@ def _tulsi_sources_aspect(target, ctx):
 tulsi_sources_aspect = aspect(
     implementation = _tulsi_sources_aspect,
     attr_aspects = _TULSI_COMPILE_DEPS,
+    fragments = ['cpp'],
 )
