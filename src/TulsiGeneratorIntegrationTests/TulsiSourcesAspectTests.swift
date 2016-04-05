@@ -32,10 +32,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
     makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
+    var buildOptions = bazelBuildOptions
+    buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE")
+    buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_VALUE=1")
+    buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'")
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
-                                                                      buildOptions: bazelBuildOptions)
+                                                                      buildOptions: buildOptions)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -46,6 +50,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
+        .hasListAttribute(.compiler_defines,
+                          containing: ["A_COMMANDLINE_DEFINE",
+                                       "A_COMMANDLINE_DEFINE_WITH_VALUE=1",
+                                       "A_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'"])
         .hasAttribute(.includes, value: ["Binary/includes"])
         .hasAttribute(.launch_storyboard, value: ["path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true])
@@ -397,6 +405,25 @@ private class InfoChecker {
       } else if let attributeValue = ruleEntry.attributes[attribute] {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type \(T.self) " +
                     "but it is of type \(attributeValue.dynamicType)",
+                line: line)
+      } else {
+        XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)
+      }
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
+    func hasListAttribute(attribute: RuleEntry.Attribute,
+                          containing: [String],
+                          line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      if let attributeValue = ruleEntry.attributes[attribute] as? [String] {
+        for item in containing {
+          XCTAssert(attributeValue.contains(item), line: line)
+        }
+      } else if let attributeValue = ruleEntry.attributes[attribute] {
+        XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type " +
+                    "[String] but it is of type \(attributeValue.dynamicType)",
                 line: line)
       } else {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)

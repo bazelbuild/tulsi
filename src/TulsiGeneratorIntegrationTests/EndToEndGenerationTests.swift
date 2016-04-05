@@ -185,6 +185,9 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                                                       config: config,
                                                       extractorBazelURL: bazelURL,
                                                       messageLogger: localizedMessageLogger.messageLogger)
+    // Bazel built-in preprocessor defines are suppressed in order to prevent any
+    // environment-dependent variables from mismatching the golden data.
+    projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

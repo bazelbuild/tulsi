@@ -89,6 +89,7 @@ class PBXTargetGenerator {
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
   let workspaceRootURL: NSURL
+  let suppressCompilerDefines: Bool
 
   var bazelCleanScriptTarget: PBXLegacyTarget? = nil
 
@@ -98,7 +99,8 @@ class PBXTargetGenerator {
        envScriptPath: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
-       workspaceRootURL: NSURL) {
+       workspaceRootURL: NSURL,
+       suppressCompilerDefines: Bool = false) {
     self.bazelURL = bazelURL
     self.project = project
     self.buildScriptPath = buildScriptPath
@@ -106,6 +108,7 @@ class PBXTargetGenerator {
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
     self.workspaceRootURL = workspaceRootURL
+    self.suppressCompilerDefines = suppressCompilerDefines
   }
 
   /// Generates file references for the given file paths in the associated project without adding
@@ -177,6 +180,11 @@ class PBXTargetGenerator {
       }
 
       if let ruleDefines = ruleEntry.attributes[.defines] as? [String] where !ruleDefines.isEmpty {
+        defines.unionInPlace(ruleDefines)
+      }
+      if !suppressCompilerDefines,
+         let ruleDefines = ruleEntry.attributes[.compiler_defines] as? [String]
+         where !ruleDefines.isEmpty {
         defines.unionInPlace(ruleDefines)
       }
 

@@ -72,6 +72,9 @@ public final class RuleEntry: RuleInfo {
     case copts
     case datamodels
     case defines
+    // Contains defines that were specified by the user on the commandline or are built into
+    // Bazel itself.
+    case compiler_defines
     case includes
     case launch_storyboard
     case pch

@@ -235,8 +235,8 @@ def _tulsi_sources_aspect(target, ctx):
   # example).
   inheritable_attributes = _dict_omitting_none(
       bridging_header = _collect_first_file(rule_attr, 'bridging_header'),
-      defines = (_getattr_as_list(rule_attr, 'defines') +
-                 _extract_compiler_defines(ctx)),
+      defines = _getattr_as_list(rule_attr, 'defines'),
+      compiler_defines = _extract_compiler_defines(ctx),
       includes = _getattr_as_list(rule_attr, 'includes'),
       launch_storyboard = _collect_first_file(rule_attr, 'launch_storyboard'),
       pch = _collect_first_file(rule_attr, 'pch'),

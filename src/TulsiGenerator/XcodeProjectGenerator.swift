@@ -48,6 +48,10 @@ final class XcodeProjectGenerator {
     try data.writeToURL(outputFileURL, options: NSDataWritingOptions.DataWritingAtomic)
   }
 
+  // Exposed for testing. Suppresses writing any preprocessor defines integral to Bazel itself into
+  // the generated project.
+  var suppressCompilerDefines = false
+
   init(workspaceRootURL: NSURL,
        config: TulsiGeneratorConfig,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -128,7 +132,8 @@ final class XcodeProjectGenerator {
                                        envScriptPath: envScriptPath,
                                        options: config.options,
                                        localizedMessageLogger: localizedMessageLogger,
-                                       workspaceRootURL: workspaceRootURL)
+                                       workspaceRootURL: workspaceRootURL,
+                                       suppressCompilerDefines: suppressCompilerDefines)
 
     if let additionalFilePaths = config.additionalFilePaths {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
