@@ -289,7 +289,10 @@ class BazelIntegrationTestCase: XCTestCase {
       print("W: \(key) - \(values)")
     }
 
-    override func error(key: String, comment: String, values: CVarArgType...) {
+    override func error(key: String,
+                        comment: String,
+                        details: String? = nil,
+                        values: CVarArgType...) {
       XCTFail("Critical error logged: \(key) - \(values)")
     }
   }

@@ -73,7 +73,15 @@ class BazelWorkspacePackagePathFetcher {
         self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
                                           comment: "Extracting package_path info from bazel failed. The exit code is %1$d.",
                                           values: completionInfo.task.terminationStatus)
-        let debugInfo = BazelAspectInfoExtractor.debugInfoForTaskCompletion(completionInfo)
+
+        let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
+                                                      bundle: NSBundle(forClass: self.dynamicType),
+                                                      comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
+        let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding) ?? "<No STDERR>"
+        let debugInfo = String(format: debugInfoFormatString,
+                               completionInfo.commandlineString,
+                               completionInfo.terminationStatus,
+                               stderr)
         self.localizedMessageLogger.infoMessage(debugInfo)
     }
     task.currentDirectoryPath = workspaceRootURL.path!

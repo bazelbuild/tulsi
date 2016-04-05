@@ -18,9 +18,16 @@ public protocol MessageLoggerProtocol {
   /// Used to report a non-fatal warning message.
   func warning(message: String)
 
-  /// Used to report a fatal error message.
-  func error(message: String)
+  /// Used to report a fatal error message, optionally with a detailed message to be shown in the
+  /// resulting alert popup.
+  func error(message: String, details: String?)
 
   /// Used to display a general status message.
   func info(message: String)
+}
+
+extension MessageLoggerProtocol {
+  func error(message: String) {
+    error(message, details: nil)
+  }
 }

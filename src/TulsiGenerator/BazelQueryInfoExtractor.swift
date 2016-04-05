@@ -53,8 +53,22 @@ final class BazelQueryInfoExtractor {
 
     if task.terminationStatus != 0 {
       localizedMessageLogger.infoMessage(debugInfo)
+
+      let errorMessage: String?
+      let errorLines = debugInfo.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
+      if errorLines.isEmpty {
+        errorMessage = nil
+      } else {
+        let numErrorLinesToShow = min(errorLines.count, 3)
+        var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
+        if numErrorLinesToShow < errorLines.count {
+          errorSnippet += "\n..."
+        }
+        errorMessage = errorSnippet
+      }
       self.localizedMessageLogger.error("BazelInfoExtractionFailed",
-                                        comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.")
+                                        comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
+                                        details: errorMessage)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
     return infos

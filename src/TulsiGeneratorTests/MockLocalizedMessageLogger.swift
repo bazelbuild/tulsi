@@ -33,7 +33,10 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
     warningMessageKeys.append(key)
   }
 
-  override func error(key: String, comment: String, values: CVarArgType...) {
+  override func error(key: String,
+                      comment: String,
+                      details: String? = nil,
+                      values: CVarArgType...) {
     errorMessageKeys.append(key)
   }
 }

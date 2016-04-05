@@ -37,23 +37,9 @@ final class BazelAspectInfoExtractor {
   private let aspectFileWorkspaceRelativePath: String
   private let localizedMessageLogger: LocalizedMessageLogger
 
-  static let debugInfoFormatString: String = {
-    NSLocalizedString("DebugInfoForBazelCommand",
-                      bundle: NSBundle(forClass: BazelAspectInfoExtractor.self),
-                      comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
-  }()
-
   private typealias CompletionHandler = (bazelTask: NSTask,
                                          generatedArtifacts: [String]?,
                                          debugInfo: String) -> Void
-
-  static func debugInfoForTaskCompletion(completionInfo: TaskRunner.CompletionInfo) -> String {
-    let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
-    return String(format: debugInfoFormatString,
-                  completionInfo.commandlineString,
-                  completionInfo.terminationStatus,
-                  stderr ?? "<No STDERR>")
-  }
 
   init(bazelURL: NSURL,
        workspaceRootURL: NSURL,
@@ -98,15 +84,28 @@ final class BazelAspectInfoExtractor {
                                          startupOptions: startupOptions,
                                          buildOptions: buildOptions) {
       (task: NSTask, generatedArtifacts: [String]?, debugInfo: String) -> Void in
-        defer{ dispatch_semaphore_signal(semaphore) }
+        defer { dispatch_semaphore_signal(semaphore) }
         if task.terminationStatus == 0,
            let artifacts = generatedArtifacts where !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
         } else {
           self.localizedMessageLogger.infoMessage(debugInfo)
+          let errorMessage: String?
+          let errorLines = debugInfo.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
+          if errorLines.isEmpty {
+            errorMessage = nil
+          } else {
+            let numErrorLinesToShow = min(errorLines.count, 3)
+            var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
+            if numErrorLinesToShow < errorLines.count {
+              errorSnippet += "\n..."
+            }
+            errorMessage = errorSnippet
+          }
           self.localizedMessageLogger.error("BazelInfoExtractionFailed",
-                                            comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.")
+                                            comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
+                                            details: errorMessage)
         }
     }
 

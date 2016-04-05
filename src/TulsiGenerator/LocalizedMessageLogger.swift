@@ -53,13 +53,13 @@ class LocalizedMessageLogger {
     }
   }
 
-  func error(key: String, comment: String, values: CVarArgType...) {
+  func error(key: String, comment: String, details: String? = nil, values: CVarArgType...) {
     if messageLogger == nil || bundle == nil { return }
 
     NSThread.doOnMainThread() {
       let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
       let message = String(format: formatString, arguments: values)
-      self.messageLogger!.error(message)
+      self.messageLogger!.error(message, details: details)
     }
   }
 }

@@ -404,7 +404,7 @@ final class TulsiProjectDocument: NSDocument,
     }
   }
 
-  func error(message: String) {
+  func error(message: String, details: String? = nil) {
     #if DEBUG
     print("E: \(message)")
     #endif
@@ -419,6 +419,14 @@ final class TulsiProjectDocument: NSDocument,
           "you could navigate back one step and retry this one."
       alert.informativeText = "TODO(abaire): finish error handling."
       alert.alertStyle = .CriticalAlertStyle
+
+      if let details = details {
+        let accessoryView = NSTextView(frame: NSMakeRect(0, 0, 480, 60))
+        accessoryView.insertText(details)
+        accessoryView.editable = false
+        accessoryView.drawsBackground = false
+        alert.accessoryView = accessoryView
+      }
       alert.runModal()
     }
   }

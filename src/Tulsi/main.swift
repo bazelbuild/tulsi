@@ -95,7 +95,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     print("W: \(message)")
   }
 
-  func error(message: String) {
+  func error(message: String, details: String? = nil) {
     print("E: \(message)")
   }
 

@@ -602,8 +602,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     messageLogger?.warning(message)
   }
 
-  func error(message: String) {
-    messageLogger?.error(message)
+  func error(message: String, details: String? = nil) {
+    messageLogger?.error(message, details: details)
   }
 
   func info(message: String) {
