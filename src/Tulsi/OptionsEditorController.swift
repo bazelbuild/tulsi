@@ -126,7 +126,8 @@ final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDel
   enum CloseReason {
     case Cancel, Accept
   }
-  var closeReason: CloseReason = .Cancel
+  var closeReason: CloseReason = .Accept
+  var optionItem: AnyObject? = nil
 
   private weak var popover: NSPopover? = nil
 
@@ -279,7 +280,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
              "Mismatch in storyboard column identifier and OptionLevel enum")
       return
     }
-    let optionNode = optionNodeForItem(editor.itemAtRow(editor.clickedRow)!, outlineView: editor)
+    let optionItem = editor.itemAtRow(editor.clickedRow)!
+    let optionNode = optionNodeForItem(optionItem, outlineView: editor)
 
     // Verify that the column is editable.
     if OptionsEditorController.bindingsControlledColumns.contains(columnIdentifier) ||
@@ -297,6 +299,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         popoverViewController = storyboard.instantiateControllerWithIdentifier("OptionsEditorPopover") as? OptionsEditorPopoverViewController
       }
       popoverEditor.contentViewController = popoverViewController
+      popoverViewController.optionItem = optionItem
       popoverViewController.setRepresentedOptionNode(optionNode, level: optionLevel)
       popoverViewController.popover = popoverEditor
       popoverEditor.delegate = self
@@ -395,7 +398,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     }
 
     if popoverViewController.closeReason == .Accept {
-      reloadDataForRow(view.selectedRow)
+      reloadDataForItem(popoverViewController.optionItem)
     }
     popoverEditor = nil
   }
@@ -468,7 +471,11 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   private func reloadDataForRow(row: Int) {
     guard row >= 0 else { return }
     let item = view.itemAtRow(row)!
-    let indexes = NSMutableIndexSet(index: row)
+    reloadDataForItem(item)
+  }
+
+  private func reloadDataForItem(item: AnyObject?) {
+    let indexes = NSMutableIndexSet(index: view.rowForItem(item))
     if let parent = view.parentForItem(item) {
       indexes.addIndex(view.rowForItem(parent))
     } else {
