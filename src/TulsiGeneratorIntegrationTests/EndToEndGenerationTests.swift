@@ -32,8 +32,7 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
     let appLabel = BuildLabel("//\(testDir):Application")
     let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [RuleInfo(label: appLabel, type: "ios_application", linkedTargetLabels: Set<BuildLabel>()),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test", linkedTargetLabels: hostLabels),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTestWithDefaultHost"), type: "ios_test", linkedTargetLabels: Set<BuildLabel>())]
+                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"), type: "ios_test", linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("SimpleProject",

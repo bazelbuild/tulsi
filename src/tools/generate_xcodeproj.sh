@@ -19,7 +19,7 @@
 set -eu
 
 readonly tulsi_bundle_id=com.google.Tulsi
-readonly app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id})
+readonly app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id} | head -1)
 
 if [[ "${app_bundle_path}" == "" ]]; then
   echo "Tulsi.app could not be located. Please ensure that you have built Tulsi\
@@ -28,7 +28,7 @@ if [[ "${app_bundle_path}" == "" ]]; then
   exit 1
 fi
 
-readonly tulsi_path=${app_bundle_path}/Contents/MacOS/Tulsi
+readonly tulsi_path="${app_bundle_path}/Contents/MacOS/Tulsi"
 
 if [[ $# == 0 ]]; then
   exec "${tulsi_path}" -- -h

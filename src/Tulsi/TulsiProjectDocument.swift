@@ -330,25 +330,29 @@ final class TulsiProjectDocument: NSDocument,
   /// completionHandler on the main thread when the document is fully loaded.
   func loadConfigDocumentNamed(name: String,
                                completionHandler: (TulsiGeneratorConfigDocument? -> Void)) throws -> TulsiGeneratorConfigDocument {
+    let doc = try loadSparseConfigDocumentNamed(name)
+    doc.finishLoadingDocument(completionHandler)
+    return doc
+  }
+
+  /// Sparsely loads a previously created config with the given name. The returned document may have
+  /// unresolved label references.
+  func loadSparseConfigDocumentNamed(name: String) throws -> TulsiGeneratorConfigDocument {
     guard let configURL = urlForConfigNamed(name) else {
       throw Error.NoSuchConfig
     }
 
     let documentController = NSDocumentController.sharedDocumentController()
     if let configDocument = documentController.documentForURL(configURL) as? TulsiGeneratorConfigDocument {
-      NSThread.doOnMainThread() {
-        completionHandler(configDocument)
-      }
       return configDocument
     }
 
     do {
-      let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithContentsOfURL(configURL,
-                                                                                          infoExtractor: infoExtractor,
-                                                                                          messageLogger: self,
-                                                                                          messageLog: self,
-                                                                                          bazelURL: bazelURL,
-                                                                                          completionHandler: completionHandler)
+      let configDocument = try TulsiGeneratorConfigDocument.makeSparseDocumentWithContentsOfURL(configURL,
+                                                                                                infoExtractor: infoExtractor,
+                                                                                                messageLogger: self,
+                                                                                                messageLog: self,
+                                                                                                bazelURL: bazelURL)
       configDocument.projectRuleInfos = ruleInfos
       configDocument.delegate = self
       trackChildConfigDocument(configDocument)

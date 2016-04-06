@@ -146,6 +146,13 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   var messageLogger: MessageLoggerProtocol? = nil
   var messageLog: MessageLogProtocol? = nil
 
+  override var entireFileLoaded: Bool {
+    return _entireFileLoaded
+  }
+  /// Whether or not this document contains buildTargetLabels that have not been resolved to
+  /// RuleInfos. Since the doc is initialized without any buildTargetLabels, it starts fully loaded.
+  var _entireFileLoaded = true
+
   // Labels from a serialized config that must be resolved in order to fully load this config.
   private var buildTargetLabels: [BuildLabel]? = nil
 
@@ -199,6 +206,23 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                             messageLog: MessageLogProtocol?,
                                             bazelURL: NSURL? = nil,
                                             completionHandler: (TulsiGeneratorConfigDocument -> Void)) throws -> TulsiGeneratorConfigDocument {
+    let doc = try makeSparseDocumentWithContentsOfURL(url,
+                                                      infoExtractor: infoExtractor,
+                                                      messageLogger: messageLogger,
+                                                      messageLog: messageLog,
+                                                      bazelURL: bazelURL)
+    doc.finishLoadingDocument(completionHandler)
+    return doc
+  }
+
+  /// Builds a skeletal TulsiGeneratorConfigDocument by loading data from the given persisted config
+  /// and adds it to the document controller. The returned document will not contain fully resolved
+  /// label references and is not suitable for UI display in an editor.
+  static func makeSparseDocumentWithContentsOfURL(url: NSURL,
+                                                  infoExtractor: TulsiProjectInfoExtractor,
+                                                  messageLogger: MessageLoggerProtocol,
+                                                  messageLog: MessageLogProtocol?,
+                                                  bazelURL: NSURL? = nil) throws -> TulsiGeneratorConfigDocument {
     let documentController = NSDocumentController.sharedDocumentController()
     guard let doc = try documentController.makeDocumentWithContentsOfURL(url,
                                                                          ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
@@ -209,22 +233,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     doc.messageLogger = messageLogger
     doc.messageLog = messageLog
     doc.bazelURL = bazelURL
-
-    doc.processingTaskStarted()
-    NSThread.doOnQOSUserInitiatedThread() {
-      // Resolve labels to UIRuleEntries, warning on any failures.
-      doc.resolveLabelReferences() {
-        assert(NSThread.isMainThread())
-        if let concreteBuildTargetLabels = doc.buildTargetLabels {
-          let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
-                                      comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-          doc.warning(String(format: fmt, concreteBuildTargetLabels.map({ $0.description })))
-        }
-        doc.processingTaskFinished()
-        completionHandler(doc)
-      }
-    }
-
+    doc._entireFileLoaded = false
     return doc
   }
 
@@ -505,6 +514,27 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
+  /// Resolves any outstanding uncached label references, converting a sparsely loaded document into
+  /// a fully loaded one. completionHandler is invoked on the main thread when the document is fully
+  /// loaded.
+  func finishLoadingDocument(completionHandler: (TulsiGeneratorConfigDocument -> Void)) {
+    processingTaskStarted()
+    NSThread.doOnQOSUserInitiatedThread() {
+      // Resolve labels to UIRuleEntries, warning on any failures.
+      self.resolveLabelReferences() {
+        assert(NSThread.isMainThread())
+        if let concreteBuildTargetLabels = self.buildTargetLabels {
+          let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
+                                      comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
+          self.warning(String(format: fmt, concreteBuildTargetLabels.map({ $0.description })))
+        }
+        self.processingTaskFinished()
+        self._entireFileLoaded = true
+        completionHandler(self)
+      }
+    }
+  }
+
   func processingTaskStarted() {
     NSThread.doOnMainThread() { self.processingTaskCount += 1 }
   }
@@ -629,12 +659,23 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       }
       return $0.path
     })
-    return TulsiGeneratorConfig(projectName: concreteProjectName,
-                                buildTargets: selectedRuleInfos,
-                                pathFilters: pathFilters,
-                                additionalFilePaths: additionalFilePaths,
-                                options: concreteOptionSet,
-                                bazelURL: bazelURL)
+
+    // Check to see if the document is sparsely loaded or not.
+    if entireFileLoaded {
+      return TulsiGeneratorConfig(projectName: concreteProjectName,
+                                  buildTargets: selectedRuleInfos,
+                                  pathFilters: pathFilters,
+                                  additionalFilePaths: additionalFilePaths,
+                                  options: concreteOptionSet,
+                                  bazelURL: bazelURL)
+    } else {
+      return TulsiGeneratorConfig(projectName: concreteProjectName,
+                                  buildTargetLabels: buildTargetLabels ?? [],
+                                  pathFilters: pathFilters,
+                                  additionalFilePaths: additionalFilePaths,
+                                  options: concreteOptionSet,
+                                  bazelURL: bazelURL)
+    }
   }
 
   /// Resolves buildTargetLabels, leaving them populated with any labels that failed to be resolved.
@@ -663,6 +704,16 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       uiRuleEntry.selected = true
       ruleInfos.append(uiRuleEntry)
     }
+
+    // Add in any of the previously loaded rule infos that were not resolved as selected targets.
+    var existingInfos = self.uiRuleInfos.filter() {
+      !concreteBuildTargetLabels.contains($0.ruleInfo.label)
+    }
+    for existingInfo in existingInfos {
+      existingInfo.selected = false
+      ruleInfos.append(existingInfo)
+    }
+
     NSThread.doOnMainThread() {
       self.uiRuleInfos = ruleInfos
       self.buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)

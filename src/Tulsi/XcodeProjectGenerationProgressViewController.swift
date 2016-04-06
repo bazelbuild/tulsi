@@ -149,33 +149,28 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       return
     }
 
-    getConfigDocumentNamed(name) { (configDocument: TulsiGeneratorConfigDocument?) in
-      assert(NSThread.isMainThread())
-      guard let configDocument = configDocument else {
-        // Error messages have already been displayed.
-        completionHandler(nil)
-        return
-      }
+    guard let configDocument = getConfigDocumentNamed(name) else {
+      // Error messages have already been displayed.
+      completionHandler(nil)
+      return
+    }
 
-      NSThread.doOnQOSUserInitiatedThread() {
-        let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
-                                                              withWorkspaceRootURL: workspaceRootURL)
-        NSThread.doOnMainThread() {
-          completionHandler(url)
-        }
+    NSThread.doOnQOSUserInitiatedThread() {
+      let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
+                                                            withWorkspaceRootURL: workspaceRootURL)
+      NSThread.doOnMainThread() {
+        completionHandler(url)
       }
     }
   }
 
-  /// Loads a previously created config with the given name. The given completionHandler is invoked
-  /// on the main thread when the document is fully loaded.
-  private func getConfigDocumentNamed(name: String,
-                                      completionHandler: (TulsiGeneratorConfigDocument? -> Void)) -> TulsiGeneratorConfigDocument? {
+  /// Loads a previously created config with the given name as a sparse document.
+  private func getConfigDocumentNamed(name: String) -> TulsiGeneratorConfigDocument? {
     let document = self.representedObject as! TulsiProjectDocument
 
     let errorInfo: String
     do {
-      return try document.loadConfigDocumentNamed(name, completionHandler: completionHandler)
+      return try document.loadSparseConfigDocumentNamed(name)
     } catch TulsiProjectDocument.Error.NoSuchConfig {
       errorInfo = "No URL for config named '\(name)'"
     } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {

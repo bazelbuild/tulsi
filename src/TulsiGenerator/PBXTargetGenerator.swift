@@ -189,7 +189,13 @@ class PBXTargetGenerator {
       }
 
       if let ruleIncludes = ruleEntry.attributes[.includes] as? [String] {
-        let rootedPaths = ruleIncludes.map({"\(sourceDirectory)/\($0)"})
+        let packagePath: String
+        if let packageName = ruleEntry.label.packageName where !packageName.isEmpty {
+          packagePath = packageName + "/"
+        } else {
+          packagePath = ""
+        }
+        let rootedPaths = ruleIncludes.map() { "\(sourceDirectory)/\(packagePath)\($0)" }
         for include in rootedPaths {
           if !includesSet.contains(include) {
             includes.append(include)
