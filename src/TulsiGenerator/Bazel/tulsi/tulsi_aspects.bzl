@@ -179,23 +179,27 @@ def _extract_defines_from_option_list(lst):
 
 def _extract_compiler_defines(ctx):
   """Extracts preprocessor defines from compiler fragments."""
-  cpp_fragment = _get_opt_attr(ctx.fragments, 'cpp')
-  if not cpp_fragment:
-    return []
-
   defines = []
 
-  c_options = _get_opt_attr(cpp_fragment, 'c_options')
-  defines += _extract_defines_from_option_list(c_options)
+  cpp_fragment = _get_opt_attr(ctx.fragments, 'cpp')
+  if cpp_fragment:
+    c_options = _get_opt_attr(cpp_fragment, 'c_options')
+    defines += _extract_defines_from_option_list(c_options)
 
-  compiler_options = cpp_fragment.compiler_options([])
-  defines += _extract_defines_from_option_list(compiler_options)
+    compiler_options = cpp_fragment.compiler_options([])
+    defines += _extract_defines_from_option_list(compiler_options)
 
-  unfiltered = cpp_fragment.unfiltered_compiler_options([])
-  defines += _extract_defines_from_option_list(unfiltered)
+    unfiltered = cpp_fragment.unfiltered_compiler_options([])
+    defines += _extract_defines_from_option_list(unfiltered)
 
-  cxx = cpp_fragment.cxx_options([])
-  defines += _extract_defines_from_option_list(cxx)
+    cxx = cpp_fragment.cxx_options([])
+    defines += _extract_defines_from_option_list(cxx)
+
+  objc_fragment = _get_opt_attr(ctx.fragments, 'objc')
+  if objc_fragment:
+    objc_copts = _get_opt_attr(objc_fragment, 'copts')
+    defines += _extract_defines_from_option_list(objc_copts)
+
   return defines
 
 
@@ -281,5 +285,5 @@ def _tulsi_sources_aspect(target, ctx):
 tulsi_sources_aspect = aspect(
     implementation = _tulsi_sources_aspect,
     attr_aspects = _TULSI_COMPILE_DEPS,
-    fragments = ['cpp'],
+    fragments = ['cpp', 'objc'],
 )
