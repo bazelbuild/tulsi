@@ -188,10 +188,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
-        "HEADER_SEARCH_PATHS": "$(SRCROOT)",
+        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT)",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
+        "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
@@ -213,10 +214,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
-        "HEADER_SEARCH_PATHS": "$(SRCROOT) $(SRCROOT)/additional $(SRCROOT)/include/paths",
+        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT) $(TULSI_WORKSPACE_ROOT)/additional $(TULSI_WORKSPACE_ROOT)/include/paths",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
+        "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
@@ -723,7 +725,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(SRCROOT)/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WORKSPACE_ROOT)/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -1023,7 +1025,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": indexerTargetName,
     ]
     if pchFile != nil {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(SRCROOT)/\(pchFile!.path!)"
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WORKSPACE_ROOT)/\(pchFile!.path!)"
     }
     if bridgingHeader != nil {
         expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!

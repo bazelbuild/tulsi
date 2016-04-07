@@ -43,7 +43,7 @@ struct BazelFileTarget {
   var fullPath: String {
     switch targetType {
       case .SourceFile:
-        return "$(SRCROOT)/\(path)"
+        return "$(TULSI_WORKSPACE_ROOT)/\(path)"
       case .GeneratedFile:
         return "bazel-genfiles/\(path)"
     }
@@ -122,12 +122,6 @@ class PBXTargetGenerator {
   func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
                                          ruleEntryMap: [BuildLabel: RuleEntry],
                                          pathFilters: Set<String>) {
-
-    var sourceDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
-    if sourceDirectory.isEmpty {
-      sourceDirectory = "$(SRCROOT)"
-    }
-
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
       $0.substringToIndex($0.endIndex.advancedBy(-3))
     })
@@ -195,7 +189,7 @@ class PBXTargetGenerator {
         } else {
           packagePath = ""
         }
-        let rootedPaths = ruleIncludes.map() { "\(sourceDirectory)/\(packagePath)\($0)" }
+        let rootedPaths = ruleIncludes.map() { "$(TULSI_WORKSPACE_ROOT)/\(packagePath)\($0)" }
         for include in rootedPaths {
           if !includesSet.contains(include) {
             includes.append(include)
@@ -264,7 +258,7 @@ class PBXTargetGenerator {
           } else  if opt.hasPrefix("-I") {
             var path = opt.substringFromIndex(opt.startIndex.advancedBy(2))
             if !path.hasPrefix("/") {
-              path = "\(sourceDirectory)/\(path)"
+              path = "$(TULSI_WORKSPACE_ROOT)/\(path)"
             }
             if !includesSet.contains(path) {
               localIncludes.append(path)
@@ -335,9 +329,11 @@ class PBXTargetGenerator {
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
     }
-    var searchPaths = [sourceDirectory]
+    buildSettings["TULSI_WORKSPACE_ROOT"] = sourceDirectory
+
+    var searchPaths = ["$(TULSI_WORKSPACE_ROOT)"]
     if let additionalIncludePaths = additionalIncludePaths {
-      let rootedPaths = additionalIncludePaths.sort().map({"\(sourceDirectory)/\($0)"})
+      let rootedPaths = additionalIncludePaths.sort().map({"$(TULSI_WORKSPACE_ROOT)/\($0)"})
       searchPaths.appendContentsOf(rootedPaths)
     }
     buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
