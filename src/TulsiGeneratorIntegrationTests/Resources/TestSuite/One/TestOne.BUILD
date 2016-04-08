@@ -14,6 +14,11 @@
 
 # Simple mock test.
 
+test_suite(
+    name = "explicit_XCTests",
+    tests = [":XCTest"],
+)
+
 ios_test(
     name = "XCTest",
     srcs = ["XCTest.m"],

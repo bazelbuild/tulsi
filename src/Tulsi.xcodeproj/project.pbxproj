@@ -80,6 +80,7 @@
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
 		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
+		3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
 		3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */; };
@@ -217,6 +218,7 @@
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
+		3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryTests.swift; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
 		3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectInfoExtractor.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */,
 				3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */,
 				3DAEE4671C85EB6100BA1C67 /* Info.plist */,
+				3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */,
 				3DAEE4721C8600BE00BA1C67 /* Resources */,
 				3DAEE46E1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift */,
 			);
@@ -837,6 +840,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */,
 				3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */,
 				3DAEE46F1C85ECEC00BA1C67 /* TulsiSourcesAspectTests.swift in Sources */,
 				AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */,

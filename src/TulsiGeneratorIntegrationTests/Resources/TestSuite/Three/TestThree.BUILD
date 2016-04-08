@@ -14,6 +14,11 @@
 
 # Simple mock test.
 
+test_suite(
+    name = "tagged_tests",
+    tags = ["tagged"],
+)
+
 ios_test(
     name = "XCTest",
     srcs = ["XCTest.m"],
@@ -24,5 +29,6 @@ ios_test(
 ios_test(
     name = "NonXCTest",
     srcs = ["nonXCTest.m"],
+    tags = ["tagged"],
     xctest = 0,
 )

@@ -41,6 +41,14 @@ test_suite(
     tags = ["tagged"],
 )
 
+test_suite(
+    name = "recursive_test_suite",
+    tests = [
+        ":TestSuiteXCTest",
+        "//TestSuite/Three:tagged_tests",
+    ],
+)
+
 ios_application(
     name = "TestApplication",
     binary = ":Binary",

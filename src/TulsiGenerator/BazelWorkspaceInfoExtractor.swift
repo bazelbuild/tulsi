@@ -53,7 +53,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   // MARK: - BazelWorkspaceInfoExtractorProtocol
 
   func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
-    return queryExtractor.extractTargetRulesFromProject(project)
+    return queryExtractor.extractTargetRulesFromPackages(project.bazelPackages)
   }
 
   func ruleEntriesForLabels(labels: [BuildLabel],

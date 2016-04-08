@@ -35,46 +35,73 @@ final class BazelQueryInfoExtractor {
     self.localizedMessageLogger = localizedMessageLogger
   }
 
-  func extractTargetRulesFromProject(project: TulsiProject) -> [RuleInfo] {
-    let projectPackages = project.bazelPackages
-    guard !projectPackages.isEmpty else {
+  func extractTargetRulesFromPackages(packages: [String]) -> [RuleInfo] {
+    guard !packages.isEmpty else {
       return []
     }
 
-    var infos = [RuleInfo]()
-    let query = projectPackages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
     let profilingStart = localizedMessageLogger.startProfiling("fetch_rules",
-                                                               message: "Fetching rules for packages \(projectPackages)")
-
+                                                               message: "Fetching rules for packages \(packages)")
+    var infos = [RuleInfo]()
+    let query = packages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
     let (task, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
     if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
       infos = entries
     }
 
     if task.terminationStatus != 0 {
-      localizedMessageLogger.infoMessage(debugInfo)
-
-      let errorMessage: String?
-      let errorLines = debugInfo.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
-      if errorLines.isEmpty {
-        errorMessage = nil
-      } else {
-        let numErrorLinesToShow = min(errorLines.count, 3)
-        var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
-        if numErrorLinesToShow < errorLines.count {
-          errorSnippet += "\n..."
-        }
-        errorMessage = errorSnippet
-      }
-      self.localizedMessageLogger.error("BazelInfoExtractionFailed",
-                                        comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
-                                        details: errorMessage)
+      showExtractionError(debugInfo)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
     return infos
   }
 
+  /// Extracts a map of RuleInfo to considered expansions for the given test_suite targets.
+  // The information provided represents the full possible set of tests for each test_suite; the
+  // actual expansion by Bazel may not include all of the returned labels and will be done
+  // recursively such that a test_suite whose expansion contains another test_suite would expand to
+  // the contents of the incldued suite.
+  func extractTestSuiteRules(testSuiteLabels: [BuildLabel]) -> [RuleInfo: Set<BuildLabel>] {
+    if testSuiteLabels.isEmpty { return [:] }
+    let profilingStart = localizedMessageLogger.startProfiling("expand_test_suite_rules",
+                                                               message: "Expanding \(testSuiteLabels.count) test suites")
+
+    var infos = [RuleInfo: Set<BuildLabel>]()
+    let labelDeps = testSuiteLabels.map {"deps(\($0.value))"}
+    let joinedLabelDeps = labelDeps.joinWithSeparator("+")
+    let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
+    let (task, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
+      infos = entries
+    }
+    // Note that this query is expected to return a non-zero exit code on occasion, so no error
+    // message is logged.
+    localizedMessageLogger.infoMessage(debugInfo)
+    localizedMessageLogger.logProfilingEnd(profilingStart)
+    return infos
+  }
+
   // MARK: - Private methods
+
+  private func showExtractionError(debugInfo: String) {
+    localizedMessageLogger.infoMessage(debugInfo)
+
+    let errorMessage: String?
+    let errorLines = debugInfo.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
+    if errorLines.isEmpty {
+      errorMessage = nil
+    } else {
+      let numErrorLinesToShow = min(errorLines.count, 3)
+      var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
+      if numErrorLinesToShow < errorLines.count {
+        errorSnippet += "\n..."
+      }
+      errorMessage = errorSnippet
+    }
+    localizedMessageLogger.error("BazelInfoExtractionFailed",
+                                 comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
+                                 details: errorMessage)
+  }
 
   // Generates an NSTask that will perform a bazel query, capturing the output data and passing it
   // to the terminationHandler.
@@ -144,9 +171,9 @@ final class BazelQueryInfoExtractor {
     return (task, data, info)
   }
 
-  private func extractRuleInfosFromBazelXMLOutput(bazelOutput: NSData) -> [RuleInfo]? {
+  private func extractRuleInfosWithRuleInputsFromBazelXMLOutput(bazelOutput: NSData) -> [RuleInfo: Set<BuildLabel>]? {
     do {
-      var infos = [RuleInfo]()
+      var infos = [RuleInfo: Set<BuildLabel>]()
       let doc = try NSXMLDocument(data: bazelOutput, options: 0)
       let rules = try doc.nodesForXPath("/query/rule")
       for ruleNode in rules {
@@ -169,22 +196,28 @@ final class BazelQueryInfoExtractor {
           continue
         }
 
-        var linkedTargetLabels = Set<BuildLabel>()
-        let xctestAppNodes = try ruleElement.nodesForXPath("./label[@name='xctest_app']/@value")
-        for node in xctestAppNodes {
-          guard let label = node.stringValue else {
-            localizedMessageLogger.error("BazelResponseLabelAttributeInvalid",
-                                         comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
-                                         values: node)
-            continue
+        func extractLabelsFromXpath(xpath: String) throws -> Set<BuildLabel> {
+          var labelSet = Set<BuildLabel>()
+          let nodes = try ruleElement.nodesForXPath(xpath)
+          for node in nodes {
+            guard let label = node.stringValue else {
+              localizedMessageLogger.error("BazelResponseLabelAttributeInvalid",
+                                           comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
+                                           values: node)
+              continue
+            }
+            labelSet.insert(BuildLabel(label))
           }
-          linkedTargetLabels.insert(BuildLabel(label))
+          return labelSet
         }
+
+        let linkedTargetLabels = try extractLabelsFromXpath("./label[@name='xctest_app']/@value")
 
         let entry = RuleInfo(label: BuildLabel(ruleLabel),
                              type: ruleType,
                              linkedTargetLabels: linkedTargetLabels)
-        infos.append(entry)
+
+        infos[entry] = try extractLabelsFromXpath("./rule-input/@name")
       }
       return infos
     } catch let e as NSError {
@@ -193,5 +226,12 @@ final class BazelQueryInfoExtractor {
                                    values: e.localizedDescription)
       return nil
     }
+  }
+
+  private func extractRuleInfosFromBazelXMLOutput(bazelOutput: NSData) -> [RuleInfo]? {
+    if let infoMap = extractRuleInfosWithRuleInputsFromBazelXMLOutput(bazelOutput) {
+      return [RuleInfo](infoMap.keys)
+    }
+    return nil
   }
 }
