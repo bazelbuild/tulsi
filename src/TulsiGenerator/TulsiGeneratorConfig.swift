@@ -161,18 +161,19 @@ public class TulsiGeneratorConfig {
     let additionalFilePaths = dict[TulsiGeneratorConfig.AdditionalFilePathsKey] as? [String]
 
     // TODO(abaire): Clean up after a reasonable migration period (after April 15th, 2016).
-    let pathFilters: Set<String>
+    let rawPathFilters: Set<String>
     if let sourceTargetLabels = dict[TulsiGeneratorConfig.SourceTargetsKey] as? [String] {
-      // Convert the build labels to their package paths.
-      var filterSet = Set<String>()
-      for sourceTarget in sourceTargetLabels {
-        if let packageName = BuildLabel(sourceTarget).packageName {
-          filterSet.insert(packageName)
-        }
-      }
-      pathFilters = filterSet
+      rawPathFilters = Set<String>(sourceTargetLabels)
     } else {
-      pathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
+      rawPathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
+    }
+
+    // Convert any path filters specified as build labels to their package paths.
+    var pathFilters = Set<String>()
+    for sourceTarget in rawPathFilters {
+      if let packageName = BuildLabel(sourceTarget).packageName {
+        pathFilters.insert(packageName)
+      }
     }
 
     var optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]

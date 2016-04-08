@@ -68,4 +68,25 @@ class TulsiGeneratorConfigTests: XCTestCase {
       XCTFail("Unexpected assertion")
     }
   }
+
+  func testLoadWithBuildLabelSourceFilters() {
+    do {
+      var sourceFilters = pathFilters.map() { "//\($0)" }
+      let dict = [
+          "additionalFilePaths": additionalFilePaths,
+          "buildTargets": buildTargetLabels,
+          "projectName": projectName,
+          "sourceFilters": sourceFilters,
+      ]
+      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      config = try TulsiGeneratorConfig(data: data)
+
+      XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
+      XCTAssertEqual(config.buildTargetLabels, buildTargetLabels.map({ BuildLabel($0) }))
+      XCTAssertEqual(config.projectName, projectName)
+      XCTAssertEqual(config.pathFilters, pathFilters)
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
 }
