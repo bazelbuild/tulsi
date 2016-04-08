@@ -219,6 +219,9 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     case ReferencedObjectNotFoundError
   }
 
+  // List of objects that are always serialized on a single line by Xcode.
+  private static let CompactPBXTypes = Set<String>(["PBXBuildFile", "PBXFileReference"])
+
   private let rootObject: PBXProject
   private let gidGenerator: GIDGeneratorProtocol
   private var objects = [String: NSData]()
@@ -229,12 +232,15 @@ class OpenStepSerializer: PBXProjFieldSerializer {
   // Maps PBXObject types to arrays of keys in the objects array. This allows serialization in the
   // same OpenStep format as Xcode.
   private var typedObjectIndex = [String: [String]]()
+  // String to prepend to serialized fields.
   var indent = ""
+  // Character used between serialized fields.
+  var spacer = " "
   var currentObjectData: NSMutableData!
   var data: NSMutableData!
 
   // Regex used to determine whether a string value can be printed without quotes or not.
-  private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9]+$", options: [.CaseInsensitive])
+  private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9._/]+$", options: [.CaseInsensitive])
 
 
   init(rootObject: PBXProject, gidGenerator: GIDGeneratorProtocol) {
@@ -247,14 +253,14 @@ class OpenStepSerializer: PBXProjFieldSerializer {
 
     do {
       try data.tulsi_appendString("// !$*UTF8*$!\n{\n")
-      indent = "  "
+      indent = "\t"
       try appendIndentedString("archiveVersion = \(XcodeProjectArchiveVersion);\n")
       try appendIndentedString("classes = {\n\(indent)};\n")
       try appendIndentedString("objectVersion = \(XcodeVersionInfo.objectVersion);\n")
 
       try appendIndentedString("objects = {\n")
       let oldIndent = indent
-      indent += "  "
+      indent += "\t"
       let rootObjectID = try serializeObject(rootObject)
 
       try encodeSerializedPBXObjectArray("PBXBuildFile")
@@ -282,49 +288,6 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     return data
-  }
-
-  private func appendIndentedString(string: String) throws {
-    try data.tulsi_appendString(indent + string)
-  }
-
-  private func encodeSerializedPBXObjectArray(key: String) throws {
-    guard let entries = typedObjectIndex[key] else {
-      return
-    }
-
-    // For debugging purposes, throw away the index now that it's being encoded.
-    typedObjectIndex.removeValueForKey(key)
-
-    try data.tulsi_appendString("/* Begin \(key) section */\n")
-
-    for key in entries.sort() {
-      guard let objData = objects[key] else {
-        throw SerializationError.ReferencedObjectNotFoundError
-      }
-      data.appendData(objData)
-      try data.tulsi_appendString("\n")
-    }
-
-    try data.tulsi_appendString("\n/* End \(key) section */\n")
-  }
-
-  private func escapeString(val: String) -> String {
-    var val = val
-    // The quotation marks can be omitted if the string is composed strictly of alphanumeric
-    // characters and contains no white space (numbers are handled as strings in property lists).
-    // Though the property list format uses ASCII for strings, note that Cocoa uses Unicode. Since
-    // string encodings vary from region to region, this representation makes the format fragile.
-    // You may see strings containing unreadable sequences of ASCII characters; these are used to
-    // represent Unicode characters.
-    let valueRange = NSMakeRange(0, val.characters.count)
-    if unquotedSerializableStringRegex.firstMatchInString(val, options: NSMatchingOptions.Anchored, range: valueRange) != nil {
-      return val
-    } else {
-      val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
-      val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
-      return "\"\(val)\""
-    }
   }
 
   // MARK: - XcodeProjFieldSerializer
@@ -359,12 +322,21 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     let isa = obj.isa
-    try currentObjectData.tulsi_appendString("\(indent)\(obj.globalID)\(comment) = { isa = \(isa); ")
+    var startingString = "\(indent)\(obj.globalID)\(comment) = {"
 
+    let oldSpacer = spacer
+    if !OpenStepSerializer.CompactPBXTypes.contains(isa) {
+      spacer = "\n\(indent)\t"
+      startingString += spacer
+    } else {
+      spacer = " "
+    }
+    startingString += "isa = \(isa);\(spacer)"
+
+    try currentObjectData.tulsi_appendString(startingString)
     try obj.serializeInto(self)
 
     try currentObjectData.tulsi_appendString("};")
-
 
     if typedObjectIndex[isa] == nil {
       typedObjectIndex[isa] = [globalID]
@@ -372,6 +344,7 @@ class OpenStepSerializer: PBXProjFieldSerializer {
       typedObjectIndex[isa]!.append(globalID)
     }
 
+    spacer = oldSpacer
     currentObjectData = stack
 
     if returnRawID {
@@ -386,16 +359,16 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     let gid = try serializeObject(local)
-    try currentObjectData.tulsi_appendString("\(name) = \(gid); ")
+    try currentObjectData.tulsi_appendString("\(name) = \(gid);\(spacer)")
   }
 
   func addField(name: String, _ val: Int) throws {
-    try currentObjectData.tulsi_appendString("\(name) = \(val); ")
+    try currentObjectData.tulsi_appendString("\(name) = \(val);\(spacer)")
   }
 
   func addField(name: String, _ val: Bool) throws {
     let intVal = val ? 1 : 0
-    try currentObjectData.tulsi_appendString("\(name) = \(intVal); ")
+    try currentObjectData.tulsi_appendString("\(name) = \(intVal);\(spacer)")
   }
 
   func addField(name: String, _ val: String?) throws {
@@ -404,7 +377,7 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     let escapedString = escapeString(stringValue)
-    try currentObjectData.tulsi_appendString("\(name) = \(escapedString); ")
+    try currentObjectData.tulsi_appendString("\(name) = \(escapedString);\(spacer)")
   }
 
   func addField(name: String, _ val: [String: AnyObject]?) throws {
@@ -414,45 +387,97 @@ class OpenStepSerializer: PBXProjFieldSerializer {
       return
     }
 
-    try currentObjectData.tulsi_appendString("\(name) = { ")
-
-    for (key, value) in dict.sort({ $0.0 < $1.0 }) {
-      if let stringValue = value as? String {
-        let escapedString = escapeString(stringValue)
-        try currentObjectData.tulsi_appendString("\(key) = \(escapedString); ")
-      } else if let dictValue = value as? [String: AnyObject] {
-        try addField(key, dictValue)
-      } else if let arrayValue = value as? [String] {
-        try addField(key, arrayValue)
-      } else {
-        assertionFailure("Unsupported complex object \(value) in nested dictionary type")
+    try wrapSerializedGroup(name, prefixDelimiter: "{", suffixDelimiter: "};") {
+      for (key, value) in dict.sort({ $0.0 < $1.0 }) {
+        if let stringValue = value as? String {
+          let escapedString = self.escapeString(stringValue)
+          try self.currentObjectData.tulsi_appendString("\(key) = \(escapedString);\(self.spacer)")
+        } else if let dictValue = value as? [String:AnyObject] {
+          try self.addField(key, dictValue)
+        } else if let arrayValue = value as? [String] {
+          try self.addField(key, arrayValue)
+        } else {
+          assertionFailure("Unsupported complex object \(value) in nested dictionary type")
+        }
       }
     }
-
-    try currentObjectData.tulsi_appendString("}; ")
   }
 
   func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws {
-    try currentObjectData.tulsi_appendString("\(name) = ( ")
-
-    for val in values {
-      let objectReference = try serializeObject(val)
-      try currentObjectData.tulsi_appendString("\(objectReference), ")
+    try wrapSerializedGroup(name, prefixDelimiter: "(", suffixDelimiter: ");") {
+      for val in values {
+        let objectReference = try self.serializeObject(val)
+        try self.currentObjectData.tulsi_appendString("\(self.spacer)\(objectReference),")
+      }
     }
-    try currentObjectData.tulsi_appendString("); ")
   }
 
   func addField(name: String, _ values: [String]) throws {
-    try currentObjectData.tulsi_appendString("\(name) = ( ")
-
-    for val in values {
-      try currentObjectData.tulsi_appendString("\(escapeString(val)), ")
+    try wrapSerializedGroup(name, prefixDelimiter: "(", suffixDelimiter: ");") {
+      for val in values {
+        try self.currentObjectData.tulsi_appendString("\(self.spacer)\(self.escapeString(val)),")
+      }
     }
-
-    try currentObjectData.tulsi_appendString("); ")
   }
 
   func getGlobalIDForObject(object: PBXObjectProtocol) throws -> String {
     return try serializeObject(object)
+  }
+
+  // MARK: - Private methods
+
+  private func wrapSerializedGroup(name: String,
+                                   prefixDelimiter: String,
+                                   suffixDelimiter: String,
+                                   contentClosure: () throws -> Void) throws {
+    try currentObjectData.tulsi_appendString("\(name) = \(prefixDelimiter)\(spacer)")
+    let oldSpacer = spacer
+    spacer += "\t"
+    try contentClosure()
+    spacer = oldSpacer
+    try currentObjectData.tulsi_appendString("\(spacer)\(suffixDelimiter)\(spacer)")
+  }
+
+  private func appendIndentedString(string: String) throws {
+    try data.tulsi_appendString(indent + string)
+  }
+
+  private func encodeSerializedPBXObjectArray(key: String) throws {
+    guard let entries = typedObjectIndex[key] else {
+      return
+    }
+
+    // For debugging purposes, throw away the index now that it's being encoded.
+    typedObjectIndex.removeValueForKey(key)
+
+    try data.tulsi_appendString("\n/* Begin \(key) section */\n")
+
+    for key in entries.sort() {
+      guard let objData = objects[key] else {
+        throw SerializationError.ReferencedObjectNotFoundError
+      }
+      data.appendData(objData)
+      try data.tulsi_appendString("\n")
+    }
+
+    try data.tulsi_appendString("/* End \(key) section */\n")
+  }
+
+  private func escapeString(val: String) -> String {
+    var val = val
+    // The quotation marks can be omitted if the string is composed strictly of alphanumeric
+    // characters and contains no white space (numbers are handled as strings in property lists).
+    // Though the property list format uses ASCII for strings, note that Cocoa uses Unicode. Since
+    // string encodings vary from region to region, this representation makes the format fragile.
+    // You may see strings containing unreadable sequences of ASCII characters; these are used to
+    // represent Unicode characters.
+    let valueRange = NSMakeRange(0, val.characters.count)
+    if unquotedSerializableStringRegex.firstMatchInString(val, options: NSMatchingOptions.Anchored, range: valueRange) != nil {
+      return val
+    } else {
+      val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
+      val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+      return "\"\(val)\""
+    }
   }
 }

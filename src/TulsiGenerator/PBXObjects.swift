@@ -117,6 +117,7 @@ class PBXReference: PBXObjectProtocol {
   let name: String
   let path: String?
   let sourceTree: SourceTree
+  var serializesName = false
 
   var isa: String {
     assertionFailure("PBXReference must be subclassed")
@@ -175,7 +176,9 @@ class PBXReference: PBXObjectProtocol {
   }
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try serializer.addField("name", name)
+    if serializesName {
+      try serializer.addField("name", name)
+    }
     try serializer.addField("path", path)
     try serializer.addField("sourceTree", sourceTree.rawValue)
   }
@@ -227,15 +230,17 @@ class PBXFileReference: PBXReference, Hashable {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try super.serializeInto(serializer)
-
-    guard let uti = fileType else { return }
-    if isInputFile {
-      try serializer.addField("lastKnownFileType", uti)
-    } else {
-      try serializer.addField("explicitFileType", uti)
-      // TODO(abaire): set includeInIndex to 0 for output files?
+    if let uti = fileType {
+      if isInputFile {
+        try serializer.addField("lastKnownFileType", uti)
+      } else {
+        try serializer.addField("explicitFileType", uti)
+        // TODO(abaire): set includeInIndex to 0 for output files?
+      }
     }
+
+    // Note that super is serialized last in order to match Xcode's ordering.
+    try super.serializeInto(serializer)
   }
 }
 
@@ -330,8 +335,10 @@ class PBXGroup: PBXReference {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try super.serializeInto(serializer)
     try serializer.addField("children", children.sort({$0.name < $1.name}))
+
+    // Note that super is serialized last in order to match Xcode's ordering.
+    try super.serializeInto(serializer)
   }
 }
 
@@ -615,11 +622,11 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   }
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try serializer.addField("name", name)
-    try serializer.addField("productName", productName)
-    try serializer.addField("dependencies", dependencies)
     try serializer.addField("buildPhases", buildPhases)
     try serializer.addField("buildConfigurationList", buildConfigurationList)
+    try serializer.addField("dependencies", dependencies)
+    try serializer.addField("name", name)
+    try serializer.addField("productName", productName)
   }
 }
 
@@ -647,8 +654,8 @@ class PBXNativeTarget: PBXTarget {
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try super.serializeInto(serializer)
-    try serializer.addField("productType", productType.rawValue)
     try serializer.addField("productReference", productReference)
+    try serializer.addField("productType", productType.rawValue)
   }
 }
 
@@ -672,8 +679,8 @@ class PBXLegacyTarget: PBXTarget {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try super.serializeInto(serializer)
     try serializer.addField("buildArgumentsString", buildArgumentsString)
+    try super.serializeInto(serializer)
     try serializer.addField("buildToolPath", buildToolPath)
     try serializer.addField("buildWorkingDirectory", buildWorkingDirectory)
     try serializer.addField("passBuildSettingsInEnvironment", passBuildSettingsInEnvironment)
@@ -729,8 +736,8 @@ class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try serializer.addField("containerPortal", _ContainerPortal)
-    try serializer.addField("remoteGlobalIDString", _Target)
     try serializer.addField("proxyType", proxyType.rawValue)
+    try serializer.addField("remoteGlobalIDString", _Target)
     // TODO(abaire): Consider writing out remoteInfo as well (the name of the proxied target/file).
   }
 }
@@ -777,6 +784,9 @@ class PBXTargetDependency: PBXObjectProtocol {
 
 /// Models a project container.
 class PBXProject: PBXObjectProtocol {
+  // Name of the group in which target file references are stored.
+  static let ProductsGroupName = "Products"
+
   var globalID: String = ""
   let name: String
 
@@ -825,6 +835,7 @@ class PBXProject: PBXObjectProtocol {
       self.mainGroup = PBXGroup(name: "mainGroup", path: nil, sourceTree: .SourceRoot, parent: nil)
     }
     self.name = name
+    self.mainGroup.serializesName = true
   }
 
   /// Returns the product name and explicit file type for a target with the given name and product
@@ -880,7 +891,11 @@ class PBXProject: PBXObjectProtocol {
     let (productName, explicitFileType) = PBXProject.productNameAndTypeForTargetName(name,
                                                                                      targetType: targetType)
 
-    let productReference = PBXFileReference(name: productName, path: productName, sourceTree: .BuiltProductsDir, parent: nil)
+    let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
+                                                              path: nil)
+    productsGroup.serializesName = true
+    let productReference = productsGroup.getOrCreateFileReferenceBySourceTree(.BuiltProductsDir,
+                                                                              path: productName)
     productReference.fileTypeOverride = explicitFileType
     productReference.isInputFile = false
     value.productReference = productReference

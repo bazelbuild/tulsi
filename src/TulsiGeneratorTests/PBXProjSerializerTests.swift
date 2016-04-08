@@ -154,7 +154,7 @@ class PBXProjSerializerTests: XCTestCase {
       XCTFail("Failed to parse OpenStep serialized data " + error.localizedDescription + "\n" + serializedData)
       return
     }
-    XCTAssertEqual(openStepDeserializedPlist, xmlDeserializedPlist)
+    XCTAssertEqual(openStepDeserializedPlist, xmlDeserializedPlist, "Plists must match")
   }
 
   func testOpenStepSerializesEmptyDictionaries() {
@@ -258,6 +258,18 @@ class PBXProjSerializerTests: XCTestCase {
       self.groups = groups
       self.expectedPBXClass = expectedPBXClass
     }
+
+    func groupByAddingGroup(group: GroupDefinition) -> GroupDefinition {
+      var newGroups = groups
+      newGroups.append(group)
+      return GroupDefinition(name: name,
+                             sourceTree: sourceTree,
+                             path: path,
+                             gid: gid,
+                             files: files,
+                             groups: newGroups,
+                             expectedPBXClass: expectedPBXClass)
+    }
   }
 
   class VersionGroupDefinition: GroupDefinition {
@@ -345,6 +357,13 @@ class PBXProjSerializerTests: XCTestCase {
                                                   gid: generator.generateReservedID(),
                                                   isInputFile: true)
       let mainGroupGroups = [
+          GroupDefinition(name: "Products",
+              sourceTree: .Group,
+              path: nil,
+              gid: generator.generateReservedID(),
+              files: [],
+              groups: []
+          ),
           GroupDefinition(name: "ChildGroup",
               sourceTree: .Group,
               path: "child_group_path",
@@ -527,9 +546,11 @@ class PBXProjSerializerTests: XCTestCase {
                                                    withPBXClass: groupDef.expectedPBXClass,
                                                    fromObjects: objects,
                                                    line: line)
-    XCTAssertEqual(group["name"], groupDef.name, line: line)
-    XCTAssertEqual(group["sourceTree"], groupDef.sourceTree.rawValue, line: line)
-    XCTAssertEqual(group["path"], groupDef.path, line: line)
+    if let name = group["name"] {
+      XCTAssertEqual(name, groupDef.name, "name mismatch", line: line)
+    }
+    XCTAssertEqual(group["sourceTree"], groupDef.sourceTree.rawValue, "sourceTree mismatch", line: line)
+    XCTAssertEqual(group["path"], groupDef.path, "path mismatch", line: line)
 
     let numChildren = groupDef.files.count + groupDef.groups.count
     guard numChildren > 0 else {
@@ -559,12 +580,15 @@ class PBXProjSerializerTests: XCTestCase {
       assertFileReferenceSerialized(versionedGroupDef.currentVersion,
                                     withObjects: objects,
                                     line: line)
-      XCTAssertEqual(group["versionGroupType"], versionedGroupDef.versionGroupType, line: line)
+      XCTAssertEqual(group["versionGroupType"],
+                     versionedGroupDef.versionGroupType,
+                     "versionGroupType mismatch",
+                     line: line)
     }
 
     // Now that all of the expected children have been found, ensure that there are no unexpected
     // ones.
-    XCTAssertEqual(children.count, numChildren, line: line)
+    XCTAssertEqual(children.count, numChildren, "child count mismatch", line: line)
   }
 
   private func assertFileReferenceSerialized(fileDef: FileDefinition,
@@ -574,8 +598,8 @@ class PBXProjSerializerTests: XCTestCase {
                                                      withPBXClass: "PBXFileReference",
                                                      fromObjects: objects,
                                                      line: line)
-    XCTAssertEqual(fileRef["path"], fileDef.path, line: line)
-    XCTAssertEqual(fileRef["sourceTree"], fileDef.sourceTree.rawValue, line: line)
+    XCTAssertEqual(fileRef["path"], fileDef.path, "path mismatch", line: line)
+    XCTAssertEqual(fileRef["sourceTree"], fileDef.sourceTree.rawValue, "sourceTree mismatch", line: line)
 
     if fileDef.isInputFile {
       XCTAssertEqual(fileRef["lastKnownFileType"],
@@ -596,9 +620,9 @@ class PBXProjSerializerTests: XCTestCase {
                               matchesDefinition def: SimpleProjectDefinition.NativeTargetDefinition,
                               withObjects objects: StringToObjectDict,
                               line: UInt = #line) {
-    XCTAssertEqual(target["name"], def.name, line: line)
-    XCTAssertEqual(target["productName"], def.name, line: line)
-    XCTAssertEqual(target["productType"], def.targetType.rawValue, line: line)
+    XCTAssertEqual(target["name"], def.name, "name mismatch", line: line)
+    XCTAssertEqual(target["productName"], def.name, "productName mismatch", line: line)
+    XCTAssertEqual(target["productType"], def.targetType.rawValue, "productType mismatch", line: line)
 
     let buildConfigurationListGID = target["buildConfigurationList"] as! String
     let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID,
@@ -607,14 +631,14 @@ class PBXProjSerializerTests: XCTestCase {
                                                              line: line)
     let buildConfigs: [String]! = getBuildConfigurationsFromBuildConfigurationList(buildConfigList,
                                                                                    line: line)
-    XCTAssertEqual(buildConfigs.count, 1, line: line)
+    XCTAssertEqual(buildConfigs.count, 1, "buildConfigs count mismatch", line: line)
 
     let buildConfigDict: StringToObjectDict! = getObjectByID(buildConfigs[0],
                                                              withPBXClass: "XCBuildConfiguration",
                                                              fromObjects: objects,
                                                              line: line)
-    XCTAssertEqual(buildConfigDict["name"], def.config, line: line)
-    XCTAssertEqual(buildConfigDict["buildSettings"], def.settings, line: line)
+    XCTAssertEqual(buildConfigDict["name"], def.config, "name mismatch", line: line)
+    XCTAssertEqual(buildConfigDict["buildSettings"], def.settings, "buildSettings mismatch", line: line)
 
     // TODO(abaire): Validate that the target output information is correct.
     let productReferenceGID = target["productReference"] as! String
@@ -629,11 +653,11 @@ class PBXProjSerializerTests: XCTestCase {
                               withObjects objects: StringToObjectDict,
                               line: UInt = #line) {
 
-    XCTAssertEqual(target["name"], def.name, line: line)
-    XCTAssertEqual(target["productName"], def.name, line: line)
-    XCTAssertEqual(target["buildToolPath"], def.buildToolPath, line: line)
-    XCTAssertEqual(target["buildArgumentsString"], def.buildArguments, line: line)
-    XCTAssertEqual(target["buildWorkingDirectory"], def.buildWorkingDirectory, line: line)
+    XCTAssertEqual(target["name"], def.name, "name mismatch", line: line)
+    XCTAssertEqual(target["productName"], def.name, "productName mismatch", line: line)
+    XCTAssertEqual(target["buildToolPath"], def.buildToolPath, "buildToolPath mismatch", line: line)
+    XCTAssertEqual(target["buildArgumentsString"], def.buildArguments, "buildArgumentsString mismatch", line: line)
+    XCTAssertEqual(target["buildWorkingDirectory"], def.buildWorkingDirectory, "buildWorkingDirectory mismatch", line: line)
 
     let buildConfigurationListGID = target["buildConfigurationList"] as! String
     let buildConfigList: StringToObjectDict! = getObjectByID(buildConfigurationListGID,
