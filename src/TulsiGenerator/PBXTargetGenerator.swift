@@ -792,9 +792,21 @@ class PBXTargetGenerator {
       }
 
       // Emit a filtered option (--optionName[configName]) for each config.
-      for (configName, value) in configValues {
+      for (optionKey, value) in configValues {
         guard let concreteValue = value else { continue }
-        commandLine += "\(optionFlag)[\(configName.rawValue)] \(concreteValue) -- "
+        let rawName = optionKey.rawValue
+        var configKey: String! = nil
+        for key in ["Debug", "Fastbuild", "Release"] {
+          if rawName.hasSuffix(key) {
+            configKey = key
+            break
+          }
+        }
+        if configKey == nil {
+          assertionFailure("Failed to map option key \(optionKey) to a build config.")
+          configKey = "Fastbuild"
+        }
+        commandLine += "\(optionFlag)[\(configKey)] \(concreteValue) -- "
       }
     }
 

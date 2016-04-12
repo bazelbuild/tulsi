@@ -159,14 +159,17 @@ class EndToEndGenerationTests: BazelIntegrationTestCase {
                                     pathFilters: [String],
                                     additionalFilePaths: [String] = [],
                                     outputDir: String) -> NSURL? {
-    let options = TulsiOptionSet()
     let userDefaults = NSUserDefaults.standardUserDefaults()
+    let buildOptions =  userDefaults.stringForKey("testBazelBuildOptions") ?? ""
+
+    let options = TulsiOptionSet()
     if let startupOptions = userDefaults.stringForKey("testBazelStartupOptions") {
       options[.BazelBuildStartupOptionsDebug].projectValue = startupOptions
     }
-    if let buildOptions = userDefaults.stringForKey("testBazelBuildOptions") {
-      options[.BazelBuildOptionsDebug].projectValue = buildOptions
-    }
+
+    options[.BazelBuildOptionsDebug].projectValue = "--define=TULSI_TEST=dbg " + buildOptions
+    options[.BazelBuildOptionsFastbuild].projectValue = "--define=TULSI_TEST=fst " + buildOptions
+    options[.BazelBuildOptionsRelease].projectValue = "--define=TULSI_TEST=rel " + buildOptions
 
     let config = TulsiGeneratorConfig(projectName: projectName,
                                       buildTargets: buildTargets,

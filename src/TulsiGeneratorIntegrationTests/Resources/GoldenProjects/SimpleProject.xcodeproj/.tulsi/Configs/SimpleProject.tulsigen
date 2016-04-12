@@ -8,7 +8,15 @@
     "\/\/tulsi_e2e_simple:XCTest"
   ],
   "optionSet" : {
-
+    "BazelBuildOptionsDebug" : {
+      "p" : "--define=TULSI_TEST=dbg "
+    },
+    "BazelBuildOptionsFastbuild" : {
+      "p" : "--define=TULSI_TEST=fst "
+    },
+    "BazelBuildOptionsRelease" : {
+      "p" : "--define=TULSI_TEST=rel "
+    }
   },
   "sourceFilters" : [
     "tulsi_e2e_simple\/..."

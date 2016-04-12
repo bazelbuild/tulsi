@@ -165,7 +165,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B422714BD2875800000000 /* ShellScript */,
+				84B42271366EDBAA00000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
@@ -215,7 +215,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B422710D652B1700000000 /* ShellScript */,
+				84B42271ECA6004200000000 /* ShellScript */,
 			);
 			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */;
 			dependencies = (
@@ -231,7 +231,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B42271FBA7F01A00000000 /* ShellScript */,
+				84B42271DB7CD92200000000 /* ShellScript */,
 				605793E20000000000000002 /* Sources */,
 			);
 			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
@@ -249,7 +249,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B422714BD2875800000001 /* ShellScript */,
+				84B42271366EDBAA00000001 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
 			);
 			buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
@@ -339,7 +339,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B422710D652B1700000000 /* ShellScript */ = {
+		84B42271366EDBAA00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -354,10 +354,10 @@
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
-		84B422714BD2875800000000 /* ShellScript */ = {
+		84B42271366EDBAA00000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -372,10 +372,10 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
-		84B422714BD2875800000001 /* ShellScript */ = {
+		84B42271DB7CD92200000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -390,10 +390,10 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTe
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
-		84B42271FBA7F01A00000000 /* ShellScript */ = {
+		84B42271ECA6004200000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -408,7 +408,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTe
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
 /* End PBXShellScriptBuildPhase section */

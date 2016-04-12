@@ -460,7 +460,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B422719925049800000000 /* ShellScript */,
+				84B42271A9BD4F9F00000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
@@ -510,7 +510,7 @@
 			isa = PBXNativeTarget;
 			buildPhases = (
 			
-				84B4227129DD6EA600000000 /* ShellScript */,
+				84B42271F718813C00000000 /* ShellScript */,
 			);
 			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "Application" */;
 			dependencies = (
@@ -591,7 +591,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B4227129DD6EA600000000 /* ShellScript */ = {
+		84B42271A9BD4F9F00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -606,10 +606,10 @@
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
-		84B422719925049800000000 /* ShellScript */ = {
+		84B42271F718813C00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			files = (
 			
@@ -624,7 +624,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			shellScript = "set -e
 cd \"${SRCROOT}/../..\"
 . \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
-exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\"  --install_generated_artifacts";
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 			};
 /* End PBXShellScriptBuildPhase section */
