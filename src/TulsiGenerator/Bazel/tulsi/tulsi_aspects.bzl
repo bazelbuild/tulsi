@@ -58,7 +58,18 @@ def _file_metadata(file):
     return None
 
   if not file.is_source:
-    root_execution_path_fragment = file.root.path
+    # The root path will be something like "bazel-out/darwin_x86_64-fastbuild/genfiles". Tulsi needs
+    # to use the automatic symlink as the actual build type is unlikely to be the same as that used
+    # to run the aspect (i.e., the darwin_x86_64-fastbuild part).
+    root_path = file.root.path
+    first_dash = root_path.find("-")
+    components = root_path.split("/")
+    if first_dash >= 0 and len(components) > 2:
+      symlink_path = root_path[:first_dash + 1] + "/".join(components[2:])
+      root_execution_path_fragment = symlink_path
+    else:
+      print('Unexpected root path "%s". Please report.' % root_path)
+      root_execution_path_fragment = root_path
   else:
     root_execution_path_fragment = None
 

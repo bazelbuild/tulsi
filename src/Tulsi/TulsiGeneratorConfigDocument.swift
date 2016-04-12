@@ -442,8 +442,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         }
 
         let componentDelimiters = NSCharacterSet(charactersInString: "/:")
-        for sourceFile in ruleEntry.sourceFiles {
-          let path = (sourceFile as NSString).stringByDeletingLastPathComponent
+        for fileInfo in ruleEntry.sourceFiles {
+          if fileInfo.targetType != .SourceFile { continue }
+          let path = (fileInfo.fullPath as NSString).stringByDeletingLastPathComponent
           if path.isEmpty { continue }
 
           let pathComponents = path.componentsSeparatedByCharactersInSet(componentDelimiters)

@@ -38,6 +38,54 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   }
 }
 
+
+/// Encapsulates data about a file that may be a Bazel input or output.
+public class BazelFileInfo {
+  public enum TargetType {
+    case SourceFile
+    case GeneratedFile
+  }
+
+  /// The path to this file relative to rootPath.
+  public let subPath: String
+
+  /// The root of this file's path (typically used to indicate the path to a generated file's root).
+  public let rootPath: String
+
+  /// The type of this file.
+  public let targetType: TargetType
+
+  public var fullPath: String {
+    return NSString.pathWithComponents([rootPath, subPath])
+  }
+
+  init?(info: AnyObject?) {
+    guard let info = info as? [String: AnyObject] else { return nil }
+
+    guard let subPath = info["path"] as? String,
+              isSourceFile = info["src"] as? Bool else {
+      assertionFailure("Aspect provided a file info dictionary but was missing required keys")
+      return nil
+    }
+
+    self.subPath = subPath
+    if let rootPath = info["rootPath"] as? String {
+      // Patch up
+      self.rootPath = rootPath
+    } else {
+      self.rootPath = ""
+    }
+    self.targetType = isSourceFile ? .SourceFile : .GeneratedFile
+  }
+
+  init(rootPath: String, subPath: String, targetType: TargetType) {
+    self.rootPath = rootPath
+    self.subPath = subPath
+    self.targetType = targetType
+  }
+}
+
+
 /// Models the full metadata of a single supported Bazel target.
 /// See http://bazel.io/docs/build-ref.html#targets.
 public final class RuleEntry: RuleInfo {
@@ -87,7 +135,7 @@ public final class RuleEntry: RuleInfo {
   public let attributes: [Attribute: AnyObject]
 
   /// Source files associated with this rule.
-  public let sourceFiles: [String]
+  public let sourceFiles: [BazelFileInfo]
 
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
@@ -115,7 +163,7 @@ public final class RuleEntry: RuleInfo {
   init(label: BuildLabel,
        type: String,
        attributes: [String: AnyObject],
-       sourceFiles: [String],
+       sourceFiles: [BazelFileInfo],
        dependencies: Set<String>,
        buildFilePath: String? = nil) {
 
@@ -145,7 +193,7 @@ public final class RuleEntry: RuleInfo {
   convenience init(label: String,
                    type: String,
                    attributes: [String: AnyObject],
-                   sourceFiles: [String],
+                   sourceFiles: [BazelFileInfo],
                    dependencies: Set<String>,
                    buildFilePath: String? = nil) {
     self.init(label: BuildLabel(label),

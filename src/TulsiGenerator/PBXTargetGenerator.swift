@@ -15,42 +15,6 @@
 import Foundation
 
 
-/// Encapsulates a file that may be a bazel input or output.
-struct BazelFileTarget {
-  enum TargetType {
-    case SourceFile
-    case GeneratedFile
-  }
-
-  static func fileTargetFromAspectFileInfo(info: AnyObject?) -> BazelFileTarget? {
-    guard let info = info as? [String: AnyObject] else { return nil }
-
-    guard let path = info["path"] as? String,
-              isSourceFile = info["src"] as? Bool else {
-      assertionFailure("Aspect provided a file info dictionary but was missing required keys")
-      return nil
-    }
-    return BazelFileTarget(path: path,
-                           targetType: isSourceFile ? .SourceFile : .GeneratedFile)
-  }
-
-  /// The path to this file relative to the bazel workspace root or generated files root.
-  let path: String
-
-  /// The type of this file.
-  let targetType: TargetType
-
-  var fullPath: String {
-    switch targetType {
-      case .SourceFile:
-        return "$(TULSI_WORKSPACE_ROOT)/\(path)"
-      case .GeneratedFile:
-        return "bazel-genfiles/\(path)"
-    }
-  }
-}
-
-
 // Concrete PBXProject target generator.
 class PBXTargetGenerator {
 
@@ -93,6 +57,10 @@ class PBXTargetGenerator {
 
   var bazelCleanScriptTarget: PBXLegacyTarget? = nil
 
+  private static func projectRefForBazelFileInfo(info: BazelFileInfo) -> String {
+    return "$(TULSI_WORKSPACE_ROOT)/\(info.fullPath)"
+  }
+
   init(bazelURL: NSURL,
        project: PBXProject,
        buildScriptPath: String,
@@ -134,6 +102,11 @@ class PBXTargetGenerator {
         if terminatedDir.hasPrefix(filter) { return true }
       }
       return false
+    }
+
+    func includeFileInProject(info: BazelFileInfo) -> Bool {
+      if info.targetType == .GeneratedFile { return true }
+      return includePathInProject(info.fullPath)
     }
 
     func addBuildFileForRule(ruleEntry: RuleEntry) {
@@ -198,14 +171,14 @@ class PBXTargetGenerator {
         }
       }
 
-      func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileTarget]? {
+      func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileInfo]? {
         guard let descriptions = ruleEntry.attributes[attribute] as? [[String: AnyObject]] else {
           return nil
         }
 
-        var fileTargets = [BazelFileTarget]()
+        var fileTargets = [BazelFileInfo]()
         for description in descriptions {
-          guard let target = BazelFileTarget.fileTargetFromAspectFileInfo(description) else {
+          guard let target = BazelFileInfo(info: description) else {
             assertionFailure("Failed to resolve file description to a file target")
             continue
           }
@@ -214,16 +187,16 @@ class PBXTargetGenerator {
         return fileTargets
       }
 
-      let sourcePaths = ruleEntry.sourceFiles.filter(includePathInProject)
+      let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
       var buildPhaseReferences = [PBXReference]()
       if let fileTargets = parseFileDescriptionListAttribute(.datamodels) {
         let versionedFileReferences = createReferencesForVersionedFileTargets(fileTargets)
         buildPhaseReferences.appendContentsOf(versionedFileReferences as [PBXReference])
       }
 
-      var additionalFileTargets = [BazelFileTarget]()
+      var additionalFileTargets = [BazelFileInfo]()
       if let description = ruleEntry.attributes[.launch_storyboard] as? [String: AnyObject],
-             fileTarget = BazelFileTarget.fileTargetFromAspectFileInfo(description) {
+             fileTarget = BazelFileInfo(info: description) {
         additionalFileTargets.append(fileTarget)
       }
 
@@ -236,14 +209,14 @@ class PBXTargetGenerator {
       }
 
       for target in additionalFileTargets {
-        let path = target.path as NSString
+        let path = target.fullPath as NSString
         let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
         let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
                                                              path: path.lastPathComponent)
         ref.isInputFile = target.targetType == .SourceFile
       }
 
-      if sourcePaths.isEmpty && buildPhaseReferences.isEmpty {
+      if sourceFileInfos.isEmpty && buildPhaseReferences.isEmpty {
         return (defines, includes)
       }
 
@@ -271,7 +244,8 @@ class PBXTargetGenerator {
       let targetName = indexerNameForRuleEntry(ruleEntry)
       let indexingTarget = project.createNativeTarget(targetName,
                                                       targetType: PBXTarget.ProductType.StaticLibrary)
-      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
+
+      let fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
       buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
       addBuildFileForRule(ruleEntry)
       let buildPhase = createBuildPhaseForReferences(buildPhaseReferences)
@@ -280,7 +254,7 @@ class PBXTargetGenerator {
                                   ruleEntry: ruleEntry,
                                   preprocessorDefines: localPreprocessorDefines,
                                   includes: localIncludes,
-                                  sourceFilter: includePathInProject)
+                                  sourceFilter: includeFileInProject)
       return (defines, includes)
     }
 
@@ -411,6 +385,27 @@ class PBXTargetGenerator {
 
   // MARK: - Private methods
 
+  private func generateFileReferencesForFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
+    var generatedFilePaths = [String]()
+    var sourceFilePaths = [String]()
+    for info in infos {
+      switch info.targetType {
+        case .GeneratedFile:
+          generatedFilePaths.append(info.fullPath)
+        case .SourceFile:
+          sourceFilePaths.append(info.fullPath)
+      }
+    }
+
+    // Add the source paths directly and the generated paths with explicitFileType set.
+    var (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourceFilePaths)
+    let (_, generatedFileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(generatedFilePaths)
+    generatedFileReferences.forEach() { $0.isInputFile = false }
+
+    fileReferences.appendContentsOf(generatedFileReferences)
+    return fileReferences
+  }
+
   private func generateUniqueNamesForRuleEntries(ruleEntries: [RuleEntry]) -> [String: RuleEntry] {
     // Build unique names for the target rules.
     var collidingRuleEntries = [String: [RuleEntry]]()
@@ -441,13 +436,13 @@ class PBXTargetGenerator {
   }
 
   /// Adds the given file targets to a versioned group.
-  private func createReferencesForVersionedFileTargets(fileTargets: [BazelFileTarget]) -> [XCVersionGroup] {
+  private func createReferencesForVersionedFileTargets(fileInfos: [BazelFileInfo]) -> [XCVersionGroup] {
     var groups = [String: XCVersionGroup]()
 
-    for target in fileTargets {
-      let path = target.path as NSString
+    for info in fileInfos {
+      let path = info.fullPath as NSString
       let versionedGroupPath = path.stringByDeletingLastPathComponent
-      let type = target.path.pbPathUTI ?? ""
+      let type = info.subPath.pbPathUTI ?? ""
       let versionedGroup = project.getOrCreateVersionGroupForPath(versionedGroupPath,
                                                                   versionGroupType: type)
       if groups[versionedGroupPath] == nil {
@@ -455,7 +450,7 @@ class PBXTargetGenerator {
       }
       let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group,
                                                                     path: path.lastPathComponent)
-      ref.isInputFile = target.targetType == .SourceFile
+      ref.isInputFile = info.targetType == .SourceFile
     }
 
     for (sourcePath, group) in groups {
@@ -510,18 +505,18 @@ class PBXTargetGenerator {
                                            ruleEntry: RuleEntry,
                                            preprocessorDefines: Set<String>?,
                                            includes: [String],
-                                           sourceFilter: (String) -> Bool) {
+                                           sourceFilter: (BazelFileInfo) -> Bool) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
-    func addFilteredSourceReference(target: BazelFileTarget) {
-      if target.targetType == .SourceFile && sourceFilter(target.path) {
-        project.getOrCreateGroupsAndFileReferencesForPaths([target.path])
-      }
+    func addFilteredSourceReference(info: BazelFileInfo) {
+      if !sourceFilter(info) { return }
+      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths([info.fullPath])
+      fileReferences.first!.isInputFile = info.targetType == .SourceFile
     }
 
-    if let pchFile = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.pch]) {
-      buildSettings["GCC_PREFIX_HEADER"] = pchFile.fullPath
+    if let pchFile = BazelFileInfo(info: ruleEntry.attributes[.pch]) {
+      buildSettings["GCC_PREFIX_HEADER"] = PBXTargetGenerator.projectRefForBazelFileInfo(pchFile)
       addFilteredSourceReference(pchFile)
     }
 
@@ -530,8 +525,8 @@ class PBXTargetGenerator {
       buildSettings["OTHER_CFLAGS"] = cflagDefines.joinWithSeparator(" ")
     }
 
-    if let bridgingHeader = BazelFileTarget.fileTargetFromAspectFileInfo(ruleEntry.attributes[.bridging_header]) {
-      buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader.fullPath
+    if let bridgingHeader = BazelFileInfo(info: ruleEntry.attributes[.bridging_header]) {
+      buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = PBXTargetGenerator.projectRefForBazelFileInfo(bridgingHeader)
       addFilteredSourceReference(bridgingHeader)
     }
 
@@ -574,9 +569,9 @@ class PBXTargetGenerator {
                                               inheritingFromConfigurationList: indexerTarget?.buildConfigurationList)
     }
 
-    let sourcePaths = ruleEntry.sourceFiles
-    if !sourcePaths.isEmpty {
-      let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(sourcePaths)
+    let sourceFileInfos = ruleEntry.sourceFiles
+    if !sourceFileInfos.isEmpty {
+      let fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
       let buildPhase = createBuildPhaseForReferences(fileReferences)
       target.buildPhases.append(buildPhase)
 

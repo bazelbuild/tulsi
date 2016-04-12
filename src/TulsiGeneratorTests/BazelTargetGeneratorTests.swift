@@ -732,7 +732,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   func testGenerateIndexerWithGeneratedBridgingHeader() {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
-                              "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                              "rootPath": "bazel-genfiles",
                               "src": false]
     let ruleAttributes = ["bridging_header": bridgingHeaderInfo]
 
@@ -749,7 +749,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "bazel-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -891,16 +891,23 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                              buildFilePath: buildFilePath)
   }
 
+  private class TestBazelFileInfo : BazelFileInfo {
+    init(fullPath: String) {
+      super.init(rootPath: "", subPath: fullPath, targetType: .SourceFile)
+    }
+  }
+
   private func makeTestRuleEntry(label: BuildLabel,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set<String>(),
                                  buildFilePath: String? = nil) -> RuleEntry {
+    let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
     return RuleEntry(label: label,
                      type: type,
                      attributes: attributes,
-                     sourceFiles: sourceFiles,
+                     sourceFiles: sourceInfos,
                      dependencies: dependencies,
                      buildFilePath: buildFilePath)
   }

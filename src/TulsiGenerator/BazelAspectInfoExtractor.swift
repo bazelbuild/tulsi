@@ -212,10 +212,10 @@ final class BazelAspectInfoExtractor {
       let ruleType = try getRequiredField("type")
       let attributes = dict["attr"] as? [String: AnyObject] ?? [:]
       let sourceInfos = dict["srcs"] as? [[String: AnyObject]] ?? []
-      var sources = [String]()
+      var sources = [BazelFileInfo]()
       for info in sourceInfos {
-        if let path = info["path"] as? String {
-          sources.append(path)
+        if let pathInfo = BazelFileInfo(info: info) {
+          sources.append(pathInfo)
         }
       }
       let dependencies = dict["deps"] as? [String] ?? []

@@ -53,7 +53,7 @@
 		43D68C2841BB402A00000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_SubLibrary_-4799450061059093063.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C284C292B6200000000 /* AssetsOne.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsOne.xcassets; sourceTree = "<group>"; };
 		43D68C284C75FE0B00000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C284DBD1B7500000000 /* output.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = output.m; sourceTree = "<group>"; };
+		43D68C284DBD1B7500000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = output.m; sourceTree = "<group>"; };
 		43D68C285901749E00000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; path = Two.storyboard; sourceTree = "<group>"; };
 		43D68C285BF5223400000000 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
 		43D68C2862A61A8600000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnotherPCHFile.pch; sourceTree = "<group>"; };
@@ -66,14 +66,43 @@
 		43D68C28AF13353000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B91EE1B700000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
 		43D68C28BA5D07EF00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28C03B40EE00000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C28C08351D300000000 /* lib_indexer_Library_-4799450060931977398.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Library_-4799450060931977398.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28C9CA518600000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
+		43D68C28DA72219400000000 /* bridging_header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
 		43D68C28DBBEB27100000000 /* lib_indexer_XCTest_-4799450059344870159.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_XCTest_-4799450059344870159.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FA482AD300000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE03344B0C00000000 /* BridgingHeaderGenerator */ = {
+			isa = PBXGroup;
+			children = (
+			
+				966FB6DE0675459E00000000 /* outs */,
+			);
+			path = BridgingHeaderGenerator;
+			sourceTree = "<group>";
+			};
 		966FB6DE0675459E00000000 /* outs */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C28DA72219400000000 /* bridging_header.h */,
+			);
+			path = outs;
+			sourceTree = "<group>";
+			};
+		966FB6DE0675459E00000001 /* outs */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C28C03B40EE00000000 /* PCHFile.pch */,
+			);
+			path = outs;
+			sourceTree = "<group>";
+			};
+		966FB6DE0675459E00000002 /* outs */ = {
 			isa = PBXGroup;
 			children = (
 			
@@ -82,7 +111,7 @@
 			path = outs;
 			sourceTree = "<group>";
 			};
-		966FB6DE0675459E00000001 /* outs */ = {
+		966FB6DE0675459E00000003 /* outs */ = {
 			isa = PBXGroup;
 			children = (
 			
@@ -134,6 +163,15 @@
 				966FB6DE5B9D018E00000003 /* srcs */,
 			);
 			path = SubLibrary;
+			sourceTree = "<group>";
+			};
+		966FB6DE529F18AF00000000 /* PCHGenerator */ = {
+			isa = PBXGroup;
+			children = (
+			
+				966FB6DE0675459E00000001 /* outs */,
+			);
+			path = PCHGenerator;
 			sourceTree = "<group>";
 			};
 		966FB6DE56C029FB00000000 /* Base.lproj */ = {
@@ -216,9 +254,18 @@
 			isa = PBXGroup;
 			children = (
 			
-				966FB6DE0675459E00000001 /* outs */,
+				966FB6DE0675459E00000003 /* outs */,
 			);
 			path = StoryboardGenerator;
+			sourceTree = "<group>";
+			};
+		966FB6DE683454B700000000 /* bazel-genfiles */ = {
+			isa = PBXGroup;
+			children = (
+			
+				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
+			);
+			path = "bazel-genfiles";
 			sourceTree = "<group>";
 			};
 		966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */ = {
@@ -243,12 +290,22 @@
 			isa = PBXGroup;
 			children = (
 			
+				966FB6DE03344B0C00000000 /* BridgingHeaderGenerator */,
+				966FB6DE529F18AF00000000 /* PCHGenerator */,
+				966FB6DEA04342FA00000000 /* SrcGenerator */,
+				966FB6DE65EA9DC200000000 /* StoryboardGenerator */,
+			);
+			path = tulsi_e2e_complex;
+			sourceTree = "<group>";
+			};
+		966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */ = {
+			isa = PBXGroup;
+			children = (
+			
 				43D68C285BF5223400000000 /* BUILD */,
 				966FB6DEE2E4E10A00000000 /* Binary */,
 				966FB6DE94E444FD00000000 /* Library */,
 				966FB6DE144879E600000000 /* LibrarySources */,
-				966FB6DEA04342FA00000000 /* SrcGenerator */,
-				966FB6DE65EA9DC200000000 /* StoryboardGenerator */,
 				966FB6DE3FFB782800000000 /* SubLibrary */,
 				966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */,
 				966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */,
@@ -290,7 +347,7 @@
 			isa = PBXGroup;
 			children = (
 			
-				966FB6DE0675459E00000000 /* outs */,
+				966FB6DE0675459E00000002 /* outs */,
 			);
 			path = SrcGenerator;
 			sourceTree = "<group>";
@@ -322,7 +379,8 @@
 			children = (
 			
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
+				966FB6DE683454B700000000 /* bazel-genfiles */,
+				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
 			);
 			name = mainGroup;
 			path = ../..;
@@ -584,8 +642,8 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			files = (
 			
 				E6AF49471B08EDE700000000 /* main.m in srcs */,
-				E6AF49474DBD1B7500000000 /* output.m in outs */,
 				E6AF4947B91EE1B700000000 /* NonARCFile.mm in non_arc_srcs */,
+				E6AF49474DBD1B7500000000 /* output.m in outs */,
 			);
 			};
 		605793E20000000000000002 /* Sources */ = {
@@ -699,7 +757,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
-				SWIFT_OBJC_BRIDGING_HEADER = "bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 				
 			};
 			};
@@ -715,7 +773,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			isa = XCBuildConfiguration;
 			name = Fastbuild;
 			buildSettings = {
-			GCC_PREFIX_HEADER = "bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+			GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";
@@ -812,7 +870,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
-				SWIFT_OBJC_BRIDGING_HEADER = "bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 				
 			};
 			};
@@ -828,7 +886,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			isa = XCBuildConfiguration;
 			name = Debug;
 			buildSettings = {
-			GCC_PREFIX_HEADER = "bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+			GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";
@@ -925,7 +983,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
-				SWIFT_OBJC_BRIDGING_HEADER = "bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 				
 			};
 			};
@@ -941,7 +999,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:
 			isa = XCBuildConfiguration;
 			name = Release;
 			buildSettings = {
-			GCC_PREFIX_HEADER = "bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+			GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";

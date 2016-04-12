@@ -126,7 +126,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:Binary")
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                              "rootPath": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
@@ -135,14 +135,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                               "rootPath": "bazel-genfiles",
                                "src": false]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm",
                      "tulsi_test/Binary/srcs/main.m",
-                     "tulsi_test/SrcGenerator/outs/output.m"
+                     "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasAttribute(.asset_catalogs,
                       value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
@@ -151,7 +151,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                              "rootPath": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
@@ -160,7 +160,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                               "rootPath": "bazel-genfiles",
                                "src": false]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
@@ -183,7 +183,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                         "'LIBRARY SECOND DEFINE'=2",
                                         "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
         .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
-                                    "rootPath": "bazel-out/darwin_x86_64-fastbuild/genfiles",
+                                    "rootPath": "bazel-genfiles",
                                     "src": false])
 
     checker.assertThat("//tulsi_test:SubLibrary")
@@ -341,10 +341,17 @@ private class InfoChecker {
   class Context {
     let ruleEntry: RuleEntry?
     let ruleEntries: [BuildLabel: RuleEntry]
+    let resolvedSourceFiles: [String]
 
     init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
       self.ruleEntry = ruleEntry
       self.ruleEntries = ruleEntries
+
+      if let ruleEntry = ruleEntry {
+        resolvedSourceFiles = ruleEntry.sourceFiles.map() { $0.fullPath }
+      } else {
+        resolvedSourceFiles = []
+      }
     }
 
     // Does nothing as "assertThat" already asserted the existence of the associated ruleEntry.
@@ -367,8 +374,8 @@ private class InfoChecker {
     func containsSources(sources: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       for s in sources {
-        XCTAssert(ruleEntry.sourceFiles.contains(s),
-                  "\(ruleEntry) missing expected source file '\(s)' from \(ruleEntry.sourceFiles)",
+        XCTAssert(resolvedSourceFiles.contains(s),
+                  "\(ruleEntry) missing expected source file '\(s)' from \(resolvedSourceFiles)",
                   line: line)
       }
       return self
