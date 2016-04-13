@@ -377,8 +377,10 @@ class BazelBuildBridge(object):
       # into the test host that need to be signed with the same identity as
       # the host itself.
       xcode_version = int(os.environ['XCODE_VERSION_MINOR'])
+      platform_name = os.environ['PLATFORM_NAME']
       test_host_binary = os.environ.get('TEST_HOST', None)
-      if test_host_binary and xcode_version >= 730:
+      if (test_host_binary and xcode_version >= 730 and
+          platform_name != 'iphonesimulator'):
         test_host_bundle = os.path.dirname(test_host_binary)
         timer = Timer('Re-signing injected test host artifacts').Start()
         exit_code = self._ResignTestHost(test_host_bundle)
