@@ -30,16 +30,17 @@ import time
 import zipfile
 
 
-class Timer:
+class Timer(object):
   """Simple profiler."""
+
   def __init__(self, action_name):
     self.action_name = action_name
 
-  def start(self):
+  def Start(self):
     self._start = time.time()
     return self
 
-  def end(self):
+  def End(self):
     end = time.time()
     seconds = end - self._start
     print '<*> %s completed in %0.3f ms' % (self.action_name, seconds * 1000)
@@ -329,9 +330,9 @@ class BazelBuildBridge(object):
     arch = os.environ.get('CURRENT_ARCH', None)
     main_group_path = os.getcwd()
     parser = _OptionsParser(sdk_version, arch, main_group_path)
-    timer = Timer('Parsing options').start()
+    timer = Timer('Parsing options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
-    timer.end()
+    timer.End()
     if exit_code:
       self._PrintError('error: Option parsing failed: %s' % message)
       return exit_code
@@ -344,11 +345,11 @@ class BazelBuildBridge(object):
       return retval
 
     project_dir = os.environ['PROJECT_DIR']
-    timer = Timer('Running Bazel').start()
+    timer = Timer('Running Bazel').Start()
     exit_code = self._RunBazelAndPatchOutput(command,
                                              main_group_path,
                                              project_dir)
-    timer.end()
+    timer.End()
     if exit_code:
       self._PrintError('Bazel build failed.')
       return exit_code
@@ -360,17 +361,30 @@ class BazelBuildBridge(object):
 
     if parser.install_generated_artifacts:
       bundle_output_path = os.environ['CODESIGNING_FOLDER_PATH']
-      timer = Timer('Installing bundle artifacts').start()
+      timer = Timer('Installing bundle artifacts').Start()
       exit_code = self._InstallBundleArtifact(bundle_output_path)
-      timer.end()
+      timer.End()
       if exit_code:
         return exit_code
 
-      timer = Timer('Installing DSYM bundles').start()
+      timer = Timer('Installing DSYM bundles').Start()
       exit_code = self._InstallDSYMBundles(os.environ['BUILT_PRODUCTS_DIR'])
-      timer.end()
+      timer.End()
       if exit_code:
         return exit_code
+
+      # Starting with Xcode 7.3, XCTests inject several supporting frameworks
+      # into the test host that need to be signed with the same identity as
+      # the host itself.
+      xcode_version = int(os.environ['XCODE_VERSION_MINOR'])
+      test_host_binary = os.environ.get('TEST_HOST', None)
+      if test_host_binary and xcode_version >= 730:
+        test_host_bundle = os.path.dirname(test_host_binary)
+        timer = Timer('Re-signing injected test host artifacts').Start()
+        exit_code = self._ResignTestHost(test_host_bundle)
+        timer.End()
+        if exit_code:
+          return exit_code
 
     return 0
 
@@ -415,7 +429,7 @@ class BazelBuildBridge(object):
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
                                bufsize=1)
-    linebuf = ""
+    linebuf = ''
     while process.returncode is None:
       for line in process.stdout.readline():
         # Occasionally Popen's line-buffering appears to break down. Not
@@ -425,7 +439,7 @@ class BazelBuildBridge(object):
           linebuf += line
           continue
         line = patch_xcode_parsable_line(linebuf + line)
-        linebuf = ""
+        linebuf = ''
         sys.stdout.write(line)
         sys.stdout.flush()
       process.poll()
@@ -462,11 +476,12 @@ class BazelBuildBridge(object):
       try:
         shutil.rmtree(output_path)
       except OSError as e:
-        self._PrintError('Failed to remove stale output directory ""%s". '
+        self._PrintError('Failed to remove stale output directory "%s". '
                          '%s' % (output_path, e))
         return 600
 
-    self.build_path = os.path.join('bazel-bin', os.environ.get('BUILD_PATH', ""))
+    self.build_path = os.path.join('bazel-bin',
+                                   os.environ.get('BUILD_PATH', ''))
 
     bundle_artifact = os.environ['WRAPPER_NAME']
     full_bundle_artifact_path = os.path.join(self.build_path, bundle_artifact)
@@ -596,6 +611,61 @@ class BazelBuildBridge(object):
                                 output_full_path)
     return 0
 
+  def _ResignTestHost(self, test_host):
+    """Re-signs the support frameworks in the given test host bundle."""
+    signing_identity = self._ExtractSigningIdentity(test_host)
+    if not signing_identity:
+      return 800
+    exit_code = self._ResignBundle(os.path.join(test_host,
+                                                'Frameworks',
+                                                'IDEBundleInjection.framework'),
+                                   signing_identity)
+    if exit_code != 0:
+      return exit_code
+
+    exit_code = self._ResignBundle(os.path.join(test_host,
+                                                'Frameworks',
+                                                'XCTest.framework'),
+                                   signing_identity)
+    if exit_code != 0:
+      return exit_code
+    # Note that Xcode 7.3 also re-signs the test_host itself, but this does
+    # not appear to be necessary in the Bazel-backed case.
+    return 0
+
+  def _ResignBundle(self, bundle_path, signing_identity):
+    """Re-signs the given path with a given signing identity."""
+    command = ['xcrun',
+               'codesign',
+               '-f',
+               '--preserve-metadata=identifier,entitlements',
+               '--timestamp=none',
+               '-s',
+               signing_identity,
+               bundle_path,
+              ]
+    process = subprocess.Popen(command,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+    stdout, _ = process.communicate()
+    if process.returncode:
+      self._PrintError('Re-sign command %r failed. %s' % (command, stdout))
+      return 800 + process.returncode
+    return 0
+
+  def _ExtractSigningIdentity(self, signed_bundle):
+    """Returns the identity used to sign the given bundle path."""
+    output = subprocess.check_output(['xcrun',
+                                      'codesign',
+                                      '-dvv',
+                                      signed_bundle],
+                                     stderr=subprocess.STDOUT)
+    for line in output.split('\n'):
+      if line.startswith('Authority='):
+        return line[10:]
+    self._PrintError('Failed to extract signing identity from %s' % output)
+    return None
+
   def _SplitPathComponents(self, path):
     """Splits the given path into an array of all of its components."""
     components = path.split(os.sep)
@@ -615,7 +685,7 @@ class BazelBuildBridge(object):
 
 
 if __name__ == '__main__':
-  timer = Timer('Everything').start()
-  exit_code = BazelBuildBridge().Run(sys.argv)
-  timer.end()
-  sys.exit(exit_code)
+  _timer = Timer('Everything').Start()
+  _exit_code = BazelBuildBridge().Run(sys.argv)
+  _timer.End()
+  sys.exit(_exit_code)
