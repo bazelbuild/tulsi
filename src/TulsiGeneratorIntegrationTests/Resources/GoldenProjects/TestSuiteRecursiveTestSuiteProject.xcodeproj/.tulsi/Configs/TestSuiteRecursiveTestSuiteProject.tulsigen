@@ -2,10 +2,10 @@
   "additionalFilePaths" : [
 
   ],
-  "projectName" : "TestSuiteExplicitXCTestsProject",
+  "projectName" : "TestSuiteRecursiveTestSuiteProject",
   "buildTargets" : [
     "\/\/TestSuite:TestApplication",
-    "\/\/TestSuite:explicit_XCTests"
+    "\/\/TestSuite:recursive_test_suite"
   ],
   "optionSet" : {
     "BazelBuildOptionsDebug" : {

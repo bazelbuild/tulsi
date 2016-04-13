@@ -140,9 +140,22 @@ final class XcodeProjectGenerator {
     }
 
     let ruleEntryMap = loadRuleEntryMap()
+    var expandedTargetLabels = Set<BuildLabel>()
+    func expandTargetLabels<T: SequenceType where T.Generator.Element == BuildLabel>(labels: T) {
+      for label in labels {
+        guard let ruleEntry = ruleEntryMap[label] else { continue }
+        if ruleEntry.type != "test_suite" {
+          expandedTargetLabels.insert(label)
+        } else {
+          expandTargetLabels(ruleEntry.weakDependencies)
+        }
+      }
+    }
+    expandTargetLabels(config.buildTargetLabels)
+
     var targetRuleEntries = [RuleEntry]()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
-    for label in config.buildTargetLabels {
+    for label in expandedTargetLabels {
       guard let ruleEntry = ruleEntryMap[label] else {
         localizedMessageLogger.error("UnknownTargetRule",
                                      comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",

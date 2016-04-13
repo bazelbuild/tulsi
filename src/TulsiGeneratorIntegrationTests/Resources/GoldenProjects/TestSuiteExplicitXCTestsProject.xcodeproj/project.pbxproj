@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		E6AF49471B08EDE700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
-		E6AF494760B80DFF00000000 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
-		E6AF494760B80DFF00000001 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
-		E6AF494760B80DFF00000002 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
-		E6AF494760B80DFF00000003 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
-		E6AF494760B80DFF00000004 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
-		E6AF494760B80DFF00000005 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
+		E6AF494760B80DFF00000000 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
+		E6AF494760B80DFF00000001 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
+		E6AF494760B80DFF00000002 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
+		E6AF494760B80DFF00000003 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
+		E6AF494760B80DFF00000004 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
+		E6AF494760B80DFF00000005 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 			children = (
 			
 				43D68C285BF5223400000002 /* BUILD */,
-				43D68C2860B80DFF00000002 /* XCTest.m */,
+				43D68C2860B80DFF00000000 /* XCTest.m */,
 			);
 			path = Three;
 			sourceTree = "<group>";
@@ -91,7 +91,7 @@
 			children = (
 			
 				43D68C285BF5223400000003 /* BUILD */,
-				43D68C2860B80DFF00000001 /* XCTest.m */,
+				43D68C2860B80DFF00000002 /* XCTest.m */,
 			);
 			path = Two;
 			sourceTree = "<group>";
@@ -101,7 +101,7 @@
 			children = (
 			
 				43D68C285BF5223400000001 /* BUILD */,
-				43D68C2860B80DFF00000000 /* XCTest.m */,
+				43D68C2860B80DFF00000001 /* XCTest.m */,
 			);
 			path = One;
 			sourceTree = "<group>";
@@ -166,9 +166,9 @@
 			buildPhases = (
 			
 				84B42271366EDBAA00000000 /* ShellScript */,
-				605793E20000000000000000 /* Sources */,
+				605793E20000000000000001 /* Sources */,
 			);
-			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
+			buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
 			dependencies = (
 			
 				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
@@ -232,9 +232,9 @@
 			buildPhases = (
 			
 				84B42271DB7CD92200000000 /* ShellScript */,
-				605793E20000000000000002 /* Sources */,
+				605793E20000000000000000 /* Sources */,
 			);
-			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
+			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
 			dependencies = (
 			
 				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
@@ -250,9 +250,9 @@
 			buildPhases = (
 			
 				84B42271366EDBAA00000001 /* ShellScript */,
-				605793E20000000000000001 /* Sources */,
+				605793E20000000000000002 /* Sources */,
 			);
-			buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
+			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
 			dependencies = (
 			
 				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
@@ -418,21 +418,21 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = PBXSourcesBuildPhase;
 			files = (
 			
-				E6AF494760B80DFF00000000 /* XCTest.m in One */,
+				E6AF494760B80DFF00000000 /* XCTest.m in Three */,
 			);
 			};
 		605793E20000000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
 			
-				E6AF494760B80DFF00000001 /* XCTest.m in Two */,
+				E6AF494760B80DFF00000001 /* XCTest.m in One */,
 			);
 			};
 		605793E20000000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
 			
-				E6AF494760B80DFF00000002 /* XCTest.m in Three */,
+				E6AF494760B80DFF00000002 /* XCTest.m in Two */,
 			);
 			};
 		605793E20000000000000003 /* Sources */ = {
@@ -481,11 +481,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Fastbuild;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
-				BUILD_PATH = TestSuite/One;
+			BAZEL_TARGET = "//TestSuite/Three:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
+				BUILD_PATH = TestSuite/Three;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-One-XCTest";
+				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -507,11 +507,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Fastbuild;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
-				BUILD_PATH = TestSuite/Two;
+			BAZEL_TARGET = "//TestSuite/One:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
+				BUILD_PATH = TestSuite/One;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Two-XCTest";
+				PRODUCT_NAME = "TestSuite-One-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -520,11 +520,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Fastbuild;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
+			BAZEL_TARGET = "//TestSuite/Two:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
+				BUILD_PATH = TestSuite/Two;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Three-XCTest";
+				PRODUCT_NAME = "TestSuite-Two-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -581,11 +581,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Debug;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
-				BUILD_PATH = TestSuite/One;
+			BAZEL_TARGET = "//TestSuite/Three:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
+				BUILD_PATH = TestSuite/Three;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-One-XCTest";
+				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -607,11 +607,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Debug;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
-				BUILD_PATH = TestSuite/Two;
+			BAZEL_TARGET = "//TestSuite/One:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
+				BUILD_PATH = TestSuite/One;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Two-XCTest";
+				PRODUCT_NAME = "TestSuite-One-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -620,11 +620,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Debug;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
+			BAZEL_TARGET = "//TestSuite/Two:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
+				BUILD_PATH = TestSuite/Two;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Three-XCTest";
+				PRODUCT_NAME = "TestSuite-Two-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -681,11 +681,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Release;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
-				BUILD_PATH = TestSuite/One;
+			BAZEL_TARGET = "//TestSuite/Three:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
+				BUILD_PATH = TestSuite/Three;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-One-XCTest";
+				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -707,11 +707,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Release;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
-				BUILD_PATH = TestSuite/Two;
+			BAZEL_TARGET = "//TestSuite/One:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
+				BUILD_PATH = TestSuite/One;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Two-XCTest";
+				PRODUCT_NAME = "TestSuite-One-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -720,11 +720,11 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = Release;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
+			BAZEL_TARGET = "//TestSuite/Two:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
+				BUILD_PATH = TestSuite/Two;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				PRODUCT_NAME = "TestSuite-Three-XCTest";
+				PRODUCT_NAME = "TestSuite-Two-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -781,15 +781,15 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = __TulsiTestRunner_Debug;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
-				BUILD_PATH = TestSuite/One;
+			BAZEL_TARGET = "//TestSuite/Three:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
+				BUILD_PATH = TestSuite/Three;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
-				PRODUCT_NAME = "TestSuite-One-XCTest";
+				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -815,6 +815,23 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = __TulsiTestRunner_Debug;
 			buildSettings = {
+			BAZEL_TARGET = "//TestSuite/One:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
+				BUILD_PATH = TestSuite/One;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = "TestSuite-One-XCTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Debug;
+			buildSettings = {
 			BAZEL_TARGET = "//TestSuite/Two:XCTest";
 				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BUILD_PATH = TestSuite/Two;
@@ -824,23 +841,6 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = "TestSuite-Two-XCTest";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
-				
-			};
-			};
-		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
-			isa = XCBuildConfiguration;
-			name = __TulsiTestRunner_Debug;
-			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -868,15 +868,15 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = __TulsiTestRunner_Release;
 			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
-				BUILD_PATH = TestSuite/One;
+			BAZEL_TARGET = "//TestSuite/Three:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
+				BUILD_PATH = TestSuite/Three;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
-				PRODUCT_NAME = "TestSuite-One-XCTest";
+				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -902,6 +902,23 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 			isa = XCBuildConfiguration;
 			name = __TulsiTestRunner_Release;
 			buildSettings = {
+			BAZEL_TARGET = "//TestSuite/One:XCTest";
+				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
+				BUILD_PATH = TestSuite/One;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = "TestSuite-One-XCTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Release;
+			buildSettings = {
 			BAZEL_TARGET = "//TestSuite/Two:XCTest";
 				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BUILD_PATH = TestSuite/Two;
@@ -911,23 +928,6 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = "TestSuite-Two-XCTest";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
-				
-			};
-			};
-		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			name = __TulsiTestRunner_Release;
-			buildSettings = {
-			BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				PRODUCT_NAME = "TestSuite-Three-XCTest";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				
 			};
@@ -954,7 +954,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */ = {
+		DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 			
@@ -982,7 +982,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
 			);
 			};
-		DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */ = {
+		DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 			
@@ -993,7 +993,7 @@ exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestAppl
 				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
 			);
 			};
-		DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */ = {
+		DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 			

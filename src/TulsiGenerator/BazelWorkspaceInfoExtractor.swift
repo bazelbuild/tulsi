@@ -35,6 +35,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   // Cache of all RuleEntry instances loaded for the associated project.
   private var ruleEntryCache = [BuildLabel: RuleEntry]()
+  // The set of labels for which a test_suite query has been run (to prevent duplicate queries).
+  private var attemptedTestSuiteLabels = Set<BuildLabel>()
 
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
 
@@ -59,7 +61,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
-    let missingLabels = labels.filter() { ruleEntryCache[$0] == nil }
+    func isLabelMissing(label: BuildLabel) -> Bool { return ruleEntryCache[label] == nil }
+    let missingLabels = labels.filter(isLabelMissing)
     if missingLabels.isEmpty { return ruleEntryCache }
 
     let commandLineSplitter = CommandLineSplitter()
@@ -77,6 +80,32 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     for (label, entry) in ruleEntries {
       ruleEntryCache[label] = entry
     }
+
+    // Because certain label types are expanded by Bazel prior to aspect invocation (most notably
+    // test_suite rules), an additional pass is attempted if any of the requested labels are still
+    // missing after the aspect run.
+    let remainingMissingLabels = missingLabels.filter() {
+      return isLabelMissing($0) && !attemptedTestSuiteLabels.contains($0)
+    }
+    if !remainingMissingLabels.isEmpty {
+      extractTestSuiteRules(remainingMissingLabels)
+      attemptedTestSuiteLabels.forEach() { attemptedTestSuiteLabels.insert($0) }
+    }
+
     return ruleEntryCache
+  }
+
+  // MARK: - Private methods
+
+  private func extractTestSuiteRules(labels: [BuildLabel]) {
+    let testSuiteDependencies = queryExtractor.extractTestSuiteRules(labels)
+    for (ruleInfo, possibleExpansions) in testSuiteDependencies {
+      ruleEntryCache[ruleInfo.label] = RuleEntry(label: ruleInfo.label,
+                                                 type: ruleInfo.type,
+                                                 attributes: [:],
+                                                 sourceFiles: [],
+                                                 dependencies: Set<String>(),
+                                                 weakDependencies: possibleExpansions)
+    }
   }
 }

@@ -152,6 +152,14 @@ public final class RuleEntry: RuleInfo {
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
 
+  /// Set of labels that this rule depends on but does not require.
+  // NOTE(abaire): This is a hack used for test_suite rules, where the possible expansions retrieved
+  // via queries are filtered by the existence of the selected labels extracted via the normal
+  // aspect path. Ideally the aspect would be able to directly express the relationship between the
+  // test_suite and the test rules themselves, but that expansion is done prior to the application
+  // of the aspect.
+  public var weakDependencies = Set<BuildLabel>()
+
   /// The BUILD file that this rule was defined in.
   public let buildFilePath: String?
 
@@ -177,6 +185,7 @@ public final class RuleEntry: RuleInfo {
        attributes: [String: AnyObject],
        sourceFiles: [BazelFileInfo],
        dependencies: Set<String>,
+       weakDependencies: Set<BuildLabel>? = nil,
        buildFilePath: String? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
@@ -192,6 +201,9 @@ public final class RuleEntry: RuleInfo {
 
     self.sourceFiles = sourceFiles
     self.dependencies = dependencies
+    if let weakDependencies = weakDependencies {
+      self.weakDependencies = weakDependencies
+    }
     self.buildFilePath = buildFilePath
 
     var linkedTargetLabels = Set<BuildLabel>()
@@ -207,12 +219,14 @@ public final class RuleEntry: RuleInfo {
                    attributes: [String: AnyObject],
                    sourceFiles: [BazelFileInfo],
                    dependencies: Set<String>,
+                   weakDependencies: Set<BuildLabel>? = nil,
                    buildFilePath: String? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
               sourceFiles: sourceFiles,
               dependencies: dependencies,
+              weakDependencies: weakDependencies,
               buildFilePath: buildFilePath)
   }
 }

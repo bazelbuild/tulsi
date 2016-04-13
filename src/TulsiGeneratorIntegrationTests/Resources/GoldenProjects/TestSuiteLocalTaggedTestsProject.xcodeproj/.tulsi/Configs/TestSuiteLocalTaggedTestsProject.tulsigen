@@ -2,10 +2,10 @@
   "additionalFilePaths" : [
 
   ],
-  "projectName" : "TestSuiteExplicitXCTestsProject",
+  "projectName" : "TestSuiteLocalTaggedTestsProject",
   "buildTargets" : [
     "\/\/TestSuite:TestApplication",
-    "\/\/TestSuite:explicit_XCTests"
+    "\/\/TestSuite:local_tagged_tests"
   ],
   "optionSet" : {
     "BazelBuildOptionsDebug" : {

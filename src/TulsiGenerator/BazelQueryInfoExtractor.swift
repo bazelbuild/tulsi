@@ -70,7 +70,7 @@ final class BazelQueryInfoExtractor {
     let labelDeps = testSuiteLabels.map {"deps(\($0.value))"}
     let joinedLabelDeps = labelDeps.joinWithSeparator("+")
     let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
-    let (task, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
     if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
       infos = entries
     }

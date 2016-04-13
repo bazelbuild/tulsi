@@ -1,0 +1,780 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E6AF49471B08EDE700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
+		E6AF494759EFFF9E00000000 /* TestSuiteNonXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C2859EFFF9E00000000 /* TestSuiteNonXCTest.m */; };
+		E6AF49479985AEB000000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C289985AEB000000000 /* TestSuiteXCTest.m */; };
+		E6AF49479985AEB000000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C289985AEB000000000 /* TestSuiteXCTest.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		819366727632380300000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAF670C7F700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E67632380200000000 /* TestApplication */;
+			};
+		81936672B490EC1B00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAF670C7F700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECCC9594B490EC1A00000000 /* _bazel_clean_ */;
+			};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		43D68C281B08EDE700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C2859EFFF9E00000000 /* TestSuiteNonXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteNonXCTest.m; sourceTree = "<group>"; };
+		43D68C285BF5223400000000 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
+		43D68C2874B6FAB400000000 /* TestSuiteNonXCTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestSuiteNonXCTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C289985AEB000000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteXCTest.m; sourceTree = "<group>"; };
+		43D68C28AD17C5B700000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28CAEFD00C00000000 /* lib_indexer_TestSuiteNonXCTest_-4799450061216834479.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_TestSuiteNonXCTest_-4799450061216834479.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_TestSuiteXCTest_-4799450060952101021.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		966FB6DE2BD1037D00000000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C28AD17C5B700000000 /* TestApplication.app */,
+				43D68C2874B6FAB400000000 /* TestSuiteNonXCTest.app */,
+				43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */,
+				43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
+				43D68C28CAEFD00C00000000 /* lib_indexer_TestSuiteNonXCTest_-4799450061216834479.a */,
+				43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+			};
+		966FB6DE5B9D018E00000000 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C281B08EDE700000000 /* main.m */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+			};
+		966FB6DE97D5C89200000000 /* TestSuite */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C285BF5223400000000 /* BUILD */,
+				966FB6DEE2E4E10A00000000 /* Binary */,
+				966FB6DE97D5C89200000001 /* TestSuite */,
+			);
+			path = TestSuite;
+			sourceTree = "<group>";
+			};
+		966FB6DE97D5C89200000001 /* TestSuite */ = {
+			isa = PBXGroup;
+			children = (
+			
+				43D68C2859EFFF9E00000000 /* TestSuiteNonXCTest.m */,
+				43D68C289985AEB000000000 /* TestSuiteXCTest.m */,
+			);
+			path = TestSuite;
+			sourceTree = "<group>";
+			};
+		966FB6DEE2E4E10A00000000 /* Binary */ = {
+			isa = PBXGroup;
+			children = (
+			
+				966FB6DE5B9D018E00000000 /* srcs */,
+			);
+			path = Binary;
+			sourceTree = "<group>";
+			};
+		966FB6DEE342F69A00000000 /* mainGroup */ = {
+			isa = PBXGroup;
+			children = (
+			
+				966FB6DE2BD1037D00000000 /* Products */,
+				966FB6DE97D5C89200000000 /* TestSuite */,
+			);
+			name = mainGroup;
+			path = ../..;
+			sourceTree = SOURCE_ROOT;
+			};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		ECCC9594B490EC1A00000000 /* _bazel_clean_ */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\"";
+			buildPhases = (
+			
+			);
+			buildConfigurationList = DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			dependencies = (
+			
+			);
+			name = _bazel_clean_;
+			productName = _bazel_clean_;
+			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
+			buildWorkingDirectory = "${SRCROOT}/../..";
+			passBuildSettingsInEnvironment = 1;
+			};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		3D31C5E61B24550300000000 /* TestSuiteNonXCTest */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				84B42271AF659F3900000000 /* ShellScript */,
+			);
+			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuiteNonXCTest" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = TestSuiteNonXCTest;
+			productName = TestSuiteNonXCTest;
+			productReference = 43D68C2874B6FAB400000000 /* TestSuiteNonXCTest.app */;
+			productType = "com.apple.product-type.application";
+			};
+		3D31C5E61B8E813D00000000 /* _indexer_TestSuiteXCTest_-4799450060952101021 */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				605793E20000000000000003 /* Sources */,
+			);
+			buildConfigurationList = DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_TestSuiteXCTest_-4799450060952101021" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_TestSuiteXCTest_-4799450060952101021";
+			productName = "_indexer_TestSuiteXCTest_-4799450060952101021";
+			productReference = 43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */;
+			productType = "com.apple.product-type.library.static";
+			};
+		3D31C5E621975C4300000000 /* _indexer_TestSuiteNonXCTest_-4799450061216834479 */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				605793E20000000000000002 /* Sources */,
+			);
+			buildConfigurationList = DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_TestSuiteNonXCTest_-4799450061216834479" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_TestSuiteNonXCTest_-4799450061216834479";
+			productName = "_indexer_TestSuiteNonXCTest_-4799450061216834479";
+			productReference = 43D68C28CAEFD00C00000000 /* lib_indexer_TestSuiteNonXCTest_-4799450061216834479.a */;
+			productType = "com.apple.product-type.library.static";
+			};
+		3D31C5E67632380200000000 /* TestApplication */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				84B42271ECA6004200000001 /* ShellScript */,
+			);
+			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = TestApplication;
+			productName = TestApplication;
+			productReference = 43D68C28AD17C5B700000000 /* TestApplication.app */;
+			productType = "com.apple.product-type.application";
+			};
+		3D31C5E6A105E5D500000000 /* TestSuiteXCTest */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				84B42271ECA6004200000000 /* ShellScript */,
+				605793E20000000000000000 /* Sources */,
+			);
+			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuiteXCTest" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B427632380300000000 /* PBXTargetDependency */,
+			);
+			name = TestSuiteXCTest;
+			productName = TestSuiteXCTest;
+			productReference = 43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+			};
+		3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */ = {
+			isa = PBXNativeTarget;
+			buildPhases = (
+			
+				605793E20000000000000001 /* Sources */,
+			);
+			buildConfigurationList = DE4755830000000000000005 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */;
+			dependencies = (
+			
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_Binary_-4799450061102981736";
+			productName = "_indexer_Binary_-4799450061102981736";
+			productReference = 43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
+			productType = "com.apple.product-type.library.static";
+			};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E7BD0EAF670C7F700000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+				3D31C5E6A105E5D500000000 = {
+					TestTargetID = 3D31C5E67632380200000000;
+						
+					};
+					
+				};
+				
+			};
+			buildConfigurationList = DE4755830000000000000003;
+			compatibilityVersion = "Xcode 3.2";
+			mainGroup = 966FB6DEE342F69A00000000 /* mainGroup */;
+			targets = (
+			
+				3D31C5E67632380200000000 /* TestApplication */,
+				3D31C5E61B24550300000000 /* TestSuiteNonXCTest */,
+				3D31C5E6A105E5D500000000 /* TestSuiteXCTest */,
+				ECCC9594B490EC1A00000000 /* _bazel_clean_ */,
+				3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */,
+				3D31C5E621975C4300000000 /* _indexer_TestSuiteNonXCTest_-4799450061216834479 */,
+				3D31C5E61B8E813D00000000 /* _indexer_TestSuiteXCTest_-4799450060952101021 */,
+			);
+			};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		84B42271AF659F3900000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			files = (
+			
+			);
+			inputPaths = (
+			
+			);
+			outputPaths = (
+			
+			);
+			shellPath = /bin/bash;
+			shellScript = "set -e
+cd \"${SRCROOT}/../..\"
+. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteNonXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+			};
+		84B42271ECA6004200000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			files = (
+			
+			);
+			inputPaths = (
+			
+			);
+			outputPaths = (
+			
+			);
+			shellPath = /bin/bash;
+			shellScript = "set -e
+cd \"${SRCROOT}/../..\"
+. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+			};
+		84B42271ECA6004200000001 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			files = (
+			
+			);
+			inputPaths = (
+			
+			);
+			outputPaths = (
+			
+			);
+			shellPath = /bin/bash;
+			shellScript = "set -e
+cd \"${SRCROOT}/../..\"
+. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"
+exec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+			};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		605793E20000000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			
+				E6AF49479985AEB000000000 /* TestSuiteXCTest.m in TestSuite */,
+			);
+			};
+		605793E20000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			
+				E6AF49471B08EDE700000000 /* main.m in srcs */,
+			);
+			};
+		605793E20000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			
+				E6AF494759EFFF9E00000000 /* TestSuiteNonXCTest.m in TestSuite */,
+			);
+			};
+		605793E20000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			
+				E6AF49479985AEB000000001 /* TestSuiteXCTest.m in TestSuite */,
+			);
+			};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4DAD0B427632380300000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366727632380300000000 /* PBXContainerItemProxy */;
+			};
+		4DAD0B42B490EC1B00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 81936672B490EC1B00000000 /* PBXContainerItemProxy */;
+			};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		44936BD63008588600000000 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				PRODUCT_NAME = TestSuiteXCTest;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD63008588600000001 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_TARGET = "//TestSuite:TestApplication";
+				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestApplication;
+				
+			};
+			};
+		44936BD63008588600000002 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+				
+			};
+			};
+		44936BD63008588600000003 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestSuiteNonXCTest;
+				
+			};
+			};
+		44936BD63008588600000004 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_Binary_-4799450061102981736";
+				
+			};
+			};
+		44936BD63008588600000005 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteNonXCTest_-4799450061216834479";
+				
+			};
+			};
+		44936BD63008588600000006 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			name = Fastbuild;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteXCTest_-4799450060952101021";
+				
+			};
+			};
+		44936BD67EED3C4D00000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				PRODUCT_NAME = TestSuiteXCTest;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD67EED3C4D00000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_TARGET = "//TestSuite:TestApplication";
+				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestApplication;
+				
+			};
+			};
+		44936BD67EED3C4D00000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+				
+			};
+			};
+		44936BD67EED3C4D00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestSuiteNonXCTest;
+				
+			};
+			};
+		44936BD67EED3C4D00000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_Binary_-4799450061102981736";
+				
+			};
+			};
+		44936BD67EED3C4D00000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteNonXCTest_-4799450061216834479";
+				
+			};
+			};
+		44936BD67EED3C4D00000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			name = Debug;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteXCTest_-4799450060952101021";
+				
+			};
+			};
+		44936BD6A3D45CE900000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				PRODUCT_NAME = TestSuiteXCTest;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD6A3D45CE900000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_TARGET = "//TestSuite:TestApplication";
+				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestApplication;
+				
+			};
+			};
+		44936BD6A3D45CE900000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+				
+			};
+			};
+		44936BD6A3D45CE900000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				PRODUCT_NAME = TestSuiteNonXCTest;
+				
+			};
+			};
+		44936BD6A3D45CE900000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_Binary_-4799450061102981736";
+				
+			};
+			};
+		44936BD6A3D45CE900000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteNonXCTest_-4799450061216834479";
+				
+			};
+			};
+		44936BD6A3D45CE900000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			name = Release;
+			buildSettings = {
+			PRODUCT_NAME = "_indexer_TestSuiteXCTest_-4799450060952101021";
+				
+			};
+			};
+		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Debug;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TestSuiteXCTest;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD6C928366700000001 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Debug;
+			buildSettings = {
+			BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_TARGET = "//TestSuite:TestApplication";
+				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BUILD_PATH = TestSuite;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TestApplication;
+				
+			};
+			};
+		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Debug;
+			buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				SDKROOT = iphoneos;
+				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+				
+			};
+			};
+		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Release;
+			buildSettings = {
+			BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
+				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BUILD_PATH = TestSuite;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TestSuiteXCTest;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				
+			};
+			};
+		44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Release;
+			buildSettings = {
+			BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_TARGET = "//TestSuite:TestApplication";
+				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BUILD_PATH = TestSuite;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TestApplication;
+				
+			};
+			};
+		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			name = __TulsiTestRunner_Release;
+			buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				SDKROOT = iphoneos;
+				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+				
+			};
+			};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuiteXCTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000000 /* Debug */,
+				44936BD63008588600000000 /* Fastbuild */,
+				44936BD6A3D45CE900000000 /* Release */,
+				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+			);
+			};
+		DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+			);
+			};
+		DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000001 /* Debug */,
+				44936BD63008588600000001 /* Fastbuild */,
+				44936BD6A3D45CE900000001 /* Release */,
+				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+			);
+			};
+		DE4755830000000000000003 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000002 /* Debug */,
+				44936BD63008588600000002 /* Fastbuild */,
+				44936BD6A3D45CE900000002 /* Release */,
+				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
+			);
+			};
+		DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuiteNonXCTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
+			);
+			};
+		DE4755830000000000000005 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
+			);
+			};
+		DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_TestSuiteNonXCTest_-4799450061216834479" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD63008588600000005 /* Fastbuild */,
+				44936BD6A3D45CE900000005 /* Release */,
+			);
+			};
+		DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_TestSuiteXCTest_-4799450060952101021" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			
+				44936BD67EED3C4D00000006 /* Debug */,
+				44936BD63008588600000006 /* Fastbuild */,
+				44936BD6A3D45CE900000006 /* Release */,
+			);
+			};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7E7BD0EAF670C7F700000000 /* Project object */;
+}
