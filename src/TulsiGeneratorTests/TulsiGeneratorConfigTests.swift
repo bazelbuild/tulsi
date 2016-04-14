@@ -71,7 +71,7 @@ class TulsiGeneratorConfigTests: XCTestCase {
 
   func testLoadWithBuildLabelSourceFilters() {
     do {
-      var sourceFilters = pathFilters.map() { "//\($0)" }
+      let sourceFilters = pathFilters.map() { "//\($0)" }
       let dict = [
           "additionalFilePaths": additionalFilePaths,
           "buildTargets": buildTargetLabels,

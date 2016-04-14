@@ -78,8 +78,9 @@ final class XcodeProjectGenerator {
                                                                 workspaceRootURL: workspaceRootURL)
     let (xcodeProject, buildTargetRuleEntries) = try buildXcodeProjectWithMainGroup(mainGroup)
 
-    let serializer = PBXProjSerializer(rootObject: xcodeProject, gidGenerator: ConcreteGIDGenerator())
-    guard let serializedXcodeProject = serializer.toOpenStep() else {
+    let serializer = OpenStepSerializer(rootObject: xcodeProject,
+                                        gidGenerator: ConcreteGIDGenerator())
+    guard let serializedXcodeProject = serializer.serialize() else {
       throw Error.SerializationFailed("OpenStep serialization failed")
     }
 
