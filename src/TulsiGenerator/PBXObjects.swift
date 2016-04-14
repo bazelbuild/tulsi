@@ -81,7 +81,7 @@ extension PBXObjectProtocol {
 
 
 /// Models a collection of build settings.
-class XCBuildConfiguration: PBXObjectProtocol {
+final class XCBuildConfiguration: PBXObjectProtocol {
   var globalID: String = ""
   let name: String
   var buildSettings = [String:String]()
@@ -186,7 +186,7 @@ class PBXReference: PBXObjectProtocol {
 
 
 /// PBXFileReference instances are used to track each file in the project.
-class PBXFileReference: PBXReference, Hashable {
+final class PBXFileReference: PBXReference, Hashable {
   // A PBXFileReference for an input will have lastKnownFileType set to the file's UTI. An output
   // will have explicitFileType set. The types used correspond to the "Type" field shown in Xcode's
   // File Inspector.
@@ -198,7 +198,7 @@ class PBXFileReference: PBXReference, Hashable {
   }
   var lastKnownFileType: String? {
     if isInputFile {
-      return fileType
+      return fileType ?? "text"
     }
     return nil
   }
@@ -230,17 +230,13 @@ class PBXFileReference: PBXReference, Hashable {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    if let uti = fileType {
-      if isInputFile {
-        try serializer.addField("lastKnownFileType", uti)
-      } else {
-        try serializer.addField("explicitFileType", uti)
-        // TODO(abaire): set includeInIndex to 0 for output files?
-      }
-    }
-
-    // Note that super is serialized last in order to match Xcode's ordering.
     try super.serializeInto(serializer)
+    if let uti = lastKnownFileType {
+      try serializer.addField("lastKnownFileType", uti)
+    } else if let uti = explicitFileType {
+      try serializer.addField("explicitFileType", uti)
+      // TODO(abaire): set includeInIndex to 0 for output files?
+    }
   }
 }
 
@@ -335,10 +331,8 @@ class PBXGroup: PBXReference {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try serializer.addField("children", children.sort({$0.name < $1.name}))
-
-    // Note that super is serialized last in order to match Xcode's ordering.
     try super.serializeInto(serializer)
+    try serializer.addField("children", children.sort({$0.name < $1.name}))
   }
 }
 
@@ -352,7 +346,7 @@ class PBXVariantGroup: PBXGroup {
 
 
 /// Models a versioned group (e.g., a Core Data xcdatamodeld).
-class XCVersionGroup: PBXGroup {
+final class XCVersionGroup: PBXGroup {
   /// The active child reference.
   var currentVersion: PBXReference? = nil
   var versionGroupType: String = ""
@@ -402,9 +396,11 @@ class XCVersionGroup: PBXGroup {
 
 
 /// Models the set of XCBuildConfiguration instances for a given target or project.
-class XCConfigurationList: PBXObjectProtocol {
+final class XCConfigurationList: PBXObjectProtocol {
   var globalID: String = ""
   var buildConfigurations = [String: XCBuildConfiguration]()
+  var defaultConfigurationIsVisible = false
+  var defaultConfigurationName: String? = nil
 
   var isa: String {
     return "XCConfigurationList"
@@ -414,8 +410,15 @@ class XCConfigurationList: PBXObjectProtocol {
     return 0
   }
 
-  // Should be populated by the owner of this configuration list.
-  var comment: String? = nil
+  let comment: String?
+
+  init(forType: String? = nil, named: String? = nil) {
+    if let ownerType = forType, let name = named {
+      self.comment = "Build configuration list for \(ownerType) \"\(name)\""
+    } else {
+      self.comment = nil
+    }
+  }
 
   func getOrCreateBuildConfiguration(name: String) -> XCBuildConfiguration {
     if let value = buildConfigurations[name] {
@@ -428,6 +431,10 @@ class XCConfigurationList: PBXObjectProtocol {
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try serializer.addField("buildConfigurations", buildConfigurations.values.sort({$0.name < $1.name}))
+    try serializer.addField("defaultConfigurationIsVisible", defaultConfigurationIsVisible)
+    if let defaultConfigurationName = defaultConfigurationName {
+      try serializer.addField("defaultConfigurationName", defaultConfigurationName)
+    }
   }
 }
 
@@ -437,6 +444,13 @@ class XCConfigurationList: PBXObjectProtocol {
 class PBXBuildPhase: PBXObjectProtocol  {
   var globalID: String = ""
   var files = [PBXBuildFile]()
+  let buildActionMask: Int
+  let runOnlyForDeploymentPostprocessing: Bool
+
+  init(buildActionMask: Int = 0, runOnlyForDeploymentPostprocessing: Bool = false) {
+    self.buildActionMask = buildActionMask
+    self.runOnlyForDeploymentPostprocessing = runOnlyForDeploymentPostprocessing
+  }
 
   var isa: String {
     assertionFailure("PBXBuildPhase must be subclassed")
@@ -453,14 +467,16 @@ class PBXBuildPhase: PBXObjectProtocol  {
     return nil
   }
 
-  func serializeInto(serializer: PBXProjFieldSerializer) throws{
+  func serializeInto(serializer: PBXProjFieldSerializer) throws {
+    try serializer.addField("buildActionMask", buildActionMask)
     try serializer.addField("files", files)
+    try serializer.addField("runOnlyForDeploymentPostprocessing", runOnlyForDeploymentPostprocessing)
   }
 }
 
 
 /// Encapsulates a source file compilation phase.
-class PBXSourcesBuildPhase: PBXBuildPhase  {
+final class PBXSourcesBuildPhase: PBXBuildPhase  {
   override var isa: String {
     return "PBXSourcesBuildPhase"
   }
@@ -476,7 +492,7 @@ class PBXSourcesBuildPhase: PBXBuildPhase  {
 
 
 /// Encapsulates a shell script execution phase.
-class PBXShellScriptBuildPhase: PBXBuildPhase {
+final class PBXShellScriptBuildPhase: PBXBuildPhase {
   let inputPaths: [String]
   let outputPaths: [String]
   let shellPath: String
@@ -498,13 +514,15 @@ class PBXShellScriptBuildPhase: PBXBuildPhase {
   init(shellScript: String,
        shellPath: String = "/bin/sh",
        inputPaths: [String] = [String](),
-       outputPaths: [String] = [String]()) {
+       outputPaths: [String] = [String](),
+       buildActionMask: Int = 0,
+       runOnlyForDeploymentPostprocessing: Bool = false) {
     self.shellScript = shellScript
     self.shellPath = shellPath
     self.inputPaths = inputPaths
     self.outputPaths = outputPaths
 
-    super.init()
+    super.init(buildActionMask: buildActionMask, runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing)
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
@@ -522,7 +540,7 @@ class PBXShellScriptBuildPhase: PBXBuildPhase {
 /// extra level of indirection allows any given PBXReference to be included in multiple targets
 /// with different COMPILER_FLAGS settings for each. (e.g., a file could have a preprocessor define
 /// set while compiling a test target that is not set when building the main target).
-class PBXBuildFile: PBXObjectProtocol {
+final class PBXBuildFile: PBXObjectProtocol {
   var globalID: String = ""
   let fileRef: PBXReference
   let settings: [String: String]?
@@ -576,7 +594,9 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   var globalID: String = ""
   let name: String
   let productName: String?
-  let buildConfigurationList: XCConfigurationList
+  lazy var buildConfigurationList: XCConfigurationList = { [unowned self] in
+    XCConfigurationList(forType: self.isa, named: self.name)
+  }()
   /// The targets on which this target depends.
   var dependencies = [PBXTargetDependency]()
   /// The build phases to be executed to generate this target.
@@ -598,8 +618,6 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   init(name: String) {
     self.name = name
     self.productName = name
-    buildConfigurationList = XCConfigurationList()
-    buildConfigurationList.comment = "Build configuration list for \(isa) \"\(name)\""
   }
 
   /// Creates a dependency on the given target.
@@ -637,7 +655,7 @@ func == (lhs: PBXTarget, rhs: PBXTarget) -> Bool {
 
 
 /// Models a target that produces a binary.
-class PBXNativeTarget: PBXTarget {
+final class PBXNativeTarget: PBXTarget {
   let productType: ProductType
 
   /// Reference to the output of this target.
@@ -654,6 +672,8 @@ class PBXNativeTarget: PBXTarget {
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try super.serializeInto(serializer)
+    // An empty buildRules array is emitted to match Xcode's serialization.
+    try serializer.addField("buildRules", [String]())
     try serializer.addField("productReference", productReference)
     try serializer.addField("productType", productType.rawValue)
   }
@@ -661,7 +681,7 @@ class PBXNativeTarget: PBXTarget {
 
 
 /// Models a target that executes an arbitray binary.
-class PBXLegacyTarget: PBXTarget {
+final class PBXLegacyTarget: PBXTarget {
   let buildArgumentsString: String
   let buildToolPath: String
   let buildWorkingDirectory: String
@@ -679,8 +699,8 @@ class PBXLegacyTarget: PBXTarget {
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
-    try serializer.addField("buildArgumentsString", buildArgumentsString)
     try super.serializeInto(serializer)
+    try serializer.addField("buildArgumentsString", buildArgumentsString)
     try serializer.addField("buildToolPath", buildToolPath)
     try serializer.addField("buildWorkingDirectory", buildWorkingDirectory)
     try serializer.addField("passBuildSettingsInEnvironment", passBuildSettingsInEnvironment)
@@ -689,7 +709,7 @@ class PBXLegacyTarget: PBXTarget {
 
 
 /// Models a link to a target or output file which may be in a different project.
-class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
+final class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
   /// The type of the item being referenced.
   enum ProxyType: Int {
     /// Refers to a PBXTarget in some project file.
@@ -710,9 +730,9 @@ class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
 
   /// The target being tracked by this proxy.
   var target: PBXObjectProtocol {
-    return _Target!
+    return _target!
   }
-  private weak var _Target: PBXObjectProtocol?
+  private weak var _target: PBXObjectProtocol?
 
   let proxyType: ProxyType
 
@@ -721,7 +741,7 @@ class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
   }
 
   var hashValue: Int {
-    return _Target!.hashValue &+ proxyType.rawValue
+    return _target!.hashValue &+ proxyType.rawValue
   }
 
   var comment: String? {
@@ -730,15 +750,14 @@ class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
 
   init(containerPortal: PBXProject, target: PBXObjectProtocol, proxyType: ProxyType) {
     self._ContainerPortal = containerPortal
-    self._Target = target
+    self._target = target
     self.proxyType = proxyType
   }
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try serializer.addField("containerPortal", _ContainerPortal)
     try serializer.addField("proxyType", proxyType.rawValue)
-    try serializer.addField("remoteGlobalIDString", _Target)
-    // TODO(abaire): Consider writing out remoteInfo as well (the name of the proxied target/file).
+    try serializer.addField("remoteGlobalIDString", _target, rawID: true)
   }
 }
 
@@ -747,15 +766,15 @@ func == (lhs: PBXContainerItemProxy, rhs: PBXContainerItemProxy) -> Bool {
 
   switch lhs.proxyType {
     case .TargetReference:
-      return lhs._Target as? PBXTarget == rhs._Target as? PBXTarget
+      return lhs._target as? PBXTarget == rhs._target as? PBXTarget
     case .FileReference:
-      return lhs._Target as? PBXFileReference == rhs._Target as? PBXFileReference
+      return lhs._target as? PBXFileReference == rhs._target as? PBXFileReference
   }
 }
 
 
 /// Models a dependent relationship between a build target and some other build target.
-class PBXTargetDependency: PBXObjectProtocol {
+final class PBXTargetDependency: PBXObjectProtocol {
   var globalID: String = ""
   let targetProxy: PBXContainerItemProxy
 
@@ -783,7 +802,7 @@ class PBXTargetDependency: PBXObjectProtocol {
 
 
 /// Models a project container.
-class PBXProject: PBXObjectProtocol {
+final class PBXProject: PBXObjectProtocol {
   // Name of the group in which target file references are stored.
   static let ProductsGroupName = "Products"
 
@@ -814,7 +833,9 @@ class PBXProject: PBXObjectProtocol {
   // dependency instances.
   var targetDependencies = [PBXContainerItemProxy: PBXTargetDependency]()
 
-  let buildConfigurationList =  XCConfigurationList()
+  lazy var buildConfigurationList: XCConfigurationList = { [unowned self] in
+    XCConfigurationList(forType: self.isa, named: self.name)
+  }()
 
   var isa: String {
     return "PBXProject"
@@ -1033,5 +1054,10 @@ class PBXProject: PBXObjectProtocol {
     try serializer.addField("compatibilityVersion", compatibilityVersion)
     try serializer.addField("mainGroup", mainGroup);
     try serializer.addField("targets", targetByName.values.sort({$0.name < $1.name}));
+
+    // Hardcoded defaults to match Xcode behavior.
+    try serializer.addField("developmentRegion", "English")
+    try serializer.addField("hasScannedForEncodings", false)
+    try serializer.addField("knownRegions", ["en"])
   }
 }

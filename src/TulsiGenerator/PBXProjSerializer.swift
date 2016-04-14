@@ -25,7 +25,7 @@ protocol PBXProjSerializable: class {
 
 /// Methods for serializing components of a PBXObject.
 protocol PBXProjFieldSerializer {
-  func addField(name: String, _ obj: PBXObjectProtocol?) throws
+  func addField(name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws
   func addField(name: String, _ val: Int) throws
   func addField(name: String, _ val: Bool) throws
   func addField(name: String, _ val: String?) throws
@@ -36,6 +36,12 @@ protocol PBXProjFieldSerializer {
   // Serializes an object if it has not already been serialized and returns its globalID, optionally
   // with a comment string attached unless returnRawID is true.
   func serializeObject(object: PBXObjectProtocol, returnRawID: Bool) throws -> String
+}
+
+extension PBXProjFieldSerializer {
+  func addField(name: String, _ obj: PBXObjectProtocol?) throws {
+    try addField(name, obj, rawID: false)
+  }
 }
 
 
@@ -69,7 +75,9 @@ class PBXProjSerializer {
   /// Serializes the project into a Dictionary object. Setting forceBasicTypes will convert any
   /// integers or booleans to be stored as Strings.
   func toDictionary(forceBasicTypes forceBasicTypes: Bool = false) -> PBXDict {
-    let serializer = DictionarySerializer(rootObject: rootObject, gidGenerator: gidGenerator, forceBasicTypes: forceBasicTypes)
+    let serializer = DictionarySerializer(rootObject: rootObject,
+                                          gidGenerator: gidGenerator,
+                                          forceBasicTypes: forceBasicTypes)
     return serializer.serialize()
   }
 
@@ -158,7 +166,7 @@ class DictionarySerializer: PBXProjFieldSerializer {
     return obj.globalID
   }
 
-  func addField(name: String, _ obj: PBXObjectProtocol?) {
+  func addField(name: String, _ obj: PBXObjectProtocol?, rawID: Bool) {
     guard let local = obj else {
       return
     }
@@ -212,7 +220,7 @@ class DictionarySerializer: PBXProjFieldSerializer {
 
 
 /// Encapsulates the ability to serialize a PBXProject into an OpenStep formatted plist.
-class OpenStepSerializer: PBXProjFieldSerializer {
+final class OpenStepSerializer: PBXProjFieldSerializer {
 
   private enum SerializationError: ErrorType {
     // A PBX object was referenced but never defined.
@@ -224,20 +232,14 @@ class OpenStepSerializer: PBXProjFieldSerializer {
 
   private let rootObject: PBXProject
   private let gidGenerator: GIDGeneratorProtocol
-  private var objects = [String: NSData]()
-  // Map of GID's to comments that should be placed alongside any references to that GID in the
-  // serialized file.
-  private var objectComments = [String: String]()
+  private var objects = [String: TypedDict]()
 
   // Maps PBXObject types to arrays of keys in the objects array. This allows serialization in the
   // same OpenStep format as Xcode.
   private var typedObjectIndex = [String: [String]]()
-  // String to prepend to serialized fields.
-  var indent = ""
-  // Character used between serialized fields.
-  var spacer = " "
-  var currentObjectData: NSMutableData!
-  var data: NSMutableData!
+
+  // Dictionary containing data for the object currently being serialized.
+  private var currentDict: RawDict!
 
   // Regex used to determine whether a string value can be printed without quotes or not.
   private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9._/]+$", options: [.CaseInsensitive])
@@ -249,11 +251,131 @@ class OpenStepSerializer: PBXProjFieldSerializer {
   }
 
   func serialize() -> NSData? {
-    data = NSMutableData()
+    do {
+      let rootObjectID = try serializeObject(rootObject)
+      return serializeObjectDictionaryWithRoot(rootObjectID)
+    } catch {
+      return nil
+    }
+  }
 
+  // MARK: - XcodeProjFieldSerializer
+
+  func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
+    if let typedObject = objects[obj.globalID] {
+      if !returnRawID {
+        return "\(obj.globalID)\(typedObject.comment)"
+      }
+      return obj.globalID
+    }
+
+    // If the object doesn't have a GID from a previous serialization, generate one.
+    if obj.globalID.isEmpty {
+      obj.globalID = gidGenerator.generate(obj)
+    }
+
+    let globalID = obj.globalID
+    let isa = obj.isa
+    let serializationDict = TypedDict(gid: globalID, isa: isa, comment: obj.comment)
+    let stack = currentDict
+    currentDict = serializationDict
+
+    // Note: The object must be added to the objects dictionary prior to serialization in order to
+    // allow recursive references. e.g., PBXTargetDependency instances between targets in the same
+    // PBXProject instance.
+    objects[globalID] = serializationDict
+
+    try obj.serializeInto(self)
+
+    if typedObjectIndex[isa] == nil {
+      typedObjectIndex[isa] = [globalID]
+    } else {
+      typedObjectIndex[isa]!.append(globalID)
+    }
+
+    currentDict = stack
+
+    if returnRawID {
+      return globalID
+    }
+    return "\(globalID)\(serializationDict.comment)"
+  }
+
+  func addField(name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws {
+    guard let local = obj else {
+      return
+    }
+
+    let gid = try serializeObject(local, returnRawID: rawID)
+    currentDict.dict[name] = gid
+  }
+
+  func addField(name: String, _ val: Int) throws {
+    currentDict.dict[name] = val
+  }
+
+  func addField(name: String, _ val: Bool) throws {
+    let intVal = val ? 1 : 0
+    currentDict.dict[name] = intVal
+  }
+
+  func addField(name: String, _ val: String?) throws {
+    guard let stringValue = val else {
+      return
+    }
+
+    currentDict.dict[name] = escapeString(stringValue)
+  }
+
+  func addField(name: String, _ val: [String: AnyObject]?) throws {
+    // Note: Xcode will crash if empty buildSettings member dictionaries of XCBuildConfiguration's
+    // are omitted so this does not check to see if the dictionary is empty or not.
+    guard let dict = val else {
+      return
+    }
+
+    let stack = currentDict
+    currentDict = RawDict()
+    for (key, value) in dict {
+      if let stringValue = value as? String {
+        currentDict.dict[key] = escapeString(stringValue)
+      } else if let dictValue = value as? [String: AnyObject] {
+        try addField(key, dictValue)
+      } else if let arrayValue = value as? [String] {
+        try addField(key, arrayValue)
+      } else {
+        assertionFailure("Unsupported complex object \(value) in nested dictionary type")
+      }
+    }
+    stack.dict[name] = currentDict
+    currentDict = stack
+
+  }
+
+  func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws {
+    currentDict.dict[name] = try values.map() { try serializeObject($0) }
+  }
+
+  func addField(name: String, _ values: [String]) throws {
+    currentDict.dict[name] = values.map() { escapeString($0) }
+  }
+
+  func getGlobalIDForObject(object: PBXObjectProtocol) throws -> String {
+    return try serializeObject(object)
+  }
+
+  // MARK: - Private methods
+
+  private func serializeObjectDictionaryWithRoot(rootObjectID: String) -> NSData? {
+    let data = NSMutableData()
     do {
       try data.tulsi_appendString("// !$*UTF8*$!\n{\n")
-      indent = "\t"
+      var indent = "\t"
+
+      func appendIndentedString(value: String) throws {
+        try data.tulsi_appendString(indent + value)
+      }
+
       try appendIndentedString("archiveVersion = \(XcodeProjectArchiveVersion);\n")
       try appendIndentedString("classes = {\n\(indent)};\n")
       try appendIndentedString("objectVersion = \(XcodeVersionInfo.objectVersion);\n")
@@ -261,25 +383,24 @@ class OpenStepSerializer: PBXProjFieldSerializer {
       try appendIndentedString("objects = {\n")
       let oldIndent = indent
       indent += "\t"
-      let rootObjectID = try serializeObject(rootObject)
 
-      try encodeSerializedPBXObjectArray("PBXBuildFile")
-      try encodeSerializedPBXObjectArray("PBXContainerItemProxy")
-      try encodeSerializedPBXObjectArray("PBXFileReference")
-      try encodeSerializedPBXObjectArray("PBXGroup")
-      try encodeSerializedPBXObjectArray("PBXLegacyTarget")
-      try encodeSerializedPBXObjectArray("PBXNativeTarget")
-      try encodeSerializedPBXObjectArray("PBXProject")
-      try encodeSerializedPBXObjectArray("PBXShellScriptBuildPhase")
-      try encodeSerializedPBXObjectArray("PBXSourcesBuildPhase")
-      try encodeSerializedPBXObjectArray("PBXTargetDependency")
-      try encodeSerializedPBXObjectArray("XCBuildConfiguration")
-      try encodeSerializedPBXObjectArray("XCConfigurationList")
-      try encodeSerializedPBXObjectArray("XCVersionGroup")
+      try encodeSerializedPBXObjectArray("PBXBuildFile", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXContainerItemProxy", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXFileReference", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXGroup", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXLegacyTarget", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXNativeTarget", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXProject", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXShellScriptBuildPhase", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXSourcesBuildPhase", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXTargetDependency", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("XCBuildConfiguration", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("XCConfigurationList", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("XCVersionGroup", into: data, indented: indent)
 
       assert(typedObjectIndex.isEmpty, "Failed to encode objects of type(s) \(typedObjectIndex.keys)")
-      indent = oldIndent
 
+      indent = oldIndent
       try appendIndentedString("};\n")
       try appendIndentedString("rootObject = \(rootObjectID);\n")
       try data.tulsi_appendString("}")
@@ -290,159 +411,9 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     return data
   }
 
-  // MARK: - XcodeProjFieldSerializer
-
-  func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
-    if objects[obj.globalID] != nil {
-      if !returnRawID, let comment = objectComments[obj.globalID] {
-        return "\(obj.globalID)\(comment)"
-      }
-      return obj.globalID
-    }
-
-    // If the object already has a GID from a previous serialization, reuse it.
-    if obj.globalID.isEmpty {
-      obj.globalID = gidGenerator.generate(obj)
-    }
-
-    let stack = currentObjectData
-    currentObjectData = NSMutableData()
-
-    // Note: The object is added to the objects dictionary in order to allow recursive references.
-    // e.g., PBXTargetDependency instances between targets in the same PBXProject instance.
-    let globalID = obj.globalID
-    objects[globalID] = currentObjectData
-
-    let comment: String
-    if let rawComment = obj.comment {
-      comment = " /* \(rawComment) */"
-      objectComments[globalID] = comment
-    } else {
-      comment = ""
-    }
-
-    let isa = obj.isa
-    var startingString = "\(indent)\(obj.globalID)\(comment) = {"
-
-    let oldSpacer = spacer
-    if !OpenStepSerializer.CompactPBXTypes.contains(isa) {
-      spacer = "\n\(indent)\t"
-      startingString += spacer
-    } else {
-      spacer = " "
-    }
-    startingString += "isa = \(isa);\(spacer)"
-
-    try currentObjectData.tulsi_appendString(startingString)
-    try obj.serializeInto(self)
-
-    try currentObjectData.tulsi_appendString("};")
-
-    if typedObjectIndex[isa] == nil {
-      typedObjectIndex[isa] = [globalID]
-    } else {
-      typedObjectIndex[isa]!.append(globalID)
-    }
-
-    spacer = oldSpacer
-    currentObjectData = stack
-
-    if returnRawID {
-      return globalID
-    }
-    return "\(globalID)\(comment)"
-  }
-
-  func addField(name: String, _ obj: PBXObjectProtocol?) throws {
-    guard let local = obj else {
-      return
-    }
-
-    let gid = try serializeObject(local)
-    try currentObjectData.tulsi_appendString("\(name) = \(gid);\(spacer)")
-  }
-
-  func addField(name: String, _ val: Int) throws {
-    try currentObjectData.tulsi_appendString("\(name) = \(val);\(spacer)")
-  }
-
-  func addField(name: String, _ val: Bool) throws {
-    let intVal = val ? 1 : 0
-    try currentObjectData.tulsi_appendString("\(name) = \(intVal);\(spacer)")
-  }
-
-  func addField(name: String, _ val: String?) throws {
-    guard let stringValue = val else {
-      return
-    }
-
-    let escapedString = escapeString(stringValue)
-    try currentObjectData.tulsi_appendString("\(name) = \(escapedString);\(spacer)")
-  }
-
-  func addField(name: String, _ val: [String: AnyObject]?) throws {
-    // Note: Xcode will crash if empty buildSettings member dictionaries of XCBuildConfiguration's
-    // are omitted so this does not check to see if the dictionary is empty or not.
-    guard let dict = val else {
-      return
-    }
-
-    try wrapSerializedGroup(name, prefixDelimiter: "{", suffixDelimiter: "};") {
-      for (key, value) in dict.sort({ $0.0 < $1.0 }) {
-        if let stringValue = value as? String {
-          let escapedString = self.escapeString(stringValue)
-          try self.currentObjectData.tulsi_appendString("\(key) = \(escapedString);\(self.spacer)")
-        } else if let dictValue = value as? [String:AnyObject] {
-          try self.addField(key, dictValue)
-        } else if let arrayValue = value as? [String] {
-          try self.addField(key, arrayValue)
-        } else {
-          assertionFailure("Unsupported complex object \(value) in nested dictionary type")
-        }
-      }
-    }
-  }
-
-  func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws {
-    try wrapSerializedGroup(name, prefixDelimiter: "(", suffixDelimiter: ");") {
-      for val in values {
-        let objectReference = try self.serializeObject(val)
-        try self.currentObjectData.tulsi_appendString("\(self.spacer)\(objectReference),")
-      }
-    }
-  }
-
-  func addField(name: String, _ values: [String]) throws {
-    try wrapSerializedGroup(name, prefixDelimiter: "(", suffixDelimiter: ");") {
-      for val in values {
-        try self.currentObjectData.tulsi_appendString("\(self.spacer)\(self.escapeString(val)),")
-      }
-    }
-  }
-
-  func getGlobalIDForObject(object: PBXObjectProtocol) throws -> String {
-    return try serializeObject(object)
-  }
-
-  // MARK: - Private methods
-
-  private func wrapSerializedGroup(name: String,
-                                   prefixDelimiter: String,
-                                   suffixDelimiter: String,
-                                   contentClosure: () throws -> Void) throws {
-    try currentObjectData.tulsi_appendString("\(name) = \(prefixDelimiter)\(spacer)")
-    let oldSpacer = spacer
-    spacer += "\t"
-    try contentClosure()
-    spacer = oldSpacer
-    try currentObjectData.tulsi_appendString("\(spacer)\(suffixDelimiter)\(spacer)")
-  }
-
-  private func appendIndentedString(string: String) throws {
-    try data.tulsi_appendString(indent + string)
-  }
-
-  private func encodeSerializedPBXObjectArray(key: String) throws {
+  private func encodeSerializedPBXObjectArray(key: String,
+                                              into data: NSMutableData,
+                                              indented indent: String) throws {
     guard let entries = typedObjectIndex[key] else {
       return
     }
@@ -452,12 +423,12 @@ class OpenStepSerializer: PBXProjFieldSerializer {
 
     try data.tulsi_appendString("\n/* Begin \(key) section */\n")
 
-    for key in entries.sort() {
-      guard let objData = objects[key] else {
+    for gid in entries.sort() {
+      guard let obj = objects[gid] else {
         throw SerializationError.ReferencedObjectNotFoundError
       }
-      data.appendData(objData)
-      try data.tulsi_appendString("\n")
+
+      try obj.appendToData(data, indent: indent)
     }
 
     try data.tulsi_appendString("/* End \(key) section */\n")
@@ -477,7 +448,97 @@ class OpenStepSerializer: PBXProjFieldSerializer {
     } else {
       val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
       val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+      val = val.stringByReplacingOccurrencesOfString("\n", withString: "\\n")
       return "\"\(val)\""
+    }
+  }
+
+
+  /// Intermediate representation of a raw dictionary.
+  private class RawDict {
+    var dict = [String: AnyObject]()
+    let compact: Bool
+
+    init(compact: Bool = false) {
+      self.compact = compact
+    }
+
+    func appendToData(data: NSMutableData, indent: String) throws {
+      try data.tulsi_appendString("{")
+
+      let (closingSpacer, spacer) = spacersForIndent(indent)
+      if !compact {
+        try data.tulsi_appendString(spacer)
+      }
+
+      try appendContentsToData(data, indent: indent, spacer: spacer)
+      try data.tulsi_appendString("\(closingSpacer)};")
+    }
+
+    // MARK: - Internal methods
+
+    func appendContentsToData(data: NSMutableData, indent: String, spacer: String) throws {
+      let newIndent = indent + "\t"
+      var leadingSpacer = ""
+      for (key, value) in dict.sort({ $0.0 < $1.0 }) {
+        if let rawDictValue = value as? RawDict {
+          try data.tulsi_appendString("\(leadingSpacer)\(key) = ")
+          try rawDictValue.appendToData(data, indent: newIndent)
+        } else if let arrayValue = value as? [String] {
+          try data.tulsi_appendString("\(leadingSpacer)\(key) = (")
+          let itemSpacer = spacer + (compact ? "" : "\t")
+          try arrayValue.forEach() { try data.tulsi_appendString("\(itemSpacer)\($0),") }
+          try data.tulsi_appendString("\(spacer));")
+        } else {
+          try data.tulsi_appendString("\(leadingSpacer)\(key) = \(value);")
+        }
+        leadingSpacer = spacer
+      }
+    }
+
+    func spacersForIndent(indent: String) -> (String, String) {
+      let closingSpacer: String
+      let spacer: String
+      if compact {
+        spacer = " "
+        closingSpacer = spacer
+      } else {
+        closingSpacer = "\n\(indent)"
+        spacer = "\(closingSpacer)\t"
+      }
+      return (closingSpacer, spacer)
+    }
+  }
+
+
+  /// Intermediate representation of a typed PBXObject.
+  private final class TypedDict: RawDict {
+    let gid: String
+    let isa: String
+    let comment: String
+
+    init(gid: String, isa: String, comment: String? = nil) {
+      self.gid = gid
+      self.isa = isa
+      if let comment = comment {
+        self.comment = " /* \(comment) */"
+      } else {
+        self.comment = ""
+      }
+      super.init(compact: OpenStepSerializer.CompactPBXTypes.contains(isa))
+    }
+
+    override func appendToData(data: NSMutableData, indent: String) throws {
+      try data.tulsi_appendString("\(indent)\(gid)\(comment) = {")
+
+      let (closingSpacer, spacer) = spacersForIndent(indent)
+      if !compact {
+        try data.tulsi_appendString(spacer)
+      }
+
+      try data.tulsi_appendString("isa = \(isa);\(spacer)")
+      try appendContentsToData(data, indent: indent, spacer: spacer)
+      try data.tulsi_appendString("\(closingSpacer)};\n")
     }
   }
 }

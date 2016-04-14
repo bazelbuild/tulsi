@@ -383,7 +383,7 @@ class PBXProjSerializerTests: XCTestCase {
                   FileDefinition(sourceTree: .Group, path: "t.storyboard", gid: generator.generateReservedID()),
                   FileDefinition(sourceTree: .Group, path: "t.xcassets", uti: DirExtensionToUTI["xcassets"], gid: generator.generateReservedID()),
                   FileDefinition(sourceTree: .Group, path: "t.xib", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "Test", uti: nil, gid: generator.generateReservedID()),
+                  FileDefinition(sourceTree: .Group, path: "Test", uti: "text", gid: generator.generateReservedID()),
                   FileDefinition(sourceTree: .Group, path: "Output.app", gid: generator.generateReservedID(), isInputFile: false),
               ],
               groups: []
