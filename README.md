@@ -7,27 +7,9 @@ plant.
 
 ## Building and installing
 
-1.  Open src/Tulsi.xcodeproj, and within Xcode, build the **TulsiApp** and
-    **TulsiPlugin** targets.
+1.  Open src/Tulsi.xcodeproj, and within Xcode, build the **TulsiApp**.
 
-2.  Run the **TulsiPlugin** project.
-
-    Xcode will present a warning that the plugin is not from Apple. You need to
-    tell it to go ahead and _Load Bundle_. Once the plugin is loaded, Xcode will
-    now display a _Tulsi_ menu item under the File menu.
-
-    If you accidentally hit _Skip Bundle_ in the warning above, you'll need to
-    clear out the setting under `com.apple.dt.Xcode` and restart Xcode.
-
-    For example, for Xcode 7.1:
-
-        defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-7.1
-
-    If Xcode has flagged Tulsi as skipped, it'll just silently fail to show up
-    in the Xcode UI.
-
-3.  Select _File > Tulsi > New Tulsi Project..._ (or _Open Tulsi Project..._ if
-    your team already has a shared project).
+2.  Run the **TulsiApp**.
 
 ## Notes
 

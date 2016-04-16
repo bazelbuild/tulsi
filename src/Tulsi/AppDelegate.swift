@@ -29,29 +29,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
     let _ = TulsiDocumentController()
   }
 
-  func applicationShouldOpenUntitledFile(sender: NSApplication) -> Bool {
-    if let (_, mode) = GetXcodeURLFromCurrentAppleEvent() where mode == .OpenProject {
-      NSDocumentController.sharedDocumentController().openDocument(sender)
-      return false
-    }
-    return true
-  }
-
-  func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-    // If the apple event that opened us contains an Xcode URL, we want to treat this as a menu
-    // command rather than simply restoring focus.
-    if let (_, mode) = GetXcodeURLFromCurrentAppleEvent() {
-      switch mode {
-        case .NewProject:
-          NSDocumentController.sharedDocumentController().newDocument(sender)
-        case .OpenProject:
-          NSDocumentController.sharedDocumentController().openDocument(sender)
-      }
-      return false
-    }
-    return true
-  }
-
   func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
     return true
   }

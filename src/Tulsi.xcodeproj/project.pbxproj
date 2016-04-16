@@ -104,10 +104,6 @@
 		8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */; };
 		8B8F55C81BE4100A0095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */; };
 		8BEEF96C1BF94FB800247062 /* BazelFileTypeFixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEF96B1BF94FB800247062 /* BazelFileTypeFixer.swift */; };
-		8BEEF9751BF9A5D400247062 /* TulsiAppleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEF9741BF9A5D400247062 /* TulsiAppleEvents.swift */; };
-		8BEEF9761BF9A5D400247062 /* TulsiAppleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEEF9741BF9A5D400247062 /* TulsiAppleEvents.swift */; };
-		8BF4B3711BF6B61400239948 /* TulsiPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4B3701BF6B61400239948 /* TulsiPlugin.swift */; };
-		8BF4B3731BF6B61400239948 /* NSObject_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4B3721BF6B61400239948 /* NSObject_Extension.swift */; };
 		AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */; };
 /* End PBXBuildFile section */
 
@@ -250,11 +246,6 @@
 		8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXProjSerializerTests.swift; sourceTree = "<group>"; };
 		8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorBuildTargetSelectorViewController.swift; sourceTree = "<group>"; };
 		8BEEF96B1BF94FB800247062 /* BazelFileTypeFixer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelFileTypeFixer.swift; sourceTree = "<group>"; };
-		8BEEF9741BF9A5D400247062 /* TulsiAppleEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiAppleEvents.swift; sourceTree = "<group>"; };
-		8BF4B36B1BF6B61400239948 /* TulsiPlugin.xcplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TulsiPlugin.xcplugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BF4B3701BF6B61400239948 /* TulsiPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiPlugin.swift; sourceTree = "<group>"; };
-		8BF4B3721BF6B61400239948 /* NSObject_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject_Extension.swift; sourceTree = "<group>"; };
-		8BF4B3741BF6B61400239948 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
@@ -467,8 +458,6 @@
 				3D9926641C29F0A20094E098 /* TulsiGenerator */,
 				3DAEE4641C85EB6100BA1C67 /* TulsiGeneratorBazelIntegrationTests */,
 				3D9926721C29F0A30094E098 /* TulsiGeneratorTests */,
-				8BF4B36C1BF6B61400239948 /* TulsiPlugin */,
-				8BEEF9731BF9A5AD00247062 /* TulsiShared */,
 				F4469ECD1C5BCA3200BCFAA1 /* XcodeConfig */,
 			);
 			sourceTree = "<group>";
@@ -477,7 +466,6 @@
 			isa = PBXGroup;
 			children = (
 				8B8F55971BE3ECDC0095AF7F /* Tulsi.app */,
-				8BF4B36B1BF6B61400239948 /* TulsiPlugin.xcplugin */,
 				3D9926631C29F0A20094E098 /* TulsiGenerator.framework */,
 				3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */,
 				3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */,
@@ -522,24 +510,6 @@
 				3D387BB01C75352E00544AE0 /* XcodeProjectGenerationProgressViewController.swift */,
 			);
 			path = Tulsi;
-			sourceTree = "<group>";
-		};
-		8BEEF9731BF9A5AD00247062 /* TulsiShared */ = {
-			isa = PBXGroup;
-			children = (
-				8BEEF9741BF9A5D400247062 /* TulsiAppleEvents.swift */,
-			);
-			path = TulsiShared;
-			sourceTree = SOURCE_ROOT;
-		};
-		8BF4B36C1BF6B61400239948 /* TulsiPlugin */ = {
-			isa = PBXGroup;
-			children = (
-				8BF4B3741BF6B61400239948 /* Info.plist */,
-				8BF4B3721BF6B61400239948 /* NSObject_Extension.swift */,
-				8BF4B3701BF6B61400239948 /* TulsiPlugin.swift */,
-			);
-			path = TulsiPlugin;
 			sourceTree = "<group>";
 		};
 		F4469ECD1C5BCA3200BCFAA1 /* XcodeConfig */ = {
@@ -637,22 +607,6 @@
 			productReference = 8B8F55971BE3ECDC0095AF7F /* Tulsi.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8BF4B36A1BF6B61400239948 /* TulsiPlugin */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8BF4B3771BF6B61400239948 /* Build configuration list for PBXNativeTarget "TulsiPlugin" */;
-			buildPhases = (
-				8BF4B3681BF6B61400239948 /* Sources */,
-				8BF4B3691BF6B61400239948 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = TulsiPlugin;
-			productName = TulsiPlugin;
-			productReference = 8BF4B36B1BF6B61400239948 /* TulsiPlugin.xcplugin */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -675,9 +629,6 @@
 					8B8F55961BE3ECDC0095AF7F = {
 						CreatedOnToolsVersion = 7.1;
 					};
-					8BF4B36A1BF6B61400239948 = {
-						CreatedOnToolsVersion = 7.1;
-					};
 				};
 			};
 			buildConfigurationList = 8B8F55921BE3ECDC0095AF7F /* Build configuration list for PBXProject "Tulsi" */;
@@ -694,7 +645,6 @@
 			projectRoot = "";
 			targets = (
 				8B8F55961BE3ECDC0095AF7F /* Tulsi */,
-				8BF4B36A1BF6B61400239948 /* TulsiPlugin */,
 				3D9926621C29F0A20094E098 /* TulsiGenerator */,
 				3D99266B1C29F0A20094E098 /* TulsiGeneratorTests */,
 				3DAEE4621C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests */,
@@ -747,13 +697,6 @@
 				8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */,
 				3DD0DE451C65404F008B0CDF /* NewProjectViewController.xib in Resources */,
 				3D167E271C5B1FA700DD485C /* Credits.html in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8BF4B3691BF6B61400239948 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,7 +818,6 @@
 				8BEEF96C1BF94FB800247062 /* BazelFileTypeFixer.swift in Sources */,
 				8B8F559D1BE3ECDC0095AF7F /* ConfigEditorWizardViewController.swift in Sources */,
 				8B8F559B1BE3ECDC0095AF7F /* AppDelegate.swift in Sources */,
-				8BEEF9751BF9A5D400247062 /* TulsiAppleEvents.swift in Sources */,
 				3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */,
 				3D084A041C73CEEF005F5ABA /* ProjectEditorConfigManagerViewController.swift in Sources */,
 				3D0849FC1C73AE77005F5ABA /* ProjectEditorTabViewController.swift in Sources */,
@@ -883,16 +825,6 @@
 				3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */,
 				8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */,
 				3DD0EB0E1C40AEC7005C0469 /* OptionsEditorController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8BF4B3681BF6B61400239948 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8BF4B3711BF6B61400239948 /* TulsiPlugin.swift in Sources */,
-				8BF4B3731BF6B61400239948 /* NSObject_Extension.swift in Sources */,
-				8BEEF9761BF9A5D400247062 /* TulsiAppleEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1201,36 +1133,6 @@
 			};
 			name = Release;
 		};
-		8BF4B3751BF6B61400239948 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(HOME)";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				INFOPLIST_FILE = TulsiPlugin/Info.plist;
-				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
-				LD_RUNPATH_SEARCH_PATHS = "$(DT_TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME}";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				WRAPPER_EXTENSION = xcplugin;
-			};
-			name = Debug;
-		};
-		8BF4B3761BF6B61400239948 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(HOME)";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				INFOPLIST_FILE = TulsiPlugin/Info.plist;
-				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
-				LD_RUNPATH_SEARCH_PATHS = "$(DT_TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME}";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				WRAPPER_EXTENSION = xcplugin;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1275,15 +1177,6 @@
 			buildConfigurations = (
 				8B8F55BD1BE3ECDC0095AF7F /* Debug */,
 				8B8F55BE1BE3ECDC0095AF7F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8BF4B3771BF6B61400239948 /* Build configuration list for PBXNativeTarget "TulsiPlugin" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8BF4B3751BF6B61400239948 /* Debug */,
-				8BF4B3761BF6B61400239948 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
