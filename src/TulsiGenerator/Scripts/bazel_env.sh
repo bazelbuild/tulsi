@@ -14,5 +14,3 @@
 #
 # Sets environment variable overrides prior to invoking bazel scripts.
 
-# The dSYM generation in Bazel is a stub and must be disabled.
-export TULSI_DISABLE_STUB_DSYM_GENERATOR=1
