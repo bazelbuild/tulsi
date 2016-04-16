@@ -602,15 +602,6 @@ class BazelBuildBridge(object):
         return self._CopyBundle(bazel_dsym_path,
                                 input_dsym_full_path,
                                 output_full_path)
-    elif target_dsym.endswith('.xctest.dSYM'):
-      # TODO(abaire): Remove this hack once Bazel generates xctest bundle dSYMs
-      #               with the correct extension.
-      misnamed_dsym = target_dsym[:-12] + '.app.dSYM'
-      input_dsym_full_path = os.path.join(self.build_path, misnamed_dsym)
-      if os.path.isdir(input_dsym_full_path):
-        return self._CopyBundle(target_dsym,
-                                input_dsym_full_path,
-                                output_full_path)
     return 0
 
   def _ResignTestHost(self, test_host):
