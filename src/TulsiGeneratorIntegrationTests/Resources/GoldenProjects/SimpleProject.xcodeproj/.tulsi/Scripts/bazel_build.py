@@ -68,12 +68,14 @@ class _OptionsParser(object):
 
             'Debug': [
                 '--compilation_mode=dbg',
-                '--copt=-g',
                 '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
                 '--copt=-Xclang', '--copt=%s' % main_group_path,
                 '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
                 '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
-                '--objc_generate_debug_symbols',
+                # There is currently no crosstool for OS X, so -g must be specified manually.
+                # TODO(abaire): Remove these when symbols are enabled via compilation_mode.
+                '--copt=-g',
+                '--objccopt=-g',
             ],
 
             'Release': [
