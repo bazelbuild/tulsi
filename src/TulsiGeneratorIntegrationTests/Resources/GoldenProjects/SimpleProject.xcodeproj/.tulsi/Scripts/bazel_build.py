@@ -357,9 +357,9 @@ class BazelBuildBridge(object):
       return exit_code
 
     if parser.install_generated_artifacts:
-      bundle_output_path = os.environ['CODESIGNING_FOLDER_PATH']
-      timer = Timer('Installing bundle artifacts').Start()
-      exit_code = self._InstallBundleArtifact(bundle_output_path)
+      output_path = os.environ['CODESIGNING_FOLDER_PATH']
+      timer = Timer('Installing artifacts').Start()
+      exit_code = self._InstallArtifact(output_path)
       timer.End()
       if exit_code:
         return exit_code
@@ -469,39 +469,73 @@ class BazelBuildBridge(object):
         return 20
     return 0
 
-  def _InstallBundleArtifact(self, output_path):
+  def _InstallArtifact(self, output_path):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
-    if os.path.isdir(output_path):
-      try:
-        shutil.rmtree(output_path)
-      except OSError as e:
-        self._PrintError('Failed to remove stale output directory "%s". '
-                         '%s' % (output_path, e))
-        return 600
-
     self.build_path = os.path.join('bazel-bin',
                                    os.environ.get('BUILD_PATH', ''))
-
-    bundle_artifact = os.environ['WRAPPER_NAME']
-    full_bundle_artifact_path = os.path.join(self.build_path, bundle_artifact)
-    if os.path.isdir(full_bundle_artifact_path):
-      exit_code = self._CopyBundle(bundle_artifact,
-                                   full_bundle_artifact_path,
-                                   output_path)
-      if exit_code:
-        return exit_code
+    bundle_artifact = os.environ.get('WRAPPER_NAME', None)
+    if bundle_artifact:
+      if os.path.isdir(output_path):
+        try:
+          shutil.rmtree(output_path)
+        except OSError as e:
+          self._PrintError('Failed to remove stale output directory ""%s". '
+                           '%s' % (output_path, e))
+          return 600
+      full_bundle_artifact_path = os.path.join(self.build_path, bundle_artifact)
+      if os.path.isdir(full_bundle_artifact_path):
+        exit_code = self._CopyBundle(bundle_artifact,
+                                     full_bundle_artifact_path,
+                                     output_path)
+        if exit_code:
+          return exit_code
+      else:
+        ipa_artifact = os.environ['PRODUCT_NAME'] + '.ipa'
+        exit_code = self._UnpackTarget(ipa_artifact, output_path)
+        if exit_code:
+          return exit_code
     else:
-      ipa_artifact = os.environ['PRODUCT_NAME'] + '.ipa'
-      exit_code = self._UnpackTarget(ipa_artifact, output_path)
+      # The artifact is a simple file.
+      if os.path.isfile(output_path):
+        try:
+          os.remove(output_path)
+        except OSError as e:
+          self._PrintError('Failed to remove stale output file ""%s". '
+                           '%s' % (output_path, e))
+          return 600
+      generated_artifact = os.environ['FULL_PRODUCT_NAME']
+      full_artifact_path = os.path.join(self.build_path, generated_artifact)
+      exit_code = self._CopyFile(generated_artifact,
+                                 full_artifact_path,
+                                 output_path)
       if exit_code:
         return exit_code
-    return exit_code
+
+    return 0
 
   def _CopyBundle(self, source_path, full_source_path, output_path):
-    """Copies the given bundle tothe given expected output path."""
+    """Copies the given bundle to the given expected output path."""
     self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
     try:
       shutil.copytree(full_source_path, output_path)
+    except OSError as e:
+      self._PrintError('Copy failed. %s' % e)
+      return 650
+    return 0
+
+  def _CopyFile(self, source_path, full_source_path, output_path):
+    """Copies the given file to the given expected output path."""
+    self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
+    output_path_dir = os.path.dirname(output_path)
+    if not os.path.exists(output_path_dir):
+      try:
+        os.makedirs(output_path_dir)
+      except OSError as e:
+        self._PrintError('Failed to create output directory ""%s". '
+                         '%s' % (output_path_dir, e))
+        return 650
+    try:
+      shutil.copy(full_source_path, output_path)
     except OSError as e:
       self._PrintError('Copy failed. %s' % e)
       return 650
