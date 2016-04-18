@@ -41,9 +41,8 @@ final class SplashScreenWindowController: NSWindowController {
       applicationVersion = cfBundleVersion
     }
 
-    let documentController = NSDocumentController.sharedDocumentController()
     recentDocumentURLs = [NSURL()]
-    recentDocumentURLs.appendContentsOf(documentController.recentDocumentURLs)
+    recentDocumentURLs.appendContentsOf(getRecentProjectURLs())
   }
 
   @IBAction func didDoubleClickRecentDocument(sender: NSTableView) {
@@ -61,11 +60,46 @@ final class SplashScreenWindowController: NSWindowController {
         alert.runModal()
       }
     } else {
-      let url = (recentDocumentsArrayController.arrangedObjects as! [NSURL])[clickedRow]
+      let url = recentDocumentURLs[clickedRow]
       documentController.openDocumentWithContentsOfURL(url, display: true) {
         (_: NSDocument?, _: Bool, _: NSError?) in
       }
     }
+  }
+
+  // MARK: - Private methods
+
+  private func getRecentProjectURLs() -> [NSURL] {
+    let projectExtension = TulsiProjectDocument.getTulsiBundleExtension()
+    let documentController = NSDocumentController.sharedDocumentController()
+
+    var recentURLs = [NSURL]()
+    for url in documentController.recentDocumentURLs {
+      guard let path = url.path where path.containsString(projectExtension) else { continue }
+
+      var components: [String] = url.pathComponents!
+      var i = components.count - 1
+      repeat {
+        if (components[i] as NSString).pathExtension == projectExtension {
+          break
+        }
+        i -= 1
+      } while i > 0
+
+      let projectURL: NSURL
+      if i == components.count - 1 {
+        projectURL = url
+      } else {
+        let projectComponents = [String](components.prefix(i + 1))
+        projectURL = NSURL.fileURLWithPathComponents(projectComponents)!
+      }
+
+      if !recentURLs.contains(projectURL) {
+        recentURLs.append(projectURL)
+      }
+    }
+
+    return recentURLs
   }
 }
 
