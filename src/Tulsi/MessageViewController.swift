@@ -16,7 +16,7 @@ import Cocoa
 
 
 /// NSTableView that posts a notification when live resizing completes.
-class MessageTableView: NSTableView {
+final class MessageTableView: NSTableView {
   override func viewDidEndLiveResize() {
     super.viewDidEndLiveResize()
 
@@ -28,7 +28,7 @@ class MessageTableView: NSTableView {
 
 
 /// View controller for the message output area in the Tulsi wizard.
-class MessageViewController: NSViewController, NSTableViewDelegate, NSUserInterfaceValidations {
+final class MessageViewController: NSViewController, NSTableViewDelegate, NSUserInterfaceValidations {
   let minRowHeight = CGFloat(16.0)
 
   @IBOutlet var messageArrayController: NSArrayController!
@@ -134,7 +134,7 @@ class MessageViewController: NSViewController, NSTableViewDelegate, NSUserInterf
 
 
 /// Transformer that converts a UIMessage type into an image to be displayed in the message view.
-class MessageTypeToImageValueTransformer : NSValueTransformer {
+final class MessageTypeToImageValueTransformer : NSValueTransformer {
   override class func transformedValueClass() -> AnyClass {
     return NSString.self
   }

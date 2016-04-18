@@ -18,6 +18,8 @@ import TulsiGenerator
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
 
+  var splashScreenWindowController: SplashScreenWindowController! = nil
+
   @IBAction func fileBugReport(sender: NSMenuItem) {
     BugReporter.fileBugReport()
   }
@@ -27,6 +29,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
   func applicationWillFinishLaunching(notification: NSNotification) {
     // Create the shared document controller.
     let _ = TulsiDocumentController()
+  }
+
+  func applicationDidFinishLaunching(notification: NSNotification) {
+    splashScreenWindowController = SplashScreenWindowController()
+    splashScreenWindowController.showWindow(self)
+  }
+
+  func applicationShouldOpenUntitledFile(sender: NSApplication) -> Bool {
+    return false
   }
 
   func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {

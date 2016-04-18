@@ -80,6 +80,9 @@
 /* Label for the button used to confirm the selected output folder for the generated Xcode project. */
 "ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt" = "Generate";
 
+/* Special item in the recent documents list on the splash screen that will create a new project document. */
+"SplashScreen_NewProject" = "[New project]";
+
 /* Error message for when the user tried to generate an Xcode project from an incomplete config. */
 "TulsiError_ConfigNotGenerateable" = "Generator config is not fully populated and cannot generate an Xcode project.";
 

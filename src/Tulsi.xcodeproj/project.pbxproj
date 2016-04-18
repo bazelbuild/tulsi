@@ -30,6 +30,8 @@
 		3D7B77431C8F2DD3004786EF /* UISourcePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77421C8F2DD3004786EF /* UISourcePath.swift */; };
 		3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */; };
 		3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */ = {isa = PBXBuildFile; fileRef = 3D7B77C61C9098A4004786EF /* GoldenProjects */; };
+		3D7CED5B1CC171CD0073204D /* SplashScreenWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */; };
+		3D7CED5D1CC171E60073204D /* SplashScreenWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D7CED5F1CC171E60073204D /* SplashScreenWindowController.xib */; };
 		3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D800DE81C6C24C000F4D08C /* BugReporter.swift */; };
 		3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */; };
 		3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */; };
@@ -171,6 +173,8 @@
 		3D7B77421C8F2DD3004786EF /* UISourcePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISourcePath.swift; sourceTree = "<group>"; };
 		3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndToEndGenerationTests.swift; sourceTree = "<group>"; };
 		3D7B77C61C9098A4004786EF /* GoldenProjects */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GoldenProjects; path = Resources/GoldenProjects; sourceTree = "<group>"; };
+		3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenWindowController.swift; sourceTree = "<group>"; };
+		3D7CED5E1CC171E60073204D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SplashScreenWindowController.xib; sourceTree = "<group>"; };
 		3D800DE81C6C24C000F4D08C /* BugReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReporter.swift; sourceTree = "<group>"; };
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
@@ -445,6 +449,7 @@
 				8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */,
 				3D387BAF1C7500B500544AE0 /* NewGeneratorConfigViewController.xib */,
 				3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */,
+				3D7CED5F1CC171E60073204D /* SplashScreenWindowController.xib */,
 				3D387BB61C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib */,
 			);
 			name = Resources;
@@ -498,6 +503,7 @@
 				3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */,
 				3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */,
 				3DFAD2691C4FE05900C7D7AF /* Resources */,
+				3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */,
 				3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */,
 				3D387BB71C761B8800544AE0 /* TulsiError.swift */,
 				3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */,
@@ -693,6 +699,7 @@
 				3DF313B71C34898500A34C14 /* Localizable.strings in Resources */,
 				3D8B37ED1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib in Resources */,
 				3D387BB41C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib in Resources */,
+				3D7CED5D1CC171E60073204D /* SplashScreenWindowController.xib in Resources */,
 				3D387BAD1C7500B500544AE0 /* NewGeneratorConfigViewController.xib in Resources */,
 				8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */,
 				3DD0DE451C65404F008B0CDF /* NewProjectViewController.xib in Resources */,
@@ -798,6 +805,7 @@
 				3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */,
 				3D0849F11C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift in Sources */,
 				3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */,
+				3D7CED5B1CC171CD0073204D /* SplashScreenWindowController.swift in Sources */,
 				3DF313B41C3488BE00A34C14 /* UISelectableOutlineViewNode.swift in Sources */,
 				3DD0DE491C656C15008B0CDF /* FilteredOpenPanel.swift in Sources */,
 				3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */,
@@ -871,6 +879,14 @@
 				3D387BB51C75354C00544AE0 /* Base */,
 			);
 			name = XcodeProjectGenerationProgressViewController.xib;
+			sourceTree = "<group>";
+		};
+		3D7CED5F1CC171E60073204D /* SplashScreenWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3D7CED5E1CC171E60073204D /* Base */,
+			);
+			name = SplashScreenWindowController.xib;
 			sourceTree = "<group>";
 		};
 		3D8B37EF1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib */ = {

@@ -16,7 +16,7 @@ import Cocoa
 
 
 // Document controller for customization of the open panel.
-class TulsiDocumentController: NSDocumentController {
+final class TulsiDocumentController: NSDocumentController {
 
   override func runModalOpenPanel(openPanel: NSOpenPanel, forTypes types: [String]?) -> Int {
     openPanel.message = NSLocalizedString("OpenProject_OpenProjectPanelMessage",
