@@ -230,6 +230,10 @@ def _tulsi_sources_aspect(target, ctx):
   srcs = (_collect_files(rule, 'attr.srcs') +
           _collect_files(rule, 'attr.hdrs') +
           _collect_files(rule, 'attr.non_arc_srcs'))
+  src_outputs = None
+  if target_kind == "objc_proto_library":
+    src_outputs = [_file_metadata(file)
+                   for file in _get_opt_attr(target, 'files')]
   compile_deps = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
@@ -270,6 +274,7 @@ def _tulsi_sources_aspect(target, ctx):
       deps = compile_deps,
       label = str(target.label),
       srcs = srcs,
+      src_outputs = src_outputs,
       type = target_kind,
   )
 

@@ -52,6 +52,7 @@ objc_binary(
     deps = [
         ":CoreDataResources",
         ":Library",
+        ":ObjCProtoLibrary",
     ],
 )
 
@@ -178,4 +179,17 @@ genrule(
     srcs = ["StoryboardGenerator/srcs/storyboard_input.file"],
     outs = ["StoryboardGenerator/outs/Two.storyboard"],
     cmd = "cp $< $@",
+)
+
+proto_library(
+    name = "ProtoLibrary",
+    srcs = ["protolibrary.proto"],
+    cc_api_version = 2,
+)
+
+objc_proto_library(
+    name = "ObjCProtoLibrary",
+    deps = [
+        ":ProtoLibrary",
+    ],
 )

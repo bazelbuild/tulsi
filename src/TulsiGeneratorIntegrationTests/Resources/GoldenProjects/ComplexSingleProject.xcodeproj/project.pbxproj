@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E6AF494706F127E800000000 /* Test.xcdatamodeld in tulsi_e2e_complex */ = {isa = PBXBuildFile; fileRef = C517CBBD06F127E800000000 /* Test.xcdatamodeld */; };
+		E6AF494709BEA59400000000 /* Protolibrary.pb.m in tulsi_e2e_complex */ = {isa = PBXBuildFile; fileRef = 43D68C2809BEA59400000000 /* Protolibrary.pb.m */; };
 		E6AF49471B08EDE700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
 		E6AF494722A915AD00000000 /* src5.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2822A915AD00000000 /* src5.mm */; };
 		E6AF49472A00A0BB00000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C282A00A0BB00000000 /* src1.m */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C280984A59100000000 /* Protolibrary.pb.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = Protolibrary.pb.h; sourceTree = "<group>"; };
+		43D68C2809BEA59400000000 /* Protolibrary.pb.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = Protolibrary.pb.m; sourceTree = "<group>"; };
 		43D68C281B08EDE700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		43D68C28221BF5D700000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C2822A915AD00000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src5.mm; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 		43D68C28972B936400000000 /* lib_indexer_Binary_4799450061441825755.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_Binary_4799450061441825755.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A6B81E7A00000000 /* AssetsTwo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsTwo.xcassets; sourceTree = "<group>"; };
 		43D68C28A872D4A700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
+		43D68C28AB39C6BC00000000 /* protolibrary.proto */ = {isa = PBXFileReference; lastKnownFileType = dyn.age81a6xtsv1u; path = protolibrary.proto; sourceTree = "<group>"; };
 		43D68C28AF13353000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B91EE1B700000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
 		43D68C28BA5D07EF00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +75,8 @@
 		43D68C28C9CA518600000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C28DA72219400000000 /* bridging_header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
 		43D68C28DBBEB27100000000 /* lib_indexer_XCTest_-4799450059344870159.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_XCTest_-4799450059344870159.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F44982FD00000000 /* lib_indexer_ProtoLibrary_4799450059949081385.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_ProtoLibrary_4799450059949081385.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F9F8E87D00000000 /* lib_indexer_ObjCProtoLibrary_-4799450059432318361.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_ObjCProtoLibrary_-4799450059432318361.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FA482AD300000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -139,6 +145,8 @@
 				43D68C28972B936400000000 /* lib_indexer_Binary_4799450061441825755.a */,
 				43D68C28BA5D07EF00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */,
 				43D68C28C08351D300000000 /* lib_indexer_Library_-4799450060931977398.a */,
+				43D68C28F9F8E87D00000000 /* lib_indexer_ObjCProtoLibrary_-4799450059432318361.a */,
+				43D68C28F44982FD00000000 /* lib_indexer_ProtoLibrary_4799450059949081385.a */,
 				43D68C288E05957000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */,
 				43D68C284C75FE0B00000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */,
 				43D68C2841BB402A00000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */,
@@ -243,7 +251,7 @@
 		966FB6DE683454B700000000 /* bazel-genfiles */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
+				966FB6DE7DA6F9D500000002 /* tulsi_e2e_complex */,
 			);
 			path = "bazel-genfiles";
 			sourceTree = "<group>";
@@ -267,6 +275,23 @@
 		966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */ = {
 			isa = PBXGroup;
 			children = (
+				966FB6DEAFE2BB0400000000 /* _generated_protos */,
+			);
+			path = tulsi_e2e_complex;
+			sourceTree = "<group>";
+		};
+		966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C280984A59100000000 /* Protolibrary.pb.h */,
+				43D68C2809BEA59400000000 /* Protolibrary.pb.m */,
+			);
+			path = tulsi_e2e_complex;
+			sourceTree = "<group>";
+		};
+		966FB6DE7DA6F9D500000002 /* tulsi_e2e_complex */ = {
+			isa = PBXGroup;
+			children = (
 				966FB6DE03344B0C00000000 /* BridgingHeaderGenerator */,
 				966FB6DE529F18AF00000000 /* PCHGenerator */,
 				966FB6DEA04342FA00000000 /* SrcGenerator */,
@@ -275,7 +300,7 @@
 			path = tulsi_e2e_complex;
 			sourceTree = "<group>";
 		};
-		966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */ = {
+		966FB6DE7DA6F9D500000003 /* tulsi_e2e_complex */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C285BF5223400000000 /* BUILD */,
@@ -287,6 +312,7 @@
 				966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */,
 				C517CBBD06F127E800000000 /* Test.xcdatamodeld */,
 				966FB6DE77973FA000000000 /* XCTest */,
+				43D68C28AB39C6BC00000000 /* protolibrary.proto */,
 			);
 			path = tulsi_e2e_complex;
 			sourceTree = "<group>";
@@ -332,6 +358,22 @@
 			path = non_arc_srcs;
 			sourceTree = "<group>";
 		};
+		966FB6DEAFE2BB0400000000 /* _generated_protos */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEFED8287600000000 /* ObjCProtoLibrary */,
+			);
+			path = _generated_protos;
+			sourceTree = "<group>";
+		};
+		966FB6DEB9CCF25C00000000 /* bazel-bin */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
+			);
+			path = "bazel-bin";
+			sourceTree = "<group>";
+		};
 		966FB6DEE2E4E10A00000000 /* Binary */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,12 +390,21 @@
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
+				966FB6DEB9CCF25C00000000 /* bazel-bin */,
 				966FB6DE683454B700000000 /* bazel-genfiles */,
-				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
+				966FB6DE7DA6F9D500000003 /* tulsi_e2e_complex */,
 			);
 			name = mainGroup;
 			path = ../..;
 			sourceTree = SOURCE_ROOT;
+		};
+		966FB6DEFED8287600000000 /* ObjCProtoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
+			);
+			path = ObjCProtoLibrary;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -393,9 +444,9 @@
 		};
 		3D31C5E61BF0C4F400000000 /* _indexer_XCTest_-4799450059344870159 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */;
+			buildConfigurationList = DE475583000000000000000C /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */;
 			buildPhases = (
-				605793E20000000000000007 /* Sources */,
+				605793E20000000000000009 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -409,9 +460,9 @@
 		};
 		3D31C5E64985E86200000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */;
+			buildConfigurationList = DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */;
 			buildPhases = (
-				605793E20000000000000005 /* Sources */,
+				605793E20000000000000007 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -441,6 +492,22 @@
 			productReference = 43D68C28AF13353000000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3D31C5E68C3934B000000000 /* _indexer_ObjCProtoLibrary_-4799450059432318361 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_ObjCProtoLibrary_-4799450059432318361" */;
+			buildPhases = (
+				605793E20000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_ObjCProtoLibrary_-4799450059432318361";
+			productName = "_indexer_ObjCProtoLibrary_-4799450059432318361";
+			productReference = 43D68C28F9F8E87D00000000 /* lib_indexer_ObjCProtoLibrary_-4799450059432318361.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E6927ED62600000000 /* _indexer_Library_-4799450060931977398 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */;
@@ -459,9 +526,9 @@
 		};
 		3D31C5E695D5CBA700000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */;
+			buildConfigurationList = DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */;
 			buildPhases = (
-				605793E20000000000000004 /* Sources */,
+				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -507,9 +574,9 @@
 		};
 		3D31C5E6D2D9D06100000000 /* _indexer_SubLibrary_-4799450061059093063 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */;
+			buildConfigurationList = DE475583000000000000000B /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */;
 			buildPhases = (
-				605793E20000000000000006 /* Sources */,
+				605793E20000000000000008 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -519,6 +586,22 @@
 			name = "_indexer_SubLibrary_-4799450061059093063";
 			productName = "_indexer_SubLibrary_-4799450061059093063";
 			productReference = 43D68C2841BB402A00000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6E03F8C3000000000 /* _indexer_ProtoLibrary_4799450059949081385 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_ProtoLibrary_4799450059949081385" */;
+			buildPhases = (
+				605793E20000000000000005 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+			);
+			name = _indexer_ProtoLibrary_4799450059949081385;
+			productName = _indexer_ProtoLibrary_4799450059949081385;
+			productReference = 43D68C28F44982FD00000000 /* lib_indexer_ProtoLibrary_4799450059949081385.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -550,6 +633,8 @@
 				3D31C5E61BD6D16B00000000 /* _indexer_Binary_4799450061441825755 */,
 				3D31C5E6D2AC712200000000 /* _indexer_CoreDataResources_-4799450060412742337 */,
 				3D31C5E6927ED62600000000 /* _indexer_Library_-4799450060931977398 */,
+				3D31C5E68C3934B000000000 /* _indexer_ObjCProtoLibrary_-4799450059432318361 */,
+				3D31C5E6E03F8C3000000000 /* _indexer_ProtoLibrary_4799450059949081385 */,
 				3D31C5E695D5CBA700000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */,
 				3D31C5E64985E86200000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */,
 				3D31C5E6D2D9D06100000000 /* _indexer_SubLibrary_-4799450061059093063 */,
@@ -632,7 +717,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49472AF538F700000000 /* src.mm in srcs */,
+				E6AF494709BEA59400000000 /* Protolibrary.pb.m in tulsi_e2e_complex */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,7 +725,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49472AF538F700000001 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,11 +732,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49472AF538F700000002 /* src.mm in srcs */,
+				E6AF49472AF538F700000000 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		605793E20000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF49472AF538F700000001 /* src.mm in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000008 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF49472AF538F700000002 /* src.mm in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000009 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -745,13 +845,27 @@
 		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000007 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = _indexer_ProtoLibrary_4799450059949081385;
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000008 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000007 /* Fastbuild */ = {
+		44936BD63008588600000009 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
@@ -760,7 +874,7 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000008 /* Fastbuild */ = {
+		44936BD6300858860000000A /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
@@ -768,7 +882,7 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000009 /* Fastbuild */ = {
+		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
@@ -848,13 +962,27 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = _indexer_ProtoLibrary_4799450059949081385;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000007 /* Debug */ = {
+		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
@@ -863,7 +991,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000008 /* Debug */ = {
+		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
@@ -871,7 +999,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000009 /* Debug */ = {
+		44936BD67EED3C4D0000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
@@ -951,13 +1079,27 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = _indexer_ProtoLibrary_4799450059949081385;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000007 /* Release */ = {
+		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
@@ -966,7 +1108,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000008 /* Release */ = {
+		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
@@ -974,7 +1116,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000009 /* Release */ = {
+		44936BD6A3D45CE90000000B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
@@ -1154,7 +1296,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */ = {
+		DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_ObjCProtoLibrary_-4799450059432318361" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1163,7 +1305,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */ = {
+		DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_ProtoLibrary_4799450059949081385" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000007 /* Debug */,
@@ -1172,7 +1314,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */ = {
+		DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000008 /* Debug */,
@@ -1181,12 +1323,30 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */ = {
+		DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000009 /* Debug */,
 				44936BD63008588600000009 /* Fastbuild */,
 				44936BD6A3D45CE900000009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583000000000000000B /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6300858860000000A /* Fastbuild */,
+				44936BD6A3D45CE90000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583000000000000000C /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D0000000B /* Debug */,
+				44936BD6300858860000000B /* Fastbuild */,
+				44936BD6A3D45CE90000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

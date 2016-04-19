@@ -59,6 +59,10 @@ public class BazelFileInfo {
     return NSString.pathWithComponents([rootPath, subPath])
   }
 
+  public var uti: String? {
+    return subPath.pbPathUTI
+  }
+
   init?(info: AnyObject?) {
     guard let info = info as? [String: AnyObject] else {
       // TODO(abaire): Remove useless initialization when Swift 2.1 support is dropped.

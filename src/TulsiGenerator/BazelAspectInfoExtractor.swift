@@ -218,6 +218,15 @@ final class BazelAspectInfoExtractor {
           sources.append(pathInfo)
         }
       }
+      let generatedSourceInfos = dict["src_outputs"] as? [[String: AnyObject]] ?? []
+      for info in generatedSourceInfos {
+        guard let pathInfo = BazelFileInfo(info: info),
+                  fileUTI = pathInfo.uti
+              where fileUTI.hasPrefix("sourcecode.") else {
+          continue
+        }
+        sources.append(pathInfo)
+      }
       let dependencies = dict["deps"] as? [String] ?? []
       let buildFilePath = dict["build_file"] as? String
 

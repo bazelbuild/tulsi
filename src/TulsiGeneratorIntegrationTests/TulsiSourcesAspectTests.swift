@@ -118,7 +118,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 8)
+    XCTAssertEqual(ruleEntries.count, 10)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -186,6 +186,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                     "rootPath": "bazel-genfiles",
                                     "src": false])
 
+    checker.assertThat("//tulsi_test:ObjCProtoLibrary")
+        .hasSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
+                     "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
+
     checker.assertThat("//tulsi_test:SubLibrary")
         .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])
         .hasAttribute(.pch, value: ["path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
@@ -225,7 +229,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 8)
+    XCTAssertEqual(ruleEntries.count, 10)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
