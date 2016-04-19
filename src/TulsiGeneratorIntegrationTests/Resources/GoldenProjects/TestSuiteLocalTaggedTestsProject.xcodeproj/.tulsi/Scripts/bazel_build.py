@@ -416,11 +416,22 @@ class BazelBuildBridge(object):
                        '"%s" with project path at "%s".' % (' '.join(command),
                                                             main_group_path,
                                                             project_dir))
-    patch_xcode_parsable_line = lambda x: x
+    # Xcode translates anything that looks like ""<path>:<line>:" that is not
+    # followed by the word "warning" into an error. Bazel warnings do not fit
+    # this scheme and must be patched here.
+    bazel_warning_line_regex = re.compile(r'WARNING: ([^:]+:\d+:)\s+(.+)')
+    def PatchBazelWarningStatements(line):
+      match = bazel_warning_line_regex.match(line)
+      if match:
+        line = '%s warning: %s' % (match.group(1), match.group(2))
+      return line
+
+    patch_xcode_parsable_line = PatchBazelWarningStatements
     if main_group_path != project_dir:
       # Match (likely) filename:line_number: lines.
-      xcode_parsable_line_regex = re.compile(r'([^:]+):\d+:')
+      xcode_parsable_line_regex = re.compile(r'([^/][^:]+):\d+:')
       def PatchOutputLine(line):
+        line = PatchBazelWarningStatements(line)
         if xcode_parsable_line_regex.match(line):
           line = '%s/%s' % (main_group_path, line)
         return line
