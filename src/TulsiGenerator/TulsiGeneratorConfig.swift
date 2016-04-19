@@ -65,8 +65,6 @@ public class TulsiGeneratorConfig {
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
-  // TODO(abaire): Remove after a reasonable migration period (after April 15th, 2016).
-  static let SourceTargetsKey = "sourceTargets"
   static let PathFiltersKey = "sourceFilters"
   static let AdditionalFilePathsKey = "additionalFilePaths"
 
@@ -159,14 +157,7 @@ public class TulsiGeneratorConfig {
     let projectName = dict[TulsiGeneratorConfig.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
     let buildTargetLabels = dict[TulsiGeneratorConfig.BuildTargetsKey] as? [String] ?? []
     let additionalFilePaths = dict[TulsiGeneratorConfig.AdditionalFilePathsKey] as? [String]
-
-    // TODO(abaire): Clean up after a reasonable migration period (after April 15th, 2016).
-    let rawPathFilters: Set<String>
-    if let sourceTargetLabels = dict[TulsiGeneratorConfig.SourceTargetsKey] as? [String] {
-      rawPathFilters = Set<String>(sourceTargetLabels)
-    } else {
-      rawPathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
-    }
+    let rawPathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
 
     // Convert any path filters specified as build labels to their package paths.
     var pathFilters = Set<String>()
