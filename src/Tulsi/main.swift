@@ -286,6 +286,10 @@ class CommandlineParser {
       return
     }
     commandlineSentinalFound = true
+    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+      print("Tulsi version \(cfBundleVersion)")
+    }
+
     args = [String](args.dropFirst())
 
     var parsedArguments = [String: AnyObject]()
