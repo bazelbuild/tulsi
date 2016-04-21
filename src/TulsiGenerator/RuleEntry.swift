@@ -85,7 +85,7 @@ public class BazelFileInfo {
     }
 
     self.subPath = subPath
-    if let rootPath = info["rootPath"] as? String {
+    if let rootPath = info["root"] as? String {
       // Patch up
       self.rootPath = rootPath
     } else {
@@ -153,6 +153,8 @@ public final class RuleEntry: RuleInfo {
   /// Source files associated with this rule.
   public let sourceFiles: [BazelFileInfo]
 
+  public let generatedIncludePaths: [String]?
+
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
 
@@ -190,7 +192,8 @@ public final class RuleEntry: RuleInfo {
        sourceFiles: [BazelFileInfo],
        dependencies: Set<String>,
        weakDependencies: Set<BuildLabel>? = nil,
-       buildFilePath: String? = nil) {
+       buildFilePath: String? = nil,
+       generatedIncludePaths: [String]? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
     for (key, value) in attributes {
@@ -209,6 +212,7 @@ public final class RuleEntry: RuleInfo {
       self.weakDependencies = weakDependencies
     }
     self.buildFilePath = buildFilePath
+    self.generatedIncludePaths = generatedIncludePaths
 
     var linkedTargetLabels = Set<BuildLabel>()
     if let hostLabelString = self.attributes[.xctest_app] as? String {
@@ -224,14 +228,16 @@ public final class RuleEntry: RuleInfo {
                    sourceFiles: [BazelFileInfo],
                    dependencies: Set<String>,
                    weakDependencies: Set<BuildLabel>? = nil,
-                   buildFilePath: String? = nil) {
+                   buildFilePath: String? = nil,
+                   generatedIncludePaths: [String]? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
               sourceFiles: sourceFiles,
               dependencies: dependencies,
               weakDependencies: weakDependencies,
-              buildFilePath: buildFilePath)
+              buildFilePath: buildFilePath,
+              generatedIncludePaths: generatedIncludePaths)
   }
 }
 

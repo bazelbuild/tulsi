@@ -29,4 +29,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
 
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: NSURL {get set}
+
+  /// Workspace-relative path to the directory in which Bazel will install generated artifacts.
+  var bazelBinPath: String {get}
 }

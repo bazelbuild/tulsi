@@ -27,6 +27,7 @@ class BazelTargetGeneratorTests: XCTestCase {
     super.setUp()
     project = PBXProject(name: "TestProject")
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+                                         bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
@@ -117,6 +118,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     options[.SDKROOT].projectValue = sdkRoot
     messageLogger = MockLocalizedMessageLogger()
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+                                         bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
@@ -140,7 +142,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(target.buildToolPath, scriptPath)
 
     // The script should launch the test scriptPath with bazelURL's path as the only argument.
-    let expectedScriptArguments = "\"\(bazelURL.path!)\""
+    let expectedScriptArguments = "\"\(bazelURL.path!)\" \"bazel-bin\""
     XCTAssertEqual(target.buildArgumentsString, expectedScriptArguments)
   }
 
@@ -732,7 +734,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   func testGenerateIndexerWithGeneratedBridgingHeader() {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
-                              "rootPath": "bazel-genfiles",
+                              "root": "bazel-genfiles",
                               "src": false]
     let ruleAttributes = ["bridging_header": bridgingHeaderInfo]
 

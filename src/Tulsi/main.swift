@@ -74,7 +74,7 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
 
     print("Generating project into \(outputFolderURL.path!) using config at \(configURL.path!) " +
               "and Bazel workspace at \(workspaceRootPath).\n" +
-              "This may take awhile.")
+              "This may take a while.")
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,

@@ -128,6 +128,7 @@ final class XcodeProjectGenerator {
     let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
 
     let generator = PBXTargetGenerator(bazelURL: config.bazelURL,
+                                       bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                        project: xcodeProject,
                                        buildScriptPath: buildScriptPath,
                                        envScriptPath: envScriptPath,

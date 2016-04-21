@@ -47,6 +47,9 @@ class PBXTargetGenerator {
   /// Location of the bazel binary.
   let bazelURL: NSURL
 
+  /// Location of the bazel-bin symlink, relative to the workspace root.
+  let bazelBinPath: String
+
   let project: PBXProject
   let buildScriptPath: String
   let envScriptPath: String
@@ -62,6 +65,7 @@ class PBXTargetGenerator {
   }
 
   init(bazelURL: NSURL,
+       bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
        envScriptPath: String,
@@ -70,6 +74,7 @@ class PBXTargetGenerator {
        workspaceRootURL: NSURL,
        suppressCompilerDefines: Bool = false) {
     self.bazelURL = bazelURL
+    self.bazelBinPath = bazelBinPath
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.envScriptPath = envScriptPath
@@ -163,6 +168,16 @@ class PBXTargetGenerator {
           packagePath = ""
         }
         let rootedPaths = ruleIncludes.map() { "$(TULSI_WORKSPACE_ROOT)/\(packagePath)\($0)" }
+        for include in rootedPaths {
+          if !includesSet.contains(include) {
+            includes.append(include)
+            includesSet.insert(include)
+          }
+        }
+      }
+
+      if let generatedIncludePaths = ruleEntry.generatedIncludePaths {
+        let rootedPaths = generatedIncludePaths.map() { "$(TULSI_WORKSPACE_ROOT)/\($0)" }
         for include in rootedPaths {
           if !includesSet.contains(include) {
             includes.append(include)
@@ -268,11 +283,10 @@ class PBXTargetGenerator {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
     let bazelPath = bazelURL.path!
-    bazelCleanScriptTarget = project.createLegacyTarget(
-    PBXTargetGenerator.BazelCleanTarget,
-    buildToolPath: "\(scriptPath)",
-    buildArguments: "\"\(bazelPath)\"",
-    buildWorkingDirectory: workingDirectory)
+    bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
+                                                        buildToolPath: "\(scriptPath)",
+                                                        buildArguments: "\"\(bazelPath)\" \"\(bazelBinPath)\"",
+                                                        buildWorkingDirectory: workingDirectory)
 
     for target: PBXTarget in project.allTargets {
       if target === bazelCleanScriptTarget {
@@ -766,7 +780,8 @@ class PBXTargetGenerator {
                                                     withOptionsForTargetLabel target: BuildLabel) -> String {
     var commandLine = "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
-        "--bazel \"\(bazelURL.path!)\" "
+        "--bazel \"\(bazelURL.path!)\" " +
+        "--bazel_bin_path \"\(bazelBinPath)\" "
 
     func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey], optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be

@@ -28,7 +28,7 @@ final class BazelAspectInfoExtractor {
   let workspaceRootURL: NSURL
 
   /// Fetcher object from which a workspace's package_path may be obtained.
-  private let packagePathFetcher: BazelWorkspacePackagePathFetcher
+  private let packagePathFetcher: BazelWorkspacePathInfoFetcher
 
   private let bundle: NSBundle
   // Absolute path to the workspace containing the Tulsi aspect bzl file.
@@ -43,7 +43,7 @@ final class BazelAspectInfoExtractor {
 
   init(bazelURL: NSURL,
        workspaceRootURL: NSURL,
-       packagePathFetcher: BazelWorkspacePackagePathFetcher,
+       packagePathFetcher: BazelWorkspacePathInfoFetcher,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
@@ -218,7 +218,7 @@ final class BazelAspectInfoExtractor {
           sources.append(pathInfo)
         }
       }
-      let generatedSourceInfos = dict["src_outputs"] as? [[String: AnyObject]] ?? []
+      let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
       for info in generatedSourceInfos {
         guard let pathInfo = BazelFileInfo(info: info),
                   fileUTI = pathInfo.uti
@@ -227,6 +227,7 @@ final class BazelAspectInfoExtractor {
         }
         sources.append(pathInfo)
       }
+      let generatedIncludePaths = dict["generated_includes"] as? [String]
       let dependencies = dict["deps"] as? [String] ?? []
       let buildFilePath = dict["build_file"] as? String
 
@@ -235,7 +236,8 @@ final class BazelAspectInfoExtractor {
                                 attributes: attributes,
                                 sourceFiles: sources,
                                 dependencies: Set<String>(dependencies),
-                                buildFilePath: buildFilePath)
+                                buildFilePath: buildFilePath,
+                                generatedIncludePaths: generatedIncludePaths)
       progressNotifier?.incrementValue()
       return ruleEntry
     }

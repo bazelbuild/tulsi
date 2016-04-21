@@ -31,7 +31,7 @@ class BazelIntegrationTestCase: XCTestCase {
   var bazelStartupOptions = [String]()
   var bazelBuildOptions = [String]()
   var workspaceRootURL: NSURL! = nil
-  var packagePathFetcher: BazelWorkspacePackagePathFetcher! = nil
+  var packagePathFetcher: BazelWorkspacePathInfoFetcher! = nil
   var localizedMessageLogger: LocalizedMessageLogger! = nil
 
   private var pathsToCleanOnTeardown = Set<NSURL>()
@@ -299,7 +299,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
 
   /// Hardcodes the package path to the default for an empty WORKSPACE file.
-  private class MockBazelWorkspacePackagePathFetcher: BazelWorkspacePackagePathFetcher {
+  private class MockBazelWorkspacePackagePathFetcher: BazelWorkspacePathInfoFetcher {
     override func getPackagePath() -> String {
       return "%workspace%"
     }

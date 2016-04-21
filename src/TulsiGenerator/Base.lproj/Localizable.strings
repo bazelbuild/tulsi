@@ -23,7 +23,7 @@
 /* Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file. */
 "BazelResponseXMLParsingFailed" = "Bazel response XML parsing failed with error '%1$@'. This may be a Bazel bug or a BUILD file issue.";
 
-/* Extracting package_path info from bazel failed. The exit code is %1$d. */
+/* Extracting path info from bazel failed. The exit code is %1$d. */
 "BazelWorkspaceInfoQueryFailed" = "Failed to query information about the Bazel workspace. Bazel exited with code %1$d";
 
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */

@@ -126,7 +126,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:Binary")
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "rootPath": "bazel-genfiles",
+                              "root": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
@@ -135,7 +135,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "rootPath": "bazel-genfiles",
+                               "root": "bazel-genfiles",
                                "src": false]])
 
     checker.assertThat("//tulsi_test:Binary")
@@ -151,7 +151,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "rootPath": "bazel-genfiles",
+                              "root": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
@@ -160,7 +160,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "rootPath": "bazel-genfiles",
+                               "root": "bazel-genfiles",
                                "src": false]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
@@ -183,7 +183,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                         "'LIBRARY SECOND DEFINE'=2",
                                         "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
         .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
-                                    "rootPath": "bazel-genfiles",
+                                    "root": "bazel-genfiles",
                                     "src": false])
 
     checker.assertThat("//tulsi_test:ObjCProtoLibrary")

@@ -102,6 +102,7 @@ class _OptionsParser(object):
 
     self.verbose = True
     self.install_generated_artifacts = False
+    self.bazel_bin_path = 'bazel-bin'
 
   def _UsageMessage(self):
     """Returns a usage message string."""
@@ -120,6 +121,9 @@ class _OptionsParser(object):
 
         --bazel_options <option1> [<option2> ...] --
             Provides one or more Bazel build options.
+
+        --bazel_bin_path <path>
+            Path at which Bazel-generated artifacts may be retrieved.
       """ % sys.argv[0])
 
     usage += '\n' + textwrap.fill(
@@ -199,8 +203,7 @@ class _OptionsParser(object):
         config = self._ParseConfigFilter(arg)
         args, items, terminated = self._ParseDoubleDashDelimitedItems(args)
         if not terminated:
-          return (('Missing "--" terminator while parsing %s' % arg),
-                  2)
+          return ('Missing "--" terminator while parsing %s' % arg, 2)
         duplicates = self._FindDuplicateOptions(self.startup_options,
                                                 config,
                                                 items)
@@ -225,6 +228,12 @@ class _OptionsParser(object):
                   arg, ','.join(duplicates)),
               2)
         self.build_options[config].extend(items)
+
+      elif arg == '--bazel_bin_path':
+        if not args:
+          return ('Missing required parameter for %s' % arg, 2)
+        self.bazel_bin_path = args[0]
+        args = args[1:]
 
       else:
         return ('Unknown option "%s"\n%s' % (arg, self._UsageMessage()), 1)
@@ -337,7 +346,7 @@ class BazelBuildBridge(object):
       return exit_code
 
     self.verbose = parser.verbose
-    self.bazel_bin_path = os.path.abspath('bazel-bin')
+    self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
 
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
@@ -399,9 +408,8 @@ class BazelBuildBridge(object):
     if configuration.startswith(test_runner_config_prefix):
       configuration = configuration[len(test_runner_config_prefix):]
     if configuration not in _OptionsParser.KNOWN_CONFIGS:
-      print ('Warning: Unknown build configuration "%s", building in '
-             'fastbuild mode' % configuration)
-      configuration = 'Fastbuild'
+      print ('Error: Unknown build configuration "%s"' % configuration)
+      return (None, 1)
 
     bazel_command.extend(options.GetStartupOptions(configuration))
     bazel_command.append('build')
@@ -465,10 +473,10 @@ class BazelBuildBridge(object):
     return process.returncode
 
   def _EnsureBazelBinSymlinkIsValid(self):
-    """Ensures that the bazel-bin symlink points at a real directory."""
+    """Ensures that the Bazel binary output symlink points at a real directory."""
 
     if not os.path.islink(self.bazel_bin_path):
-      self._PrintVerbose('Warning: bazel-bin symlink at "%s" non-existent' %
+      self._PrintVerbose('Warning: Bazel output symlink at "%s" non-existent' %
                          (self.bazel_bin_path))
       return 0
 
@@ -477,14 +485,14 @@ class BazelBuildBridge(object):
       try:
         os.makedirs(real_path)
       except OSError as e:
-        self._PrintError('Failed to create bazel-bin at "%s". %s' %
+        self._PrintError('Failed to create Bazel binary dir at "%s". %s' %
                          (real_path, e))
         return 20
     return 0
 
   def _InstallArtifact(self, output_path):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
-    self.build_path = os.path.join('bazel-bin',
+    self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('BUILD_PATH', ''))
     bundle_artifact = os.environ.get('WRAPPER_NAME', None)
     if bundle_artifact:

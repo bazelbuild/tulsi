@@ -411,7 +411,7 @@
 /* Begin PBXLegacyTarget section */
 		ECCC9594B490EC1A00000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"/fake/tulsi_test_bazel\"";
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
 			buildConfigurationList = DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
@@ -478,7 +478,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				84B42271A9BD4F9F00000000 /* ShellScript */,
+				84B422713940A72400000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -544,7 +544,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				84B42271F718813C00000000 /* ShellScript */,
+				84B42271C785F92400000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -644,7 +644,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271A9BD4F9F00000000 /* ShellScript */ = {
+		84B422713940A72400000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -655,10 +655,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271F718813C00000000 /* ShellScript */ = {
+		84B42271C785F92400000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -669,7 +669,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -781,7 +781,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -818,7 +818,7 @@
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -845,6 +845,7 @@
 		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary";
 				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
 			};
 			name = Fastbuild;
@@ -885,7 +886,7 @@
 		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
 			};
@@ -898,7 +899,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -935,7 +936,7 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -962,6 +963,7 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary";
 				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
 			};
 			name = Debug;
@@ -1002,7 +1004,7 @@
 		44936BD67EED3C4D0000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
 			};
@@ -1015,7 +1017,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -1052,7 +1054,7 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -1079,6 +1081,7 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary";
 				PRODUCT_NAME = "_indexer_ObjCProtoLibrary_-4799450059432318361";
 			};
 			name = Release;
@@ -1119,7 +1122,7 @@
 		44936BD6A3D45CE90000000B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
 			};
@@ -1133,7 +1136,7 @@
 				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1184,7 +1187,7 @@
 				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/bazel-bin/tulsi_e2e_complex/_generated_protos/ObjCProtoLibrary $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";

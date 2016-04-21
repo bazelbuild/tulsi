@@ -27,8 +27,13 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     }
   }
 
+  /// Returns the workspace relative path to the bazel-bin symlink. Note that this may block.
+  var bazelBinPath: String {
+    return packagePathFetcher.getBazelBinPath()
+  }
+
   /// Fetcher object from which a workspace's package_path may be obtained.
-  private let packagePathFetcher: BazelWorkspacePackagePathFetcher
+  private let packagePathFetcher: BazelWorkspacePathInfoFetcher
 
   private let aspectExtractor: BazelAspectInfoExtractor
   private let queryExtractor: BazelQueryInfoExtractor
@@ -40,9 +45,9 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
 
-    packagePathFetcher = BazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
-                                                          workspaceRootURL: workspaceRootURL,
-                                                          localizedMessageLogger: localizedMessageLogger)
+    packagePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
+                                                       workspaceRootURL: workspaceRootURL,
+                                                       localizedMessageLogger: localizedMessageLogger)
     aspectExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                workspaceRootURL: workspaceRootURL,
                                                packagePathFetcher: packagePathFetcher,

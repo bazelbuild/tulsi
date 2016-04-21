@@ -76,7 +76,7 @@ def _file_metadata(file):
   return _struct_omitting_none(
       path = file.short_path,
       src = file.is_source,
-      rootPath = root_execution_path_fragment
+      root = root_execution_path_fragment
   )
 
 
@@ -117,7 +117,7 @@ def _collect_xcdatamodeld_files(obj, attr_path):
     datamodelds.append(_struct_omitting_none(
         path = path,
         src = file.src,
-        rootPath = rootPath))
+        root = rootPath))
   return datamodelds
 
 
@@ -214,6 +214,27 @@ def _extract_compiler_defines(ctx):
   return defines
 
 
+def _includes_for_objc_proto_files(generated_files, rule_name):
+  """Extracts generated include paths for objc_proto_library rule_name."""
+  ret = set()
+  # _generated_protos comes from the ProtoSupport class in Bazel's objc rule
+  # package and will need to be updated here if it changes at any point.
+  generated_root_subpath = '_generated_protos/' + rule_name
+  generated_root_subpath_len = len(generated_root_subpath)
+  for f in generated_files:
+    generated_path_index = f.path.find(generated_root_subpath)
+    if generated_path_index < 0:
+      continue
+    path = f.path[:generated_path_index + generated_root_subpath_len]
+    root = _get_opt_attr(f, 'root')
+    if root:
+      include = '%s/%s' % (root, path)
+    else:
+      include = path
+    ret += [include]
+  return ret
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -230,10 +251,13 @@ def _tulsi_sources_aspect(target, ctx):
   srcs = (_collect_files(rule, 'attr.srcs') +
           _collect_files(rule, 'attr.hdrs') +
           _collect_files(rule, 'attr.non_arc_srcs'))
-  src_outputs = None
+  generated_files = None
+  generated_includes = None
   if target_kind == "objc_proto_library":
-    src_outputs = [_file_metadata(file)
-                   for file in _get_opt_attr(target, 'files')]
+    generated_files = [_file_metadata(file)
+                       for file in _get_opt_attr(target, 'files')]
+    generated_includes = list(_includes_for_objc_proto_files(generated_files,
+                                                             target.label.name))
   compile_deps = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
@@ -274,7 +298,8 @@ def _tulsi_sources_aspect(target, ctx):
       deps = compile_deps,
       label = str(target.label),
       srcs = srcs,
-      src_outputs = src_outputs,
+      generated_files = generated_files,
+      generated_includes = generated_includes,
       type = target_kind,
   )
 

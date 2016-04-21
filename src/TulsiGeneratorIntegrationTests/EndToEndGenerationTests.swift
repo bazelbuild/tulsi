@@ -23,10 +23,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
 
   final func validateDiff(diffLines: [String], line: UInt = #line) {
     for diff in diffLines {
-      // .tulsigen-user files are omitted from the golden output and can be ignored.
-      if diff.hasSuffix(".tulsigen-user") || diff.hasSuffix("bazel_env.sh") {
-        continue
-      }
+      // For the sake of simplicity in maintaining the golden data, all Tulsi artifacts are assumed
+      // to have been installed correctly.
+      if diff.hasSuffix(".tulsi") { continue }
       XCTFail(diff, line: line)
     }
   }
