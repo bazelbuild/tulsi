@@ -58,7 +58,11 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
 
   @IBAction func cancel(sender: AnyObject?) {
     let document = representedObject as! TulsiGeneratorConfigDocument
-    document.revertDocumentToSaved(nil)
+    do {
+      try document.revert()
+    } catch {
+      // Nothing useful can be done here with failures to revert so the exception is ignored.
+    }
     document.close()
   }
 

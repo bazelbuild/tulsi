@@ -279,6 +279,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     saveDocument(nil)
   }
 
+  func revert() throws {
+    guard let url = fileURL else { return }
+    try revertToContentsOfURL(url, ofType: TulsiGeneratorConfigDocument.FileType)
+  }
+
   override func makeWindowControllers() {
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
     let windowController = storyboard.instantiateControllerWithIdentifier("TulsiGeneratorConfigDocumentWindow") as! NSWindowController
