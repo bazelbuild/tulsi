@@ -390,7 +390,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   func updateSourcePaths(callback: ([UISourcePath]) -> Void) {
     var sourcePathMap = [String: UISourcePath]()
     selectedSourcePaths.forEach() { sourcePathMap[$0.path] = $0 }
-    sourcePaths.removeAll()
     processingTaskStarted()
 
     let selectedLabels = self.selectedRuleInfos.map() { $0.label }
