@@ -415,23 +415,8 @@ final class TulsiProjectDocument: NSDocument,
 
     NSThread.doOnMainThread() {
       self.messages.append(UIMessage(text: message, type: .Error))
-
       // TODO(abaire): Implement better error handling, allowing recovery of a good state.
-      let alert = NSAlert()
-      alert.messageText = "\(message)\n\nA fatal error occurred. Please check the message window " +
-          "and file a bug if appropriate. You should restart Tulsi, but if you're feeling lucky " +
-          "you could navigate back one step and retry this one."
-      alert.informativeText = "TODO(abaire): finish error handling."
-      alert.alertStyle = .CriticalAlertStyle
-
-      if let details = details {
-        let accessoryView = NSTextView(frame: NSMakeRect(0, 0, 480, 60))
-        accessoryView.insertText(details)
-        accessoryView.editable = false
-        accessoryView.drawsBackground = false
-        alert.accessoryView = accessoryView
-      }
-      alert.runModal()
+      ErrorAlertView.displayModalError(message, details: details)
     }
   }
 
@@ -521,5 +506,36 @@ final class TulsiProjectDocument: NSDocument,
         self.processingTaskFinished()
       }
     }
+  }
+}
+
+
+/// Convenience class for displaying an error message with an optional detail accessory view.
+class ErrorAlertView: NSAlert {
+  dynamic var text = ""
+
+  static func displayModalError(message: String, details: String? = nil) {
+    let alert = ErrorAlertView()
+    alert.messageText = "\(message)\n\nA fatal error occurred. Please check the message window " +
+        "and file a bug if appropriate."
+    alert.alertStyle = .CriticalAlertStyle
+
+    if let details = details {
+      alert.text = details
+
+      var views: NSArray?
+      NSBundle.mainBundle().loadNibNamed("ErrorAlertDetailView",
+                                         owner: alert,
+                                         topLevelObjects: &views)
+      // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
+      // non-deterministic order.
+      views = views?.filter() { $0 is NSView }
+      if let accessoryView = views?.firstObject as? NSScrollView {
+        alert.accessoryView = accessoryView
+      } else {
+        assertionFailure("Failed to load accessory view for error alert.")
+      }
+    }
+    alert.runModal()
   }
 }
