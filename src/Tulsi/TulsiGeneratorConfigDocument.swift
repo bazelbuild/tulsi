@@ -706,7 +706,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
 
     // Add in any of the previously loaded rule infos that were not resolved as selected targets.
-    var existingInfos = self.uiRuleInfos.filter() {
+    let existingInfos = self.uiRuleInfos.filter() {
       !concreteBuildTargetLabels.contains($0.ruleInfo.label)
     }
     for existingInfo in existingInfos {
