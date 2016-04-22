@@ -65,6 +65,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   override func loadView() {
+    NSValueTransformer.setValueTransformer(IsOneValueTransformer(),
+                                           forName: "IsOneValueTransformer")
     super.loadView()
     bind("numSelectedConfigs",
          toObject: configArrayController,
@@ -221,5 +223,24 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let document = representedObject as! TulsiProjectDocument
     let selectedConfigNames = configArrayController.selectedObjects as! [String]
     document.deleteConfigsNamed(selectedConfigNames)
+  }
+}
+
+
+/// Transformer that returns true if the value is equal to 1.
+final class IsOneValueTransformer : NSValueTransformer {
+  override class func transformedValueClass() -> AnyClass {
+    return NSString.self
+  }
+
+  override class func allowsReverseTransformation() -> Bool  {
+    return false
+  }
+
+  override func transformedValue(value: AnyObject?) -> AnyObject? {
+    if let intValue = value as? Int where intValue == 1 {
+      return true
+    }
+    return false
   }
 }

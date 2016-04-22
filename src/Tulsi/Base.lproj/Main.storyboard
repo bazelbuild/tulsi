@@ -427,7 +427,11 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="doGenerate:" target="Pgt-4s-lhO" id="F2L-0G-7Eb"/>
-                                    <binding destination="EPJ-qo-bmN" name="enabled" keyPath="selectionIndexes.count" id="GYu-5l-9Jy"/>
+                                    <binding destination="EPJ-qo-bmN" name="enabled" keyPath="selectionIndexes.count" id="3si-Fr-iw5">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">IsOneValueTransformer</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </button>
                         </subviews>
