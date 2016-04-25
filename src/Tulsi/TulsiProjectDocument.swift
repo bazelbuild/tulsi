@@ -28,6 +28,8 @@ final class TulsiProjectDocument: NSDocument,
     case NoSuchConfig
     /// The config failed to load with the given debug info.
     case ConfigLoadFailed(String)
+    /// The workspace used by the project is invalid.
+    case InvalidWorkspace
   }
 
   /// Prefix used to access the persisted output folder for a given BUILD file path.
@@ -252,6 +254,18 @@ final class TulsiProjectDocument: NSDocument,
       }
 
       generatorConfigNames = configNames.sort()
+    }
+
+    // Verify that the workspace is a valid one.
+    let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
+                                                                             isDirectory: false)
+    var isDirectory = ObjCBool(false)
+    if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
+                                                        isDirectory: &isDirectory) || isDirectory {
+      let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
+                                  comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
+      error(String(format: fmt, workspaceFile.path!))
+      throw Error.InvalidWorkspace
     }
 
     updateRuleEntries()

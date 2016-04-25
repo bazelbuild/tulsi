@@ -79,6 +79,7 @@
 		3DB1FBFC1C31DDCB0080198C /* ProjectEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
 		3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */; };
+		3DBCB5201CCA94E7000801A5 /* BazelErrorExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */; };
 		3DBEFACA1C2A168C00119556 /* MessageLoggerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */; };
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
@@ -215,6 +216,7 @@
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
 		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; };
+		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
 		3DBEFAC91C2A168C00119556 /* MessageLoggerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLoggerProtocol.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */,
+				3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */,
 				3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */,
 				3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */,
 				3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */,
@@ -741,6 +744,7 @@
 				3D123A531C659688002BEBA2 /* TulsiProject.swift in Sources */,
 				3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */,
 				3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */,
+				3DBCB5201CCA94E7000801A5 /* BazelErrorExtractor.swift in Sources */,
 				3D029B581C6421B400779E8E /* TaskRunner.swift in Sources */,
 				3D99268F1C29F1100094E098 /* PBXProjSerializer.swift in Sources */,
 				3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */,

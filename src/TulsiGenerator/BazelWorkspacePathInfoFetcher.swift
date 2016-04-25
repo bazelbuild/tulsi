@@ -91,19 +91,19 @@ class BazelWorkspacePathInfoFetcher {
         }
 
         self.packagePath = ""
-        self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
-                                          comment: "Extracting path info from bazel failed. The exit code is %1$d.",
-                                          values: completionInfo.task.terminationStatus)
-
+        let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: NSBundle(forClass: self.dynamicType),
                                                       comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
-        let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding) ?? "<No STDERR>"
         let debugInfo = String(format: debugInfoFormatString,
                                completionInfo.commandlineString,
                                completionInfo.terminationStatus,
-                               stderr)
+                               stderr ?? "<No STDERR>")
         self.localizedMessageLogger.infoMessage(debugInfo)
+        self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
+                                          comment: "Extracting path info from bazel failed. The exit code is %1$d.",
+                                          details: stderr as String?,
+                                          values: completionInfo.task.terminationStatus)
     }
     task.currentDirectoryPath = workspaceRootURL.path!
     task.launch()

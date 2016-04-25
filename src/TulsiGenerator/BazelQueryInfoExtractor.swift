@@ -27,6 +27,7 @@ final class BazelQueryInfoExtractor {
 
   private typealias CompletionHandler = (bazelTask: NSTask,
                                          returnedData: NSData,
+                                         stderrString: String?,
                                          debugInfo: String) -> Void
 
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
@@ -44,14 +45,13 @@ final class BazelQueryInfoExtractor {
                                                                message: "Fetching rules for packages \(packages)")
     var infos = [RuleInfo]()
     let query = packages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
-    let (task, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
-    if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
+    let (task, data, stderr, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    if task.terminationStatus != 0 {
+      showExtractionError(debugInfo, stderr: stderr, displayLastLineIfNoErrorLines: true)
+    } else if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
       infos = entries
     }
 
-    if task.terminationStatus != 0 {
-      showExtractionError(debugInfo)
-    }
     localizedMessageLogger.logProfilingEnd(profilingStart)
     return infos
   }
@@ -70,7 +70,7 @@ final class BazelQueryInfoExtractor {
     let labelDeps = testSuiteLabels.map {"deps(\($0.value))"}
     let joinedLabelDeps = labelDeps.joinWithSeparator("+")
     let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
-    let (_, data, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
+    let (_, data, _, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
     if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
       infos = entries
     }
@@ -83,24 +83,23 @@ final class BazelQueryInfoExtractor {
 
   // MARK: - Private methods
 
-  private func showExtractionError(debugInfo: String) {
+  private func showExtractionError(debugInfo: String,
+                                   stderr: String?,
+                                   displayLastLineIfNoErrorLines: Bool = false) {
     localizedMessageLogger.infoMessage(debugInfo)
-
-    let errorMessage: String?
-    let errorLines = debugInfo.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
-    if errorLines.isEmpty {
-      errorMessage = nil
-    } else {
-      let numErrorLinesToShow = min(errorLines.count, 3)
-      var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
-      if numErrorLinesToShow < errorLines.count {
-        errorSnippet += "\n..."
+    let details: String?
+    if let stderr = stderr {
+      if displayLastLineIfNoErrorLines {
+        details = BazelErrorExtractor.firstErrorLinesOrLastLinesFromString(stderr)
+      } else {
+        details = BazelErrorExtractor.firstErrorLinesFromString(stderr)
       }
-      errorMessage = errorSnippet
+    } else {
+      details = nil
     }
     localizedMessageLogger.error("BazelInfoExtractionFailed",
                                  comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
-                                 details: errorMessage)
+                                 details: details)
   }
 
   // Generates an NSTask that will perform a bazel query, capturing the output data and passing it
@@ -141,6 +140,7 @@ final class BazelQueryInfoExtractor {
 
         terminationHandler(bazelTask: completionInfo.task,
                            returnedData: completionInfo.stdout,
+                           stderrString: stderr as String?,
                            debugInfo: debugInfo)
     }
 
@@ -152,14 +152,17 @@ final class BazelQueryInfoExtractor {
                                          outputKind: String? = nil,
                                          let message: String = "") -> (bazelTask: NSTask,
                                                                        returnedData: NSData,
+                                                                       stderrString: String?,
                                                                        debugInfo: String) {
     let semaphore = dispatch_semaphore_create(0)
     var data: NSData! = nil
+    var stderr: String? = nil
     var info: String! = nil
 
     let task = bazelQueryTask(query, outputKind: outputKind, message: message) {
-      (_: NSTask, returnedData: NSData, debugInfo: String) in
+      (_: NSTask, returnedData: NSData, stderrString: String?, debugInfo: String) in
         data = returnedData
+        stderr = stderrString
         info = debugInfo
       dispatch_semaphore_signal(semaphore)
     }
@@ -168,7 +171,7 @@ final class BazelQueryInfoExtractor {
     task.launch()
 
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-    return (task, data, info)
+    return (task, data, stderr, info)
   }
 
   private func extractRuleInfosWithRuleInputsFromBazelXMLOutput(bazelOutput: NSData) -> [RuleInfo: Set<BuildLabel>]? {
