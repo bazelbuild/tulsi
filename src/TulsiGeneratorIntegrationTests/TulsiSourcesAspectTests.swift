@@ -90,6 +90,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-Irelative/Library/include/path"])
         .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"])
         .hasAttribute(.pch, value: ["path": "tulsi_test/Library/pch/PCHFile.pch", "src": true])
+        .hasAttribute(.xibs, value: [["path": "tulsi_test/Library/xibs/xib.xib", "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
@@ -185,6 +186,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
                                     "root": "bazel-genfiles",
                                     "src": false])
+        .hasAttribute(.xibs, value: [["path": "tulsi_test/Library/xib.xib", "src": true]])
 
     checker.assertThat("//tulsi_test:ObjCProtoLibrary")
         .hasSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",

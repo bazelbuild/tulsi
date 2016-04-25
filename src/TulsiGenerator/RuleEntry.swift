@@ -145,6 +145,7 @@ public final class RuleEntry: RuleInfo {
     case storyboards
     case xctest
     case xctest_app
+    case xibs
   }
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).

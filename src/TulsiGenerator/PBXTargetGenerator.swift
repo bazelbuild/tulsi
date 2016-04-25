@@ -223,6 +223,10 @@ class PBXTargetGenerator {
         additionalFileTargets.appendContentsOf(fileTargets)
       }
 
+      if let fileTargets = parseFileDescriptionListAttribute(.xibs) {
+        additionalFileTargets.appendContentsOf(fileTargets)
+      }
+
       for target in additionalFileTargets {
         let path = target.fullPath as NSString
         let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)

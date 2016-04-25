@@ -284,6 +284,7 @@ def _tulsi_sources_aspect(target, ctx):
       launch_storyboard = _collect_first_file(rule_attr, 'launch_storyboard'),
       pch = _collect_first_file(rule_attr, 'pch'),
       storyboards = _collect_files(rule_attr, 'storyboards'),
+      xibs = _collect_files(rule_attr, 'xibs'),
   )
 
   # Merge any attributes on the "binary" dependency into this container rule.

@@ -48,6 +48,7 @@
 		43D68C28A3088CC200000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		43D68C28A872D4A700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C28AF13353000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B114951A00000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
 		43D68C28C03B40EE00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C28C9CA518600000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C28DA72219400000000 /* bridging_header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
@@ -132,6 +133,7 @@
 				966FB6DE9DC3732400000000 /* hdrs */,
 				966FB6DE97917B0F00000000 /* pch */,
 				966FB6DE5B9D018E00000001 /* srcs */,
+				966FB6DEA07B457B00000000 /* xibs */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -150,6 +152,14 @@
 				43D68C2863CB365D00000000 /* HdrsHeader.h */,
 			);
 			path = hdrs;
+			sourceTree = "<group>";
+		};
+		966FB6DEA07B457B00000000 /* xibs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28B114951A00000000 /* xib.xib */,
+			);
+			path = xibs;
 			sourceTree = "<group>";
 		};
 		966FB6DEB58A255E00000000 /* Application */ = {

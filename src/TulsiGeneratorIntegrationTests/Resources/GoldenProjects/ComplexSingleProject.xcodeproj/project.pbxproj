@@ -68,6 +68,7 @@
 		43D68C28A872D4A700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C28AB39C6BC00000000 /* protolibrary.proto */ = {isa = PBXFileReference; lastKnownFileType = dyn.age81a6xtsv1u; path = protolibrary.proto; sourceTree = "<group>"; };
 		43D68C28AF13353000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B114951A00000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
 		43D68C28B91EE1B700000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
 		43D68C28BA5D07EF00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28C03B40EE00000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
@@ -322,6 +323,7 @@
 			children = (
 				966FB6DE9DC3732400000000 /* hdrs */,
 				966FB6DE5B9D018E00000001 /* srcs */,
+				43D68C28B114951A00000000 /* xib.xib */,
 			);
 			path = Library;
 			sourceTree = "<group>";
