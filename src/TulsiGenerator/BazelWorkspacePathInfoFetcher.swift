@@ -76,7 +76,14 @@ class BazelWorkspacePathInfoFetcher {
   private func fetchWorkspaceInfo() {
     let profilingStart = localizedMessageLogger.startProfiling("get_package_path",
                                                                message: "Fetching bazel path info")
-    let task = TaskRunner.standardRunner().createTask(bazelURL.path!, arguments: ["info"]) {
+    guard let bazelPath = bazelURL.path where NSFileManager.defaultManager().fileExistsAtPath(bazelPath) else {
+      localizedMessageLogger.error("BazelBinaryNotFound",
+                                   comment: "Error to show when the bazel binary cannot be found at the previously saved location %1$@.",
+                                   values: bazelURL)
+      return
+    }
+
+    let task = TaskRunner.standardRunner().createTask(bazelPath, arguments: ["info"]) {
       completionInfo in
         defer {
           self.localizedMessageLogger.logProfilingEnd(profilingStart)

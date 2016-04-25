@@ -18,6 +18,12 @@ import Foundation
 // Provides methods utilizing Bazel query (http://bazel.io/docs/query.html) to extract
 // information from a workspace.
 final class BazelQueryInfoExtractor {
+
+  enum Error: ErrorType {
+    /// A valid Bazel binary could not be located.
+    case InvalidBazelPath
+  }
+
   /// The location of the bazel binary.
   var bazelURL: NSURL
   /// The location of the directory in which the workspace enclosing this BUILD file can be found.
@@ -45,11 +51,16 @@ final class BazelQueryInfoExtractor {
                                                                message: "Fetching rules for packages \(packages)")
     var infos = [RuleInfo]()
     let query = packages.map({ "kind(rule, \($0):all)"}).joinWithSeparator("+")
-    let (task, data, stderr, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
-    if task.terminationStatus != 0 {
-      showExtractionError(debugInfo, stderr: stderr, displayLastLineIfNoErrorLines: true)
-    } else if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
-      infos = entries
+    do {
+      let (task, data, stderr, debugInfo) = try self.bazelSynchronousQueryTask(query, outputKind: "xml")
+      if task.terminationStatus != 0 {
+        showExtractionError(debugInfo, stderr: stderr, displayLastLineIfNoErrorLines: true)
+      } else if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
+        infos = entries
+      }
+    } catch {
+      // The error has already been displayed to the user.
+      return []
     }
 
     localizedMessageLogger.logProfilingEnd(profilingStart)
@@ -70,14 +81,19 @@ final class BazelQueryInfoExtractor {
     let labelDeps = testSuiteLabels.map {"deps(\($0.value))"}
     let joinedLabelDeps = labelDeps.joinWithSeparator("+")
     let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
-    let (_, data, _, debugInfo) = self.bazelSynchronousQueryTask(query, outputKind: "xml")
-    if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
-      infos = entries
+    do {
+      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query, outputKind: "xml")
+      if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
+        infos = entries
+      }
+      // Note that this query is expected to return a non-zero exit code on occasion, so no error
+      // message is logged.
+      localizedMessageLogger.infoMessage(debugInfo)
+      localizedMessageLogger.logProfilingEnd(profilingStart)
+    } catch {
+      // The error has already been displayed to the user.
+      return [:]
     }
-    // Note that this query is expected to return a non-zero exit code on occasion, so no error
-    // message is logged.
-    localizedMessageLogger.infoMessage(debugInfo)
-    localizedMessageLogger.logProfilingEnd(profilingStart)
     return infos
   }
 
@@ -107,7 +123,14 @@ final class BazelQueryInfoExtractor {
   private func bazelQueryTask(query: String,
                               outputKind: String? = nil,
                               message: String = "",
-                              terminationHandler: CompletionHandler) -> NSTask {
+                              terminationHandler: CompletionHandler) throws -> NSTask {
+    guard let bazelPath = bazelURL.path where NSFileManager.defaultManager().fileExistsAtPath(bazelPath) else {
+      localizedMessageLogger.error("BazelBinaryNotFound",
+                                   comment: "Error to show when the bazel binary cannot be found at the previously saved location %1$@.",
+                                   values: bazelURL)
+      throw Error.InvalidBazelPath
+    }
+
     var arguments = [
         "--max_idle_secs=60",
         "query",
@@ -150,16 +173,16 @@ final class BazelQueryInfoExtractor {
   /// Performs the given Bazel query synchronously in the workspaceRootURL directory.
   private func bazelSynchronousQueryTask(query: String,
                                          outputKind: String? = nil,
-                                         let message: String = "") -> (bazelTask: NSTask,
-                                                                       returnedData: NSData,
-                                                                       stderrString: String?,
-                                                                       debugInfo: String) {
+                                         let message: String = "") throws -> (bazelTask: NSTask,
+                                                                              returnedData: NSData,
+                                                                              stderrString: String?,
+                                                                              debugInfo: String) {
     let semaphore = dispatch_semaphore_create(0)
     var data: NSData! = nil
     var stderr: String? = nil
     var info: String! = nil
 
-    let task = bazelQueryTask(query, outputKind: outputKind, message: message) {
+    let task = try bazelQueryTask(query, outputKind: outputKind, message: message) {
       (_: NSTask, returnedData: NSData, stderrString: String?, debugInfo: String) in
         data = returnedData
         stderr = stderrString
