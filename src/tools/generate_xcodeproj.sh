@@ -15,11 +15,19 @@
 #
 #
 # Helper script to invoke Tulsi in commandline mode.
+# The path to the Tulsi.app bundle may be provided though the TULSI_APP
+# environment variable. If it is not, the script will attempt to find
+# Tulsi using the first result returned by the Spotlight index.
 
 set -eu
 
-readonly tulsi_bundle_id=com.google.Tulsi
-readonly app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id} | head -1)
+# If the TULSI_APP environment variable is set, use it.
+if [[ "${TULSI_APP:-}" != "" ]]; then
+  readonly app_bundle_path="${TULSI_APP}"
+else
+  readonly tulsi_bundle_id=com.google.Tulsi
+  readonly app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id} | head -1)
+fi
 
 if [[ "${app_bundle_path}" == "" ]]; then
   echo "Tulsi.app could not be located. Please ensure that you have built Tulsi\
