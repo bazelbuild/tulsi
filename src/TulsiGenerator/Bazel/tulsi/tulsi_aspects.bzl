@@ -34,6 +34,10 @@ _TULSI_COMPILE_DEPS = [
     # ios_application
     "extensions",
 
+    # apple_watch_extension_binary, ios_extension_binary, ios_framework_binary,
+    # objc_binary, objc_library, ios_test
+    "non_propagated_deps",
+
     # ios_test
     "xctest_app",
 ]

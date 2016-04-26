@@ -45,6 +45,9 @@ objc_binary(
     non_arc_srcs = [
         "Binary/non_arc_srcs/NonARCFile.mm",
     ],
+    non_propagated_deps = [
+        ":NonPropagatedLibrary",
+    ],
     storyboards = [
         "Binary/Base.lproj/One.storyboard",
         ":StoryboardGenerator",
@@ -140,6 +143,13 @@ ios_test(
     xctest_app = ":Application",
     deps = [
         ":Library",
+    ],
+)
+
+objc_library(
+    name = "NonPropagatedLibrary",
+    srcs = [
+        "NonPropagatedLibrary/srcs/non_propagated.m",
     ],
 )
 
