@@ -461,7 +461,7 @@
                         </binding>
                     </connections>
                 </objectController>
-                <arrayController selectsInsertedObjects="NO" avoidsEmptySelection="NO" id="EPJ-qo-bmN" userLabel="ConfigArray">
+                <arrayController selectsInsertedObjects="NO" id="EPJ-qo-bmN" userLabel="ConfigArray">
                     <connections>
                         <binding destination="N97-9Y-GAJ" name="contentArray" keyPath="selection.generatorConfigNames" id="KDV-QQ-Lbj">
                             <dictionary key="options">
