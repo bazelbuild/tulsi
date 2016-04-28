@@ -238,8 +238,8 @@ class CommandlineParser {
 
   static let ParamHelpShort = "-h"
   static let ParamHelpLong = "--help"
-  static let ParamVerboseShort = "-v"
-  static let ParamVerboseLong = "--verbose"
+  static let ParamQuietShort = "-q"
+  static let ParamQuietLong = "--quiet"
 
   static let ParamBazel = "--bazel"
   static let ParamGeneratorConfigShort = "-c"
@@ -264,7 +264,7 @@ class CommandlineParser {
       generatorConfig = nil
       outputFolder = nil
       workspaceRoot = nil
-      verbose = false
+      verbose = true
     }
 
     init(dict: [String: AnyObject]) {
@@ -272,7 +272,7 @@ class CommandlineParser {
       generatorConfig = dict[CommandlineParser.ParamGeneratorConfigLong] as? String
       outputFolder = dict[CommandlineParser.ParamOutputFolderLong] as? String
       workspaceRoot = dict[CommandlineParser.ParamWorkspaceRootLong] as? String
-      verbose = dict[CommandlineParser.ParamVerboseLong] as? Bool == true
+      verbose = !(dict[CommandlineParser.ParamQuietLong] as? Bool == true)
     }
   }
 
@@ -313,10 +313,10 @@ class CommandlineParser {
           CommandlineParser.printUsage()
           exit(1)
 
-        case CommandlineParser.ParamVerboseShort:
+        case CommandlineParser.ParamQuietShort:
           fallthrough
-        case CommandlineParser.ParamVerboseLong:
-          parsedArguments[CommandlineParser.ParamVerboseLong] = true
+        case CommandlineParser.ParamQuietLong:
+          parsedArguments[CommandlineParser.ParamQuietLong] = true
 
         case CommandlineParser.ParamBazel:
           storeValueAt(i, forArgument: CommandlineParser.ParamBazel)
@@ -368,7 +368,7 @@ class CommandlineParser {
         "  \(ParamWorkspaceRootLong) <path>: (required)",
         "    Path to the folder containing the Bazel WORKSPACE file.",
         "  \(ParamHelpLong): Show this help message.",
-        "  \(ParamVerboseLong): Show verbose info messages.",
+        "  \(ParamQuietLong): Hide verbose info messages (warning: may also hide some error details).",
     ]
     print(usage.joinWithSeparator("\n") + "\n")
   }
