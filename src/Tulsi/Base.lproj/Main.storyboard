@@ -1090,6 +1090,9 @@ Please check this project's packages.</string>
                             <constraint firstItem="yhB-E0-ghf" firstAttribute="centerY" secondItem="eBr-Gq-Xkt" secondAttribute="centerY" id="vfY-hO-Y1J"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="buildTargetTable" destination="jzE-ag-Xnt" id="FBr-cd-a8A"/>
+                    </connections>
                 </viewController>
                 <customObject id="Dvi-Aw-7jo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <objectController objectClassName="TulsiGeneratorConfigDocument" id="j9X-DC-afq" userLabel="TulsiGeneratorConfigDocument">

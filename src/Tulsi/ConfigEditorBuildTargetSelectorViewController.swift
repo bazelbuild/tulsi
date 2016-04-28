@@ -28,6 +28,8 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
       "ios_test",
   ]
 
+  @IBOutlet weak var buildTargetTable: NSTableView!
+
   dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
                                                           argumentArray: [filteredFileTypes])
 
@@ -54,6 +56,11 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
 
   override func loadView() {
     super.loadView()
+
+    let typeColumn = buildTargetTable.tableColumnWithIdentifier("Type")!
+    let labelColumn = buildTargetTable.tableColumnWithIdentifier("Label")!
+    buildTargetTable.sortDescriptors = [typeColumn.sortDescriptorPrototype!,
+                                        labelColumn.sortDescriptorPrototype!]
   }
 
   // MARK: - WizardSubviewProtocol
