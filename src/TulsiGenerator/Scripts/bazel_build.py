@@ -427,7 +427,7 @@ class BazelBuildBridge(object):
     # Xcode translates anything that looks like ""<path>:<line>:" that is not
     # followed by the word "warning" into an error. Bazel warnings do not fit
     # this scheme and must be patched here.
-    bazel_warning_line_regex = re.compile(r'WARNING: ([^:]+:\d+:)\s+(.+)')
+    bazel_warning_line_regex = re.compile(r'WARNING: ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
     def PatchBazelWarningStatements(line):
       match = bazel_warning_line_regex.match(line)
       if match:
