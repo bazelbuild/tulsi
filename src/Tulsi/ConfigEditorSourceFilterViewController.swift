@@ -54,6 +54,13 @@ final class SourcePathNode: UISelectableOutlineViewNode {
 // generated Xcode project.
 final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubviewProtocol {
   dynamic var sourceFilterContentArray: [SourcePathNode] = []
+  @IBOutlet weak var sourceFilterOutlineView: NSOutlineView!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let sourceTargetColumn = sourceFilterOutlineView.tableColumnWithIdentifier("sourceTargets")!
+    sourceFilterOutlineView.sortDescriptors = [sourceTargetColumn.sortDescriptorPrototype!]
+  }
 
   // MARK: - WizardSubviewProtocol
 

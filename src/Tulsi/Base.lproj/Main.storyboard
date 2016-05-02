@@ -949,7 +949,7 @@ CA
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
-                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="self.targetName"/>
+                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="targetName"/>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="CBU-Sg-l40">
@@ -990,7 +990,7 @@ CA
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
-                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="self.type"/>
+                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="type"/>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="15z-Gb-uT1">
@@ -1138,7 +1138,7 @@ Please check this project's packages.</string>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="514.02097216383356" minWidth="40" maxWidth="4096" id="ShU-et-fmG">
+                                                <tableColumn identifier="sourceTargets" editable="NO" width="514.02097216383356" minWidth="40" maxWidth="4096" id="ShU-et-fmG">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Source Targets">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1149,6 +1149,7 @@ Please check this project's packages.</string>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
+                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="name"/>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="MAv-2d-F3q">
@@ -1268,6 +1269,9 @@ Please check this project's packages.</string>
                             <constraint firstItem="aD3-hQ-YgP" firstAttribute="centerX" secondItem="9Ya-rm-Cis" secondAttribute="centerX" id="zSa-U2-2Xn"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="sourceFilterOutlineView" destination="qgL-G7-biT" id="EWd-pv-El1"/>
+                    </connections>
                 </viewController>
                 <customObject id="AiC-qm-h5b" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <objectController objectClassName="TulsiProjectDocument" id="emO-pW-WSj" userLabel="TulsiGeneratorConfigDocument">
@@ -1278,6 +1282,7 @@ Please check this project's packages.</string>
                 <treeController objectClassName="RuleNode" editable="NO" childrenKeyPath="children" avoidsEmptySelection="NO" preservesSelection="NO" selectsInsertedObjects="NO" id="XRe-2t-xpm" userLabel="Source Target Tree Controller">
                     <connections>
                         <binding destination="Siq-Ra-ce7" name="contentArray" keyPath="self.sourceFilterContentArray" id="yFM-MP-dhm"/>
+                        <binding destination="Siq-Ra-ce7" name="sortDescriptors" keyPath="self.sourceFilterOutlineView.sortDescriptors" id="tFP-g2-MkH"/>
                     </connections>
                 </treeController>
             </objects>
@@ -1611,7 +1616,7 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="NSK-dd-w7F">
-                                                                    <rect key="frame" x="289" y="1" width="148" height="17"/>
+                                                                    <rect key="frame" x="289.5" y="1" width="148" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 </tableCellView>
                                                             </prototypeCellViews>

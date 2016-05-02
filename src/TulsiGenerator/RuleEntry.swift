@@ -170,6 +170,46 @@ public final class RuleEntry: RuleInfo {
   /// The BUILD file that this rule was defined in.
   public let buildFilePath: String?
 
+  /// Returns the set of non-versioned artifacts that are not source files.
+  public var normalNonSourceArtifacts: [BazelFileInfo] {
+    var artifacts = [BazelFileInfo]()
+    if let description = attributes[.launch_storyboard] as? [String: AnyObject],
+           fileTarget = BazelFileInfo(info: description) {
+      artifacts.append(fileTarget)
+    }
+
+    if let fileTargets = parseFileDescriptionListAttribute(.storyboards) {
+      artifacts.appendContentsOf(fileTargets)
+    }
+
+    if let fileTargets = parseFileDescriptionListAttribute(.asset_catalogs) {
+      artifacts.appendContentsOf(fileTargets)
+    }
+
+    if let fileTargets = parseFileDescriptionListAttribute(.xibs) {
+      artifacts.appendContentsOf(fileTargets)
+    }
+
+    return artifacts
+  }
+
+  /// Returns the set of artifacts for which a versioned group should be created in the generated
+  /// Xcode project.
+  public var versionedNonSourceArtifacts: [BazelFileInfo] {
+    if let fileTargets = parseFileDescriptionListAttribute(.datamodels) {
+      return fileTargets
+    }
+    return []
+  }
+
+  /// The full set of input and output artifacts for this rule.
+  public var projectArtifacts: [BazelFileInfo] {
+    var artifacts = sourceFiles
+    artifacts.appendContentsOf(normalNonSourceArtifacts)
+    artifacts.appendContentsOf(versionedNonSourceArtifacts)
+    return artifacts
+  }
+
   var pbxTargetType: PBXTarget.ProductType? {
     if type == "ios_test",
        let xctestOpt = attributes[.xctest] as? Bool where !xctestOpt {
@@ -239,6 +279,24 @@ public final class RuleEntry: RuleInfo {
               weakDependencies: weakDependencies,
               buildFilePath: buildFilePath,
               generatedIncludePaths: generatedIncludePaths)
+  }
+
+  // MARK: Private methods
+
+  private func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileInfo]? {
+    guard let descriptions = attributes[attribute] as? [[String: AnyObject]] else {
+      return nil
+    }
+
+    var fileTargets = [BazelFileInfo]()
+    for description in descriptions {
+      guard let target = BazelFileInfo(info: description) else {
+        assertionFailure("Failed to resolve file description to a file target")
+        continue
+      }
+      fileTargets.append(target)
+    }
+    return fileTargets
   }
 }
 

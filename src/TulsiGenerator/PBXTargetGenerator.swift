@@ -110,7 +110,6 @@ class PBXTargetGenerator {
     }
 
     func includeFileInProject(info: BazelFileInfo) -> Bool {
-      if info.targetType == .GeneratedFile { return true }
       return includePathInProject(info.fullPath)
     }
 
@@ -186,48 +185,15 @@ class PBXTargetGenerator {
         }
       }
 
-      func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileInfo]? {
-        guard let descriptions = ruleEntry.attributes[attribute] as? [[String: AnyObject]] else {
-          return nil
-        }
-
-        var fileTargets = [BazelFileInfo]()
-        for description in descriptions {
-          guard let target = BazelFileInfo(info: description) else {
-            assertionFailure("Failed to resolve file description to a file target")
-            continue
-          }
-          fileTargets.append(target)
-        }
-        return fileTargets
-      }
-
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
       var buildPhaseReferences = [PBXReference]()
-      if let fileTargets = parseFileDescriptionListAttribute(.datamodels) {
-        let versionedFileReferences = createReferencesForVersionedFileTargets(fileTargets)
+      let versionedFileTargets = ruleEntry.versionedNonSourceArtifacts.filter(includeFileInProject)
+      if !versionedFileTargets.isEmpty {
+        let versionedFileReferences = createReferencesForVersionedFileTargets(versionedFileTargets)
         buildPhaseReferences.appendContentsOf(versionedFileReferences as [PBXReference])
       }
 
-      var additionalFileTargets = [BazelFileInfo]()
-      if let description = ruleEntry.attributes[.launch_storyboard] as? [String: AnyObject],
-             fileTarget = BazelFileInfo(info: description) {
-        additionalFileTargets.append(fileTarget)
-      }
-
-      if let fileTargets = parseFileDescriptionListAttribute(.storyboards) {
-        additionalFileTargets.appendContentsOf(fileTargets)
-      }
-
-      if let fileTargets = parseFileDescriptionListAttribute(.asset_catalogs) {
-        additionalFileTargets.appendContentsOf(fileTargets)
-      }
-
-      if let fileTargets = parseFileDescriptionListAttribute(.xibs) {
-        additionalFileTargets.appendContentsOf(fileTargets)
-      }
-
-      for target in additionalFileTargets {
+      for target in ruleEntry.normalNonSourceArtifacts.filter(includeFileInProject) {
         let path = target.fullPath as NSString
         let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
         let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
