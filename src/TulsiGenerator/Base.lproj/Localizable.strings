@@ -32,6 +32,9 @@
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
 "CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
 
+/* Failed to create folders for generated artifacts %1$@. The generated Xcode project may need to be reloaded after the first build. */
+"CreatingGeneratedArtifactFoldersFailed" = "Failed to pre-create folders for generated artifacts. The generated project may need to be reloaded manually after the first build. Failed paths: %1$@";
+
 /* Provides general information about a Bazel command; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@. */
 "DebugInfoForBazelCommand" = "Bazel command info:\n%1$@\nExited with code %2$d\n\n%3$@";
 

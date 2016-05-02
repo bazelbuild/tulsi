@@ -99,6 +99,7 @@ final class XcodeProjectGenerator {
                                       targetRuleEntries: buildTargetRuleEntries)
     installTulsiScripts(projectURL)
     installGeneratorConfig(projectURL)
+    createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
 
     return projectURL
   }
@@ -364,6 +365,29 @@ final class XcodeProjectGenerator {
                                      comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
                                      values: sourceURL, targetURL.absoluteString, errorInfo)
       }
+    }
+  }
+
+  private func createGeneratedArtifactFolders(mainGroup: PBXGroup, relativeTo path: NSURL) {
+    let generatedArtifacts = mainGroup.allSources.filter() { !$0.isInputFile }
+    var generatedFolders = Set<NSURL>()
+    for artifact in generatedArtifacts {
+      let url = path.URLByAppendingPathComponent(artifact.sourceRootRelativePath)
+      if let absoluteURL = url.URLByDeletingLastPathComponent?.URLByStandardizingPath {
+        generatedFolders.insert(absoluteURL)
+      }
+    }
+
+    var failedCreates = [String]()
+    for url in generatedFolders {
+      if !createDirectory(url, failSilently: true) {
+        failedCreates.append(url.path!)
+      }
+    }
+    if !failedCreates.isEmpty {
+      localizedMessageLogger.warning("CreatingGeneratedArtifactFoldersFailed",
+                                     comment: "Failed to create folders for generated artifacts %1$@. The generated Xcode project may need to be reloaded after the first build.",
+                                     values: failedCreates.joinWithSeparator(", "))
     }
   }
 }
