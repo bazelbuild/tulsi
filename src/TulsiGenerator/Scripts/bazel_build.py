@@ -68,10 +68,6 @@ class _OptionsParser(object):
 
             'Debug': [
                 '--compilation_mode=dbg',
-                '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
-                '--copt=-Xclang', '--copt=%s' % main_group_path,
-                '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
-                '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
                 # There is currently no crosstool for OS X, so -g must be specified manually.
                 # TODO(abaire): Remove these when symbols are enabled via compilation_mode.
                 '--copt=-g',
@@ -88,6 +84,16 @@ class _OptionsParser(object):
                 '--compilation_mode=fastbuild',
             ],
         })
+
+    # Options specific to debugger integration in Xcode.
+    xcode_lldb_options = [
+      '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
+      '--copt=-Xclang', '--copt=%s' % main_group_path,
+      '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
+      '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
+    ]
+    self.build_options['Debug'].extend(xcode_lldb_options)
+    self.build_options['Release'].extend(xcode_lldb_options)
 
     self.sdk_version = sdk_version
 
