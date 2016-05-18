@@ -101,8 +101,6 @@ final class XcodeScheme {
 
   /// Settings for the Xcode "Test" action.
   private func testAction() -> NSXMLElement {
-    let testTargets = project.linkedTestTargetsForHost(target)
-
     let element = NSXMLElement(name: "TestAction")
     let testActionAttributes = [
       "buildConfiguration": testActionBuildConfig,
@@ -111,6 +109,21 @@ final class XcodeScheme {
       "shouldUseLaunchSchemeArgsEnv": "YES",
     ]
     element.setAttributesWithDictionary(testActionAttributes)
+
+    let testTargets: [PBXTarget]
+    // Hosts should have all of their hosted test targets added as testables and tests should have
+    // themselves added.
+    let linkedTestTargets = project.linkedTestTargetsForHost(target)
+    if linkedTestTargets.isEmpty {
+      let host = project.linkedHostForTestTarget(target)
+      if host != nil {
+        testTargets = [target]
+      } else {
+        testTargets = []
+      }
+    } else {
+      testTargets = linkedTestTargets
+    }
 
     let testables = NSXMLElement(name: "Testables")
     for testTarget in testTargets {

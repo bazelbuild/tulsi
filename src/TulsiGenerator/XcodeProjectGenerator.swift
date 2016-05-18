@@ -255,9 +255,6 @@ final class XcodeProjectGenerator {
 
       let filename = target.name + ".xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
-      if fileManager.fileExistsAtPath(url.path!) {
-        continue
-      }
       let scheme = XcodeScheme(target: target,
                                project: xcodeProject,
                                projectBundleName: projectBundleName,

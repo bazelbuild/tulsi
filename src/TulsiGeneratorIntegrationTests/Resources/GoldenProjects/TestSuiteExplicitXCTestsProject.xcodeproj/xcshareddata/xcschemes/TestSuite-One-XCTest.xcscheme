@@ -8,7 +8,11 @@
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
-        <Testables></Testables>
+        <Testables>
+            <TestableReference skipped="NO">
+                <BuildableReference BlueprintIdentifier="3D31C5E600253A5400000000" BuildableIdentifier="primary" BuildableName="TestSuite-One-XCTest" BlueprintName="TestSuite-One-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+            </TestableReference>
+        </Testables>
         <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E600253A5400000000" BuildableIdentifier="primary" BuildableName="TestSuite-One-XCTest" BlueprintName="TestSuite-One-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
         </MacroExpansion>

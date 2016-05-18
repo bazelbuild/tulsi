@@ -946,6 +946,16 @@ final class PBXProject: PBXObjectProtocol {
     return targetHostPairs.map() { $0.0 }
   }
 
+  func linkedHostForTestTarget(target: PBXTarget) -> PBXTarget? {
+    for (testTarget, testHostTarget) in testTargetLinkages {
+      if testTarget == target {
+        return testHostTarget
+      }
+    }
+
+    return nil
+  }
+
   func createTargetDependency(target: PBXTarget, proxyType: PBXContainerItemProxy.ProxyType) -> PBXTargetDependency {
     let targetProxy = PBXContainerItemProxy(containerPortal: self, target: target, proxyType: proxyType)
     if let existingDependency = targetDependencies[targetProxy] {
