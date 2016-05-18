@@ -20,11 +20,12 @@ import Cocoa
 final class ConfigEditorBuildTargetSelectorViewController: NSViewController, WizardSubviewProtocol {
   // This list needs to be kept up to date with whatever Bazel supports.
   static let filteredFileTypes = [
-      "objc_binary",
+      "apple_watch1_extension",
+      "objc_binary",  // TODO(abaire): Remove when app-related attributes are removed from Bazel.
       "objc_library",
       "ios_application",
-      "ios_extension_binary",
-      "ios_framework_binary",
+      "ios_extension",
+      "ios_framework",
       "ios_test",
   ]
 

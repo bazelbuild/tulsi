@@ -107,12 +107,13 @@ public class BazelFileInfo {
 public final class RuleEntry: RuleInfo {
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
+      "apple_watch1_extension": PBXTarget.ProductType.AppExtension,
+      "ios_application": PBXTarget.ProductType.Application,
+      "ios_extension": PBXTarget.ProductType.AppExtension,
+      "ios_framework": PBXTarget.ProductType.Framework,
+      "ios_test": PBXTarget.ProductType.UnitTest,
       "objc_binary": PBXTarget.ProductType.Application,
       "objc_library": PBXTarget.ProductType.StaticLibrary,
-      "ios_application": PBXTarget.ProductType.Application,
-      "ios_extension_binary": PBXTarget.ProductType.AppExtension,
-      "ios_framework_binary": PBXTarget.ProductType.Framework,
-      "ios_test": PBXTarget.ProductType.UnitTest,
 
       // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
       // XCTest test rules.
@@ -120,6 +121,7 @@ public final class RuleEntry: RuleInfo {
   ]
 
   static let BuildTypesWithImplicitIPAs = Set<String>([
+      "apple_watch1_extension",
       "ios_application",
       "ios_extension",
       "ios_test",

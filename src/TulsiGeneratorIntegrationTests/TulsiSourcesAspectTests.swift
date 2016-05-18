@@ -119,7 +119,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 11)
+    XCTAssertEqual(ruleEntries.count, 15)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -221,6 +221,18 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:NonPropagatedLibrary")
         .hasSources(["tulsi_test/NonPropagatedLibrary/srcs/non_propagated.m"])
 
+    checker.assertThat("//tulsi_test:TodayExtensionBinary")
+        .hasSources(["tulsi_test/TodayExtensionBinary/srcs/today_extension_binary.m"])
+
+    checker.assertThat("//tulsi_test:TodayExtension")
+        .dependsOn("//tulsi_test:TodayExtensionBinary")
+
+    checker.assertThat("//tulsi_test:WatchExtensionBinary")
+        .hasSources(["tulsi_test/WatchExtensionBinary/srcs/watch_extension_binary.m"])
+
+    checker.assertThat("//tulsi_test:WatchExtension")
+        .dependsOn("//tulsi_test:WatchExtensionBinary")
+
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
@@ -235,7 +247,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 11)
+    XCTAssertEqual(ruleEntries.count, 15)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 

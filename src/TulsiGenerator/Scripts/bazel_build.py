@@ -579,7 +579,11 @@ class BazelBuildBridge(object):
     # The base of the dirname within the Payload must match the last
     # component of output_path.
     expected_bundle_name = os.path.basename(output_path)
-    expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
+    package_type = os.environ.get('PACKAGE_TYPE', '')
+    if package_type == 'com.apple.package-type.app-extension':
+      expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
+    else:
+      expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
 
     with zipfile.ZipFile(ipa_path, 'r') as zf:
       for item in zf.infolist():

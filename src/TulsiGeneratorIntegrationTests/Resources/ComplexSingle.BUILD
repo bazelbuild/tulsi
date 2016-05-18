@@ -22,6 +22,10 @@ config_setting(
 ios_application(
     name = "Application",
     binary = ":Binary",
+    extensions = [
+        ":TodayExtension",
+        ":WatchExtension",
+    ],
 )
 
 objc_binary(
@@ -151,6 +155,34 @@ objc_library(
     srcs = [
         "NonPropagatedLibrary/srcs/non_propagated.m",
     ],
+)
+
+ios_extension_binary(
+    name = "TodayExtensionBinary",
+    srcs = [
+        "TodayExtensionBinary/srcs/today_extension_binary.m",
+    ],
+)
+
+ios_extension(
+    name = "TodayExtension",
+    binary = "TodayExtensionBinary",
+)
+
+apple_watch_extension_binary(
+    name = "WatchExtensionBinary",
+    srcs = [
+        "WatchExtensionBinary/srcs/watch_extension_binary.m",
+    ],
+    sdk_frameworks = [
+        "WatchKit",
+    ],
+)
+
+apple_watch1_extension(
+    name = "WatchExtension",
+    app_name = "WatchApp",
+    binary = ":WatchExtensionBinary",
 )
 
 filegroup(
