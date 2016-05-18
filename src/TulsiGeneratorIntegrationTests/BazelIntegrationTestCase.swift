@@ -274,11 +274,26 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
 
-  /// Override for LocalizedMessageLogger that prints directly.
+  /// Override for LocalizedMessageLogger that prints immediately rather than bouncing to the main
+  /// thread.
   private class DirectLocalizedMessageLogger: LocalizedMessageLogger {
 
+    private class DirectMessageLogger: MessageLoggerProtocol {
+      func warning(message: String) {
+        print("W: \(message)")
+      }
+
+      func error(message: String, details: String?) {
+        XCTFail("Critical error logged: \(message)\nDetails:\n\(details)")
+      }
+
+      func info(message: String) {
+        print("I: \(message)")
+      }
+    }
+
     init() {
-      super.init(messageLogger: nil, bundle: nil)
+      super.init(messageLogger: DirectMessageLogger(), bundle: nil)
     }
 
     override func infoMessage(message: String) {
