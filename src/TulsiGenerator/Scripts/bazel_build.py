@@ -68,10 +68,8 @@ class _OptionsParser(object):
 
             'Debug': [
                 '--compilation_mode=dbg',
-                # There is currently no crosstool for OS X, so -g must be specified manually.
-                # TODO(abaire): Remove these when symbols are enabled via compilation_mode.
+                # TODO(abaire): Remove when symbols are enabled for CC via compilation_mode.
                 '--copt=-g',
-                '--objccopt=-g',
             ],
 
             'Release': [
