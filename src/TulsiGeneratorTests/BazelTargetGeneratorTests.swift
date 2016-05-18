@@ -102,7 +102,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   var messageLogger: MockLocalizedMessageLogger! = nil
 
   var sourceFileNames = [String]()
-  var pathFilters = Set<String>([""])
+  var pathFilters = Set<String>()
   var sourceFileReferences = [PBXFileReference]()
   var pchFile: PBXFileReference! = nil
 
@@ -769,7 +769,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
                                                       ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+                                                      pathFilters: pathFilters.union(Set([dataModel])))
 
     var allSourceFiles = sourceFileNames
     allSourceFiles.append(dataModel)
@@ -942,7 +942,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       // Validate the file set.
       XCTAssertEqual(phase.files.count,
                      fileSet.count,
-                     "Mismatch in file count in build phase",
+                     "Mismatch in file count in build phase:\n\(phase.files)\n\(fileSet)",
                      line: line)
       for buildFile in phase.files {
         let path = buildFile.fileRef.sourceRootRelativePath
