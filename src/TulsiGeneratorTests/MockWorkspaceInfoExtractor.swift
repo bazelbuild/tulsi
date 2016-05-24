@@ -44,4 +44,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     }
     return ret
   }
+
+  func resolveExternalReferencePath(path: String) -> String? {
+    return nil
+  }
 }
