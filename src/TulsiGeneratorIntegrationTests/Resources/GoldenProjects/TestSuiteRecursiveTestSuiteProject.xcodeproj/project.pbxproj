@@ -382,6 +382,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
@@ -389,6 +390,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Fastbuild;
@@ -431,6 +433,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 			};
@@ -444,6 +447,7 @@
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BUILD_PATH = TestSuite;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = TestApplication;
 			};
 			name = Debug;
@@ -452,13 +456,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Debug;
@@ -469,6 +476,7 @@
 				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
 				BUILD_PATH = TestSuite/Three;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = NonXCTest;
 			};
 			name = Debug;
@@ -476,6 +484,7 @@
 		44936BD67EED3C4D00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = "_indexer_Binary_-4799450061102981736";
 			};
 			name = Debug;
@@ -483,6 +492,7 @@
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = _indexer_NonXCTest_4799450060268549067;
 			};
 			name = Debug;
@@ -490,6 +500,7 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = "_indexer_TestSuiteXCTest_-4799450060952101021";
 			};
 			name = Debug;
@@ -501,6 +512,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 			};
@@ -514,6 +526,7 @@
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BUILD_PATH = TestSuite;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = TestApplication;
 			};
 			name = Release;
@@ -522,13 +535,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Release;
@@ -539,6 +555,7 @@
 				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
 				BUILD_PATH = TestSuite/Three;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = NonXCTest;
 			};
 			name = Release;
@@ -546,6 +563,7 @@
 		44936BD6A3D45CE900000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = "_indexer_Binary_-4799450061102981736";
 			};
 			name = Release;
@@ -553,6 +571,7 @@
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = _indexer_NonXCTest_4799450060268549067;
 			};
 			name = Release;
@@ -560,6 +579,7 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = "_indexer_TestSuiteXCTest_-4799450060952101021";
 			};
 			name = Release;
@@ -572,6 +592,7 @@
 				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -589,6 +610,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BUILD_PATH = TestSuite;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -600,16 +622,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = __TulsiTestRunner_Debug;
@@ -622,6 +647,7 @@
 				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -639,6 +665,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BUILD_PATH = TestSuite;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -650,16 +677,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = __TulsiTestRunner_Release;

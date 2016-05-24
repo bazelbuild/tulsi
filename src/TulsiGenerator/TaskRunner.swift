@@ -14,6 +14,8 @@
 
 import Foundation
 
+
+/// Encapsulates functionality to launch and manage NSTasks.
 public final class TaskRunner {
 
   /// Information retrieved through execution of a task.
@@ -45,18 +47,39 @@ public final class TaskRunner {
   private var pendingTasks = Set<NSTask>()
   private let taskReader: TaskOutputReader
 
-  public static func standardRunner() -> TaskRunner {
-    return defaultInstance
+  /// Prepares an NSTask using the given launch binary with the given arguments that will collect
+  /// output and passing it to a terminationHandler.
+  public static func createTask(launchPath: String,
+                         arguments: [String]? = nil,
+                         environment: [String: String]? = nil,
+                         terminationHandler: CompletionHandler) -> NSTask {
+    return defaultInstance.createTask(launchPath,
+                                      arguments: arguments,
+                                      environment: environment,
+                                      terminationHandler: terminationHandler)
   }
 
-  /// Prepares an NSTask using the given launch binary with the given arguments that will collect
-  // output and passing it to a terminationHandler.
-  public func createTask(launchPath: String,
-                         arguments: [String]? = nil,
-                         terminationHandler: CompletionHandler) -> NSTask {
+  // MARK: - Private methods
+
+  private init() {
+    taskReader = TaskOutputReader()
+    taskReader.start()
+  }
+
+  deinit {
+    taskReader.stop()
+  }
+
+  private func createTask(launchPath: String,
+                          arguments: [String]? = nil,
+                          environment: [String: String]? = nil,
+                          terminationHandler: CompletionHandler) -> NSTask {
     let task = NSTask()
     task.launchPath = launchPath
     task.arguments = arguments
+    if let environment = environment {
+      task.environment = environment
+    }
 
     let dispatchGroup = dispatch_group_create()
     let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -128,17 +151,6 @@ public final class TaskRunner {
       self.pendingTasks.insert(task)
     }
     return task
-  }
-
-  // MARK: - Private methods
-
-  private init() {
-    taskReader = TaskOutputReader()
-    taskReader.start()
-  }
-
-  deinit {
-    taskReader.stop()
   }
 
 

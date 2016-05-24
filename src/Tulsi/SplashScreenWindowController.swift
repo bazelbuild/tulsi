@@ -13,23 +13,35 @@
 // limitations under the License.
 import Cocoa
 
+/// View controller for the "recent document" rows in the tableview in the splash screen.
+final class SplashScreenRecentDocumentViewController : NSViewController {
+  @IBOutlet weak var icon : NSImageView!
+  @IBOutlet weak var filename : NSTextField!
+  @IBOutlet weak var path: NSTextField!
+  var url : NSURL = NSURL()
+
+  override var nibName: String? {
+    return "SplashScreenRecentDocumentView"
+  }
+
+  override func viewDidLoad() {
+    guard let urlPath = url.path else { return }
+    icon.image =  NSWorkspace.sharedWorkspace().iconForFile(urlPath)
+    filename.stringValue = (url.lastPathComponent! as NSString).stringByDeletingPathExtension
+    path.stringValue = ((urlPath as NSString).stringByDeletingLastPathComponent as NSString).stringByAbbreviatingWithTildeInPath
+  }
+}
 
 /// Window controller for the splash screen.
-final class SplashScreenWindowController: NSWindowController {
+final class SplashScreenWindowController: NSWindowController, NSTableViewDelegate, NSTableViewDataSource {
 
   @IBOutlet var recentDocumentsArrayController: NSArrayController!
   @IBOutlet weak var splashScreenImageView: NSImageView!
   dynamic var applicationVersion: String = ""
-  dynamic var recentDocumentURLs = [NSURL]()
+  dynamic var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
 
   override var windowNibName: String? {
     return "SplashScreenWindowController"
-  }
-
-  override func windowWillLoad() {
-    super.windowWillLoad()
-    NSValueTransformer.setValueTransformer(TulsiProjDocumentURLToNameValueTransformer(),
-                                           forName: "TulsiProjDocumentURLToNameValueTransformer")
   }
 
   override func windowDidLoad() {
@@ -41,41 +53,53 @@ final class SplashScreenWindowController: NSWindowController {
       applicationVersion = cfBundleVersion
     }
 
-    recentDocumentURLs = [NSURL()]
-    recentDocumentURLs.appendContentsOf(getRecentProjectURLs())
+    recentDocumentViewControllers = getRecentDocumentViewControllers()
+  }
+
+  @IBAction func createNewDocument(sender: NSButton) {
+    let documentController = NSDocumentController.sharedDocumentController()
+    do {
+      try documentController.openUntitledDocumentAndDisplay(true)
+    } catch let e as NSError {
+      let alert = NSAlert()
+      alert.messageText = e.localizedFailureReason ?? e.localizedDescription
+      alert.informativeText = e.localizedRecoverySuggestion ?? ""
+      alert.runModal()
+    }
   }
 
   @IBAction func didDoubleClickRecentDocument(sender: NSTableView) {
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
     let documentController = NSDocumentController.sharedDocumentController()
-    if clickedRow == 0 {
-      // Handle the special "New project" item.
-      do {
-        try documentController.openUntitledDocumentAndDisplay(true)
-      } catch let e as NSError {
-        let alert = NSAlert()
-        alert.messageText = e.localizedFailureReason ?? e.localizedDescription
-        alert.informativeText = e.localizedRecoverySuggestion ?? ""
-        alert.runModal()
-      }
-    } else {
-      let url = recentDocumentURLs[clickedRow]
-      documentController.openDocumentWithContentsOfURL(url, display: true) {
-        (_: NSDocument?, _: Bool, _: NSError?) in
-      }
+    let viewController = recentDocumentViewControllers[clickedRow]
+    documentController.openDocumentWithContentsOfURL(viewController.url, display: true) {
+      (_: NSDocument?, _: Bool, _: NSError?) in
     }
+  }
+
+  func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    return recentDocumentViewControllers[row].view
+  }
+
+  func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    return recentDocumentViewControllers.count
   }
 
   // MARK: - Private methods
 
-  private func getRecentProjectURLs() -> [NSURL] {
+  private func getRecentDocumentViewControllers() -> [SplashScreenRecentDocumentViewController] {
     let projectExtension = TulsiProjectDocument.getTulsiBundleExtension()
     let documentController = NSDocumentController.sharedDocumentController()
 
-    var recentURLs = [NSURL]()
+    var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
+    var recentDocumentURLs = Set<NSURL>()
+    let fileManager = NSFileManager.defaultManager()
     for url in documentController.recentDocumentURLs {
       guard let path = url.path where path.containsString(projectExtension) else { continue }
+      if !fileManager.isReadableFileAtPath(path) {
+        continue
+      }
 
       var components: [String] = url.pathComponents!
       var i = components.count - 1
@@ -93,34 +117,16 @@ final class SplashScreenWindowController: NSWindowController {
         let projectComponents = [String](components.prefix(i + 1))
         projectURL = NSURL.fileURLWithPathComponents(projectComponents)!
       }
-
-      if !recentURLs.contains(projectURL) {
-        recentURLs.append(projectURL)
+      if (recentDocumentURLs.contains(projectURL)) {
+        continue;
       }
+      recentDocumentURLs.insert(projectURL);
+
+      let viewController = SplashScreenRecentDocumentViewController()
+      viewController.url = projectURL;
+      recentDocumentViewControllers.append(viewController)
     }
 
-    return recentURLs
-  }
-}
-
-
-/// Transformer that converts a URL for a Tulsi project document to a name suitable for display in
-/// the splash screen.
-final class TulsiProjDocumentURLToNameValueTransformer : NSValueTransformer {
-  override class func transformedValueClass() -> AnyClass {
-    return NSString.self
-  }
-
-  override class func allowsReverseTransformation() -> Bool  {
-    return false
-  }
-
-  override func transformedValue(value: AnyObject?) -> AnyObject? {
-    guard let url = value as? NSURL, filename = url.lastPathComponent else {
-      return NSLocalizedString("SplashScreen_NewProject",
-                               comment: "Special item in the recent documents list on the splash screen that will create a new project document.")
-    }
-
-    return (filename as NSString).stringByDeletingPathExtension
+    return recentDocumentViewControllers
   }
 }

@@ -119,7 +119,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 15)
+    XCTAssertEqual(ruleEntries.count, 13)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -142,10 +142,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:NonPropagatedLibrary")
-        .hasSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm",
-                     "tulsi_test/Binary/srcs/main.m",
+        .hasSources(["tulsi_test/Binary/srcs/main.m",
                      "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
+        .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
         .hasAttribute(.asset_catalogs,
                       value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
                                "src": true],
@@ -189,14 +189,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                     "src": false])
         .hasAttribute(.xibs, value: [["path": "tulsi_test/Library/xib.xib", "src": true]])
 
-    checker.assertThat("//tulsi_test:ObjCProtoLibrary")
-        .hasSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
-                     "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
-
     checker.assertThat("//tulsi_test:SubLibrary")
         .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])
         .hasAttribute(.pch, value: ["path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
                                     "src": true])
+        .hasAttribute(.enable_modules, value: 1)
 
     checker.assertThat("//tulsi_test:SubLibraryWithDefines")
         .hasSources(["tulsi_test/SubLibraryWithDefines/srcs/src.mm"])
@@ -247,7 +244,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 15)
+    XCTAssertEqual(ruleEntries.count, 13)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -256,6 +253,31 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasTestHost("//tulsi_test:Application")
         .hasAttribute(.xctest, value: true)
         .hasSources(["tulsi_test/XCTest/srcs/configTestSource.m"])
+  }
+
+  func testPlatformDependent() {
+    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    XCTAssertEqual(ruleEntries.count, 4)
+
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Binary")
+
+    checker.assertThat("//tulsi_test:Binary")
+        .dependsOn("//tulsi_test:ObjCLibrary")
+        .hasSources(["tulsi_test/Binary/srcs/main.m"])
+
+    checker.assertThat("//tulsi_test:ObjCProtoLibrary")
+        .containsSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
+                          "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
+
+    checker.assertThat("//tulsi_test:ProtoLibrary")
+        .hasSources(["tulsi_test/protolibrary.proto"])
+
   }
 }
 
@@ -364,6 +386,7 @@ private class InfoChecker {
     let ruleEntry: RuleEntry?
     let ruleEntries: [BuildLabel: RuleEntry]
     let resolvedSourceFiles: [String]
+    let resolvedNonARCSourceFiles: [String]
 
     init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
       self.ruleEntry = ruleEntry
@@ -371,8 +394,10 @@ private class InfoChecker {
 
       if let ruleEntry = ruleEntry {
         resolvedSourceFiles = ruleEntry.sourceFiles.map() { $0.fullPath }
+        resolvedNonARCSourceFiles = ruleEntry.nonARCSourceFiles.map() { $0.fullPath }
       } else {
         resolvedSourceFiles = []
+        resolvedNonARCSourceFiles = []
       }
     }
 
@@ -410,6 +435,29 @@ private class InfoChecker {
       XCTAssertEqual(ruleEntry.sourceFiles.count,
                      sources.count,
                      "\(ruleEntry) expected to have exactly \(sources.count) source files but has \(ruleEntry.sourceFiles.count)",
+                     line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry contains the given list of non-ARC sources (but may
+    /// have others as well).
+    func containsNonARCSources(sources: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      for s in sources {
+        XCTAssert(resolvedNonARCSourceFiles.contains(s),
+                  "\(ruleEntry) missing expected non-ARC source file '\(s)' from \(resolvedNonARCSourceFiles)",
+                  line: line)
+      }
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has exactly the given list of non-ARC sources.
+    func hasNonARCSources(sources: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      containsNonARCSources(sources, line: line)
+      XCTAssertEqual(ruleEntry.nonARCSourceFiles.count,
+                     sources.count,
+                     "\(ruleEntry) expected to have exactly \(sources.count) non-ARC source files but has \(ruleEntry.nonARCSourceFiles.count)",
                      line: line)
       return self
     }

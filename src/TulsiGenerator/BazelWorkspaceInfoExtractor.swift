@@ -29,11 +29,11 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   /// Returns the workspace relative path to the bazel-bin symlink. Note that this may block.
   var bazelBinPath: String {
-    return packagePathFetcher.getBazelBinPath()
+    return workspacePathFetcher.getBazelBinPath()
   }
 
   /// Fetcher object from which a workspace's package_path may be obtained.
-  private let packagePathFetcher: BazelWorkspacePathInfoFetcher
+  private let workspacePathFetcher: BazelWorkspacePathInfoFetcher
 
   private let aspectExtractor: BazelAspectInfoExtractor
   private let queryExtractor: BazelQueryInfoExtractor
@@ -45,12 +45,12 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
 
-    packagePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
-                                                       workspaceRootURL: workspaceRootURL,
-                                                       localizedMessageLogger: localizedMessageLogger)
+    workspacePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
+                                                         workspaceRootURL: workspaceRootURL,
+                                                         localizedMessageLogger: localizedMessageLogger)
     aspectExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                workspaceRootURL: workspaceRootURL,
-                                               packagePathFetcher: packagePathFetcher,
+                                               packagePathFetcher: workspacePathFetcher,
                                                localizedMessageLogger: localizedMessageLogger)
     queryExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
                                              workspaceRootURL: workspaceRootURL,
@@ -100,6 +100,12 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ruleEntryCache
   }
 
+  func resolveExternalReferencePath(path: String) -> String? {
+    let execRoot = workspacePathFetcher.getExecutionRoot()
+    let fullURL = NSURL.fileURLWithPathComponents([execRoot, path])?.URLByResolvingSymlinksInPath
+    return fullURL?.path
+  }
+
   // MARK: - Private methods
 
   private func extractTestSuiteRules(labels: [BuildLabel]) {
@@ -109,6 +115,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                                  type: ruleInfo.type,
                                                  attributes: [:],
                                                  sourceFiles: [],
+                                                 nonARCSourceFiles: [],
                                                  dependencies: Set<String>(),
                                                  weakDependencies: possibleExpansions)
     }

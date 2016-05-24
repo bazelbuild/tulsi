@@ -446,6 +446,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
@@ -453,6 +454,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Fastbuild;
@@ -493,6 +495,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
@@ -508,6 +511,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = Application;
 			};
 			name = Debug;
@@ -516,13 +520,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Debug;
@@ -530,6 +537,7 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _indexer_Binary_4799450059964562858;
@@ -541,6 +549,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WORKSPACE_ROOT)/relative/Library/include/path";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = "_indexer_Library_-4799450061039509283";
@@ -550,6 +559,7 @@
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _indexer_XCTest_4799450059533471296;
@@ -563,6 +573,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
@@ -578,6 +589,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = Application;
 			};
 			name = Release;
@@ -586,13 +598,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = Release;
@@ -600,6 +615,7 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _indexer_Binary_4799450059964562858;
@@ -611,6 +627,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WORKSPACE_ROOT)/relative/Library/include/path";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = "_indexer_Library_-4799450061039509283";
@@ -620,6 +637,7 @@
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _indexer_XCTest_4799450059533471296;
@@ -634,6 +652,7 @@
 				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -652,6 +671,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -663,16 +683,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = __TulsiTestRunner_Debug;
@@ -685,6 +708,7 @@
 				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -703,6 +727,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BUILD_PATH = tulsi_e2e_simple;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -714,16 +739,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(TULSI_WORKSPACE_ROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
 			};
 			name = __TulsiTestRunner_Release;

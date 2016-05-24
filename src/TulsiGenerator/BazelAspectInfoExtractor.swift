@@ -135,7 +135,7 @@ final class BazelAspectInfoExtractor {
     arguments.appendContentsOf(targets)
     localizedMessageLogger.infoMessage("Running \(bazelURL.path!) with arguments: \(arguments)")
 
-    let task = TaskRunner.standardRunner().createTask(bazelURL.path!, arguments: arguments) {
+    let task = TulsiTaskRunner.createTask(bazelURL.path!, arguments: arguments) {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: NSBundle(forClass: self.dynamicType),
@@ -215,6 +215,13 @@ final class BazelAspectInfoExtractor {
         }
         sources.append(pathInfo)
       }
+      let nonARCSourceInfos = dict["non_arc_srcs"] as? [[String: AnyObject]] ?? []
+      var nonARCSources = [BazelFileInfo]()
+      for info in nonARCSourceInfos {
+        if let pathInfo = BazelFileInfo(info: info) {
+          nonARCSources.append(pathInfo)
+        }
+      }
       let generatedIncludePaths = dict["generated_includes"] as? [String]
       let dependencies = dict["deps"] as? [String] ?? []
       let buildFilePath = dict["build_file"] as? String
@@ -223,6 +230,7 @@ final class BazelAspectInfoExtractor {
                                 type: ruleType,
                                 attributes: attributes,
                                 sourceFiles: sources,
+                                nonARCSourceFiles: nonARCSources,
                                 dependencies: Set<String>(dependencies),
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths)

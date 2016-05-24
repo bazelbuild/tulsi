@@ -209,6 +209,8 @@ final class PBXFileReference: PBXReference, Hashable {
   /// Whether or not this file reference is for a project input file.
   var isInputFile: Bool = false
 
+  var settings = [String: String]()
+
   override var isa: String {
     return "PBXFileReference"
   }
@@ -229,6 +231,10 @@ final class PBXFileReference: PBXReference, Hashable {
     self.init(name: name, path: sourceTreePath.path, sourceTree: sourceTreePath.sourceTree, parent: parent)
   }
 
+  func setCompilerFlags(flags: [String]) {
+    settings["COMPILER_FLAGS"] = flags.joinWithSeparator(" ")
+  }
+
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try super.serializeInto(serializer)
     if let uti = lastKnownFileType {
@@ -236,6 +242,9 @@ final class PBXFileReference: PBXReference, Hashable {
     } else if let uti = explicitFileType {
       try serializer.addField("explicitFileType", uti)
       // TODO(abaire): set includeInIndex to 0 for output files?
+    }
+    if !settings.isEmpty {
+      try serializer.addField("settings", settings)
     }
   }
 }
@@ -286,31 +295,36 @@ class PBXGroup: PBXReference {
     self.init(name: name, path: sourceTreePath.path, sourceTree: sourceTreePath.sourceTree, parent: parent)
   }
 
-  func getOrCreateChildGroupByName(name: String, path: String?) -> PBXGroup {
+  func getOrCreateChildGroupByName(name: String,
+                                   path: String?,
+                                   sourceTree: SourceTree = .Group) -> PBXGroup {
     if let value = childGroupsByName[name] {
       return value
     }
-    let value = PBXGroup(name: name, path: path, sourceTree: .Group, parent: self)
+    let value = PBXGroup(name: name, path: path, sourceTree: sourceTree, parent: self)
     childGroupsByName[name] = value
     children.append(value)
     return value
   }
 
-  func getOrCreateChildVariantGroupByName(name: String) -> PBXVariantGroup {
+  func getOrCreateChildVariantGroupByName(name: String,
+                                          sourceTree: SourceTree = .Group) -> PBXVariantGroup {
     if let value = childVariantGroupsByName[name] {
       return value
     }
-    let value = PBXVariantGroup(name: name, path: nil, sourceTree: .Group, parent: self)
+    let value = PBXVariantGroup(name: name, path: nil, sourceTree: sourceTree, parent: self)
     childVariantGroupsByName[name] = value
     children.append(value)
     return value
   }
 
-  func getOrCreateChildVersionGroupByName(name: String, path: String?) -> XCVersionGroup {
+  func getOrCreateChildVersionGroupByName(name: String,
+                                          path: String?,
+                                          sourceTree: SourceTree = .Group) -> XCVersionGroup {
     if let value = childVersionGroupsByName[name] {
       return value
     }
-    let value = XCVersionGroup(name: name, path: path, sourceTree: .Group, parent: self)
+    let value = XCVersionGroup(name: name, path: path, sourceTree: sourceTree, parent: self)
     childVersionGroupsByName[name] = value
     children.append(value)
     return value
@@ -324,10 +338,45 @@ class PBXGroup: PBXReference {
     if let value = fileReferencesBySourceTreePath[sourceTreePath] {
       return value
     }
-    let value = PBXFileReference(name: sourceTreePath.path.pbPathLastComponent, sourceTreePath: sourceTreePath, parent:self)
+    let value = PBXFileReference(name: sourceTreePath.path.pbPathLastComponent,
+                                 sourceTreePath: sourceTreePath,
+                                 parent:self)
     fileReferencesBySourceTreePath[sourceTreePath] = value
     children.append(value)
     return value
+  }
+
+  func removeChild(child: PBXReference) {
+    children = children.filter() { $0 !== child }
+    if child is XCVersionGroup {
+      childVersionGroupsByName.removeValueForKey(child.name)
+    } else if child is PBXVariantGroup {
+      childVariantGroupsByName.removeValueForKey(child.name)
+    } else if child is PBXGroup {
+      childGroupsByName.removeValueForKey(child.name)
+    } else if child is PBXFileReference {
+      let sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: child.path!)
+      fileReferencesBySourceTreePath.removeValueForKey(sourceTreePath)
+    }
+  }
+
+  /// Takes ownership of the children of the given group. Note that this leaves the "other" group in
+  /// an invalid state and it should be discarded (for example, via removeChild).
+  func migrateChildrenOfGroup(other: PBXGroup) {
+    for child in other.children {
+      child._parent = self
+      children.append(child)
+      if let child = child as? XCVersionGroup {
+        childVersionGroupsByName[child.name] = child
+      } else if let child = child as? PBXVariantGroup {
+        childVariantGroupsByName[child.name] = child
+      } else if let child = child as? PBXGroup {
+        childGroupsByName[child.name] = child
+      } else if let child = child as? PBXFileReference {
+        let sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: child.path!)
+        fileReferencesBySourceTreePath[sourceTreePath] = child
+      }
+    }
   }
 
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {

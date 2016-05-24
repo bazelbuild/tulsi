@@ -32,7 +32,7 @@ class CommandLineSplitter {
 
     var splitCommands: [String]? = nil
     let semaphore = dispatch_semaphore_create(0)
-    let task = TaskRunner.standardRunner().createTask(scriptPath, arguments: [commandLine]) {
+    let task = TaskRunner.createTask(scriptPath, arguments: [commandLine]) {
       completionInfo in
         defer { dispatch_semaphore_signal(semaphore) }
 

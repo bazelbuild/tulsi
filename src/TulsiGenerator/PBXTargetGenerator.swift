@@ -53,6 +53,7 @@ class PBXTargetGenerator {
   let project: PBXProject
   let buildScriptPath: String
   let envScriptPath: String
+  let tulsiVersion: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
   let workspaceRootURL: NSURL
@@ -69,6 +70,7 @@ class PBXTargetGenerator {
        project: PBXProject,
        buildScriptPath: String,
        envScriptPath: String,
+       tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceRootURL: NSURL,
@@ -78,6 +80,7 @@ class PBXTargetGenerator {
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.envScriptPath = envScriptPath
+    self.tulsiVersion = tulsiVersion
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
     self.workspaceRootURL = workspaceRootURL
@@ -186,6 +189,7 @@ class PBXTargetGenerator {
       }
 
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
+      let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles.filter(includeFileInProject)
       var buildPhaseReferences = [PBXReference]()
       let versionedFileTargets = ruleEntry.versionedNonSourceArtifacts.filter(includeFileInProject)
       if !versionedFileTargets.isEmpty {
@@ -201,7 +205,7 @@ class PBXTargetGenerator {
         ref.isInputFile = target.targetType == .SourceFile
       }
 
-      if sourceFileInfos.isEmpty && buildPhaseReferences.isEmpty {
+      if sourceFileInfos.isEmpty && nonARCSourceFileInfos.isEmpty && buildPhaseReferences.isEmpty {
         return (defines, includes)
       }
 
@@ -230,7 +234,8 @@ class PBXTargetGenerator {
       let indexingTarget = project.createNativeTarget(targetName,
                                                       targetType: PBXTarget.ProductType.StaticLibrary)
 
-      let fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
+      var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
+      fileReferences.appendContentsOf(generateFileReferencesForNonARCFileInfos(nonARCSourceFileInfos))
       buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
       addBuildFileForRule(ruleEntry)
       let buildPhase = createBuildPhaseForReferences(buildPhaseReferences)
@@ -279,6 +284,11 @@ class PBXTargetGenerator {
     // anyway it doesn't hurt anything to set it on all configs.
     buildSettings["ENABLE_TESTABILITY"] = "YES"
 
+    // Bazel sources are more or less ARC by default (the user has to use the special non_arc_srcs
+    // attribute for non-ARC) so the project is set to reflect that and per-file flags are used to
+    // override the default.
+    buildSettings["CLANG_ENABLE_OBJC_ARC"] = "YES"
+
     // Bazel takes care of signing the generated applications, so Xcode's signing must be disabled.
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
     buildSettings["CODE_SIGN_IDENTITY"] = ""
@@ -288,6 +298,7 @@ class PBXTargetGenerator {
       sourceDirectory = "$(SRCROOT)"
     }
     buildSettings["TULSI_WORKSPACE_ROOT"] = sourceDirectory
+    buildSettings["TULSI_VERSION"] = tulsiVersion
 
     var searchPaths = ["$(TULSI_WORKSPACE_ROOT)"]
     if let additionalIncludePaths = additionalIncludePaths {
@@ -388,6 +399,15 @@ class PBXTargetGenerator {
 
     fileReferences.appendContentsOf(generatedFileReferences)
     return fileReferences
+  }
+
+  /// Generates file references for the given infos, marking them as -fno-objc-arc.
+  private func generateFileReferencesForNonARCFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
+    let nonARCFileReferences = generateFileReferencesForFileInfos(infos)
+    nonARCFileReferences.forEach() {
+      $0.setCompilerFlags(["-fno-objc-arc"])
+    }
+    return nonARCFileReferences
   }
 
   private func generateUniqueNamesForRuleEntries(ruleEntries: [RuleEntry]) -> [String: RuleEntry] {
@@ -514,6 +534,10 @@ class PBXTargetGenerator {
       addFilteredSourceReference(bridgingHeader)
     }
 
+    if let enableModules = ruleEntry.attributes[.enable_modules] as? Int where enableModules == 1 {
+      buildSettings["CLANG_ENABLE_MODULES"] = "YES"
+    }
+
     if !includes.isEmpty {
       buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includes.joinWithSeparator(" ")
     }
@@ -554,8 +578,10 @@ class PBXTargetGenerator {
     }
 
     let sourceFileInfos = ruleEntry.sourceFiles
-    if !sourceFileInfos.isEmpty {
-      let fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
+    let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles
+    if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty {
+      var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
+      fileReferences.appendContentsOf(generateFileReferencesForNonARCFileInfos(nonARCSourceFileInfos))
       let buildPhase = createBuildPhaseForReferences(fileReferences)
       target.buildPhases.append(buildPhase)
 
@@ -602,9 +628,29 @@ class PBXTargetGenerator {
 
   private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
                                                 buildSettings: Dictionary<String, String>) {
+    func addPreprocessorDefine(define: String, toConfig config: XCBuildConfiguration) {
+      if let existingDefinitions = config.buildSettings["GCC_PREPROCESSOR_DEFINITIONS"] {
+        // NOTE(abaire): Technically this should probably check first to see if "define" has been
+        //               set but in the foreseeable usage it's unlikely that this if condition would
+        //               ever trigger at all.
+        config.buildSettings["GCC_PREPROCESSOR_DEFINITIONS"] = existingDefinitions + " \(define)"
+      } else {
+        config.buildSettings["GCC_PREPROCESSOR_DEFINITIONS"] = define
+      }
+    }
+
     for configName in PBXTargetGenerator.buildConfigNames {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
       config.buildSettings = buildSettings
+
+      // Insert any defines that are injected by Bazel's ObjcConfiguration.
+      // TODO(abaire): Grab these in the aspect instead of hardcoding them here.
+      //               Note that doing this would also require per-config aspect passes.
+      if configName == "Debug" {
+        addPreprocessorDefine("DEBUG=1", toConfig: config)
+      } else if configName == "Release" {
+        addPreprocessorDefine("NDEBUG=1", toConfig: config)
+      }
     }
   }
 

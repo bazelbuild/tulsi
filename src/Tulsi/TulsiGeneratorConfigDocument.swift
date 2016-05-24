@@ -249,8 +249,15 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                            messageLogger: MessageLoggerProtocol,
                                            messageLog: MessageLogProtocol?,
                                            projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
+    let tulsiVersion: String
+    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+      tulsiVersion = cfBundleVersion
+    } else {
+      tulsiVersion = ""
+    }
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
+                                                      tulsiVersion: tulsiVersion,
                                                       messageLogger: messageLogger)
     let errorInfo: String
     do {

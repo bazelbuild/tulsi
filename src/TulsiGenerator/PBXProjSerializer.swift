@@ -175,7 +175,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     let stack = currentDict
-    currentDict = RawDict()
+    currentDict = RawDict(compact: stack.compact)
     for (key, value) in dict {
       if let stringValue = value as? String {
         currentDict.dict[key] = escapeString(stringValue)

@@ -19,6 +19,7 @@ import XCTest
 class XcodeProjectGeneratorTests: XCTestCase {
   let workspaceRoot = NSURL(fileURLWithPath: "/path/to/workspace")
   let projectName = "ProjectName"
+  let testTulsiVersion = "9.99.999.9999"
 
   let buildTargetLabels = ["target", "path/to/target"].map({ BuildLabel($0) })
   let pathFilters = Set<String>(["target", "path/to/target", "sourceTarget"])
@@ -72,7 +73,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       workspaceInfoExtractor: mockExtractor,
                                       buildScriptURL: buildScriptURL,
                                       envScriptURL: envScriptURL,
-                                      cleanScriptURL: cleanScriptURL)
+                                      cleanScriptURL: cleanScriptURL,
+                                      tulsiVersion: testTulsiVersion)
     generator.writeDataHandler = {(_, _) in }
   }
 
@@ -107,6 +109,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                              type: "ios_application",
                              attributes: [:],
                              sourceFiles: [],
+                             nonARCSourceFiles: [],
                              dependencies: Set<String>())
     }
     return ret

@@ -62,85 +62,103 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
 
 
   func testComplexSingle() {
-    installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
-    let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
+    installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_complex_test")
+    let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_complex_test"])
 
-    XCTAssertEqual(infos.count, 21)
+    XCTAssertEqual(infos.count, 19)
     let checker = InfoChecker(ruleInfos: infos)
 
-    checker.assertThat("//tulsi_test:Application")
+    checker.assertThat("//tulsi_complex_test:Application")
         .hasType("ios_application")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:Binary")
+    checker.assertThat("//tulsi_complex_test:Binary")
         .hasType("objc_binary")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:CoreDataResources")
+    checker.assertThat("//tulsi_complex_test:CoreDataResources")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:Library")
+    checker.assertThat("//tulsi_complex_test:Library")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:NonPropagatedLibrary")
+    checker.assertThat("//tulsi_complex_test:NonPropagatedLibrary")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:ObjCProtoLibrary")
-        .hasType("objc_proto_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_test:ProtoLibrary")
-        .hasType("proto_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_test:SubLibrary")
+    checker.assertThat("//tulsi_complex_test:SubLibrary")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:SubLibraryWithDefines")
+    checker.assertThat("//tulsi_complex_test:SubLibraryWithDefines")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:SubLibraryWithDifferentDefines")
+    checker.assertThat("//tulsi_complex_test:SubLibraryWithDifferentDefines")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:TodayExtensionBinary")
+    checker.assertThat("//tulsi_complex_test:TodayExtensionBinary")
         .hasType("ios_extension_binary")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:TodayExtension")
+    checker.assertThat("//tulsi_complex_test:TodayExtension")
         .hasType("ios_extension")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:WatchExtensionBinary")
+    checker.assertThat("//tulsi_complex_test:WatchExtensionBinary")
         .hasType("apple_watch_extension_binary")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:WatchExtension")
+    checker.assertThat("//tulsi_complex_test:WatchExtension")
         .hasType("apple_watch1_extension")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:XCTest")
+    checker.assertThat("//tulsi_complex_test:XCTest")
         .hasType("ios_test")
-        .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_test:Application"))
+        .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_complex_test:Application"))
+        .hasNoDependencies()
+  }
+
+  func testPlatformDependent() {
+    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_platformdependent_test")
+    let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_platformdependent_test"])
+
+    XCTAssertEqual(infos.count, 4)
+    let checker = InfoChecker(ruleInfos: infos)
+
+    checker.assertThat("//tulsi_platformdependent_test:Application")
+        .hasType("ios_application")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:Binary")
+        .hasType("objc_binary")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:ObjCProtoLibrary")
+        .hasType("objc_proto_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:ProtoLibrary")
+        .hasType("proto_library")
+        .hasNoLinkedTargetLabels()
         .hasNoDependencies()
   }
 }

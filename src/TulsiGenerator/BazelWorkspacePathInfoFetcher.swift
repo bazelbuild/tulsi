@@ -19,6 +19,8 @@ import Foundation
 class BazelWorkspacePathInfoFetcher {
   /// The Bazel package_path as defined by the target workspace.
   private var packagePath: String? = nil
+  /// The Bazel execution_root as defined by the target workspace.
+  private var executionRoot: String? = nil
 
   /// Optional path to the directory in which bazel-* symlinks will be created.
   private var bazelSymlinkParentPathOverride: String? = nil
@@ -45,6 +47,13 @@ class BazelWorkspacePathInfoFetcher {
     if fetchCompleted { return packagePath! }
     waitForCompletion()
     return packagePath!
+  }
+
+  /// Returns the execution_root for this fetcher's workspace, blocking until it is available.
+  func getExecutionRoot() -> String {
+    if fetchCompleted { return executionRoot! }
+    waitForCompletion()
+    return executionRoot!
   }
 
   /// Returns the tulsi_bazel_symlink_parent_path for this workspace (if it exists), blocking until
@@ -83,7 +92,7 @@ class BazelWorkspacePathInfoFetcher {
       return
     }
 
-    let task = TaskRunner.standardRunner().createTask(bazelPath, arguments: ["info"]) {
+    let task = TulsiTaskRunner.createTask(bazelPath, arguments: ["info"]) {
       completionInfo in
         defer {
           self.localizedMessageLogger.logProfilingEnd(profilingStart)
@@ -98,6 +107,7 @@ class BazelWorkspacePathInfoFetcher {
         }
 
         self.packagePath = ""
+        self.executionRoot = ""
         let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: NSBundle(forClass: self.dynamicType),
@@ -125,6 +135,9 @@ class BazelWorkspacePathInfoFetcher {
       let value = valueComponents.joinWithSeparator(": ")
 
       switch key {
+        case "execution_root":
+          executionRoot = value
+
         case "package_path":
           packagePath = value
 

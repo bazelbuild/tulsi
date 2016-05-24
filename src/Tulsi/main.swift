@@ -82,8 +82,12 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
                                                                            messageLog: nil)
     switch result {
       case .Success(let url):
-        print("Opening generated project in Xcode")
-        NSWorkspace.sharedWorkspace().openURL(url)
+        if arguments.openXcodeOnSuccess {
+          print("Opening generated project in Xcode")
+          NSWorkspace.sharedWorkspace().openURL(url)
+        } else {
+          print("Generated project at \(outputFolderURL.path!)")
+        }
       case .Failure(let errorInfo):
         throw Error.GenerationFailed(errorInfo)
     }
@@ -248,6 +252,7 @@ class CommandlineParser {
   static let ParamOutputFolderLong = "--outputfolder"
   static let ParamWorkspaceRootShort = "-w"
   static let ParamWorkspaceRootLong = "--workspaceroot"
+  static let ParamNoOpenXcode = "--no-open-xcode"
 
   private let arguments: Arguments
   let commandlineSentinalFound: Bool
@@ -258,6 +263,7 @@ class CommandlineParser {
     let outputFolder: String?
     let workspaceRoot: String?
     let verbose: Bool
+    let openXcodeOnSuccess: Bool
 
     init() {
       bazel = nil
@@ -265,6 +271,7 @@ class CommandlineParser {
       outputFolder = nil
       workspaceRoot = nil
       verbose = true
+      openXcodeOnSuccess = true
     }
 
     init(dict: [String: AnyObject]) {
@@ -273,6 +280,7 @@ class CommandlineParser {
       outputFolder = dict[CommandlineParser.ParamOutputFolderLong] as? String
       workspaceRoot = dict[CommandlineParser.ParamWorkspaceRootLong] as? String
       verbose = !(dict[CommandlineParser.ParamQuietLong] as? Bool == true)
+      openXcodeOnSuccess = !(dict[CommandlineParser.ParamNoOpenXcode] as? Bool == true)
     }
   }
 
@@ -328,6 +336,9 @@ class CommandlineParser {
           storeValueAt(i, forArgument: CommandlineParser.ParamGeneratorConfigLong)
           i += 1
 
+        case CommandlineParser.ParamNoOpenXcode:
+          parsedArguments[CommandlineParser.ParamNoOpenXcode] = true
+
         case CommandlineParser.ParamOutputFolderShort:
           fallthrough
         case CommandlineParser.ParamOutputFolderLong:
@@ -364,6 +375,7 @@ class CommandlineParser {
         "        e.g., \"/path/to/MyGeneratedXcodeProject.xcodeproj\"",
         "      * the path to a Tulsi project followed by a colon \":\" and a config name",
         "        e.g., \"/path/to/MyProject.tulsiproj:MyConfig\"",
+        "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
         "  \(ParamOutputFolderLong) <path>: Sets the folder into which the Xcode project should be saved.",
         "  \(ParamWorkspaceRootLong) <path>: (required)",
         "    Path to the folder containing the Bazel WORKSPACE file.",

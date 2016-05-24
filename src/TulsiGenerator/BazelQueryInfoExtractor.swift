@@ -150,7 +150,7 @@ final class BazelQueryInfoExtractor {
     }
     localizedMessageLogger.infoMessage("\(message)Running \(bazelURL.path!) with arguments: \(arguments)")
 
-    let task = TaskRunner.standardRunner().createTask(bazelURL.path!, arguments: arguments) {
+    let task = TulsiTaskRunner.createTask(bazelURL.path!, arguments: arguments) {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: NSBundle(forClass: self.dynamicType),

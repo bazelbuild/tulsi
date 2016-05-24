@@ -20,6 +20,7 @@ import XCTest
 class BazelTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
+  let testTulsiVersion = "9.99.999.9999"
   var project: PBXProject! = nil
   var targetGenerator: PBXTargetGenerator! = nil
 
@@ -31,6 +32,7 @@ class BazelTargetGeneratorTests: XCTestCase {
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
+                                         tulsiVersion: testTulsiVersion,
                                          options: TulsiOptionSet(),
                                          localizedMessageLogger: MockLocalizedMessageLogger(),
                                          workspaceRootURL: workspaceRootURL)
@@ -97,6 +99,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
+  let testTulsiVersion = "9.99.999.9999"
+
   var project: PBXProject! = nil
   var targetGenerator: PBXTargetGenerator! = nil
   var messageLogger: MockLocalizedMessageLogger! = nil
@@ -122,6 +126,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
+                                         tulsiVersion: testTulsiVersion,
                                          options: options,
                                          localizedMessageLogger: messageLogger,
                                          workspaceRootURL: workspaceRootURL)
@@ -187,6 +192,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CLANG_ENABLE_OBJC_ARC": "YES",
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
@@ -194,12 +200,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
+        "TULSI_VERSION": testTulsiVersion,
         "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
-    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, debugBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Release"])
-    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, releaseBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Fastbuild"])
     XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
   }
@@ -213,6 +220,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CLANG_ENABLE_OBJC_ARC": "YES",
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
@@ -220,12 +228,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
+        "TULSI_VERSION": testTulsiVersion,
         "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
-    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, debugBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Release"])
-    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, releaseBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Fastbuild"])
     XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
   }
@@ -277,11 +286,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -305,11 +314,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -361,11 +370,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -392,11 +401,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -457,11 +466,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -469,11 +478,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
-                  expectedBuildSettings: testRunnerExpectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Release",
-                  expectedBuildSettings: testRunnerExpectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -502,11 +511,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -514,11 +523,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
-                  expectedBuildSettings: testRunnerExpectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Release",
-                  expectedBuildSettings: testRunnerExpectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -571,11 +580,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -626,11 +635,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -655,11 +664,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
           buildConfigurations: [
               BuildConfigurationDefinition(
                   name: "Debug",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Release",
-                  expectedBuildSettings: expectedBuildSettings
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "Fastbuild",
@@ -872,6 +881,18 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   // MARK: - Helper methods
 
+  private func debugBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+    var newSettings = settings
+    newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "DEBUG=1"
+    return newSettings
+  }
+
+  private func releaseBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+    var newSettings = settings
+    newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "NDEBUG=1"
+    return newSettings
+  }
+
   private func rebuildSourceFileReferences() {
     sourceFileReferences = []
     for file in sourceFileNames {
@@ -910,6 +931,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                      type: type,
                      attributes: attributes,
                      sourceFiles: sourceInfos,
+                     nonARCSourceFiles: [],
                      dependencies: dependencies,
                      buildFilePath: buildFilePath)
   }
@@ -1051,11 +1073,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         buildConfigurations: [
             BuildConfigurationDefinition(
               name: "Debug",
-              expectedBuildSettings: expectedBuildSettings
+              expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
             ),
             BuildConfigurationDefinition(
               name: "Release",
-              expectedBuildSettings: expectedBuildSettings
+              expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
             ),
             BuildConfigurationDefinition(
               name: "Fastbuild",

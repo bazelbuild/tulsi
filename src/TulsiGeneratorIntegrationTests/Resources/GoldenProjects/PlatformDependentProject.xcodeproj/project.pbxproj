@@ -1,0 +1,10 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+	};
+	rootObject = 0 /* Project object */;
+}

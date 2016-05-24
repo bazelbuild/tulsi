@@ -71,18 +71,7 @@ class BazelIntegrationTestCase: XCTestCase {
       let dirName = "tulsi_\(NSUUID().UUIDString)"
       workspaceRootURL = globalTempDir.URLByAppendingPathComponent(dirName, isDirectory: true)
 
-      do {
-        try NSFileManager.defaultManager().createDirectoryAtURL(workspaceRootURL,
-                                                                withIntermediateDirectories: true,
-                                                                attributes: nil)
-        pathsToCleanOnTeardown.insert(workspaceRootURL)
-        // Create an empty WORKSPACE file in the temp directory.
-        let workspaceURL = workspaceRootURL!.URLByAppendingPathComponent("WORKSPACE", isDirectory: false)
-        XCTAssertTrue(NSData().writeToURL(workspaceURL, atomically: true),
-                      "Failed to create WORKSPACE file at \(workspaceURL.path!)")
-      } catch let e as NSError {
-        XCTFail("Failed to create temp directory '\(workspaceRootURL!.path!)' for test. Error: \(e.localizedDescription)")
-      }
+      installWorkspaceFile()
     }
 
     localizedMessageLogger = DirectLocalizedMessageLogger()
@@ -103,9 +92,9 @@ class BazelIntegrationTestCase: XCTestCase {
                         file: StaticString = #file,
                         line: UInt = #line) -> NSURL? {
     let bundle = NSBundle(forClass: self.dynamicType)
-    guard let buildFileURL = bundle.URLForResource(fileResourceName,
-                                                   withExtension: "BUILD",
-                                                   subdirectory: resourceDirectory) else {
+    guard let fileURL = bundle.URLForResource(fileResourceName,
+                                              withExtension: "BUILD",
+                                              subdirectory: resourceDirectory) else {
       XCTFail("Missing required test resource file \(fileResourceName).BUILD",
               file: file,
               line: line)
@@ -119,10 +108,10 @@ class BazelIntegrationTestCase: XCTestCase {
       if fileManager.fileExistsAtPath(destinationURL.path!) {
         try fileManager.removeItemAtURL(destinationURL)
       }
-      try fileManager.copyItemAtURL(buildFileURL, toURL: destinationURL)
+      try fileManager.copyItemAtURL(fileURL, toURL: destinationURL)
       pathsToCleanOnTeardown.insert(destinationURL)
     } catch let e as NSError {
-      XCTFail("Failed to install BUILD file '\(buildFileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)",
+      XCTFail("Failed to install BUILD file '\(fileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)",
               file: file,
               line: line)
       return nil
@@ -220,6 +209,38 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   // MARK: - Private methods
+
+  private func installWorkspaceFile() {
+    do {
+      try NSFileManager.defaultManager().createDirectoryAtURL(workspaceRootURL,
+                                                              withIntermediateDirectories: true,
+                                                              attributes: nil)
+      pathsToCleanOnTeardown.insert(workspaceRootURL)
+
+      let bundle = NSBundle(forClass: self.dynamicType)
+      guard let fileURL = bundle.URLForResource("test",
+                                                withExtension: "WORKSPACE") else {
+        XCTFail("Missing required test.WORKSPACE file")
+        return
+      }
+
+      let destinationURL = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
+                                                                        isDirectory: false)
+      do {
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(destinationURL.path!) {
+          try fileManager.removeItemAtURL(destinationURL)
+        }
+        try fileManager.copyItemAtURL(fileURL, toURL: destinationURL)
+        pathsToCleanOnTeardown.insert(destinationURL)
+      } catch let e as NSError {
+        XCTFail("Failed to install WORKSPACE file '\(fileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)")
+        return
+      }
+    } catch let e as NSError {
+      XCTFail("Failed to create temp directory '\(workspaceRootURL!.path!)' for test. Error: \(e.localizedDescription)")
+    }
+  }
 
   private func getWorkspaceDirectory(subdirectory: String? = nil,
                                      file: StaticString = #file,

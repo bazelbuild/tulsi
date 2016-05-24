@@ -135,12 +135,13 @@ public final class RuleEntry: RuleInfo {
     case asset_catalogs
     case binary
     case bridging_header
-    case copts
-    case datamodels
-    case defines
     // Contains defines that were specified by the user on the commandline or are built into
     // Bazel itself.
     case compiler_defines
+    case copts
+    case datamodels
+    case defines
+    case enable_modules
     case includes
     case launch_storyboard
     case pch
@@ -155,6 +156,9 @@ public final class RuleEntry: RuleInfo {
 
   /// Source files associated with this rule.
   public let sourceFiles: [BazelFileInfo]
+
+  /// Non-ARC source files associated with this rule.
+  public let nonARCSourceFiles: [BazelFileInfo]
 
   public let generatedIncludePaths: [String]?
 
@@ -207,6 +211,7 @@ public final class RuleEntry: RuleInfo {
   /// The full set of input and output artifacts for this rule.
   public var projectArtifacts: [BazelFileInfo] {
     var artifacts = sourceFiles
+    artifacts.appendContentsOf(nonARCSourceFiles)
     artifacts.appendContentsOf(normalNonSourceArtifacts)
     artifacts.appendContentsOf(versionedNonSourceArtifacts)
     return artifacts
@@ -233,6 +238,7 @@ public final class RuleEntry: RuleInfo {
        type: String,
        attributes: [String: AnyObject],
        sourceFiles: [BazelFileInfo],
+       nonARCSourceFiles: [BazelFileInfo],
        dependencies: Set<String>,
        weakDependencies: Set<BuildLabel>? = nil,
        buildFilePath: String? = nil,
@@ -250,6 +256,7 @@ public final class RuleEntry: RuleInfo {
     self.attributes = checkedAttributes
 
     self.sourceFiles = sourceFiles
+    self.nonARCSourceFiles = nonARCSourceFiles
     self.dependencies = dependencies
     if let weakDependencies = weakDependencies {
       self.weakDependencies = weakDependencies
@@ -269,6 +276,7 @@ public final class RuleEntry: RuleInfo {
                    type: String,
                    attributes: [String: AnyObject],
                    sourceFiles: [BazelFileInfo],
+                   nonARCSourceFiles: [BazelFileInfo],
                    dependencies: Set<String>,
                    weakDependencies: Set<BuildLabel>? = nil,
                    buildFilePath: String? = nil,
@@ -277,6 +285,7 @@ public final class RuleEntry: RuleInfo {
               type: type,
               attributes: attributes,
               sourceFiles: sourceFiles,
+              nonARCSourceFiles: nonARCSourceFiles,
               dependencies: dependencies,
               weakDependencies: weakDependencies,
               buildFilePath: buildFilePath,

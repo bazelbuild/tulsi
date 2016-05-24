@@ -30,6 +30,7 @@ final class XcodeProjectGenerator {
   private static let TulsiArtifactDirectory = ".tulsi"
   static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
+  static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let EnvScript = "bazel_env.sh"
@@ -42,6 +43,7 @@ final class XcodeProjectGenerator {
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
+  private let tulsiVersion: String
 
   // Exposed for testing. Simply writes the given NSData to the given NSURL.
   var writeDataHandler: (NSURL, NSData) throws -> Void = { (outputFileURL: NSURL, data: NSData) in
@@ -59,7 +61,8 @@ final class XcodeProjectGenerator {
        workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol,
        buildScriptURL: NSURL,
        envScriptURL: NSURL,
-       cleanScriptURL: NSURL) {
+       cleanScriptURL: NSURL,
+       tulsiVersion: String) {
     self.workspaceRootURL = workspaceRootURL
     self.config = config
     self.localizedMessageLogger = localizedMessageLogger
@@ -68,6 +71,7 @@ final class XcodeProjectGenerator {
     self.buildScriptURL = buildScriptURL
     self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
+    self.tulsiVersion = tulsiVersion
   }
 
   /// Generates an Xcode project bundle in the given folder.
@@ -101,6 +105,12 @@ final class XcodeProjectGenerator {
     installGeneratorConfig(projectURL)
     createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
 
+    let manifestFileURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
+                                                                 isDirectory: false)
+    let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
+                                     pbxProject: xcodeProject)
+    manifest.writeToURL(manifestFileURL)
+
     return projectURL
   }
 
@@ -133,6 +143,7 @@ final class XcodeProjectGenerator {
                                        project: xcodeProject,
                                        buildScriptPath: buildScriptPath,
                                        envScriptPath: envScriptPath,
+                                       tulsiVersion: tulsiVersion,
                                        options: config.options,
                                        localizedMessageLogger: localizedMessageLogger,
                                        workspaceRootURL: workspaceRootURL,
@@ -199,6 +210,7 @@ final class XcodeProjectGenerator {
                                          type: "_test_host_",
                                          attributes: [:],
                                          sourceFiles: [],
+                                         nonARCSourceFiles: [],
                                          dependencies: Set<String>()))
     }
 
@@ -207,7 +219,31 @@ final class XcodeProjectGenerator {
     generator.generateTopLevelBuildConfigurations()
     try generator.generateBuildTargetsForRuleEntries(targetRuleEntries)
 
+    patchExternalRepositoryReferences(xcodeProject)
     return (xcodeProject, targetRuleEntries)
+  }
+
+  // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
+  // "external" container to absolute filesystem references.
+  private func patchExternalRepositoryReferences(xcodeProject: PBXProject) {
+    let mainGroup = xcodeProject.mainGroup
+    guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
+    let externalChildren = externalGroup.children as! [PBXGroup]
+    for child in externalChildren {
+      guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.path!)") else {
+        localizedMessageLogger.warning("ExternalRepositoryResolutionFailed",
+                                       comment: "Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable.",
+                                       values: child.path!)
+        continue
+      }
+
+      let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
+                                                           path: resolvedPath,
+                                                           sourceTree: .Absolute)
+      newChild.serializesName = true
+      newChild.migrateChildrenOfGroup(child)
+    }
+    mainGroup.removeChild(externalGroup)
   }
 
   private func installWorkspaceSettings(projectURL: NSURL) throws {
@@ -385,6 +421,61 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.warning("CreatingGeneratedArtifactFoldersFailed",
                                      comment: "Failed to create folders for generated artifacts %1$@. The generated Xcode project may need to be reloaded after the first build.",
                                      values: failedCreates.joinWithSeparator(", "))
+    }
+  }
+
+
+  /// Encapsulates high level information about the generated Xcode project intended for use by
+  /// external scripts or to aid debugging.
+  private class GeneratorManifest {
+    private let localizedMessageLogger: LocalizedMessageLogger
+    private let pbxProject: PBXProject
+    var fileReferences: [String]! = nil
+    var targets: [String]! = nil
+    var artifacts: [String]! = nil
+
+    init(localizedMessageLogger: LocalizedMessageLogger, pbxProject: PBXProject) {
+      self.localizedMessageLogger = localizedMessageLogger
+      self.pbxProject = pbxProject
+    }
+
+    func writeToURL(outputURL: NSURL) -> Bool {
+      if fileReferences == nil {
+        parsePBXProject()
+      }
+      let dict = [
+          "fileReferences": fileReferences,
+          "targets": targets,
+          "artifacts": artifacts,
+      ]
+      do {
+        let data = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+        return data.writeToURL(outputURL, atomically: true)
+      } catch let e as NSError {
+        localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path!): \(e.localizedDescription)")
+        return false
+      } catch {
+        localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path!): Unexpected exception")
+        return false
+      }
+    }
+
+    private func parsePBXProject() {
+      fileReferences = []
+      targets = []
+      artifacts = []
+
+      for ref in pbxProject.mainGroup.allSources {
+        if ref.isInputFile {
+          fileReferences.append(ref.sourceRootRelativePath)
+        } else {
+          artifacts.append(ref.sourceRootRelativePath)
+        }
+      }
+
+      for target in pbxProject.allTargets {
+        targets.append(target.name)
+      }
     }
   }
 }

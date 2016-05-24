@@ -32,16 +32,19 @@ public final class TulsiXcodeProjectGenerator {
 
   public convenience init (workspaceRootURL: NSURL,
                            config: TulsiGeneratorConfig,
+                           tulsiVersion: String,
                            messageLogger: MessageLoggerProtocol? = nil) {
     self.init(workspaceRootURL: workspaceRootURL,
               config: config,
               extractorBazelURL: config.bazelURL,
+              tulsiVersion: tulsiVersion,
               messageLogger: messageLogger)
   }
 
   init(workspaceRootURL: NSURL,
        config: TulsiGeneratorConfig,
        extractorBazelURL: NSURL,
+       tulsiVersion: String,
        messageLogger: MessageLoggerProtocol? = nil) {
     let bundle = NSBundle(forClass: self.dynamicType)
     let localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger,
@@ -63,7 +66,8 @@ public final class TulsiXcodeProjectGenerator {
                                                   workspaceInfoExtractor: extractor,
                                                   buildScriptURL: buildScriptURL,
                                                   envScriptURL: envScriptURL,
-                                                  cleanScriptURL: cleanScriptURL)
+                                                  cleanScriptURL: cleanScriptURL,
+                                                  tulsiVersion: tulsiVersion)
   }
 
   /// Generates an Xcode project bundle in the given folder.

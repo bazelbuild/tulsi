@@ -33,6 +33,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
 
   func applicationDidFinishLaunching(notification: NSNotification) {
     splashScreenWindowController = SplashScreenWindowController()
+    splashScreenWindowController.window?.contentView?.layer?.backgroundColor = NSColor.whiteColor().CGColor
     splashScreenWindowController.showWindow(self)
   }
 
