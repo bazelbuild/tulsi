@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SplashScreenWindowController" customModule="Tulsi" customModuleProvider="target">
@@ -18,7 +18,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="618" height="377"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="66" horizontalPageScroll="10" verticalLineScroll="66" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lIe-Jb-eJQ">
                         <rect key="frame" x="302" y="0.0" width="316" height="377"/>
@@ -124,7 +124,7 @@
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujV-sA-1qZ">
                         <rect key="frame" x="35" y="67" width="261" height="48"/>
-                        <buttonCell key="cell" type="square" title="Create New Project…" bezelStyle="shadowlessSquare" image="Project" imagePosition="left" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="D9j-0y-ovw">
+                        <buttonCell key="cell" type="square" title="Create New Project…" bezelStyle="shadowlessSquare" image="NewProject" imagePosition="left" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="D9j-0y-ovw">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="systemBold"/>
                         </buttonCell>
@@ -134,7 +134,7 @@
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Gh-jw-2TU" userLabel="Open Existing Project">
                         <rect key="frame" x="35" y="14" width="261" height="48"/>
-                        <buttonCell key="cell" type="square" title="Open Existing Project…" bezelStyle="shadowlessSquare" image="Project" imagePosition="left" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="PxS-uS-IAo">
+                        <buttonCell key="cell" type="square" title="Open Existing Project…" bezelStyle="shadowlessSquare" image="OpenProject" imagePosition="left" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="PxS-uS-IAo">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="systemBold"/>
                         </buttonCell>
@@ -151,6 +151,7 @@
         </window>
     </objects>
     <resources>
-        <image name="Project" width="128" height="128"/>
+        <image name="NewProject" width="48" height="48"/>
+        <image name="OpenProject" width="48" height="48"/>
     </resources>
 </document>

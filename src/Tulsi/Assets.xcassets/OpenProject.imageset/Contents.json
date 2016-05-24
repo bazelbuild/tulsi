@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "exclamation_circle-r14.png",
+      "filename" : "Open48X48.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "exclamation_circle-r28.png",
+      "filename" : "Open96X96.png",
       "scale" : "2x"
     }
   ],
