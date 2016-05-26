@@ -315,22 +315,19 @@ class PBXTargetGenerator {
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
-    var testTargetLinkages = [(PBXTarget, String, RuleEntry)]()
+    var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
     for (name, entry) in namedRuleEntries {
       let target = try createBuildTargetForRuleEntry(entry, named: name)
 
       if let hostLabelString = entry.attributes[.xctest_app] as? String {
         let hostLabel = BuildLabel(hostLabelString)
-        guard let hostTargetName = hostLabel.targetName else {
-          throw ProjectSerializationError.GeneralFailure("Test target \(entry.label) has an invalid host label \(hostLabel)")
-        }
-        testTargetLinkages.append((target, hostTargetName, entry))
+        testTargetLinkages.append((target, hostLabel, entry))
       }
     }
 
-    for (testTarget, hostTargetName, entry) in testTargetLinkages {
+    for (testTarget, testHostLabel, entry) in testTargetLinkages {
       updateTestTarget(testTarget,
-                       withLinkageToHostTargetNamed: hostTargetName,
+                       withLinkageToHostTarget: testHostLabel,
                        ruleEntry: entry)
     }
   }
@@ -548,14 +545,14 @@ class PBXTargetGenerator {
   // Updates the build settings and optionally adds a "Compile sources" phase for the given test
   // bundle target.
   private func updateTestTarget(target: PBXTarget,
-                                withLinkageToHostTargetNamed hostTargetName: String,
+                                withLinkageToHostTarget hostTargetLabel: BuildLabel,
                                 ruleEntry: RuleEntry) {
-    guard let hostTarget = project.targetByName[hostTargetName] as? PBXNativeTarget else {
+    guard let hostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget else {
       // If the user did not choose to include the host target it won't be available so the linkage
       // can be skipped, but the test won't be runnable in Xcode.
       localizedMessageLogger.warning("MissingTestHost",
                                      comment: "Warning to show when a user has selected an XCTest but not its host application.",
-                                     values: ruleEntry.label.value, hostTargetName)
+                                     values: ruleEntry.label.value, hostTargetLabel.value)
       return
     }
 
@@ -595,6 +592,17 @@ class PBXTargetGenerator {
       addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
       addTestRunnerBuildConfigurationToBuildConfigurationList(hostTarget.buildConfigurationList)
     }
+  }
+
+  // Resolves a BuildLabel to an existing PBXTarget, handling target name collisions.
+  private func projectTargetForLabel(label: BuildLabel) -> PBXTarget? {
+    guard let targetName = label.targetName else { return nil }
+    if let target = project.targetByName[targetName] {
+      return target
+    }
+
+    guard let fullTargetName = label.asFullPBXTargetName else { return nil }
+    return project.targetByName[fullTargetName]
   }
 
   // Adds a dummy build configuration to the given list based off of the Debug config that is

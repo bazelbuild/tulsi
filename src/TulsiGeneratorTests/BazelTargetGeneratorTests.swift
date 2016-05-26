@@ -351,6 +351,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
     XCTAssertEqual(topLevelConfigs.count, 0)
@@ -442,6 +443,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
 
     // Configs will be minimally generated for Debug and the test runner dummy.
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
@@ -538,6 +540,41 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       )
       assertTarget(expectedTarget, inTargets: targets)
     }
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages() {
+    let hostTargetName = "TestHost"
+    let host1Package = "test/package/1"
+    let host2Package = "test/package/2"
+    let host1Target = "\(host1Package):\(hostTargetName)"
+    let host2Target = "\(host2Package):\(hostTargetName)"
+
+    let testSources = ["sourceFile1.m", "sourceFile2.mm"]
+    let test1TargetName = "Test_1"
+    let test2TargetName = "Test_2"
+
+    let test1Target = "\(host1Package):\(test1TargetName)"
+    let test2Target = "\(host2Package):\(test2TargetName)"
+    let test1Rule = makeTestRuleEntry(test1Target,
+                                      type: "ios_test",
+                                      attributes: ["xctest_app": host1Target],
+                                      sourceFiles: testSources)
+    let test2Rule = makeTestRuleEntry(test2Target,
+                                      type: "ios_test",
+                                      attributes: ["xctest_app": host2Target],
+                                      sourceFiles: testSources)
+    let rules = [
+      makeTestRuleEntry(host1Target, type: "ios_application"),
+      makeTestRuleEntry(host2Target, type: "ios_application"),
+      test1Rule,
+      test2Rule,
+    ]
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules)
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns() {
