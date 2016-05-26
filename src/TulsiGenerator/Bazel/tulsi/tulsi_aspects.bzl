@@ -340,6 +340,7 @@ def _tulsi_sources_aspect(target, ctx):
       binary=_get_label_attr(rule_attr, 'binary.label'),
       copts=_get_opt_attr(rule_attr, 'copts'),
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
+      supporting_files=_collect_supporting_files(rule_attr),
       xctest=_get_opt_attr(rule_attr, 'xctest'),
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
   )
@@ -356,7 +357,6 @@ def _tulsi_sources_aspect(target, ctx):
       includes=_getattr_as_list(rule_attr, 'includes'),
       launch_storyboard=_collect_first_file(rule_attr, 'launch_storyboard'),
       pch=_collect_first_file(rule_attr, 'pch'),
-      supporting_files=_collect_supporting_files(rule_attr),
   )
 
   # Merge any attributes on the "binary" dependency into this container rule.

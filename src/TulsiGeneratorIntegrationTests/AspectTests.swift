@@ -57,10 +57,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.includes, value: ["Binary/includes"])
         .hasAttribute(.launch_storyboard, value: ["path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true])
-        .hasAttribute(.supporting_files, value: [["path": "tulsi_test/Binary/Assets.xcassets",
-                                                  "src": true],
-                                                 ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
-                                                  "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -136,15 +132,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                      value: [["path": "tulsi_test/Application/entitlements.entitlements",
                                "src": true],
-                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                              ["path": "tulsi_test/Application/structured_resources.file1",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
-                               "src": true],
-                              ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "root": "bazel-genfiles",
-                               "src": false]])
+                              ["path": "tulsi_test/Application/structured_resources.file2",
+                               "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -164,6 +157,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                       value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
                                "src": true],
                               ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/Info.plist",
                                "src": true],
                               ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
@@ -236,6 +231,25 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:WatchExtension")
         .dependsOn("//tulsi_test:WatchExtensionBinary")
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/app_infoplists/Info.plist",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/app_resources.file",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/app_structured_resources.file",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/ext_entitlements.entitlements",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/ext_infoplists/Info.plist",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/ext_resources.file",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/ext_structured_resources.file",
+                               "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")

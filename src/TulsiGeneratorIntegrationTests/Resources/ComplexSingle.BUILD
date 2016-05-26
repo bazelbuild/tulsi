@@ -22,9 +22,14 @@ config_setting(
 ios_application(
     name = "Application",
     binary = ":Binary",
+    entitlements = "Application/entitlements.entitlements",
     extensions = [
         ":TodayExtension",
         ":WatchExtension",
+    ],
+    structured_resources = [
+        "Application/structured_resources.file1",
+        "Application/structured_resources.file2",
     ],
 )
 
@@ -46,6 +51,7 @@ objc_binary(
         "Binary/includes/first/include",
         "Binary/includes/second/include",
     ],
+    infoplist = "Binary/Info.plist",
     non_arc_srcs = [
         "Binary/non_arc_srcs/NonARCFile.mm",
     ],
@@ -167,6 +173,14 @@ ios_extension_binary(
 ios_extension(
     name = "TodayExtension",
     binary = "TodayExtensionBinary",
+    infoplists = [
+        "TodayExtension/Plist1.plist",
+        "TodayExtension/Plist2.plist",
+    ],
+    resources = [
+        "TodayExtension/resources/file1",
+        "TodayExtension/resources/file2.file",
+    ],
 )
 
 apple_watch_extension_binary(
@@ -181,8 +195,31 @@ apple_watch_extension_binary(
 
 apple_watch1_extension(
     name = "WatchExtension",
+    app_asset_catalogs = [
+        "WatchExtension/app_asset_catalogs.xcassets",
+    ],
+    app_entitlements = "WatchExtension/app_entitlements.entitlements",
+    app_infoplists = [
+        "WatchExtension/app_infoplists/Info.plist",
+    ],
     app_name = "WatchApp",
+    app_resources = [
+        "WatchExtension/app_resources.file",
+    ],
+    app_structured_resources = [
+        "WatchExtension/app_structured_resources.file",
+    ],
     binary = ":WatchExtensionBinary",
+    ext_entitlements = "WatchExtension/ext_entitlements.entitlements",
+    ext_infoplists = [
+        "WatchExtension/ext_infoplists/Info.plist",
+    ],
+    ext_resources = [
+        "WatchExtension/ext_resources.file",
+    ],
+    ext_structured_resources = [
+        "WatchExtension/ext_structured_resources.file",
+    ],
 )
 
 filegroup(
