@@ -132,7 +132,6 @@ public final class RuleEntry: RuleInfo {
   /// Encyclopedia (see http://bazel.io/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.
   public enum Attribute: String {
-    case asset_catalogs
     case binary
     case bridging_header
     // Contains defines that were specified by the user on the commandline or are built into
@@ -145,10 +144,9 @@ public final class RuleEntry: RuleInfo {
     case includes
     case launch_storyboard
     case pch
-    case storyboards
+    case supporting_files
     case xctest
     case xctest_app
-    case xibs
   }
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
@@ -184,15 +182,7 @@ public final class RuleEntry: RuleInfo {
       artifacts.append(fileTarget)
     }
 
-    if let fileTargets = parseFileDescriptionListAttribute(.storyboards) {
-      artifacts.appendContentsOf(fileTargets)
-    }
-
-    if let fileTargets = parseFileDescriptionListAttribute(.asset_catalogs) {
-      artifacts.appendContentsOf(fileTargets)
-    }
-
-    if let fileTargets = parseFileDescriptionListAttribute(.xibs) {
+    if let fileTargets = parseFileDescriptionListAttribute(.supporting_files) {
       artifacts.appendContentsOf(fileTargets)
     }
 

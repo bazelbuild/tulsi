@@ -22,24 +22,27 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
   let fakeBazelURL = NSURL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
-  final func validateDiff(diffLines: [String], line: UInt = #line) {
+  final func validateDiff(diffLines: [String], file: StaticString = #file, line: UInt = #line) {
     for diff in diffLines {
       // For the sake of simplicity in maintaining the golden data, all Tulsi artifacts are assumed
       // to have been installed correctly.
       if diff.hasSuffix(".tulsi") { continue }
-      XCTFail(diff, line: line)
+      XCTFail(diff, file: file, line: line)
     }
   }
 
   final func diffProjectAt(projectURL: NSURL,
                            againstGoldenProject resourceName: String,
+                           file: StaticString = #file,
                            line: UInt = #line) -> [String] {
     let bundle = NSBundle(forClass: self.dynamicType)
     guard let goldenProjectURL = bundle.URLForResource(resourceName,
                                                        withExtension: "xcodeproj",
                                                        subdirectory: "GoldenProjects") else {
       assertionFailure("Missing required test resource file \(resourceName).xcodeproj")
-      XCTFail("Missing required test resource file \(resourceName).xcodeproj", line: line)
+      XCTFail("Missing required test resource file \(resourceName).xcodeproj",
+              file: file,
+              line: line)
       return []
     }
 
@@ -56,7 +59,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
         if let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) {
           diffOutput = stdout.componentsSeparatedByString("\n").filter({ !$0.isEmpty })
         } else {
-          XCTFail("No output received for diff command", line: line)
+          XCTFail("No output received for diff command", file: file, line: line)
         }
     }
     task.currentDirectoryPath = workspaceRootURL.path!

@@ -57,15 +57,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.includes, value: ["Binary/includes"])
         .hasAttribute(.launch_storyboard, value: ["path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true])
-        .hasAttribute(.storyboards, value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
-                                            "src": true]])
+        .hasAttribute(.supporting_files, value: [["path": "tulsi_test/Binary/Assets.xcassets",
+                                                  "src": true],
+                                                 ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                                                  "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/Binary/srcs/main.m"])
-        .hasAttribute(.asset_catalogs,
-                      value: [["path": "tulsi_test/Binary/Assets.xcassets",
-                               "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
@@ -75,8 +74,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                             "src": true], ])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
-        .hasAttribute(.storyboards, value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
-                                            "src": true]])
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/Binary/Assets.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                               "src": true]])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/Library/srcs/src1.m",
@@ -90,7 +92,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-Irelative/Library/include/path"])
         .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"])
         .hasAttribute(.pch, value: ["path": "tulsi_test/Library/pch/PCHFile.pch", "src": true])
-        .hasAttribute(.xibs, value: [["path": "tulsi_test/Library/xibs/xib.xib", "src": true]])
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/Library/xibs/xib.xib", "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
@@ -132,8 +135,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
-        .hasAttribute(.storyboards,
-                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
                                "root": "bazel-genfiles",
@@ -146,11 +153,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
-        .hasAttribute(.asset_catalogs,
-                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
-                               "src": true],
-                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
-                               "src": true]])
         .hasAttribute(.bridging_header,
                       value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
                               "root": "bazel-genfiles",
@@ -158,8 +160,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
-        .hasAttribute(.storyboards,
-                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
                                "root": "bazel-genfiles",
@@ -187,7 +193,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
                                     "root": "bazel-genfiles",
                                     "src": false])
-        .hasAttribute(.xibs, value: [["path": "tulsi_test/Library/xib.xib", "src": true]])
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/Library/xib.xib", "src": true]])
 
     checker.assertThat("//tulsi_test:SubLibrary")
         .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])

@@ -42,6 +42,31 @@ _TULSI_COMPILE_DEPS = [
     'xctest_app',
 ]
 
+# List of all attributes whose contents should resolve to "support" files; files
+# that are used by Bazel to build but do not need special handling in the
+# generated Xcode project. For example, Info.plist and entitlements files.
+_SUPPORTING_FILE_ATTRIBUTES = [
+    # apple_watch1_extension
+    'app_asset_catalogs',
+    'app_entitlements',
+    'app_infoplists',
+    'app_resources',
+    'app_structured_resources',
+    'ext_entitlements',
+    'ext_infoplists',
+    'ext_resources',
+    'ext_structured_resources',
+
+    'asset_catalogs',
+    'entitlements',
+    'infoplist',
+    'infoplists',
+    'resources',
+    'structured_resources',
+    'storyboards',
+    'xibs',
+]
+
 # Set of rules whose outputs should be treated as generated sources.
 _SOURCE_GENERATING_RULES = set([
     'j2objc_library',
@@ -113,6 +138,14 @@ def _collect_first_file(obj, attr_path):
   if not files:
     return None
   return files[0]
+
+
+def _collect_supporting_files(rule_attr):
+  """Extracts 'supporting' files from the given rule attributes."""
+  all_files = []
+  for attr in _SUPPORTING_FILE_ATTRIBUTES:
+    all_files += _collect_files(rule_attr, attr)
+  return all_files
 
 
 def _collect_xcdatamodeld_files(obj, attr_path):
@@ -304,7 +337,6 @@ def _tulsi_sources_aspect(target, ctx):
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
-      asset_catalogs=_collect_files(rule_attr, 'asset_catalogs'),
       binary=_get_label_attr(rule_attr, 'binary.label'),
       copts=_get_opt_attr(rule_attr, 'copts'),
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
@@ -324,8 +356,7 @@ def _tulsi_sources_aspect(target, ctx):
       includes=_getattr_as_list(rule_attr, 'includes'),
       launch_storyboard=_collect_first_file(rule_attr, 'launch_storyboard'),
       pch=_collect_first_file(rule_attr, 'pch'),
-      storyboards=_collect_files(rule_attr, 'storyboards'),
-      xibs=_collect_files(rule_attr, 'xibs'),
+      supporting_files=_collect_supporting_files(rule_attr),
   )
 
   # Merge any attributes on the "binary" dependency into this container rule.
