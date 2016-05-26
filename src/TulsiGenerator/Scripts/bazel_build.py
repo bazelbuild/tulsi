@@ -74,7 +74,7 @@ class _OptionsParser(object):
 
             'Release': [
                 '--compilation_mode=opt',
-                '--objc_generate_debug_symbols',
+                '--apple_generate_dsym',
                 '--strip=always',
             ],
 
