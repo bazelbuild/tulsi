@@ -29,11 +29,6 @@ public final class TulsiProject {
     case FailedToReadAdditionalOptionsData(String)
   }
 
-  /// NSUserDefaults key for the default Bazel path if one is not found in the opened project's
-  /// workspace.
-  // TODO(abaire): Move this out of the generator.
-  public static let DefaultBazelURLKey = "defaultBazelURL"
-
   /// The filename into which a TulsiProject instance is saved.
   public static let ProjectFilename = "project.tulsiconf"
 
@@ -110,7 +105,7 @@ public final class TulsiProject {
     if let bazelPath = self.options[.BazelPath].projectValue {
       self.bazelURL = NSURL(fileURLWithPath: bazelPath)
     } else {
-      self.bazelURL = TulsiProject.findBazelForWorkspaceRoot(workspaceRootURL)
+      self.bazelURL = BazelLocator.findBazelForWorkspaceRoot(workspaceRootURL)
       self.options[.BazelPath].projectValue = self.bazelURL?.path
     }
     self.options[.WorkspaceRootPath].projectValue = workspaceRootURL.path
@@ -203,17 +198,6 @@ public final class TulsiProject {
   }
 
   // MARK: - Private methods
-
-  private static func findBazelForWorkspaceRoot(workspaceRoot: NSURL?) -> NSURL? {
-    // TODO(abaire): Consider removing this as it's unlikley to be a standard for all users.
-    if let bazelURL = workspaceRoot?.URLByAppendingPathComponent("tools/osx/blaze/bazel")
-        where NSFileManager.defaultManager().fileExistsAtPath(bazelURL.path!) {
-      return bazelURL
-    }
-
-    // TODO(abaire): Fall back to searching the user's path if no default exists.
-    return NSUserDefaults.standardUserDefaults().URLForKey(TulsiProject.DefaultBazelURLKey)
-  }
 
   private static func updateOptionsDict(inout optionsDict: TulsiOptionSet.PersistenceType,
                                         withAdditionalOptionData data: NSData) throws {

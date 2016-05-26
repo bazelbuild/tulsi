@@ -56,7 +56,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
         document.bazelURL = panel.URL
         if panel.bazelSelectorUseAsDefaultCheckbox.state == NSOnState {
           NSUserDefaults.standardUserDefaults().setURL(document.bazelURL!,
-                                                       forKey: TulsiProject.DefaultBazelURLKey)
+                                                       forKey: BazelLocator.DefaultBazelURLKey)
         }
       }
 
