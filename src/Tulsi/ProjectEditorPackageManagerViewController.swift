@@ -61,7 +61,13 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     if document.fileURL != nil || document.project != nil { return }
     newProjectSheet = NewProjectViewController()
     newProjectSheet.delegate = self
-    presentViewControllerAsSheet(newProjectSheet)
+
+    // Present the NewProjectViewController as a sheet.
+    // This is done via dispatch_async because we want it to happen after the window appearance
+    // animation is complete.
+    dispatch_async(dispatch_get_main_queue(), {
+      self.presentViewControllerAsSheet(self.newProjectSheet)
+    })
   }
 
   @IBAction func didClickAddRemoveSegmentedControl(sender: NSSegmentedCell) {
