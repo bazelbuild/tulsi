@@ -12,7 +12,7 @@
 "BazelBinaryNotFound" = "Bazel could not be found at \"%1$@\". Please update the path in the project file.";
 
 /* Error message for when a Bazel extractor did not complete successfully. Details are logged separately. */
-"BazelInfoExtractionFailed" = "Failed to retrieve information about the Bazel workspace. This may mean that the contents of a BUILD file are incorrect or flags are missing. See the message log for details.";
+"BazelInfoExtractionFailed" = "Failed to retrieve information about the Bazel workspace. This usually means that the contents of a BUILD file are incorrect or flags are missing. Read the message log carefully for details.";
 
 /* Bazel response XML element %1$@ should have a valid string value but does not. */
 "BazelResponseLabelAttributeInvalid" = "Bazel query returned an invalid, non-string convertible list element '%1$@'. This may be a Bazel bug or a BUILD file issue.";
