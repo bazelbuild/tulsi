@@ -159,11 +159,6 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
                                                                     document: document)
   }
 
-  @IBAction func didClickClearBazelButton(sender: AnyObject) {
-    let document = representedObject as! TulsiProjectDocument
-    document.bazelURL = nil
-  }
-
   @IBAction func didDoubleClickPackage(sender: NSTableView) {
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }

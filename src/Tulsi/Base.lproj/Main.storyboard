@@ -812,53 +812,6 @@ CA
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-q3-OMc" userLabel="Bazel path">
-                                <rect key="frame" x="20" y="23" width="194" height="14"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="1hg-pr-m3y"/>
-                                </constraints>
-                                <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" placeholderString="Bazel Picker (default via bindings)" id="ByA-5V-eXg">
-                                    <font key="font" metaFont="smallSystem"/>
-                                </pathCell>
-                                <connections>
-                                    <binding destination="6Ix-Ro-Er4" name="value" keyPath="selection.bazelURL" id="NWl-2x-KMe">
-                                        <dictionary key="options">
-                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                            <bool key="NSConditionallySetsEnabled" value="NO"/>
-                                            <string key="NSNullPlaceholder">Choose a Bazel executable…</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </pathControl>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wKJ-4v-qrf" userLabel="Clear Bazel Button">
-                                <rect key="frame" x="717" y="21" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Iia-r7-qOt"/>
-                                    <constraint firstAttribute="width" constant="20" id="agM-LF-ayO"/>
-                                    <constraint firstAttribute="height" constant="20" id="eCI-Cz-lBX"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="pEb-qP-aO4"/>
-                                </constraints>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="ue9-Y5-mNW">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="didClickClearBazelButton:" target="GoM-gR-TmP" id="xpu-k4-lBV"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="onV-r2-vl9">
-                                <rect key="frame" x="595" y="13" width="120" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="108" id="8LH-jR-Tpz"/>
-                                </constraints>
-                                <buttonCell key="cell" type="push" title="Bazel…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="n0Y-ov-8Hi">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="selectBazelPath:" target="GoM-gR-TmP" id="Sfw-2z-wMZ"/>
-                                </connections>
-                            </button>
                             <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P9B-5h-yw2">
                                 <rect key="frame" x="20" y="48" width="67" height="23"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="momentary" id="Yyw-tE-15w">
@@ -872,20 +825,50 @@ CA
                                     </connections>
                                 </segmentedCell>
                             </segmentedControl>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="onV-r2-vl9">
+                                <rect key="frame" x="616" y="13" width="120" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="108" id="8LH-jR-Tpz"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Bazel…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="n0Y-ov-8Hi">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="selectBazelPath:" target="GoM-gR-TmP" id="Sfw-2z-wMZ"/>
+                                </connections>
+                            </button>
+                            <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-q3-OMc" userLabel="Bazel path">
+                                <rect key="frame" x="20" y="25" width="194" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="1hg-pr-m3y"/>
+                                </constraints>
+                                <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" refusesFirstResponder="YES" alignment="left" placeholderString="Bazel Picker (default via bindings)" id="ByA-5V-eXg">
+                                    <font key="font" metaFont="smallSystem"/>
+                                </pathCell>
+                                <connections>
+                                    <binding destination="6Ix-Ro-Er4" name="value" keyPath="selection.bazelURL" id="NWl-2x-KMe">
+                                        <dictionary key="options">
+                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                            <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                            <string key="NSNullPlaceholder">Choose a Bazel executable…</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </pathControl>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="kek-vY-RVz" secondAttribute="trailing" constant="19" id="0Lw-g0-d6D"/>
                             <constraint firstItem="P9B-5h-yw2" firstAttribute="top" secondItem="kek-vY-RVz" secondAttribute="bottom" constant="-1" id="7go-k4-cJf" userLabel="Add/Remove to Table View - Y"/>
-                            <constraint firstItem="onV-r2-vl9" firstAttribute="centerY" secondItem="wKJ-4v-qrf" secondAttribute="centerY" id="8qw-Vo-8v6"/>
                             <constraint firstItem="onV-r2-vl9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Anc-q3-OMc" secondAttribute="trailing" constant="8" symbolic="YES" id="Bat-h7-wAN"/>
+                            <constraint firstAttribute="trailing" secondItem="onV-r2-vl9" secondAttribute="trailing" constant="20" id="PBv-8s-Zr5"/>
                             <constraint firstAttribute="bottom" secondItem="onV-r2-vl9" secondAttribute="bottom" constant="20" symbolic="YES" id="Pyk-OY-3Pe"/>
                             <constraint firstItem="Anc-q3-OMc" firstAttribute="leading" secondItem="qgm-2K-DIz" secondAttribute="leading" constant="20" id="QwM-IV-P35" userLabel="Bazel path - Left"/>
                             <constraint firstItem="onV-r2-vl9" firstAttribute="top" secondItem="P9B-5h-yw2" secondAttribute="bottom" constant="8" id="Tls-ay-jjI"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="leading" secondItem="P9B-5h-yw2" secondAttribute="leading" id="eUo-zh-f7M" userLabel="Add/Remove to Table View - X"/>
-                            <constraint firstItem="Anc-q3-OMc" firstAttribute="baseline" secondItem="onV-r2-vl9" secondAttribute="baseline" id="ijX-8u-hDH"/>
-                            <constraint firstAttribute="trailing" secondItem="wKJ-4v-qrf" secondAttribute="trailing" constant="13" id="muD-hN-VY6"/>
-                            <constraint firstItem="wKJ-4v-qrf" firstAttribute="leading" secondItem="onV-r2-vl9" secondAttribute="trailing" constant="8" id="okH-rf-oM1"/>
+                            <constraint firstItem="Anc-q3-OMc" firstAttribute="baseline" secondItem="onV-r2-vl9" secondAttribute="baseline" constant="-2" id="ijX-8u-hDH"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="top" secondItem="qgm-2K-DIz" secondAttribute="top" constant="20" id="sOC-Qn-YLr"/>
+                            <constraint firstAttribute="bottom" secondItem="onV-r2-vl9" secondAttribute="bottom" constant="20" id="sqX-ab-tTM"/>
                             <constraint firstItem="kek-vY-RVz" firstAttribute="leading" secondItem="qgm-2K-DIz" secondAttribute="leading" constant="20" id="wsg-HO-6RB"/>
                         </constraints>
                     </view>
@@ -1614,7 +1597,7 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="NSK-dd-w7F">
-                                                                    <rect key="frame" x="289.5" y="1" width="148" height="17"/>
+                                                                    <rect key="frame" x="289" y="1" width="148" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
@@ -1722,6 +1705,5 @@ Please check this project's packages.</string>
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
-        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
     </resources>
 </document>
