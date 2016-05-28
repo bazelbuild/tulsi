@@ -71,10 +71,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Binary/Assets.xcassets",
+                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
-                               "src": true]])
+                              ["path": "tulsi_test/Binary/Assets.xcassets",
+                               "src": true],])
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/Library/srcs/src1.m",
@@ -154,17 +154,17 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Binary/AssetsOne.xcassets",
-                               "src": true],
-                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
-                               "src": true],
-                              ["path": "tulsi_test/Binary/Info.plist",
+                      value: [["path": "tulsi_test/Binary/Info.plist",
                                "src": true],
                               ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
                                "root": "bazel-genfiles",
-                               "src": false]])
+                               "src": false],
+                              ["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                               "src": true],
+                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
         .hasAttribute(.datamodels,
@@ -232,9 +232,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:WatchExtension")
         .dependsOn("//tulsi_test:WatchExtensionBinary")
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
-                               "src": true],
-                              ["path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
+                      value: [["path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
                                "src": true],
                               ["path": "tulsi_test/WatchExtension/app_infoplists/Info.plist",
                                "src": true],
@@ -249,6 +247,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                               ["path": "tulsi_test/WatchExtension/ext_resources.file",
                                "src": true],
                               ["path": "tulsi_test/WatchExtension/ext_structured_resources.file",
+                               "src": true],
+                              ["path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")

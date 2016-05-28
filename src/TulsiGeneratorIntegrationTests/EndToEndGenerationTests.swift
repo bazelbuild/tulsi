@@ -57,6 +57,9 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     installBUILDFile("ComplexSingle", intoSubdirectory: testDir)
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
     makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
+    makePlistFileNamed(".xccurrentversion",
+                       withContent: ["_XCCurrentVersionName": "DataModelsTestv2.xcdatamodel"],
+                       inSubdirectory: "\(testDir)/Test.xcdatamodeld")
 
     let appLabel = BuildLabel("//\(testDir):Application")
     let hostLabels = Set<BuildLabel>([appLabel])

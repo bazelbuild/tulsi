@@ -26,7 +26,7 @@ objc_binary(
     srcs = [
         "Binary/srcs/main.m",
     ],
-    asset_catalogs = ["Binary/Assets.xcassets"],
+    asset_catalogs = ["Binary/Assets.xcassets/asset.png"],
     bridging_header = "Binary/bridging_header/bridging_header.h",
     datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [

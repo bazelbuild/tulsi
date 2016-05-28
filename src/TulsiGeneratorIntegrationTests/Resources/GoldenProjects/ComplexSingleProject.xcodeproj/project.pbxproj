@@ -1556,6 +1556,7 @@
 				43D68C283659E1D400000000 /* DataModelsTestv1.xcdatamodel */,
 				43D68C28221BF5D700000000 /* DataModelsTestv2.xcdatamodel */,
 			);
+			currentVersion = 43D68C28221BF5D700000000 /* DataModelsTestv2.xcdatamodel */;
 			path = Test.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

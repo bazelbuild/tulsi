@@ -47,7 +47,6 @@ _TULSI_COMPILE_DEPS = [
 # generated Xcode project. For example, Info.plist and entitlements files.
 _SUPPORTING_FILE_ATTRIBUTES = [
     # apple_watch1_extension
-    'app_asset_catalogs',
     'app_entitlements',
     'app_infoplists',
     'app_resources',
@@ -57,7 +56,6 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'ext_resources',
     'ext_structured_resources',
 
-    'asset_catalogs',
     'entitlements',
     'infoplist',
     'infoplists',
@@ -125,6 +123,16 @@ def _file_metadata(f):
   )
 
 
+def _file_metadata_by_replacing_path(f, new_path):
+  """Returns a copy of the f _file_metadata struct with the given path."""
+  root_path = _get_opt_attr(f, 'rootPath')
+  return _struct_omitting_none(
+      path=new_path,
+      src=f.src,
+      root=root_path
+  )
+
+
 def _collect_files(obj, attr_path):
   """Returns a list of artifact_location's for the attr_path in obj."""
   return [_file_metadata(f)
@@ -148,6 +156,28 @@ def _collect_supporting_files(rule_attr):
   return all_files
 
 
+def _collect_asset_catalogs(rule_attr):
+  """Extracts xcassets directories from the given rule attributes."""
+  discovered_paths = set()
+  bundles = []
+  for attr in ['app_asset_catalogs', 'asset_catalogs']:
+    for f in _collect_files(rule_attr, attr):
+      end = f.path.find('.xcassets/')
+      if end < 0:
+        continue
+      end += 9
+
+      path = f.path[:end]
+      root_path = _get_opt_attr(f, 'rootPath')
+      full_path = str(root_path) + ':' + path
+      if full_path in discovered_paths:
+        continue
+      discovered_paths += [full_path]
+      bundles.append(_file_metadata_by_replacing_path(f, path))
+
+  return bundles
+
+
 def _collect_xcdatamodeld_files(obj, attr_path):
   """Returns artifact_location's for xcdatamodeld's for attr_path in obj."""
   files = _collect_files(obj, attr_path)
@@ -167,10 +197,7 @@ def _collect_xcdatamodeld_files(obj, attr_path):
     if full_path in discovered_paths:
       continue
     discovered_paths += [full_path]
-    datamodelds.append(_struct_omitting_none(
-        path=path,
-        src=f.src,
-        root=root_path))
+    datamodelds.append(_file_metadata_by_replacing_path(f, path))
   return datamodelds
 
 
@@ -334,13 +361,16 @@ def _tulsi_sources_aspect(target, ctx):
   compile_deps = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
+  supporting_files = (_collect_supporting_files(rule_attr) +
+                      _collect_asset_catalogs(rule_attr))
+
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
       binary=_get_label_attr(rule_attr, 'binary.label'),
       copts=_get_opt_attr(rule_attr, 'copts'),
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
-      supporting_files=_collect_supporting_files(rule_attr),
+      supporting_files=supporting_files,
       xctest=_get_opt_attr(rule_attr, 'xctest'),
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
   )

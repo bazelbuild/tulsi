@@ -40,8 +40,9 @@ objc_binary(
         ":SrcGenerator",
     ],
     asset_catalogs = [
-        "Binary/AssetsOne.xcassets",
-        "Binary/AssetsTwo.xcassets",
+        "Binary/AssetsOne.xcassets/test_file.ico",
+        "Binary/AssetsOne.xcassets/another_file.ico",
+        "Binary/AssetsTwo.xcassets/png_file.png",
     ],
     bridging_header = ":BridgingHeaderGenerator",
     defines = [
@@ -196,7 +197,7 @@ apple_watch_extension_binary(
 apple_watch1_extension(
     name = "WatchExtension",
     app_asset_catalogs = [
-        "WatchExtension/app_asset_catalogs.xcassets",
+        "WatchExtension/app_asset_catalogs.xcassets/app_asset_file.png",
     ],
     app_entitlements = "WatchExtension/app_entitlements.entitlements",
     app_infoplists = [
