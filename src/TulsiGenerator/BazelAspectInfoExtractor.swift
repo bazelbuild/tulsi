@@ -122,6 +122,7 @@ final class BazelAspectInfoExtractor {
     var arguments = startupOptions
     arguments.appendContentsOf([
         "build",
+        "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
         "--show_result=0",  // Don't bother printing the build results.
         "--no_show_loading_progress",  // Don't show Bazel's loading progress.
         "--no_show_progress",  // Don't show Bazel's build progress.
