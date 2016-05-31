@@ -16,7 +16,7 @@ import Cocoa
 import TulsiGenerator
 
 
-final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
+final class AppDelegate: NSObject, NSApplicationDelegate {
 
   var splashScreenWindowController: SplashScreenWindowController! = nil
 
@@ -43,14 +43,5 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidat
 
   func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
     return true
-  }
-
-  // MARK: - NSUserInterfaceValidations
-
-  func validateUserInterfaceItem(anItem: NSValidatedUserInterfaceItem) -> Bool {
-    // Nothing useful can be done if there is no current document.
-    let currentDocument = NSDocumentController.sharedDocumentController().currentDocument
-    return currentDocument as? TulsiProjectDocument != nil ||
-        currentDocument as? TulsiGeneratorConfigDocument != nil
   }
 }
