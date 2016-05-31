@@ -546,6 +546,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
+  func addProcessingTaskCount(taskCount: Int) {
+    NSThread.doOnMainThread() { self.processingTaskCount += taskCount }
+  }
+
   func processingTaskStarted() {
     NSThread.doOnMainThread() { self.processingTaskCount += 1 }
   }

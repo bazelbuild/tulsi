@@ -287,6 +287,8 @@ final class TulsiProjectDocument: NSDocument,
   /// Tracks the given document as a child of this project.
   func trackChildConfigDocument(document: TulsiGeneratorConfigDocument) {
     childConfigDocuments.addObject(document)
+    // Ensure that the child document is aware of the project-level processing tasks.
+    document.addProcessingTaskCount(processingTaskCount)
   }
 
   /// Closes any generator config documents associated with this project.
@@ -473,18 +475,22 @@ final class TulsiProjectDocument: NSDocument,
   // MARK: - Private methods
 
   private func processingTaskStarted() {
-    NSThread.doOnMainThread() { self.processingTaskCount += 1 }
-    let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
-    for configDoc in childDocuments {
-      configDoc.processingTaskStarted()
+    NSThread.doOnMainThread() {
+      self.processingTaskCount += 1
+      let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+      for configDoc in childDocuments {
+        configDoc.processingTaskStarted()
+      }
     }
   }
 
   private func processingTaskFinished() {
-    NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
-    let childDocuments = childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
-    for configDoc in childDocuments {
-      configDoc.processingTaskFinished()
+    NSThread.doOnMainThread() {
+      self.processingTaskCount -= 1
+      let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
+      for configDoc in childDocuments {
+        configDoc.processingTaskFinished()
+      }
     }
   }
 
