@@ -49,6 +49,9 @@ class PBXTargetGenerator {
 
   /// Location of the bazel-bin symlink, relative to the workspace root.
   let bazelBinPath: String
+  var bazelGenfilesPath: String {
+    return bazelBinPath.stringByReplacingOccurrencesOfString("-bin", withString: "-genfiles")
+  }
 
   let project: PBXProject
   let buildScriptPath: String
@@ -300,7 +303,10 @@ class PBXTargetGenerator {
     buildSettings["TULSI_WORKSPACE_ROOT"] = sourceDirectory
     buildSettings["TULSI_VERSION"] = tulsiVersion
 
-    var searchPaths = ["$(TULSI_WORKSPACE_ROOT)"]
+    var searchPaths = ["$(TULSI_WORKSPACE_ROOT)",
+                       "$(TULSI_WORKSPACE_ROOT)/\(bazelBinPath)",
+                       "$(TULSI_WORKSPACE_ROOT)/\(bazelGenfilesPath)",
+    ]
     if let additionalIncludePaths = additionalIncludePaths {
       let rootedPaths = additionalIncludePaths.sort().map({"$(TULSI_WORKSPACE_ROOT)/\($0)"})
       searchPaths.appendContentsOf(rootedPaths)
