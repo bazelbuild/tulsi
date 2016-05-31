@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -405,12 +405,15 @@
                                 </tableHeaderView>
                             </scrollView>
                             <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Igh-yT-sbk">
-                                <rect key="frame" x="20" y="40" width="67" height="23"/>
+                                <rect key="frame" x="20" y="40" width="98" height="23"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="momentary" id="a7q-3F-v0J">
                                     <font key="font" metaFont="system"/>
                                     <segments>
                                         <segment image="NSAddTemplate" width="32" enabled="NO"/>
                                         <segment image="NSRemoveTemplate" width="32" enabled="NO" tag="1"/>
+                                        <segment image="NSActionTemplate" enabled="NO" tag="2">
+                                            <nil key="label"/>
+                                        </segment>
                                     </segments>
                                     <connections>
                                         <action selector="didClickAddRemoveSegmentedControl:" target="Pgt-4s-lhO" id="w4l-KM-4lB"/>

@@ -20,10 +20,11 @@ import TulsiGenerator
 /// project.
 final class ProjectEditorConfigManagerViewController: NSViewController {
 
-  /// Indices into the Add/Remove SegmentedControl (as built by Interface Builder).
+  /// Indices into the Add/Remove/Action SegmentedControl (as built by Interface Builder).
   private enum SegmentedControlButtonIndex: Int {
     case Add = 0
     case Remove = 1
+    case Action = 2
   }
 
   // Context indicating that a new config should be added after a document save completes.
@@ -42,9 +43,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   dynamic var numSelectedConfigs: Int = 0 {
     didSet {
-      let enableRemoveButton = numSelectedConfigs > 0
-      addRemoveSegmentedControl.setEnabled(enableRemoveButton,
+      addRemoveSegmentedControl.setEnabled(numSelectedConfigs > 0,
                                            forSegment: SegmentedControlButtonIndex.Remove.rawValue)
+      addRemoveSegmentedControl.setEnabled(numSelectedConfigs == 1,
+                                           forSegment: SegmentedControlButtonIndex.Action.rawValue)
     }
   }
 
@@ -88,6 +90,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
         didClickAddConfig(sender)
       case .Remove:
         didClickRemoveSelectedConfigs(sender)
+      case .Action:
+        didClickAction(sender)
     }
   }
 
@@ -112,30 +116,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   @IBAction func didDoubleClickConfigRow(sender: NSTableView) {
     guard requireValidBazel({ self.didDoubleClickConfigRow(sender) }) else { return }
-
-    let projectDocument = representedObject as! TulsiProjectDocument
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
     let configName = (configArrayController.arrangedObjects as! [String])[clickedRow]
-    let errorInfo: String
-    do {
-      let configDocument = try projectDocument.loadConfigDocumentNamed(configName) { (_) in
-        // Nothing in particular has to be done when the config doc is loaded, the editor UI already
-        // handles this via the document's processing state.
-      }
-      configDocument.makeWindowControllers()
-      configDocument.showWindows()
-      return
-    } catch TulsiProjectDocument.Error.NoSuchConfig {
-      errorInfo = "No URL for config named '\(configName)'"
-    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
-      errorInfo = info
-    } catch {
-      errorInfo = "An unexpected exception occurred while loading config named '\(configName)'"
-    }
-    let fmt = NSLocalizedString("Error_ConfigLoadFailed",
-                                comment: "Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@.")
-    projectDocument.error(String(format: fmt, errorInfo))
+    editConfigNamed(configName)
   }
 
   func document(doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutablePointer<Void>) {
@@ -223,6 +207,36 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let document = representedObject as! TulsiProjectDocument
     let selectedConfigNames = configArrayController.selectedObjects as! [String]
     document.deleteConfigsNamed(selectedConfigNames)
+  }
+
+  private func didClickAction(sender: AnyObject?) {
+    let selectedConfigNames = configArrayController.selectedObjects as! [String]
+    if let configName = selectedConfigNames.first {
+      editConfigNamed(configName)
+    }
+  }
+
+  private func editConfigNamed(name: String) {
+    let projectDocument = representedObject as! TulsiProjectDocument
+    let errorInfo: String
+    do {
+      let configDocument = try projectDocument.loadConfigDocumentNamed(name) { (_) in
+        // Nothing in particular has to be done when the config doc is loaded, the editor UI already
+        // handles this via the document's processing state.
+      }
+      configDocument.makeWindowControllers()
+      configDocument.showWindows()
+      return
+    } catch TulsiProjectDocument.Error.NoSuchConfig {
+      errorInfo = "No URL for config named '\(name)'"
+    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
+      errorInfo = info
+    } catch {
+      errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
+    }
+    let fmt = NSLocalizedString("Error_ConfigLoadFailed",
+                                comment: "Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@.")
+    projectDocument.error(String(format: fmt, errorInfo))
   }
 }
 
