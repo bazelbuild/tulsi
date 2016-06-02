@@ -125,7 +125,10 @@ Release mode flags:
    Note that if you haven't already saved the project, you'll be asked to do so
    the first time you add a config. You can save the project pretty much
    wherever you like, but you'll get the most benefit out of checking it into
-   your source tree so it may be shared by other developers on your team.
+   your source tree so it may be shared by other developers on your team. The
+   project bundle is entirely shareable apart from the `tulsiconf-user` files,
+   which contain settings that are likely to be user specific (such as absolute
+   paths).
 
    ![ForcedProjectSave](/images/0060_ForcedProjectSave.png "Save project")
 
