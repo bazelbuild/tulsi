@@ -125,7 +125,7 @@ class PBXReference: PBXObjectProtocol {
   }
 
   var hashValue: Int {
-    return name.hashValue
+    return name.hashValue &+ (path?.hashValue ?? 0)
   }
 
   var comment: String? {
@@ -259,7 +259,7 @@ func == (lhs: PBXFileReference, rhs: PBXFileReference) -> Bool {
 
 
 /// PBXGroups are simple containers for other PBXReference instances.
-class PBXGroup: PBXReference {
+class PBXGroup: PBXReference, Hashable {
   /// Array of reference objects contained by this group.
   var children = [PBXReference]()
 
@@ -383,6 +383,15 @@ class PBXGroup: PBXReference {
     try super.serializeInto(serializer)
     try serializer.addField("children", children.sort({$0.name < $1.name}))
   }
+}
+
+func == (lhs: PBXGroup, rhs: PBXGroup) -> Bool {
+  // NOTE(abaire): This isn't technically correct as it's possible to create two groups with
+  // identical paths but different contents. For this to be reusable, everything should really be
+  // made Hashable and the children should be compared as well.
+  return lhs.name == rhs.name &&
+      lhs.isa == rhs.isa &&
+      lhs.path == rhs.path
 }
 
 
@@ -979,6 +988,16 @@ final class PBXProject: PBXObjectProtocol {
     return value
   }
 
+  /// Creates subgroups and a file reference to the given path under the special Products directory
+  /// rather than as a normal component of the build process. This should very rarely be used, but
+  /// is useful if it is necessary to add references to byproducts of the build process that are
+  /// not the direct output of any PBXTarget.
+  func createProductReference(path: String) -> (Set<PBXGroup>, PBXFileReference) {
+    let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
+                                                              path: nil)
+    return createGroupsAndFileReferenceForPath(path, underGroup: productsGroup)
+  }
+
   func linkTestTarget(testTarget: PBXTarget, toHostTarget hostTarget: PBXTarget) {
     testTargetLinkages.append((testTarget, hostTarget))
     testTarget.createDependencyOn(hostTarget,
@@ -1025,41 +1044,13 @@ final class PBXProject: PBXObjectProtocol {
   /// PBXFileReference.
   /// Returns a tuple containing the PBXGroup and PBXFileReference instances that were touched while
   /// processing the set of paths.
-  func getOrCreateGroupsAndFileReferencesForPaths(paths: [String]) -> ([PBXGroup], [PBXFileReference]) {
-    var accessedGroups = [PBXGroup]()
+  func getOrCreateGroupsAndFileReferencesForPaths(paths: [String]) -> (Set<PBXGroup>, [PBXFileReference]) {
+    var accessedGroups = Set<PBXGroup>()
     var accessedFileReferences = [PBXFileReference]()
 
     pathsLoop: for path in paths {
-      var group = mainGroup
-
-      // Traverse the directory components of the path, converting them to Xcode
-      // PBXGroups.
-      let components = path.componentsSeparatedByString("/")
-      for i in 0 ..< components.count - 1 {
-        // Check to see if this component is actually a bundle that should be treated as a file
-        // reference by Xcode (e.g., .xcassets bundles) instead of as a PBXGroup.
-        let currentComponent = components[i]
-        // TODO(abaire): Look into proper support for localization bundles. This will naively create
-        //               a bundle grouping rather than including the per-locale strings.
-        if let ext = currentComponent.pbPathExtension, uti = DirExtensionToUTI[ext] {
-          let ref = group.getOrCreateFileReferenceBySourceTree(.Group, path: currentComponent)
-          ref.fileTypeOverride = uti
-          ref.isInputFile = true
-
-          accessedFileReferences.append(ref)
-
-          // Contents of bundles should never be referenced directly so this path
-          // entry is now fully parsed.
-          continue pathsLoop
-        }
-
-        // Create a subgroup for this simple path component.
-        let groupName = currentComponent.isEmpty ? "/" : currentComponent
-        group = group.getOrCreateChildGroupByName(groupName, path: currentComponent)
-        accessedGroups.append(group)
-      }
-
-      let ref = group.getOrCreateFileReferenceBySourceTree(.Group, path: components.last!)
+      let (groups, ref) = createGroupsAndFileReferenceForPath(path, underGroup: mainGroup)
+      accessedGroups.unionInPlace(groups)
       ref.isInputFile = true
       accessedFileReferences.append(ref)
     }
@@ -1118,5 +1109,40 @@ final class PBXProject: PBXObjectProtocol {
     try serializer.addField("developmentRegion", "English")
     try serializer.addField("hasScannedForEncodings", false)
     try serializer.addField("knownRegions", ["en"])
+  }
+
+  // MARK: - Private methods
+
+  private func createGroupsAndFileReferenceForPath(path: String,
+                                                   underGroup parent: PBXGroup) -> (Set<PBXGroup>, PBXFileReference) {
+    var group = parent
+    var accessedGroups = Set<PBXGroup>()
+
+    // Traverse the directory components of the path, converting them to Xcode
+    // PBXGroups.
+    let components = path.componentsSeparatedByString("/")
+    for i in 0 ..< components.count - 1 {
+      // Check to see if this component is actually a bundle that should be treated as a file
+      // reference by Xcode (e.g., .xcassets bundles) instead of as a PBXGroup.
+      let currentComponent = components[i]
+      // TODO(abaire): Look into proper support for localization bundles. This will naively create
+      //               a bundle grouping rather than including the per-locale strings.
+      if let ext = currentComponent.pbPathExtension, uti = DirExtensionToUTI[ext] {
+        let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: currentComponent)
+        fileRef.fileTypeOverride = uti
+
+        // Contents of bundles should never be referenced directly so this path
+        // entry is now fully parsed.
+        return (accessedGroups, fileRef)
+      }
+
+      // Create a subgroup for this simple path component.
+      let groupName = currentComponent.isEmpty ? "/" : currentComponent
+      group = group.getOrCreateChildGroupByName(groupName, path: currentComponent)
+      accessedGroups.insert(group)
+    }
+
+    let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: components.last!)
+    return (accessedGroups, fileRef)
   }
 }

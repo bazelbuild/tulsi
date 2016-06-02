@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6AF49471B08EDE700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
-		E6AF494760B80DFF00000000 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
-		E6AF494760B80DFF00000001 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
-		E6AF494760B80DFF00000002 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
-		E6AF494760B80DFF00000003 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000002 /* XCTest.m */; };
-		E6AF494760B80DFF00000004 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000000 /* XCTest.m */; };
-		E6AF494760B80DFF00000005 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C2860B80DFF00000001 /* XCTest.m */; };
+		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
+		E6AF4947C1701BFE00000000 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000000 /* XCTest.m */; };
+		E6AF4947C1701BFE00000001 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000001 /* XCTest.m */; };
+		E6AF4947C1701BFE00000002 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000002 /* XCTest.m */; };
+		E6AF4947C1701BFE00000003 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000002 /* XCTest.m */; };
+		E6AF4947C1701BFE00000004 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000000 /* XCTest.m */; };
+		E6AF4947C1701BFE00000005 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 43D68C28C1701BFE00000001 /* XCTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,104 +32,104 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C281B08EDE700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		43D68C282740DE3C00000000 /* TestSuite-Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C285BF5223400000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C285BF5223400000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C285BF5223400000002 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C285BF5223400000003 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C2860B80DFF00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
-		43D68C2860B80DFF00000001 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
-		43D68C2860B80DFF00000002 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
-		43D68C2876D8906A00000000 /* lib_indexer_XCTest_-4799450059703901475.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_XCTest_-4799450059703901475.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C288361AB3C00000000 /* lib_indexer_XCTest_4799450059611656605.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450059611656605.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28AD17C5B700000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28EAE7373400000000 /* lib_indexer_XCTest_4799450060018286533.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450060018286533.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28EF70117C00000000 /* TestSuite-Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28FFC8B66400000000 /* TestSuite-One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2806C3567800000000 /* lib_indexer_XCTest_4799450059611656605.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450059611656605.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28B7EA446800000002 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28B7EA446800000003 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28C1701BFE00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
+		43D68C28C1701BFE00000001 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
+		43D68C28C1701BFE00000002 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCTest.m; sourceTree = "<group>"; };
+		43D68C28D5CE6E6800000000 /* lib_indexer_XCTest_4799450060018286533.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450060018286533.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28EDB120D400000000 /* lib_indexer_XCTest_-4799450059703901475.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_XCTest_-4799450059703901475.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "TestSuite-One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		966FB6DE2008A7BC00000000 /* Three */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C285BF5223400000002 /* BUILD */,
-				43D68C2860B80DFF00000000 /* XCTest.m */,
-			);
-			path = Three;
-			sourceTree = "<group>";
-		};
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28AD17C5B700000000 /* TestApplication.app */,
-				43D68C28FFC8B66400000000 /* TestSuite-One-XCTest.xctest */,
-				43D68C282740DE3C00000000 /* TestSuite-Three-XCTest.xctest */,
-				43D68C28EF70117C00000000 /* TestSuite-Two-XCTest.xctest */,
-				43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
-				43D68C2876D8906A00000000 /* lib_indexer_XCTest_-4799450059703901475.a */,
-				43D68C288361AB3C00000000 /* lib_indexer_XCTest_4799450059611656605.a */,
-				43D68C28EAE7373400000000 /* lib_indexer_XCTest_4799450060018286533.a */,
+				43D68C285A2F8B6E00000000 /* TestApplication.app */,
+				43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */,
+				43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */,
+				43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */,
+				43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
+				43D68C28EDB120D400000000 /* lib_indexer_XCTest_-4799450059703901475.a */,
+				43D68C2806C3567800000000 /* lib_indexer_XCTest_4799450059611656605.a */,
+				43D68C28D5CE6E6800000000 /* lib_indexer_XCTest_4799450060018286533.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE5B9D018E00000000 /* srcs */ = {
+		966FB6DE2D257E0800000000 /* Two */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C281B08EDE700000000 /* main.m */,
-			);
-			path = srcs;
-			sourceTree = "<group>";
-		};
-		966FB6DE9692BF0400000000 /* Two */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C285BF5223400000003 /* BUILD */,
-				43D68C2860B80DFF00000002 /* XCTest.m */,
+				43D68C28B7EA446800000003 /* BUILD */,
+				43D68C28C1701BFE00000002 /* XCTest.m */,
 			);
 			path = Two;
 			sourceTree = "<group>";
 		};
-		966FB6DE96FC0B6C00000000 /* One */ = {
+		966FB6DE2DF816D800000000 /* One */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C285BF5223400000001 /* BUILD */,
-				43D68C2860B80DFF00000001 /* XCTest.m */,
+				43D68C28B7EA446800000001 /* BUILD */,
+				43D68C28C1701BFE00000001 /* XCTest.m */,
 			);
 			path = One;
 			sourceTree = "<group>";
 		};
-		966FB6DE97D5C89200000000 /* TestSuite */ = {
+		966FB6DE2FAB912400000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C285BF5223400000000 /* BUILD */,
-				966FB6DEE2E4E10A00000000 /* Binary */,
-				966FB6DE96FC0B6C00000000 /* One */,
-				966FB6DE2008A7BC00000000 /* Three */,
-				966FB6DE9692BF0400000000 /* Two */,
+				43D68C28B7EA446800000000 /* BUILD */,
+				966FB6DEC5C9C21400000000 /* Binary */,
+				966FB6DE2DF816D800000000 /* One */,
+				966FB6DE40114F7800000000 /* Three */,
+				966FB6DE2D257E0800000000 /* Two */,
 			);
 			path = TestSuite;
 			sourceTree = "<group>";
 		};
-		966FB6DEE2E4E10A00000000 /* Binary */ = {
+		966FB6DE40114F7800000000 /* Three */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000000 /* srcs */,
+				43D68C28B7EA446800000002 /* BUILD */,
+				43D68C28C1701BFE00000000 /* XCTest.m */,
 			);
-			path = Binary;
+			path = Three;
 			sourceTree = "<group>";
 		};
-		966FB6DEE342F69A00000000 /* mainGroup */ = {
+		966FB6DEB6031FE700000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE97D5C89200000000 /* TestSuite */,
+				966FB6DE2FAB912400000000 /* TestSuite */,
 			);
 			name = mainGroup;
 			path = ../..;
 			sourceTree = SOURCE_ROOT;
+		};
+		966FB6DEB73A031C00000000 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C283611DBCE00000000 /* main.m */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEC5C9C21400000000 /* Binary */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEB73A031C00000000 /* srcs */,
+			);
+			path = Binary;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -166,7 +166,7 @@
 			);
 			name = "TestSuite-One-XCTest";
 			productName = "TestSuite-One-XCTest";
-			productReference = 43D68C28FFC8B66400000000 /* TestSuite-One-XCTest.xctest */;
+			productReference = 43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6396057C300000000 /* _indexer_XCTest_4799450059611656605 */ = {
@@ -182,7 +182,7 @@
 			);
 			name = _indexer_XCTest_4799450059611656605;
 			productName = _indexer_XCTest_4799450059611656605;
-			productReference = 43D68C288361AB3C00000000 /* lib_indexer_XCTest_4799450059611656605.a */;
+			productReference = 43D68C2806C3567800000000 /* lib_indexer_XCTest_4799450059611656605.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E63992D6A100000000 /* _indexer_XCTest_-4799450059703901475 */ = {
@@ -198,7 +198,7 @@
 			);
 			name = "_indexer_XCTest_-4799450059703901475";
 			productName = "_indexer_XCTest_-4799450059703901475";
-			productReference = 43D68C2876D8906A00000000 /* lib_indexer_XCTest_-4799450059703901475.a */;
+			productReference = 43D68C28EDB120D400000000 /* lib_indexer_XCTest_-4799450059703901475.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E67632380200000000 /* TestApplication */ = {
@@ -214,7 +214,7 @@
 			);
 			name = TestApplication;
 			productName = TestApplication;
-			productReference = 43D68C28AD17C5B700000000 /* TestApplication.app */;
+			productReference = 43D68C285A2F8B6E00000000 /* TestApplication.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3D31C5E68217546C00000000 /* TestSuite-Three-XCTest */ = {
@@ -232,7 +232,7 @@
 			);
 			name = "TestSuite-Three-XCTest";
 			productName = "TestSuite-Three-XCTest";
-			productReference = 43D68C282740DE3C00000000 /* TestSuite-Three-XCTest.xctest */;
+			productReference = 43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6BE267DAC00000000 /* TestSuite-Two-XCTest */ = {
@@ -250,7 +250,7 @@
 			);
 			name = "TestSuite-Two-XCTest";
 			productName = "TestSuite-Two-XCTest";
-			productReference = 43D68C28EF70117C00000000 /* TestSuite-Two-XCTest.xctest */;
+			productReference = 43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */ = {
@@ -266,7 +266,7 @@
 			);
 			name = "_indexer_Binary_-4799450061102981736";
 			productName = "_indexer_Binary_-4799450061102981736";
-			productReference = 43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
+			productReference = 43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6E0386BBB00000000 /* _indexer_XCTest_4799450060018286533 */ = {
@@ -282,7 +282,7 @@
 			);
 			name = _indexer_XCTest_4799450060018286533;
 			productName = _indexer_XCTest_4799450060018286533;
-			productReference = 43D68C28EAE7373400000000 /* lib_indexer_XCTest_4799450060018286533.a */;
+			productReference = 43D68C28D5CE6E6800000000 /* lib_indexer_XCTest_4799450060018286533.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -312,7 +312,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = 966FB6DEE342F69A00000000 /* mainGroup */;
+			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
 				3D31C5E67632380200000000 /* TestApplication */,
 				3D31C5E600253A5400000000 /* TestSuite-One-XCTest */,
@@ -391,7 +391,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000000 /* XCTest.m in Three */,
+				E6AF4947C1701BFE00000000 /* XCTest.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +399,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000001 /* XCTest.m in One */,
+				E6AF4947C1701BFE00000001 /* XCTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,7 +407,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000002 /* XCTest.m in Two */,
+				E6AF4947C1701BFE00000002 /* XCTest.m in Two */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49471B08EDE700000000 /* main.m in srcs */,
+				E6AF49473611DBCE00000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +423,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000003 /* XCTest.m in Two */,
+				E6AF4947C1701BFE00000003 /* XCTest.m in Two */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000004 /* XCTest.m in Three */,
+				E6AF4947C1701BFE00000004 /* XCTest.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,7 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494760B80DFF00000005 /* XCTest.m in One */,
+				E6AF4947C1701BFE00000005 /* XCTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

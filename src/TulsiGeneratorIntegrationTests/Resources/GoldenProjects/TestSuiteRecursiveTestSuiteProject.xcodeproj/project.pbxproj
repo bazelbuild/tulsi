@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6AF49471B08EDE700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281B08EDE700000000 /* main.m */; };
-		E6AF49479985AEB000000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C289985AEB000000000 /* TestSuiteXCTest.m */; };
-		E6AF49479985AEB000000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C289985AEB000000000 /* TestSuiteXCTest.m */; };
-		E6AF4947A8D3ED0D00000000 /* nonXCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C28A8D3ED0D00000000 /* nonXCTest.m */; };
+		E6AF4947330B5D6000000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
+		E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
+		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
+		E6AF494751A7DA1A00000000 /* nonXCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2851A7DA1A00000000 /* nonXCTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,86 +29,86 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C281B08EDE700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		43D68C2832A387C300000000 /* NonXCTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = NonXCTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C285BF5223400000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C285BF5223400000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C289985AEB000000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteXCTest.m; sourceTree = "<group>"; };
-		43D68C28A630C96F00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_NonXCTest_4799450060268549067.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28A8D3ED0D00000000 /* nonXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nonXCTest.m; sourceTree = "<group>"; };
-		43D68C28AD17C5B700000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_TestSuiteXCTest_-4799450060952101021.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28330B5D6000000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteXCTest.m; sourceTree = "<group>"; };
+		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C284C6192DE00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_NonXCTest_4799450060268549067.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2851A7DA1A00000000 /* nonXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nonXCTest.m; sourceTree = "<group>"; };
+		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2865470F8600000000 /* NonXCTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = NonXCTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Binary_-4799450061102981736.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28DF91878C00000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_TestSuiteXCTest_-4799450060952101021.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		966FB6DE2008A7BC00000000 /* Three */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C285BF5223400000001 /* BUILD */,
-				43D68C28A8D3ED0D00000000 /* nonXCTest.m */,
-			);
-			path = Three;
-			sourceTree = "<group>";
-		};
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2832A387C300000000 /* NonXCTest.app */,
-				43D68C28AD17C5B700000000 /* TestApplication.app */,
-				43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */,
-				43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
-				43D68C28A630C96F00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */,
-				43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */,
+				43D68C2865470F8600000000 /* NonXCTest.app */,
+				43D68C285A2F8B6E00000000 /* TestApplication.app */,
+				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
+				43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
+				43D68C284C6192DE00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */,
+				43D68C28DF91878C00000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE5B9D018E00000000 /* srcs */ = {
+		966FB6DE2FAB912400000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C281B08EDE700000000 /* main.m */,
-			);
-			path = srcs;
-			sourceTree = "<group>";
-		};
-		966FB6DE97D5C89200000000 /* TestSuite */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C285BF5223400000000 /* BUILD */,
-				966FB6DEE2E4E10A00000000 /* Binary */,
-				966FB6DE97D5C89200000001 /* TestSuite */,
-				966FB6DE2008A7BC00000000 /* Three */,
+				43D68C28B7EA446800000000 /* BUILD */,
+				966FB6DEC5C9C21400000000 /* Binary */,
+				966FB6DE2FAB912400000001 /* TestSuite */,
+				966FB6DE40114F7800000000 /* Three */,
 			);
 			path = TestSuite;
 			sourceTree = "<group>";
 		};
-		966FB6DE97D5C89200000001 /* TestSuite */ = {
+		966FB6DE2FAB912400000001 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C289985AEB000000000 /* TestSuiteXCTest.m */,
+				43D68C28330B5D6000000000 /* TestSuiteXCTest.m */,
 			);
 			path = TestSuite;
 			sourceTree = "<group>";
 		};
-		966FB6DEE2E4E10A00000000 /* Binary */ = {
+		966FB6DE40114F7800000000 /* Three */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000000 /* srcs */,
+				43D68C28B7EA446800000001 /* BUILD */,
+				43D68C2851A7DA1A00000000 /* nonXCTest.m */,
 			);
-			path = Binary;
+			path = Three;
 			sourceTree = "<group>";
 		};
-		966FB6DEE342F69A00000000 /* mainGroup */ = {
+		966FB6DEB6031FE700000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE97D5C89200000000 /* TestSuite */,
+				966FB6DE2FAB912400000000 /* TestSuite */,
 			);
 			name = mainGroup;
 			path = ../..;
 			sourceTree = SOURCE_ROOT;
+		};
+		966FB6DEB73A031C00000000 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C283611DBCE00000000 /* main.m */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEC5C9C21400000000 /* Binary */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEB73A031C00000000 /* srcs */,
+			);
+			path = Binary;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -143,7 +143,7 @@
 			);
 			name = "_indexer_TestSuiteXCTest_-4799450060952101021";
 			productName = "_indexer_TestSuiteXCTest_-4799450060952101021";
-			productReference = 43D68C28EFC8C3C600000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */;
+			productReference = 43D68C28DF91878C00000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E628CE526200000000 /* _indexer_NonXCTest_4799450060268549067 */ = {
@@ -159,7 +159,7 @@
 			);
 			name = _indexer_NonXCTest_4799450060268549067;
 			productName = _indexer_NonXCTest_4799450060268549067;
-			productReference = 43D68C28A630C96F00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */;
+			productReference = 43D68C284C6192DE00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E67632380200000000 /* TestApplication */ = {
@@ -175,7 +175,7 @@
 			);
 			name = TestApplication;
 			productName = TestApplication;
-			productReference = 43D68C28AD17C5B700000000 /* TestApplication.app */;
+			productReference = 43D68C285A2F8B6E00000000 /* TestApplication.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3D31C5E6A105E5D500000000 /* TestSuiteXCTest */ = {
@@ -193,7 +193,7 @@
 			);
 			name = TestSuiteXCTest;
 			productName = TestSuiteXCTest;
-			productReference = 43D68C28D30BCFE500000000 /* TestSuiteXCTest.xctest */;
+			productReference = 43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */ = {
@@ -209,7 +209,7 @@
 			);
 			name = "_indexer_Binary_-4799450061102981736";
 			productName = "_indexer_Binary_-4799450061102981736";
-			productReference = 43D68C28D0BEB74E00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
+			productReference = 43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6C35BF04E00000000 /* NonXCTest */ = {
@@ -225,7 +225,7 @@
 			);
 			name = NonXCTest;
 			productName = NonXCTest;
-			productReference = 43D68C2832A387C300000000 /* NonXCTest.app */;
+			productReference = 43D68C2865470F8600000000 /* NonXCTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -249,7 +249,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = 966FB6DEE342F69A00000000 /* mainGroup */;
+			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
 				3D31C5E6C35BF04E00000000 /* NonXCTest */,
 				3D31C5E67632380200000000 /* TestApplication */,
@@ -312,7 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49479985AEB000000000 /* TestSuiteXCTest.m in TestSuite */,
+				E6AF4947330B5D6000000000 /* TestSuiteXCTest.m in TestSuite */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49471B08EDE700000000 /* main.m in srcs */,
+				E6AF49473611DBCE00000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947A8D3ED0D00000000 /* nonXCTest.m in Three */,
+				E6AF494751A7DA1A00000000 /* nonXCTest.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49479985AEB000000001 /* TestSuiteXCTest.m in TestSuite */,
+				E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
