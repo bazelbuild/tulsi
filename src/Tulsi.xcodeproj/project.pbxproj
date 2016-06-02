@@ -88,13 +88,13 @@
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
 		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
+		3DC5CE0E1CFF3BAC00688AD6 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */; };
 		3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
 		3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */; };
 		3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */; };
 		3DD0DE441C65404F008B0CDF /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */; };
-		3DD0DE451C65404F008B0CDF /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */; };
 		3DD0DE491C656C15008B0CDF /* FilteredOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */; };
 		3DD0EB0E1C40AEC7005C0469 /* OptionsEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */; };
 		3DD0EB101C40AED8005C0469 /* OptionsTargetSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0F1C40AED8005C0469 /* OptionsTargetSelectorController.swift */; };
@@ -232,13 +232,13 @@
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
+		3DC5CE0F1CFF3BAC00688AD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NewProjectViewController.xib; sourceTree = "<group>"; };
 		3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryTests.swift; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
 		3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectInfoExtractor.swift; sourceTree = "<group>"; };
 		3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressNotifier.swift; sourceTree = "<group>"; };
 		3DD0DE421C65404F008B0CDF /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
-		3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
 		3DD0DE461C654E79008B0CDF /* TulsiProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProject.swift; sourceTree = "<group>"; };
 		3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOpenPanel.swift; sourceTree = "<group>"; };
 		3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorController.swift; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 				3DF313B91C34898500A34C14 /* Localizable.strings */,
 				8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */,
 				3D387BAF1C7500B500544AE0 /* NewGeneratorConfigViewController.xib */,
-				3DD0DE431C65404F008B0CDF /* NewProjectViewController.xib */,
+				3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */,
 				8BC3D1031CF3643800D6D10E /* SplashScreenRecentDocumentView.xib */,
 				3D7CED5F1CC171E60073204D /* SplashScreenWindowController.xib */,
 				3D387BB61C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib */,
@@ -730,7 +730,7 @@
 				3D3DDD141CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib in Resources */,
 				8BC3D1051CF3643800D6D10E /* SplashScreenRecentDocumentView.xib in Resources */,
 				8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */,
-				3DD0DE451C65404F008B0CDF /* NewProjectViewController.xib in Resources */,
+				3DC5CE0E1CFF3BAC00688AD6 /* NewProjectViewController.xib in Resources */,
 				3D167E271C5B1FA700DD485C /* Credits.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -951,6 +951,14 @@
 				3DBEFACE1C2A1F7200119556 /* Base */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DC5CE0F1CFF3BAC00688AD6 /* Base */,
+			);
+			name = NewProjectViewController.xib;
 			sourceTree = "<group>";
 		};
 		3DF313B91C34898500A34C14 /* Localizable.strings */ = {

@@ -23,6 +23,10 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   /// The string serialized for boolean options which are 'false'.
   public static let BooleanFalseValue = "NO"
 
+  /// Special keyword that may be used in an option's value in order to inherit a parent option's
+  /// value.
+  public static let InheritKeyword = "$(inherited)"
+
   /// The valid value types for this option.
   public enum ValueType {
     case Bool, String
@@ -54,6 +58,9 @@ public class TulsiOption: Equatable, CustomStringConvertible {
 
     /// An option that may only be persisted into per-user configs.
     static let PerUserOnly = OptionType(rawValue: 1 << 17)
+
+    /// An option that merges its parent's value if the special InheritKeyword string appears.
+    static let SupportsInheritKeyword = OptionType(rawValue: 1 << 18)
   }
 
   /// Name of this option as it should be displayed to the user.
@@ -108,6 +115,33 @@ public class TulsiOption: Equatable, CustomStringConvertible {
       self.targetValues = [String: String]()
     } else {
       self.targetValues = nil
+    }
+  }
+
+  /// Creates a new TulsiOption instance whose value is taken from an existing TulsiOption and may
+  /// inherit parts/all of its values from another parent TulsiOption.
+  init(resolvingValuesFrom opt: TulsiOption, byInheritingFrom parent: TulsiOption) {
+    displayName = opt.displayName
+    userDescription = opt.userDescription
+    valueType = opt.valueType
+    optionType = opt.optionType
+    defaultValue = parent.commonValue
+    projectValue = opt.projectValue
+    targetValues = opt.targetValues
+
+    let inheritValue = defaultValue ?? ""
+    func resolveInheritKeyword(value: String?) -> String? {
+      guard let value = value else { return nil }
+      return value.stringByReplacingOccurrencesOfString(TulsiOption.InheritKeyword,
+                                                        withString: inheritValue)
+    }
+    if optionType.contains(.SupportsInheritKeyword) {
+      projectValue = resolveInheritKeyword(projectValue)
+      if targetValues != nil {
+        for (key, value) in targetValues! {
+          targetValues![key] = resolveInheritKeyword(value)
+        }
+      }
     }
   }
 

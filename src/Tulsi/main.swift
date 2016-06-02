@@ -112,17 +112,6 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
   // MARK: - Private methods
 
   private func resolveConfigPath(path: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
-    let fileManager = NSFileManager.defaultManager()
-
-    if path.hasSuffix(".xcodeproj") || path.hasSuffix(".xcodeproj/"){
-      return try resolveXcodeProjConfigPath(path)
-    }
-
-    if path.hasSuffix(TulsiGeneratorConfig.FileExtension) && fileManager.isReadableFileAtPath(path) {
-      let configURL = NSURL(fileURLWithPath:path, isDirectory: false)
-      return (configURL, nil)
-    }
-
     let tulsiProjExtension = TulsiProjectDocument.getTulsiBundleExtension()
     let components = path.componentsSeparatedByString(":")
     if components.count == 2 {
@@ -152,32 +141,6 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     }
 
     throw Error.InvalidConfigPath("The given config is invalid")
-  }
-
-  private func resolveXcodeProjConfigPath(path: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
-    let fileManager = NSFileManager.defaultManager()
-    let projectURL = NSURL.fileURLWithPath(path, isDirectory: true)
-    let configDirectoryURL = projectURL.URLByAppendingPathComponent(TulsiXcodeProjectGenerator.ConfigDirectorySubpath)
-    if !isExistingDirectory(configDirectoryURL) {
-      throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config folder.")
-    }
-
-    do {
-      let contents = try fileManager.contentsOfDirectoryAtURL(configDirectoryURL,
-                                                              includingPropertiesForKeys: nil,
-                                                              options: .SkipsHiddenFiles)
-      for url in contents {
-        guard let path = url.path else { continue }
-        if path.hasSuffix(TulsiGeneratorConfig.FileExtension) {
-          return (url, projectURL.URLByDeletingLastPathComponent!)
-        }
-      }
-    } catch let e as NSError {
-      throw Error.InvalidConfigPath("Failed to search the given Xcode project: \(e.localizedDescription)")
-    } catch {
-      throw Error.InvalidConfigPath("Failed to search the given Xcode project")
-    }
-    throw Error.InvalidConfigPath("The given Xcode project does not contain a Tulsi config.")
   }
 
   private func resolveConfig(configName: String,
@@ -368,13 +331,15 @@ class CommandlineParser {
         "Where options are:",
         "  \(ParamBazel) <path>: Path to the Bazel binary.",
         "  \(ParamGeneratorConfigLong) <config>: (required)",
-        "    Generates an Xcode project using the given generator config.",
-        "    The <config> may be specified in three ways:",
-        "      * the path to a \".\(TulsiGeneratorConfig.FileExtension)\" file",
-        "      * the path to a Tulsi-generated Xcode project",
-        "        e.g., \"/path/to/MyGeneratedXcodeProject.xcodeproj\"",
-        "      * the path to a Tulsi project followed by a colon \":\" and a config name",
+        "    Generates an Xcode project using the given generator config. The config must be",
+        "      expressed as the path to a Tulsi project, optionally followed by a colon \":\"",
+        "      and a config name.",
         "        e.g., \"/path/to/MyProject.tulsiproj:MyConfig\"",
+        "      omitting the trailing colon/config will attempt to use a config with the same name",
+        "      as the project. i.e.",
+        "        \"MyProject.tulsiproj\"",
+        "      is equivalent to ",
+        "        \"MyProject.tulsiproj:MyProject\"",
         "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
         "  \(ParamOutputFolderLong) <path>: Sets the folder into which the Xcode project should be saved.",
         "  \(ParamWorkspaceRootLong) <path>: (required)",

@@ -255,7 +255,7 @@
                 <tabViewController selectedTabViewItemIndex="0" id="Wnm-kZ-bg4" customClass="ProjectTabViewController" customModule="Tulsi" customModuleProvider="target" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="Packages" id="Ui7-R4-v2G"/>
-                        <tabViewItem label="Default options" id="0Mj-ot-p7A"/>
+                        <tabViewItem label="Shared options" id="0Mj-ot-p7A"/>
                         <tabViewItem label="Configs" identifier="" id="vaV-Ql-hIG"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsNoBorder" id="jhj-7W-YOZ">
@@ -1586,8 +1586,8 @@ Please check this project's packages.</string>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
-                                                        <tableColumn identifier="ProjectValue" width="147.6015625" minWidth="100" maxWidth="4096" headerToolTip="Default value for all targets in this BUILD file" id="6kq-g5-8tW">
-                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Project">
+                                                        <tableColumn identifier="ProjectValue" width="148" minWidth="100" maxWidth="4096" headerToolTip="Default value for all targets in this BUILD file" id="6kq-g5-8tW">
+                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="&lt;Project or Config&gt;">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1606,7 +1606,7 @@ Please check this project's packages.</string>
                                                             </prototypeCellViews>
                                                         </tableColumn>
                                                         <tableColumn identifier="DefaultValue" editable="NO" width="147" minWidth="40" maxWidth="3.4028234663852886e+38" headerToolTip="Built in value for all Tulsi projects" id="mji-9R-mL3">
-                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Default">
+                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="&lt;Default or Project&gt;">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

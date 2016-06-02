@@ -217,7 +217,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
   }
 
   override var defaultValueDisplayItem: String {
-    if let value = option.defaultValue {
+    if let parentOption = model?.parentOptionForOptionKey(key) {
+      if let value = parentOption.commonValue ?? parentOption.defaultValue {
+        return displayItemForValue(value)
+      }
+    } else if let value = option.defaultValue {
       return displayItemForValue(value)
     }
     return NSLocalizedString("OptionsEditor_NoDefault",

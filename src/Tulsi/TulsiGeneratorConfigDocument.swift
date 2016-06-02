@@ -19,6 +19,9 @@ import TulsiGenerator
 protocol TulsiGeneratorConfigDocumentDelegate: class {
   /// Called when the TulsiGeneratorConfigDocument is saved successfully with a new name.
   func didNameTulsiGeneratorConfigDocument(document: TulsiGeneratorConfigDocument)
+
+  /// Used to retrieve project-level option values.
+  func parentOptionSetForConfigDocument(document: TulsiGeneratorConfigDocument) -> TulsiOptionSet?
 }
 
 
@@ -184,7 +187,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     doc.projectRuleInfos = ruleInfos
     doc.additionalFilePaths = additionalFilePaths
-    doc.optionSet = optionSet
     doc.projectName = projectName
     doc.saveFolderURL = saveFolderURL
     doc.infoExtractor = infoExtractor
@@ -500,7 +502,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                     withWorkspaceRootURL workspaceRootURL: NSURL) -> NSURL? {
     assert(!NSThread.isMainThread(), "Must not be called from the main thread")
 
-    guard let config = makeConfig() else {
+    guard let config = makeConfig(withFullyResolvedOptions: true) else {
       let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                   comment: "A general, critical failure during project generation. Details are provided as %1$@.")
       self.error(String(format: fmt, "Generator config is not fully populated."))
@@ -568,10 +570,26 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   var projectName: String? = nil
 
-  var optionSet: TulsiOptionSet? = TulsiOptionSet()
+  var optionSet: TulsiOptionSet? = TulsiOptionSet(withInheritanceEnabled: true)
+
+  var projectValueColumnTitle: String {
+    return NSLocalizedString("OptionsEditor_ColumnTitle_Config",
+                             comment: "Title for the options editor column used to edit per-config values.")
+  }
+
+  var defaultValueColumnTitle: String {
+    return NSLocalizedString("OptionsEditor_ColumnTitle_Project",
+                             comment: "Title for the options editor column used to edit per-tulsiproj values.")
+  }
 
   var optionsTargetUIRuleEntries: [UIRuleInfo]? {
     return selectedUIRuleInfos
+  }
+
+  func parentOptionForOptionKey(key: TulsiOptionKey) -> TulsiOption? {
+    // Return the project-level option for the given key to indicate inheritance.
+    guard let parentOptionSet = delegate?.parentOptionSetForConfigDocument(self) else { return nil }
+    return parentOptionSet[key]
   }
 
   // MARK: - NSUserInterfaceValidations
@@ -662,10 +680,21 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  private func makeConfig() -> TulsiGeneratorConfig? {
+  private func makeConfig(withFullyResolvedOptions resolve: Bool = false) -> TulsiGeneratorConfig? {
     guard let concreteProjectName = projectName,
               concreteOptionSet = optionSet else {
       return nil
+    }
+
+    let configOptions: TulsiOptionSet
+    if resolve {
+      guard let resolvedOptionSet = resolveOptionSet() else {
+        assertionFailure("Failed to resolve option set.")
+        return nil
+      }
+      configOptions = resolvedOptionSet
+    } else {
+      configOptions = concreteOptionSet
     }
 
     let pathFilters = Set<String>(selectedSourcePaths.map() {
@@ -681,16 +710,24 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                   buildTargets: selectedRuleInfos,
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
-                                  options: concreteOptionSet,
+                                  options: configOptions,
                                   bazelURL: bazelURL)
     } else {
       return TulsiGeneratorConfig(projectName: concreteProjectName,
                                   buildTargetLabels: buildTargetLabels ?? [],
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
-                                  options: concreteOptionSet,
+                                  options: configOptions,
                                   bazelURL: bazelURL)
     }
+  }
+
+  private func resolveOptionSet() -> TulsiOptionSet? {
+    guard let configOptionSet = optionSet else { return nil }
+    guard let parentOptionSet = delegate?.parentOptionSetForConfigDocument(self) else {
+      return configOptionSet
+    }
+    return configOptionSet.optionSetByInheritingFrom(parentOptionSet)
   }
 
   /// Resolves buildTargetLabels, leaving them populated with any labels that failed to be resolved.

@@ -56,6 +56,15 @@
 /* Value to show when a boolean option is 'false'. This should match Xcode's localization. */
 "OptionsEditor_FalseValue" = "No";
 
+/* Title for the options editor column used to edit per-config values. */
+"OptionsEditor_ColumnTitle_Config" = "Config";
+
+/* Title for the options editor column used to display the built-in default values. */
+"OptionsEditor_ColumnTitle_Default" = "Default";
+
+/* Title for the options editor column used to edit per-tulsiproj values. */
+"OptionsEditor_ColumnTitle_Project" = "Project";
+
 /* Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
 "ProjectEditor_AddBUILDFilePrompt" = "Add";
 

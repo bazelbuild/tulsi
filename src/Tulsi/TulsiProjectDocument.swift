@@ -456,6 +456,10 @@ final class TulsiProjectDocument: NSDocument,
     }
   }
 
+  func parentOptionSetForConfigDocument(_: TulsiGeneratorConfigDocument) -> TulsiOptionSet? {
+    return optionSet
+  }
+
   // MARK: - OptionsEditorModelProtocol
 
   var projectName: String? {
@@ -466,6 +470,16 @@ final class TulsiProjectDocument: NSDocument,
   var optionSet: TulsiOptionSet? {
     guard let concreteProject = project else { return nil }
     return concreteProject.options
+  }
+
+  var projectValueColumnTitle: String {
+    return NSLocalizedString("OptionsEditor_ColumnTitle_Project",
+                             comment: "Title for the options editor column used to edit per-tulsiproj values.")
+  }
+
+  var defaultValueColumnTitle: String {
+    return NSLocalizedString("OptionsEditor_ColumnTitle_Default",
+                             comment: "Title for the options editor column used to display the built-in default values.")
   }
 
   var optionsTargetUIRuleEntries: [UIRuleInfo]? {

@@ -100,9 +100,9 @@ public class TulsiOptionSet: Equatable {
     return dict[TulsiOptionSet.PersistenceKey] as? PersistenceType
   }
 
-  public init() {
+  public init(withInheritanceEnabled inherit: Bool = false) {
     let bundle = NSBundle(forClass: self.dynamicType)
-    populateOptionsWithBundle(bundle)
+    populateOptionsWithBundle(bundle, withInheritAsDefault: inherit)
     populateOptionGroupInfoWithBundle(bundle)
   }
 
@@ -119,6 +119,23 @@ public class TulsiOptionSet: Equatable {
         option.deserialize(value)
       }
     }
+  }
+
+  /// Returns a new TulsiOptionSet by using the given parent as a base and applying this option
+  /// set's options as overrides.
+  public func optionSetByInheritingFrom(parent: TulsiOptionSet) -> TulsiOptionSet {
+    var resolvedOptions = [TulsiOptionKey: TulsiOption]()
+    for (key, opt) in options {
+      guard let parentOption = parent.options[key] else {
+        resolvedOptions[key] = opt
+        continue
+      }
+      resolvedOptions[key] = TulsiOption(resolvingValuesFrom: opt, byInheritingFrom: parentOption)
+    }
+
+    let resolvedSet = TulsiOptionSet()
+    resolvedSet.options = resolvedOptions
+    return resolvedSet
   }
 
   func saveShareableOptionsIntoDictionary(inout dict: [String: AnyObject]) {
@@ -182,7 +199,7 @@ public class TulsiOptionSet: Equatable {
     return serialized
   }
 
-  private func populateOptionsWithBundle(bundle: NSBundle) {
+  private func populateOptionsWithBundle(bundle: NSBundle, withInheritAsDefault inherit: Bool) {
     func addOption(optionKey: TulsiOptionKey, valueType: TulsiOption.ValueType, optionType: TulsiOption.OptionType, defaultValue: String?) {
       let key = optionKey.rawValue
       let displayName = bundle.localizedStringForKey(key, value: nil, table: "Options")
@@ -190,11 +207,15 @@ public class TulsiOptionSet: Equatable {
       var description = bundle.localizedStringForKey(descriptionKey, value: nil, table: "Options")
       if description == descriptionKey { description = "" }
 
-      options[optionKey] = TulsiOption(displayName: displayName,
-                                       userDescription: description,
-                                       valueType: valueType,
-                                       optionType: optionType,
-                                       defaultValue: defaultValue)
+      let opt = TulsiOption(displayName: displayName,
+                            userDescription: description,
+                            valueType: valueType,
+                            optionType: optionType,
+                            defaultValue: defaultValue)
+      if inherit && optionType.contains(.SupportsInheritKeyword) {
+        opt.projectValue = TulsiOption.InheritKeyword
+      }
+      options[optionKey] = opt
     }
 
     func addBoolOption(optionKey: TulsiOptionKey, _ optionType: TulsiOption.OptionType, _ defaultValue: Bool = false) {
@@ -207,16 +228,15 @@ public class TulsiOptionSet: Equatable {
     }
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
-    addStringOption(.BazelBuildOptionsDebug, .TargetSpecializable)
-    addStringOption(.BazelBuildOptionsFastbuild, .TargetSpecializable)
-    addStringOption(.BazelBuildOptionsRelease, .TargetSpecializable)
-    addStringOption(.BazelBuildStartupOptionsDebug, .TargetSpecializable)
-    addStringOption(.BazelBuildStartupOptionsFastbuild, .TargetSpecializable)
-    addStringOption(.BazelBuildStartupOptionsRelease, .TargetSpecializable)
+    addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BazelBuildOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BazelBuildStartupOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.IPHONEOS_DEPLOYMENT_TARGET, .BuildSetting, "8.4")
     addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
-
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])

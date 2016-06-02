@@ -198,11 +198,21 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
   let storyboard: NSStoryboard
   weak var view: NSOutlineView!
+  // The table column used to display system or tulsiproj defaults.
+  let defaultValueColumn: NSTableColumn
+  // The table column used to display project-wide options.
+  let projectValueColumn: NSTableColumn
   // The table column used to display build target-specific build options.
   let targetValueColumn: NSTableColumn
 
   dynamic var nodes = [OptionsEditorNode]()
-  weak var model: OptionsEditorModelProtocol? = nil
+  weak var model: OptionsEditorModelProtocol? = nil {
+    didSet {
+      guard let model = model else { return }
+      defaultValueColumn.title = model.defaultValueColumnTitle
+      projectValueColumn.title = model.projectValueColumnTitle
+    }
+  }
 
   // Popover containing a multiline editor for an option the user double clicked on.
   var popoverEditor: NSPopover! = nil
@@ -211,7 +221,9 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   init(view: NSOutlineView, storyboard: NSStoryboard) {
     self.view = view
     self.storyboard = storyboard
-    self.targetValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.targetColumnIdentifier)!
+    defaultValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.defaultColumnIdentifier)!
+    projectValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.projectColumnIdentifier)!
+    targetValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.targetColumnIdentifier)!
     super.init()
     self.view.setDelegate(self)
   }
@@ -229,7 +241,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     var newOptionNodes = [OptionsEditorNode]()
     var optionGroupNodes = [TulsiOptionKeyGroup: OptionsEditorGroupNode]()
 
-    guard let visibleOptions = model?.optionSet?.allVisibleOptions else { return }
+    let optionSet = model?.optionSet
+    guard let visibleOptions = optionSet?.allVisibleOptions else { return }
     for (key, option) in visibleOptions {
       let newNode: OptionsEditorNode
       switch option.valueType {
@@ -239,7 +252,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
           newNode = OptionsEditorStringNode(key: key, option: option, model: model, target: target)
       }
 
-      if let (group, displayName, description) = model?.optionSet?.groupInfoForOptionKey(key) {
+      if let (group, displayName, description) = optionSet?.groupInfoForOptionKey(key) {
         var parent: OptionsEditorGroupNode! = optionGroupNodes[group]
         if parent == nil {
           parent = OptionsEditorGroupNode(key: group,
