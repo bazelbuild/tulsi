@@ -68,8 +68,6 @@ class _OptionsParser(object):
 
             'Debug': [
                 '--compilation_mode=dbg',
-                # TODO(abaire): Remove when symbols are enabled for CC via compilation_mode.
-                '--copt=-g',
             ],
 
             'Release': [
