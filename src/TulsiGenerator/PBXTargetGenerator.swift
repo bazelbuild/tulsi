@@ -722,6 +722,10 @@ class PBXTargetGenerator {
     }
     let target = project.createNativeTarget(name, targetType: pbxTargetType)
 
+    for f in entry.secondaryArtifacts {
+      project.createProductReference(f.fullPath)
+    }
+
     var buildSettings = options.buildSettingsForTarget(name)
     buildSettings["BUILD_PATH"] = entry.label.packageName!
     buildSettings["PRODUCT_NAME"] = name

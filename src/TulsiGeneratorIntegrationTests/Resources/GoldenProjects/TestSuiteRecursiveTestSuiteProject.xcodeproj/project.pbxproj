@@ -40,6 +40,7 @@
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28DF91878C00000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_TestSuiteXCTest_-4799450060952101021.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F35B462E00000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -49,6 +50,7 @@
 				43D68C2865470F8600000000 /* NonXCTest.app */,
 				43D68C285A2F8B6E00000000 /* TestApplication.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
+				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */,
 				43D68C284C6192DE00000000 /* lib_indexer_NonXCTest_4799450060268549067.a */,
 				43D68C28DF91878C00000000 /* lib_indexer_TestSuiteXCTest_-4799450060952101021.a */,
@@ -59,15 +61,23 @@
 		966FB6DE2FAB912400000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B7EA446800000000 /* BUILD */,
-				966FB6DEC5C9C21400000000 /* Binary */,
-				966FB6DE2FAB912400000001 /* TestSuite */,
-				966FB6DE40114F7800000000 /* Three */,
+				43D68C28F35B462E00000000 /* TestApplication-MergedInfo.plist */,
 			);
 			path = TestSuite;
 			sourceTree = "<group>";
 		};
 		966FB6DE2FAB912400000001 /* TestSuite */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28B7EA446800000000 /* BUILD */,
+				966FB6DEC5C9C21400000000 /* Binary */,
+				966FB6DE2FAB912400000002 /* TestSuite */,
+				966FB6DE40114F7800000000 /* Three */,
+			);
+			path = TestSuite;
+			sourceTree = "<group>";
+		};
+		966FB6DE2FAB912400000002 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C28330B5D6000000000 /* TestSuiteXCTest.m */,
@@ -84,11 +94,19 @@
 			path = Three;
 			sourceTree = "<group>";
 		};
+		966FB6DE7399E4B800000000 /* bazel-bin */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE2FAB912400000000 /* TestSuite */,
+			);
+			path = "bazel-bin";
+			sourceTree = "<group>";
+		};
 		966FB6DEB6031FE700000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE2FAB912400000000 /* TestSuite */,
+				966FB6DE2FAB912400000001 /* TestSuite */,
 			);
 			name = mainGroup;
 			path = ../..;

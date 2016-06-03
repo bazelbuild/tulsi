@@ -53,6 +53,7 @@
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28C7966CBA00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HdrsHeader.h; sourceTree = "<group>"; };
 		43D68C28CA05720000000000 /* lib_indexer_XCTest_4799450059533471296.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450059533471296.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28E69B2FB000000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -74,6 +75,7 @@
 			children = (
 				43D68C28F49055A600000000 /* Application.app */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
+				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C286F4BA8F200000000 /* lib_indexer_Binary_4799450059964562858.a */,
 				43D68C283AC99B8600000000 /* lib_indexer_Library_-4799450061039509283.a */,
 				43D68C28CA05720000000000 /* lib_indexer_XCTest_4799450059533471296.a */,
@@ -113,6 +115,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		966FB6DE7399E4B800000000 /* bazel-bin */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEC37E5B4800000000 /* tulsi_e2e_simple */,
+			);
+			path = "bazel-bin";
+			sourceTree = "<group>";
+		};
 		966FB6DE8E7A5E7800000000 /* bridging_header */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DEC37E5B4800000000 /* tulsi_e2e_simple */,
+				966FB6DEC37E5B4800000001 /* tulsi_e2e_simple */,
 			);
 			name = mainGroup;
 			path = ../..;
@@ -168,6 +178,14 @@
 			sourceTree = "<group>";
 		};
 		966FB6DEC37E5B4800000000 /* tulsi_e2e_simple */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */,
+			);
+			path = tulsi_e2e_simple;
+			sourceTree = "<group>";
+		};
+		966FB6DEC37E5B4800000001 /* tulsi_e2e_simple */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE6B144ABC00000000 /* Application */,

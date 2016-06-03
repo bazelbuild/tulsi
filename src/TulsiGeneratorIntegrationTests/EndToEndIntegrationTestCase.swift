@@ -106,6 +106,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     // Bazel built-in preprocessor defines are suppressed in order to prevent any
     // environment-dependent variables from mismatching the golden data.
     projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true
+    // Output directory generation is suppressed in order to prevent having to whitelist diffs of
+    // empty directories.
+    projectGenerator.xcodeProjectGenerator.suppressGeneratedArtifactFolderCreation = true
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

@@ -75,7 +75,10 @@ _IPA_GENERATING_RULES = set([
 ])
 
 # Set of rules that generate MergedInfo.plist files as part of the build.
-_MERGEDINFOPLIST_GENERATING_RULES = _IPA_GENERATING_RULES
+_MERGEDINFOPLIST_GENERATING_RULES = set([
+    'apple_watch1_extension',
+    'ios_application',
+])
 
 # Set of rules whose outputs should be treated as generated sources.
 _SOURCE_GENERATING_RULES = set([
@@ -111,7 +114,7 @@ def _convert_outpath_to_symlink_path(path):
 
 
 def _file_metadata(f):
-  """Returns metadata about a given file label."""
+  """Returns metadata about a given File."""
   if not f:
     return None
 
@@ -328,11 +331,20 @@ def _includes_for_objc_proto_files(generated_files, rule_name):
   return ret
 
 
-def _collect_secondary_artifacts(rule):
+def _collect_secondary_artifacts(target, ctx):
   """Returns a list of file metadatas for implicit outputs of 'rule'."""
   artifacts = []
+  rule = ctx.rule
   if rule.kind in _MERGEDINFOPLIST_GENERATING_RULES:
-    pass
+    bin_dir = _convert_outpath_to_symlink_path(ctx.configuration.bin_dir.path)
+    package = target.label.package
+    basename = target.label.name
+    artifacts.append(_struct_omitting_none(
+        path='%s/%s-MergedInfo.plist' % (package, basename),
+        src=False,
+        root=bin_dir
+    ))
+
   return artifacts
 
 
@@ -428,7 +440,7 @@ def _tulsi_sources_aspect(target, ctx):
       ipa_output_label=ipa_output_label,
       label=str(target.label),
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
-      secondary_product_artifacts=_collect_secondary_artifacts(rule),
+      secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
       type=target_kind,
   )
