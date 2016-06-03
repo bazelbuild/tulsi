@@ -211,7 +211,8 @@ final class XcodeProjectGenerator {
                                          attributes: [:],
                                          sourceFiles: [],
                                          nonARCSourceFiles: [],
-                                         dependencies: Set<String>()))
+                                         dependencies: Set<String>(),
+                                         secondaryArtifacts: []))
     }
 
     let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(mainGroup)

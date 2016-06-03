@@ -110,7 +110,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                              attributes: [:],
                              sourceFiles: [],
                              nonARCSourceFiles: [],
-                             dependencies: Set<String>())
+                             dependencies: Set<String>(),
+                             secondaryArtifacts: [])
     }
     return ret
   }

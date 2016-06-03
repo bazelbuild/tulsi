@@ -224,7 +224,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT) $(TULSI_WORKSPACE_ROOT)/bazel-bin $(TULSI_WORKSPACE_ROOT)/bazel-genfiles $(TULSI_WORKSPACE_ROOT)/additional $(TULSI_WORKSPACE_ROOT)/include/paths",
+        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT) $(TULSI_WORKSPACE_ROOT)/additional $(TULSI_WORKSPACE_ROOT)/bazel-bin $(TULSI_WORKSPACE_ROOT)/bazel-genfiles $(TULSI_WORKSPACE_ROOT)/include/paths",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
@@ -257,8 +257,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildPath = "test/objclib"
     let rule2TargetName = "ObjectiveCLibrary"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
+    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = [
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
       makeTestRuleEntry(rule2BuildTarget, type: "objc_library"),
     ]
 
@@ -277,7 +278,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
+          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -341,9 +342,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "TestBundle"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = ["xctest_app": rule1BuildTarget]
+    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = [
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
-      makeTestRuleEntry(rule2BuildTarget, type: "ios_test", attributes: rule2Attributes),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
+      makeTestRuleEntry(rule2BuildTarget,
+                        type: "ios_test",
+                        attributes: rule2Attributes,
+                        implicitIPATarget: ipa),
     ]
 
     do {
@@ -362,7 +367,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
+          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -391,7 +396,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
+          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BUILD_PATH": rule2BuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": rule2TargetName,
@@ -430,12 +435,15 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = ["xctest_app": rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
+    let appIPA = BuildLabel("test/app:TestApplication.ipa")
+    let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: "ios_test",
                                      attributes: testRuleAttributes,
-                                     sourceFiles: testSources)
+                                     sourceFiles: testSources,
+                                     implicitIPATarget: testIPA)
     let rules = [
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: appIPA),
       testRule,
     ]
     do {
@@ -454,7 +462,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": "test/app/TestApplication.ipa",
+          "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
       ]
@@ -497,7 +505,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
+          "BAZEL_TARGET_IPA": testIPA.asFileName!,
           "BUILD_PATH": testRuleBuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": testRuleTargetName,
@@ -586,10 +594,12 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = ["xctest_app": rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
+    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: "ios_test",
                                      attributes: testRuleAttributes,
-                                     sourceFiles: testSources)
+                                     sourceFiles: testSources,
+                                     implicitIPATarget: ipa)
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([testRule])
     } catch let e as NSError {
@@ -603,7 +613,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": "test/testbundle/TestBundle.ipa",
+          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BUILD_PATH": testRuleBuildPath,
           "PRODUCT_NAME": testRuleTargetName,
       ]
@@ -643,9 +653,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule1BuildTarget = "\(rule1BuildPath):\(targetName)"
     let rule2BuildPath = "test/test2"
     let rule2BuildTarget = "\(rule2BuildPath):\(targetName)"
+    let rule1IPA = BuildLabel("test/test1:\(targetName).ipa")
+    let rule2IPA = BuildLabel("test/test2:\(targetName).ipa")
     let rules = [
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
-      makeTestRuleEntry(rule2BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: rule1IPA),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application", implicitIPATarget: rule2IPA),
     ]
 
     do {
@@ -663,7 +675,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test1:\(targetName)",
-          "BAZEL_TARGET_IPA": "test/test1/\(targetName).ipa",
+          "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
           "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": "test-test1-SameName",
       ]
@@ -692,7 +704,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test2:\(targetName)",
-          "BAZEL_TARGET_IPA": "test/test2/\(targetName).ipa",
+          "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "BUILD_PATH": rule2BuildPath,
           "PRODUCT_NAME": "test-test2-SameName",
       ]
@@ -942,13 +954,15 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set<String>(),
-                                 buildFilePath: String? = nil) -> RuleEntry {
+                                 buildFilePath: String? = nil,
+                                 implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
                              type: type,
                              attributes: attributes,
                              sourceFiles: sourceFiles,
                              dependencies: dependencies,
-                             buildFilePath: buildFilePath)
+                             buildFilePath: buildFilePath,
+                             implicitIPATarget: implicitIPATarget)
   }
 
   private class TestBazelFileInfo : BazelFileInfo {
@@ -962,7 +976,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set<String>(),
-                                 buildFilePath: String? = nil) -> RuleEntry {
+                                 buildFilePath: String? = nil,
+                                 implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
     return RuleEntry(label: label,
                      type: type,
@@ -970,7 +985,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                      sourceFiles: sourceInfos,
                      nonARCSourceFiles: [],
                      dependencies: dependencies,
-                     buildFilePath: buildFilePath)
+                     secondaryArtifacts: [],
+                     buildFilePath: buildFilePath,
+                     implicitIPATarget: implicitIPATarget)
   }
 
   private struct TargetDefinition {

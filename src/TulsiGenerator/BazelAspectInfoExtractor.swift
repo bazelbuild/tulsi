@@ -216,16 +216,29 @@ final class BazelAspectInfoExtractor {
         }
         sources.append(pathInfo)
       }
-      let nonARCSourceInfos = dict["non_arc_srcs"] as? [[String: AnyObject]] ?? []
-      var nonARCSources = [BazelFileInfo]()
-      for info in nonARCSourceInfos {
-        if let pathInfo = BazelFileInfo(info: info) {
-          nonARCSources.append(pathInfo)
+
+      func MakeBazelFileInfos(attributeName: String) -> [BazelFileInfo] {
+        let infos = dict[attributeName] as? [[String: AnyObject]] ?? []
+        var bazelFileInfos = [BazelFileInfo]()
+        for info in infos {
+          if let pathInfo = BazelFileInfo(info: info) {
+            bazelFileInfos.append(pathInfo)
+          }
         }
+        return bazelFileInfos
       }
+      let nonARCSources = MakeBazelFileInfos("non_arc_srcs")
+
       let generatedIncludePaths = dict["generated_includes"] as? [String]
       let dependencies = dict["deps"] as? [String] ?? []
       let buildFilePath = dict["build_file"] as? String
+      let implictIPATarget: BuildLabel?
+      if let ipaLabel = dict["ipa_output_label"] as? String {
+        implictIPATarget = BuildLabel(ipaLabel)
+      } else {
+        implictIPATarget = nil
+      }
+      let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
 
       let ruleEntry = RuleEntry(label: ruleLabel,
                                 type: ruleType,
@@ -233,8 +246,10 @@ final class BazelAspectInfoExtractor {
                                 sourceFiles: sources,
                                 nonARCSourceFiles: nonARCSources,
                                 dependencies: Set<String>(dependencies),
+                                secondaryArtifacts: secondaryArtifacts,
                                 buildFilePath: buildFilePath,
-                                generatedIncludePaths: generatedIncludePaths)
+                                generatedIncludePaths: generatedIncludePaths,
+                                implicitIPATarget: implictIPATarget)
       progressNotifier?.incrementValue()
       return ruleEntry
     }

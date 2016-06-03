@@ -65,6 +65,18 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'xibs',
 ]
 
+# Set of rules with implicit <label>.ipa IPA outputs.
+_IPA_GENERATING_RULES = set([
+    'apple_watch1_extension',
+    'ios_application',
+    'ios_extension',
+    'ios_test',
+    'objc_binary',
+])
+
+# Set of rules that generate MergedInfo.plist files as part of the build.
+_MERGEDINFOPLIST_GENERATING_RULES = _IPA_GENERATING_RULES
+
 # Set of rules whose outputs should be treated as generated sources.
 _SOURCE_GENERATING_RULES = set([
     'j2objc_library',
@@ -316,6 +328,14 @@ def _includes_for_objc_proto_files(generated_files, rule_name):
   return ret
 
 
+def _collect_secondary_artifacts(rule):
+  """Returns a list of file metadatas for implicit outputs of 'rule'."""
+  artifacts = []
+  if rule.kind in _MERGEDINFOPLIST_GENERATING_RULES:
+    pass
+  return artifacts
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -394,16 +414,22 @@ def _tulsi_sources_aspect(target, ctx):
   if binary_attributes:
     inheritable_attributes = binary_attributes + inheritable_attributes
 
+  ipa_output_label = None
+  if target_kind in _IPA_GENERATING_RULES:
+    ipa_output_label = str(target.label) + '.ipa'
+
   all_attributes = attributes + inheritable_attributes
   info = _struct_omitting_none(
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       deps=compile_deps,
-      label=str(target.label),
-      srcs=srcs,
-      non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       generated_files=generated_files,
       generated_includes=generated_includes,
+      ipa_output_label=ipa_output_label,
+      label=str(target.label),
+      non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
+      secondary_product_artifacts=_collect_secondary_artifacts(rule),
+      srcs=srcs,
       type=target_kind,
   )
 
