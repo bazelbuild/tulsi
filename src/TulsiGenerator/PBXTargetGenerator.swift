@@ -303,7 +303,7 @@ class PBXTargetGenerator {
     buildSettings["TULSI_WORKSPACE_ROOT"] = sourceDirectory
     buildSettings["TULSI_VERSION"] = tulsiVersion
 
-    var searchPaths = ["$(TULSI_WORKSPACE_ROOT)",
+    let searchPaths = ["$(TULSI_WORKSPACE_ROOT)",
                        "$(TULSI_WORKSPACE_ROOT)/\(bazelBinPath)",
                        "$(TULSI_WORKSPACE_ROOT)/\(bazelGenfilesPath)",
     ]
