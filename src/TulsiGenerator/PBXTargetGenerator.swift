@@ -278,8 +278,8 @@ class PBXTargetGenerator {
     }
   }
 
-  /// Generates top level build configurations with an optional set of additional include paths.
-  func generateTopLevelBuildConfigurations(additionalIncludePaths: Set<String>? = nil) {
+  /// Generates top level build configurations.
+  func generateTopLevelBuildConfigurations() {
     var buildSettings = options.commonBuildSettings()
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
     // Fixes an Xcode "Upgrade to recommended settings" warning. Technically the warning only
@@ -307,10 +307,6 @@ class PBXTargetGenerator {
                        "$(TULSI_WORKSPACE_ROOT)/\(bazelBinPath)",
                        "$(TULSI_WORKSPACE_ROOT)/\(bazelGenfilesPath)",
     ]
-    if let additionalIncludePaths = additionalIncludePaths {
-      let rootedPaths = additionalIncludePaths.sort().map({"$(TULSI_WORKSPACE_ROOT)/\($0)"})
-      searchPaths.appendContentsOf(rootedPaths)
-    }
     buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)

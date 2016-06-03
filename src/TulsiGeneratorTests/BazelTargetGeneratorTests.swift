@@ -211,34 +211,6 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
   }
 
-  func testGenerateTopLevelBuildConfigurationsWithAdditionalIncludes() {
-    let additionalIncludePaths = Set<String>(["additional", "include/paths"])
-    targetGenerator.generateTopLevelBuildConfigurations(additionalIncludePaths)
-
-    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 3)
-
-    let topLevelBuildSettings = [
-        "ALWAYS_SEARCH_USER_PATHS": "NO",
-        "CLANG_ENABLE_OBJC_ARC": "YES",
-        "CODE_SIGN_IDENTITY": "",
-        "CODE_SIGNING_REQUIRED": "NO",
-        "ENABLE_TESTABILITY": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT) $(TULSI_WORKSPACE_ROOT)/additional $(TULSI_WORKSPACE_ROOT)/bazel-bin $(TULSI_WORKSPACE_ROOT)/bazel-genfiles $(TULSI_WORKSPACE_ROOT)/include/paths",
-        "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
-        "ONLY_ACTIVE_ARCH": "YES",
-        "SDKROOT": sdkRoot,
-        "TULSI_VERSION": testTulsiVersion,
-        "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
-    ]
-    XCTAssertNotNil(topLevelConfigs["Debug"])
-    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, debugBuildSettingsFromSettings(topLevelBuildSettings))
-    XCTAssertNotNil(topLevelConfigs["Release"])
-    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, releaseBuildSettingsFromSettings(topLevelBuildSettings))
-    XCTAssertNotNil(topLevelConfigs["Fastbuild"])
-    XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
-  }
-
   func testGenerateTargetsForRuleEntriesWithNoEntries() {
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([])
