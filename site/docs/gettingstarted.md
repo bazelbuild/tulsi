@@ -23,9 +23,10 @@ re-run Tulsi is if you want to add additional build targets or have new source
 files show up in Xcode for editing.
 
 # What Bazel flags are used when building?
+
 __Note__: this list is limited to "interesting" flags and is not necessarily
 perfectly up to date. The current set of flags can be seen in the
-[bazel_build.py script](https://bazel.googlesource.com/tulsi/+/master/src/TulsiGenerator/Scripts/bazel_build.py)
+[`bazel_build.py` script](https://bazel.googlesource.com/tulsi/+/master/src/TulsiGenerator/Scripts/bazel_build.py)
 and their operation can be retrieved from Bazel's help.
 
 Flags used for all build modes:
@@ -61,7 +62,7 @@ Release mode flags:
 
 ## The Tulsi project editor
 
-1. __Create a new Tulsi project__
+### 1. Create a new Tulsi project
 
    Tulsi leverages a project bundle which captures the set of Bazel packages in
    your project and provides a convenient location to store shared generator
@@ -85,7 +86,7 @@ Release mode flags:
 
    ![EmptyPackages](/images/0020_EmptyPackages.png "Empty package tab")
 
-1. __Add BUILD files__
+### 2. Add BUILD files
 
    Click on the "+" button to add your BUILD file. Repeat this step if you have
    more than one BUILD file containing targets you wish to build directly. For
@@ -94,7 +95,7 @@ Release mode flags:
 
    ![SelectBUILDFile](/images/0030_SelectBUILDFile.png "Add a BUILD file")
 
-1. __Set default options if applicable__
+### 3. Set default options if applicable
 
    Tulsi allows you to set various options that are used by the generated Xcode
    project. Probably the most interesting are the "'build' options", which are
@@ -107,7 +108,7 @@ Release mode flags:
 
    ![DefaultOptions](/images/0040_DefaultOptions.png "Set default options")
 
-1. __Create project generator configs__
+### 4. Create project generator configs
 
    The final step in setting up your project is to create one or more generator
    configurations. A larger project might have several gen configs, perhaps one
@@ -136,7 +137,7 @@ Release mode flags:
 
 Tulsi generator configuration files are created through a simple wizard flow.
 
-1. __Select build targets__
+### 1. Select build targets
 
    The first page of the config editor shows the full list of targets contained
    in the BUILD files associated with the project.
@@ -144,12 +145,12 @@ Tulsi generator configuration files are created through a simple wizard flow.
    ![ConfigBuildTargets](/images/0070_ConfigBuildTargets.png "Config build targets")
 
    Select one or more targets that you want to build in Xcode. For a typical
-   project, like the PrenotCalculator demo, you'll choose your ios_application
-   and maybe associated ios_test targets.
+   project, like the PrenotCalculator demo, you'll choose your `ios_application`
+   and maybe associated `ios_test` targets.
 
    ![ConfigBuildTargetSelected](/images/0080_ConfigBuildTargetSelected.png "Select one or more build targets")
 
-1. __Set options__
+### 2. Set options
 
    If you need to set any options for your config, this is the place. The option
    editor will be prepopulated with the values set in the "Default options" tab
@@ -167,7 +168,7 @@ Tulsi generator configuration files are created through a simple wizard flow.
    ![ConfigEditingProjectOption](/images/0120_ConfigEditingProjectOption.png "Example of an edited option")
    ![ConfigModifiedProjectOption](/images/0130_ConfigModifiedProjectOption.png "An edited option")
 
-1. __Select source targets__
+### 3. Select source targets
 
    The wizard will then show the dependencies of the build targets you've
    selected that contain source files. This allows you to select a working set
@@ -180,7 +181,7 @@ Tulsi generator configuration files are created through a simple wizard flow.
 
    ![ConfigAllSourceTargetsSelected](/images/0090_ConfigAllSourceTargetsSelected.png "Select source targets")
 
-1. __Set the config's name if necessary__
+### 4. Set the config's name if necessary
 
    If this is a new generator config, you'll be asked to provide a name before
    saving. This name is used only to differentiate configs and does not have a

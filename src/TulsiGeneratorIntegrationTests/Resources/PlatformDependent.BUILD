@@ -25,6 +25,7 @@ objc_binary(
         "Binary/srcs/main.m",
     ],
     deps = [
+        ":J2ObjCLibrary",
         ":ObjCProtoLibrary",
     ],
 )
@@ -39,4 +40,16 @@ objc_proto_library(
     deps = [
         ":ProtoLibrary",
     ],
+)
+
+j2objc_library(
+    name = "J2ObjCLibrary",
+    deps = [
+        ":JavaLibrary",
+    ],
+)
+
+java_library(
+    name = "JavaLibrary",
+    srcs = ["file.java"],
 )

@@ -1,9 +1,7 @@
 ---
-layout: community
+layout: default
 title: Governance
 ---
-
-# Governance
 
 The Tulsi project is led by a core group of contributors, initially Googlers,
 and managed by the community. The group of core contributors is self-managing -
@@ -52,10 +50,8 @@ list), but this will hopefully change over time.
 
 ### Core Contributors
 
-<p class="lead">
 Contact the core team at <a href="mailto:tulsi-dev@googlegroups.com">
 tulsi-dev@googlegroups.com</a>.
-</p>
 
 The current group is:
 

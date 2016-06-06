@@ -1,7 +1,6 @@
 ---
 layout: default
 title: FAQ
-nav: faq
 ---
 
 # How do I build for debug/fastbuild/release?
@@ -23,10 +22,12 @@ The Tulsi build script produces a ton of interesting debugging data that isn't
 shown by default in the Xcode UI. Luckily it's very simple to retrieve:
 
 ## To expand everything:
+
 Open up the Xcode Report navigator, right click anyplace in the build log and
 select "Expand All Transcripts."
 
 ## To expand one particular action:
+
 Open up the Xcode Report navigator, scroll down to the action you'd like to
 expand, and click on the expander button on the right hand side.
 

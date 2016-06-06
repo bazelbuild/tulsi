@@ -281,8 +281,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 4)
-
+    XCTAssertEqual(ruleEntries.count, 5)
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:Application")
@@ -290,7 +289,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:ObjCLibrary")
+        .dependsOn("//tulsi_test:J2ObjCLibrary")
         .hasSources(["tulsi_test/Binary/srcs/main.m"])
+
+    checker.assertThat("//tulsi_test:J2ObjCLibrary")
+        .exists()
 
     checker.assertThat("//tulsi_test:ObjCProtoLibrary")
         .containsSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
@@ -406,16 +409,16 @@ private class InfoChecker {
   class Context {
     let ruleEntry: RuleEntry?
     let ruleEntries: [BuildLabel: RuleEntry]
-    let resolvedSourceFiles: [String]
-    let resolvedNonARCSourceFiles: [String]
+    let resolvedSourceFiles: Set<String>
+    let resolvedNonARCSourceFiles: Set<String>
 
     init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
       self.ruleEntry = ruleEntry
       self.ruleEntries = ruleEntries
 
       if let ruleEntry = ruleEntry {
-        resolvedSourceFiles = ruleEntry.sourceFiles.map() { $0.fullPath }
-        resolvedNonARCSourceFiles = ruleEntry.nonARCSourceFiles.map() { $0.fullPath }
+        resolvedSourceFiles = Set(ruleEntry.sourceFiles.map() { $0.fullPath })
+        resolvedNonARCSourceFiles = Set(ruleEntry.nonARCSourceFiles.map() { $0.fullPath })
       } else {
         resolvedSourceFiles = []
         resolvedNonARCSourceFiles = []
@@ -443,7 +446,7 @@ private class InfoChecker {
       guard let ruleEntry = ruleEntry else { return self }
       for s in sources {
         XCTAssert(resolvedSourceFiles.contains(s),
-                  "\(ruleEntry) missing expected source file '\(s)' from \(resolvedSourceFiles)",
+                  "\(ruleEntry) missing expected source file '\(s)'",
                   line: line)
       }
       return self
@@ -466,7 +469,7 @@ private class InfoChecker {
       guard let ruleEntry = ruleEntry else { return self }
       for s in sources {
         XCTAssert(resolvedNonARCSourceFiles.contains(s),
-                  "\(ruleEntry) missing expected non-ARC source file '\(s)' from \(resolvedNonARCSourceFiles)",
+                  "\(ruleEntry) missing expected non-ARC source file '\(s)'",
                   line: line)
       }
       return self

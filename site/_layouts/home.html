@@ -1,11 +1,22 @@
+---
+stylesheet: home
+title: Tulsi
+---
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="https://schema.org/WebPage">
   {% include head.html %}
   <body class="body-home">
-    {% include header.html %}
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      {% include header.html %}
 
-    {{ content }}
+      <main class="mdl-layout__content">
+        <div class="page-content">
 
-    {% include footer.html %}
+        {{ content }}
+
+        </div>
+        {% include footer.html %}
+      </main>
+    </div>
   </body>
 </html>

@@ -1,9 +1,7 @@
 ---
-layout: community
+layout: default
 title: Contributing to Tulsi
 ---
-
-# Contributing to Tulsi
 
 <p class="lead">We welcome contributions! This page covers setting up your
 machine to develop Tulsi and, when you've made a patch, how to submit it.</p>
@@ -50,4 +48,4 @@ a lot of time in a patch.
 
 ## Setting up your coding environment
 
-Simply open up the Tulsi.xcodeproj in Xcode or AppCode.
+Simply open up the `Tulsi.xcodeproj` in Xcode or AppCode.

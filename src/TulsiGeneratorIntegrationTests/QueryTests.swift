@@ -138,7 +138,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_platformdependent_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_platformdependent_test"])
 
-    XCTAssertEqual(infos.count, 4)
+    XCTAssertEqual(infos.count, 6)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_platformdependent_test:Application")
@@ -158,6 +158,16 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_platformdependent_test:ProtoLibrary")
         .hasType("proto_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:J2ObjCLibrary")
+        .hasType("j2objc_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:JavaLibrary")
+        .hasType("java_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
   }

@@ -1,18 +1,16 @@
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <p class="text-muted">&copy; 2016 Google</p>
-          </div>
-        </div>
+    <footer class="mdl-mini-footer">
+      <div class="mdl-mini-footer__left-section">
+        <div class="mdl-logo">&copy; 2016 Google, Inc.</div>
+      </div>
+      <div class="mdl-mini-footer__right-section">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="#"
+          id="scroll-to-top">
+          Back to Top
+        </a>
       </div>
     </footer>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-
     <script>
       var shiftWindow = function() {
         if (location.hash.length !== 0) {
@@ -23,21 +21,45 @@
 
       var highlightCurrentSidebarNav = function() {
         var href = location.pathname;
-        var item = $('#sidebar-nav [href$="' + href + '"]');
+        var item = $('.drawer-nav [href$="' + href + '"]');
         if (item) {
           var li = item.parent();
           li.addClass("active");
-
-          if (li.parent() && li.parent().is("ul")) {
-            do {
-              var ul = li.parent();
-              if (ul.hasClass("collapse")) {
-                ul.collapse("show");
-              }
-              li = ul.parent();
-            } while (li && li.is("li"));
-          }
         }
+      };
+
+      /**
+       * Creates a CSE search form and submits the search query.
+       *
+       * Since the Material Design Lite header expandable text field does not
+       * support having a <form> element around the <input> element, we need to
+       * capture the ENTER keypress and then submit the form using this handler.
+       */
+      var submitSearch = function(query) {
+        var form = document.createElement("form");
+        form.setAttribute("action", "/search.html");
+
+        var cseParams = {
+          "cx": "008327220137350982602:0mpaowwcmvg",
+          "cof": "FORID:10",
+          "ie": "UTF-8",
+        };
+        for (key in cseParams) {
+          var hidden = document.createElement("input");
+          hidden.setAttribute("type", "hidden");
+          hidden.setAttribute("name", key);
+          hidden.setAttribute("value", cseParams[key]);
+          form.appendChild(hidden);
+        }
+
+        var text = document.createElement("input");
+        text.setAttribute("type", "text");
+        text.setAttribute("name", "q");
+        text.setAttribute("value", query);
+        form.appendChild(text);
+
+        document.body.appendChild(form);
+        form.submit();
       };
 
       $(document).ready(function() {
@@ -46,22 +68,25 @@
           shiftWindow();
         }, 1);
 
-        // Flip the caret when submenu toggles are clicked.
-        $(".sidebar-submenu").on("show.bs.collapse", function() {
-          var toggle = $('[href$="#' + $(this).attr('id') + '"]');
-          if (toggle) {
-            toggle.addClass("dropup");
-          }
-        });
-        $(".sidebar-submenu").on("hide.bs.collapse", function() {
-          var toggle = $('[href$="#' + $(this).attr('id') + '"]');
-          if (toggle) {
-            toggle.removeClass("dropup");
+        // Highlight the current item on the sidebar.
+        highlightCurrentSidebarNav();
+
+        // Handler to capture the ENTER keypress for the CSE search input
+        // in the page header and then call submitSearch() to submit the search
+        // query.
+        $("#cse-search-box").keyup(function(e) {
+          if (e.keyCode == 13) {
+            let query = $("#cse-search-box").val();
+            submitSearch(query);
           }
         });
 
-        // Highlight the current page on the sidebar nav.
-        highlightCurrentSidebarNav();
+        // Handler for the Scroll to Top link in the page footer to scroll the
+        // main content back to the top.
+        $("#scroll-to-top").click(function() {
+          $(".mdl-layout__content").animate({ scrollTop: 0 }, "slow");
+          return false;
+        });
       });
     </script>
 
@@ -74,5 +99,4 @@
 
       ga('create', 'UA-61082125-2', 'auto');
       ga('send', 'pageview');
-
     </script>

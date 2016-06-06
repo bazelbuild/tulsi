@@ -1,0 +1,193 @@
+// Copyright 2016 The Tulsi Authors. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+$code-bg-color: #eee;
+
+pre,
+code {
+  font-family: 'Liberation Mono', Consolas, Monaco, 'Andale Mono', monospace;
+}
+
+pre {
+  background-color: $code-bg-color;
+  padding: 20px;
+  overflow-x: auto;
+  word-wrap: normal;
+
+  code {
+    overflow-wrap: normal;
+    white-space: pre;
+  }
+}
+
+code {
+  display: inline-block;
+  font-size: 90%;
+  white-space: pre-wrap;
+}
+
+p.lead {
+  font-size: 20px;
+  line-height: 32px;
+}
+
+img {
+  margin: 20px 0;
+  max-width: 100%;
+  height: auto;
+}
+
+$table-bg-color: #fff;
+$table-border-color: #eee;
+$th-bg-color: #fafafa;
+$th-color: #757575;
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: $table-bg-color;
+  table-layout: auto;
+
+  thead {
+    th {
+      background-color: $th-bg-color;
+      border: 1px solid $table-border-color;
+      color: $th-color;
+      padding: 12px 12px 12px 24px;
+      vertical-align: top;
+    }
+  }
+
+  tbody {
+    td {
+      border: 1px solid $table-border-color;
+      padding: 12px 12px 12px 24px;
+      vertical-align: top;
+    }
+  }
+}
+
+table.params-table {
+  width: 100%;
+
+  col.col-param {
+    width: 25%;
+  }
+
+  col.col-description {
+    width: 75%;
+  }
+}
+
+hr {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+$toc-heading-color: #757575;
+
+nav.toc {
+  border-left: 5px solid $primary-color;
+  padding-left: 20px;
+  margin-bottom: 48px;
+
+  h1,
+  h2 {
+    font-size: 15px;
+    line-height: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    color: $toc-heading-color;
+  }
+
+  ul {
+    list-style: none;
+    margin-top: 0;
+    padding-left: 0;
+
+    li {
+      font-size: 20px;
+      line-height: 40px;
+
+      a {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+$h3-color: #757575;
+
+.page-content {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  width: 760px;
+
+  h1.page-title {
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 40px;
+    margin-bottom: 30px;
+    color: $primary-color;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    margin-bottom: 20px;
+    color: $primary-color;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-bottom: 20px;
+    color: $primary-color;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-bottom: 20px;
+    color: $h3-color;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    width: 360px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-content {
+    width: 760px;
+  }
+}
+
+@media (min-width: 1476px) {
+  .page-content {
+    width: 1160px;
+  }
+}
+
+.mdl-mini-footer {
+  padding-left: 40px;
+}
