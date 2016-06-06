@@ -90,8 +90,8 @@ Release mode flags:
 
    Click on the "+" button to add your BUILD file. Repeat this step if you have
    more than one BUILD file containing targets you wish to build directly. For
-   example, you might have one BUILD file with your ios_application and another
-   containing ios_test rules.
+   example, you might have one BUILD file with your `ios_application` and
+   another containing `ios_test` rules.
 
    ![SelectBUILDFile](/images/0030_SelectBUILDFile.png "Add a BUILD file")
 
