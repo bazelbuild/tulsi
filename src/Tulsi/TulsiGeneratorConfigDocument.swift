@@ -54,11 +54,17 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   dynamic var processing: Bool = false
 
   // The number of tasks that need to complete before processing is finished.
-  private var processingTaskCount = 0 {
-    didSet {
-      assert(NSThread.isMainThread(), "Must be mutated on the main thread")
-      assert(processingTaskCount >= 0, "Processing task count may never be negative")
-      processing = processingTaskCount > 0
+  private var _processingTaskCount = 0
+  var processingTaskCount: Int {
+    get {
+      return _processingTaskCount
+    }
+    set {
+      NSThread.doOnMainQueue() {
+        self._processingTaskCount = newValue
+        assert(self._processingTaskCount >= 0, "Processing task count may never be negative")
+        self.processing = self._processingTaskCount > 0
+      }
     }
   }
 
@@ -474,7 +480,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         extractSourcePaths(entry)
       }
 
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         defer { self.processingTaskFinished() }
         self.sourcePaths = [UISourcePath](sourcePathMap.values)
         callback(self.sourcePaths)
@@ -535,7 +541,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     NSThread.doOnQOSUserInitiatedThread() {
       // Resolve labels to UIRuleEntries, warning on any failures.
       self.resolveLabelReferences() {
-        assert(NSThread.isMainThread())
         if let concreteBuildTargetLabels = self.buildTargetLabels {
           let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
                                       comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
@@ -549,15 +554,15 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   func addProcessingTaskCount(taskCount: Int) {
-    NSThread.doOnMainThread() { self.processingTaskCount += taskCount }
+    NSThread.doOnMainQueue() { self.processingTaskCount += taskCount }
   }
 
   func processingTaskStarted() {
-    NSThread.doOnMainThread() { self.processingTaskCount += 1 }
+    NSThread.doOnMainQueue() { self.processingTaskCount += 1 }
   }
 
   func processingTaskFinished() {
-    NSThread.doOnMainThread() { self.processingTaskCount -= 1 }
+    NSThread.doOnMainQueue() { self.processingTaskCount -= 1 }
   }
 
   // MARK: - NSWindowDelegate
@@ -736,7 +741,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     guard let concreteBuildTargetLabels = buildTargetLabels
         where !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         completionHandler()
       }
       return
@@ -766,7 +771,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       ruleInfos.append(existingInfo)
     }
 
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.uiRuleInfos = ruleInfos
       self.buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)
       self.selectedRuleInfoCount = self.selectedRuleInfos.count

@@ -46,13 +46,19 @@ final class TulsiProjectDocument: NSDocument,
   dynamic var processing: Bool = false
 
   // The number of tasks that need to complete before processing is finished.
-  private var processingTaskCount = 0 {
-    didSet {
-      assert(NSThread.isMainThread(), "Must be mutated on the main thread")
-      assert(processingTaskCount >= 0, "Processing task count may never be negative")
-      processing = processingTaskCount > 0
+  private var processingTaskCount: Int {
+    get {
+      return _processingTaskCount
+    }
+    set {
+      NSThread.doOnMainQueue() {
+        self._processingTaskCount = newValue
+        assert(self._processingTaskCount >= 0, "Processing task count may never be negative")
+        self.processing = self._processingTaskCount > 0
+      }
     }
   }
+  private var _processingTaskCount = 0
 
   /// The display names of generator configs associated with this project.
   dynamic var generatorConfigNames = [String]()
@@ -419,7 +425,7 @@ final class TulsiProjectDocument: NSDocument,
     print("W: \(message)")
     #endif
 
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.messages.append(UIMessage(text: message, type: .Warning))
     }
   }
@@ -429,7 +435,7 @@ final class TulsiProjectDocument: NSDocument,
     print("E: \(message)")
     #endif
 
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.messages.append(UIMessage(text: message, type: .Error))
       // TODO(abaire): Implement better error handling, allowing recovery of a good state.
       ErrorAlertView.displayModalError(message, details: details)
@@ -441,7 +447,7 @@ final class TulsiProjectDocument: NSDocument,
     print("I: \(message)")
     #endif
 
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.messages.append(UIMessage(text: message, type: .Info))
     }
   }
@@ -489,7 +495,7 @@ final class TulsiProjectDocument: NSDocument,
   // MARK: - Private methods
 
   private func processingTaskStarted() {
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.processingTaskCount += 1
       let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
@@ -499,7 +505,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   private func processingTaskFinished() {
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.processingTaskCount -= 1
       let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
@@ -535,7 +541,7 @@ final class TulsiProjectDocument: NSDocument,
 
     NSThread.doOnQOSUserInitiatedThread() {
       let updatedRuleEntries = self.infoExtractor.extractTargetRules()
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         self._ruleInfos = updatedRuleEntries
         self.processingTaskFinished()
       }

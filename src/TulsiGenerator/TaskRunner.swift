@@ -139,7 +139,7 @@ public final class TaskRunner {
                                         stdout: stdoutData,
                                         stderr: stderrData))
 
-      NSThread.doOnMainThread {
+      NSThread.doOnMainQueue {
         notificationCenter.removeObserver(stdoutObserver)
         notificationCenter.removeObserver(stderrObserver)
         assert(self.pendingTasks.contains(task), "terminationHandler called with unexpected task")
@@ -147,7 +147,7 @@ public final class TaskRunner {
       }
     }
 
-    NSThread.doOnMainThread {
+    NSThread.doOnMainQueue {
       self.pendingTasks.insert(task)
     }
     return task

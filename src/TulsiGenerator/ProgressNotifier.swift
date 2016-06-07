@@ -22,7 +22,7 @@ final class ProgressNotifier {
 
   var value: Int = 0 {
     didSet {
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.postNotificationName(ProgressUpdatingTaskProgress,
                                                 object: self,
@@ -38,7 +38,7 @@ final class ProgressNotifier {
     self.name = name
     self.maxValue = maxValue
 
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       let notificationCenter = NSNotificationCenter.defaultCenter()
       notificationCenter.postNotificationName(ProgressUpdatingTaskDidStart,
                                               object: self,
@@ -51,7 +51,7 @@ final class ProgressNotifier {
   }
 
   func incrementValue() {
-    NSThread.doOnMainThread() {
+    NSThread.doOnMainQueue() {
       self.value += 1
     }
   }

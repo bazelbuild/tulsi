@@ -134,7 +134,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     guard let workspaceRootURL = document.workspaceRootURL else {
       document.error(NSLocalizedString("Error_BadWorkspace",
                                        comment: "General error when project does not have a valid Bazel workspace."))
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         completionHandler(nil)
       }
       return
@@ -143,7 +143,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       // This should never actually happen and indicates an unexpected path through the UI.
       document.error(NSLocalizedString("Error_NoOutputFolder",
                                        comment: "Error for a generation attempt without a valid target output folder"))
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         completionHandler(nil)
       }
       return
@@ -158,7 +158,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     NSThread.doOnQOSUserInitiatedThread() {
       let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
                                                             withWorkspaceRootURL: workspaceRootURL)
-      NSThread.doOnMainThread() {
+      NSThread.doOnMainQueue() {
         completionHandler(url)
       }
     }

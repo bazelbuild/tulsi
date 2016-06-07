@@ -16,20 +16,13 @@ import Foundation
 
 
 extension NSThread {
-  /// Performs the given closure on the main thread, possibly synchronously if called from the
-  /// main thread.
-  public class func doOnMainThread(closure: (Void) -> Void ) {
-    if !NSThread.isMainThread() {
-      dispatch_async(dispatch_get_main_queue(), closure)
-    } else {
-      closure()
-    }
+  /// Performs the given closure on the main queue.
+  public class func doOnMainQueue(closure: (Void) -> Void ) {
+    dispatch_async(dispatch_get_main_queue(), closure)
   }
 
   /// Performs the given closure on the system thread reserved for user-initiated activities.
   public class func doOnQOSUserInitiatedThread(closure: (Void) -> Void ) {
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-      closure()
-    }
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), closure)
   }
 }
