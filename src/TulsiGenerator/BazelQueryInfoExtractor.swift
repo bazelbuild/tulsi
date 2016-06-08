@@ -134,6 +134,7 @@ final class BazelQueryInfoExtractor {
     var arguments = [
         "--max_idle_secs=60",
         "query",
+        "--announce_rc",  // Print the RC files used by this operation.
         "--noimplicit_deps",
         "--order_output=no",
         "--noshow_loading_progress",
