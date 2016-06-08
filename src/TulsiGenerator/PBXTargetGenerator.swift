@@ -811,7 +811,8 @@ class PBXTargetGenerator {
     var commandLine = "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
         "--bazel \"\(bazelURL.path!)\" " +
-        "--bazel_bin_path \"\(bazelBinPath)\" "
+        "--bazel_bin_path \"\(bazelBinPath)\" " +
+        "--verbose "
 
     func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey], optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be
