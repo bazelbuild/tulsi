@@ -86,6 +86,9 @@ final class XcodeProjectGenerator {
                                                                 workspaceRootURL: workspaceRootURL)
     let (xcodeProject, buildTargetRuleEntries) = try buildXcodeProjectWithMainGroup(mainGroup)
 
+    let progressNotifier = ProgressNotifier(name: SerializingXcodeProject,
+                                            maxValue: 1,
+                                            indeterminate: true)
     let serializer = OpenStepSerializer(rootObject: xcodeProject,
                                         gidGenerator: ConcreteGIDGenerator())
     guard let serializedXcodeProject = serializer.serialize() else {
@@ -99,6 +102,7 @@ final class XcodeProjectGenerator {
     }
     let pbxproj = projectURL.URLByAppendingPathComponent("project.pbxproj")
     try writeDataHandler(pbxproj, serializedXcodeProject)
+    progressNotifier.incrementValue()
 
     try installWorkspaceSettings(projectURL)
     try installXcodeSchemesForProject(xcodeProject,
@@ -311,6 +315,8 @@ final class XcodeProjectGenerator {
     let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
     if createDirectory(scriptDirectoryURL) {
+      let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
+      defer { progressNotifier.incrementValue() }
       localizedMessageLogger.infoMessage("Installing scripts")
       installFiles([(buildScriptURL, XcodeProjectGenerator.BuildScript),
                     (cleanScriptURL, XcodeProjectGenerator.CleanScript),
@@ -324,6 +330,8 @@ final class XcodeProjectGenerator {
     let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
                                                                     isDirectory: true)
     guard createDirectory(configDirectoryURL, failSilently: true) else { return }
+    let progressNotifier = ProgressNotifier(name: InstallingGeneratorConfig, maxValue: 1)
+    defer { progressNotifier.incrementValue() }
     localizedMessageLogger.infoMessage("Installing generator config")
 
     let configURL = configDirectoryURL.URLByAppendingPathComponent(config.defaultFilename)

@@ -72,7 +72,8 @@ final class BazelAspectInfoExtractor {
 
     let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
                                             maxValue: targets.count,
-                                            startIndeterminate: true)
+                                            indeterminate: false,
+                                            suppressStart: true)
 
     let profilingStart = localizedMessageLogger.startProfiling("extract_source_info",
                                                                message: "Extracting info for \(targets.count) rules")
@@ -82,7 +83,8 @@ final class BazelAspectInfoExtractor {
     let task = bazelAspectTaskForTargets(targets.map({ $0.value }),
                                          aspect: "tulsi_sources_aspect",
                                          startupOptions: startupOptions,
-                                         buildOptions: buildOptions) {
+                                         buildOptions: buildOptions,
+                                         progressNotifier: progressNotifier) {
       (task: NSTask, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer { dispatch_semaphore_signal(semaphore) }
         if task.terminationStatus == 0,
@@ -115,8 +117,20 @@ final class BazelAspectInfoExtractor {
                                          aspect: String,
                                          startupOptions: [String] = [],
                                          buildOptions: [String] = [],
+                                         progressNotifier: ProgressNotifier? = nil,
                                          terminationHandler: CompletionHandler) -> NSTask? {
+
+    let infoExtractionNotifier = ProgressNotifier(name: WorkspaceInfoExtraction,
+                                                  maxValue: 1,
+                                                  indeterminate: true)
+
     let workspacePackagePath = packagePathFetcher.getPackagePath()
+    infoExtractionNotifier.incrementValue()
+
+    if let progressNotifier = progressNotifier {
+      progressNotifier.start()
+    }
+
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
 
     var arguments = startupOptions

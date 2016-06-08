@@ -92,9 +92,6 @@
 /* Label for the button used to confirm the selected output folder for the generated Xcode project. */
 "ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt" = "Generate";
 
-/* Special item in the recent documents list on the splash screen that will create a new project document. */
-"SplashScreen_NewProject" = "[New project]";
-
 /* Error message for when the user tried to generate an Xcode project from an incomplete config. */
 "TulsiError_ConfigNotGenerateable" = "Generator config is not fully populated and cannot generate an Xcode project.";
 
@@ -122,5 +119,17 @@
 /* Sent when finding all BUILD files applicable to a Bazel project. */
 "buildFileExtraction" = "Extracting BUILD files";
 
+/* Sent when the Tulsi generator is copying the build scripts into the output Xcode project. */
+"installingScripts" = "Installing build scripts";
+
+/* Sent when the Tulsi generator is copying the generator config into the output Xcode project. */
+"installingGeneratorConfig" = "Installing generator config";
+
+/* Sent when starting to serialize the Xcode project. */
+"serializingXcodeProject" = "Creating Xcode project";
+
 /* Sent when extracting source files from a Bazel project. */
 "sourceFileExtraction" = "Extracting source files";
+
+/* Sent when the Tulsi generator is extracting workspace information. */
+"workspaceInfoExtraction" = "Retrieving workspace info";

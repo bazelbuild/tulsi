@@ -30,8 +30,20 @@ public let ProgressUpdatingTaskStartIndeterminate = "startIndeterminate"
 public let ProgressUpdatingTaskProgress = "progressUpdatingTaskProgress"
 public let ProgressUpdatingTaskProgressValue = "value"
 
-/// Sent when the Tulsi generator starts finding BUILD file dependencies.
+/// Sent when finding BUILD file dependencies.
 public let BuildFileExtraction = "buildFileExtraction"
 
-/// Sent when the Tulsi generator starts extracting source files from Bazel rules.
+/// Sent when copying the build scripts into the output Xcode project.
+public let InstallingScripts = "installingScripts"
+
+/// Sent when copying the generator config into the output Xcode project.
+public let InstallingGeneratorConfig = "installingGeneratorConfig"
+
+/// Sent when starting to serialize the Xcode project.
+public let SerializingXcodeProject = "serializingXcodeProject"
+
+/// Sent when extracting source files from Bazel rules.
 public let SourceFileExtraction = "sourceFileExtraction"
+
+/// Sent when extracting workspace information.
+public let WorkspaceInfoExtraction = "workspaceInfoExtraction"

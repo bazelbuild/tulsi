@@ -19,6 +19,7 @@ import Foundation
 final class ProgressNotifier {
   private let name: String
   private let maxValue: Int
+  private let indeterminate: Bool
 
   var value: Int = 0 {
     didSet {
@@ -34,18 +35,25 @@ final class ProgressNotifier {
   }
 
   /// Initializes a new instance with the given name and maximum value.
-  init(name: String, maxValue: Int, startIndeterminate: Bool = false) {
+  init(name: String, maxValue: Int, indeterminate: Bool = false, suppressStart: Bool = false) {
     self.name = name
     self.maxValue = maxValue
+    self.indeterminate = indeterminate
 
+    if !suppressStart {
+      start()
+    }
+  }
+
+  func start() {
     NSThread.doOnMainQueue() {
       let notificationCenter = NSNotificationCenter.defaultCenter()
       notificationCenter.postNotificationName(ProgressUpdatingTaskDidStart,
                                               object: self,
                                               userInfo: [
-                                                  ProgressUpdatingTaskName: name,
-                                                  ProgressUpdatingTaskMaxValue: maxValue,
-                                                  ProgressUpdatingTaskStartIndeterminate: startIndeterminate,
+                                                  ProgressUpdatingTaskName: self.name,
+                                                  ProgressUpdatingTaskMaxValue: self.maxValue,
+                                                  ProgressUpdatingTaskStartIndeterminate: self.indeterminate,
                                               ])
     }
   }
