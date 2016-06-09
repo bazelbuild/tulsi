@@ -52,11 +52,11 @@ Debug mode flags:
     when debugging Bazel-generated binaries.
 * `--objccopt` flags:
   * `-fdebug-compilation-dir` - as above.
-* `--objc_generate_debug_symbols` - generates dSYM bundles.
+* `--apple_generate_dsym` - generates dSYM bundles.
 
 Release mode flags:
 
-* `--objc_generate_debug_symbols` - generates dSYM bundles.
+* `--apple_generate_dsym` - generates dSYM bundles.
 
 # How do I use it?
 
