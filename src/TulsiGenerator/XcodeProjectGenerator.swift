@@ -344,16 +344,10 @@ final class XcodeProjectGenerator {
                                          values: testEntryLabel.value, suite.label.value)
           continue
         }
-
+        // The first target host is arbitrarily chosen as the scheme target.
         if suiteHostTarget == nil {
           suiteHostTarget = testHostTarget
-        } else if suiteHostTarget !== testHostTarget {
-          localizedMessageLogger.warning("TestSuiteIncludesDisparateTargets",
-                                         comment: "Warning shown when generation of an Xcode scheme for test_suite %1$@ includes a test %2$@ whose test host %3$@ is different from the first selected host %4$@",
-                                         values: suite.label.value, testEntryLabel.value, testHostTarget.name, suiteHostTarget!.name)
-          continue
         }
-
         validTests.insert(testTarget)
       }
 
@@ -369,7 +363,7 @@ final class XcodeProjectGenerator {
                                project: xcodeProject,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
-                               enabledTests: validTests)
+                               explicitTests: Array(validTests))
       let xmlDocument = scheme.toXML()
 
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)

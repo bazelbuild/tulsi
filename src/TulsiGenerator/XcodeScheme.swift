@@ -26,7 +26,7 @@ final class XcodeScheme {
   let profileActionBuildConfig: String
   let analyzeActionBuildConfig: String
   let archiveActionBuildConfig: String
-  let enabledTests: Set<PBXTarget>?
+  let explicitTests: [PBXTarget]?
 
   let primaryTargetBuildableReference: BuildableReference
 
@@ -39,7 +39,7 @@ final class XcodeScheme {
        analyzeActionBuildConfig: String = "Debug",
        archiveActionBuildConfig: String = "Release",
        version: String = "1.3",
-       enabledTests: Set<PBXTarget>? = nil) {
+       explicitTests: [PBXTarget]? = nil) {
     self.version = version
     self.target = target
     self.project = project
@@ -49,7 +49,7 @@ final class XcodeScheme {
     self.profileActionBuildConfig = profileActionBuildConfig
     self.analyzeActionBuildConfig = analyzeActionBuildConfig
     self.archiveActionBuildConfig = archiveActionBuildConfig
-    self.enabledTests = enabledTests
+    self.explicitTests = explicitTests
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -114,19 +114,19 @@ final class XcodeScheme {
     element.setAttributesWithDictionary(testActionAttributes)
 
     let testTargets: [PBXTarget]
-    // Hosts should have all of their hosted test targets added as testables and tests should have
-    // themselves added.
-    let linkedTestTargets = project.linkedTestTargetsForHost(target)
-    if linkedTestTargets.isEmpty {
-      let host = project.linkedHostForTestTarget(target)
-      if host != nil {
-        testTargets = [target]
-      } else {
-        testTargets = []
-      }
+    if let explicitTests = explicitTests {
+      testTargets = explicitTests
     } else {
-      if let enabledTests = enabledTests {
-        testTargets = linkedTestTargets.filter(enabledTests.contains)
+      // Hosts should have all of their hosted test targets added as testables and tests should have
+      // themselves added.
+      let linkedTestTargets = project.linkedTestTargetsForHost(target)
+      if linkedTestTargets.isEmpty {
+        let host = project.linkedHostForTestTarget(target)
+        if host != nil {
+          testTargets = [target]
+        } else {
+          testTargets = []
+        }
       } else {
         testTargets = linkedTestTargets
       }

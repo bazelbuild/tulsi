@@ -56,9 +56,6 @@
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
 
-/* Warning shown when generation of an Xcode scheme for test_suite %1$@ includes a test %2$@ whose test host %3$@ is different from the first selected host %4$@. */
-"TestSuiteIncludesDisparateTargets" = "Test '%2$@' in test_suite '%1$@' uses test host '%3$@', but an earlier test in the suite uses '%4$@'. This test will be excluded from the suite.";
-
 /* Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported. */
 "TestSuiteTestHostResolutionFailed" = "Failed to resolve host for test '%1$@', it will be ignored in test_suite '%2$@'. This is an unexpected problem and should be reported as a Tulsi bug.";
 
