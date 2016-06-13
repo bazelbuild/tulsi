@@ -62,7 +62,6 @@ public final class TulsiXcodeProjectGenerator {
     xcodeProjectGenerator = XcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                   config: config,
                                                   localizedMessageLogger: localizedMessageLogger,
-                                                  fileManager: NSFileManager.defaultManager(),
                                                   workspaceInfoExtractor: extractor,
                                                   buildScriptURL: buildScriptURL,
                                                   envScriptURL: envScriptURL,

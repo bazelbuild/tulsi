@@ -45,6 +45,8 @@ final class XcodeProjectGenerator {
   private let cleanScriptURL: NSURL
   private let tulsiVersion: String
 
+  private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
+
   // Exposed for testing. Simply writes the given NSData to the given NSURL.
   var writeDataHandler: (NSURL, NSData) throws -> Void = { (outputFileURL: NSURL, data: NSData) in
     try data.writeToURL(outputFileURL, options: NSDataWritingOptions.DataWritingAtomic)
@@ -61,30 +63,32 @@ final class XcodeProjectGenerator {
   init(workspaceRootURL: NSURL,
        config: TulsiGeneratorConfig,
        localizedMessageLogger: LocalizedMessageLogger,
-       fileManager: NSFileManager,
        workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol,
        buildScriptURL: NSURL,
        envScriptURL: NSURL,
        cleanScriptURL: NSURL,
-       tulsiVersion: String) {
+       tulsiVersion: String,
+       fileManager: NSFileManager = NSFileManager.defaultManager(),
+       pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type = PBXTargetGenerator.self) {
     self.workspaceRootURL = workspaceRootURL
     self.config = config
     self.localizedMessageLogger = localizedMessageLogger
-    self.fileManager = fileManager
     self.workspaceInfoExtractor = workspaceInfoExtractor
     self.buildScriptURL = buildScriptURL
     self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
     self.tulsiVersion = tulsiVersion
+    self.fileManager = fileManager
+    self.pbxTargetGeneratorType = pbxTargetGeneratorType
   }
 
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
     try resolveConfigReferences()
-    let mainGroup = PBXTargetGenerator.mainGroupForOutputFolder(outputFolderURL,
-                                                                workspaceRootURL: workspaceRootURL)
-    let (xcodeProject, buildTargetRuleEntries) = try buildXcodeProjectWithMainGroup(mainGroup)
+    let mainGroup = pbxTargetGeneratorType.mainGroupForOutputFolder(outputFolderURL,
+                                                                    workspaceRootURL: workspaceRootURL)
+    let (xcodeProject, buildTargets, testSuites) = try buildXcodeProjectWithMainGroup(mainGroup)
 
     let progressNotifier = ProgressNotifier(name: SerializingXcodeProject,
                                             maxValue: 1,
@@ -108,7 +112,8 @@ final class XcodeProjectGenerator {
     try installXcodeSchemesForProject(xcodeProject,
                                       projectURL: projectURL,
                                       projectBundleName: projectBundleName,
-                                      targetRuleEntries: buildTargetRuleEntries)
+                                      targetRuleEntries: buildTargets,
+                                      testSuiteRuleEntries: testSuites)
     installTulsiScripts(projectURL)
     installGeneratorConfig(projectURL)
     createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
@@ -133,10 +138,11 @@ final class XcodeProjectGenerator {
     }
   }
 
-  // Generates a PBXProject and a returns it along with a list of RuleEntries for which build
-  // targets were created. Note that this list may differ from the set of targets selected by the
-  // user as part of the generator config.
-  private func buildXcodeProjectWithMainGroup(mainGroup: PBXGroup) throws -> (PBXProject, [RuleEntry]) {
+  // Generates a PBXProject and a returns it along with a set of RuleEntry's for which build
+  // targets were created and a set of test_suite RuleEntry's for which special test schemes should
+  // be created. Note that this list may differ from the set of targets selected by the user as part
+  // of the generator config.
+  private func buildXcodeProjectWithMainGroup(mainGroup: PBXGroup) throws -> (PBXProject, Set<RuleEntry>, Set<RuleEntry>) {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool where enabled {
       xcodeProject.lastSwiftUpdateCheck = "0710"
@@ -146,16 +152,16 @@ final class XcodeProjectGenerator {
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
     let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
 
-    let generator = PBXTargetGenerator(bazelURL: config.bazelURL,
-                                       bazelBinPath: workspaceInfoExtractor.bazelBinPath,
-                                       project: xcodeProject,
-                                       buildScriptPath: buildScriptPath,
-                                       envScriptPath: envScriptPath,
-                                       tulsiVersion: tulsiVersion,
-                                       options: config.options,
-                                       localizedMessageLogger: localizedMessageLogger,
-                                       workspaceRootURL: workspaceRootURL,
-                                       suppressCompilerDefines: suppressCompilerDefines)
+    let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
+                                                bazelBinPath: workspaceInfoExtractor.bazelBinPath,
+                                                project: xcodeProject,
+                                                buildScriptPath: buildScriptPath,
+                                                envScriptPath: envScriptPath,
+                                                tulsiVersion: tulsiVersion,
+                                                options: config.options,
+                                                localizedMessageLogger: localizedMessageLogger,
+                                                workspaceRootURL: workspaceRootURL,
+                                                suppressCompilerDefines: suppressCompilerDefines)
 
     if let additionalFilePaths = config.additionalFilePaths {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
@@ -163,6 +169,7 @@ final class XcodeProjectGenerator {
 
     let ruleEntryMap = loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
+    var testSuiteRules = Set<RuleEntry>()
     // Swift 2.1 segfaults when dealing with nested functions using generics of any type, so an
     // unnecessary type conversion from an array to a set is done instead.
     func expandTargetLabels(labels: Set<BuildLabel>) {
@@ -171,6 +178,7 @@ final class XcodeProjectGenerator {
         if ruleEntry.type != "test_suite" {
           expandedTargetLabels.insert(label)
         } else {
+          testSuiteRules.insert(ruleEntry)
           expandTargetLabels(ruleEntry.weakDependencies)
         }
       }
@@ -183,13 +191,14 @@ final class XcodeProjectGenerator {
 //        if ruleEntry.type != "test_suite" {
 //          expandedTargetLabels.insert(label)
 //        } else {
+//          testSuiteRules.insert(ruleEntry)
 //          expandTargetLabels(ruleEntry.weakDependencies)
 //        }
 //      }
 //    }
 //    expandTargetLabels(config.buildTargetLabels)
 
-    var targetRuleEntries = [RuleEntry]()
+    var targetRules = Set<RuleEntry>()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
     for label in expandedTargetLabels {
       guard let ruleEntry = ruleEntryMap[label] else {
@@ -198,7 +207,7 @@ final class XcodeProjectGenerator {
                                      values: label.value)
         continue
       }
-      targetRuleEntries.append(ruleEntry)
+      targetRules.insert(ruleEntry)
       for hostTargetLabel in ruleEntry.linkedTargetLabels {
         hostTargetLabels[hostTargetLabel] = ruleEntry.label
       }
@@ -214,22 +223,22 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.warning("GeneratingTestHost",
                                      comment: "Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues.",
                                      values: hostLabel.value, testLabel.value)
-      targetRuleEntries.append(RuleEntry(label: hostLabel,
-                                         type: "_test_host_",
-                                         attributes: [:],
-                                         sourceFiles: [],
-                                         nonARCSourceFiles: [],
-                                         dependencies: Set<String>(),
-                                         secondaryArtifacts: []))
+      targetRules.insert(RuleEntry(label: hostLabel,
+                                   type: "_test_host_",
+                                   attributes: [:],
+                                   sourceFiles: [],
+                                   nonARCSourceFiles: [],
+                                   dependencies: Set<String>(),
+                                   secondaryArtifacts: []))
     }
 
-    let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(mainGroup)
+    let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)
     generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
     generator.generateTopLevelBuildConfigurations()
-    try generator.generateBuildTargetsForRuleEntries(targetRuleEntries)
+    try generator.generateBuildTargetsForRuleEntries(targetRules)
 
     patchExternalRepositoryReferences(xcodeProject)
-    return (xcodeProject, targetRuleEntries)
+    return (xcodeProject, targetRules, testSuiteRules)
   }
 
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
@@ -279,17 +288,26 @@ final class XcodeProjectGenerator {
   private func installXcodeSchemesForProject(xcodeProject: PBXProject,
                                              projectURL: NSURL,
                                              projectBundleName: String,
-                                             targetRuleEntries: [RuleEntry]) throws {
+                                             targetRuleEntries: Set<RuleEntry>,
+                                             testSuiteRuleEntries: Set<RuleEntry>) throws {
     let xcschemesURL = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
     guard createDirectory(xcschemesURL) else { return }
 
+    func targetForLabel(label: BuildLabel) -> PBXTarget? {
+      if let pbxTarget = xcodeProject.targetByName[label.targetName!] {
+        return pbxTarget
+      } else if let pbxTarget = xcodeProject.targetByName[label.asFullPBXTargetName!] {
+        return pbxTarget
+      }
+      return nil
+    }
+
+    let runTestTargetBuildConfigPrefix = pbxTargetGeneratorType.getRunTestTargetBuildConfigPrefix()
     for entry in targetRuleEntries {
       // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
       // attempting to compile code.
       let target: PBXTarget
-      if let pbxTarget = xcodeProject.targetByName[entry.label.targetName!] {
-        target = pbxTarget
-      } else if let pbxTarget = xcodeProject.targetByName[entry.label.asFullPBXTargetName!] {
+      if let pbxTarget = targetForLabel(entry.label) {
         target = pbxTarget
       } else {
         localizedMessageLogger.warning("XCSchemeGenerationFailed",
@@ -303,11 +321,80 @@ final class XcodeProjectGenerator {
       let scheme = XcodeScheme(target: target,
                                project: xcodeProject,
                                projectBundleName: projectBundleName,
-                               testActionBuildConfig: PBXTargetGenerator.runTestTargetBuildConfigPrefix + "Debug")
+                               testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug")
       let xmlDocument = scheme.toXML()
 
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
       try writeDataHandler(url, data)
+    }
+
+    func installSchemeForTestSuite(suite: RuleEntry, named suiteName: String) throws {
+      var suiteHostTarget: PBXTarget? = nil
+      var validTests = Set<PBXTarget>()
+      for testEntryLabel in suite.weakDependencies {
+        guard let testTarget = targetForLabel(testEntryLabel) else {
+          localizedMessageLogger.warning("TestSuiteUsesUnresolvedTarget",
+                                         comment: "Warning shown when a test_suite %1$@ refers to a test label %2$@ that was not resolved and will be ignored",
+                                         values: suite.label.value, testEntryLabel.value)
+          continue
+        }
+        guard let testHostTarget = xcodeProject.linkedHostForTestTarget(testTarget) as? PBXNativeTarget else {
+          localizedMessageLogger.warning("TestSuiteTestHostResolutionFailed",
+                                         comment: "Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported.",
+                                         values: testEntryLabel.value, suite.label.value)
+          continue
+        }
+
+        if suiteHostTarget == nil {
+          suiteHostTarget = testHostTarget
+        } else if suiteHostTarget !== testHostTarget {
+          localizedMessageLogger.warning("TestSuiteIncludesDisparateTargets",
+                                         comment: "Warning shown when generation of an Xcode scheme for test_suite %1$@ includes a test %2$@ whose test host %3$@ is different from the first selected host %4$@",
+                                         values: suite.label.value, testEntryLabel.value, testHostTarget.name, suiteHostTarget!.name)
+          continue
+        }
+
+        validTests.insert(testTarget)
+      }
+
+      guard let concreteTarget = suiteHostTarget else {
+        localizedMessageLogger.warning("TestSuiteHasNoValidTests",
+                                       comment: "Warning shown when none of the tests of a test suite %1$@ were able to be resolved.",
+                                       values: suite.label.value)
+        return
+      }
+      let filename = suiteName + "_Suite.xcscheme"
+      let url = xcschemesURL.URLByAppendingPathComponent(filename)
+      let scheme = XcodeScheme(target: concreteTarget,
+                               project: xcodeProject,
+                               projectBundleName: projectBundleName,
+                               testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                               enabledTests: validTests)
+      let xmlDocument = scheme.toXML()
+
+      let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
+      try writeDataHandler(url, data)
+    }
+
+    var testSuiteSchemes = [String: [RuleEntry]]()
+    for entry in testSuiteRuleEntries {
+      let shortName = entry.label.targetName!
+      if let _ = testSuiteSchemes[shortName] {
+        testSuiteSchemes[shortName]!.append(entry)
+      } else {
+        testSuiteSchemes[shortName] = [entry]
+      }
+    }
+    for testSuites in testSuiteSchemes.values {
+      for suite in testSuites {
+        let suiteName: String
+        if testSuites.count > 1 {
+          suiteName = suite.label.asFullPBXTargetName!
+        } else {
+          suiteName = suite.label.targetName!
+        }
+        try installSchemeForTestSuite(suite, named: suiteName)
+      }
     }
   }
 

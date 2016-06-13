@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
+import XCTest
 @testable import TulsiGenerator
 
 // Stub LocalizedMessageLogger that does nothing.
@@ -38,5 +38,19 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
                       details: String? = nil,
                       values: CVarArgType...) {
     errorMessageKeys.append(key)
+  }
+
+  func assertNoErrors(file: StaticString = #file, line: UInt = #line) {
+    XCTAssert(errorMessageKeys.isEmpty,
+              "Unexpected error messages printed: \(errorMessageKeys)",
+              file: file,
+              line: line)
+  }
+
+  func assertNoWarnings(file: StaticString = #file, line: UInt = #line) {
+    XCTAssert(warningMessageKeys.isEmpty,
+              "Unexpected warning messages printed: \(warningMessageKeys)",
+              file: file,
+              line: line)
   }
 }

@@ -26,6 +26,7 @@ final class XcodeScheme {
   let profileActionBuildConfig: String
   let analyzeActionBuildConfig: String
   let archiveActionBuildConfig: String
+  let enabledTests: Set<PBXTarget>?
 
   let primaryTargetBuildableReference: BuildableReference
 
@@ -37,7 +38,8 @@ final class XcodeScheme {
        profileActionBuildConfig: String = "Release",
        analyzeActionBuildConfig: String = "Debug",
        archiveActionBuildConfig: String = "Release",
-       version: String = "1.3") {
+       version: String = "1.3",
+       enabledTests: Set<PBXTarget>? = nil) {
     self.version = version
     self.target = target
     self.project = project
@@ -47,6 +49,7 @@ final class XcodeScheme {
     self.profileActionBuildConfig = profileActionBuildConfig
     self.analyzeActionBuildConfig = analyzeActionBuildConfig
     self.archiveActionBuildConfig = archiveActionBuildConfig
+    self.enabledTests = enabledTests
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -122,7 +125,11 @@ final class XcodeScheme {
         testTargets = []
       }
     } else {
-      testTargets = linkedTestTargets
+      if let enabledTests = enabledTests {
+        testTargets = linkedTestTargets.filter(enabledTests.contains)
+      } else {
+        testTargets = linkedTestTargets
+      }
     }
 
     let testables = NSXMLElement(name: "Testables")

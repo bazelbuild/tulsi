@@ -15,8 +15,36 @@
 import Foundation
 
 
-// Concrete PBXProject target generator.
-class PBXTargetGenerator {
+/// Defines an object that can populate a PBXProject based on RuleEntry's.
+protocol PBXTargetGeneratorProtocol: class {
+  static func getRunTestTargetBuildConfigPrefix() -> String
+
+  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String
+  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup
+
+  init(bazelURL: NSURL,
+       bazelBinPath: String,
+       project: PBXProject,
+       buildScriptPath: String,
+       envScriptPath: String,
+       tulsiVersion: String,
+       options: TulsiOptionSet,
+       localizedMessageLogger: LocalizedMessageLogger,
+       workspaceRootURL: NSURL,
+       suppressCompilerDefines: Bool)
+
+  func generateFileReferencesForFilePaths(paths: [String])
+  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
+                                         ruleEntryMap: [BuildLabel: RuleEntry],
+                                         pathFilters: Set<String>)
+  func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
+  func generateTopLevelBuildConfigurations()
+  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws
+}
+
+
+/// Concrete PBXProject target generator.
+final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   enum ProjectSerializationError: ErrorType {
     case BUILDFileIsNotContainedByProjectRoot
@@ -35,6 +63,10 @@ class PBXTargetGenerator {
   /// Release builds.
   // NOTE: This value needs to be kept in sync with the bazel_build script.
   static let runTestTargetBuildConfigPrefix = "__TulsiTestRunner_"
+  // TODO(abaire): Remove when Swift supports static stored properties in protocols.
+  static func getRunTestTargetBuildConfigPrefix() -> String {
+    return runTestTargetBuildConfigPrefix
+  }
 
   /// Name of the static library target that will be used to accumulate all source file dependencies
   /// in order to make their symbols available to the Xcode indexer.
@@ -63,6 +95,66 @@ class PBXTargetGenerator {
   let suppressCompilerDefines: Bool
 
   var bazelCleanScriptTarget: PBXLegacyTarget? = nil
+
+  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String {
+    switch group.sourceTree {
+      case .SourceRoot:
+        if let relativePath = group.path where !relativePath.isEmpty {
+          return "${SRCROOT}/\(relativePath)"
+        }
+        return ""
+
+      case .Absolute:
+        return group.path!
+
+      default:
+        assertionFailure("Group has an unexpected sourceTree type \(group.sourceTree)")
+        return ""
+    }
+  }
+
+  // Returns a PBXGroup appropriate for use as a top level project group.
+  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup {
+    let outputFolder = outputFolderURL.path!
+    let workspaceRoot = workspaceRootURL.path!
+
+    let slashTerminatedOutputFolder = outputFolder + (outputFolder.hasSuffix("/") ? "" : "/")
+    let slashTerminatedWorkspaceRoot = workspaceRoot + (workspaceRoot.hasSuffix("/") ? "" : "/")
+
+    // If workspaceRoot == outputFolder, return a relative group with no path.
+    if slashTerminatedOutputFolder == slashTerminatedWorkspaceRoot {
+      return PBXGroup(name: "mainGroup", path: nil, sourceTree: .SourceRoot, parent: nil)
+    }
+
+    // If outputFolder contains workspaceRoot, return a relative group with the path from
+    // outputFolder to workspaceRoot
+    if workspaceRoot.hasPrefix(slashTerminatedOutputFolder) {
+      let index = workspaceRoot.startIndex.advancedBy(slashTerminatedOutputFolder.characters.count)
+      let relativePath = workspaceRoot.substringFromIndex(index)
+      return PBXGroup(name: "mainGroup",
+                      path: relativePath,
+                      sourceTree: .SourceRoot,
+                      parent: nil)
+    }
+
+    // If workspaceRoot contains outputFolder, return a relative group using .. to walk up to
+    // workspaceRoot from outputFolder.
+    if outputFolder.hasPrefix(slashTerminatedWorkspaceRoot) {
+      let index = outputFolder.startIndex.advancedBy(slashTerminatedWorkspaceRoot.characters.count + 1)
+      let pathToWalkBackUp = outputFolder.substringFromIndex(index) as NSString
+      let numberOfDirectoriesToWalk = pathToWalkBackUp.pathComponents.count
+      let relativePath = [String](count: numberOfDirectoriesToWalk, repeatedValue: "..").joinWithSeparator("/")
+      return PBXGroup(name: "mainGroup",
+                      path: relativePath,
+                      sourceTree: .SourceRoot,
+                      parent: nil)
+    }
+
+    return PBXGroup(name: "mainGroup",
+                    path: workspaceRootURL.path,
+                    sourceTree: .Absolute,
+                    parent: nil)
+  }
 
   private static func projectRefForBazelFileInfo(info: BazelFileInfo) -> String {
     return "$(TULSI_WORKSPACE_ROOT)/\(info.fullPath)"
@@ -315,7 +407,7 @@ class PBXTargetGenerator {
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(ruleEntries: [RuleEntry]) throws {
+  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
     for (name, entry) in namedRuleEntries {
@@ -332,49 +424,6 @@ class PBXTargetGenerator {
                        withLinkageToHostTarget: testHostLabel,
                        ruleEntry: entry)
     }
-  }
-
-  // Returns a PBXGroup appropriate for use as a top level project group.
-  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup {
-    let outputFolder = outputFolderURL.path!
-    let workspaceRoot = workspaceRootURL.path!
-
-    let slashTerminatedOutputFolder = outputFolder + (outputFolder.hasSuffix("/") ? "" : "/")
-    let slashTerminatedWorkspaceRoot = workspaceRoot + (workspaceRoot.hasSuffix("/") ? "" : "/")
-
-    // If workspaceRoot == outputFolder, return a relative group with no path.
-    if slashTerminatedOutputFolder == slashTerminatedWorkspaceRoot {
-      return PBXGroup(name: "mainGroup", path: nil, sourceTree: .SourceRoot, parent: nil)
-    }
-
-    // If outputFolder contains workspaceRoot, return a relative group with the path from
-    // outputFolder to workspaceRoot
-    if workspaceRoot.hasPrefix(slashTerminatedOutputFolder) {
-      let index = workspaceRoot.startIndex.advancedBy(slashTerminatedOutputFolder.characters.count)
-      let relativePath = workspaceRoot.substringFromIndex(index)
-      return PBXGroup(name: "mainGroup",
-                      path: relativePath,
-                      sourceTree: .SourceRoot,
-                      parent: nil)
-    }
-
-    // If workspaceRoot contains outputFolder, return a relative group using .. to walk up to
-    // workspaceRoot from outputFolder.
-    if outputFolder.hasPrefix(slashTerminatedWorkspaceRoot) {
-      let index = outputFolder.startIndex.advancedBy(slashTerminatedWorkspaceRoot.characters.count + 1)
-      let pathToWalkBackUp = outputFolder.substringFromIndex(index) as NSString
-      let numberOfDirectoriesToWalk = pathToWalkBackUp.pathComponents.count
-      let relativePath = [String](count: numberOfDirectoriesToWalk, repeatedValue: "..").joinWithSeparator("/")
-      return PBXGroup(name: "mainGroup",
-                      path: relativePath,
-                      sourceTree: .SourceRoot,
-                      parent: nil)
-    }
-
-    return PBXGroup(name: "mainGroup",
-                    path: workspaceRootURL.path,
-                    sourceTree: .Absolute,
-                    parent: nil)
   }
 
   // MARK: - Private methods
@@ -409,7 +458,7 @@ class PBXTargetGenerator {
     return nonARCFileReferences
   }
 
-  private func generateUniqueNamesForRuleEntries(ruleEntries: [RuleEntry]) -> [String: RuleEntry] {
+  private func generateUniqueNamesForRuleEntries(ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
     // Build unique names for the target rules.
     var collidingRuleEntries = [String: [RuleEntry]]()
     for entry: RuleEntry in ruleEntries {
@@ -784,23 +833,6 @@ class PBXTargetGenerator {
     buildPhase.showEnvVarsInLog = true
     #endif
     return buildPhase
-  }
-
-  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String {
-    switch group.sourceTree {
-      case .SourceRoot:
-        if let relativePath = group.path where !relativePath.isEmpty {
-          return "${SRCROOT}/\(relativePath)"
-        }
-        return ""
-
-      case .Absolute:
-        return group.path!
-
-      default:
-        assertionFailure("Group has an unexpected sourceTree type \(group.sourceTree)")
-        return ""
-    }
   }
 
   /// Constructs a commandline string that will invoke the bazel build script to generate the given

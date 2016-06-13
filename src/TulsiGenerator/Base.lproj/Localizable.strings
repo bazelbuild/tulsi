@@ -53,8 +53,20 @@
 /* Warning to show when a user has selected an XCTest but not its host application. */
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
 
+/* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
+"TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
+
+/* Warning shown when generation of an Xcode scheme for test_suite %1$@ includes a test %2$@ whose test host %3$@ is different from the first selected host %4$@. */
+"TestSuiteIncludesDisparateTargets" = "Test '%2$@' in test_suite '%1$@' uses test host '%3$@', but an earlier test in the suite uses '%4$@'. This test will be excluded from the suite.";
+
+/* Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported. */
+"TestSuiteTestHostResolutionFailed" = "Failed to resolve host for test '%1$@', it will be ignored in test_suite '%2$@'. This is an unexpected problem and should be reported as a Tulsi bug.";
+
+/* Warning shown when a test_suite %1$@ refers to a test label %2$@ that was not resolved and will be ignored */
+"TestSuiteUsesUnresolvedTarget" = "Test suite '%1$@' refers to test '%2$@' which failed to load. The test will be ignored when running the suite.";
+
 /* Failure to look up a Bazel target that was expected to be present. The target label is %1$@ */
 "UnknownTargetRule" = "Failed to load information for Bazel target '%1$@'. This may be a Bazel bug or a BUILD file issue.";
 
-/* "Warning shown when generation of an Xcode scheme failed for build target %1$@ */
+/* Warning shown when generation of an Xcode scheme failed for build target %1$@ */
 "XCSchemeGenerationFailed" = "Failed to resolve target '%1$@', skipping scheme generation.";

@@ -230,10 +230,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "ObjectiveCLibrary"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let ipa = BuildLabel("test/app:TestApplication.ipa")
-    let rules = [
+    let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
       makeTestRuleEntry(rule2BuildTarget, type: "objc_library"),
-    ]
+    ])
 
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries(rules)
@@ -315,13 +315,13 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = ["xctest_app": rule1BuildTarget]
     let ipa = BuildLabel("test/app:TestApplication.ipa")
-    let rules = [
+    let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
       makeTestRuleEntry(rule2BuildTarget,
                         type: "ios_test",
                         attributes: rule2Attributes,
                         implicitIPATarget: ipa),
-    ]
+    ])
 
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries(rules)
@@ -414,10 +414,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                      attributes: testRuleAttributes,
                                      sourceFiles: testSources,
                                      implicitIPATarget: testIPA)
-    let rules = [
+    let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: appIPA),
       testRule,
-    ]
+    ])
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries(rules)
     } catch let e as NSError {
@@ -543,12 +543,12 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_test",
                                       attributes: ["xctest_app": host2Target],
                                       sourceFiles: testSources)
-    let rules = [
+    let rules = Set([
       makeTestRuleEntry(host1Target, type: "ios_application"),
       makeTestRuleEntry(host2Target, type: "ios_application"),
       test1Rule,
       test2Rule,
-    ]
+    ])
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries(rules)
     } catch let e as NSError {
@@ -627,10 +627,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildTarget = "\(rule2BuildPath):\(targetName)"
     let rule1IPA = BuildLabel("test/test1:\(targetName).ipa")
     let rule2IPA = BuildLabel("test/test2:\(targetName).ipa")
-    let rules = [
+    let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: rule1IPA),
       makeTestRuleEntry(rule2BuildTarget, type: "ios_application", implicitIPATarget: rule2IPA),
-    ]
+    ])
 
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries(rules)
