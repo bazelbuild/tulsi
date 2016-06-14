@@ -53,18 +53,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Whether or not the document is currently performing a long running operation.
   dynamic var processing: Bool = false
 
-  // The number of tasks that need to complete before processing is finished.
-  private var _processingTaskCount = 0
-  var processingTaskCount: Int {
-    get {
-      return _processingTaskCount
-    }
-    set {
-      NSThread.doOnMainQueue() {
-        self._processingTaskCount = newValue
-        assert(self._processingTaskCount >= 0, "Processing task count may never be negative")
-        self.processing = self._processingTaskCount > 0
-      }
+  // The number of tasks that need to complete before processing is finished. May only be mutated on
+  // the main queue.
+  private var processingTaskCount: Int = 0 {
+    didSet {
+      assert(processingTaskCount >= 0, "Processing task count may never be negative")
+      processing = processingTaskCount > 0
     }
   }
 
