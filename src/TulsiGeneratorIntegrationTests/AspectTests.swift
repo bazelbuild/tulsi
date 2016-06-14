@@ -118,7 +118,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 13)
+    XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -142,6 +142,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:NonPropagatedLibrary")
+        .dependsOn("//tulsi_test:ObjCBundle")
         .hasSources(["tulsi_test/Binary/srcs/main.m",
                      "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
@@ -164,6 +165,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                               ["path": "tulsi_test/Binary/AssetsOne.xcassets",
                                "src": true],
                               ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                               "src": true]])
+
+    checker.assertThat("//tulsi_test:ObjCBundle")
+        .hasAttribute(.supporting_files,
+                      value: [["path": "tulsi_test/ObjCBundle.bundle",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
@@ -265,7 +271,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 13)
+    XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 

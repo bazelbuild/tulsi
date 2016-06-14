@@ -61,6 +61,7 @@
 		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
 		43D68C28577B7A7A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src3.m; sourceTree = "<group>"; };
 		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
+		43D68C285DB74CA000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ObjCBundle.bundle; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285F81D61600000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
@@ -507,6 +508,7 @@
 				966FB6DE29C889FA00000000 /* Library */,
 				966FB6DE2890F3CC00000000 /* LibrarySources */,
 				966FB6DE6C00B87400000000 /* NonPropagatedLibrary */,
+				43D68C285DB74CA000000000 /* ObjCBundle.bundle */,
 				966FB6DE7FF6F05000000000 /* SubLibrary */,
 				966FB6DE3FF3BC9E00000000 /* SubLibraryWithDefines */,
 				966FB6DEDF6E685E00000000 /* SubLibraryWithDifferentDefines */,

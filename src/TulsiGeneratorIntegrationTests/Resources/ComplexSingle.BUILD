@@ -45,6 +45,7 @@ objc_binary(
         "Binary/AssetsTwo.xcassets/png_file.png",
     ],
     bridging_header = ":BridgingHeaderGenerator",
+    bundles = [":ObjCBundle"],
     defines = [
         "A=BINARY_DEFINE",
     ],
@@ -66,6 +67,14 @@ objc_binary(
     deps = [
         ":CoreDataResources",
         ":Library",
+    ],
+)
+
+objc_bundle(
+    name = "ObjCBundle",
+    bundle_imports = [
+        "ObjCBundle.bundle/FileOne.txt",
+        "ObjCBundle.bundle/FileTwo",
     ],
 )
 

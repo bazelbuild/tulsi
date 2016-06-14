@@ -24,21 +24,11 @@ project and pass it back to Tulsi.
 # objc_binary rule which in turn might have objc_library's in its "deps"
 # attribute.
 _TULSI_COMPILE_DEPS = [
-    # ios_application, ios_extension, ios_framework
     'binary',
-
-    # ios_extension_binary, ios_framework_binary, objc_binary, j2objc_library,
-    # objc_library, objc_proto_library, ios_test
+    'bundles',
     'deps',
-
-    # ios_application
     'extensions',
-
-    # apple_watch_extension_binary, ios_extension_binary, ios_framework_binary,
-    # objc_binary, objc_library, ios_test
     'non_propagated_deps',
-
-    # ios_test
     'xctest_app',
 ]
 
@@ -196,6 +186,26 @@ def _collect_asset_catalogs(rule_attr):
 
   return bundles
 
+
+def _collect_bundles(rule_attr):
+  """Extracts bundle directories from the given rule attributes."""
+  discovered_paths = set()
+  bundles = []
+  for f in _collect_files(rule_attr, 'bundle_imports'):
+    end = f.path.find('.bundle/')
+    if end < 0:
+      continue
+    end += 7
+
+    path = f.path[:end]
+    root_path = _get_opt_attr(f, 'rootPath')
+    full_path = str(root_path) + ':' + path
+    if full_path in discovered_paths:
+      continue
+    discovered_paths += [full_path]
+    bundles.append(_file_metadata_by_replacing_path(f, path))
+
+  return bundles
 
 def _collect_xcdatamodeld_files(obj, attr_path):
   """Returns artifact_location's for xcdatamodeld's for attr_path in obj."""
@@ -409,7 +419,8 @@ def _tulsi_sources_aspect(target, ctx):
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
   supporting_files = (_collect_supporting_files(rule_attr) +
-                      _collect_asset_catalogs(rule_attr))
+                      _collect_asset_catalogs(rule_attr) +
+                      _collect_bundles(rule_attr))
 
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
