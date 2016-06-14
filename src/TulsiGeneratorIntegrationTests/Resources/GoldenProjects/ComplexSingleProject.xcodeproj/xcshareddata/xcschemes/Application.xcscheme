@@ -5,6 +5,33 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6B58A255E00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_SubLibrary_-4799450061059093063" BlueprintName="_indexer_SubLibrary_-4799450061059093063" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_NonPropagatedLibrary_4799450059426399627" BlueprintName="_indexer_NonPropagatedLibrary_4799450059426399627" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_TodayExtensionBinary_4799450059766121447" BlueprintName="_indexer_TodayExtensionBinary_4799450059766121447" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Binary_4799450061441825755" BlueprintName="_indexer_Binary_4799450061441825755" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_CoreDataResources_-4799450060412742337" BlueprintName="_indexer_CoreDataResources_-4799450060412742337" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_SubLibraryWithDefines_4799450059349455580" BlueprintName="_indexer_SubLibraryWithDefines_4799450059349455580" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" BlueprintName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_WatchExtensionBinary_-4799450061449773155" BlueprintName="_indexer_WatchExtensionBinary_-4799450061449773155" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Library_-4799450060931977398" BlueprintName="_indexer_Library_-4799450060931977398" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">

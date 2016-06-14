@@ -5,6 +5,9 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6C35BF04E00000000" BuildableIdentifier="primary" BuildableName="NonXCTest" BlueprintName="NonXCTest" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E628CE526200000000" BuildableIdentifier="primary" BuildableName="_indexer_NonXCTest_4799450060268549067" BlueprintName="_indexer_NonXCTest_4799450060268549067" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">

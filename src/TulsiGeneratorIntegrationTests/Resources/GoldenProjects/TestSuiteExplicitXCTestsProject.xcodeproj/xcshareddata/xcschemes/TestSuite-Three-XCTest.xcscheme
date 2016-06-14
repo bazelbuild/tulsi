@@ -5,6 +5,12 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E68217546C00000000" BuildableIdentifier="primary" BuildableName="TestSuite-Three-XCTest" BlueprintName="TestSuite-Three-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6396057C300000000" BuildableIdentifier="primary" BuildableName="_indexer_XCTest_4799450059611656605" BlueprintName="_indexer_XCTest_4799450059611656605" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6C04857C500000000" BuildableIdentifier="primary" BuildableName="_indexer_Binary_-4799450061102981736" BlueprintName="_indexer_Binary_-4799450061102981736" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">

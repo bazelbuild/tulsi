@@ -5,6 +5,36 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E677973FA000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6D2D9D06100000000" BuildableIdentifier="primary" BuildableName="_indexer_SubLibrary_-4799450061059093063" BlueprintName="_indexer_SubLibrary_-4799450061059093063" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E68D15FD1900000000" BuildableIdentifier="primary" BuildableName="_indexer_NonPropagatedLibrary_4799450059426399627" BlueprintName="_indexer_NonPropagatedLibrary_4799450059426399627" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E63F39B36B00000000" BuildableIdentifier="primary" BuildableName="_indexer_TodayExtensionBinary_4799450059766121447" BlueprintName="_indexer_TodayExtensionBinary_4799450059766121447" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E61BF0C4F400000000" BuildableIdentifier="primary" BuildableName="_indexer_XCTest_-4799450059344870159" BlueprintName="_indexer_XCTest_-4799450059344870159" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E61BD6D16B00000000" BuildableIdentifier="primary" BuildableName="_indexer_Binary_4799450061441825755" BlueprintName="_indexer_Binary_4799450061441825755" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6D2AC712200000000" BuildableIdentifier="primary" BuildableName="_indexer_CoreDataResources_-4799450060412742337" BlueprintName="_indexer_CoreDataResources_-4799450060412742337" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E695D5CBA700000000" BuildableIdentifier="primary" BuildableName="_indexer_SubLibraryWithDefines_4799450059349455580" BlueprintName="_indexer_SubLibraryWithDefines_4799450059349455580" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E64985E86200000000" BuildableIdentifier="primary" BuildableName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" BlueprintName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6A303294F00000000" BuildableIdentifier="primary" BuildableName="_indexer_WatchExtensionBinary_-4799450061449773155" BlueprintName="_indexer_WatchExtensionBinary_-4799450061449773155" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6927ED62600000000" BuildableIdentifier="primary" BuildableName="_indexer_Library_-4799450060931977398" BlueprintName="_indexer_Library_-4799450060931977398" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">

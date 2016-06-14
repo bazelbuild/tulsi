@@ -20,6 +20,8 @@ protocol PBXTargetGeneratorProtocol: class {
   static func getRunTestTargetBuildConfigPrefix() -> String
 
   static func workingDirectoryForPBXGroup(group: PBXGroup) -> String
+
+  /// Returns a new PBXGroup instance appropriate for use as a top level project group.
   static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup
 
   init(bazelURL: NSURL,
@@ -33,12 +35,27 @@ protocol PBXTargetGeneratorProtocol: class {
        workspaceRootURL: NSURL,
        suppressCompilerDefines: Bool)
 
+  /// Generates file references for the given file paths in the associated project without adding
+  /// them to an indexer target. The paths must be relative to the workspace root.
   func generateFileReferencesForFilePaths(paths: [String])
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         ruleEntryMap: [BuildLabel: RuleEntry],
-                                         pathFilters: Set<String>)
+
+  /// Generates indexer targets for the given Bazel rule and its transitive dependencies, adding
+  /// source files whose directories are present in pathFilters. Returns the set of created targets.
+  func generateIndexerTargetsForRuleEntry(ruleEntry: RuleEntry,
+                                          ruleEntryMap: [BuildLabel: RuleEntry],
+                                          pathFilters: Set<String>) -> Set<PBXTarget>
+
+  /// Generates a legacy target that is added as a dependency of all build targets and invokes
+  /// the given script. The build action may be accessed by the script via the ACTION environment
+  /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
+
+  /// Generates project-level build configurations.
   func generateTopLevelBuildConfigurations()
+
+  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
+  /// non-compiling source file linkages are created to facilitate indexing of XCTests.
+  /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws
 }
 
@@ -113,7 +130,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  // Returns a PBXGroup appropriate for use as a top level project group.
   static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup {
     let outputFolder = outputFolderURL.path!
     let workspaceRoot = workspaceRootURL.path!
@@ -182,17 +198,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.suppressCompilerDefines = suppressCompilerDefines
   }
 
-  /// Generates file references for the given file paths in the associated project without adding
-  /// them to an indexer target. The paths must be relative to the workspace root.
   func generateFileReferencesForFilePaths(paths: [String]) {
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
   }
 
-  /// Generates an indexer target for the given Bazel rule and its transitive dependencies, adding
-  /// source files whose directories are present in pathFilters.
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         ruleEntryMap: [BuildLabel: RuleEntry],
-                                         pathFilters: Set<String>) {
+  func generateIndexerTargetsForRuleEntry(ruleEntry: RuleEntry,
+                                          ruleEntryMap: [BuildLabel: RuleEntry],
+                                          pathFilters: Set<String>) -> Set<PBXTarget> {
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
       $0.substringToIndex($0.endIndex.advancedBy(-3))
     })
@@ -218,6 +230,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       project.getOrCreateGroupsAndFileReferencesForPaths([buildFilePath])
     }
 
+    // Set of all the indexer targets generated for ruleEntry.
+    var generatedIndexerTargets = Set<PBXTarget>()
     // Map of build label to cumulative preprocessor defines and include paths.
     var processedEntries = [BuildLabel: (Set<String>, [String])]()
     func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>, [String]) {
@@ -328,6 +342,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let targetName = indexerNameForRuleEntry(ruleEntry)
       let indexingTarget = project.createNativeTarget(targetName,
                                                       targetType: PBXTarget.ProductType.StaticLibrary)
+      generatedIndexerTargets.insert(indexingTarget)
 
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
       fileReferences.appendContentsOf(generateFileReferencesForNonARCFileInfos(nonARCSourceFileInfos))
@@ -344,11 +359,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
+    return generatedIndexerTargets
   }
 
-  /// Generates a legacy target that is added as a dependency of all build targets and invokes
-  /// the given script. The build action may be accessed by the script via the ACTION environment
-  /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
@@ -370,7 +383,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  /// Generates top level build configurations.
   func generateTopLevelBuildConfigurations() {
     var buildSettings = options.commonBuildSettings()
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
@@ -404,9 +416,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
   }
 
-  /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
-  /// non-compiling source file linkages are created to facilitate indexing of XCTests.
-  /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()

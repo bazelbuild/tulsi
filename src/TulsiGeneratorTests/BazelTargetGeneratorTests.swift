@@ -706,7 +706,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
     let targets = project.targetByName
     XCTAssert(targets.isEmpty)
   }
@@ -718,7 +720,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -733,7 +737,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -751,7 +757,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -775,7 +783,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry, ruleEntryMap: [:], pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -797,9 +807,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters.union(Set([dataModel])))
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters.union(Set([dataModel])))
 
     var allSourceFiles = sourceFileNames
     allSourceFiles.append(dataModel)
@@ -825,9 +835,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: allSourceFiles)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -849,9 +859,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: allSourceFiles)
     let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
 
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -866,9 +876,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
     XCTAssertNil(fileRefForPath(buildFilePath))
   }
 
@@ -880,9 +890,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 
@@ -894,9 +904,9 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetForRuleEntry(ruleEntry,
-                                                      ruleEntryMap: [:],
-                                                      pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                       ruleEntryMap: [:],
+                                                       pathFilters: pathFilters)
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 

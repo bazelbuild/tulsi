@@ -5,6 +5,18 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6B58A255E00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E69C72B07E00000000" BuildableIdentifier="primary" BuildableName="_indexer_ObjCProtoLibrary_4799450059520215381" BlueprintName="_indexer_ObjCProtoLibrary_4799450059520215381" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E60292196400000000" BuildableIdentifier="primary" BuildableName="_indexer_ProtoLibrary_-4799450059636949709" BlueprintName="_indexer_ProtoLibrary_-4799450059636949709" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E65B13ADDA00000000" BuildableIdentifier="primary" BuildableName="_indexer_J2ObjCLibrary_-4799450061375909640" BlueprintName="_indexer_J2ObjCLibrary_-4799450061375909640" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6CC7F120900000000" BuildableIdentifier="primary" BuildableName="_indexer_Binary_-4799450061127925591" BlueprintName="_indexer_Binary_-4799450061127925591" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">

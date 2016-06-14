@@ -271,9 +271,10 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateFileReferencesForFilePaths(paths: [String]) {
   }
 
-  func generateIndexerTargetForRuleEntry(ruleEntry: RuleEntry,
-                                         ruleEntryMap: [BuildLabel:RuleEntry],
-                                         pathFilters: Set<String>) {
+  func generateIndexerTargetsForRuleEntry(ruleEntry: RuleEntry,
+                                          ruleEntryMap: [BuildLabel: RuleEntry],
+                                          pathFilters: Set<String>) -> Set<PBXTarget> {
+    return Set()
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String) {
