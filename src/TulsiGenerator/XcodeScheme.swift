@@ -84,8 +84,11 @@ final class XcodeScheme {
   private func buildAction() -> NSXMLElement {
     let element = NSXMLElement(name: "BuildAction")
     let buildActionAttributes = [
-        "parallelizeBuildables": "YES",
-        "buildImplicitDependencies": "YES",
+        // Bazel will handle parallelism and generally the scheme will only have one active build
+        // target. The exception to this is the archive action, in which case parallelism is
+        // undesirable as the build script should immediately error out with an "unsupported" error.
+        "parallelizeBuildables": "NO",
+        "buildImplicitDependencies": "NO",
     ]
     element.setAttributesWithDictionary(buildActionAttributes)
 
