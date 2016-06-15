@@ -81,11 +81,6 @@ _NON_ARC_SOURCE_GENERATING_RULES = set([
     'objc_proto_library',
 ])
 
-# Set of rules who should be ignored entirely (including their dependencies).
-_IGNORED_RULES = set([
-    'java_library',
-])
-
 def _dict_omitting_none(**kwargs):
   """Creates a dict from the args, dropping keys with None or [] values."""
   return {name: kwargs[name]
@@ -365,20 +360,14 @@ def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
   target_kind = rule.kind
-  if target_kind in _IGNORED_RULES:
-    return struct(skipped_labels=set([target.label]))
-
   rule_attr = _get_opt_attr(rule, 'attr')
 
   tulsi_info_files = set()
-  skipped_labels = set()
   for attr_name in _TULSI_COMPILE_DEPS:
     deps = _getattr_as_list(rule_attr, attr_name)
     for dep in deps:
       if hasattr(dep, 'tulsi_info_files'):
         tulsi_info_files += dep.tulsi_info_files
-      if hasattr(dep, 'skipped_labels'):
-        skipped_labels += dep.skipped_labels
 
   srcs = (_collect_files(rule, 'attr.srcs') +
           _collect_files(rule, 'attr.hdrs'))
@@ -392,12 +381,10 @@ def _tulsi_sources_aspect(target, ctx):
     generated_non_arc_files, generated_includes = (
         _extract_generated_sources_and_includes(target))
 
-  compile_deps = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
-  # Filter out any deps that were skipped by the attribute and convert the
-  # labels to strings.
-  compile_deps = [str(dep)
-                  for dep in compile_deps
-                  if dep not in skipped_labels]
+  # Collect the dependencies of this rule, dropping any .jar files (which may be
+  # created as artifacts of java/j2objc rules).
+  dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
+  compile_deps = [str(l) for l in dep_labels if not l.name.endswith('.jar')]
   binary_rule = _get_opt_attr(rule_attr, 'binary')
 
   supporting_files = (_collect_supporting_files(rule_attr) +
@@ -467,9 +454,6 @@ def _tulsi_sources_aspect(target, ctx):
       # The file actions used to save this rule's info and that of all of its
       # transitive dependencies.
       tulsi_info_files=tulsi_info_files,
-      # The accumulated set of labels which have been excluded from info
-      # generation.
-      skipped_labels=skipped_labels,
       # The inheritable attributes of this rule, expressed as a dict instead of
       # a struct to allow easy joining.
       inheritable_attributes=inheritable_attributes,
