@@ -18,7 +18,7 @@
 		E6AF494756F87EF800000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2856F87EF800000000 /* src4.m */; };
 		E6AF4947577B7A7A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28577B7A7A00000000 /* src3.m */; };
 		E6AF4947578645F400000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28578645F400000000 /* src2.m */; };
-		E6AF4947723DC36E00000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28723DC36E00000000 /* NonARCFile.mm */; };
+		E6AF4947723DC36E00000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28723DC36E00000000 /* NonARCFile.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6AF49479B7A36EA00000000 /* output.m in outs */ = {isa = PBXBuildFile; fileRef = 43D68C289B7A36EA00000000 /* output.m */; };
 		E6AF4947BC21CCBA00000000 /* non_propagated.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BC21CCBA00000000 /* non_propagated.m */; };
 		E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D21BD1AA00000000 /* today_extension_binary.m */; };
@@ -66,7 +66,7 @@
 		43D68C285F81D61600000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
 		43D68C286CB3C3A800000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
-		43D68C28723DC36E00000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; sourceTree = "<group>"; };
+		43D68C28723DC36E00000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
 		43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Library_-4799450060931977398.a"; sourceTree = BUILT_PRODUCTS_DIR; };

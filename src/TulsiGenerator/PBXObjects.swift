@@ -209,8 +209,6 @@ final class PBXFileReference: PBXReference, Hashable {
   /// Whether or not this file reference is for a project input file.
   var isInputFile: Bool = false
 
-  var settings = [String: String]()
-
   override var isa: String {
     return "PBXFileReference"
   }
@@ -231,10 +229,6 @@ final class PBXFileReference: PBXReference, Hashable {
     self.init(name: name, path: sourceTreePath.path, sourceTree: sourceTreePath.sourceTree, parent: parent)
   }
 
-  func setCompilerFlags(flags: [String]) {
-    settings["COMPILER_FLAGS"] = flags.joinWithSeparator(" ")
-  }
-
   override func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try super.serializeInto(serializer)
     if let uti = lastKnownFileType {
@@ -242,9 +236,6 @@ final class PBXFileReference: PBXReference, Hashable {
     } else if let uti = explicitFileType {
       try serializer.addField("explicitFileType", uti)
       // TODO(abaire): set includeInIndex to 0 for output files?
-    }
-    if !settings.isEmpty {
-      try serializer.addField("settings", settings)
     }
   }
 }

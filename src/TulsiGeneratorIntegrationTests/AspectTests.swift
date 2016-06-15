@@ -302,8 +302,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .exists()
 
     checker.assertThat("//tulsi_test:ObjCProtoLibrary")
-        .containsSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
-                          "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
+        .containsNonARCSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
+                                "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
 
     checker.assertThat("//tulsi_test:ProtoLibrary")
         .hasSources(["tulsi_test/protolibrary.proto"])

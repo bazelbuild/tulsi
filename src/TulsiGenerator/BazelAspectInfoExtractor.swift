@@ -242,7 +242,16 @@ final class BazelAspectInfoExtractor {
         }
         return bazelFileInfos
       }
-      let nonARCSources = MakeBazelFileInfos("non_arc_srcs")
+      var nonARCSources = MakeBazelFileInfos("non_arc_srcs")
+      let generatedNonARCSourceInfos = dict["generated_non_arc_files"] as? [[String: AnyObject]] ?? []
+      for info in generatedNonARCSourceInfos {
+        guard let pathInfo = BazelFileInfo(info: info),
+                  fileUTI = pathInfo.uti
+              where fileUTI.hasPrefix("sourcecode.") else {
+          continue
+        }
+        nonARCSources.append(pathInfo)
+      }
 
       let generatedIncludePaths = dict["generated_includes"] as? [String]
       let dependencies = dict["deps"] as? [String] ?? []

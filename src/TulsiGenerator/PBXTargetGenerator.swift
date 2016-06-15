@@ -345,10 +345,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       generatedIndexerTargets.insert(indexingTarget)
 
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
-      fileReferences.appendContentsOf(generateFileReferencesForNonARCFileInfos(nonARCSourceFileInfos))
+      let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
+      fileReferences.appendContentsOf(nonARCFiles)
       buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
       addBuildFileForRule(ruleEntry)
-      let buildPhase = createBuildPhaseForReferences(buildPhaseReferences)
+      let buildPhase = createBuildPhaseForReferences(buildPhaseReferences,
+                                                     withPerFileSettings: nonARCSettings)
       indexingTarget.buildPhases.append(buildPhase)
       addConfigsForIndexingTarget(indexingTarget,
                                   ruleEntry: ruleEntry,
@@ -458,13 +460,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return fileReferences
   }
 
-  /// Generates file references for the given infos, marking them as -fno-objc-arc.
-  private func generateFileReferencesForNonARCFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
+  /// Generates file references for the given infos, and returns a settings dictionary to be passed
+  /// to createBuildPhaseForReferences:withPerFileSettings:.
+  private func generateFileReferencesAndSettingsForNonARCFileInfos(infos: [BazelFileInfo]) -> ([PBXFileReference], [PBXFileReference: [String: String]]) {
     let nonARCFileReferences = generateFileReferencesForFileInfos(infos)
+    var settings = [PBXFileReference: [String: String]]()
+    let disableARCSetting = ["COMPILER_FLAGS": "-fno-objc-arc"]
     nonARCFileReferences.forEach() {
-      $0.setCompilerFlags(["-fno-objc-arc"])
+      settings[$0] = disableARCSetting
     }
-    return nonARCFileReferences
+    return (nonARCFileReferences, settings)
   }
 
   private func generateUniqueNamesForRuleEntries(ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
@@ -638,8 +643,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles
     if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty {
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
-      fileReferences.appendContentsOf(generateFileReferencesForNonARCFileInfos(nonARCSourceFileInfos))
-      let buildPhase = createBuildPhaseForReferences(fileReferences)
+      let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
+      fileReferences.appendContentsOf(nonARCFiles)
+      let buildPhase = createBuildPhaseForReferences(fileReferences,
+                                                     withPerFileSettings: nonARCSettings)
       target.buildPhases.append(buildPhase)
 
       // Add configurations that will allow the tests to be run but not compiled. Note that the
@@ -752,19 +759,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given
   // per-file settings to each.
   private func createBuildPhaseForReferences(refs: [PBXReference],
-                                             withPerFileSettings settings: [String: String]? = nil) -> PBXSourcesBuildPhase {
+                                             withPerFileSettings settings: [PBXFileReference: [String: String]]? = nil) -> PBXSourcesBuildPhase {
     let buildPhase = PBXSourcesBuildPhase()
 
     for ref in refs {
-      if let file = ref as? PBXFileReference {
+      if let ref = ref as? PBXFileReference {
         // Do not add header files to the build phase.
-        guard let fileUTI = file.uti
+        guard let fileUTI = ref.uti
             where fileUTI.hasPrefix("sourcecode.") && !fileUTI.hasSuffix(".h") else {
           continue
         }
+        buildPhase.files.append(PBXBuildFile(fileRef: ref, settings: settings?[ref]))
+      } else {
+        buildPhase.files.append(PBXBuildFile(fileRef: ref))
       }
 
-      buildPhase.files.append(PBXBuildFile(fileRef: ref, settings: settings))
     }
     return buildPhase
   }
