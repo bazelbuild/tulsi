@@ -307,8 +307,9 @@ class _OptionsParser(object):
     reported_version = os.environ['XCODE_VERSION_ACTUAL']
     match = re.match(r'(\d{2})(\d)(\d)$', reported_version)
     if not match:
-      self._PrintWarning(
-          'Failed to extract Xcode version from %s' % reported_version)
+      sys.stdout.write('Warning: Failed to extract Xcode version from %s\n' % (
+          reported_version))
+      sys.stdout.flush()
       return None
     major_version = int(match.group(1))
     minor_version = int(match.group(2))
@@ -321,6 +322,10 @@ class _OptionsParser(object):
 
 class BazelBuildBridge(object):
   """Handles invoking Bazel and unpacking generated binaries."""
+
+  # Tuple of paths that are allowed as siblings of the Payload directory in IPA
+  # bundles.
+  _IPA_SUPPORT_DIRECTORIES = ('WatchKitSupport', 'SwiftSupport')
 
   def __init__(self):
     self.verbose = 0
@@ -605,12 +610,18 @@ class BazelBuildBridge(object):
     with zipfile.ZipFile(ipa_path, 'r') as zf:
       for item in zf.infolist():
         filename = item.filename
-        attributes = (item.external_attr >> 16) & 0777
-        self._PrintVerbose('Extracting %s (%o)' % (filename, attributes),
-                           level=1)
+
+        # Support directories do not seem to be needed by the debugger and are
+        # skipped.
+        if filename.startswith(self._IPA_SUPPORT_DIRECTORIES):
+          continue
 
         if len(filename) < len(expected_ipa_subpath):
           continue
+
+        attributes = (item.external_attr >> 16) & 0777
+        self._PrintVerbose('Extracting %s (%o)' % (filename, attributes),
+                           level=1)
 
         if not filename.startswith(expected_ipa_subpath):
           # TODO(abaire): Make an error if Bazel modifies this behavior.
