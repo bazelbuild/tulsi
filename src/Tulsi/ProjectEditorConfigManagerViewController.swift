@@ -231,8 +231,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       errorInfo = "No URL for config named '\(name)'"
     } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
       errorInfo = info
-    } catch TulsiProjectDocument.Error.InvalidWorkspace(let workspace) {
-      errorInfo = "Invalid workspace \(workspace)"
+    } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
+      errorInfo = "Invalid workspace: \(info)"
     } catch {
       errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
     }
