@@ -50,8 +50,17 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let (projectURL, configURL, defaultOutputFolderURL) = try resolveConfigPath(configPath)
 
     let documentController = NSDocumentController.sharedDocumentController()
-    let doc = try documentController.makeDocumentWithContentsOfURL(projectURL,
-                                                                   ofType: "com.google.tulsi.project")
+    let doc: NSDocument
+    do {
+      doc = try documentController.makeDocumentWithContentsOfURL(projectURL,
+                                                                 ofType: "com.google.tulsi.project")
+    } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
+      throw Error.InvalidProjectFileContents("Failed to load project due to invalid workspace: \(info)")
+    } catch let e as NSError {
+      throw Error.InvalidProjectFileContents("Failed to load project due to unexpected exception: \(e)")
+    } catch {
+      throw Error.InvalidProjectFileContents("Failed to load project due to unexpected exception.")
+    }
     guard let projectDocument = doc as? TulsiProjectDocument else {
       throw Error.InvalidProjectFileContents("\(doc) is not of the expected type.")
     }
