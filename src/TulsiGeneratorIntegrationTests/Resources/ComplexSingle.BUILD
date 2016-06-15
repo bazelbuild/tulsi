@@ -64,6 +64,14 @@ objc_binary(
         "Binary/Base.lproj/One.storyboard",
         ":StoryboardGenerator",
     ],
+    strings = [
+        "Binary/Base.lproj/Localizable.strings",
+        "Binary/Base.lproj/Localized.strings",
+        "Binary/en.lproj/Localized.strings",
+        "Binary/en.lproj/EN.strings",
+        "Binary/es.lproj/Localized.strings",
+        "Binary/NonLocalized.strings",
+    ],
     deps = [
         ":CoreDataResources",
         ":Library",

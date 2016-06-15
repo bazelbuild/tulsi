@@ -48,6 +48,10 @@
 		43D68C282E5726C800000000 /* lib_indexer_Binary_4799450061441825755.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_Binary_4799450061441825755.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282F76936E00000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file1; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C283D391B8200000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
+		43D68C283D391B8200000001 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
+		43D68C283D391B8200000002 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
+		43D68C283D51411800000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		43D68C28428DF50400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist1.plist; sourceTree = "<group>"; };
 		43D68C284437EBAE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C2845522B5A00000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src5.mm; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 		43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Library_-4799450060931977398.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_SubLibrary_-4799450061059093063.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2886555B1600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = file2.file; sourceTree = "<group>"; };
+		43D68C289349B5E800000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = EN.strings; sourceTree = "<group>"; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C2897997C9400000000 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_resources.file; sourceTree = "<group>"; };
 		43D68C2897D54C2400000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = ext_entitlements.entitlements; sourceTree = "<group>"; };
@@ -99,6 +104,7 @@
 		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_NonPropagatedLibrary_4799450059426399627.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28EF237CF400000000 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
+		43D68C28F1F4A85E00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NonLocalized.strings; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FB38EC0400000000 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -216,6 +222,14 @@
 			path = app_infoplists;
 			sourceTree = "<group>";
 		};
+		966FB6DE364BD42800000000 /* es.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C283D391B8200000002 /* Localized.strings */,
+			);
+			path = es.lproj;
+			sourceTree = "<group>";
+		};
 		966FB6DE3B86E64800000000 /* hdrs */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +333,8 @@
 		966FB6DEAD8053F600000000 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				43D68C283D51411800000000 /* Localizable.strings */,
+				43D68C283D391B8200000000 /* Localized.strings */,
 				43D68C289394A30C00000000 /* One.storyboard */,
 			);
 			path = Base.lproj;
@@ -426,6 +442,9 @@
 				43D68C284D703CF400000000 /* AssetsTwo.xcassets */,
 				966FB6DEAD8053F600000000 /* Base.lproj */,
 				43D68C28B7B6EFA200000000 /* Info.plist */,
+				43D68C28F1F4A85E00000000 /* NonLocalized.strings */,
+				966FB6DED8A59E2200000000 /* en.lproj */,
+				966FB6DE364BD42800000000 /* es.lproj */,
 				966FB6DE552DEA4E00000000 /* non_arc_srcs */,
 				966FB6DEB73A031C00000000 /* srcs */,
 			);
@@ -462,6 +481,15 @@
 				966FB6DEFB4DF3AA00000001 /* tulsi_e2e_complex */,
 			);
 			path = "bazel-genfiles";
+			sourceTree = "<group>";
+		};
+		966FB6DED8A59E2200000000 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C289349B5E800000000 /* EN.strings */,
+				43D68C283D391B8200000001 /* Localized.strings */,
+			);
+			path = en.lproj;
 			sourceTree = "<group>";
 		};
 		966FB6DEDF6E685E00000000 /* SubLibraryWithDifferentDefines */ = {

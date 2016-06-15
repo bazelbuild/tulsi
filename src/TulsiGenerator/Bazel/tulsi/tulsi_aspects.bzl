@@ -40,16 +40,19 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'app_entitlements',
     'app_infoplists',
     'app_resources',
+    'app_strings',
     'app_structured_resources',
     'ext_entitlements',
     'ext_infoplists',
     'ext_resources',
+    'ext_strings',
     'ext_structured_resources',
 
     'entitlements',
     'infoplist',
     'infoplists',
     'resources',
+    'strings',
     'structured_resources',
     'storyboards',
     'xibs',
@@ -206,6 +209,7 @@ def _collect_bundles(rule_attr):
     bundles.append(_file_metadata_by_replacing_path(f, path))
 
   return bundles
+
 
 def _collect_xcdatamodeld_files(obj, attr_path):
   """Returns artifact_location's for xcdatamodeld's for attr_path in obj."""
