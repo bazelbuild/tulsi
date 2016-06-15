@@ -478,6 +478,10 @@ final class XCConfigurationList: PBXObjectProtocol {
     return value
   }
 
+  func getBuildConfiguration(name: String) -> XCBuildConfiguration? {
+    return buildConfigurations[name]
+  }
+
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
     try serializer.addField("buildConfigurations", buildConfigurations.values.sort({$0.name < $1.name}))
     try serializer.addField("defaultConfigurationIsVisible", defaultConfigurationIsVisible)

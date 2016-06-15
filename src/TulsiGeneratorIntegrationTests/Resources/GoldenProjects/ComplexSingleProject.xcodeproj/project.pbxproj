@@ -949,12 +949,12 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Fastbuild;
 		};
@@ -965,8 +965,8 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Fastbuild;
 		};
@@ -1076,13 +1076,13 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Debug;
 		};
@@ -1093,9 +1093,9 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Debug;
 		};
@@ -1216,13 +1216,13 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Release;
 		};
@@ -1233,9 +1233,9 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = Release;
 		};
@@ -1356,7 +1356,6 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1366,6 +1365,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1376,13 +1376,13 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1412,7 +1412,6 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1422,6 +1421,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1432,13 +1432,13 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
-				BUILD_PATH = tulsi_e2e_complex;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
 			name = __TulsiTestRunner_Release;
 		};

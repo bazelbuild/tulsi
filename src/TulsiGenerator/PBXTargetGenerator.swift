@@ -73,6 +73,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // NOTE: Must be kept in sync with the CONFIGURATION environment variable use in the build script.
   static let buildConfigNames = ["Debug", "Fastbuild", "Release"]
 
+  /// Tuples consisting of a test runner config name and the base config name (from
+  /// buildConfigNames) that it inherits from.
+  static let testRunnerEnabledBuildConfigNames = ["Debug", "Release"].map({
+    (runTestTargetBuildConfigPrefix + $0, $0)
+  })
+
   /// Prefix for special configs used when running XCTests that prevent compilation and linking of
   /// any source files. This allows XCTest bundles to have associated test sources indexed by Xcode
   /// but not compiled when testing (as they're compiled by Bazel and the generated project may be
@@ -416,6 +422,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
+    addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
@@ -648,16 +655,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
       target.buildPhases.append(buildPhase)
-
-      // Add configurations that will allow the tests to be run but not compiled. Note that the
-      // config needs to be in the project (in order to pick up the correct defaults for the project
-      // type), the host (where it will be set in the xcode scheme) and the test bundle target
-      // (where it will be applied when the host is executed with the test action). Xcode does not
-      // explicitly produce errors if the target is not found in all three places, but it does
-      // behave unexpectedly.
-      addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
-      addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
-      addTestRunnerBuildConfigurationToBuildConfigurationList(hostTarget.buildConfigurationList)
     }
   }
 
@@ -677,9 +674,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // into a "clang -help" invocation.
   private func addTestRunnerBuildConfigurationToBuildConfigurationList(list: XCConfigurationList) {
 
-    func createTestConfigForBaseConfig(configurationName: String) {
+    func createTestConfigNamed(testConfigName: String,
+                               forBaseConfigNamed configurationName: String) {
       let baseConfig = list.getOrCreateBuildConfiguration(configurationName)
-      let testConfigName = PBXTargetGenerator.runTestTargetBuildConfigPrefix + configurationName
       let config = list.getOrCreateBuildConfiguration(testConfigName)
 
       var runTestTargetBuildSettings = baseConfig.buildSettings
@@ -697,8 +694,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       config.buildSettings = runTestTargetBuildSettings
     }
 
-    createTestConfigForBaseConfig("Debug")
-    createTestConfigForBaseConfig("Release")
+    for (testConfigName, configName) in PBXTargetGenerator.testRunnerEnabledBuildConfigNames {
+      createTestConfigNamed(testConfigName, forBaseConfigNamed: configName)
+    }
   }
 
   private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
@@ -744,7 +742,20 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let config = buildConfigurationList.getOrCreateBuildConfiguration(configName)
       mergeDictionary(&config.buildSettings, withContentsOfDictionary: newSettings)
 
-      if let baseSettings = baseConfigurationList?.getOrCreateBuildConfiguration(configName).buildSettings {
+      if let baseSettings = baseConfigurationList?.getBuildConfiguration(configName)?.buildSettings {
+        mergeDictionary(&config.buildSettings, withContentsOfDictionary: baseSettings)
+      }
+    }
+
+    for (testRunnerConfigName, configName) in PBXTargetGenerator.testRunnerEnabledBuildConfigNames {
+      let config = buildConfigurationList.getOrCreateBuildConfiguration(testRunnerConfigName)
+      mergeDictionary(&config.buildSettings, withContentsOfDictionary: newSettings)
+
+      if let baseSettings = baseConfigurationList?.getBuildConfiguration(testRunnerConfigName)?.buildSettings {
+        mergeDictionary(&config.buildSettings, withContentsOfDictionary: baseSettings)
+      } else if let baseSettings = baseConfigurationList?.getBuildConfiguration(configName)?.buildSettings {
+        // Fall back to the base config name if the base configuration list doesn't support a given
+        // test runner.
         mergeDictionary(&config.buildSettings, withContentsOfDictionary: baseSettings)
       }
     }
@@ -790,7 +801,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     var buildSettings = options.buildSettingsForTarget(name)
-    buildSettings["BUILD_PATH"] = entry.label.packageName!
+    buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
     buildSettings["PRODUCT_NAME"] = name
 
     // The following settings are simply passed through the environment for use by build scripts.
@@ -815,6 +826,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
+    addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
 
     if let buildPhase = createBuildPhaseForRuleEntry(entry) {
       target.buildPhases.append(buildPhase)

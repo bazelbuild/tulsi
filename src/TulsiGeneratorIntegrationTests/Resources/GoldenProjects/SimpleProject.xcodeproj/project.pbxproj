@@ -439,12 +439,12 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Fastbuild;
 		};
@@ -455,8 +455,8 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Fastbuild;
 		};
@@ -511,13 +511,13 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Debug;
 		};
@@ -528,9 +528,9 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Debug;
 		};
@@ -589,13 +589,13 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Release;
 		};
@@ -606,9 +606,9 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = Release;
 		};
@@ -667,7 +667,6 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -677,6 +676,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -687,13 +687,13 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -723,7 +723,6 @@
 			buildSettings = {
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -733,6 +732,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -743,13 +743,13 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
-				BUILD_PATH = tulsi_e2e_simple;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = Application;
+				TULSI_BUILD_PATH = tulsi_e2e_simple;
 			};
 			name = __TulsiTestRunner_Release;
 		};

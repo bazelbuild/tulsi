@@ -377,10 +377,10 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Fastbuild;
 		};
@@ -391,8 +391,8 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BUILD_PATH = TestSuite;
 				PRODUCT_NAME = TestApplication;
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Fastbuild;
 		};
@@ -418,8 +418,8 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
 				PRODUCT_NAME = NonXCTest;
+				TULSI_BUILD_PATH = TestSuite/Three;
 			};
 			name = Fastbuild;
 		};
@@ -449,11 +449,11 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Debug;
 		};
@@ -464,9 +464,9 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BUILD_PATH = TestSuite;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = TestApplication;
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Debug;
 		};
@@ -493,9 +493,9 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = NonXCTest;
+				TULSI_BUILD_PATH = TestSuite/Three;
 			};
 			name = Debug;
 		};
@@ -528,11 +528,11 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Release;
 		};
@@ -543,9 +543,9 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BUILD_PATH = TestSuite;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = TestApplication;
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Release;
 		};
@@ -572,9 +572,9 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BUILD_PATH = TestSuite/Three;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = NonXCTest;
+				TULSI_BUILD_PATH = TestSuite/Three;
 			};
 			name = Release;
 		};
@@ -607,7 +607,6 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -616,6 +615,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -626,13 +626,13 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BUILD_PATH = TestSuite;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestApplication;
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -657,12 +657,26 @@
 			};
 			name = __TulsiTestRunner_Debug;
 		};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = NonXCTest;
+				TULSI_BUILD_PATH = TestSuite/Three;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BUILD_PATH = TestSuite;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -671,6 +685,7 @@
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -681,13 +696,13 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BUILD_PATH = TestSuite;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestApplication;
+				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -709,6 +724,21 @@
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WORKSPACE_ROOT = "${SRCROOT}/../..";
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
+				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = NonXCTest;
+				TULSI_BUILD_PATH = TestSuite/Three;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -760,6 +790,8 @@
 				44936BD67EED3C4D00000003 /* Debug */,
 				44936BD63008588600000003 /* Fastbuild */,
 				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

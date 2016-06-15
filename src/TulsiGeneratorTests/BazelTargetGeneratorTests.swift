@@ -188,7 +188,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateTopLevelBuildConfigurations()
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 3)
+    XCTAssertEqual(topLevelConfigs.count, 5)
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
@@ -204,11 +204,19 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
-    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings, debugBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings,
+                   debugBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Release"])
-    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings, releaseBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings,
+                   releaseBuildSettingsFromSettings(topLevelBuildSettings))
     XCTAssertNotNil(topLevelConfigs["Fastbuild"])
     XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Debug"])
+    XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Debug"]!.buildSettings,
+                   debugTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Release"])
+    XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Release"]!.buildSettings,
+                   releaseTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
   }
 
   func testGenerateTargetsForRuleEntriesWithNoEntries() {
@@ -251,8 +259,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
+          "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
@@ -269,6 +277,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
               ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
           ],
           expectedBuildPhases: [
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
@@ -279,8 +295,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
-          "BUILD_PATH": rule2BuildPath,
           "PRODUCT_NAME": rule2TargetName,
+          "TULSI_BUILD_PATH": rule2BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: rule2TargetName,
@@ -296,6 +312,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -340,8 +364,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
+          "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
@@ -358,6 +382,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
               ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
           ],
           expectedBuildPhases: [
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
@@ -369,10 +401,10 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BUILD_PATH": rule2BuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": rule2TargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
+          "TULSI_BUILD_PATH": rule2BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: rule2TargetName,
@@ -388,6 +420,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -425,24 +465,15 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     }
     XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
 
-    // Configs will be minimally generated for Debug and the test runner dummy.
-    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 4)
-
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 2)
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": appIPA.asFileName!,
-          "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": rule1TargetName,
+          "TULSI_BUILD_PATH": rule1BuildPath,
       ]
-      var testRunnerExpectedBuildSettings = expectedBuildSettings
-      testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
-      testRunnerExpectedBuildSettings["ONLY_ACTIVE_ARCH"] = "YES"
-      testRunnerExpectedBuildSettings["OTHER_CFLAGS"] = "-help"
-      testRunnerExpectedBuildSettings["OTHER_LDFLAGS"] = "-help"
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
           buildConfigurations: [
@@ -460,11 +491,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
-                  expectedBuildSettings: debugBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Release",
-                  expectedBuildSettings: releaseBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -478,16 +509,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": testIPA.asFileName!,
-          "BUILD_PATH": testRuleBuildPath,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "PRODUCT_NAME": testRuleTargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
+          "TULSI_BUILD_PATH": testRuleBuildPath,
       ]
-      var testRunnerExpectedBuildSettings = expectedBuildSettings
-      testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
-      testRunnerExpectedBuildSettings["ONLY_ACTIVE_ARCH"] = "YES"
-      testRunnerExpectedBuildSettings["OTHER_CFLAGS"] = "-help"
-      testRunnerExpectedBuildSettings["OTHER_LDFLAGS"] = "-help"
       let expectedTarget = TargetDefinition(
           name: testRuleTargetName,
           buildConfigurations: [
@@ -505,11 +531,11 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
-                  expectedBuildSettings: debugBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Release",
-                  expectedBuildSettings: releaseBuildSettingsFromSettings(testRunnerExpectedBuildSettings)
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -586,8 +612,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BUILD_PATH": testRuleBuildPath,
           "PRODUCT_NAME": testRuleTargetName,
+          "TULSI_BUILD_PATH": testRuleBuildPath,
       ]
       var testRunnerExpectedBuildSettings = expectedBuildSettings
       testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
@@ -608,6 +634,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -648,8 +682,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test1:\(targetName)",
           "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
-          "BUILD_PATH": rule1BuildPath,
           "PRODUCT_NAME": "test-test1-SameName",
+          "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: "test-test1-SameName",
@@ -666,6 +700,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
               ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
           ],
           expectedBuildPhases: [
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
@@ -677,8 +719,8 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test2:\(targetName)",
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
-          "BUILD_PATH": rule2BuildPath,
           "PRODUCT_NAME": "test-test2-SameName",
+          "TULSI_BUILD_PATH": rule2BuildPath,
       ]
       let expectedTarget = TargetDefinition(
           name: "test-test2-SameName",
@@ -694,6 +736,14 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Fastbuild",
                   expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
           ],
           expectedBuildPhases: [
@@ -922,6 +972,25 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     var newSettings = settings
     newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "NDEBUG=1"
     return newSettings
+  }
+
+  private func debugTestRunnerBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+    let testRunnerSettings = addTestRunnerSettings(settings)
+    return debugBuildSettingsFromSettings(testRunnerSettings)
+  }
+
+  private func releaseTestRunnerBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+    let testRunnerSettings = addTestRunnerSettings(settings)
+    return releaseBuildSettingsFromSettings(testRunnerSettings)
+  }
+
+  private func addTestRunnerSettings(settings: [String: String]) -> [String: String] {
+    var testRunnerSettings = settings
+    testRunnerSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
+    testRunnerSettings["ONLY_ACTIVE_ARCH"] = "YES"
+    testRunnerSettings["OTHER_CFLAGS"] = "-help"
+    testRunnerSettings["OTHER_LDFLAGS"] = "-help"
+    return testRunnerSettings
   }
 
   private func rebuildSourceFileReferences() {
