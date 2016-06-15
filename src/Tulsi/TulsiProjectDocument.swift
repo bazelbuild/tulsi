@@ -28,8 +28,8 @@ final class TulsiProjectDocument: NSDocument,
     case NoSuchConfig
     /// The config failed to load with the given debug info.
     case ConfigLoadFailed(String)
-    /// The workspace used by the project is invalid.
-    case InvalidWorkspace
+    /// The workspace used by the project is invalid due to the given debug info.
+    case InvalidWorkspace(String)
   }
 
   /// Prefix used to access the persisted output folder for a given BUILD file path.
@@ -265,7 +265,7 @@ final class TulsiProjectDocument: NSDocument,
       let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
                                   comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
       error(String(format: fmt, workspaceFile.path!))
-      throw Error.InvalidWorkspace
+      throw Error.InvalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path!)")
     }
 
     updateRuleEntries()
