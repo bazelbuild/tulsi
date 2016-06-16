@@ -283,6 +283,7 @@ class _OptionsParser(object):
         '--copt',
         '--config',
         '--define',
+        '--objccopt',
     ]
 
     def ExtractOptionNames(opts):
