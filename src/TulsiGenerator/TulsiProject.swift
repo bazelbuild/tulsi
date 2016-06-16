@@ -120,10 +120,14 @@ public final class TulsiProject {
       }
 
       let projectName = dict[TulsiProject.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
-      guard let relativeWorkspaceURL = dict[TulsiProject.WorkspaceRootKey] as? String else {
+      guard let relativeWorkspacePath = dict[TulsiProject.WorkspaceRootKey] as? String else {
         throw Error.DeserializationFailed("Missing required value for \(TulsiProject.WorkspaceRootKey)")
       }
-      var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspaceURL,
+      if (relativeWorkspacePath as NSString).absolutePath {
+        throw Error.DeserializationFailed("\(TulsiProject.WorkspaceRootKey) may not be an absolute path")
+      }
+
+      var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspacePath,
                                                                           isDirectory: true)
       // Get rid of any ..'s and //'s if possible.
       if let standardizedWorkspaceRootURL = workspaceRootURL.URLByStandardizingPath {
