@@ -235,12 +235,11 @@ let DirExtensionToUTI = [
 // Helper methods to extract filename-like substrings from strings.
 extension String {
   var pbPathExtension: String? {
-    let values = self.componentsSeparatedByString(".")
-    if values.count > 1 {
-      return values.last
-    } else {
+    let ext = (self as NSString).pathExtension
+    if ext.isEmpty {
       return nil
     }
+    return ext
   }
 
   var pbPathUTI: String? {
@@ -264,7 +263,6 @@ extension String {
   }
 
   var pbPathLastComponent: String {
-    let values = self.componentsSeparatedByString("/")
-    return values.last!
+    return (self as NSString).lastPathComponent
   }
 }

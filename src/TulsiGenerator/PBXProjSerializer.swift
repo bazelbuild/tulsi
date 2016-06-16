@@ -74,9 +74,14 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
   private let gidGenerator: GIDGeneratorProtocol
   private var objects = [String: TypedDict]()
 
+  private class GIDHolder {
+    var gids: [String] = []
+  }
   // Maps PBXObject types to arrays of keys in the objects array. This allows serialization in the
-  // same OpenStep format as Xcode.
-  private var typedObjectIndex = [String: [String]]()
+  // same OpenStep format as Xcode. A wrapper GIDHolder class is leveraged in place of directly
+  // storing arrays of keys to avoid performance issues due to value semantics as the arrays are
+  // mutated.
+  private var typedObjectIndex = [String: GIDHolder]()
 
   // Dictionary containing data for the object currently being serialized.
   private var currentDict: RawDict!
@@ -100,7 +105,6 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
   }
 
   // MARK: - XcodeProjFieldSerializer
-
   func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
     if let typedObject = objects[obj.globalID] {
       if !returnRawID {
@@ -127,11 +131,12 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
 
     try obj.serializeInto(self)
 
-    if typedObjectIndex[isa] == nil {
-      typedObjectIndex[isa] = [globalID]
-    } else {
-      typedObjectIndex[isa]!.append(globalID)
+    var objectGIDHolder = typedObjectIndex[isa]
+    if objectGIDHolder == nil {
+      objectGIDHolder = GIDHolder()
+      typedObjectIndex[isa] = objectGIDHolder
     }
+    objectGIDHolder!.gids.append(globalID)
 
     currentDict = stack
 
@@ -254,7 +259,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
   private func encodeSerializedPBXObjectArray(key: String,
                                               into data: NSMutableData,
                                               indented indent: String) throws {
-    guard let entries = typedObjectIndex[key] else {
+    guard let entries = typedObjectIndex[key]?.gids else {
       return
     }
 

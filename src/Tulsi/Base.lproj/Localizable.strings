@@ -119,6 +119,12 @@
 /* Sent when finding all BUILD files applicable to a Bazel project. */
 "buildFileExtraction" = "Extracting BUILD files";
 
+/* Sent when creating Xcode build targets. */
+"generatingBuildTargets" = "Generating build targets";
+
+/* Sent when creating Xcode indexer targets. */
+"generatingIndexerTargets" = "Generating indexer libraries";
+
 /* Sent when the Tulsi generator is copying the build scripts into the output Xcode project. */
 "installingScripts" = "Installing build scripts";
 

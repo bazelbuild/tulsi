@@ -91,9 +91,9 @@ final class XCBuildConfiguration: PBXObjectProtocol {
     return "XCBuildConfiguration"
   }
 
-  var hashValue: Int {
-    return name.hashValue
-  }
+  lazy var hashValue: Int = {
+    return self.name.hashValue
+  }()
 
   var comment: String? {
     return name
@@ -124,23 +124,23 @@ class PBXReference: PBXObjectProtocol {
     return ""
   }
 
-  var hashValue: Int {
-    return name.hashValue &+ (path?.hashValue ?? 0)
-  }
+  lazy var hashValue: Int = {
+    return self.name.hashValue &+ (self.path?.hashValue ?? 0)
+  }()
 
   var comment: String? {
     return name
   }
 
-  var fileExtension: String? {
-    guard let p = path else { return nil }
+  lazy var fileExtension: String? = {
+    guard let p = self.path else { return nil }
     return p.pbPathExtension
-  }
+  }()
 
-  var uti: String? {
-    guard let p = path else { return nil }
+  lazy var uti: String? = {
+    guard let p = self.path else { return nil }
     return p.pbPathUTI
-  }
+  }()
 
   weak var parent: PBXReference? {
     return _parent
@@ -217,9 +217,12 @@ final class PBXFileReference: PBXReference, Hashable {
     if fileTypeOverride != nil {
       return fileTypeOverride
     }
-
-    return name.pbPathUTI
+    return self._pbPathUTI
   }
+  // memoized copy of the (expensive) pbPathUTI for this PBXFileReference's name.
+  private lazy var _pbPathUTI: String? = {
+    return self.name.pbPathUTI
+  }()
 
   init(name: String, path: String?, sourceTree: SourceTree, parent: PBXGroup?) {
     super.init(name: name, path: path, sourceTree: sourceTree, parent: parent)
@@ -455,9 +458,9 @@ final class XCConfigurationList: PBXObjectProtocol {
     return "XCConfigurationList"
   }
 
-  var hashValue: Int {
-    return 0
-  }
+  lazy var hashValue: Int = {
+    return self.comment?.hashValue ?? 0
+  }()
 
   let comment: String?
 
@@ -556,9 +559,8 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
     return "PBXShellScriptBuildPhase"
   }
 
-  override var hashValue: Int {
-    return shellPath.hashValue &+ shellScript.hashValue
-  }
+  override var hashValue: Int { return _hashValue }
+  private let _hashValue: Int
 
   override var comment: String? {
     return "ShellScript"
@@ -574,6 +576,7 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
     self.shellPath = shellPath
     self.inputPaths = inputPaths
     self.outputPaths = outputPaths
+    self._hashValue = shellPath.hashValue &+ shellScript.hashValue
 
     super.init(buildActionMask: buildActionMask, runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing)
   }
@@ -603,9 +606,15 @@ final class PBXBuildFile: PBXObjectProtocol {
     self.settings = settings
   }
 
-  var hashValue: Int {
-    return fileRef.hashValue
-  }
+  lazy var hashValue: Int = {
+    var val = self.fileRef.hashValue
+    if let settings = self.settings {
+      for (key, value) in settings {
+        val = val &+ key.hashValue &+ value.hashValue
+      }
+    }
+    return val
+  }()
 
   var isa: String {
     return "PBXBuildFile"
@@ -660,9 +669,9 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     return ""
   }
 
-  var hashValue: Int {
-    return name.hashValue
-  }
+  lazy var hashValue: Int = {
+    return self.name.hashValue &+ (self.comment?.hashValue ?? 0)
+  }()
 
   var comment: String? {
     return name
@@ -1043,7 +1052,7 @@ final class PBXProject: PBXObjectProtocol {
     var accessedGroups = Set<PBXGroup>()
     var accessedFileReferences = [PBXFileReference]()
 
-    pathsLoop: for path in paths {
+    for path in paths {
       let (groups, ref) = createGroupsAndFileReferenceForPath(path, underGroup: mainGroup)
       accessedGroups.unionInPlace(groups)
       ref.isInputFile = true

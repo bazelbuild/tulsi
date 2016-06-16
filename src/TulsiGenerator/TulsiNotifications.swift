@@ -33,6 +33,12 @@ public let ProgressUpdatingTaskProgressValue = "value"
 /// Sent when finding BUILD file dependencies.
 public let BuildFileExtraction = "buildFileExtraction"
 
+/// Sent when creating Xcode build targets.
+public let GeneratingBuildTargets = "generatingBuildTargets"
+
+/// Sent when creating Xcode indexer targets.
+public let GeneratingIndexerTargets = "generatingIndexerTargets"
+
 /// Sent when copying the build scripts into the output Xcode project.
 public let InstallingScripts = "installingScripts"
 

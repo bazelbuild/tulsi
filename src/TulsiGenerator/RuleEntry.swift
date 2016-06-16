@@ -55,13 +55,13 @@ public class BazelFileInfo {
   /// The type of this file.
   public let targetType: TargetType
 
-  public var fullPath: String {
-    return NSString.pathWithComponents([rootPath, subPath])
-  }
+  public lazy var fullPath: String = {
+    return NSString.pathWithComponents([self.rootPath, self.subPath])
+  }()
 
-  public var uti: String? {
-    return subPath.pbPathUTI
-  }
+  public lazy var uti: String? = {
+    return self.subPath.pbPathUTI
+  }()
 
   init?(info: AnyObject?) {
     guard let info = info as? [String: AnyObject] else {

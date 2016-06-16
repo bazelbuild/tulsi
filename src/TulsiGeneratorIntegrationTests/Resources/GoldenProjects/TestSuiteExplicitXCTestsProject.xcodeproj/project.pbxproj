@@ -17,17 +17,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		819366727632380300000000 /* PBXContainerItemProxy */ = {
+		819366726921D83500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EA68854BB100000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D31C5E67632380200000000;
+			remoteGlobalIDString = ECCC95946921D83400000000;
 		};
-		81936672B490EC1B00000000 /* PBXContainerItemProxy */ = {
+		81936672EC64700500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EA68854BB100000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ECCC9594B490EC1A00000000;
+			remoteGlobalIDString = 3D31C5E6EC64700400000000;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -152,10 +152,10 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		ECCC9594B490EC1A00000000 /* _bazel_clean_ */ = {
+		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
-			buildConfigurationList = DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
 			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
@@ -169,9 +169,9 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E600253A5400000000 /* TestSuite-One-XCTest */ = {
+		3D31C5E6004A74A800000000 /* TestSuite-One-XCTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
+			buildConfigurationList = DE47558391D6432200000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
 			buildPhases = (
 				84B42271F303B98B00000000 /* ShellScript */,
 				605793E20000000000000002 /* Sources */,
@@ -179,65 +179,17 @@
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-				4DAD0B427632380300000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42EC64700500000000 /* PBXTargetDependency */,
 			);
 			name = "TestSuite-One-XCTest";
 			productName = "TestSuite-One-XCTest";
 			productReference = 43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E6396057C300000000 /* _indexer_XCTest_4799450059611656605 */ = {
+		3D31C5E6042EA8D800000000 /* TestSuite-Three-XCTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059611656605" */;
-			buildPhases = (
-				605793E20000000000000005 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_XCTest_4799450059611656605;
-			productName = _indexer_XCTest_4799450059611656605;
-			productReference = 43D68C2806C3567800000000 /* lib_indexer_XCTest_4799450059611656605.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E63992D6A100000000 /* _indexer_XCTest_-4799450059703901475 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059703901475" */;
-			buildPhases = (
-				605793E20000000000000004 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_XCTest_-4799450059703901475";
-			productName = "_indexer_XCTest_-4799450059703901475";
-			productReference = 43D68C28EDB120D400000000 /* lib_indexer_XCTest_-4799450059703901475.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E67632380200000000 /* TestApplication */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */;
-			buildPhases = (
-				84B422711C7FCA1100000000 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = TestApplication;
-			productName = TestApplication;
-			productReference = 43D68C285A2F8B6E00000000 /* TestApplication.app */;
-			productType = "com.apple.product-type.application";
-		};
-		3D31C5E68217546C00000000 /* TestSuite-Three-XCTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
+			buildConfigurationList = DE4755834E80A3C200000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
 			buildPhases = (
 				84B4227186B99B9100000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
@@ -245,17 +197,49 @@
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-				4DAD0B427632380300000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42EC64700500000000 /* PBXTargetDependency */,
 			);
 			name = "TestSuite-Three-XCTest";
 			productName = "TestSuite-Three-XCTest";
 			productReference = 43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E6BE267DAC00000000 /* TestSuite-Two-XCTest */ = {
+		3D31C5E672C0AF8600000000 /* _indexer_XCTest_4799450059611656605 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
+			buildConfigurationList = DE4755830BB89BA900000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059611656605" */;
+			buildPhases = (
+				605793E20000000000000005 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _indexer_XCTest_4799450059611656605;
+			productName = _indexer_XCTest_4799450059611656605;
+			productReference = 43D68C2806C3567800000000 /* lib_indexer_XCTest_4799450059611656605.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E67325AD4200000000 /* _indexer_XCTest_-4799450059703901475 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583696B649700000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059703901475" */;
+			buildPhases = (
+				605793E20000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_XCTest_-4799450059703901475";
+			productName = "_indexer_XCTest_-4799450059703901475";
+			productReference = 43D68C28EDB120D400000000 /* lib_indexer_XCTest_-4799450059703901475.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E67C4CFB5800000000 /* TestSuite-Two-XCTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755831AEA36FA00000000 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
 			buildPhases = (
 				84B422719A775C6300000000 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
@@ -263,45 +247,61 @@
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-				4DAD0B427632380300000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42EC64700500000000 /* PBXTargetDependency */,
 			);
 			name = "TestSuite-Two-XCTest";
 			productName = "TestSuite-Two-XCTest";
 			productReference = 43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */ = {
+		3D31C5E68090AF8A00000000 /* _indexer_Binary_-4799450061102981736 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */;
+			buildConfigurationList = DE475583F00E97FB00000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */;
 			buildPhases = (
 				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = "_indexer_Binary_-4799450061102981736";
 			productName = "_indexer_Binary_-4799450061102981736";
 			productReference = 43D68C28A17D6E9C00000000 /* lib_indexer_Binary_-4799450061102981736.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E6E0386BBB00000000 /* _indexer_XCTest_4799450060018286533 */ = {
+		3D31C5E6C070D77600000000 /* _indexer_XCTest_4799450060018286533 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450060018286533" */;
+			buildConfigurationList = DE475583C05E37A100000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450060018286533" */;
 			buildPhases = (
 				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = _indexer_XCTest_4799450060018286533;
 			productName = _indexer_XCTest_4799450060018286533;
 			productReference = 43D68C28D5CE6E6800000000 /* lib_indexer_XCTest_4799450060018286533.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6EC64700400000000 /* TestApplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558305B5AF7800000000 /* Build configuration list for PBXNativeTarget "TestApplication" */;
+			buildPhases = (
+				84B422711C7FCA1100000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = TestApplication;
+			productName = TestApplication;
+			productReference = 43D68C285A2F8B6E00000000 /* TestApplication.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -312,18 +312,18 @@
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0610;
 				TargetAttributes = {
-					3D31C5E600253A5400000000 = {
-						TestTargetID = 3D31C5E67632380200000000;
+					3D31C5E6004A74A800000000 = {
+						TestTargetID = 3D31C5E6EC64700400000000;
 					};
-					3D31C5E68217546C00000000 = {
-						TestTargetID = 3D31C5E67632380200000000;
+					3D31C5E6042EA8D800000000 = {
+						TestTargetID = 3D31C5E6EC64700400000000;
 					};
-					3D31C5E6BE267DAC00000000 = {
-						TestTargetID = 3D31C5E67632380200000000;
+					3D31C5E67C4CFB5800000000 = {
+						TestTargetID = 3D31C5E6EC64700400000000;
 					};
 				};
 			};
-			buildConfigurationList = DE4755830000000000000005 /* Build configuration list for PBXProject "TestSuiteExplicitXCTestsProject" */;
+			buildConfigurationList = DE4755832C50EFEB00000000 /* Build configuration list for PBXProject "TestSuiteExplicitXCTestsProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -332,15 +332,15 @@
 			);
 			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
-				3D31C5E67632380200000000 /* TestApplication */,
-				3D31C5E600253A5400000000 /* TestSuite-One-XCTest */,
-				3D31C5E68217546C00000000 /* TestSuite-Three-XCTest */,
-				3D31C5E6BE267DAC00000000 /* TestSuite-Two-XCTest */,
-				ECCC9594B490EC1A00000000 /* _bazel_clean_ */,
-				3D31C5E6C04857C500000000 /* _indexer_Binary_-4799450061102981736 */,
-				3D31C5E63992D6A100000000 /* _indexer_XCTest_-4799450059703901475 */,
-				3D31C5E6396057C300000000 /* _indexer_XCTest_4799450059611656605 */,
-				3D31C5E6E0386BBB00000000 /* _indexer_XCTest_4799450060018286533 */,
+				3D31C5E6EC64700400000000 /* TestApplication */,
+				3D31C5E6004A74A800000000 /* TestSuite-One-XCTest */,
+				3D31C5E6042EA8D800000000 /* TestSuite-Three-XCTest */,
+				3D31C5E67C4CFB5800000000 /* TestSuite-Two-XCTest */,
+				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				3D31C5E68090AF8A00000000 /* _indexer_Binary_-4799450061102981736 */,
+				3D31C5E67325AD4200000000 /* _indexer_XCTest_-4799450059703901475 */,
+				3D31C5E672C0AF8600000000 /* _indexer_XCTest_4799450059611656605 */,
+				3D31C5E6C070D77600000000 /* _indexer_XCTest_4799450060018286533 */,
 			);
 		};
 /* End PBXProject section */
@@ -464,13 +464,13 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4DAD0B427632380300000000 /* PBXTargetDependency */ = {
+		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 819366727632380300000000 /* PBXContainerItemProxy */;
+			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
 		};
-		4DAD0B42B490EC1B00000000 /* PBXTargetDependency */ = {
+		4DAD0B42EC64700500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 81936672B490EC1B00000000 /* PBXContainerItemProxy */;
+			targetProxy = 81936672EC64700500000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -953,24 +953,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000000 /* Debug */,
-				44936BD63008588600000000 /* Fastbuild */,
-				44936BD6A3D45CE900000000 /* Release */,
-				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "TestApplication" */ = {
+		DE47558305B5AF7800000000 /* Build configuration list for PBXNativeTarget "TestApplication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000001 /* Debug */,
@@ -981,7 +964,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000003 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */ = {
+		DE4755830BB89BA900000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059611656605" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD63008588600000007 /* Fastbuild */,
+				44936BD6A3D45CE900000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755831AEA36FA00000000 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000002 /* Debug */,
@@ -992,18 +984,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
-				44936BD6A3D45CE900000003 /* Release */,
-				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755830000000000000005 /* Build configuration list for PBXProject "TestSuiteExplicitXCTestsProject" */ = {
+		DE4755832C50EFEB00000000 /* Build configuration list for PBXProject "TestSuiteExplicitXCTestsProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000004 /* Debug */,
@@ -1014,16 +995,18 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */ = {
+		DE4755834E80A3C200000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000005 /* Debug */,
-				44936BD63008588600000005 /* Fastbuild */,
-				44936BD6A3D45CE900000005 /* Release */,
+				44936BD67EED3C4D00000000 /* Debug */,
+				44936BD63008588600000000 /* Fastbuild */,
+				44936BD6A3D45CE900000000 /* Release */,
+				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059703901475" */ = {
+		DE475583696B649700000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059703901475" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1032,21 +1015,38 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059611656605" */ = {
+		DE47558391D6432200000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD63008588600000007 /* Fastbuild */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450060018286533" */ = {
+		DE475583C05E37A100000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450060018286533" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000008 /* Debug */,
 				44936BD63008588600000008 /* Fastbuild */,
 				44936BD6A3D45CE900000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583F00E97FB00000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_-4799450061102981736" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD63008588600000005 /* Fastbuild */,
+				44936BD6A3D45CE900000005 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

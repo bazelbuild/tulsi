@@ -85,19 +85,25 @@ final class XcodeProjectGenerator {
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
+    let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project")
+    defer { localizedMessageLogger.logProfilingEnd(generateProfilingToken) }
     try resolveConfigReferences()
+
     let mainGroup = pbxTargetGeneratorType.mainGroupForOutputFolder(outputFolderURL,
                                                                     workspaceRootURL: workspaceRootURL)
     let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup)
 
-    let progressNotifier = ProgressNotifier(name: SerializingXcodeProject,
-                                            maxValue: 1,
-                                            indeterminate: true)
+    let serializingProgressNotifier = ProgressNotifier(name: SerializingXcodeProject,
+                                                       maxValue: 1,
+                                                       indeterminate: true)
     let serializer = OpenStepSerializer(rootObject: projectInfo.project,
                                         gidGenerator: ConcreteGIDGenerator())
+
+    let serializingProfileToken = localizedMessageLogger.startProfiling("serializing_project")
     guard let serializedXcodeProject = serializer.serialize() else {
       throw Error.SerializationFailed("OpenStep serialization failed")
     }
+    localizedMessageLogger.logProfilingEnd(serializingProfileToken)
 
     let projectBundleName = config.xcodeProjectFilename
     let projectURL = outputFolderURL.URLByAppendingPathComponent(projectBundleName)
@@ -106,7 +112,7 @@ final class XcodeProjectGenerator {
     }
     let pbxproj = projectURL.URLByAppendingPathComponent("project.pbxproj")
     try writeDataHandler(pbxproj, serializedXcodeProject)
-    progressNotifier.incrementValue()
+    serializingProgressNotifier.incrementValue()
 
     try installWorkspaceSettings(projectURL)
     try installXcodeSchemesForProjectInfo(projectInfo,
@@ -214,21 +220,33 @@ final class XcodeProjectGenerator {
     var targetRules = Set<RuleEntry>()
     var targetIndexers = [RuleEntry: Set<PBXTarget>]()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
-    for label in expandedTargetLabels {
-      guard let ruleEntry = ruleEntryMap[label] else {
-        localizedMessageLogger.error("UnknownTargetRule",
-                                     comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
-                                     values: label.value)
-        continue
+
+    func profileAction(name: String, @noescape action: () throws -> Void) rethrows {
+      let profilingToken = localizedMessageLogger.startProfiling(name)
+      try action()
+      localizedMessageLogger.logProfilingEnd(profilingToken)
+    }
+
+    profileAction("generating_indexers") {
+      let progressNotifier = ProgressNotifier(name: GeneratingIndexerTargets,
+                                              maxValue: expandedTargetLabels.count)
+      for label in expandedTargetLabels {
+        progressNotifier.incrementValue()
+        guard let ruleEntry = ruleEntryMap[label] else {
+          localizedMessageLogger.error("UnknownTargetRule",
+                                       comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                       values: label.value)
+          continue
+        }
+        targetRules.insert(ruleEntry)
+        for hostTargetLabel in ruleEntry.linkedTargetLabels {
+          hostTargetLabels[hostTargetLabel] = ruleEntry.label
+        }
+        let indexers = generator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                                    ruleEntryMap: ruleEntryMap,
+                                                                    pathFilters: config.pathFilters)
+        targetIndexers[ruleEntry] = indexers
       }
-      targetRules.insert(ruleEntry)
-      for hostTargetLabel in ruleEntry.linkedTargetLabels {
-        hostTargetLabels[hostTargetLabel] = ruleEntry.label
-      }
-      let indexers = generator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                                  ruleEntryMap: ruleEntryMap,
-                                                                  pathFilters: config.pathFilters)
-      targetIndexers[ruleEntry] = indexers
     }
 
     // Generate RuleEntry's for any test hosts to ensure that selected tests can be executed in
@@ -248,11 +266,20 @@ final class XcodeProjectGenerator {
     }
 
     let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)
-    generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
-    generator.generateTopLevelBuildConfigurations()
-    try generator.generateBuildTargetsForRuleEntries(targetRules)
+    profileAction("generating_clean_target") {
+      generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
+    }
+    profileAction("generating_top_level_build_configs") {
+      generator.generateTopLevelBuildConfigurations()
+    }
 
-    patchExternalRepositoryReferences(xcodeProject)
+    try profileAction("generating_build_targets") {
+      try generator.generateBuildTargetsForRuleEntries(targetRules)
+    }
+
+    profileAction("patching_external_repository_references") {
+      patchExternalRepositoryReferences(xcodeProject)
+    }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,

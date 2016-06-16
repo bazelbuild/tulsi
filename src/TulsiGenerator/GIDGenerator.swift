@@ -22,17 +22,15 @@ protocol GIDGeneratorProtocol {
 
 
 /// Implementation of GIDGeneratorProtocol.
-class ConcreteGIDGenerator: GIDGeneratorProtocol {
-  var reservedIDS = Set<String>()
+final class ConcreteGIDGenerator: GIDGeneratorProtocol {
+  /// Map of hash prefix to the last used counter for that prefix.
+  private var reservedIDS = [String: Int]()
 
   func generate(item: PBXObjectProtocol) -> String {
-    var counter = 0
-    var gid: String
-    repeat {
-      gid = String(format: "%08X%08X%08X", item.isa.hashValue, item.hashValue, counter)
-      counter += 1
-    } while (reservedIDS.contains(gid))
-    reservedIDS.insert(gid)
+    let hash = String(format: "%08X%08X", item.isa.hashValue, item.hashValue)
+    let counter = reservedIDS[hash] ?? 0
+    let gid = String(format: "\(hash)%08X", counter)
+    reservedIDS[hash] = counter + 1
     return gid
   }
 }

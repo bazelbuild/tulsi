@@ -428,7 +428,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
+    let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
+                                            maxValue: namedRuleEntries.count)
     for (name, entry) in namedRuleEntries {
+      progressNotifier.incrementValue()
       let target = try createBuildTargetForRuleEntry(entry, named: name)
 
       if let hostLabelString = entry.attributes[.xctest_app] as? String {

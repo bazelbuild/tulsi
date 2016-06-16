@@ -18,26 +18,26 @@
 		E6AF494756F87EF800000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2856F87EF800000000 /* src4.m */; };
 		E6AF4947577B7A7A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28577B7A7A00000000 /* src3.m */; };
 		E6AF4947578645F400000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28578645F400000000 /* src2.m */; };
-		E6AF4947723DC36E00000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28723DC36E00000000 /* NonARCFile.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6AF49479B7A36EA00000000 /* output.m in outs */ = {isa = PBXBuildFile; fileRef = 43D68C289B7A36EA00000000 /* output.m */; };
 		E6AF4947BC21CCBA00000000 /* non_propagated.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BC21CCBA00000000 /* non_propagated.m */; };
 		E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D21BD1AA00000000 /* today_extension_binary.m */; };
 		E6AF4947D52A290A00000000 /* defaultTestSource.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D52A290A00000000 /* defaultTestSource.m */; };
 		E6AF4947D52A290A00000001 /* defaultTestSource.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D52A290A00000000 /* defaultTestSource.m */; };
+		E6AF4947F3721A0C00000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28723DC36E00000000 /* NonARCFile.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		81936672B490EC1B00000000 /* PBXContainerItemProxy */ = {
+		819366726921D83500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ECCC9594B490EC1A00000000;
+			remoteGlobalIDString = ECCC95946921D83400000000;
 		};
-		81936672B58A255F00000000 /* PBXContainerItemProxy */ = {
+		819366726B144ABD00000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D31C5E6B58A255E00000000;
+			remoteGlobalIDString = 3D31C5E66B144ABC00000000;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -553,10 +553,10 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		ECCC9594B490EC1A00000000 /* _bazel_clean_ */ = {
+		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
-			buildConfigurationList = DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
 			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
@@ -570,73 +570,185 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E61BD6D16B00000000 /* _indexer_Binary_4799450061441825755 */ = {
+		3D31C5E61A2BFA3200000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */;
+			buildConfigurationList = DE475583B3DE3EFD00000000 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */;
+			buildPhases = (
+				605793E20000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _indexer_NonPropagatedLibrary_4799450059426399627;
+			productName = _indexer_NonPropagatedLibrary_4799450059426399627;
+			productReference = 43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E624FDAC4C00000000 /* _indexer_Library_-4799450060931977398 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558369EED87C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_Library_-4799450060931977398";
+			productName = "_indexer_Library_-4799450060931977398";
+			productReference = 43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E62BAB974E00000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583D5219EE800000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */;
+			buildPhases = (
+				605793E20000000000000005 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _indexer_SubLibraryWithDefines_4799450059349455580;
+			productName = _indexer_SubLibraryWithDefines_4799450059349455580;
+			productReference = 43D68C281C0B2AE000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E637ADA2D600000000 /* _indexer_Binary_4799450061441825755 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583841B339100000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */;
 			buildPhases = (
 				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = _indexer_Binary_4799450061441825755;
 			productName = _indexer_Binary_4799450061441825755;
 			productReference = 43D68C282E5726C800000000 /* lib_indexer_Binary_4799450061441825755.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E61BF0C4F400000000 /* _indexer_XCTest_-4799450059344870159 */ = {
+		3D31C5E637E189E800000000 /* _indexer_XCTest_-4799450059344870159 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583000000000000000D /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */;
+			buildConfigurationList = DE475583DF24779A00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */;
 			buildPhases = (
 				605793E2000000000000000A /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = "_indexer_XCTest_-4799450059344870159";
 			productName = "_indexer_XCTest_-4799450059344870159";
 			productReference = 43D68C28B77D64E200000000 /* lib_indexer_XCTest_-4799450059344870159.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E63F39B36B00000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */ = {
+		3D31C5E64606529E00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583000000000000000B /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */;
+			buildConfigurationList = DE4755835134638300000000 /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */;
+			buildPhases = (
+				605793E20000000000000009 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_WatchExtensionBinary_-4799450061449773155";
+			productName = "_indexer_WatchExtensionBinary_-4799450061449773155";
+			productReference = 43D68C28AADD963000000000 /* lib_indexer_WatchExtensionBinary_-4799450061449773155.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E66B144ABC00000000 /* Application */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
+			buildPhases = (
+				84B4227141BF210E00000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = Application;
+			productName = Application;
+			productReference = 43D68C28F49055A600000000 /* Application.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3D31C5E67E7366D600000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583DF4D7F2100000000 /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */;
 			buildPhases = (
 				605793E20000000000000008 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = _indexer_TodayExtensionBinary_4799450059766121447;
 			productName = _indexer_TodayExtensionBinary_4799450059766121447;
 			productReference = 43D68C28B7D1AC6800000000 /* lib_indexer_TodayExtensionBinary_4799450059766121447.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E64985E86200000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */ = {
+		3D31C5E6930BD0C400000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */;
+			buildConfigurationList = DE47558304D1660600000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */;
 			buildPhases = (
 				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
 			name = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
 			productName = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
 			productReference = 43D68C2898EBFC1600000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E677973FA000000000 /* XCTest */ = {
+		3D31C5E6A558E24400000000 /* _indexer_CoreDataResources_-4799450060412742337 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
+			buildConfigurationList = DE4755834336801800000000 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */;
+			buildPhases = (
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_CoreDataResources_-4799450060412742337";
+			productName = "_indexer_CoreDataResources_-4799450060412742337";
+			productReference = 43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6A5B3A0C200000000 /* _indexer_SubLibrary_-4799450061059093063 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583EB60965700000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */;
+			buildPhases = (
+				605793E20000000000000007 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = "_indexer_SubLibrary_-4799450061059093063";
+			productName = "_indexer_SubLibrary_-4799450061059093063";
+			productReference = 43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
 				84B4227121CF9CA000000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
@@ -644,125 +756,13 @@
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-				4DAD0B42B58A255F00000000 /* PBXTargetDependency */,
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B426B144ABD00000000 /* PBXTargetDependency */,
 			);
 			name = XCTest;
 			productName = XCTest;
 			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		3D31C5E68D15FD1900000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */;
-			buildPhases = (
-				605793E20000000000000004 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_NonPropagatedLibrary_4799450059426399627;
-			productName = _indexer_NonPropagatedLibrary_4799450059426399627;
-			productReference = 43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6927ED62600000000 /* _indexer_Library_-4799450060931977398 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */;
-			buildPhases = (
-				605793E20000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_Library_-4799450060931977398";
-			productName = "_indexer_Library_-4799450060931977398";
-			productReference = 43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E695D5CBA700000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */;
-			buildPhases = (
-				605793E20000000000000005 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_SubLibraryWithDefines_4799450059349455580;
-			productName = _indexer_SubLibraryWithDefines_4799450059349455580;
-			productReference = 43D68C281C0B2AE000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6A303294F00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583000000000000000C /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */;
-			buildPhases = (
-				605793E20000000000000009 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_WatchExtensionBinary_-4799450061449773155";
-			productName = "_indexer_WatchExtensionBinary_-4799450061449773155";
-			productReference = 43D68C28AADD963000000000 /* lib_indexer_WatchExtensionBinary_-4799450061449773155.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6B58A255E00000000 /* Application */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "Application" */;
-			buildPhases = (
-				84B4227141BF210E00000000 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = Application;
-			productName = Application;
-			productReference = 43D68C28F49055A600000000 /* Application.app */;
-			productType = "com.apple.product-type.application";
-		};
-		3D31C5E6D2AC712200000000 /* _indexer_CoreDataResources_-4799450060412742337 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830000000000000005 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */;
-			buildPhases = (
-				605793E20000000000000002 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_CoreDataResources_-4799450060412742337";
-			productName = "_indexer_CoreDataResources_-4799450060412742337";
-			productReference = 43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6D2D9D06100000000 /* _indexer_SubLibrary_-4799450061059093063 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */;
-			buildPhases = (
-				605793E20000000000000007 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B42B490EC1B00000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_SubLibrary_-4799450061059093063";
-			productName = "_indexer_SubLibrary_-4799450061059093063";
-			productReference = 43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -773,12 +773,12 @@
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0610;
 				TargetAttributes = {
-					3D31C5E677973FA000000000 = {
-						TestTargetID = 3D31C5E6B58A255E00000000;
+					3D31C5E6EF2E7F4000000000 = {
+						TestTargetID = 3D31C5E66B144ABC00000000;
 					};
 				};
 			};
-			buildConfigurationList = DE4755830000000000000003 /* Build configuration list for PBXProject "ComplexSingleProject" */;
+			buildConfigurationList = DE4755836798DA7E00000000 /* Build configuration list for PBXProject "ComplexSingleProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -787,19 +787,19 @@
 			);
 			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
-				3D31C5E6B58A255E00000000 /* Application */,
-				3D31C5E677973FA000000000 /* XCTest */,
-				ECCC9594B490EC1A00000000 /* _bazel_clean_ */,
-				3D31C5E61BD6D16B00000000 /* _indexer_Binary_4799450061441825755 */,
-				3D31C5E6D2AC712200000000 /* _indexer_CoreDataResources_-4799450060412742337 */,
-				3D31C5E6927ED62600000000 /* _indexer_Library_-4799450060931977398 */,
-				3D31C5E68D15FD1900000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */,
-				3D31C5E695D5CBA700000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */,
-				3D31C5E64985E86200000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */,
-				3D31C5E6D2D9D06100000000 /* _indexer_SubLibrary_-4799450061059093063 */,
-				3D31C5E63F39B36B00000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */,
-				3D31C5E6A303294F00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */,
-				3D31C5E61BF0C4F400000000 /* _indexer_XCTest_-4799450059344870159 */,
+				3D31C5E66B144ABC00000000 /* Application */,
+				3D31C5E6EF2E7F4000000000 /* XCTest */,
+				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				3D31C5E637ADA2D600000000 /* _indexer_Binary_4799450061441825755 */,
+				3D31C5E6A558E24400000000 /* _indexer_CoreDataResources_-4799450060412742337 */,
+				3D31C5E624FDAC4C00000000 /* _indexer_Library_-4799450060931977398 */,
+				3D31C5E61A2BFA3200000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */,
+				3D31C5E62BAB974E00000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */,
+				3D31C5E6930BD0C400000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */,
+				3D31C5E6A5B3A0C200000000 /* _indexer_SubLibrary_-4799450061059093063 */,
+				3D31C5E67E7366D600000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */,
+				3D31C5E64606529E00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */,
+				3D31C5E637E189E800000000 /* _indexer_XCTest_-4799450059344870159 */,
 			);
 		};
 /* End PBXProject section */
@@ -850,7 +850,7 @@
 			files = (
 				E6AF49473611DBCE00000000 /* main.m in srcs */,
 				E6AF49479B7A36EA00000000 /* output.m in outs */,
-				E6AF4947723DC36E00000000 /* NonARCFile.mm in non_arc_srcs */,
+				E6AF4947F3721A0C00000000 /* NonARCFile.mm in non_arc_srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,13 +933,13 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4DAD0B42B490EC1B00000000 /* PBXTargetDependency */ = {
+		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 81936672B490EC1B00000000 /* PBXContainerItemProxy */;
+			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
 		};
-		4DAD0B42B58A255F00000000 /* PBXTargetDependency */ = {
+		4DAD0B426B144ABD00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 81936672B58A255F00000000 /* PBXContainerItemProxy */;
+			targetProxy = 819366726B144ABD00000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1466,35 +1466,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE4755830000000000000000 /* Build configuration list for PBXNativeTarget "XCTest" */ = {
+		DE47558304D1660600000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000000 /* Debug */,
-				44936BD63008588600000000 /* Fastbuild */,
-				44936BD6A3D45CE900000000 /* Release */,
-				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD63008588600000008 /* Fastbuild */,
+				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000001 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+		DE4755834336801800000000 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000002 /* Build configuration list for PBXNativeTarget "Application" */ = {
+		DE4755835134638300000000 /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000001 /* Debug */,
-				44936BD63008588600000001 /* Fastbuild */,
-				44936BD6A3D45CE900000001 /* Release */,
-				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+				44936BD67EED3C4D0000000B /* Debug */,
+				44936BD6300858860000000B /* Fastbuild */,
+				44936BD6A3D45CE90000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000003 /* Build configuration list for PBXProject "ComplexSingleProject" */ = {
+		DE4755836798DA7E00000000 /* Build configuration list for PBXProject "ComplexSingleProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000002 /* Debug */,
@@ -1505,25 +1504,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000004 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
-				44936BD6A3D45CE900000003 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755830000000000000005 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
-				44936BD6A3D45CE900000004 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755830000000000000006 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */ = {
+		DE47558369EED87C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,
@@ -1532,7 +1513,27 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000007 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */ = {
+		DE475583841B339100000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000000 /* Debug */,
+				44936BD63008588600000000 /* Fastbuild */,
+				44936BD6A3D45CE900000000 /* Release */,
+				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583B3DE3EFD00000000 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1541,7 +1542,13 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000008 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */ = {
+		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583D5219EE800000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000007 /* Debug */,
@@ -1550,25 +1557,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755830000000000000009 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */ = {
+		DE475583DF24779A00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000008 /* Debug */,
-				44936BD63008588600000008 /* Fastbuild */,
-				44936BD6A3D45CE900000008 /* Release */,
+				44936BD67EED3C4D0000000C /* Debug */,
+				44936BD6300858860000000C /* Fastbuild */,
+				44936BD6A3D45CE90000000C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583000000000000000A /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD63008588600000009 /* Fastbuild */,
-				44936BD6A3D45CE900000009 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583000000000000000B /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */ = {
+		DE475583DF4D7F2100000000 /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D0000000A /* Debug */,
@@ -1577,21 +1575,23 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583000000000000000C /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */ = {
+		DE475583EB60965700000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000B /* Debug */,
-				44936BD6300858860000000B /* Fastbuild */,
-				44936BD6A3D45CE90000000B /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD63008588600000009 /* Fastbuild */,
+				44936BD6A3D45CE900000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583000000000000000D /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */ = {
+		DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000C /* Debug */,
-				44936BD6300858860000000C /* Fastbuild */,
-				44936BD6A3D45CE90000000C /* Release */,
+				44936BD67EED3C4D00000001 /* Debug */,
+				44936BD63008588600000001 /* Fastbuild */,
+				44936BD6A3D45CE900000001 /* Release */,
+				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
