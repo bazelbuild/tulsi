@@ -591,7 +591,8 @@ final class XcodeProjectGenerator {
           "artifacts": artifacts,
       ]
       do {
-        let data = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+        let data = try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                                     options: .PrettyPrinted)
         return data.writeToURL(outputURL, atomically: true)
       } catch let e as NSError {
         localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path!): \(e.localizedDescription)")

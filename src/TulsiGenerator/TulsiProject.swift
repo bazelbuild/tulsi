@@ -179,7 +179,8 @@ public final class TulsiProject {
     ]
 
     do {
-      return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                               options: .PrettyPrinted)
     } catch let e as NSError {
       throw Error.SerializationFailed(e.localizedDescription)
     } catch {
@@ -193,7 +194,8 @@ public final class TulsiProject {
     options.savePerUserOptionsIntoDictionary(&dict)
     if dict.isEmpty { return nil }
     do {
-      return try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                               options: .PrettyPrinted)
     } catch let e as NSError {
       throw Error.SerializationFailed(e.localizedDescription)
     } catch {

@@ -27,6 +27,7 @@
 		3D387BB41C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D387BB61C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib */; };
 		3D387BB81C761B8800544AE0 /* TulsiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BB71C761B8800544AE0 /* TulsiError.swift */; };
 		3D3DDD141CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D3DDD161CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib */; };
+		3D47D6BA1D13190E005B5BF3 /* NSJSONSerializationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D47D6B91D13190E005B5BF3 /* NSJSONSerializationExtensions.swift */; };
 		3D4E5A421D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */; };
 		3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */; };
 		3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */; };
@@ -177,6 +178,7 @@
 		3D387BB51C75354C00544AE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XcodeProjectGenerationProgressViewController.xib; sourceTree = "<group>"; };
 		3D387BB71C761B8800544AE0 /* TulsiError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiError.swift; sourceTree = "<group>"; };
 		3D3DDD151CCA7BCF00E21FA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ErrorAlertDetailView.xib; sourceTree = "<group>"; };
+		3D47D6B91D13190E005B5BF3 /* NSJSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSJSONSerializationExtensions.swift; sourceTree = "<group>"; };
 		3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGeneratorTests.swift; sourceTree = "<group>"; };
 		3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessXcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
@@ -191,7 +193,7 @@
 		3D800DE81C6C24C000F4D08C /* BugReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReporter.swift; sourceTree = "<group>"; };
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
-		3D8B37EE1C4F100F0090F3AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BazelOpenSheetAccessoryView.xib; sourceTree = "<group>"; };
+		3D8B37EE1C4F100F0090F3AD /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BazelOpenSheetAccessoryView.xib; sourceTree = "<group>"; };
 		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
 		3D9485421C3193F00026CE41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Options.strings; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
 				8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */,
 				3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */,
+				3D47D6B91D13190E005B5BF3 /* NSJSONSerializationExtensions.swift */,
 				3D9E1A501C6F87670026EE68 /* NSThreadExtensions.swift */,
 				3DA65B5D1C692FA20055448E /* NSURLExtensions.swift */,
 				AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */,
@@ -798,6 +801,7 @@
 				3D99268E1C29F1100094E098 /* BazelWorkspaceInfoExtractorProtocol.swift in Sources */,
 				3D9926881C29F10B0094E098 /* PBXTargetGenerator.swift in Sources */,
 				3DA65B1B1C67B9DE0055448E /* TulsiGeneratorConfig.swift in Sources */,
+				3D47D6BA1D13190E005B5BF3 /* NSJSONSerializationExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

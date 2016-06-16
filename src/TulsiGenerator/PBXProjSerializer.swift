@@ -44,7 +44,7 @@ extension PBXProjFieldSerializer {
 }
 
 
-private extension NSMutableData {
+extension NSMutableData {
   enum EncodingError: ErrorType {
     // A string failed to be encoded into NSData as UTF8.
     case StringUTF8EncodingError
