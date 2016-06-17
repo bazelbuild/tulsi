@@ -261,7 +261,8 @@ final class XcodeProjectGenerator {
                                    attributes: [:],
                                    sourceFiles: [],
                                    nonARCSourceFiles: [],
-                                   dependencies: Set<String>(),
+                                   dependencies: Set(),
+                                   frameworkImports: [],
                                    secondaryArtifacts: []))
     }
 

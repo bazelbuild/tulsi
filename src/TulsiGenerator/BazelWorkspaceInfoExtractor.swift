@@ -116,7 +116,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                                  attributes: [:],
                                                  sourceFiles: [],
                                                  nonARCSourceFiles: [],
-                                                 dependencies: Set<String>(),
+                                                 dependencies: Set(),
+                                                 frameworkImports: [],
                                                  secondaryArtifacts: [],
                                                  weakDependencies: possibleExpansions)
     }

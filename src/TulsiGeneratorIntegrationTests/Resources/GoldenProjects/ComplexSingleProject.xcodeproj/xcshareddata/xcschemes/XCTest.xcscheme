@@ -15,6 +15,9 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6930BD0C400000000" BuildableIdentifier="primary" BuildableName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" BlueprintName="_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6A28BEEEC00000000" BuildableIdentifier="primary" BuildableName="_indexer_ObjCFramework_-4799450059490475303" BlueprintName="_indexer_ObjCFramework_-4799450059490475303" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6A558E24400000000" BuildableIdentifier="primary" BuildableName="_indexer_CoreDataResources_-4799450060412742337" BlueprintName="_indexer_CoreDataResources_-4799450060412742337" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">

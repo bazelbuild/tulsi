@@ -215,22 +215,6 @@ final class BazelAspectInfoExtractor {
       let ruleLabel = try getRequiredField("label")
       let ruleType = try getRequiredField("type")
       let attributes = dict["attr"] as? [String: AnyObject] ?? [:]
-      let sourceInfos = dict["srcs"] as? [[String: AnyObject]] ?? []
-      var sources = [BazelFileInfo]()
-      for info in sourceInfos {
-        if let pathInfo = BazelFileInfo(info: info) {
-          sources.append(pathInfo)
-        }
-      }
-      let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
-      for info in generatedSourceInfos {
-        guard let pathInfo = BazelFileInfo(info: info),
-                  fileUTI = pathInfo.uti
-              where fileUTI.hasPrefix("sourcecode.") else {
-          continue
-        }
-        sources.append(pathInfo)
-      }
 
       func MakeBazelFileInfos(attributeName: String) -> [BazelFileInfo] {
         let infos = dict[attributeName] as? [[String: AnyObject]] ?? []
@@ -242,6 +226,18 @@ final class BazelAspectInfoExtractor {
         }
         return bazelFileInfos
       }
+
+      var sources = MakeBazelFileInfos("srcs")
+      let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
+      for info in generatedSourceInfos {
+        guard let pathInfo = BazelFileInfo(info: info),
+                  fileUTI = pathInfo.uti
+              where fileUTI.hasPrefix("sourcecode.") else {
+          continue
+        }
+        sources.append(pathInfo)
+      }
+
       var nonARCSources = MakeBazelFileInfos("non_arc_srcs")
       let generatedNonARCSourceInfos = dict["generated_non_arc_files"] as? [[String: AnyObject]] ?? []
       for info in generatedNonARCSourceInfos {
@@ -254,7 +250,8 @@ final class BazelAspectInfoExtractor {
       }
 
       let generatedIncludePaths = dict["generated_includes"] as? [String]
-      let dependencies = dict["deps"] as? [String] ?? []
+      let dependencies = Set(dict["deps"] as? [String] ?? [])
+      let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String
       let implictIPATarget: BuildLabel?
       if let ipaLabel = dict["ipa_output_label"] as? String {
@@ -269,7 +266,8 @@ final class BazelAspectInfoExtractor {
                                 attributes: attributes,
                                 sourceFiles: sources,
                                 nonARCSourceFiles: nonARCSources,
-                                dependencies: Set<String>(dependencies),
+                                dependencies: dependencies,
+                                frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,

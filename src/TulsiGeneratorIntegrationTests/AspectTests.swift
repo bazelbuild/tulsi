@@ -118,7 +118,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 14)
+    XCTAssertEqual(ruleEntries.count, 15)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -238,6 +238,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:NonPropagatedLibrary")
         .hasSources(["tulsi_test/NonPropagatedLibrary/srcs/non_propagated.m"])
 
+    checker.assertThat("//tulsi_test:ObjCFramework")
+        .hasFrameworks(["tulsi_test/ObjCFramework/test.framework"])
+
     checker.assertThat("//tulsi_test:TodayExtensionBinary")
         .hasSources(["tulsi_test/TodayExtensionBinary/srcs/today_extension_binary.m"])
 
@@ -283,7 +286,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 14)
+    XCTAssertEqual(ruleEntries.count, 15)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -431,6 +434,7 @@ private class InfoChecker {
     let ruleEntries: [BuildLabel: RuleEntry]
     let resolvedSourceFiles: Set<String>
     let resolvedNonARCSourceFiles: Set<String>
+    let resolvedFrameworkFiles: Set<String>
 
     init(ruleEntry: RuleEntry?, ruleEntries: [BuildLabel: RuleEntry]) {
       self.ruleEntry = ruleEntry
@@ -439,9 +443,11 @@ private class InfoChecker {
       if let ruleEntry = ruleEntry {
         resolvedSourceFiles = Set(ruleEntry.sourceFiles.map() { $0.fullPath })
         resolvedNonARCSourceFiles = Set(ruleEntry.nonARCSourceFiles.map() { $0.fullPath })
+        resolvedFrameworkFiles = Set(ruleEntry.frameworkImports.map() { $0.fullPath })
       } else {
         resolvedSourceFiles = []
         resolvedNonARCSourceFiles = []
+        resolvedFrameworkFiles = []
       }
     }
 
@@ -502,6 +508,29 @@ private class InfoChecker {
       XCTAssertEqual(ruleEntry.nonARCSourceFiles.count,
                      sources.count,
                      "\(ruleEntry) expected to have exactly \(sources.count) non-ARC source files but has \(ruleEntry.nonARCSourceFiles.count)",
+                     line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry contains the given list of framework imports (but may
+    /// have others as well).
+    func containsFrameworks(frameworks: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      for s in frameworks {
+        XCTAssert(resolvedFrameworkFiles.contains(s),
+                  "\(ruleEntry) missing expected framework import '\(s)'",
+                  line: line)
+      }
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has exactly the given list of framework imports.
+    func hasFrameworks(frameworks: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      containsFrameworks(frameworks, line: line)
+      XCTAssertEqual(ruleEntry.frameworkImports.count,
+                     frameworks.count,
+                     "\(ruleEntry) expected to have exactly \(frameworks.count) framework imports but has \(ruleEntry.frameworkImports.count)",
                      line: line)
       return self
     }

@@ -168,16 +168,20 @@ def _collect_supporting_files(rule_attr):
   return all_files
 
 
-def _collect_asset_catalogs(rule_attr):
-  """Extracts xcassets directories from the given rule attributes."""
+def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
+  """Extracts subpaths with the given bundle_ext for the given attributes."""
   discovered_paths = set()
   bundles = []
-  for attr in ['app_asset_catalogs', 'asset_catalogs']:
+  if not bundle_ext.endswith('/'):
+    bundle_ext += '/'
+  bundle_ext_len = len(bundle_ext) - 1
+
+  for attr in bundle_attributes:
     for f in _collect_files(rule_attr, attr):
-      end = f.path.find('.xcassets/')
+      end = f.path.find(bundle_ext)
       if end < 0:
         continue
-      end += 9
+      end += bundle_ext_len
 
       path = f.path[:end]
       root_path = _get_opt_attr(f, 'rootPath')
@@ -186,29 +190,28 @@ def _collect_asset_catalogs(rule_attr):
         continue
       discovered_paths += [full_path]
       bundles.append(_file_metadata_by_replacing_path(f, path))
-
   return bundles
 
 
-def _collect_bundles(rule_attr):
+def _collect_asset_catalogs(rule_attr):
+  """Extracts xcassets directories from the given rule attributes."""
+  return _collect_bundle_paths(rule_attr,
+                               ['app_asset_catalogs', 'asset_catalogs'],
+                               '.xcassets')
+
+
+def _collect_bundle_imports(rule_attr):
   """Extracts bundle directories from the given rule attributes."""
-  discovered_paths = set()
-  bundles = []
-  for f in _collect_files(rule_attr, 'bundle_imports'):
-    end = f.path.find('.bundle/')
-    if end < 0:
-      continue
-    end += 7
+  return _collect_bundle_paths(rule_attr,
+                               ['bundle_imports'],
+                               '.bundle')
 
-    path = f.path[:end]
-    root_path = _get_opt_attr(f, 'rootPath')
-    full_path = str(root_path) + ':' + path
-    if full_path in discovered_paths:
-      continue
-    discovered_paths += [full_path]
-    bundles.append(_file_metadata_by_replacing_path(f, path))
 
-  return bundles
+def _collect_framework_imports(rule_attr):
+  """Extracts framework directories from the given rule attributes."""
+  return _collect_bundle_paths(rule_attr,
+                               ['framework_imports'],
+                               '.framework')
 
 
 def _collect_xcdatamodeld_files(obj, attr_path):
@@ -393,7 +396,7 @@ def _tulsi_sources_aspect(target, ctx):
 
   supporting_files = (_collect_supporting_files(rule_attr) +
                       _collect_asset_catalogs(rule_attr) +
-                      _collect_bundles(rule_attr))
+                      _collect_bundle_imports(rule_attr))
 
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
@@ -434,6 +437,7 @@ def _tulsi_sources_aspect(target, ctx):
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       deps=compile_deps,
+      framework_imports=_collect_framework_imports(rule_attr),
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,
       generated_includes=generated_includes,

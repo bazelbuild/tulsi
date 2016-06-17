@@ -1004,7 +1004,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set<String>(),
+                                 dependencies: Set<String> = Set(),
                                  buildFilePath: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
@@ -1026,7 +1026,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set<String>(),
+                                 dependencies: Set<String> = Set(),
                                  buildFilePath: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
@@ -1036,6 +1036,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                      sourceFiles: sourceInfos,
                      nonARCSourceFiles: [],
                      dependencies: dependencies,
+                     frameworkImports: [],
                      secondaryArtifacts: [],
                      buildFilePath: buildFilePath,
                      implicitIPATarget: implicitIPATarget)

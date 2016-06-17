@@ -239,16 +239,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Set of all the indexer targets generated for ruleEntry.
     var generatedIndexerTargets = Set<PBXTarget>()
     // Map of build label to cumulative preprocessor defines and include paths.
-    var processedEntries = [BuildLabel: (Set<String>, [String])]()
-    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>, [String]) {
+    var processedEntries = [BuildLabel: (Set<String>, NSOrderedSet, NSOrderedSet)]()
+    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>, NSOrderedSet, NSOrderedSet) {
       if let data = processedEntries[ruleEntry.label] {
         return data
       }
       var defines = Set<String>()
-      var includes = [String]()
-      var includesSet = Set<String>()
+      var includes = NSMutableOrderedSet()
+      var frameworkSearchPaths = NSMutableOrderedSet()
 
-      defer { processedEntries[ruleEntry.label] = (defines, includes) }
+      defer { processedEntries[ruleEntry.label] = (defines, includes, frameworkSearchPaths) }
 
       for dep in ruleEntry.dependencies {
         guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
@@ -258,14 +258,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           continue
         }
 
-        let (inheritedDefines, inheritedIncludes) = generateIndexerTargetGraphForRuleEntry(depEntry)
+        let (inheritedDefines, inheritedIncludes, inheritedFrameworkSearchPaths) =
+            generateIndexerTargetGraphForRuleEntry(depEntry)
         defines.unionInPlace(inheritedDefines)
-        for include in inheritedIncludes {
-          if !includesSet.contains(include) {
-            includes.append(include)
-            includesSet.insert(include)
-          }
-        }
+        includes.unionOrderedSet(inheritedIncludes)
+        frameworkSearchPaths.unionOrderedSet(inheritedFrameworkSearchPaths)
       }
 
       if let ruleDefines = ruleEntry.attributes[.defines] as? [String] where !ruleDefines.isEmpty {
@@ -285,26 +282,26 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           packagePath = ""
         }
         let rootedPaths = ruleIncludes.map() { "$(TULSI_WORKSPACE_ROOT)/\(packagePath)\($0)" }
-        for include in rootedPaths {
-          if !includesSet.contains(include) {
-            includes.append(include)
-            includesSet.insert(include)
-          }
-        }
+        includes.addObjectsFromArray(rootedPaths)
       }
 
       if let generatedIncludePaths = ruleEntry.generatedIncludePaths {
         let rootedPaths = generatedIncludePaths.map() { "$(TULSI_WORKSPACE_ROOT)/\($0)" }
-        for include in rootedPaths {
-          if !includesSet.contains(include) {
-            includes.append(include)
-            includesSet.insert(include)
-          }
-        }
+        includes.addObjectsFromArray(rootedPaths)
+      }
+
+      // Search path entries are added for all framework imports, regardless of whether the
+      // framework bundles are allowed by the include filters. The search path excludes the bundle
+      // itself.
+      ruleEntry.frameworkImports.forEach() {
+        let fullPath = $0.fullPath as NSString
+        let rootedPath = "$(TULSI_WORKSPACE_ROOT)/\(fullPath.stringByDeletingLastPathComponent)"
+        frameworkSearchPaths.addObject(rootedPath)
       }
 
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
       let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles.filter(includeFileInProject)
+      let frameworkFileInfos = ruleEntry.frameworkImports.filter(includeFileInProject)
       var buildPhaseReferences = [PBXReference]()
       let versionedFileTargets = ruleEntry.versionedNonSourceArtifacts.filter(includeFileInProject)
       if !versionedFileTargets.isEmpty {
@@ -320,12 +317,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         ref.isInputFile = target.targetType == .SourceFile
       }
 
-      if sourceFileInfos.isEmpty && nonARCSourceFileInfos.isEmpty && buildPhaseReferences.isEmpty {
-        return (defines, includes)
+      if sourceFileInfos.isEmpty &&
+          nonARCSourceFileInfos.isEmpty &&
+          frameworkFileInfos.isEmpty &&
+          buildPhaseReferences.isEmpty {
+        return (defines, includes, frameworkSearchPaths)
       }
 
       var localPreprocessorDefines = defines
-      var localIncludes = includes
+      let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
       if let copts = ruleEntry.attributes[.copts] as? [String] where !copts.isEmpty {
         for opt in copts {
           // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
@@ -337,10 +337,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
             if !path.hasPrefix("/") {
               path = "$(TULSI_WORKSPACE_ROOT)/\(path)"
             }
-            if !includesSet.contains(path) {
-              localIncludes.append(path)
-              includesSet.insert(path)
-            }
+            localIncludes.addObject(path)
           }
         }
       }
@@ -351,6 +348,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       generatedIndexerTargets.insert(indexingTarget)
 
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
+      fileReferences.appendContentsOf(generateFileReferencesForFileInfos(frameworkFileInfos))
       let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
       fileReferences.appendContentsOf(nonARCFiles)
       buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
@@ -361,9 +359,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       addConfigsForIndexingTarget(indexingTarget,
                                   ruleEntry: ruleEntry,
                                   preprocessorDefines: localPreprocessorDefines,
-                                  includes: localIncludes,
+                                  includes: localIncludes.array as! [String],
+                                  frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                   sourceFilter: includeFileInProject)
-      return (defines, includes)
+      return (defines, includes, frameworkSearchPaths)
     }
 
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
@@ -581,6 +580,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                            ruleEntry: RuleEntry,
                                            preprocessorDefines: Set<String>?,
                                            includes: [String],
+                                           frameworkSearchPaths: [String],
                                            sourceFilter: (BazelFileInfo) -> Bool) {
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
@@ -612,6 +612,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if !includes.isEmpty {
       buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includes.joinWithSeparator(" ")
+    }
+
+    if !frameworkSearchPaths.isEmpty {
+      buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + frameworkSearchPaths.joinWithSeparator(" ")
     }
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
@@ -651,7 +655,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let sourceFileInfos = ruleEntry.sourceFiles
     let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles
-    if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty {
+    let frameworkImportFileInfos = ruleEntry.frameworkImports
+    if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty || !frameworkImportFileInfos.isEmpty {
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
       let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
       fileReferences.appendContentsOf(nonARCFiles)

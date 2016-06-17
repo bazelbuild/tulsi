@@ -75,6 +75,7 @@ objc_binary(
     deps = [
         ":CoreDataResources",
         ":Library",
+        ":ObjCFramework",
     ],
 )
 
@@ -178,6 +179,16 @@ objc_library(
     name = "NonPropagatedLibrary",
     srcs = [
         "NonPropagatedLibrary/srcs/non_propagated.m",
+    ],
+)
+
+objc_framework(
+    name = "ObjCFramework",
+    framework_imports = [
+        "ObjCFramework/test.framework/file1",
+        "ObjCFramework/test.framework/file2.txt",
+        "ObjCFramework/test.framework/file3.m",
+        "ObjCFramework/test.framework/file4.h",
     ],
 )
 
