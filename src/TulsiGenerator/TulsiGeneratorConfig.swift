@@ -225,4 +225,14 @@ public class TulsiGeneratorConfig {
       throw Error.SerializationFailed("Unexpected exception")
     }
   }
+
+  public func configByResolvingInheritedOptions(parentOptions: TulsiOptionSet) -> TulsiGeneratorConfig {
+    let resolvedOptions = options.optionSetByInheritingFrom(parentOptions)
+    return TulsiGeneratorConfig(projectName: projectName,
+                                buildTargetLabels: buildTargetLabels,
+                                pathFilters: pathFilters,
+                                additionalFilePaths: additionalFilePaths,
+                                options: resolvedOptions,
+                                bazelURL: bazelURL)
+  }
 }

@@ -85,6 +85,12 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     }
 
     let config = try loadConfig(configURL, bazelURL: explicitBazelURL)
+    let resolvedConfig: TulsiGeneratorConfig
+    if let projectOptionSet = projectDocument.optionSet {
+      resolvedConfig = config.configByResolvingInheritedOptions(projectOptionSet)
+    } else {
+      resolvedConfig = config
+    }
 
     guard let workspaceRootURL = projectDocument.workspaceRootURL else {
       throw Error.InvalidProjectFileContents("Invalid workspaceRoot")
@@ -93,8 +99,9 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     print("Generating project into \(outputFolderURL.path!) using config at \(configURL.path!) " +
               "and Bazel workspace at \(workspaceRootURL.path!).\n" +
               "This may take a while.")
+
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
-                                                                           withGeneratorConfig: config,
+                                                                           withGeneratorConfig: resolvedConfig,
                                                                            workspaceRootURL: workspaceRootURL,
                                                                            messageLogger: self,
                                                                            messageLog: nil)
@@ -141,8 +148,8 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
         pathString = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
       }
       let projectURL = NSURL(fileURLWithPath: pathString as String)
-      let (configURL, defaultOutputFolderURL) = try resolveConfig(components[1],
-                                                                  inTulsiProject: pathString as String)
+      let (configURL, defaultOutputFolderURL) = try locateConfigNamed(components[1],
+                                                                      inTulsiProject: pathString as String)
       return (projectURL, configURL, defaultOutputFolderURL)
     }
 
@@ -160,8 +167,8 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     if isProject {
       let project = pathString.lastPathComponent as NSString
       let projectName = project.stringByDeletingPathExtension
-      let (configURL, defaultOutputFolderURL) = try resolveConfig(projectName,
-                                                                  inTulsiProject: pathString as String)
+      let (configURL, defaultOutputFolderURL) = try locateConfigNamed(projectName,
+                                                                      inTulsiProject: pathString as String)
       let projectURL = NSURL(fileURLWithPath: pathString as String)
       return (projectURL, configURL, defaultOutputFolderURL)
     }
@@ -169,8 +176,8 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     throw Error.InvalidConfigPath("The given config is invalid")
   }
 
-  private func resolveConfig(configName: String,
-                             inTulsiProject tulsiProj: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
+  private func locateConfigNamed(configName: String,
+                                 inTulsiProject tulsiProj: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
     let tulsiProjectURL = NSURL(fileURLWithPath: tulsiProj, isDirectory: true)
     if !isExistingDirectory(tulsiProjectURL) {
       throw Error.InvalidConfigPath("The given Tulsi project does not exist")
