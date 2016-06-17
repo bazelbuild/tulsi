@@ -196,12 +196,12 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGN_IDENTITY": "",
         "CODE_SIGNING_REQUIRED": "NO",
         "ENABLE_TESTABILITY": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_WORKSPACE_ROOT) $(TULSI_WORKSPACE_ROOT)/bazel-bin $(TULSI_WORKSPACE_ROOT)/bazel-genfiles",
+        "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
         "TULSI_VERSION": testTulsiVersion,
-        "TULSI_WORKSPACE_ROOT": "$(SRCROOT)",
+        "TULSI_WR": "$(SRCROOT)",
     ]
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings,
@@ -815,7 +815,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WORKSPACE_ROOT)/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WR)/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -841,7 +841,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -1162,7 +1162,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": indexerTargetName,
     ]
     if pchFile != nil {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WORKSPACE_ROOT)/\(pchFile!.path!)"
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WR)/\(pchFile!.path!)"
     }
     if bridgingHeader != nil {
         expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!

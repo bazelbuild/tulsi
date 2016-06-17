@@ -99,14 +99,17 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// actions.
   static let BazelCleanTarget = "_bazel_clean_"
 
+  /// Xcode variable name used to refer to the workspace root.
+  static let WorkspaceRootVarName = "TULSI_WR"
+
   /// Location of the bazel binary.
   let bazelURL: NSURL
 
   /// Location of the bazel-bin symlink, relative to the workspace root.
   let bazelBinPath: String
-  var bazelGenfilesPath: String {
-    return bazelBinPath.stringByReplacingOccurrencesOfString("-bin", withString: "-genfiles")
-  }
+  private(set) lazy var bazelGenfilesPath: String = {
+    return self.bazelBinPath.stringByReplacingOccurrencesOfString("-bin", withString: "-genfiles")
+  }()
 
   let project: PBXProject
   let buildScriptPath: String
@@ -179,7 +182,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   private static func projectRefForBazelFileInfo(info: BazelFileInfo) -> String {
-    return "$(TULSI_WORKSPACE_ROOT)/\(info.fullPath)"
+    return "$(\(WorkspaceRootVarName))/\(info.fullPath)"
   }
 
   init(bazelURL: NSURL,
@@ -281,12 +284,17 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         } else {
           packagePath = ""
         }
-        let rootedPaths = ruleIncludes.map() { "$(TULSI_WORKSPACE_ROOT)/\(packagePath)\($0)" }
-        includes.addObjectsFromArray(rootedPaths)
+
+        ruleIncludes.forEach() {
+          let packageQualifiedPath = packagePath + $0
+          includes.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(packageQualifiedPath)")
+          includes.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)/\(packageQualifiedPath)")
+          includes.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/\(packageQualifiedPath)")
+        }
       }
 
       if let generatedIncludePaths = ruleEntry.generatedIncludePaths {
-        let rootedPaths = generatedIncludePaths.map() { "$(TULSI_WORKSPACE_ROOT)/\($0)" }
+        let rootedPaths = generatedIncludePaths.map() { "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\($0)" }
         includes.addObjectsFromArray(rootedPaths)
       }
 
@@ -295,7 +303,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // itself.
       ruleEntry.frameworkImports.forEach() {
         let fullPath = $0.fullPath as NSString
-        let rootedPath = "$(TULSI_WORKSPACE_ROOT)/\(fullPath.stringByDeletingLastPathComponent)"
+        let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(fullPath.stringByDeletingLastPathComponent)"
         frameworkSearchPaths.addObject(rootedPath)
       }
 
@@ -335,7 +343,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           } else  if opt.hasPrefix("-I") {
             var path = opt.substringFromIndex(opt.startIndex.advancedBy(2))
             if !path.hasPrefix("/") {
-              path = "$(TULSI_WORKSPACE_ROOT)/\(path)"
+              path = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
             }
             localIncludes.addObject(path)
           }
@@ -411,12 +419,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
     }
-    buildSettings["TULSI_WORKSPACE_ROOT"] = sourceDirectory
+    buildSettings["\(PBXTargetGenerator.WorkspaceRootVarName)"] = sourceDirectory
     buildSettings["TULSI_VERSION"] = tulsiVersion
 
-    let searchPaths = ["$(TULSI_WORKSPACE_ROOT)",
-                       "$(TULSI_WORKSPACE_ROOT)/\(bazelBinPath)",
-                       "$(TULSI_WORKSPACE_ROOT)/\(bazelGenfilesPath)",
+    let searchPaths = ["$(\(PBXTargetGenerator.WorkspaceRootVarName))",
+                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
+                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
     ]
     buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
