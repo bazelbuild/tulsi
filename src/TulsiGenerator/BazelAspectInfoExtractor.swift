@@ -136,6 +136,8 @@ final class BazelAspectInfoExtractor {
     var arguments = startupOptions
     arguments.appendContentsOf([
         "build",
+        "--symlink_prefix",  // Generate artifacts without overwriting the normal build symlinks.
+        "tulsigen-",
         "--announce_rc",  // Print the RC files used by this operation.
         "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
         "--show_result=0",  // Don't bother printing the build results.
