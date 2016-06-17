@@ -6,10 +6,10 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6004A74A800000000" BuildableIdentifier="primary" BuildableName="TestSuite-One-XCTest" BlueprintName="TestSuite-One-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6C070D77600000000" BuildableIdentifier="primary" BuildableName="_indexer_XCTest_4799450060018286533" BlueprintName="_indexer_XCTest_4799450060018286533" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6AA0ED71400000000" BuildableIdentifier="primary" BuildableName="_idx_XCTest_A89DFFC5" BlueprintName="_idx_XCTest_A89DFFC5" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Binary_-4799450061102981736" BlueprintName="_indexer_Binary_-4799450061102981736" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_idx_Binary_16BADD98" BlueprintName="_idx_Binary_16BADD98" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

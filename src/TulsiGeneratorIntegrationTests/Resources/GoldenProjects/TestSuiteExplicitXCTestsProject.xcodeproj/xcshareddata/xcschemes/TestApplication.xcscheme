@@ -6,7 +6,7 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6EC64700400000000" BuildableIdentifier="primary" BuildableName="TestApplication" BlueprintName="TestApplication" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Binary_-4799450061102981736" BlueprintName="_indexer_Binary_-4799450061102981736" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_idx_Binary_16BADD98" BlueprintName="_idx_Binary_16BADD98" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

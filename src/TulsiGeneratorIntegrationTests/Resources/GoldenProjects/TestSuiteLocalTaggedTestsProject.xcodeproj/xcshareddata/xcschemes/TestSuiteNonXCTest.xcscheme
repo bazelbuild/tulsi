@@ -6,7 +6,7 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E63648AA0600000000" BuildableIdentifier="primary" BuildableName="TestSuiteNonXCTest" BlueprintName="TestSuiteNonXCTest" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6432EB88600000000" BuildableIdentifier="primary" BuildableName="_indexer_TestSuiteNonXCTest_-4799450061216834479" BlueprintName="_indexer_TestSuiteNonXCTest_-4799450061216834479" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E69C690DC600000000" BuildableIdentifier="primary" BuildableName="_idx_TestSuiteNonXCTest_0FF19C51" BlueprintName="_idx_TestSuiteNonXCTest_0FF19C51" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

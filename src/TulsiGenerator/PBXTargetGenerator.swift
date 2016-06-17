@@ -93,7 +93,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Name of the static library target that will be used to accumulate all source file dependencies
   /// in order to make their symbols available to the Xcode indexer.
-  static let IndexerTargetPrefix = "_indexer_"
+  static let IndexerTargetPrefix = "_idx_"
 
   /// Name of the legacy target that will be used to communicate with Bazel during Xcode clean
   /// actions.
@@ -772,7 +772,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func indexerNameForRuleEntry(ruleEntry: RuleEntry) -> String {
     let targetName = ruleEntry.label.targetName!
     let hash = ruleEntry.label.hashValue
-    return PBXTargetGenerator.IndexerTargetPrefix + "\(targetName)_\(hash)"
+    return String(format: "\(PBXTargetGenerator.IndexerTargetPrefix)\(targetName)_%08X", hash)
   }
 
   // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given

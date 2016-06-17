@@ -44,8 +44,8 @@
 /* Begin PBXFileReference section */
 		43D68C2803714D9600000000 /* watch_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = watch_extension_binary.m; sourceTree = "<group>"; };
 		43D68C28059002BC00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = entitlements.entitlements; sourceTree = "<group>"; };
-		43D68C281C0B2AE000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_SubLibraryWithDefines_4799450059349455580.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C282E5726C800000000 /* lib_indexer_Binary_4799450061441825755.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_Binary_4799450061441825755.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_NonPropagatedLibrary_8556858B.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Binary_FD777BDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282F76936E00000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file1; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		43D68C283D391B8200000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
@@ -55,8 +55,10 @@
 		43D68C28428DF50400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist1.plist; sourceTree = "<group>"; };
 		43D68C284437EBAE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C2845522B5A00000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src5.mm; sourceTree = "<group>"; };
+		43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_20EC2F4A.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C284D703CF400000000 /* AssetsTwo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsTwo.xcassets; sourceTree = "<group>"; };
 		43D68C284DAF010A00000000 /* Plist2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist2.plist; sourceTree = "<group>"; };
+		43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_CoreDataResources_3FDF153F.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
 		43D68C28556865D600000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = test.framework; sourceTree = "<group>"; };
@@ -67,44 +69,42 @@
 		43D68C28577B7A7A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src3.m; sourceTree = "<group>"; };
 		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
 		43D68C285DB74CA000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ObjCBundle.bundle; sourceTree = "<group>"; };
+		43D68C285E11926600000000 /* lib_idx_SubLibrary_19588DB9.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibrary_19588DB9.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285F81D61600000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
+		43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_WatchExtensionBinary_020F3F9D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C286CB3C3A800000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28723DC36E00000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
-		43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_CoreDataResources_-4799450060412742337.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
-		43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Library_-4799450060931977398.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_SubLibrary_-4799450061059093063.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28825E46AA00000000 /* lib_idx_SubLibraryWithDefines_80C072DC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibraryWithDefines_80C072DC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2886555B1600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = file2.file; sourceTree = "<group>"; };
 		43D68C289349B5E800000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = EN.strings; sourceTree = "<group>"; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
+		43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_TodayExtensionBinary_999643E7.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2897997C9400000000 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_resources.file; sourceTree = "<group>"; };
 		43D68C2897D54C2400000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = ext_entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C28985256C400000000 /* AssetsOne.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsOne.xcassets; sourceTree = "<group>"; };
-		43D68C289854E40600000000 /* lib_indexer_ObjCFramework_-4799450059490475303.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_ObjCFramework_-4799450059490475303.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2898EBFC1600000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289B7A36EA00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = output.m; sourceTree = "<group>"; };
 		43D68C28A02DAD1000000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; path = structured_resources.file2; sourceTree = "<group>"; };
 		43D68C28A3F5767600000000 /* app_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_structured_resources.file; sourceTree = "<group>"; };
-		43D68C28AADD963000000000 /* lib_indexer_WatchExtensionBinary_-4799450061449773155.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_WatchExtensionBinary_-4799450061449773155.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B202E93C00000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; path = Two.storyboard; sourceTree = "<group>"; };
 		43D68C28B4E4432800000000 /* bridging_header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
-		43D68C28B77D64E200000000 /* lib_indexer_XCTest_-4799450059344870159.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_XCTest_-4799450059344870159.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7B6EFA200000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7B6EFA200000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		43D68C28B7D1AC6800000000 /* lib_indexer_TodayExtensionBinary_4799450059766121447.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_TodayExtensionBinary_4799450059766121447.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B82DAD1200000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; path = structured_resources.file1; sourceTree = "<group>"; };
 		43D68C28BC21CCBA00000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = non_propagated.m; sourceTree = "<group>"; };
 		43D68C28C05E0C0A00000000 /* app_asset_catalogs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = app_asset_catalogs.xcassets; sourceTree = "<group>"; };
 		43D68C28C54C350C00000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnotherPCHFile.pch; sourceTree = "<group>"; };
 		43D68C28C7966CBA00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HdrsHeader.h; sourceTree = "<group>"; };
+		43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCTest_7F8584F1.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D21BD1AA00000000 /* today_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = today_extension_binary.m; sourceTree = "<group>"; };
 		43D68C28D52A290A00000000 /* defaultTestSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = defaultTestSource.m; sourceTree = "<group>"; };
 		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
-		43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_NonPropagatedLibrary_4799450059426399627.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28DFFD24FA00000000 /* lib_idx_ObjCFramework_76D7C2D9.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_ObjCFramework_76D7C2D9.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28EF237CF400000000 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
 		43D68C28F1F4A85E00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NonLocalized.strings; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,17 +194,17 @@
 				43D68C28F49055A600000000 /* Application.app */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
-				43D68C282E5726C800000000 /* lib_indexer_Binary_4799450061441825755.a */,
-				43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */,
-				43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */,
-				43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */,
-				43D68C289854E40600000000 /* lib_indexer_ObjCFramework_-4799450059490475303.a */,
-				43D68C281C0B2AE000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */,
-				43D68C2898EBFC1600000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */,
-				43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */,
-				43D68C28B7D1AC6800000000 /* lib_indexer_TodayExtensionBinary_4799450059766121447.a */,
-				43D68C28AADD963000000000 /* lib_indexer_WatchExtensionBinary_-4799450061449773155.a */,
-				43D68C28B77D64E200000000 /* lib_indexer_XCTest_-4799450059344870159.a */,
+				43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */,
+				43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */,
+				43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */,
+				43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */,
+				43D68C28DFFD24FA00000000 /* lib_idx_ObjCFramework_76D7C2D9.a */,
+				43D68C28825E46AA00000000 /* lib_idx_SubLibraryWithDefines_80C072DC.a */,
+				43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */,
+				43D68C285E11926600000000 /* lib_idx_SubLibrary_19588DB9.a */,
+				43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */,
+				43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */,
+				43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -582,102 +582,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E61A2BFA3200000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583B3DE3EFD00000000 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */;
-			buildPhases = (
-				605793E20000000000000004 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_NonPropagatedLibrary_4799450059426399627;
-			productName = _indexer_NonPropagatedLibrary_4799450059426399627;
-			productReference = 43D68C28E5A6C84400000000 /* lib_indexer_NonPropagatedLibrary_4799450059426399627.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E624FDAC4C00000000 /* _indexer_Library_-4799450060931977398 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558369EED87C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */;
-			buildPhases = (
-				605793E20000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_Library_-4799450060931977398";
-			productName = "_indexer_Library_-4799450060931977398";
-			productReference = 43D68C288106A3A600000000 /* lib_indexer_Library_-4799450060931977398.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E62BAB974E00000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583D5219EE800000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */;
-			buildPhases = (
-				605793E20000000000000006 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_SubLibraryWithDefines_4799450059349455580;
-			productName = _indexer_SubLibraryWithDefines_4799450059349455580;
-			productReference = 43D68C281C0B2AE000000000 /* lib_indexer_SubLibraryWithDefines_4799450059349455580.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E637ADA2D600000000 /* _indexer_Binary_4799450061441825755 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583841B339100000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */;
-			buildPhases = (
-				605793E20000000000000001 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_Binary_4799450061441825755;
-			productName = _indexer_Binary_4799450061441825755;
-			productReference = 43D68C282E5726C800000000 /* lib_indexer_Binary_4799450061441825755.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E637E189E800000000 /* _indexer_XCTest_-4799450059344870159 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583DF24779A00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */;
-			buildPhases = (
-				605793E2000000000000000B /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_XCTest_-4799450059344870159";
-			productName = "_indexer_XCTest_-4799450059344870159";
-			productReference = 43D68C28B77D64E200000000 /* lib_indexer_XCTest_-4799450059344870159.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E64606529E00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755835134638300000000 /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */;
-			buildPhases = (
-				605793E2000000000000000A /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_WatchExtensionBinary_-4799450061449773155";
-			productName = "_indexer_WatchExtensionBinary_-4799450061449773155";
-			productReference = 43D68C28AADD963000000000 /* lib_indexer_WatchExtensionBinary_-4799450061449773155.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
@@ -694,73 +598,41 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E67E7366D600000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */ = {
+		3D31C5E688E1600400000000 /* _idx_Library_20EC2F4A */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583DF4D7F2100000000 /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */;
+			buildConfigurationList = DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */;
 			buildPhases = (
-				605793E20000000000000009 /* Sources */,
+				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _indexer_TodayExtensionBinary_4799450059766121447;
-			productName = _indexer_TodayExtensionBinary_4799450059766121447;
-			productReference = 43D68C28B7D1AC6800000000 /* lib_indexer_TodayExtensionBinary_4799450059766121447.a */;
+			name = _idx_Library_20EC2F4A;
+			productName = _idx_Library_20EC2F4A;
+			productReference = 43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E6930BD0C400000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */ = {
+		3D31C5E68AF9EBA000000000 /* _idx_SubLibraryWithDefines_80C072DC */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558304D1660600000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */;
+			buildConfigurationList = DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */;
 			buildPhases = (
-				605793E20000000000000007 /* Sources */,
+				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
-			productName = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
-			productReference = 43D68C2898EBFC1600000000 /* lib_indexer_SubLibraryWithDifferentDefines_-4799450060630414916.a */;
+			name = _idx_SubLibraryWithDefines_80C072DC;
+			productName = _idx_SubLibraryWithDefines_80C072DC;
+			productReference = 43D68C28825E46AA00000000 /* lib_idx_SubLibraryWithDefines_80C072DC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E6A28BEEEC00000000 /* _indexer_ObjCFramework_-4799450059490475303 */ = {
+		3D31C5E6A606B6CC00000000 /* _idx_SubLibrary_19588DB9 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583075412AC00000000 /* Build configuration list for PBXNativeTarget "_indexer_ObjCFramework_-4799450059490475303" */;
-			buildPhases = (
-				605793E20000000000000005 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_ObjCFramework_-4799450059490475303";
-			productName = "_indexer_ObjCFramework_-4799450059490475303";
-			productReference = 43D68C289854E40600000000 /* lib_indexer_ObjCFramework_-4799450059490475303.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6A558E24400000000 /* _indexer_CoreDataResources_-4799450060412742337 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755834336801800000000 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */;
-			buildPhases = (
-				605793E20000000000000002 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = "_indexer_CoreDataResources_-4799450060412742337";
-			productName = "_indexer_CoreDataResources_-4799450060412742337";
-			productReference = 43D68C2874BA0FDE00000000 /* lib_indexer_CoreDataResources_-4799450060412742337.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6A5B3A0C200000000 /* _indexer_SubLibrary_-4799450061059093063 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583EB60965700000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */;
+			buildConfigurationList = DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */;
 			buildPhases = (
 				605793E20000000000000008 /* Sources */,
 			);
@@ -769,9 +641,121 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = "_indexer_SubLibrary_-4799450061059093063";
-			productName = "_indexer_SubLibrary_-4799450061059093063";
-			productReference = 43D68C288376805400000000 /* lib_indexer_SubLibrary_-4799450061059093063.a */;
+			name = _idx_SubLibrary_19588DB9;
+			productName = _idx_SubLibrary_19588DB9;
+			productReference = 43D68C285E11926600000000 /* lib_idx_SubLibrary_19588DB9.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6AC743AFA00000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */;
+			buildPhases = (
+				605793E20000000000000007 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
+			productName = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
+			productReference = 43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6B0A0066C00000000 /* _idx_WatchExtensionBinary_020F3F9D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583F2E38A8000000000 /* Build configuration list for PBXNativeTarget "_idx_WatchExtensionBinary_020F3F9D" */;
+			buildPhases = (
+				605793E2000000000000000A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_WatchExtensionBinary_020F3F9D;
+			productName = _idx_WatchExtensionBinary_020F3F9D;
+			productReference = 43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6B2BBEE0000000000 /* _idx_CoreDataResources_3FDF153F */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */;
+			buildPhases = (
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_CoreDataResources_3FDF153F;
+			productName = _idx_CoreDataResources_3FDF153F;
+			productReference = 43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583E500CE6900000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_FD777BDB" */;
+			buildPhases = (
+				605793E20000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_Binary_FD777BDB;
+			productName = _idx_Binary_FD777BDB;
+			productReference = 43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */;
+			buildPhases = (
+				605793E2000000000000000B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_XCTest_7F8584F1;
+			productName = _idx_XCTest_7F8584F1;
+			productReference = 43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6D3C5008400000000 /* _idx_ObjCFramework_76D7C2D9 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830C533BB800000000 /* Build configuration list for PBXNativeTarget "_idx_ObjCFramework_76D7C2D9" */;
+			buildPhases = (
+				605793E20000000000000005 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_ObjCFramework_76D7C2D9;
+			productName = _idx_ObjCFramework_76D7C2D9;
+			productReference = 43D68C28DFFD24FA00000000 /* lib_idx_ObjCFramework_76D7C2D9.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6ED9CD46C00000000 /* _idx_TodayExtensionBinary_999643E7 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755834837BD8000000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionBinary_999643E7" */;
+			buildPhases = (
+				605793E20000000000000009 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_TodayExtensionBinary_999643E7;
+			productName = _idx_TodayExtensionBinary_999643E7;
+			productReference = 43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
@@ -791,6 +775,22 @@
 			productName = XCTest;
 			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3D31C5E6F65076A600000000 /* _idx_NonPropagatedLibrary_8556858B */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */;
+			buildPhases = (
+				605793E20000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_NonPropagatedLibrary_8556858B;
+			productName = _idx_NonPropagatedLibrary_8556858B;
+			productReference = 43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -818,17 +818,17 @@
 				3D31C5E66B144ABC00000000 /* Application */,
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E637ADA2D600000000 /* _indexer_Binary_4799450061441825755 */,
-				3D31C5E6A558E24400000000 /* _indexer_CoreDataResources_-4799450060412742337 */,
-				3D31C5E624FDAC4C00000000 /* _indexer_Library_-4799450060931977398 */,
-				3D31C5E61A2BFA3200000000 /* _indexer_NonPropagatedLibrary_4799450059426399627 */,
-				3D31C5E6A28BEEEC00000000 /* _indexer_ObjCFramework_-4799450059490475303 */,
-				3D31C5E62BAB974E00000000 /* _indexer_SubLibraryWithDefines_4799450059349455580 */,
-				3D31C5E6930BD0C400000000 /* _indexer_SubLibraryWithDifferentDefines_-4799450060630414916 */,
-				3D31C5E6A5B3A0C200000000 /* _indexer_SubLibrary_-4799450061059093063 */,
-				3D31C5E67E7366D600000000 /* _indexer_TodayExtensionBinary_4799450059766121447 */,
-				3D31C5E64606529E00000000 /* _indexer_WatchExtensionBinary_-4799450061449773155 */,
-				3D31C5E637E189E800000000 /* _indexer_XCTest_-4799450059344870159 */,
+				3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */,
+				3D31C5E6B2BBEE0000000000 /* _idx_CoreDataResources_3FDF153F */,
+				3D31C5E688E1600400000000 /* _idx_Library_20EC2F4A */,
+				3D31C5E6F65076A600000000 /* _idx_NonPropagatedLibrary_8556858B */,
+				3D31C5E6D3C5008400000000 /* _idx_ObjCFramework_76D7C2D9 */,
+				3D31C5E68AF9EBA000000000 /* _idx_SubLibraryWithDefines_80C072DC */,
+				3D31C5E6AC743AFA00000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC */,
+				3D31C5E6A606B6CC00000000 /* _idx_SubLibrary_19588DB9 */,
+				3D31C5E6ED9CD46C00000000 /* _idx_TodayExtensionBinary_999643E7 */,
+				3D31C5E6B0A0066C00000000 /* _idx_WatchExtensionBinary_020F3F9D */,
+				3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */,
 			);
 		};
 /* End PBXProject section */
@@ -1030,7 +1030,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
+				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 			};
 			name = Fastbuild;
@@ -1038,7 +1038,7 @@
 		44936BD63008588600000004 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "_indexer_CoreDataResources_-4799450060412742337";
+				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
 			};
 			name = Fastbuild;
 		};
@@ -1048,14 +1048,14 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = _indexer_NonPropagatedLibrary_4799450059426399627;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
 			};
 			name = Fastbuild;
 		};
@@ -1063,7 +1063,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/ObjCFramework";
-				PRODUCT_NAME = "_indexer_ObjCFramework_-4799450059490475303";
+				PRODUCT_NAME = _idx_ObjCFramework_76D7C2D9;
 			};
 			name = Fastbuild;
 		};
@@ -1072,7 +1072,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Fastbuild;
 		};
@@ -1081,7 +1081,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
-				PRODUCT_NAME = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
+				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Fastbuild;
 		};
@@ -1090,21 +1090,21 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
-				PRODUCT_NAME = "_indexer_SubLibrary_-4799450061059093063";
+				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
 			};
 			name = Fastbuild;
 		};
 		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = _indexer_TodayExtensionBinary_4799450059766121447;
+				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 			};
 			name = Fastbuild;
 		};
 		44936BD6300858860000000C /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "_indexer_WatchExtensionBinary_-4799450061449773155";
+				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 			};
 			name = Fastbuild;
 		};
@@ -1114,7 +1114,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
+				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
 			name = Fastbuild;
 		};
@@ -1172,7 +1172,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
+				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 			};
 			name = Debug;
@@ -1181,7 +1181,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = "_indexer_CoreDataResources_-4799450060412742337";
+				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
 			};
 			name = Debug;
 		};
@@ -1192,7 +1192,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Debug;
 		};
@@ -1200,7 +1200,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _indexer_NonPropagatedLibrary_4799450059426399627;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
 			};
 			name = Debug;
 		};
@@ -1209,7 +1209,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = "_indexer_ObjCFramework_-4799450059490475303";
+				PRODUCT_NAME = _idx_ObjCFramework_76D7C2D9;
 			};
 			name = Debug;
 		};
@@ -1219,7 +1219,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Debug;
 		};
@@ -1229,7 +1229,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
-				PRODUCT_NAME = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
+				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Debug;
 		};
@@ -1239,7 +1239,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = "_indexer_SubLibrary_-4799450061059093063";
+				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
 			};
 			name = Debug;
 		};
@@ -1247,7 +1247,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _indexer_TodayExtensionBinary_4799450059766121447;
+				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 			};
 			name = Debug;
 		};
@@ -1255,7 +1255,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = "_indexer_WatchExtensionBinary_-4799450061449773155";
+				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 			};
 			name = Debug;
 		};
@@ -1266,7 +1266,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
+				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
 			name = Debug;
 		};
@@ -1324,7 +1324,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _indexer_Binary_4799450061441825755;
+				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
 			};
 			name = Release;
@@ -1333,7 +1333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = "_indexer_CoreDataResources_-4799450060412742337";
+				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
 			};
 			name = Release;
 		};
@@ -1344,7 +1344,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450060931977398";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Release;
 		};
@@ -1352,7 +1352,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _indexer_NonPropagatedLibrary_4799450059426399627;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
 			};
 			name = Release;
 		};
@@ -1361,7 +1361,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = "_indexer_ObjCFramework_-4799450059490475303";
+				PRODUCT_NAME = _idx_ObjCFramework_76D7C2D9;
 			};
 			name = Release;
 		};
@@ -1371,7 +1371,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WORKSPACE_ROOT)/relative/SubLibraryWithDefines/local/includes";
 				OTHER_CFLAGS = "-DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _indexer_SubLibraryWithDefines_4799450059349455580;
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Release;
 		};
@@ -1381,7 +1381,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
-				PRODUCT_NAME = "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916";
+				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Release;
 		};
@@ -1391,7 +1391,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = "_indexer_SubLibrary_-4799450061059093063";
+				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
 			};
 			name = Release;
 		};
@@ -1399,7 +1399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _indexer_TodayExtensionBinary_4799450059766121447;
+				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 			};
 			name = Release;
 		};
@@ -1407,7 +1407,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = "_indexer_WatchExtensionBinary_-4799450061449773155";
+				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 			};
 			name = Release;
 		};
@@ -1418,7 +1418,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = "_indexer_XCTest_-4799450059344870159";
+				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
 			name = Release;
 		};
@@ -1539,16 +1539,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE47558304D1660600000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDifferentDefines_-4799450060630414916" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD63008588600000009 /* Fastbuild */,
-				44936BD6A3D45CE900000009 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583075412AC00000000 /* Build configuration list for PBXNativeTarget "_indexer_ObjCFramework_-4799450059490475303" */ = {
+		DE4755830C533BB800000000 /* Build configuration list for PBXNativeTarget "_idx_ObjCFramework_76D7C2D9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000007 /* Debug */,
@@ -1557,21 +1548,21 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755834336801800000000 /* Build configuration list for PBXNativeTarget "_indexer_CoreDataResources_-4799450060412742337" */ = {
+		DE4755834837BD8000000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionBinary_999643E7" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
-				44936BD6A3D45CE900000004 /* Release */,
+				44936BD67EED3C4D0000000B /* Debug */,
+				44936BD6300858860000000B /* Fastbuild */,
+				44936BD6A3D45CE90000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755835134638300000000 /* Build configuration list for PBXNativeTarget "_indexer_WatchExtensionBinary_-4799450061449773155" */ = {
+		DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000C /* Debug */,
-				44936BD6300858860000000C /* Fastbuild */,
-				44936BD6A3D45CE90000000C /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD63008588600000009 /* Fastbuild */,
+				44936BD6A3D45CE900000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1586,7 +1577,34 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558369EED87C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450060931977398" */ = {
+		DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD63008588600000008 /* Fastbuild */,
+				44936BD6A3D45CE900000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000006 /* Debug */,
+				44936BD63008588600000006 /* Fastbuild */,
+				44936BD6A3D45CE900000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,
@@ -1595,12 +1613,12 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583841B339100000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450061441825755" */ = {
+		DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
-				44936BD6A3D45CE900000003 /* Release */,
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6300858860000000A /* Fastbuild */,
+				44936BD6A3D45CE90000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1615,31 +1633,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583B3DE3EFD00000000 /* Build configuration list for PBXNativeTarget "_indexer_NonPropagatedLibrary_4799450059426399627" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000006 /* Debug */,
-				44936BD63008588600000006 /* Fastbuild */,
-				44936BD6A3D45CE900000006 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583D5219EE800000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibraryWithDefines_4799450059349455580" */ = {
+		DE475583E500CE6900000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_FD777BDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000008 /* Debug */,
-				44936BD63008588600000008 /* Fastbuild */,
-				44936BD6A3D45CE900000008 /* Release */,
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583DF24779A00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_-4799450059344870159" */ = {
+		DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D0000000D /* Debug */,
@@ -1648,21 +1657,12 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583DF4D7F2100000000 /* Build configuration list for PBXNativeTarget "_indexer_TodayExtensionBinary_4799450059766121447" */ = {
+		DE475583F2E38A8000000000 /* Build configuration list for PBXNativeTarget "_idx_WatchExtensionBinary_020F3F9D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000B /* Debug */,
-				44936BD6300858860000000B /* Fastbuild */,
-				44936BD6A3D45CE90000000B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583EB60965700000000 /* Build configuration list for PBXNativeTarget "_indexer_SubLibrary_-4799450061059093063" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D0000000A /* Debug */,
-				44936BD6300858860000000A /* Fastbuild */,
-				44936BD6A3D45CE90000000A /* Release */,
+				44936BD67EED3C4D0000000C /* Debug */,
+				44936BD6300858860000000C /* Fastbuild */,
+				44936BD6A3D45CE90000000C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

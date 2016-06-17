@@ -6,19 +6,19 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6052432C800000000" BuildableIdentifier="primary" BuildableName="_indexer_ProtoLibrary_-4799450059636949709" BlueprintName="_indexer_ProtoLibrary_-4799450059636949709" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6DCF99AC200000000" BuildableIdentifier="primary" BuildableName="_idx_ProtoLibrary_6E1CBD33" BlueprintName="_idx_ProtoLibrary_6E1CBD33" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6B6275BB400000000" BuildableIdentifier="primary" BuildableName="_indexer_J2ObjCLibrary_-4799450061375909640" BlueprintName="_indexer_J2ObjCLibrary_-4799450061375909640" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6A4C0B96C00000000" BuildableIdentifier="primary" BuildableName="_idx_Binary_153E40A9" BlueprintName="_idx_Binary_153E40A9" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E638E560FC00000000" BuildableIdentifier="primary" BuildableName="_indexer_ObjCProtoLibrary_4799450059520215381" BlueprintName="_indexer_ObjCProtoLibrary_4799450059520215381" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E62420377800000000" BuildableIdentifier="primary" BuildableName="_idx_ObjCProtoLibrary_8AEE0955" BlueprintName="_idx_ObjCProtoLibrary_8AEE0955" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E65FA1AAAE00000000" BuildableIdentifier="primary" BuildableName="_indexer_JavaLibrary_4799450060293698910" BlueprintName="_indexer_JavaLibrary_4799450060293698910" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E676B7C78600000000" BuildableIdentifier="primary" BuildableName="_idx_J2ObjCLibrary_067650F8" BlueprintName="_idx_J2ObjCLibrary_067650F8" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E698FE241200000000" BuildableIdentifier="primary" BuildableName="_indexer_Binary_-4799450061127925591" BlueprintName="_indexer_Binary_-4799450061127925591" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E630BB757400000000" BuildableIdentifier="primary" BuildableName="_idx_JavaLibrary_B908755E" BlueprintName="_idx_JavaLibrary_B908755E" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

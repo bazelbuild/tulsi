@@ -33,9 +33,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C280AC48D5A00000000 /* lib_idx_Binary_A56A3DAA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Binary_A56A3DAA.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C281112407E00000000 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		43D68C2831911CD800000000 /* lib_idx_XCTest_8BB84E40.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCTest_8BB84E40.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		43D68C283AC99B8600000000 /* lib_indexer_Library_-4799450061039509283.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "lib_indexer_Library_-4799450061039509283.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C28517E0F5200000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
@@ -45,14 +46,13 @@
 		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
-		43D68C286F4BA8F200000000 /* lib_indexer_Binary_4799450059964562858.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_Binary_4799450059964562858.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C287E5CAD8600000000 /* lib_idx_Library_1A8360DD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_1A8360DD.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C28B4E4432800000000 /* bridging_header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28C7966CBA00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HdrsHeader.h; sourceTree = "<group>"; };
-		43D68C28CA05720000000000 /* lib_indexer_XCTest_4799450059533471296.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_indexer_XCTest_4799450059533471296.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28E69B2FB000000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,9 +76,9 @@
 				43D68C28F49055A600000000 /* Application.app */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
-				43D68C286F4BA8F200000000 /* lib_indexer_Binary_4799450059964562858.a */,
-				43D68C283AC99B8600000000 /* lib_indexer_Library_-4799450061039509283.a */,
-				43D68C28CA05720000000000 /* lib_indexer_XCTest_4799450059533471296.a */,
+				43D68C280AC48D5A00000000 /* lib_idx_Binary_A56A3DAA.a */,
+				43D68C287E5CAD8600000000 /* lib_idx_Library_1A8360DD.a */,
+				43D68C2831911CD800000000 /* lib_idx_XCTest_8BB84E40.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,6 +237,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3D31C5E64E472D4600000000 /* _idx_XCTest_8BB84E40 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558319AD445900000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_8BB84E40" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_XCTest_8BB84E40;
+			productName = _idx_XCTest_8BB84E40;
+			productReference = 43D68C2831911CD800000000 /* lib_idx_XCTest_8BB84E40.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
@@ -253,9 +269,9 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E6A994A3A800000000 /* _indexer_Binary_4799450059964562858 */ = {
+		3D31C5E6A631D1C000000000 /* _idx_Binary_A56A3DAA */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755835C865EE200000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450059964562858" */;
+			buildConfigurationList = DE475583EDC4178E00000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_A56A3DAA" */;
 			buildPhases = (
 				605793E20000000000000001 /* Sources */,
 			);
@@ -264,14 +280,14 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _indexer_Binary_4799450059964562858;
-			productName = _indexer_Binary_4799450059964562858;
-			productReference = 43D68C286F4BA8F200000000 /* lib_indexer_Binary_4799450059964562858.a */;
+			name = _idx_Binary_A56A3DAA;
+			productName = _idx_Binary_A56A3DAA;
+			productReference = 43D68C280AC48D5A00000000 /* lib_idx_Binary_A56A3DAA.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E6ED272FAC00000000 /* _indexer_Library_-4799450061039509283 */ = {
+		3D31C5E6EDED0C6C00000000 /* _idx_Library_1A8360DD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583A494046C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450061039509283" */;
+			buildConfigurationList = DE475583FA9B823C00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_1A8360DD" */;
 			buildPhases = (
 				605793E20000000000000002 /* Sources */,
 			);
@@ -280,25 +296,9 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = "_indexer_Library_-4799450061039509283";
-			productName = "_indexer_Library_-4799450061039509283";
-			productReference = 43D68C283AC99B8600000000 /* lib_indexer_Library_-4799450061039509283.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6EF16C44E00000000 /* _indexer_XCTest_4799450059533471296 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583595591AD00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059533471296" */;
-			buildPhases = (
-				605793E20000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _indexer_XCTest_4799450059533471296;
-			productName = _indexer_XCTest_4799450059533471296;
-			productReference = 43D68C28CA05720000000000 /* lib_indexer_XCTest_4799450059533471296.a */;
+			name = _idx_Library_1A8360DD;
+			productName = _idx_Library_1A8360DD;
+			productReference = 43D68C287E5CAD8600000000 /* lib_idx_Library_1A8360DD.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
@@ -345,9 +345,9 @@
 				3D31C5E66B144ABC00000000 /* Application */,
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6A994A3A800000000 /* _indexer_Binary_4799450059964562858 */,
-				3D31C5E6ED272FAC00000000 /* _indexer_Library_-4799450061039509283 */,
-				3D31C5E6EF16C44E00000000 /* _indexer_XCTest_4799450059533471296 */,
+				3D31C5E6A631D1C000000000 /* _idx_Binary_A56A3DAA */,
+				3D31C5E6EDED0C6C00000000 /* _idx_Library_1A8360DD */,
+				3D31C5E64E472D4600000000 /* _idx_XCTest_8BB84E40 */,
 			);
 		};
 /* End PBXProject section */
@@ -482,7 +482,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_Binary_4799450059964562858;
+				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 			};
 			name = Fastbuild;
@@ -493,7 +493,7 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WORKSPACE_ROOT)/relative/Library/include/path";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450061039509283";
+				PRODUCT_NAME = _idx_Library_1A8360DD;
 			};
 			name = Fastbuild;
 		};
@@ -502,7 +502,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_XCTest_4799450059533471296;
+				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 			};
 			name = Fastbuild;
 		};
@@ -558,7 +558,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_Binary_4799450059964562858;
+				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 			};
 			name = Debug;
@@ -570,7 +570,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WORKSPACE_ROOT)/relative/Library/include/path";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450061039509283";
+				PRODUCT_NAME = _idx_Library_1A8360DD;
 			};
 			name = Debug;
 		};
@@ -580,7 +580,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_XCTest_4799450059533471296;
+				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 			};
 			name = Debug;
 		};
@@ -636,7 +636,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_Binary_4799450059964562858;
+				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 			};
 			name = Release;
@@ -648,7 +648,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WORKSPACE_ROOT)/relative/Library/include/path";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = "_indexer_Library_-4799450061039509283";
+				PRODUCT_NAME = _idx_Library_1A8360DD;
 			};
 			name = Release;
 		};
@@ -658,7 +658,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WORKSPACE_ROOT)/tulsi_e2e_simple/Binary/includes";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _indexer_XCTest_4799450059533471296;
+				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 			};
 			name = Release;
 		};
@@ -777,21 +777,12 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE475583595591AD00000000 /* Build configuration list for PBXNativeTarget "_indexer_XCTest_4799450059533471296" */ = {
+		DE47558319AD445900000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_8BB84E40" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,
 				44936BD63008588600000005 /* Fastbuild */,
 				44936BD6A3D45CE900000005 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755835C865EE200000000 /* Build configuration list for PBXNativeTarget "_indexer_Binary_4799450059964562858" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
-				44936BD6A3D45CE900000003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -803,15 +794,6 @@
 				44936BD6A3D45CE900000002 /* Release */,
 				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583A494046C00000000 /* Build configuration list for PBXNativeTarget "_indexer_Library_-4799450061039509283" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
-				44936BD6A3D45CE900000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -832,6 +814,15 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
+		DE475583EDC4178E00000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_A56A3DAA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -840,6 +831,15 @@
 				44936BD6A3D45CE900000001 /* Release */,
 				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583FA9B823C00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_1A8360DD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

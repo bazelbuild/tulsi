@@ -6,13 +6,13 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Library_-4799450061039509283" BlueprintName="_indexer_Library_-4799450061039509283" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_idx_Library_1A8360DD" BlueprintName="_idx_Library_1A8360DD" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_indexer_Binary_4799450059964562858" BlueprintName="_indexer_Binary_4799450059964562858" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_idx_Binary_A56A3DAA" BlueprintName="_idx_Binary_A56A3DAA" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6EF16C44E00000000" BuildableIdentifier="primary" BuildableName="_indexer_XCTest_4799450059533471296" BlueprintName="_indexer_XCTest_4799450059533471296" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E64E472D4600000000" BuildableIdentifier="primary" BuildableName="_idx_XCTest_8BB84E40" BlueprintName="_idx_XCTest_8BB84E40" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

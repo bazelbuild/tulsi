@@ -768,7 +768,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -785,7 +785,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -805,7 +805,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes,
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -831,7 +831,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes,
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -855,7 +855,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes,
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -883,7 +883,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
@@ -907,7 +907,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
-    let indexerTargetName = "_indexer_TestApp_\(buildLabel.hashValue)"
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
     targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
                                                        ruleEntryMap: [:],
