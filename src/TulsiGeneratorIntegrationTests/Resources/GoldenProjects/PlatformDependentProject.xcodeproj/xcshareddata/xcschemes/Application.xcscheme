@@ -1,24 +1,9 @@
 
 <Scheme LastUpgradeVersion="0610" version="1.3">
-    <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="NO">
+    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6DCF99AC200000000" BuildableIdentifier="primary" BuildableName="_idx_ProtoLibrary_6E1CBD33" BlueprintName="_idx_ProtoLibrary_6E1CBD33" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6A4C0B96C00000000" BuildableIdentifier="primary" BuildableName="_idx_Binary_153E40A9" BlueprintName="_idx_Binary_153E40A9" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E62420377800000000" BuildableIdentifier="primary" BuildableName="_idx_ObjCProtoLibrary_8AEE0955" BlueprintName="_idx_ObjCProtoLibrary_8AEE0955" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E676B7C78600000000" BuildableIdentifier="primary" BuildableName="_idx_J2ObjCLibrary_067650F8" BlueprintName="_idx_J2ObjCLibrary_067650F8" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E630BB757400000000" BuildableIdentifier="primary" BuildableName="_idx_JavaLibrary_B908755E" BlueprintName="_idx_JavaLibrary_B908755E" ReferencedContainer="container:PlatformDependentProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

@@ -63,6 +63,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.pbxproj"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings"))
+      XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcuserdata/USER.xcuserdatad/WorkspaceSettings.xcsettings"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-path-to-target-target.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-MainTarget.xcscheme"))
     } catch let e {
@@ -113,6 +114,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.pbxproj"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings"))
+      XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcuserdata/USER.xcuserdatad/WorkspaceSettings.xcsettings"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-Application.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-TestOne.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-TestTwo.xcscheme"))
@@ -167,8 +169,10 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                   bazelURL: bazelURL)
     let projectURL = NSURL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
     mockFileManager.allowedDirectoryCreates.insert(projectURL.path!)
-    let xcsharedData = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
-    mockFileManager.allowedDirectoryCreates.insert(xcsharedData.path!)
+    let xcshareddata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
+    mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path!)
+    let xcuserdata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")
+    mockFileManager.allowedDirectoryCreates.insert(xcuserdata.path!)
     let xcschemes = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
     mockFileManager.allowedDirectoryCreates.insert(xcschemes.path!)
     let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")
@@ -189,6 +193,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     generator.writeDataHandler = { (url, _) in
       self.writtenFiles.insert(url.path!)
     }
+    generator.usernameFetcher = { "USER" }
   }
 }
 

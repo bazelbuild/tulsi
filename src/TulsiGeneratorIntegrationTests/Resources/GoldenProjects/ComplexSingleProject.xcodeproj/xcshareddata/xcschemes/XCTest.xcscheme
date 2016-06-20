@@ -1,42 +1,9 @@
 
 <Scheme LastUpgradeVersion="0610" version="1.3">
-    <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="NO">
+    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6AC743AFA00000000" BuildableIdentifier="primary" BuildableName="_idx_SubLibraryWithDifferentDefines_32E5A9BC" BlueprintName="_idx_SubLibraryWithDifferentDefines_32E5A9BC" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E688E1600400000000" BuildableIdentifier="primary" BuildableName="_idx_Library_20EC2F4A" BlueprintName="_idx_Library_20EC2F4A" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6A606B6CC00000000" BuildableIdentifier="primary" BuildableName="_idx_SubLibrary_19588DB9" BlueprintName="_idx_SubLibrary_19588DB9" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E68AF9EBA000000000" BuildableIdentifier="primary" BuildableName="_idx_SubLibraryWithDefines_80C072DC" BlueprintName="_idx_SubLibraryWithDefines_80C072DC" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6B0A0066C00000000" BuildableIdentifier="primary" BuildableName="_idx_WatchExtensionBinary_020F3F9D" BlueprintName="_idx_WatchExtensionBinary_020F3F9D" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F65076A600000000" BuildableIdentifier="primary" BuildableName="_idx_NonPropagatedLibrary_8556858B" BlueprintName="_idx_NonPropagatedLibrary_8556858B" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6CC548BE600000000" BuildableIdentifier="primary" BuildableName="_idx_Binary_FD777BDB" BlueprintName="_idx_Binary_FD777BDB" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6ED9CD46C00000000" BuildableIdentifier="primary" BuildableName="_idx_TodayExtensionBinary_999643E7" BlueprintName="_idx_TodayExtensionBinary_999643E7" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6D3C5008400000000" BuildableIdentifier="primary" BuildableName="_idx_ObjCFramework_76D7C2D9" BlueprintName="_idx_ObjCFramework_76D7C2D9" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6D16FCABE00000000" BuildableIdentifier="primary" BuildableName="_idx_XCTest_7F8584F1" BlueprintName="_idx_XCTest_7F8584F1" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6B2BBEE0000000000" BuildableIdentifier="primary" BuildableName="_idx_CoreDataResources_3FDF153F" BlueprintName="_idx_CoreDataResources_3FDF153F" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

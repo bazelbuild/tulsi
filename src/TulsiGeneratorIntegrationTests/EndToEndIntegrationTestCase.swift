@@ -109,6 +109,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     // Output directory generation is suppressed in order to prevent having to whitelist diffs of
     // empty directories.
     projectGenerator.xcodeProjectGenerator.suppressGeneratedArtifactFolderCreation = true
+    // The username is forced to a known value.
+    projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

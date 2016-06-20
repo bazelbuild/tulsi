@@ -1,15 +1,9 @@
 
 <Scheme LastUpgradeVersion="0610" version="1.3">
-    <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="NO">
+    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E67C4CFB5800000000" BuildableIdentifier="primary" BuildableName="TestSuite-Two-XCTest" BlueprintName="TestSuite-Two-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="" BuildableIdentifier="primary" BuildableName="_idx_Binary_16BADD98" BlueprintName="_idx_Binary_16BADD98" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="NO" buildForProfiling="NO" buildForTesting="NO" buildForRunning="NO" buildForArchiving="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E63277835400000000" BuildableIdentifier="primary" BuildableName="_idx_XCTest_6A1F22DD" BlueprintName="_idx_XCTest_6A1F22DD" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

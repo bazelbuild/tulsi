@@ -870,10 +870,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       changeDirectoryAction = "cd \"\(workingDirectory)\""
     }
     let shellScript = "set -e\n" +
-        "if [[ \"${ACTION}\" == \"install\" ]]; then\n" +
-        "  echo \":: error - The Archive action is not supported for Tulsi-based projects.\"\n" +
-        "  exit 1\n" +
-        "fi\n" +
         "\(changeDirectoryAction)\n" +
         ". \"\(envScriptPath)\"\n" +
         "exec \(commandLine) --install_generated_artifacts"

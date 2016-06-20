@@ -29,10 +29,8 @@ final class XcodeScheme {
   let explicitTests: [PBXTarget]?
 
   let primaryTargetBuildableReference: BuildableReference
-  let indexerTargetBuildableReferences: [BuildableReference]
 
   init(target: PBXTarget,
-       indexerTargets: Set<PBXTarget>,
        project: PBXProject,
        projectBundleName: String,
        testActionBuildConfig: String = "Debug",
@@ -55,9 +53,6 @@ final class XcodeScheme {
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
-    indexerTargetBuildableReferences = indexerTargets.map() {
-      BuildableReference(target: $0, projectBundleName: projectBundleName)
-    }
   }
 
   func toXML() -> NSXMLDocument {
@@ -84,11 +79,8 @@ final class XcodeScheme {
   private func buildAction() -> NSXMLElement {
     let element = NSXMLElement(name: "BuildAction")
     let buildActionAttributes = [
-        // Bazel will handle parallelism and generally the scheme will only have one active build
-        // target. The exception to this is the archive action, in which case parallelism is
-        // undesirable as the build script should immediately error out with an "unsupported" error.
-        "parallelizeBuildables": "NO",
-        "buildImplicitDependencies": "NO",
+        "parallelizeBuildables": "YES",
+        "buildImplicitDependencies": "YES",
     ]
     element.setAttributesWithDictionary(buildActionAttributes)
 
@@ -105,30 +97,6 @@ final class XcodeScheme {
     buildActionEntry.setAttributesWithDictionary(buildActionEntryAttributes)
     buildActionEntry.addChild(primaryTargetBuildableReference.toXML())
     buildActionEntries.addChild(buildActionEntry)
-
-    // Xcode's Live issues feature requires that some target exist that has sources attached to it
-    // for compilation, and that said target is referenced by the current XcodeScheme. For
-    // Tulsi-based projects, indexer targets are appropriate. However, indexer targets generally
-    // will not build (and are not intended to, as it would duplicate work done by Bazel itself).
-    // As it turns out, Live issues support requires one or more build actions in order to utilize
-    // a target containing sources, but does not require any particular action be linked up. For
-    // Bazel-built projects, the "Archive" action in Xcode doesn't add much value, so it is
-    // sacrificed here in order to have Xcode leverage the sources attached to the indexer targets
-    // in support of Live issues.
-    let liveIssuesBuildActionEntryAttributes = [
-        "buildForTesting": "NO",
-        "buildForRunning": "NO",
-        "buildForProfiling": "NO",
-        "buildForArchiving": "YES",
-        "buildForAnalyzing": "NO",
-    ]
-    for indexerTarget in indexerTargetBuildableReferences {
-      let indexerActionEntry = NSXMLElement(name: "BuildActionEntry")
-      indexerActionEntry.setAttributesWithDictionary(liveIssuesBuildActionEntryAttributes)
-      indexerActionEntry.addChild(indexerTarget.toXML())
-      buildActionEntries.addChild(indexerActionEntry)
-    }
-
     element.addChild(buildActionEntries)
 
     return element

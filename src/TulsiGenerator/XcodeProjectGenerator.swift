@@ -52,6 +52,9 @@ final class XcodeProjectGenerator {
     try data.writeToURL(outputFileURL, options: NSDataWritingOptions.DataWritingAtomic)
   }
 
+  // Exposed for testing. Returns the current user name.
+  var usernameFetcher: () -> String = NSUserName
+
   // Exposed for testing. Suppresses writing any preprocessor defines integral to Bazel itself into
   // the generated project.
   var suppressCompilerDefines = false
@@ -144,11 +147,6 @@ final class XcodeProjectGenerator {
 
     /// RuleEntry's for test_suite's for whichspecial test schemes should be created.
     let testSuiteRuleEntries: Set<RuleEntry>
-
-    /// Map of buildRuleEntries to generated indexer targets containing the sources on which each
-    /// build rule depends. This map may be used to link a given build rule to its associated
-    /// indexers (e.g., for Live issues support).
-    let buildRuleToIndexerTargets: [RuleEntry: Set<PBXTarget>]
   }
 
   /// Invokes Bazel to load any missing information in the config file.
@@ -218,7 +216,6 @@ final class XcodeProjectGenerator {
 //    expandTargetLabels(config.buildTargetLabels)
 
     var targetRules = Set<RuleEntry>()
-    var targetIndexers = [RuleEntry: Set<PBXTarget>]()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
 
     func profileAction(name: String, @noescape action: () throws -> Void) rethrows {
@@ -242,10 +239,9 @@ final class XcodeProjectGenerator {
         for hostTargetLabel in ruleEntry.linkedTargetLabels {
           hostTargetLabels[hostTargetLabel] = ruleEntry.label
         }
-        let indexers = generator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                                    ruleEntryMap: ruleEntryMap,
-                                                                    pathFilters: config.pathFilters)
-        targetIndexers[ruleEntry] = indexers
+        generator.generateIndexerTargetsForRuleEntry(ruleEntry,
+                                                     ruleEntryMap: ruleEntryMap,
+                                                     pathFilters: config.pathFilters)
       }
     }
 
@@ -283,8 +279,7 @@ final class XcodeProjectGenerator {
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
-                                testSuiteRuleEntries: testSuiteRules,
-                                buildRuleToIndexerTargets: targetIndexers)
+                                testSuiteRuleEntries: testSuiteRules)
   }
 
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
@@ -311,17 +306,34 @@ final class XcodeProjectGenerator {
   }
 
   private func installWorkspaceSettings(projectURL: NSURL) throws {
-    // Write workspace options if they don't already exist.
-    let workspaceSharedDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
-    let workspaceSettingsURL = workspaceSharedDataURL.URLByAppendingPathComponent("WorkspaceSettings.xcsettings")
-    if !fileManager.fileExistsAtPath(workspaceSettingsURL.path!) &&
-        createDirectory(workspaceSharedDataURL) {
-      let workspaceSettings = ["IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded": false]
+    func writeWorkspaceSettings(workspaceSettings: [String: AnyObject],
+                                toDirectoryAtURL directoryURL: NSURL,
+                                replaceIfExists: Bool = false) throws {
+      let workspaceSettingsURL = directoryURL.URLByAppendingPathComponent("WorkspaceSettings.xcsettings")
+
+      if (!replaceIfExists && fileManager.fileExistsAtPath(workspaceSettingsURL.path!)) ||
+          !createDirectory(directoryURL) {
+        return
+      }
+
       let data = try NSPropertyListSerialization.dataWithPropertyList(workspaceSettings,
                                                                       format: .XMLFormat_v1_0,
                                                                       options: 0)
       try writeDataHandler(workspaceSettingsURL, data)
     }
+
+
+    let workspaceSharedDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
+    try writeWorkspaceSettings(["IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded": false],
+                               toDirectoryAtURL: workspaceSharedDataURL,
+                               replaceIfExists: true)
+
+    let workspaceUserDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/\(usernameFetcher()).xcuserdatad")
+    let perUserWorkspaceSettings = [
+        "LiveSourceIssuesEnabled": true,
+        "IssueFilterStyle": "ShowAll",
+    ]
+    try writeWorkspaceSettings(perUserWorkspaceSettings, toDirectoryAtURL: workspaceUserDataURL)
   }
 
   private func loadRuleEntryMap() -> [BuildLabel: RuleEntry] {
@@ -362,9 +374,7 @@ final class XcodeProjectGenerator {
 
       let filename = target.name + ".xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
-      let indexerTargets = info.buildRuleToIndexerTargets[entry] ?? []
       let scheme = XcodeScheme(target: target,
-                               indexerTargets: indexerTargets,
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug")
@@ -405,9 +415,7 @@ final class XcodeProjectGenerator {
       }
       let filename = suiteName + "_Suite.xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
-      let indexerTargets = info.buildRuleToIndexerTargets[suite] ?? []
       let scheme = XcodeScheme(target: concreteTarget,
-                               indexerTargets: indexerTargets,
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
