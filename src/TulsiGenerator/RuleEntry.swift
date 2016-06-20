@@ -209,13 +209,14 @@ public final class RuleEntry: RuleInfo {
     return artifacts
   }
 
-  var pbxTargetType: PBXTarget.ProductType? {
-    if type == "ios_test",
-       let xctestOpt = attributes[.xctest] as? Bool where !xctestOpt {
-      return RuleEntry.BuildTypeToTargetType["ios_application"]
+  private(set) lazy var pbxTargetType: PBXTarget.ProductType? = {
+    if self.type == "ios_test",
+       let xctestOpt = self.attributes[.xctest] as? Bool where !xctestOpt {
+      return BuildTypeToTargetType["ios_application"]
     }
-    return RuleEntry.BuildTypeToTargetType[type]
-  }
+
+    return BuildTypeToTargetType[self.type]
+  }()
 
   /// For rule types that generate an implicit name.ipa target, returns a BuildLabel usable to
   /// generate the IPA.

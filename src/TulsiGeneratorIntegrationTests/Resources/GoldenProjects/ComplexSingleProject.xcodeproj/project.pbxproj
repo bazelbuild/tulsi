@@ -48,11 +48,13 @@
 		43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Binary_FD777BDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282F76936E00000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file1; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283D391B8200000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
 		43D68C283D391B8200000001 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
 		43D68C283D391B8200000002 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
 		43D68C283D51411800000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		43D68C28428DF50400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist1.plist; sourceTree = "<group>"; };
+		43D68C2842EC763600000000 /* WatchExtension-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "WatchExtension-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C284437EBAE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C2845522B5A00000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src5.mm; sourceTree = "<group>"; };
 		43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_20EC2F4A.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +98,7 @@
 		43D68C28B7B6EFA200000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B82DAD1200000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; path = structured_resources.file1; sourceTree = "<group>"; };
+		43D68C28BBC8EE6A00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28BC21CCBA00000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = non_propagated.m; sourceTree = "<group>"; };
 		43D68C28C05E0C0A00000000 /* app_asset_catalogs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = app_asset_catalogs.xcassets; sourceTree = "<group>"; };
 		43D68C28C54C350C00000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnotherPCHFile.pch; sourceTree = "<group>"; };
@@ -192,6 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28F49055A600000000 /* Application.app */,
+				43D68C283A3B027E00000000 /* TodayExtension.appex */,
+				43D68C28BBC8EE6A00000000 /* WatchExtension.appex */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */,
@@ -523,6 +528,7 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */,
+				43D68C2842EC763600000000 /* WatchExtension-MergedInfo.plist */,
 			);
 			path = tulsi_e2e_complex;
 			sourceTree = "<group>";
@@ -582,6 +588,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3D31C5E61F218FDA00000000 /* TodayExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */;
+			buildPhases = (
+				84B4227148A436EB00000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = TodayExtension;
+			productName = TodayExtension;
+			productReference = 43D68C283A3B027E00000000 /* TodayExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
@@ -710,6 +732,22 @@
 			productReference = 43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		3D31C5E6CD47F3C600000000 /* WatchExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830DB9CDD900000000 /* Build configuration list for PBXNativeTarget "WatchExtension" */;
+			buildPhases = (
+				84B4227148A436EB00000001 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = WatchExtension;
+			productName = WatchExtension;
+			productReference = 43D68C28BBC8EE6A00000000 /* WatchExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */;
@@ -816,6 +854,8 @@
 			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
 				3D31C5E66B144ABC00000000 /* Application */,
+				3D31C5E61F218FDA00000000 /* TodayExtension */,
+				3D31C5E6CD47F3C600000000 /* WatchExtension */,
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
 				3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */,
@@ -846,6 +886,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B4227148A436EB00000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B4227148A436EB00000001 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\n. \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_env.sh\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:WatchExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271544E005600000000 /* ShellScript */ = {
@@ -1027,6 +1095,30 @@
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				PRODUCT_NAME = TodayExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000004 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				PRODUCT_NAME = WatchExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000005 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
@@ -1035,14 +1127,14 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000004 /* Fastbuild */ = {
+		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000005 /* Fastbuild */ = {
+		44936BD63008588600000007 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
@@ -1052,14 +1144,14 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000006 /* Fastbuild */ = {
+		44936BD63008588600000008 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000007 /* Fastbuild */ = {
+		44936BD63008588600000009 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1067,7 +1159,7 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000008 /* Fastbuild */ = {
+		44936BD6300858860000000A /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes";
@@ -1076,7 +1168,7 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000009 /* Fastbuild */ = {
+		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
@@ -1085,7 +1177,7 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000A /* Fastbuild */ = {
+		44936BD6300858860000000C /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1094,21 +1186,21 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000B /* Fastbuild */ = {
+		44936BD6300858860000000D /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000C /* Fastbuild */ = {
+		44936BD6300858860000000E /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000D /* Fastbuild */ = {
+		44936BD6300858860000000F /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1168,6 +1260,32 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				PRODUCT_NAME = TodayExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				PRODUCT_NAME = WatchExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
@@ -1177,7 +1295,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000004 /* Debug */ = {
+		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1185,7 +1303,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000005 /* Debug */ = {
+		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
@@ -1196,7 +1314,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000006 /* Debug */ = {
+		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1204,7 +1322,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000007 /* Debug */ = {
+		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1213,7 +1331,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000008 /* Debug */ = {
+		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1223,7 +1341,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000009 /* Debug */ = {
+		44936BD67EED3C4D0000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1233,7 +1351,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000A /* Debug */ = {
+		44936BD67EED3C4D0000000C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1243,7 +1361,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000B /* Debug */ = {
+		44936BD67EED3C4D0000000D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1251,7 +1369,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000C /* Debug */ = {
+		44936BD67EED3C4D0000000E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1259,7 +1377,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000D /* Debug */ = {
+		44936BD67EED3C4D0000000F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1320,6 +1438,32 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				PRODUCT_NAME = TodayExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				PRODUCT_NAME = WatchExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
@@ -1329,7 +1473,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000004 /* Release */ = {
+		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1337,7 +1481,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000005 /* Release */ = {
+		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
@@ -1348,7 +1492,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000006 /* Release */ = {
+		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1356,7 +1500,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000007 /* Release */ = {
+		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1365,7 +1509,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000008 /* Release */ = {
+		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1375,7 +1519,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000009 /* Release */ = {
+		44936BD6A3D45CE90000000B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1385,7 +1529,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000A /* Release */ = {
+		44936BD6A3D45CE90000000C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1395,7 +1539,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000B /* Release */ = {
+		44936BD6A3D45CE90000000D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1403,7 +1547,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000C /* Release */ = {
+		44936BD6A3D45CE90000000E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1411,7 +1555,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000D /* Release */ = {
+		44936BD6A3D45CE90000000F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1479,6 +1623,40 @@
 			};
 			name = __TulsiTestRunner_Debug;
 		};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TodayExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000004 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = WatchExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1536,33 +1714,78 @@
 			};
 			name = __TulsiTestRunner_Release;
 		};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = TodayExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000004 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = WatchExtension;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+			};
+			name = __TulsiTestRunner_Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		DE4755830C533BB800000000 /* Build configuration list for PBXNativeTarget "_idx_ObjCFramework_76D7C2D9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD63008588600000007 /* Fastbuild */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD63008588600000009 /* Fastbuild */,
+				44936BD6A3D45CE900000009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755830DB9CDD900000000 /* Build configuration list for PBXNativeTarget "WatchExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
+				44936BD6C928366700000004 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000004 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE4755834837BD8000000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionBinary_999643E7" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000B /* Debug */,
-				44936BD6300858860000000B /* Fastbuild */,
-				44936BD6A3D45CE90000000B /* Release */,
+				44936BD67EED3C4D0000000D /* Debug */,
+				44936BD6300858860000000D /* Fastbuild */,
+				44936BD6A3D45CE90000000D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD63008588600000009 /* Fastbuild */,
-				44936BD6A3D45CE900000009 /* Release */,
+				44936BD67EED3C4D0000000B /* Debug */,
+				44936BD6300858860000000B /* Fastbuild */,
+				44936BD6A3D45CE90000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1580,13 +1803,22 @@
 		DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6300858860000000A /* Fastbuild */,
+				44936BD6A3D45CE90000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
 				44936BD67EED3C4D00000008 /* Debug */,
 				44936BD63008588600000008 /* Fastbuild */,
 				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */ = {
+		DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1595,30 +1827,32 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
-				44936BD6A3D45CE900000004 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000005 /* Debug */,
-				44936BD63008588600000005 /* Fastbuild */,
-				44936BD6A3D45CE900000005 /* Release */,
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD63008588600000007 /* Fastbuild */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000A /* Debug */,
-				44936BD6300858860000000A /* Fastbuild */,
-				44936BD6A3D45CE90000000A /* Release */,
+				44936BD67EED3C4D0000000C /* Debug */,
+				44936BD6300858860000000C /* Fastbuild */,
+				44936BD6A3D45CE90000000C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD63008588600000003 /* Fastbuild */,
+				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1642,27 +1876,27 @@
 		DE475583E500CE6900000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_FD777BDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
-				44936BD6A3D45CE900000003 /* Release */,
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD63008588600000005 /* Fastbuild */,
+				44936BD6A3D45CE900000005 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000D /* Debug */,
-				44936BD6300858860000000D /* Fastbuild */,
-				44936BD6A3D45CE90000000D /* Release */,
+				44936BD67EED3C4D0000000F /* Debug */,
+				44936BD6300858860000000F /* Fastbuild */,
+				44936BD6A3D45CE90000000F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE475583F2E38A8000000000 /* Build configuration list for PBXNativeTarget "_idx_WatchExtensionBinary_020F3F9D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000C /* Debug */,
-				44936BD6300858860000000C /* Fastbuild */,
-				44936BD6A3D45CE90000000C /* Release */,
+				44936BD67EED3C4D0000000E /* Debug */,
+				44936BD6300858860000000E /* Fastbuild */,
+				44936BD6A3D45CE90000000E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

@@ -374,10 +374,24 @@ final class XcodeProjectGenerator {
 
       let filename = target.name + ".xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
+      let appExtension: Bool
+      let launchStyle: XcodeScheme.LaunchAutomaticallySubstyle
+      let targetType = entry.pbxTargetType ?? .Application
+      switch targetType {
+        case .AppExtension:
+          appExtension = true
+          launchStyle = .AppExtension
+
+        default:
+          appExtension = false
+          launchStyle = .Normal
+      }
       let scheme = XcodeScheme(target: target,
                                project: info.project,
                                projectBundleName: projectBundleName,
-                               testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug")
+                               testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                               appExtension: appExtension,
+                               launchStyle: launchStyle)
       let xmlDocument = scheme.toXML()
 
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)

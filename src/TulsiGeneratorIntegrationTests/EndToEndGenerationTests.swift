@@ -68,7 +68,13 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  linkedTargetLabels: Set<BuildLabel>()),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
                                  type: "ios_test",
-                                 linkedTargetLabels: hostLabels)]
+                                 linkedTargetLabels: hostLabels),
+                        RuleInfo(label: BuildLabel("//\(testDir):TodayExtension"),
+                                 type: "ios_extension",
+                                 linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: BuildLabel("//\(testDir):WatchExtension"),
+                                 type: "apple_watch1_extension",
+                                 linkedTargetLabels: Set<BuildLabel>())]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     guard let projectURL = generateProjectNamed("ComplexSingleProject",

@@ -17,6 +17,11 @@ import Foundation
 
 /// Models an xcscheme file, providing information to Xcode on how to build targets.
 final class XcodeScheme {
+
+  enum LaunchAutomaticallySubstyle {
+    case Normal, AppExtension
+  }
+
   let version: String
   let target: PBXTarget
   let project: PBXProject
@@ -26,6 +31,8 @@ final class XcodeScheme {
   let profileActionBuildConfig: String
   let analyzeActionBuildConfig: String
   let archiveActionBuildConfig: String
+  let appExtension: Bool
+  let launchStyle: LaunchAutomaticallySubstyle
   let explicitTests: [PBXTarget]?
 
   let primaryTargetBuildableReference: BuildableReference
@@ -38,6 +45,8 @@ final class XcodeScheme {
        profileActionBuildConfig: String = "Release",
        analyzeActionBuildConfig: String = "Debug",
        archiveActionBuildConfig: String = "Release",
+       appExtension: Bool = false,
+       launchStyle: LaunchAutomaticallySubstyle = .Normal,
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil) {
     self.version = version
@@ -49,6 +58,8 @@ final class XcodeScheme {
     self.profileActionBuildConfig = profileActionBuildConfig
     self.analyzeActionBuildConfig = analyzeActionBuildConfig
     self.archiveActionBuildConfig = archiveActionBuildConfig
+    self.appExtension = appExtension
+    self.launchStyle = launchStyle
     self.explicitTests = explicitTests
 
     primaryTargetBuildableReference = BuildableReference(target: target,
@@ -57,10 +68,13 @@ final class XcodeScheme {
 
   func toXML() -> NSXMLDocument {
     let rootElement = NSXMLElement(name: "Scheme")
-    let rootAttributes = [
+    var rootAttributes = [
         "version": version,
         "LastUpgradeVersion": project.lastUpgradeCheck
     ]
+    if appExtension {
+      rootAttributes["wasCreatedForAppExtension"] = "YES"
+    }
     rootElement.setAttributesWithDictionary(rootAttributes)
 
     rootElement.addChild(buildAction())
@@ -154,7 +168,7 @@ final class XcodeScheme {
   /// Settings for the Xcode "Run" action.
   private func launchAction() -> NSXMLElement {
     let element = NSXMLElement(name: "LaunchAction")
-    let attributes = [
+    var attributes = [
         "buildConfiguration": launchActionBuildConfig,
         "selectedDebuggerIdentifier": "Xcode.DebuggerFoundation.Debugger.LLDB",
         "selectedLauncherIdentifier": "Xcode.DebuggerFoundation.Launcher.LLDB",
@@ -165,8 +179,21 @@ final class XcodeScheme {
         "debugServiceExtension": "internal",
         "allowLocationSimulation": "YES",
     ]
+    if launchStyle == .AppExtension {
+      attributes["selectedDebuggerIdentifier"] = ""
+      attributes["selectedLauncherIdentifier"] = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      attributes["launchAutomaticallySubstyle"] = "2"
+    }
+
     element.setAttributesWithDictionary(attributes)
-    element.addChild(buildableProductRunnable())
+
+    if launchStyle != .AppExtension {
+      element.addChild(buildableProductRunnable())
+    } else {
+      let macroExpansion = NSXMLElement(name: "MacroExpansion")
+      macroExpansion.addChild(primaryTargetBuildableReference.toXML())
+      element.addChild(macroExpansion)
+    }
     return element
   }
 
