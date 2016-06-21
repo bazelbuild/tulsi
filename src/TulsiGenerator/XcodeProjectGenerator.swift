@@ -123,13 +123,18 @@ final class XcodeProjectGenerator {
                                           projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
     installGeneratorConfig(projectURL)
-    createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
 
+    let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders")
+    createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
+    localizedMessageLogger.logProfilingEnd(artifactFolderProfileToken)
+
+    let manifestProfileToken = localizedMessageLogger.startProfiling("writing_manifest")
     let manifestFileURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
                                                                  isDirectory: false)
     let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
                                      pbxProject: projectInfo.project)
     manifest.writeToURL(manifestFileURL)
+    localizedMessageLogger.logProfilingEnd(manifestProfileToken)
 
     return projectURL
   }
@@ -466,6 +471,7 @@ final class XcodeProjectGenerator {
     let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
     if createDirectory(scriptDirectoryURL) {
+      let profilingToken = localizedMessageLogger.startProfiling("installing_scripts")
       let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
       defer { progressNotifier.incrementValue() }
       localizedMessageLogger.infoMessage("Installing scripts")
@@ -474,6 +480,7 @@ final class XcodeProjectGenerator {
                     (envScriptURL, XcodeProjectGenerator.EnvScript),
                    ],
                    toDirectory: scriptDirectoryURL)
+      localizedMessageLogger.logProfilingEnd(profilingToken)
     }
   }
 
@@ -481,6 +488,7 @@ final class XcodeProjectGenerator {
     let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
                                                                     isDirectory: true)
     guard createDirectory(configDirectoryURL, failSilently: true) else { return }
+    let profilingToken = localizedMessageLogger.startProfiling("installing_generator_config")
     let progressNotifier = ProgressNotifier(name: InstallingGeneratorConfig, maxValue: 1)
     defer { progressNotifier.incrementValue() }
     localizedMessageLogger.infoMessage("Installing generator config")
@@ -515,6 +523,7 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Generator per-user config serialization failed. \(errorInfo)")
       return
     }
+    localizedMessageLogger.logProfilingEnd(profilingToken)
   }
 
   private func createDirectory(resourceDirectoryURL: NSURL, failSilently: Bool = false) -> Bool {
