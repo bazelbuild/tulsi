@@ -48,7 +48,7 @@
 		3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3D9926781C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3D9926791C29F0A30094E098 /* TulsiGenerator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3D9926811C29F0CC0094E098 /* BazelTargetGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */; };
+		3D9926811C29F0CC0094E098 /* PBXTargetGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4A123B1C1882F5006E592D /* PBXTargetGeneratorTests.swift */; };
 		3D9926821C29F0CC0094E098 /* BuildLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9DAF541C23604100955CD5 /* BuildLabelTests.swift */; };
 		3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */; };
 		3D9926851C29F0CC0094E098 /* PBXProjSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */; };
@@ -179,7 +179,7 @@
 		3D387BB71C761B8800544AE0 /* TulsiError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiError.swift; sourceTree = "<group>"; };
 		3D3DDD151CCA7BCF00E21FA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ErrorAlertDetailView.xib; sourceTree = "<group>"; };
 		3D47D6B91D13190E005B5BF3 /* NSJSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSJSONSerializationExtensions.swift; sourceTree = "<group>"; };
-		3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelTargetGeneratorTests.swift; sourceTree = "<group>"; };
+		3D4A123B1C1882F5006E592D /* PBXTargetGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXTargetGeneratorTests.swift; sourceTree = "<group>"; };
 		3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessXcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
 		3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSetTests.swift; sourceTree = "<group>"; };
@@ -343,7 +343,6 @@
 		3D9926721C29F0A30094E098 /* TulsiGeneratorTests */ = {
 			isa = PBXGroup;
 			children = (
-				3D4A123B1C1882F5006E592D /* BazelTargetGeneratorTests.swift */,
 				3D9DAF541C23604100955CD5 /* BuildLabelTests.swift */,
 				3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */,
 				3D9926751C29F0A30094E098 /* Info.plist */,
@@ -351,6 +350,7 @@
 				3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */,
 				3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */,
 				8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */,
+				3D4A123B1C1882F5006E592D /* PBXTargetGeneratorTests.swift */,
 				3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */,
 				3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */,
 				3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */,
@@ -812,7 +812,7 @@
 				3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */,
 				3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */,
 				3DA65B481C685BF30055448E /* MockWorkspaceInfoExtractor.swift in Sources */,
-				3D9926811C29F0CC0094E098 /* BazelTargetGeneratorTests.swift in Sources */,
+				3D9926811C29F0CC0094E098 /* PBXTargetGeneratorTests.swift in Sources */,
 				3D9926821C29F0CC0094E098 /* BuildLabelTests.swift in Sources */,
 				3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */,
 				3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */,

@@ -17,7 +17,7 @@ import XCTest
 
 // Note: Rather than test the serializer's output, we make use of the knowledge that
 // buildSerializerWithRuleEntries modifies a project directly.
-class BazelTargetGeneratorTests: XCTestCase {
+class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let testTulsiVersion = "9.99.999.9999"
@@ -95,7 +95,7 @@ class BazelTargetGeneratorTests: XCTestCase {
 }
 
 
-class BazelTargetGeneratorTestsWithFiles: XCTestCase {
+class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
@@ -193,9 +193,22 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
         "CLANG_ENABLE_OBJC_ARC": "YES",
-        "CODE_SIGN_IDENTITY": "",
+        "CLANG_WARN_BOOL_CONVERSION": "YES",
+        "CLANG_WARN_CONSTANT_CONVERSION": "YES",
+        "CLANG_WARN_EMPTY_BODY": "YES",
+        "CLANG_WARN_ENUM_CONVERSION": "YES",
+        "CLANG_WARN_INT_CONVERSION": "YES",
+        "CLANG_WARN_UNREACHABLE_CODE": "YES",
+        "CLANG_WARN__DUPLICATE_METHOD_MATCH": "YES",
         "CODE_SIGNING_REQUIRED": "NO",
+        "CODE_SIGN_IDENTITY": "",
         "ENABLE_TESTABILITY": "YES",
+        "GCC_WARN_64_TO_32_BIT_CONVERSION": "YES",
+        "GCC_WARN_ABOUT_RETURN_TYPE": "YES",
+        "GCC_WARN_UNDECLARED_SELECTOR": "YES",
+        "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
+        "GCC_WARN_UNUSED_FUNCTION": "YES",
+        "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
         "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
@@ -203,6 +216,7 @@ class BazelTargetGeneratorTestsWithFiles: XCTestCase {
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
     ]
+
     XCTAssertNotNil(topLevelConfigs["Debug"])
     XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings,
                    debugBuildSettingsFromSettings(topLevelBuildSettings))

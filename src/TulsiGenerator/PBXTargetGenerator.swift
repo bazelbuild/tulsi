@@ -334,6 +334,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       var localPreprocessorDefines = defines
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
+      let otherCFlags = NSMutableOrderedSet()
       if let copts = ruleEntry.attributes[.copts] as? [String] where !copts.isEmpty {
         for opt in copts {
           // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
@@ -346,6 +347,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
               path = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
             }
             localIncludes.addObject(path)
+          } else {
+            otherCFlags.addObject(opt)
           }
         }
       }
@@ -367,6 +370,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       addConfigsForIndexingTarget(indexingTarget,
                                   ruleEntry: ruleEntry,
                                   preprocessorDefines: localPreprocessorDefines,
+                                  otherCFlags: otherCFlags.array as! [String],
                                   includes: localIncludes.array as! [String],
                                   frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                   sourceFilter: includeFileInProject)
@@ -587,6 +591,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func addConfigsForIndexingTarget(target: PBXTarget,
                                            ruleEntry: RuleEntry,
                                            preprocessorDefines: Set<String>?,
+                                           otherCFlags: [String],
                                            includes: [String],
                                            frameworkSearchPaths: [String],
                                            sourceFilter: (BazelFileInfo) -> Bool) {
@@ -604,9 +609,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       addFilteredSourceReference(pchFile)
     }
 
+    var allOtherCFlags = otherCFlags
     if let preprocessorDefines = preprocessorDefines where !preprocessorDefines.isEmpty {
-      let cflagDefines = preprocessorDefines.sort().map({"-D\($0)"})
-      buildSettings["OTHER_CFLAGS"] = cflagDefines.joinWithSeparator(" ")
+      allOtherCFlags.appendContentsOf(preprocessorDefines.sort().map({"-D\($0)"}))
+    }
+
+    if !allOtherCFlags.isEmpty {
+      buildSettings["OTHER_CFLAGS"] = allOtherCFlags.joinWithSeparator(" ")
     }
 
     if let bridgingHeader = BazelFileInfo(info: ruleEntry.attributes[.bridging_header]) {

@@ -168,7 +168,25 @@ public class TulsiOptionSet: Equatable {
 
   /// Returns a dictionary of build settings without applying any specializations.
   func commonBuildSettings() -> [String: String] {
-    var buildSettings = [String: String]()
+    // These values come from AppleToolchain.java in Bazel
+    // https://github.com/bazelbuild/bazel/blob/master/src/main/java/com/google/devtools/build/lib/rules/apple/AppleToolchain.java
+    // TODO(abaire): Expose for user modification.
+    var buildSettings = [
+        "GCC_WARN_64_TO_32_BIT_CONVERSION": "YES",
+        "CLANG_WARN_BOOL_CONVERSION": "YES",
+        "CLANG_WARN_CONSTANT_CONVERSION": "YES",
+        "CLANG_WARN__DUPLICATE_METHOD_MATCH": "YES",
+        "CLANG_WARN_EMPTY_BODY": "YES",
+        "CLANG_WARN_ENUM_CONVERSION": "YES",
+        "CLANG_WARN_INT_CONVERSION": "YES",
+        "CLANG_WARN_UNREACHABLE_CODE": "YES",
+        "GCC_WARN_ABOUT_RETURN_TYPE": "YES",
+        "GCC_WARN_UNDECLARED_SELECTOR": "YES",
+        "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
+        "GCC_WARN_UNUSED_FUNCTION": "YES",
+        "GCC_WARN_UNUSED_VARIABLE": "YES",
+    ]
+
     for (key, opt) in options.filter({ $1.optionType.contains(.BuildSetting) }) {
       buildSettings[key.rawValue] = opt.commonValue!
     }
