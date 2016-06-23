@@ -39,6 +39,10 @@ final class TulsiProjectDocument: NSDocument,
   /// stored.
   static let ProjectConfigsSubpath = "Configs"
 
+  /// Override for headless project generation (in which messages should not spawn alert dialogs,
+  /// nor should they be queued).
+  static var messageLoggerOverride: MessageLoggerProtocol? = nil
+
   /// The project model.
   var project: TulsiProject! = nil
 
@@ -415,6 +419,10 @@ final class TulsiProjectDocument: NSDocument,
   // MARK: - MessageLoggerProtocol
 
   func warning(message: String) {
+    if let logger = TulsiProjectDocument.messageLoggerOverride {
+      logger.warning(message)
+      return
+    }
     #if DEBUG
     print("W: \(message)")
     #endif
@@ -425,6 +433,10 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   func error(message: String, details: String? = nil) {
+    if let logger = TulsiProjectDocument.messageLoggerOverride {
+      logger.error(message, details: details)
+      return
+    }
     #if DEBUG
     print("E: \(message)")
     #endif
@@ -437,6 +449,10 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   func info(message: String) {
+    if let logger = TulsiProjectDocument.messageLoggerOverride {
+      logger.info(message)
+      return
+    }
     #if DEBUG
     print("I: \(message)")
     #endif

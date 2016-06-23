@@ -43,6 +43,9 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
 
   /// Performs project generation.
   func generate() throws {
+    TulsiProjectDocument.messageLoggerOverride = self
+    defer { TulsiProjectDocument.messageLoggerOverride = nil }
+
     guard let configPath = arguments.generatorConfig else {
       throw Error.MissingConfigOption(TulsiCommandlineParser.ParamGeneratorConfigLong)
     }
@@ -126,6 +129,9 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
 
   func error(message: String, details: String? = nil) {
     print("E: \(message)")
+    if let details = details {
+      print("\t\(details)")
+    }
   }
 
   func info(message: String) {
