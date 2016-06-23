@@ -29,6 +29,7 @@ protocol PBXTargetGeneratorProtocol: class {
        project: PBXProject,
        buildScriptPath: String,
        envScriptPath: String,
+       stubInfoPlistPath: String,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -114,6 +115,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   let project: PBXProject
   let buildScriptPath: String
   let envScriptPath: String
+  let stubInfoPlistPath: String
   let tulsiVersion: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
@@ -190,6 +192,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        project: PBXProject,
        buildScriptPath: String,
        envScriptPath: String,
+       stubInfoPlistPath: String,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -200,6 +203,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.envScriptPath = envScriptPath
+    self.stubInfoPlistPath = stubInfoPlistPath
     self.tulsiVersion = tulsiVersion
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
@@ -834,6 +838,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if let ipaTarget = entry.implicitIPATarget {
       buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
     }
+
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
 
     // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
     // The build script uses the binary label to find and move the dSYM associated with an

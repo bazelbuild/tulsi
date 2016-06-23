@@ -30,10 +30,12 @@ final class XcodeProjectGenerator {
   private static let TulsiArtifactDirectory = ".tulsi"
   static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
+  static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let EnvScript = "bazel_env.sh"
+  private static let StubInfoPlistFilename = "StubInfoPlist.plist"
 
   private let workspaceRootURL: NSURL
   private let config: TulsiGeneratorConfig
@@ -43,6 +45,7 @@ final class XcodeProjectGenerator {
   private let buildScriptURL: NSURL
   private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
+  private let stubInfoPlistURL: NSURL
   private let tulsiVersion: String
 
   private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
@@ -70,6 +73,7 @@ final class XcodeProjectGenerator {
        buildScriptURL: NSURL,
        envScriptURL: NSURL,
        cleanScriptURL: NSURL,
+       stubInfoPlistURL: NSURL,
        tulsiVersion: String,
        fileManager: NSFileManager = NSFileManager.defaultManager(),
        pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type = PBXTargetGenerator.self) {
@@ -80,6 +84,7 @@ final class XcodeProjectGenerator {
     self.buildScriptURL = buildScriptURL
     self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
+    self.stubInfoPlistURL = stubInfoPlistURL
     self.tulsiVersion = tulsiVersion
     self.fileManager = fileManager
     self.pbxTargetGeneratorType = pbxTargetGeneratorType
@@ -123,6 +128,7 @@ final class XcodeProjectGenerator {
                                           projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
     installGeneratorConfig(projectURL)
+    installGeneratedProjectResources(projectURL)
 
     let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders")
     createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
@@ -173,12 +179,14 @@ final class XcodeProjectGenerator {
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
     let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
+    let stubInfoPlistPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)/\(XcodeProjectGenerator.StubInfoPlistFilename)"
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
                                                 envScriptPath: envScriptPath,
+                                                stubInfoPlistPath: stubInfoPlistPath,
                                                 tulsiVersion: tulsiVersion,
                                                 options: config.options,
                                                 localizedMessageLogger: localizedMessageLogger,
@@ -523,6 +531,18 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Generator per-user config serialization failed. \(errorInfo)")
       return
     }
+    localizedMessageLogger.logProfilingEnd(profilingToken)
+  }
+
+  private func installGeneratedProjectResources(projectURL: NSURL) {
+    let targetDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ProjectResourcesDirectorySubpath,
+                                                                    isDirectory: true)
+    guard createDirectory(targetDirectoryURL) else { return }
+    let profilingToken = localizedMessageLogger.startProfiling("installing_project_resources")
+    localizedMessageLogger.infoMessage("Installing project resources")
+
+    installFiles([(stubInfoPlistURL, XcodeProjectGenerator.StubInfoPlistFilename)],
+                 toDirectory: targetDirectoryURL)
     localizedMessageLogger.logProfilingEnd(profilingToken)
   }
 

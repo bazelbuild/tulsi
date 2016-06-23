@@ -31,6 +31,7 @@
 		3D4E5A421D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */; };
 		3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */; };
 		3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */; };
+		3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */; };
 		3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */; };
 		3D7B77431C8F2DD3004786EF /* UISourcePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77421C8F2DD3004786EF /* UISourcePath.swift */; };
 		3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */; };
@@ -183,6 +184,7 @@
 		3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessXcodeProjectGenerator.swift; sourceTree = "<group>"; };
 		3D51A7FF1C52C10A00FE90A6 /* TulsiOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOption.swift; sourceTree = "<group>"; };
 		3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSetTests.swift; sourceTree = "<group>"; };
+		3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubInfoPlist.plist; path = GeneratedProjectResources/StubInfoPlist.plist; sourceTree = "<group>"; };
 		3D7830051C17918D00AF67A4 /* PBXTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXTargetGenerator.swift; sourceTree = "<group>"; };
 		3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
 		3D7B77421C8F2DD3004786EF /* UISourcePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISourcePath.swift; sourceTree = "<group>"; };
@@ -312,9 +314,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D5A1B561D1B3432006FC2A6 /* GeneratedProjectResources */ = {
+			isa = PBXGroup;
+			children = (
+				3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */,
+			);
+			name = GeneratedProjectResources;
+			sourceTree = "<group>";
+		};
 		3D78698C1C57D6DB0070FCC8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3D5A1B561D1B3432006FC2A6 /* GeneratedProjectResources */,
 				3DCFE5CE1C80A64600D7F31B /* Bazel */,
 				3D9926671C29F0A20094E098 /* Info.plist */,
 				3DBEFACF1C2A1F7200119556 /* Localizable.strings */,
@@ -696,6 +707,7 @@
 				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
 				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
+				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
 				033651E51C6EC8BA00C2C9CA /* bazel_env.sh in Resources */,
