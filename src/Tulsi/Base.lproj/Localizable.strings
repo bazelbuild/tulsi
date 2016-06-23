@@ -11,20 +11,20 @@
 /* Error when project does not have a valid Bazel WORKSPACE file at %1$@. */
 "Error_NoWORKSPACEFile" = "Project does not contain a valid Bazel workspace. Start a new project or ensure that a WORKSPACE file exists at \"%1$@\".";
 
-/* Error when a TulsiGeneratorConfig named %1$@ could not be deleted. Details are provided as %2$@. */
-"Error_ConfigDeleteFailed" = "Failed to remove Tulsi generator config '%1$@'. Debug info: %2$@";
+/* Error when a TulsiGeneratorConfig named %1$@ could not be deleted. */
+"Error_ConfigDeleteFailed" = "Failed to remove Tulsi generator config '%1$@'.";
 
-/* Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@. */
-"Error_ConfigLoadFailed" = "Failed to reload Tulsi generator config. Debug info: %1$@";
+/* Error when a TulsiGeneratorConfig failed to be reloaded. */
+"Error_ConfigLoadFailed" = "Failed to reload Tulsi generator config.";
 
 /* Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@. */
 "Error_ConfigSaveFailed" = "Failed to save Tulsi generator config. Debug info: %1$@";
 
-/* A general, critical failure without a more fitting descriptive message. Details are provided as %1$@. */
-"Error_GeneralCriticalFailure" = "An unexpected error occurred. Debug info: %1$@";
+/* A general, critical failure without a more fitting descriptive message. */
+"Error_GeneralCriticalFailure" = "An unexpected error occurred.";
 
-/* A general, critical failure during project generation. Details are provided as %1$@. */
-"Error_GeneralProjectGenerationFailure" = "Failed to create Xcode project. Debug info: %1$@";
+/* A general, critical failure during project generation. */
+"Error_GeneralProjectGenerationFailure" = "Failed to create Xcode project.";
 
 /* Error for a generation attempt without a valid target output folder even though one should exist. */
 "Error_NoOutputFolder" = "No output folder selected. This is likely a Tulsi bug, please report.";

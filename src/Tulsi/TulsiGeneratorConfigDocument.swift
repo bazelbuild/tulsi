@@ -503,9 +503,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     assert(!NSThread.isMainThread(), "Must not be called from the main thread")
 
     guard let config = makeConfig(withFullyResolvedOptions: true) else {
-      let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                  comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-      self.error(String(format: fmt, "Generator config is not fully populated."))
+      let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
+                                  comment: "A general, critical failure during project generation.")
+      self.error(msg, details: "Generator config is not fully populated.")
       return nil
     }
 
@@ -519,10 +519,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       case .Success(let url):
         return url
       case .Failure(let errorInfo):
-        let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                    comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-        let errorMessage = String(format: fmt, errorInfo)
-        self.error(errorMessage)
+        let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
+                                    comment: "A general, critical failure during project generation.")
+        self.error(msg, details: errorInfo)
         return nil
     }
   }

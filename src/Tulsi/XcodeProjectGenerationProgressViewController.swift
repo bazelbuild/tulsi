@@ -181,9 +181,9 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
     }
 
-    let fmt = NSLocalizedString("Error_GeneralProjectGenerationFailure",
-                                comment: "A general, critical failure during project generation. Details are provided as %1$@.")
-    document.error(String(format: fmt, errorInfo))
+    let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
+                                comment: "A general, critical failure during project generation.")
+    document.error(msg, details: errorInfo)
     return nil
   }
 }

@@ -177,9 +177,9 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       errorInfo = "Unexpected exception"
     }
 
-    let fmt = NSLocalizedString("Error_GeneralCriticalFailure",
-                                comment: "A general, critical failure without a more fitting descriptive message. Details are provided as %1$@.")
-    projectDocument.error(String(format: fmt, errorInfo))
+    let msg = NSLocalizedString("Error_GeneralCriticalFailure",
+                                comment: "A general, critical failure without a more fitting descriptive message.")
+    projectDocument.error(msg, details: errorInfo)
   }
 
 
@@ -236,9 +236,9 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     } catch {
       errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
     }
-    let fmt = NSLocalizedString("Error_ConfigLoadFailed",
-                                comment: "Error when a TulsiGeneratorConfig failed to be reloaded. Details are provided as %1$@.")
-    projectDocument.error(String(format: fmt, errorInfo))
+    let msg = NSLocalizedString("Error_ConfigLoadFailed",
+                                comment: "Error when a TulsiGeneratorConfig failed to be reloaded.")
+    projectDocument.error(msg, details: errorInfo)
   }
 }
 

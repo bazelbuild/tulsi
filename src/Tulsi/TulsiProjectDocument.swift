@@ -328,8 +328,8 @@ final class TulsiProjectDocument: NSDocument,
         }
         if let errorInfo = errorInfo {
           let fmt = NSLocalizedString("Error_ConfigDeleteFailed",
-                                      comment: "Error when a TulsiGeneratorConfig named %1$@ could not be deleted. Details are provided as %2$@.")
-          error(String(format: fmt, name, errorInfo))
+                                      comment: "Error when a TulsiGeneratorConfig named %1$@ could not be deleted.")
+          error(String(format: fmt, name), details: errorInfo)
         }
       }
     }
@@ -383,9 +383,9 @@ final class TulsiProjectDocument: NSDocument,
   /// Displays a generic critical error message to the user with the given debug message.
   /// This should be used sparingly and only for messages that would indicate bugs in Tulsi.
   func generalError(debugMessage: String) {
-    let fmt = NSLocalizedString("Error_GeneralCriticalFailure",
-                                comment: "A general, critical failure without a more fitting descriptive message. Details are provided as %1$@.")
-    error(String(format: fmt, debugMessage))
+    let msg = NSLocalizedString("Error_GeneralCriticalFailure",
+                                comment: "A general, critical failure without a more fitting descriptive message.")
+    error(msg, details: debugMessage)
   }
 
   // MARK: - NSUserInterfaceValidations
