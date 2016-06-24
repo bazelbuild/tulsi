@@ -728,7 +728,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return configOptionSet.optionSetByInheritingFrom(parentOptionSet)
   }
 
-  /// Resolves buildTargetLabels, leaving them populated with any labels that failed to be resolved.
+  /// Resolves buildTargetLabels, leaving it populated with any labels that failed to be resolved.
   /// The given completion handler is invoked on the main thread once the labels are fully resolved.
   private func resolveLabelReferences(completionHandler: (Void -> Void)) {
     guard let concreteBuildTargetLabels = buildTargetLabels
@@ -759,12 +759,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let existingInfos = self.uiRuleInfos.filter() {
       !concreteBuildTargetLabels.contains($0.ruleInfo.label)
     }
-    for existingInfo in existingInfos {
-      existingInfo.selected = false
-      ruleInfos.append(existingInfo)
-    }
 
     NSThread.doOnMainQueue() {
+      for existingInfo in existingInfos {
+        existingInfo.selected = false
+        ruleInfos.append(existingInfo)
+      }
       self.uiRuleInfos = ruleInfos
       self.buildTargetLabels = unresolvedLabels.isEmpty ? nil : [BuildLabel](unresolvedLabels)
       self.selectedRuleInfoCount = self.selectedRuleInfos.count

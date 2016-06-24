@@ -41,7 +41,7 @@ class UISelectableOutlineViewNode: NSObject {
   private var _children = [UISelectableOutlineViewNode]()
 
   /// This node's parent.
-  private weak var parent: UISelectableOutlineViewNode?
+  weak var parent: UISelectableOutlineViewNode?
 
   /// This node's checkbox state in the UI (NSOnState/NSOffState/NSMixedState)
   dynamic var state: Int {
@@ -102,8 +102,7 @@ class UISelectableOutlineViewNode: NSObject {
     child.parent = self
   }
 
-  // TODO(abaire): Look into whether or not there's a way to prevent the system from setting the
-  //               state to mixed in the first place.
+  // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
   func validateState(ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
     if let value = ioValue.memory as? NSNumber {
       if value.integerValue == NSMixedState {

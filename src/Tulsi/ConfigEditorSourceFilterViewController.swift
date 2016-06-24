@@ -17,19 +17,48 @@ import Cocoa
 
 // Models a node in the source filter picker.
 final class SourcePathNode: UISelectableOutlineViewNode {
-  dynamic var recursive: Bool {
+
+  /// Whether or not this specific node is set as recursive-enabled (rather than some child marking
+  /// it as mixed state).
+  dynamic var explicitlyRecursive: Bool {
+    return recursive == NSOnState
+  }
+
+  /// This node's recursive UI state (NSOnState/NSOffState/NSMixedState).
+  dynamic var recursive: Int {
     get {
-      guard let entry = entry as? UISourcePath else { return false }
-      return entry.recursive
+      guard let entry = entry as? UISourcePath else { return NSOffState }
+      if entry.recursive { return NSOnState }
+
+      for child in children as! [SourcePathNode] {
+        if child.recursive != NSOffState {
+          return NSMixedState
+        }
+      }
+      return NSOffState
     }
 
     set {
+      // No work needs to be done for mixed state, as it does not affect the underlying values.
+      if newValue == NSMixedState { return }
+
       guard let entry = entry as? UISourcePath else { return }
-      entry.recursive = newValue
+      let enabled = newValue == NSOnState
+      willChangeValueForKey("explicitlyRecursive")
+      entry.recursive = enabled
+      didChangeValueForKey("explicitlyRecursive")
 
       // If this node is newly recursive, force hasRecursiveEnabledParent, otherwise have children
       // inherit this node's status.
-      setChildrenHaveRecursiveParent(newValue || hasRecursiveEnabledParent)
+      setChildrenHaveRecursiveParent(enabled || hasRecursiveEnabledParent)
+
+      // Notify KVO that this node's ancestors have also changed state.
+      var ancestor = parent
+      while ancestor != nil {
+        ancestor!.willChangeValueForKey("recursive")
+        ancestor!.didChangeValueForKey("recursive")
+        ancestor = ancestor!.parent
+      }
     }
   }
 
@@ -37,14 +66,30 @@ final class SourcePathNode: UISelectableOutlineViewNode {
     willSet {
       // If this node is recursive its children will still have a recursive parent and there's no
       // need to update them.
-      if recursive || newValue == hasRecursiveEnabledParent { return }
+      if recursive == NSOnState || newValue == hasRecursiveEnabledParent { return }
       setChildrenHaveRecursiveParent(newValue)
     }
   }
 
-  func setChildrenHaveRecursiveParent(newValue: Bool) {
+  // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
+  func validateRecursive(ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
+    if let value = ioValue.memory as? NSNumber {
+      if value.integerValue == NSMixedState {
+        ioValue.memory = NSNumber(integer: NSOnState)
+      }
+    }
+  }
+
+  // MARK: - Private methods
+
+  private func setChildrenHaveRecursiveParent(newValue: Bool) {
     for child in children as! [SourcePathNode] {
       child.hasRecursiveEnabledParent = newValue
+      // Children of a recursive-enabled node may not be recursive themselves (it's redundant and
+      // potentially confusing).
+      if newValue {
+        child.recursive = NSOffState
+      }
     }
   }
 }
@@ -105,7 +150,7 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
         node = newNode
       }
       node.entry = sourcePaths[i]
-      if node.recursive {
+      if node.recursive == NSOnState {
         recursiveNodes.append(node)
       }
     }
