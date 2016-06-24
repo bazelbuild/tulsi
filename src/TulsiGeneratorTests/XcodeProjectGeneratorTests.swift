@@ -36,6 +36,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   let buildScriptURL = NSURL(fileURLWithPath: "/scripts/Build")
   let cleanScriptURL = NSURL(fileURLWithPath: "/scripts/Clean")
   let envScriptURL = NSURL(fileURLWithPath: "/scripts/Env")
+  let stubInfoPlistURL = NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist")
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil
@@ -177,6 +178,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
     mockFileManager.allowedDirectoryCreates.insert(xcschemes.path!)
     let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")
     mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
+    let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")
+    mockFileManager.allowedDirectoryCreates.insert(resources.path!)
 
     mockExtractor.labelToRuleEntry = ruleEntries
 
@@ -187,6 +190,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       buildScriptURL: buildScriptURL,
                                       envScriptURL: envScriptURL,
                                       cleanScriptURL: cleanScriptURL,
+                                      stubInfoPlistURL: stubInfoPlistURL,
                                       tulsiVersion: testTulsiVersion,
                                       fileManager: mockFileManager,
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
@@ -266,6 +270,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 project: PBXProject,
                 buildScriptPath: String,
                 envScriptPath: String,
+                stubInfoPlistPath: String,
                 tulsiVersion: String,
                 options: TulsiOptionSet,
                 localizedMessageLogger: LocalizedMessageLogger,

@@ -368,6 +368,7 @@
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
@@ -381,6 +382,7 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestApplication;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -421,6 +423,7 @@
 			buildSettings = {
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteNonXCTest;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -454,6 +457,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
@@ -468,6 +472,7 @@
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestApplication;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -510,6 +515,7 @@
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteNonXCTest;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -546,6 +552,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
@@ -560,6 +567,7 @@
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestApplication;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -602,6 +610,7 @@
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				PRODUCT_NAME = TestSuiteNonXCTest;
 				TULSI_BUILD_PATH = TestSuite;
 			};
@@ -639,6 +648,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -657,6 +667,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -706,6 +717,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -722,6 +734,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -740,6 +753,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -789,6 +803,7 @@
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";

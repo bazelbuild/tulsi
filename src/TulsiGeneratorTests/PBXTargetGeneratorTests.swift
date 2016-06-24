@@ -20,6 +20,7 @@ import XCTest
 class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
+  let infoPlistPath = "TestInfo.plist"
   let testTulsiVersion = "9.99.999.9999"
   var project: PBXProject! = nil
   var targetGenerator: PBXTargetGenerator! = nil
@@ -32,6 +33,7 @@ class PBXTargetGeneratorTests: XCTestCase {
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
+                                         stubInfoPlistPath: infoPlistPath,
                                          tulsiVersion: testTulsiVersion,
                                          options: TulsiOptionSet(),
                                          localizedMessageLogger: MockLocalizedMessageLogger(),
@@ -99,6 +101,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
+  let infoPlistPath = "TestInfo.plist"
   let testTulsiVersion = "9.99.999.9999"
 
   var project: PBXProject! = nil
@@ -126,6 +129,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                          project: project,
                                          buildScriptPath: "",
                                          envScriptPath: "",
+                                         stubInfoPlistPath: infoPlistPath,
                                          tulsiVersion: testTulsiVersion,
                                          options: options,
                                          localizedMessageLogger: messageLogger,
@@ -273,6 +277,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
@@ -309,6 +314,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
           "TULSI_BUILD_PATH": rule2BuildPath,
       ]
@@ -378,6 +384,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
@@ -416,6 +423,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BUNDLE_LOADER": "$(TEST_HOST)",
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": rule2BuildPath,
@@ -485,6 +493,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": appIPA.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
@@ -524,6 +533,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": testIPA.asFileName!,
           "BUNDLE_LOADER": "$(TEST_HOST)",
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": testRuleBuildPath,
@@ -626,6 +636,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
           "TULSI_BUILD_PATH": testRuleBuildPath,
       ]
@@ -696,6 +707,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test1:\(targetName)",
           "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test1-SameName",
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
@@ -733,6 +745,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test2:\(targetName)",
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
+          "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test2-SameName",
           "TULSI_BUILD_PATH": rule2BuildPath,
       ]
