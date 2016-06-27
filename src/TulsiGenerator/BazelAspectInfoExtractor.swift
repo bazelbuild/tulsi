@@ -22,6 +22,12 @@ final class BazelAspectInfoExtractor {
     case ParsingFailed(String)
   }
 
+  /// Prefix to be used by Bazel for the output of the Tulsi aspect.
+  private static let SymlinkPrefix = "tulsigen-"
+  /// Suffixes used by Bazel when creating output symlinks.
+  private static let BazelOutputSymlinks = [
+      "bin", "genfiles", "out", "testlogs"].map({ SymlinkPrefix + $0 })
+
   /// The location of the bazel binary.
   var bazelURL: NSURL
   /// The location of the Bazel workspace to be examined.
@@ -137,7 +143,7 @@ final class BazelAspectInfoExtractor {
     arguments.appendContentsOf([
         "build",
         "--symlink_prefix",  // Generate artifacts without overwriting the normal build symlinks.
-        "tulsigen-",
+        BazelAspectInfoExtractor.SymlinkPrefix,
         "--announce_rc",  // Print the RC files used by this operation.
         "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
         "--show_result=0",  // Don't bother printing the build results.
@@ -165,6 +171,7 @@ final class BazelAspectInfoExtractor {
                                stderr)
 
         let artifacts = BazelAspectInfoExtractor.extractBuildArtifactsFromOutput(stderr)
+        self.removeGeneratedSymlinks()
         terminationHandler(bazelTask: completionInfo.task,
                            generatedArtifacts: artifacts,
                            debugInfo: debugInfo)
@@ -192,6 +199,29 @@ final class BazelAspectInfoExtractor {
     }
 
     return artifacts
+  }
+
+  private func removeGeneratedSymlinks() {
+    let fileManager = NSFileManager.defaultManager()
+    for outputSymlink in BazelAspectInfoExtractor.BazelOutputSymlinks {
+      let symlinkURL = workspaceRootURL.URLByAppendingPathComponent(outputSymlink,
+                                                                    isDirectory: true)
+      do {
+        let attributes = try fileManager.attributesOfItemAtPath(symlinkURL.path!)
+        guard let type = attributes[NSFileType] as? String where type == NSFileTypeSymbolicLink else {
+          continue
+        }
+      } catch {
+        // Any exceptions are expected to indicate that the file does not exist.
+        continue
+      }
+
+      do {
+        try fileManager.removeItemAtURL(symlinkURL)
+      } catch let e as NSError {
+        localizedMessageLogger.infoMessage("Failed to remove symlink at \(symlinkURL). \(e)")
+      }
+    }
   }
 
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
