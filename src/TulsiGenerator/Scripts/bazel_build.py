@@ -98,11 +98,6 @@ class _OptionsParser(object):
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
           '--config=ios_' + arch)
 
-    ios_minimum_os = os.environ.get('IPHONEOS_DEPLOYMENT_TARGET', None)
-    if ios_minimum_os:
-      self.build_options[_OptionsParser.ALL_CONFIGS].append(
-          '--ios_minimum_os=' + ios_minimum_os)
-
     self.verbose = 0
     self.install_generated_artifacts = False
     self.bazel_bin_path = 'bazel-bin'

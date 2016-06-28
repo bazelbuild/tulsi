@@ -24,8 +24,6 @@ public enum TulsiOptionKey: String {
       ALWAYS_SEARCH_USER_PATHS,
       // The path to the Bazel binary.
       BazelPath,
-      // The iPhone deployment target.
-      IPHONEOS_DEPLOYMENT_TARGET,
       // The SDK to use.
       // TODO(abaire): This can probably be inferred from the BUILD file or better exposed through
       //     more specific flags.
@@ -252,7 +250,6 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
-    addStringOption(.IPHONEOS_DEPLOYMENT_TARGET, .BuildSetting, "8.4")
     addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
 

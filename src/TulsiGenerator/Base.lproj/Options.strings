@@ -22,8 +22,6 @@
 
 "CODE_SIGN_IDENTITY" = "Code signing identity";
 
-"IPHONEOS_DEPLOYMENT_TARGET" = "iOS deployment target";
-
 "SDKROOT" = "Base SDK";
 
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";

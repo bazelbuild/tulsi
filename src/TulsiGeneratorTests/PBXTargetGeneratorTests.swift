@@ -214,7 +214,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
-        "IPHONEOS_DEPLOYMENT_TARGET": "8.4",
         "ONLY_ACTIVE_ARCH": "YES",
         "SDKROOT": sdkRoot,
         "TULSI_VERSION": testTulsiVersion,
