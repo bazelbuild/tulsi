@@ -189,6 +189,8 @@ final class TulsiProjectDocument: NSDocument,
                            workspaceRootURL: workspaceRootURL)
     updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
 
+    LogMessage.postSyslog("Create project: \(projectName)")
+
     didChangeValueForKey("bazelURL")
     didChangeValueForKey("bazelPackages")
     didChangeValueForKey("workspaceRootURL")

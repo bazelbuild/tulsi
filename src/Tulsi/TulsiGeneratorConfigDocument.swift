@@ -192,6 +192,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     doc.configName = name
 
     documentController.addDocument(doc)
+
+    LogMessage.postSyslog("Create config: \(projectName)")
     return doc
   }
 
@@ -252,8 +254,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                       config: config,
                                                       tulsiVersion: tulsiVersion)
     let errorInfo: String
+    let startTime = NSDate()
+
     do {
       let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
+      let timeTaken = String(format: "%.4fs", NSDate().timeIntervalSinceDate(startTime))
+      LogMessage.postSyslog("Generate[OK]: \(timeTaken) ~ \(config.projectName).")
       return .Success(url)
     } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
       errorInfo = "Unsupported target type: \(targetType)"
@@ -262,6 +268,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     } catch _ {
       errorInfo = "Unexpected failure"
     }
+    let timeTaken = String(format: "%.4fs", NSDate().timeIntervalSinceDate(startTime))
+    LogMessage.postSyslog("Generate[FAIL]: \(timeTaken) ~ \(config.projectName) ~ \(errorInfo)")
     return .Failure(errorInfo)
   }
 

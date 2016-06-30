@@ -29,6 +29,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationWillFinishLaunching(notification: NSNotification) {
     // Create the shared document controller.
     let _ = TulsiDocumentController()
+
+    let version: String
+    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+      version = cfBundleVersion
+    } else {
+      version = ""
+    }
+    LogMessage.postSyslog("Tulsi UI: version \(version)")
   }
 
   func applicationDidFinishLaunching(notification: NSNotification) {

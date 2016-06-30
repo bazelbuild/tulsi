@@ -273,9 +273,13 @@ class TulsiCommandlineParser {
       return
     }
     commandlineSentinalFound = true
+    let version: String
     if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
-      print("Tulsi version \(cfBundleVersion)")
+      version = cfBundleVersion
+    } else {
+      version = ""
     }
+    LogMessage.postSyslog("Tulsi CLI: version \(version)")
 
     args = [String](args.dropFirst())
 
