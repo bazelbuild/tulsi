@@ -15,51 +15,57 @@
 import Cocoa
 import TulsiGenerator
 
+private func main() {
+  // Parse the commandline parameters to see if the app should operate in headless mode or not.
+  let commandlineParser = TulsiCommandlineParser()
+
+  let consoleLogger = EventLogger(verbose: commandlineParser.arguments.verbose)
+  consoleLogger.startLogging()
+
+  if !commandlineParser.commandlineSentinalFound {
+    NSApplicationMain(Process.argc, Process.unsafeArgv)
+    exit(0)
+  }
+
+  let queue = dispatch_queue_create("com.google.Tulsi.xcodeProjectGenerator", DISPATCH_QUEUE_SERIAL)
+  dispatch_async(queue) {
+    let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
+    do {
+      try generator.generate()
+      exit(0)
+    } catch HeadlessXcodeProjectGenerator.Error.MissingConfigOption(let option) {
+      print("Missing required \(option) param.")
+      exit(10)
+    } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigPath(let reason) {
+      print("Invalid \(TulsiCommandlineParser.ParamGeneratorConfigLong) param: \(reason)")
+      exit(11)
+    } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigFileContents(let reason) {
+      print("Failed to read the given generator config: \(reason)")
+      exit(12)
+    } catch HeadlessXcodeProjectGenerator.Error.ExplicitOutputOptionRequired {
+      print("The \(TulsiCommandlineParser.ParamOutputFolderLong) option is required for the selected config")
+      exit(13)
+    } catch HeadlessXcodeProjectGenerator.Error.InvalidBazelPath {
+      print("The path to the bazel binary is invalid")
+      exit(14)
+    } catch HeadlessXcodeProjectGenerator.Error.GenerationFailed(let reason) {
+      print("Generation failed: \(reason)")
+      exit(15)
+    } catch HeadlessXcodeProjectGenerator.Error.InvalidProjectFileContents(let reason) {
+      print("Failed to read the given project: \(reason)")
+      exit(20)
+    } catch let e as NSError {
+      print("An unexpected exception occurred: \(e.localizedDescription)")
+      exit(126)
+    } catch {
+      print("An unexpected exception occurred")
+      exit(127)
+    }
+  }
+
+  dispatch_main()
+}
 
 // MARK: - Application entrypoint
 
-// Parse the commandline parameters to see if the app should operate in headless mode or not.
-let commandlineParser = TulsiCommandlineParser()
-
-if !commandlineParser.commandlineSentinalFound {
-  NSApplicationMain(Process.argc, Process.unsafeArgv)
-  exit(0)
-}
-
-let queue = dispatch_queue_create("com.google.Tulsi.xcodeProjectGenerator", DISPATCH_QUEUE_SERIAL)
-dispatch_async(queue) {
-  let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
-  do {
-    try generator.generate()
-    exit(0)
-  } catch HeadlessXcodeProjectGenerator.Error.MissingConfigOption(let option) {
-    print("Missing required \(option) param.")
-    exit(10)
-  } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigPath(let reason) {
-    print("Invalid \(TulsiCommandlineParser.ParamGeneratorConfigLong) param: \(reason)")
-    exit(11)
-  } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigFileContents(let reason) {
-    print("Failed to read the given generator config: \(reason)")
-    exit(12)
-  } catch HeadlessXcodeProjectGenerator.Error.ExplicitOutputOptionRequired {
-    print("The \(TulsiCommandlineParser.ParamOutputFolderLong) option is required for the selected config")
-    exit(13)
-  } catch HeadlessXcodeProjectGenerator.Error.InvalidBazelPath {
-    print("The path to the bazel binary is invalid")
-    exit(14)
-  } catch HeadlessXcodeProjectGenerator.Error.GenerationFailed(let reason) {
-    print("Generation failed: \(reason)")
-    exit(15)
-  } catch HeadlessXcodeProjectGenerator.Error.InvalidProjectFileContents(let reason) {
-    print("Failed to read the given project: \(reason)")
-    exit(20)
-  } catch let e as NSError {
-    print("An unexpected exception occurred: \(e.localizedDescription)")
-    exit(126)
-  } catch {
-    print("An unexpected exception occurred")
-    exit(127)
-  }
-}
-
-dispatch_main()
+main()

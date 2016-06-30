@@ -32,7 +32,7 @@ class BazelIntegrationTestCase: XCTestCase {
   var bazelBuildOptions = [String]()
   var workspaceRootURL: NSURL! = nil
   var packagePathFetcher: BazelWorkspacePathInfoFetcher! = nil
-  var localizedMessageLogger: LocalizedMessageLogger! = nil
+  var localizedMessageLogger: DirectLocalizedMessageLogger! = nil
 
   private var pathsToCleanOnTeardown = Set<NSURL>()
 
@@ -75,6 +75,7 @@ class BazelIntegrationTestCase: XCTestCase {
     }
 
     localizedMessageLogger = DirectLocalizedMessageLogger()
+    localizedMessageLogger.startLogging()
     packagePathFetcher = MockBazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
                                                               workspaceRootURL: workspaceRootURL ?? NSURL(),
                                                               localizedMessageLogger: localizedMessageLogger)
@@ -83,6 +84,9 @@ class BazelIntegrationTestCase: XCTestCase {
   override func tearDown() {
     super.tearDown()
     cleanCreatedFiles()
+    packagePathFetcher = nil
+    localizedMessageLogger.stopLogging()
+    localizedMessageLogger = nil
   }
 
   /// Copies the .BUILD file bundled under the given name into the test workspace.
@@ -297,39 +301,62 @@ class BazelIntegrationTestCase: XCTestCase {
 
   /// Override for LocalizedMessageLogger that prints immediately rather than bouncing to the main
   /// thread.
-  private class DirectLocalizedMessageLogger: LocalizedMessageLogger {
+  final class DirectLocalizedMessageLogger: LocalizedMessageLogger {
+    var observer: NSObjectProtocol? = nil
 
-    private class DirectMessageLogger: MessageLoggerProtocol {
-      func warning(message: String) {
-        print("W: \(message)")
-      }
+    init() {
+      super.init(bundle: nil)
+    }
 
-      func error(message: String, details: String?) {
-        XCTFail("Critical error logged: \(message)\nDetails:\n\(details)")
-      }
+    deinit {
+      stopLogging()
+    }
 
-      func info(message: String) {
-        print("I: \(message)")
+    func startLogging() {
+      observer = NSNotificationCenter.defaultCenter().addObserverForName(TulsiMessageNotification,
+                                                                         object: nil,
+                                                                         queue: nil) {
+        [weak self] (notification: NSNotification) in
+          guard let item = LogMessage(notification: notification) else {
+            XCTFail("Invalid message notification received (failed to conver to LogMessage)")
+            return
+          }
+          self?.handleMessage(item)
       }
     }
 
-    init() {
-      super.init(messageLogger: DirectMessageLogger(), bundle: nil)
+    func stopLogging() {
+      if let observer = self.observer {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+      }
     }
 
     override func infoMessage(message: String) {
-      print("I: \(message)")
+      LogMessage.postInfo(message)
     }
 
     override func warning(key: String, comment: String, values: CVarArgType...) {
-      print("W: \(key) - \(values)")
+      LogMessage.postWarning("\(key) - \(values)")
     }
 
     override func error(key: String,
                         comment: String,
                         details: String? = nil,
                         values: CVarArgType...) {
-      XCTFail("Critical error logged: \(key) - \(values)")
+      XCTFail("> Critical error logged: \(key) - \(values)")
+    }
+
+    private func handleMessage(item: LogMessage) {
+      switch item.level {
+        case .Error:
+          XCTFail("> Critical error logged: \(item.message)\nDetails:\n\(item.details)")
+        case .Warning:
+          print("> W: \(item.message)")
+        case .Info:
+          print("> I: \(item.message)")
+        case .Syslog:
+          print("> S: \(item.message)")
+      }
     }
   }
 

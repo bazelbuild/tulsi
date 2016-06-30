@@ -27,11 +27,10 @@ public final class TulsiProjectInfoExtractor {
   }
 
   public init(bazelURL: NSURL,
-              project: TulsiProject,
-              messageLogger: MessageLoggerProtocol? = nil) {
+              project: TulsiProject) {
     self.project = project
     let bundle = NSBundle(forClass: self.dynamicType)
-    localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger, bundle: bundle)
+    localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
 
     workspaceInfoExtractor = BazelWorkspaceInfoExtractor(bazelURL: bazelURL,
                                                          workspaceRootURL: project.workspaceRootURL,

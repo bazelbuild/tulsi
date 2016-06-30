@@ -12,6 +12,77 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
+
+/// Sent when message information should be displayed to the user and/or sent to the system log.
+/// The userInfo dictionary contains:
+///   "level": String - The level of the message (see TulsiMessageLevel)
+///   "message": String - The body of the message.
+///   "details": String? - Optional detailed information about the message.
+public let TulsiMessageNotification = "com.google.tulsi.Message"
+
+/// Message levels used by TulsiMessage notifications.
+public enum TulsiMessageLevel: String {
+  case Error, Warning, Info, Syslog
+}
+
+public struct LogMessage {
+  public let level: TulsiMessageLevel
+  public let message: String
+  public let details: String?
+
+  public static func postError(message: String, details: String? = nil) {
+    postMessage(.Error, message: message, details: details)
+  }
+
+  public static func postWarning(message: String, details: String? = nil) {
+    postMessage(.Warning, message: message, details: details)
+  }
+
+  public static func postInfo(message: String, details: String? = nil) {
+    postMessage(.Info, message: message, details: details)
+  }
+
+  public static func postSyslog(message: String, details: String? = nil) {
+    postMessage(.Syslog, message: message, details: details)
+  }
+
+  /// Convenience method to post a notification that may be converted into a TulsiMessageItem.
+  private static func postMessage(level: TulsiMessageLevel,
+                                 message: String,
+                                 details: String? = nil) {
+    var userInfo = [
+        "level": level.rawValue,
+        "message": message,
+    ]
+    if let details = details {
+      userInfo["details"] = details
+    }
+
+    NSNotificationCenter.defaultCenter().postNotificationName(TulsiMessageNotification,
+                                                              object: nil,
+                                                              userInfo: userInfo)
+  }
+
+  public init?(notification: NSNotification) {
+    guard notification.name == TulsiMessageNotification,
+          let userInfo = notification.userInfo,
+          let levelString = userInfo["level"] as? String,
+          let message = userInfo["message"] as? String,
+          let level = TulsiMessageLevel(rawValue: levelString) else {
+      // TODO(abaire): Remove useless initialization when Swift 2.1 support is dropped.
+      self.level = .Error
+      self.message = ""
+      self.details = nil
+      return nil
+    }
+
+    self.level = level
+    self.message = message
+    self.details = userInfo["details"] as? String
+  }
+}
+
 /// Sent when the Tulsi generator initiates a task whose progress may be tracked.
 /// The userInfo dictionary contains:
 ///   "name": String - The name of the task.
@@ -20,18 +91,15 @@
 ///       changes.
 ///   "startIndeterminate" - Whether or not there might be an indeterminate delay before the first
 ///       update (for instance if a long initialization is required before actual work is begun).
-public let ProgressUpdatingTaskDidStart = "progressUpdatingTaskDidStart"
+public let ProgressUpdatingTaskDidStart = "com.google.tulsi.progressUpdatingTaskDidStart"
 public let ProgressUpdatingTaskName = "name"
 public let ProgressUpdatingTaskMaxValue = "maxValue"
 public let ProgressUpdatingTaskStartIndeterminate = "startIndeterminate"
 
 /// Sent when a task's progress changes.
 /// The userInfo dictionary contains "value": Int - the new progress
-public let ProgressUpdatingTaskProgress = "progressUpdatingTaskProgress"
+public let ProgressUpdatingTaskProgress = "com.google.tulsi.progressUpdatingTaskProgress"
 public let ProgressUpdatingTaskProgressValue = "value"
-
-/// Sent when finding BUILD file dependencies.
-public let BuildFileExtraction = "buildFileExtraction"
 
 /// Sent when creating Xcode build targets.
 public let GeneratingBuildTargets = "generatingBuildTargets"

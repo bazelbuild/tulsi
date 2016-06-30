@@ -132,8 +132,8 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
   private func generateXcodeProjectForConfigName(name: String, completionHandler: (NSURL? -> Void)) {
     let document = self.representedObject as! TulsiProjectDocument
     guard let workspaceRootURL = document.workspaceRootURL else {
-      document.error(NSLocalizedString("Error_BadWorkspace",
-                                       comment: "General error when project does not have a valid Bazel workspace."))
+      LogMessage.postError(NSLocalizedString("Error_BadWorkspace",
+                                             comment: "General error when project does not have a valid Bazel workspace."))
       NSThread.doOnMainQueue() {
         completionHandler(nil)
       }
@@ -141,8 +141,8 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     }
     guard let concreteOutputFolderURL = outputFolderURL else {
       // This should never actually happen and indicates an unexpected path through the UI.
-      document.error(NSLocalizedString("Error_NoOutputFolder",
-                                       comment: "Error for a generation attempt without a valid target output folder"))
+      LogMessage.postError(NSLocalizedString("Error_NoOutputFolder",
+                                             comment: "Error for a generation attempt without a valid target output folder"))
       NSThread.doOnMainQueue() {
         completionHandler(nil)
       }
@@ -183,7 +183,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
 
     let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                 comment: "A general, critical failure during project generation.")
-    document.error(msg, details: errorInfo)
+    LogMessage.postError(msg, details: errorInfo)
     return nil
   }
 }

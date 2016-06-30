@@ -18,7 +18,6 @@ import TulsiGenerator
 
 final class TulsiProjectDocument: NSDocument,
                                   NSWindowDelegate,
-                                  MessageLoggerProtocol,
                                   MessageLogProtocol,
                                   OptionsEditorModelProtocol,
                                   TulsiGeneratorConfigDocumentDelegate {
@@ -39,9 +38,8 @@ final class TulsiProjectDocument: NSDocument,
   /// stored.
   static let ProjectConfigsSubpath = "Configs"
 
-  /// Override for headless project generation (in which messages should not spawn alert dialogs,
-  /// nor should they be queued).
-  static var messageLoggerOverride: MessageLoggerProtocol? = nil
+  /// Override for headless project generation (in which messages should not spawn alert dialogs).
+  static var showAlertsOnErrors: Bool = true
 
   /// The project model.
   var project: TulsiProject! = nil
@@ -122,6 +120,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   var infoExtractor: TulsiProjectInfoExtractor! = nil
+  private var logEventObserver: NSObjectProtocol! = nil
 
   /// Array of user-facing messages, generally output by the Tulsi generator.
   dynamic var messages = [UIMessage]()
@@ -135,6 +134,23 @@ final class TulsiProjectDocument: NSDocument,
     let documentTypes = bundle.infoDictionary!["CFBundleDocumentTypes"] as! [[String: AnyObject]]
     let extensions = documentTypes.first!["CFBundleTypeExtensions"] as! [String]
     return extensions.first!
+  }
+
+  override init() {
+    super.init()
+    logEventObserver = NSNotificationCenter.defaultCenter().addObserverForName(TulsiMessageNotification,
+                                                                               object: nil,
+                                                                               queue: NSOperationQueue.mainQueue()) {
+      [weak self] (notification: NSNotification) in
+        guard let item = LogMessage(notification: notification) else {
+          return
+        }
+        self?.handleLogMessage(item)
+    }
+  }
+
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(logEventObserver)
   }
 
   func clearMessages() {
@@ -268,7 +284,7 @@ final class TulsiProjectDocument: NSDocument,
                                                         isDirectory: &isDirectory) || isDirectory {
       let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
                                   comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
-      error(String(format: fmt, workspaceFile.path!))
+      LogMessage.postError(String(format: fmt, workspaceFile.path!))
       throw Error.InvalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path!)")
     }
 
@@ -284,7 +300,7 @@ final class TulsiProjectDocument: NSDocument,
 
   override func willPresentError(error: NSError) -> NSError {
     // Track errors shown to the user for bug reporting purposes.
-    self.info("Presented error: \(error)")
+    LogMessage.postInfo("Presented error: \(error)")
     return super.willPresentError(error)
   }
 
@@ -333,7 +349,7 @@ final class TulsiProjectDocument: NSDocument,
         if let errorInfo = errorInfo {
           let fmt = NSLocalizedString("Error_ConfigDeleteFailed",
                                       comment: "Error when a TulsiGeneratorConfig named %1$@ could not be deleted.")
-          error(String(format: fmt, name), details: errorInfo)
+          LogMessage.postError(String(format: fmt, name), details: errorInfo)
         }
       }
     }
@@ -370,7 +386,6 @@ final class TulsiProjectDocument: NSDocument,
     do {
       let configDocument = try TulsiGeneratorConfigDocument.makeSparseDocumentWithContentsOfURL(configURL,
                                                                                                 infoExtractor: infoExtractor,
-                                                                                                messageLogger: self,
                                                                                                 messageLog: self,
                                                                                                 bazelURL: bazelURL)
       configDocument.projectRuleInfos = ruleInfos
@@ -389,7 +404,7 @@ final class TulsiProjectDocument: NSDocument,
   func generalError(debugMessage: String) {
     let msg = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message.")
-    error(msg, details: debugMessage)
+    LogMessage.postError(msg, details: debugMessage)
   }
 
   // MARK: - NSUserInterfaceValidations
@@ -414,52 +429,6 @@ final class TulsiProjectDocument: NSDocument,
         print("Unhandled menu action: \(item.action())")
     }
     return false
-  }
-
-  // MARK: - MessageLoggerProtocol
-
-  func warning(message: String) {
-    if let logger = TulsiProjectDocument.messageLoggerOverride {
-      logger.warning(message)
-      return
-    }
-    #if DEBUG
-    print("W: \(message)")
-    #endif
-
-    NSThread.doOnMainQueue() {
-      self.messages.append(UIMessage(text: message, type: .Warning))
-    }
-  }
-
-  func error(message: String, details: String? = nil) {
-    if let logger = TulsiProjectDocument.messageLoggerOverride {
-      logger.error(message, details: details)
-      return
-    }
-    #if DEBUG
-    print("E: \(message)")
-    #endif
-
-    NSThread.doOnMainQueue() {
-      self.messages.append(UIMessage(text: message, type: .Error))
-      // TODO(abaire): Implement better error handling, allowing recovery of a good state.
-      ErrorAlertView.displayModalError(message, details: details)
-    }
-  }
-
-  func info(message: String) {
-    if let logger = TulsiProjectDocument.messageLoggerOverride {
-      logger.info(message)
-      return
-    }
-    #if DEBUG
-    print("I: \(message)")
-    #endif
-
-    NSThread.doOnMainQueue() {
-      self.messages.append(UIMessage(text: message, type: .Info))
-    }
   }
 
   // MARK: - TulsiGeneratorConfigDocumentDelegate
@@ -504,6 +473,33 @@ final class TulsiProjectDocument: NSDocument,
 
   // MARK: - Private methods
 
+  private func handleLogMessage(item: LogMessage) {
+    let fullMessage: String
+    if let details = item.details {
+      fullMessage = "\(item.message) [Details]: \(details)"
+    } else {
+      fullMessage = item.message
+    }
+
+    switch item.level {
+      case .Error:
+        messages.append(UIMessage(text: fullMessage, type: .Error))
+        if TulsiProjectDocument.showAlertsOnErrors {
+          // TODO(abaire): Implement better error handling, allowing recovery of a good state.
+          ErrorAlertView.displayModalError(item.message, details: item.details)
+        }
+
+      case .Warning:
+        messages.append(UIMessage(text: fullMessage, type: .Warning))
+
+      case .Info:
+        messages.append(UIMessage(text: fullMessage, type: .Info))
+
+      case .Syslog:
+        break
+    }
+  }
+
   private func processingTaskStarted() {
     NSThread.doOnMainQueue() {
       self.processingTaskCount += 1
@@ -545,9 +541,7 @@ final class TulsiProjectDocument: NSDocument,
 
     // TODO(abaire): Cancel any outstanding update operations.
     processingTaskStarted()
-    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
-                                              project: project,
-                                              messageLogger: self)
+    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL, project: project)
 
     NSThread.doOnQOSUserInitiatedThread() {
       let updatedRuleEntries = self.infoExtractor.extractTargetRules()

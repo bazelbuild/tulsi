@@ -17,11 +17,9 @@ import Foundation
 
 /// Provides functionality to log messages using a localized string table.
 class LocalizedMessageLogger {
-  let messageLogger: MessageLoggerProtocol?
   let bundle: NSBundle?
 
-  init(messageLogger: MessageLoggerProtocol?, bundle: NSBundle?) {
-    self.messageLogger = messageLogger
+  init(bundle: NSBundle?) {
     self.bundle = bundle
   }
 
@@ -37,29 +35,23 @@ class LocalizedMessageLogger {
     infoMessage(String(format: "** Completed %@ in %.4fs", token.0, timeTaken))
   }
 
-  func infoMessage(message: String) {
-    if messageLogger == nil { return }
+  func error(key: String, comment: String, details: String? = nil, values: CVarArgType...) {
+    if bundle == nil { return }
 
-    NSThread.doOnMainQueue() { self.messageLogger!.info(message) }
+    let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
+    let message = String(format: formatString, arguments: values)
+    LogMessage.postError(message, details: details)
   }
 
   func warning(key: String, comment: String, values: CVarArgType...) {
-    if messageLogger == nil || bundle == nil { return }
+    if bundle == nil { return }
 
-    NSThread.doOnMainQueue() {
-      let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
-      let message = String(format: formatString, arguments: values)
-      self.messageLogger!.warning(message)
-    }
+    let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
+    let message = String(format: formatString, arguments: values)
+    LogMessage.postWarning(message)
   }
 
-  func error(key: String, comment: String, details: String? = nil, values: CVarArgType...) {
-    if messageLogger == nil || bundle == nil { return }
-
-    NSThread.doOnMainQueue() {
-      let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
-      let message = String(format: formatString, arguments: values)
-      self.messageLogger!.error(message, details: details)
-    }
+  func infoMessage(message: String) {
+    LogMessage.postInfo(message)
   }
 }

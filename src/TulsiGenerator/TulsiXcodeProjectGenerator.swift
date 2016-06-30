@@ -32,23 +32,19 @@ public final class TulsiXcodeProjectGenerator {
 
   public convenience init (workspaceRootURL: NSURL,
                            config: TulsiGeneratorConfig,
-                           tulsiVersion: String,
-                           messageLogger: MessageLoggerProtocol? = nil) {
+                           tulsiVersion: String) {
     self.init(workspaceRootURL: workspaceRootURL,
               config: config,
               extractorBazelURL: config.bazelURL,
-              tulsiVersion: tulsiVersion,
-              messageLogger: messageLogger)
+              tulsiVersion: tulsiVersion)
   }
 
   init(workspaceRootURL: NSURL,
        config: TulsiGeneratorConfig,
        extractorBazelURL: NSURL,
-       tulsiVersion: String,
-       messageLogger: MessageLoggerProtocol? = nil) {
+       tulsiVersion: String) {
     let bundle = NSBundle(forClass: self.dynamicType)
-    let localizedMessageLogger = LocalizedMessageLogger(messageLogger: messageLogger,
-                                                        bundle: bundle)
+    let localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
     let buildScriptURL = bundle.URLForResource("bazel_build", withExtension: "py")!
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
     let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!

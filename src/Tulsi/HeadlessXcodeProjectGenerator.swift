@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// Provides functionality to generate an Xcode project from a TulsiGeneratorConfig
-class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
+class HeadlessXcodeProjectGenerator {
   enum Error: ErrorType {
     /// The given required commandline option was not provided.
     case MissingConfigOption(String)
@@ -43,8 +43,8 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
 
   /// Performs project generation.
   func generate() throws {
-    TulsiProjectDocument.messageLoggerOverride = self
-    defer { TulsiProjectDocument.messageLoggerOverride = nil }
+    TulsiProjectDocument.showAlertsOnErrors = false
+    defer { TulsiProjectDocument.showAlertsOnErrors = true }
 
     guard let configPath = arguments.generatorConfig else {
       throw Error.MissingConfigOption(TulsiCommandlineParser.ParamGeneratorConfigLong)
@@ -106,7 +106,6 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: resolvedConfig,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLogger: self,
                                                                            messageLog: nil)
     switch result {
       case .Success(let url):
@@ -118,25 +117,6 @@ class HeadlessXcodeProjectGenerator: MessageLoggerProtocol {
         }
       case .Failure(let errorInfo):
         throw Error.GenerationFailed(errorInfo)
-    }
-  }
-
-  // MARK: - MessageLoggerProtocol
-
-  func warning(message: String) {
-    print("W: \(message)")
-  }
-
-  func error(message: String, details: String? = nil) {
-    print("E: \(message)")
-    if let details = details {
-      print("\t\(details)")
-    }
-  }
-
-  func info(message: String) {
-    if arguments.verbose {
-      print("I: \(message)")
     }
   }
 

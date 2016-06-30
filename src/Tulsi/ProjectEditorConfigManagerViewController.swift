@@ -107,8 +107,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     generatorController.generateProjectForConfigName(configName) { (projectURL: NSURL?) in
       self.dismissViewController(generatorController)
       if let projectURL = projectURL {
-        let projectDocument = self.representedObject as! TulsiProjectDocument
-        projectDocument.info("Opening generated project in Xcode")
+        LogMessage.postInfo("Opening generated project in Xcode")
         NSWorkspace.sharedWorkspace().openURL(projectURL)
       }
     }
@@ -140,7 +139,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     // Adding a config to a project with no bazel packages is disallowed.
     guard let bazelPackages = projectDocument.bazelPackages where !bazelPackages.isEmpty else {
       // This should be prevented by the UI, so spawn a bug message and beep.
-      projectDocument.info("Bug: Add config invoked on a project with no packages.")
+      LogMessage.postInfo("Bug: Add config invoked on a project with no packages.")
       NSBeep()
       return
     }
@@ -162,7 +161,6 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
                                                                                                projectName: projectName,
                                                                                                saveFolderURL: generatorConfigFolderURL,
                                                                                                infoExtractor: projectDocument.infoExtractor,
-                                                                                               messageLogger: projectDocument,
                                                                                                messageLog: projectDocument,
                                                                                                additionalFilePaths: additionalFilePaths,
                                                                                                bazelURL: projectDocument.bazelURL)
@@ -179,7 +177,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
     let msg = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message.")
-    projectDocument.error(msg, details: errorInfo)
+    LogMessage.postError(msg, details: errorInfo)
   }
 
 
@@ -238,7 +236,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     }
     let msg = NSLocalizedString("Error_ConfigLoadFailed",
                                 comment: "Error when a TulsiGeneratorConfig failed to be reloaded.")
-    projectDocument.error(msg, details: errorInfo)
+    LogMessage.postError(msg, details: errorInfo)
   }
 }
 

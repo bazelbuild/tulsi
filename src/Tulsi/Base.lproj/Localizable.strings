@@ -116,9 +116,6 @@
 
 /* Strings mapping progress item notification names to user-friendly names */
 
-/* Sent when finding all BUILD files applicable to a Bazel project. */
-"buildFileExtraction" = "Extracting BUILD files";
-
 /* Sent when creating Xcode build targets. */
 "generatingBuildTargets" = "Generating build targets";
 

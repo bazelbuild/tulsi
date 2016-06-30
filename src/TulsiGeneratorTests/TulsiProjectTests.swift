@@ -94,7 +94,7 @@ class TulsiProjectTests: XCTestCase {
         "projectName": projectName,
       ]
       let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
-      try TulsiProject(data: data, projectBundleURL: projectBundleURL)
+      let _ = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
       XCTFail("Unexpectedly succeeded without a workspace root")
     } catch TulsiProject.Error.DeserializationFailed {
       // Expected.
@@ -111,7 +111,7 @@ class TulsiProjectTests: XCTestCase {
         "workspaceRoot": "/invalid/absolute/path",
       ]
       let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
-      try TulsiProject(data: data, projectBundleURL: projectBundleURL)
+      let _ = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
       XCTFail("Unexpectedly succeeded with an invalid workspace root")
     } catch TulsiProject.Error.DeserializationFailed {
       // Expected.

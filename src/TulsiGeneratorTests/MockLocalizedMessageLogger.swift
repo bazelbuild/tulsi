@@ -22,7 +22,7 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
   var errorMessageKeys = [String]()
 
   init() {
-    super.init(messageLogger: nil, bundle: nil)
+    super.init(bundle: nil)
   }
 
   override func infoMessage(message: String) {

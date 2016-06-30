@@ -101,8 +101,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
                                                       extractorBazelURL: bazelURL,
-                                                      tulsiVersion: testTulsiVersion,
-                                                      messageLogger: localizedMessageLogger.messageLogger)
+                                                      tulsiVersion: testTulsiVersion)
     // Bazel built-in preprocessor defines are suppressed in order to prevent any
     // environment-dependent variables from mismatching the golden data.
     projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true

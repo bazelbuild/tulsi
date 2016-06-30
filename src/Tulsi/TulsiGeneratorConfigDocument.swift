@@ -30,7 +30,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                           NSWindowDelegate,
                                           OptionsEditorModelProtocol,
                                           NewGeneratorConfigViewControllerDelegate,
-                                          MessageLoggerProtocol,
                                           MessageLogProtocol {
 
   /// Status of an Xcode project generation action.
@@ -146,7 +145,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   var additionalFilePaths: [String]? = nil
   var saveFolderURL: NSURL! = nil
   var infoExtractor: TulsiProjectInfoExtractor! = nil
-  var messageLogger: MessageLoggerProtocol? = nil
   var messageLog: MessageLogProtocol? = nil
 
   override var entireFileLoaded: Bool {
@@ -175,7 +173,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                  projectName: String,
                                                  saveFolderURL: NSURL,
                                                  infoExtractor: TulsiProjectInfoExtractor,
-                                                 messageLogger: MessageLoggerProtocol,
                                                  messageLog: MessageLogProtocol?,
                                                  additionalFilePaths: [String]? = nil,
                                                  bazelURL: NSURL? = nil,
@@ -190,7 +187,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     doc.projectName = projectName
     doc.saveFolderURL = saveFolderURL
     doc.infoExtractor = infoExtractor
-    doc.messageLogger = messageLogger
     doc.messageLog = messageLog
     doc.bazelURL = bazelURL
     doc.configName = name
@@ -204,13 +200,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// invoked on the main thread when the document is fully loaded.
   static func makeDocumentWithContentsOfURL(url: NSURL,
                                             infoExtractor: TulsiProjectInfoExtractor,
-                                            messageLogger: MessageLoggerProtocol,
                                             messageLog: MessageLogProtocol?,
                                             bazelURL: NSURL? = nil,
                                             completionHandler: (TulsiGeneratorConfigDocument -> Void)) throws -> TulsiGeneratorConfigDocument {
     let doc = try makeSparseDocumentWithContentsOfURL(url,
                                                       infoExtractor: infoExtractor,
-                                                      messageLogger: messageLogger,
                                                       messageLog: messageLog,
                                                       bazelURL: bazelURL)
     doc.finishLoadingDocument(completionHandler)
@@ -222,7 +216,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// label references and is not suitable for UI display in an editor.
   static func makeSparseDocumentWithContentsOfURL(url: NSURL,
                                                   infoExtractor: TulsiProjectInfoExtractor,
-                                                  messageLogger: MessageLoggerProtocol,
                                                   messageLog: MessageLogProtocol?,
                                                   bazelURL: NSURL? = nil) throws -> TulsiGeneratorConfigDocument {
     let documentController = NSDocumentController.sharedDocumentController()
@@ -232,7 +225,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
 
     doc.infoExtractor = infoExtractor
-    doc.messageLogger = messageLogger
     doc.messageLog = messageLog
     doc.bazelURL = bazelURL
     doc._entireFileLoaded = false
@@ -248,7 +240,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   static func generateXcodeProjectInFolder(outputFolderURL: NSURL,
                                            withGeneratorConfig config: TulsiGeneratorConfig,
                                            workspaceRootURL: NSURL,
-                                           messageLogger: MessageLoggerProtocol,
                                            messageLog: MessageLogProtocol?,
                                            projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
     let tulsiVersion: String
@@ -259,8 +250,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                       config: config,
-                                                      tulsiVersion: tulsiVersion,
-                                                      messageLogger: messageLogger)
+                                                      tulsiVersion: tulsiVersion)
     let errorInfo: String
     do {
       let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
@@ -312,7 +302,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       if let error = error {
         let fmt = NSLocalizedString("Error_ConfigSaveFailed",
                                     comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
-        self.warning(String(format: fmt, error.localizedDescription))
+        LogMessage.postWarning(String(format: fmt, error.localizedDescription))
 
         let alert = NSAlert(error: error)
         alert.runModal()
@@ -426,7 +416,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       if !unresolvedLabels.isEmpty {
         let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
                                     comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-        self.warning(String(format: fmt, "Missing labels: \(unresolvedLabels.map({$0.description}))"))
+        LogMessage.postWarning(String(format: fmt,
+                                      "Missing labels: \(unresolvedLabels.map({$0.description}))"))
       }
 
       var selectedRuleEntries = [RuleEntry]()
@@ -505,14 +496,13 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     guard let config = makeConfig(withFullyResolvedOptions: true) else {
       let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                   comment: "A general, critical failure during project generation.")
-      self.error(msg, details: "Generator config is not fully populated.")
+      LogMessage.postError(msg, details: "Generator config is not fully populated.")
       return nil
     }
 
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLogger: self,
                                                                            messageLog: self,
                                                                            projectInfoExtractor: infoExtractor)
     switch result {
@@ -521,7 +511,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       case .Failure(let errorInfo):
         let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                     comment: "A general, critical failure during project generation.")
-        self.error(msg, details: errorInfo)
+        LogMessage.postError(msg, details: errorInfo)
         return nil
     }
   }
@@ -537,7 +527,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         if let concreteBuildTargetLabels = self.buildTargetLabels {
           let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
                                       comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-          self.warning(String(format: fmt, concreteBuildTargetLabels.map({ $0.description })))
+          LogMessage.postWarning(String(format: fmt,
+                                        concreteBuildTargetLabels.map({ $0.description })))
         }
         self.processingTaskFinished()
         self._entireFileLoaded = true
@@ -657,21 +648,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  // MARK: - MessageLoggerProtocol
-
-  func warning(message: String) {
-    messageLogger?.warning(message)
-  }
-
-  func error(message: String, details: String? = nil) {
-    messageLogger?.error(message, details: details)
-  }
-
-  func info(message: String) {
-    messageLogger?.info(message)
-  }
-
   // MARK: - Private methods
+
   private func stopObservingRuleEntries() {
     for entry in uiRuleInfos {
       entry.removeObserver(self, forKeyPath: "selected", context: &TulsiGeneratorConfigDocument.KVOContext)
