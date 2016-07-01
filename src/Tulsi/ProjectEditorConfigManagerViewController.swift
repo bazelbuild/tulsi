@@ -104,10 +104,12 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     generatorController.representedObject = representedObject
     presentViewControllerAsSheet(generatorController)
 
+    let projectDocument = representedObject as! TulsiProjectDocument
     generatorController.generateProjectForConfigName(configName) { (projectURL: NSURL?) in
       self.dismissViewController(generatorController)
       if let projectURL = projectURL {
-        LogMessage.postInfo("Opening generated project in Xcode")
+        LogMessage.postInfo("Opening generated project in Xcode",
+                            context: projectDocument.projectName)
         NSWorkspace.sharedWorkspace().openURL(projectURL)
       }
     }
@@ -177,7 +179,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
     let msg = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message.")
-    LogMessage.postError(msg, details: errorInfo)
+    LogMessage.postError(msg, details: errorInfo, context: projectDocument.projectName)
   }
 
 

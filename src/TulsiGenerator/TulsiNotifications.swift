@@ -19,6 +19,7 @@ import Foundation
 ///   "level": String - The level of the message (see TulsiMessageLevel)
 ///   "message": String - The body of the message.
 ///   "details": String? - Optional detailed information about the message.
+///   "context": String? - Optional contextual information about the message.
 public let TulsiMessageNotification = "com.google.tulsi.Message"
 
 /// Message levels used by TulsiMessage notifications.
@@ -30,33 +31,38 @@ public struct LogMessage {
   public let level: TulsiMessageLevel
   public let message: String
   public let details: String?
+  public let context: String?
 
-  public static func postError(message: String, details: String? = nil) {
-    postMessage(.Error, message: message, details: details)
+  public static func postError(message: String, details: String? = nil, context: String? = nil) {
+    postMessage(.Error, message: message, details: details, context: context)
   }
 
-  public static func postWarning(message: String, details: String? = nil) {
-    postMessage(.Warning, message: message, details: details)
+  public static func postWarning(message: String, details: String? = nil, context: String? = nil) {
+    postMessage(.Warning, message: message, details: details, context: context)
   }
 
-  public static func postInfo(message: String, details: String? = nil) {
-    postMessage(.Info, message: message, details: details)
+  public static func postInfo(message: String, details: String? = nil, context: String? = nil) {
+    postMessage(.Info, message: message, details: details, context: context)
   }
 
-  public static func postSyslog(message: String, details: String? = nil) {
-    postMessage(.Syslog, message: message, details: details)
+  public static func postSyslog(message: String, details: String? = nil, context: String? = nil) {
+    postMessage(.Syslog, message: message, details: details, context: context)
   }
 
   /// Convenience method to post a notification that may be converted into a TulsiMessageItem.
   private static func postMessage(level: TulsiMessageLevel,
-                                 message: String,
-                                 details: String? = nil) {
+                                  message: String,
+                                  details: String? = nil,
+                                  context: String? = nil) {
     var userInfo = [
         "level": level.rawValue,
         "message": message,
     ]
     if let details = details {
       userInfo["details"] = details
+    }
+    if let context = context {
+      userInfo["context"] = context
     }
 
     NSNotificationCenter.defaultCenter().postNotificationName(TulsiMessageNotification,
@@ -74,12 +80,14 @@ public struct LogMessage {
       self.level = .Error
       self.message = ""
       self.details = nil
+      self.context = nil
       return nil
     }
 
     self.level = level
     self.message = message
     self.details = userInfo["details"] as? String
+    self.context = userInfo["context"] as? String
   }
 }
 

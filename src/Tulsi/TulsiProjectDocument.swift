@@ -302,7 +302,7 @@ final class TulsiProjectDocument: NSDocument,
 
   override func willPresentError(error: NSError) -> NSError {
     // Track errors shown to the user for bug reporting purposes.
-    LogMessage.postInfo("Presented error: \(error)")
+    LogMessage.postInfo("Presented error: \(error)", context: projectName)
     return super.willPresentError(error)
   }
 

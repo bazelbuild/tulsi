@@ -93,7 +93,8 @@ final class XcodeProjectGenerator {
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
-    let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project")
+    let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project",
+                                                                       context: config.projectName)
     defer { localizedMessageLogger.logProfilingEnd(generateProfilingToken) }
     try resolveConfigReferences()
 
@@ -107,7 +108,8 @@ final class XcodeProjectGenerator {
     let serializer = OpenStepSerializer(rootObject: projectInfo.project,
                                         gidGenerator: ConcreteGIDGenerator())
 
-    let serializingProfileToken = localizedMessageLogger.startProfiling("serializing_project")
+    let serializingProfileToken = localizedMessageLogger.startProfiling("serializing_project",
+                                                                        context: config.projectName)
     guard let serializedXcodeProject = serializer.serialize() else {
       throw Error.SerializationFailed("OpenStep serialization failed")
     }
@@ -130,11 +132,13 @@ final class XcodeProjectGenerator {
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
 
-    let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders")
+    let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders",
+                                                                           context: config.projectName)
     createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
     localizedMessageLogger.logProfilingEnd(artifactFolderProfileToken)
 
-    let manifestProfileToken = localizedMessageLogger.startProfiling("writing_manifest")
+    let manifestProfileToken = localizedMessageLogger.startProfiling("writing_manifest",
+                                                                     context: config.projectName)
     let manifestFileURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
                                                                  isDirectory: false)
     let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
@@ -232,7 +236,7 @@ final class XcodeProjectGenerator {
     var hostTargetLabels = [BuildLabel: BuildLabel]()
 
     func profileAction(name: String, @noescape action: () throws -> Void) rethrows {
-      let profilingToken = localizedMessageLogger.startProfiling(name)
+      let profilingToken = localizedMessageLogger.startProfiling(name, context: config.projectName)
       try action()
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
@@ -245,6 +249,7 @@ final class XcodeProjectGenerator {
         guard let ruleEntry = ruleEntryMap[label] else {
           localizedMessageLogger.error("UnknownTargetRule",
                                        comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                       context: config.projectName,
                                        values: label.value)
           continue
         }
@@ -264,6 +269,7 @@ final class XcodeProjectGenerator {
       if config.buildTargetLabels.contains(hostLabel) { continue }
       localizedMessageLogger.warning("GeneratingTestHost",
                                      comment: "Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues.",
+                                     context: config.projectName,
                                      values: hostLabel.value, testLabel.value)
       targetRules.insert(RuleEntry(label: hostLabel,
                                    type: "_test_host_",
@@ -305,6 +311,7 @@ final class XcodeProjectGenerator {
       guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.path!)") else {
         localizedMessageLogger.warning("ExternalRepositoryResolutionFailed",
                                        comment: "Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable.",
+                                       context: config.projectName,
                                        values: child.path!)
         continue
       }
@@ -381,6 +388,7 @@ final class XcodeProjectGenerator {
       } else {
         localizedMessageLogger.warning("XCSchemeGenerationFailed",
                                        comment: "Warning shown when generation of an Xcode scheme failed for build target %1$@",
+                                       context: config.projectName,
                                        values: entry.label.value)
         continue
       }
@@ -418,12 +426,14 @@ final class XcodeProjectGenerator {
         guard let testTarget = targetForLabel(testEntryLabel) else {
           localizedMessageLogger.warning("TestSuiteUsesUnresolvedTarget",
                                          comment: "Warning shown when a test_suite %1$@ refers to a test label %2$@ that was not resolved and will be ignored",
+                                         context: config.projectName,
                                          values: suite.label.value, testEntryLabel.value)
           continue
         }
         guard let testHostTarget = info.project.linkedHostForTestTarget(testTarget) as? PBXNativeTarget else {
           localizedMessageLogger.warning("TestSuiteTestHostResolutionFailed",
                                          comment: "Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported.",
+                                         context: config.projectName,
                                          values: testEntryLabel.value, suite.label.value)
           continue
         }
@@ -437,6 +447,7 @@ final class XcodeProjectGenerator {
       guard let concreteTarget = suiteHostTarget else {
         localizedMessageLogger.warning("TestSuiteHasNoValidTests",
                                        comment: "Warning shown when none of the tests of a test suite %1$@ were able to be resolved.",
+                                       context: config.projectName,
                                        values: suite.label.value)
         return
       }
@@ -479,7 +490,8 @@ final class XcodeProjectGenerator {
     let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
     if createDirectory(scriptDirectoryURL) {
-      let profilingToken = localizedMessageLogger.startProfiling("installing_scripts")
+      let profilingToken = localizedMessageLogger.startProfiling("installing_scripts",
+                                                                 context: config.projectName)
       let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
       defer { progressNotifier.incrementValue() }
       localizedMessageLogger.infoMessage("Installing scripts")
@@ -496,7 +508,8 @@ final class XcodeProjectGenerator {
     let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
                                                                     isDirectory: true)
     guard createDirectory(configDirectoryURL, failSilently: true) else { return }
-    let profilingToken = localizedMessageLogger.startProfiling("installing_generator_config")
+    let profilingToken = localizedMessageLogger.startProfiling("installing_generator_config",
+                                                               context: config.projectName)
     let progressNotifier = ProgressNotifier(name: InstallingGeneratorConfig, maxValue: 1)
     defer { progressNotifier.incrementValue() }
     localizedMessageLogger.infoMessage("Installing generator config")
@@ -512,7 +525,8 @@ final class XcodeProjectGenerator {
       errorInfo = "Unexpected exception"
     }
     if let errorInfo = errorInfo {
-      localizedMessageLogger.infoMessage("Generator config serialization failed. \(errorInfo)")
+      localizedMessageLogger.syslogMessage("Generator config serialization failed. \(errorInfo)",
+                                           context: config.projectName)
       return
     }
 
@@ -528,7 +542,8 @@ final class XcodeProjectGenerator {
       errorInfo = "Unexpected exception"
     }
     if let errorInfo = errorInfo {
-      localizedMessageLogger.infoMessage("Generator per-user config serialization failed. \(errorInfo)")
+      localizedMessageLogger.syslogMessage("Generator per-user config serialization failed. \(errorInfo)",
+                                           context: config.projectName)
       return
     }
     localizedMessageLogger.logProfilingEnd(profilingToken)
@@ -538,7 +553,8 @@ final class XcodeProjectGenerator {
     let targetDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ProjectResourcesDirectorySubpath,
                                                                     isDirectory: true)
     guard createDirectory(targetDirectoryURL) else { return }
-    let profilingToken = localizedMessageLogger.startProfiling("installing_project_resources")
+    let profilingToken = localizedMessageLogger.startProfiling("installing_project_resources",
+                                                               context: config.projectName)
     localizedMessageLogger.infoMessage("Installing project resources")
 
     installFiles([(stubInfoPlistURL, XcodeProjectGenerator.StubInfoPlistFilename)],
@@ -555,6 +571,7 @@ final class XcodeProjectGenerator {
       if !failSilently {
         localizedMessageLogger.error("DirectoryCreationFailed",
                                      comment: "Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported.",
+                                     context: config.projectName,
                                      values: resourceDirectoryURL, e.localizedDescription)
       }
       return false
@@ -569,6 +586,7 @@ final class XcodeProjectGenerator {
         if !failSilently {
           localizedMessageLogger.error("CopyingResourceFailed",
                                        comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
+                                       context: config.projectName,
                                        values: sourceURL, filename, "Target URL is invalid")
         }
         continue
@@ -589,6 +607,7 @@ final class XcodeProjectGenerator {
       if !failSilently, let errorInfo = errorInfo {
         localizedMessageLogger.error("CopyingResourceFailed",
                                      comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
+                                     context: config.projectName,
                                      values: sourceURL, targetURL.absoluteString, errorInfo)
       }
     }
@@ -614,6 +633,7 @@ final class XcodeProjectGenerator {
     if !failedCreates.isEmpty {
       localizedMessageLogger.warning("CreatingGeneratedArtifactFoldersFailed",
                                      comment: "Failed to create folders for generated artifacts %1$@. The generated Xcode project may need to be reloaded after the first build.",
+                                     context: config.projectName,
                                      values: failedCreates.joinWithSeparator(", "))
     }
   }

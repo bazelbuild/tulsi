@@ -23,35 +23,49 @@ class LocalizedMessageLogger {
     self.bundle = bundle
   }
 
-  func startProfiling(name: String, message: String? = nil) -> (String, NSDate) {
+  func startProfiling(name: String,
+                      message: String? = nil,
+                      context: String? = nil) -> (String, NSDate, String?) {
     if let concreteMessage = message {
-      infoMessage(concreteMessage)
+      syslogMessage(concreteMessage, context: context)
     }
-    return (name, NSDate())
+    return (name, NSDate(), context)
   }
 
-  func logProfilingEnd(token: (String, NSDate)) {
+  func logProfilingEnd(token: (String, NSDate, String?)) {
     let timeTaken = NSDate().timeIntervalSinceDate(token.1)
-    infoMessage(String(format: "** Completed %@ in %.4fs", token.0, timeTaken))
+    syslogMessage(String(format: "** Completed %@ in %.4fs", token.0, timeTaken), context: token.2)
   }
 
-  func error(key: String, comment: String, details: String? = nil, values: CVarArgType...) {
+  func error(key: String,
+             comment: String,
+             details: String? = nil,
+             context: String? = nil,
+             values: CVarArgType...) {
     if bundle == nil { return }
 
     let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
     let message = String(format: formatString, arguments: values)
-    LogMessage.postError(message, details: details)
+    LogMessage.postError(message, details: details, context: context)
   }
 
-  func warning(key: String, comment: String, values: CVarArgType...) {
+  func warning(key: String,
+               comment: String,
+               details: String? = nil,
+               context: String? = nil,
+               values: CVarArgType...) {
     if bundle == nil { return }
 
     let formatString = NSLocalizedString(key, bundle: self.bundle!, comment: comment)
     let message = String(format: formatString, arguments: values)
-    LogMessage.postWarning(message)
+    LogMessage.postWarning(message, details: details, context: context)
   }
 
-  func infoMessage(message: String) {
-    LogMessage.postInfo(message)
+  func infoMessage(message: String, details: String? = nil, context: String? = nil) {
+    LogMessage.postInfo(message, details: details, context: context)
+  }
+
+  func syslogMessage(message: String, details: String? = nil, context: String? = nil) {
+    LogMessage.postSyslog(message, details: details, context: context)
   }
 }
