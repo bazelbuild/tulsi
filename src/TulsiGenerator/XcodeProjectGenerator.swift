@@ -616,7 +616,8 @@ final class XcodeProjectGenerator {
   private func createGeneratedArtifactFolders(mainGroup: PBXGroup, relativeTo path: NSURL) {
     if suppressGeneratedArtifactFolderCreation { return }
     let generatedArtifacts = mainGroup.allSources.filter() { !$0.isInputFile }
-    var generatedFolders = Set<NSURL>()
+
+    let generatedFolders = PathTrie()
     for artifact in generatedArtifacts {
       let url = path.URLByAppendingPathComponent(artifact.sourceRootRelativePath)
       if let absoluteURL = url.URLByDeletingLastPathComponent?.URLByStandardizingPath {
@@ -625,7 +626,7 @@ final class XcodeProjectGenerator {
     }
 
     var failedCreates = [String]()
-    for url in generatedFolders {
+    for url in generatedFolders.leafPaths() {
       if !createDirectory(url, failSilently: true) {
         failedCreates.append(url.path!)
       }
@@ -638,6 +639,77 @@ final class XcodeProjectGenerator {
     }
   }
 
+
+  /// Models a node in a path trie.
+  private class PathTrie {
+    private var root = PathNode(pathElement: "")
+
+    func insert(path: NSURL) {
+      guard let components = path.pathComponents where !components.isEmpty else {
+        return
+      }
+      root.addPath(components)
+    }
+
+    func leafPaths() -> [NSURL] {
+      var ret = [NSURL]()
+      for n in root.children.values {
+        for path in n.leafPaths() {
+          guard let url = NSURL.fileURLWithPathComponents(path) else {
+            continue
+          }
+          ret.append(url)
+        }
+      }
+      return ret
+    }
+
+    private class PathNode {
+      let value: String
+      var children = [String: PathNode]()
+
+      init(pathElement: String) {
+        self.value = pathElement
+      }
+
+      func addPath<T: CollectionType
+                  where T.SubSequence : CollectionType,
+                  T.SubSequence.Generator.Element == T.Generator.Element,
+                  T.SubSequence.SubSequence == T.SubSequence,
+                  T.Generator.Element == String>(pathComponents: T) {
+        guard let firstComponent = pathComponents.first else {
+          return
+        }
+
+        let node: PathNode
+        if let existingNode = children[firstComponent] {
+          node = existingNode
+        } else {
+          node = PathNode(pathElement: firstComponent)
+          children[firstComponent] = node
+        }
+        let remaining = pathComponents.dropFirst()
+        if !remaining.isEmpty {
+          node.addPath(remaining)
+        }
+      }
+
+      func leafPaths() -> [[String]] {
+        if children.isEmpty {
+          return [[value]]
+        }
+        var ret = [[String]]()
+        for n in children.values {
+          for childPath in n.leafPaths() {
+            var subpath = [value]
+            subpath.appendContentsOf(childPath)
+            ret.append(subpath)
+          }
+        }
+        return ret
+      }
+    }
+  }
 
   /// Encapsulates high level information about the generated Xcode project intended for use by
   /// external scripts or to aid debugging.
