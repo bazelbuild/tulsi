@@ -1,0 +1,26 @@
+{
+  "fileReferences" : [
+    "..\/..\/TestSuite\/BUILD",
+    "..\/..\/TestSuite\/Binary\/srcs\/main.m",
+    "..\/..\/TestSuite\/TestSuite\/TestSuiteNonXCTest.m",
+    "..\/..\/TestSuite\/TestSuite\/TestSuiteXCTest.m"
+  ],
+  "targets" : [
+    "TestApplication",
+    "TestSuiteNonXCTest",
+    "TestSuiteXCTest",
+    "_bazel_clean_",
+    "_idx_Binary_16BADD98",
+    "_idx_TestSuiteNonXCTest_0FF19C51",
+    "_idx_TestSuiteXCTest_1FB91F63"
+  ],
+  "artifacts" : [
+    "TestApplication.app\/**",
+    "TestSuiteNonXCTest.app\/**",
+    "TestSuiteXCTest.xctest\/**",
+    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
+    "lib_idx_Binary_16BADD98.a",
+    "lib_idx_TestSuiteNonXCTest_0FF19C51.a",
+    "lib_idx_TestSuiteXCTest_1FB91F63.a"
+  ]
+}

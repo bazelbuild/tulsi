@@ -1,0 +1,30 @@
+{
+  "fileReferences" : [
+    "..\/..\/tulsi_e2e_platform_dependent\/BUILD",
+    "..\/..\/tulsi_e2e_platform_dependent\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_platform_dependent\/file.java",
+    "..\/..\/tulsi_e2e_platform_dependent\/protolibrary.proto"
+  ],
+  "targets" : [
+    "Application",
+    "_bazel_clean_",
+    "_idx_Binary_153E40A9",
+    "_idx_J2ObjCLibrary_067650F8",
+    "_idx_JavaLibrary_B908755E",
+    "_idx_ObjCProtoLibrary_8AEE0955",
+    "_idx_ProtoLibrary_6E1CBD33"
+  ],
+  "artifacts" : [
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.h",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.m",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.h",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.m",
+    "Application.app\/**",
+    "bazel-bin\/tulsi_e2e_platform_dependent\/Application-MergedInfo.plist",
+    "lib_idx_Binary_153E40A9.a",
+    "lib_idx_J2ObjCLibrary_067650F8.a",
+    "lib_idx_JavaLibrary_B908755E.a",
+    "lib_idx_ObjCProtoLibrary_8AEE0955.a",
+    "lib_idx_ProtoLibrary_6E1CBD33.a"
+  ]
+}

@@ -213,7 +213,7 @@ final class PBXFileReference: PBXReference, Hashable {
     return "PBXFileReference"
   }
 
-  private var fileType: String? {
+  var fileType: String? {
     if fileTypeOverride != nil {
       return fileTypeOverride
     }

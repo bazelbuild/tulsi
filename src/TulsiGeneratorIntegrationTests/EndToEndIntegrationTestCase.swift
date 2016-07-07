@@ -22,11 +22,19 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
   let fakeBazelURL = NSURL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
+  // For the sake of simplicity in maintaining the golden data, copied Tulsi artifacts are
+  // assumed to have been installed correctly.
+  private let copiedTulsiArtifactRegex = try! NSRegularExpression(pattern: "^Only in .*?\\.xcodeproj/.tulsi: .+$",
+                                                                  options: [])
+
   final func validateDiff(diffLines: [String], file: StaticString = #file, line: UInt = #line) {
     for diff in diffLines {
-      // For the sake of simplicity in maintaining the golden data, all Tulsi artifacts are assumed
-      // to have been installed correctly.
-      if diff.hasSuffix(".tulsi") { continue }
+      let range = NSMakeRange(0, (diff as NSString).length)
+      if copiedTulsiArtifactRegex.firstMatchInString(diff,
+                                                     options: NSMatchingOptions.Anchored,
+                                                     range: range) != nil {
+        continue
+      }
       XCTFail(diff, file: file, line: line)
     }
   }

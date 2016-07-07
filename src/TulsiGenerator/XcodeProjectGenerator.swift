@@ -714,11 +714,15 @@ final class XcodeProjectGenerator {
   /// Encapsulates high level information about the generated Xcode project intended for use by
   /// external scripts or to aid debugging.
   private class GeneratorManifest {
+    /// Suffix for manifest entries whose recursive contents are used by the Xcode project.
+    private static let BundleSuffix = "/**"
+    private static let NormalBundleTypes = Set(DirExtensionToUTI.values)
+
     private let localizedMessageLogger: LocalizedMessageLogger
     private let pbxProject: PBXProject
-    var fileReferences: [String]! = nil
-    var targets: [String]! = nil
-    var artifacts: [String]! = nil
+    var fileReferences: Set<String>! = nil
+    var targets: Set<String>! = nil
+    var artifacts: Set<String>! = nil
 
     init(localizedMessageLogger: LocalizedMessageLogger, pbxProject: PBXProject) {
       self.localizedMessageLogger = localizedMessageLogger
@@ -730,9 +734,9 @@ final class XcodeProjectGenerator {
         parsePBXProject()
       }
       let dict = [
-          "fileReferences": fileReferences,
-          "targets": targets,
-          "artifacts": artifacts,
+          "fileReferences": Array(fileReferences).sort(),
+          "targets": Array(targets).sort(),
+          "artifacts": Array(artifacts).sort(),
       ]
       do {
         let data = try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
@@ -748,20 +752,34 @@ final class XcodeProjectGenerator {
     }
 
     private func parsePBXProject() {
-      fileReferences = []
-      targets = []
-      artifacts = []
+      fileReferences = Set()
+      targets = Set()
+      artifacts = Set()
 
       for ref in pbxProject.mainGroup.allSources {
-        if ref.isInputFile {
-          fileReferences.append(ref.sourceRootRelativePath)
+        let artifactPath: String
+        // Bundle-type artifacts are appended with BundleSuffix to indicate that the recursive
+        // contents of the bundle are needed.
+        if ref.fileType == "wrapper.xcdatamodel",
+           let parent = ref.parent as? XCVersionGroup where
+           parent.versionGroupType == "wrapper.xcdatamodel" {
+          artifactPath = parent.sourceRootRelativePath + GeneratorManifest.BundleSuffix
+        } else if let refType = ref.fileType where
+            GeneratorManifest.NormalBundleTypes.contains(refType) {
+          artifactPath = ref.sourceRootRelativePath + GeneratorManifest.BundleSuffix
         } else {
-          artifacts.append(ref.sourceRootRelativePath)
+          artifactPath = ref.sourceRootRelativePath
+        }
+
+        if ref.isInputFile {
+          fileReferences.insert(artifactPath)
+        } else {
+          artifacts.insert(artifactPath)
         }
       }
 
       for target in pbxProject.allTargets {
-        targets.append(target.name)
+        targets.insert(target.name)
       }
     }
   }
