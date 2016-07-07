@@ -331,17 +331,18 @@ class BazelIntegrationTestCase: XCTestCase {
       }
     }
 
-    override func infoMessage(message: String) {
-      LogMessage.postInfo(message)
-    }
-
-    override func warning(key: String, comment: String, values: CVarArgType...) {
+    override func warning(key: String,
+                          comment: String,
+                          details: String?,
+                          context: String?,
+                          values: CVarArgType...) {
       LogMessage.postWarning("\(key) - \(values)")
     }
 
     override func error(key: String,
                         comment: String,
-                        details: String? = nil,
+                        details: String?,
+                        context: String?,
                         values: CVarArgType...) {
       XCTFail("> Critical error logged: \(key) - \(values)")
     }
