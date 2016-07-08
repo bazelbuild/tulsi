@@ -44,7 +44,11 @@ class HeadlessXcodeProjectGenerator {
   /// Performs project generation.
   func generate() throws {
     TulsiProjectDocument.showAlertsOnErrors = false
-    defer { TulsiProjectDocument.showAlertsOnErrors = true }
+    TulsiProjectDocument.suppressWORKSPACECheck = arguments.suppressWORKSPACECheck
+    defer {
+      TulsiProjectDocument.showAlertsOnErrors = true
+      TulsiProjectDocument.suppressWORKSPACECheck = false
+    }
 
     guard let configPath = arguments.generatorConfig else {
       throw Error.MissingConfigOption(TulsiCommandlineParser.ParamGeneratorConfigLong)
@@ -234,6 +238,7 @@ class TulsiCommandlineParser {
   static let ParamOutputFolderLong = "--outputfolder"
   static let ParamWorkspaceRootShort = "-w"
   static let ParamWorkspaceRootLong = "--workspaceroot"
+  static let ParamNoWorkspaceCheck = "--no-workspace-check"
   static let ParamNoOpenXcode = "--no-open-xcode"
 
   let arguments: Arguments
@@ -244,6 +249,7 @@ class TulsiCommandlineParser {
     let generatorConfig: String?
     let outputFolder: String?
     let verbose: Bool
+    let suppressWORKSPACECheck: Bool
     let openXcodeOnSuccess: Bool
 
     init() {
@@ -251,6 +257,7 @@ class TulsiCommandlineParser {
       generatorConfig = nil
       outputFolder = nil
       verbose = true
+      suppressWORKSPACECheck = false
       openXcodeOnSuccess = true
     }
 
@@ -259,6 +266,7 @@ class TulsiCommandlineParser {
       generatorConfig = dict[TulsiCommandlineParser.ParamGeneratorConfigLong] as? String
       outputFolder = dict[TulsiCommandlineParser.ParamOutputFolderLong] as? String
       verbose = !(dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true)
+      suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
     }
   }
@@ -321,6 +329,9 @@ class TulsiCommandlineParser {
 
         case TulsiCommandlineParser.ParamNoOpenXcode:
           parsedArguments[TulsiCommandlineParser.ParamNoOpenXcode] = true
+
+        case TulsiCommandlineParser.ParamNoWorkspaceCheck:
+          parsedArguments[TulsiCommandlineParser.ParamNoWorkspaceCheck] = true
 
         case TulsiCommandlineParser.ParamOutputFolderShort:
           fallthrough

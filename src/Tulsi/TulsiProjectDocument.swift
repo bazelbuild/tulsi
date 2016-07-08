@@ -39,7 +39,12 @@ final class TulsiProjectDocument: NSDocument,
   static let ProjectConfigsSubpath = "Configs"
 
   /// Override for headless project generation (in which messages should not spawn alert dialogs).
-  static var showAlertsOnErrors: Bool = true
+  static var showAlertsOnErrors = true
+
+  /// Override to prevent explicit tests for the presence of a WORKSPACE file. This is only useful
+  /// in cases where Bazel will be invoked in such a way that the WORKSPACE file does not need to be
+  /// available locally (e.g., in a remote-build scenario).
+  static var suppressWORKSPACECheck = false
 
   /// The project model.
   var project: TulsiProject! = nil
@@ -279,15 +284,17 @@ final class TulsiProjectDocument: NSDocument,
     }
 
     // Verify that the workspace is a valid one.
-    let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                             isDirectory: false)
-    var isDirectory = ObjCBool(false)
-    if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
-                                                        isDirectory: &isDirectory) || isDirectory {
-      let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
-                                  comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
-      LogMessage.postError(String(format: fmt, workspaceFile.path!))
-      throw Error.InvalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path!)")
+    if !TulsiProjectDocument.suppressWORKSPACECheck {
+      let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
+                                                                               isDirectory: false)
+      var isDirectory = ObjCBool(false)
+      if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
+                                                          isDirectory: &isDirectory) || isDirectory {
+        let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
+                                    comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
+        LogMessage.postError(String(format: fmt, workspaceFile.path!))
+        throw Error.InvalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path!)")
+      }
     }
 
     updateRuleEntries()
