@@ -17,6 +17,7 @@ import XCTest
 
 // Stub LocalizedMessageLogger that does nothing.
 class MockLocalizedMessageLogger: LocalizedMessageLogger {
+  var syslogMessages = [String]()
   var infoMessages = [String]()
   var warningMessageKeys = [String]()
   var errorMessageKeys = [String]()
@@ -25,19 +26,20 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
     super.init(bundle: nil)
   }
 
-  override func infoMessage(message: String) {
-    infoMessages.append(message)
+  override func error(key: String, comment: String, details: String?, context: String?, values: CVarArgType...) {
+    errorMessageKeys.append(key)
   }
 
-  override func warning(key: String, comment: String, values: CVarArgType...) {
+  override func warning(key: String, comment: String, details: String?, context: String?, values: CVarArgType...) {
     warningMessageKeys.append(key)
   }
 
-  override func error(key: String,
-                      comment: String,
-                      details: String? = nil,
-                      values: CVarArgType...) {
-    errorMessageKeys.append(key)
+  override func infoMessage(message: String, details: String?, context: String?) {
+    infoMessages.append(message)
+  }
+
+  override func syslogMessage(message: String, details: String?, context: String?) {
+    syslogMessages.append(message)
   }
 
   func assertNoErrors(file: StaticString = #file, line: UInt = #line) {
