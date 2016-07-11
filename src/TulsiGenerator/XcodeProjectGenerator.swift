@@ -714,6 +714,9 @@ final class XcodeProjectGenerator {
   /// Encapsulates high level information about the generated Xcode project intended for use by
   /// external scripts or to aid debugging.
   private class GeneratorManifest {
+    /// Version number used to track changes to the format of the generated manifest.
+    // This number may be used by consumers of the manifest for compatibility detection.
+    private static let ManifestFormatVersion = 1
     /// Suffix for manifest entries whose recursive contents are used by the Xcode project.
     private static let BundleSuffix = "/**"
     private static let NormalBundleTypes = Set(DirExtensionToUTI.values)
@@ -734,13 +737,14 @@ final class XcodeProjectGenerator {
         parsePBXProject()
       }
       let dict = [
+          "manifestVersion": GeneratorManifest.ManifestFormatVersion,
           "fileReferences": Array(fileReferences).sort(),
           "targets": Array(targets).sort(),
           "artifacts": Array(artifacts).sort(),
       ]
       do {
         let data = try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                                     options: .PrettyPrinted)
+                                                                                     options: [])
         return data.writeToURL(outputURL, atomically: true)
       } catch let e as NSError {
         localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path!): \(e.localizedDescription)")
