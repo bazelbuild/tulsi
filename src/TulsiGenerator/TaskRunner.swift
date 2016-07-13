@@ -103,7 +103,7 @@ public final class TaskRunner {
       // The docs for readToEndOfFileInBackgroundAndNotify are unclear as to exactly what work is
       // done on the calling thread. By observation, it appears that data will not be read if the
       // main queue is in event tracking mode.
-      fileHandle.performSelector(Selector("readToEndOfFileInBackgroundAndNotify"),
+      fileHandle.performSelector(#selector(NSFileHandle.readToEndOfFileInBackgroundAndNotify),
                                  onThread: taskReader.thread,
                                  withObject: nil,
                                  waitUntilDone: true)
@@ -159,7 +159,7 @@ public final class TaskRunner {
   // Provides a thread/runloop that may be used to read NSTask output pipes.
   private class TaskOutputReader: NSObject {
     lazy var thread: NSThread = {
-      let value = NSThread(target: self, selector: Selector("threadMain:"), object: nil)
+      let value = NSThread(target: self, selector: #selector(threadMain(_:)), object: nil)
       value.name = "com.google.Tulsi.TaskOutputReader"
       return value
     }()
@@ -172,7 +172,10 @@ public final class TaskRunner {
     }
 
     func stop() {
-      performSelector(Selector("stopThread"), onThread:thread, withObject:nil, waitUntilDone: false)
+      performSelector(#selector(TaskOutputReader.stopThread),
+                      onThread:thread,
+                      withObject:nil,
+                      waitUntilDone: false)
     }
 
     // MARK: - Private methods

@@ -65,22 +65,12 @@ public class BazelFileInfo {
 
   init?(info: AnyObject?) {
     guard let info = info as? [String: AnyObject] else {
-      // TODO(abaire): Remove useless initialization when Swift 2.1 support is dropped.
-      self.subPath = ""
-      self.rootPath = ""
-      self.targetType = .GeneratedFile
-
       return nil
     }
 
     guard let subPath = info["path"] as? String,
               isSourceFile = info["src"] as? Bool else {
       assertionFailure("Aspect provided a file info dictionary but was missing required keys")
-      // TODO(abaire): Remove useless initialization when Swift 2.1 support is dropped.
-      self.subPath = ""
-      self.rootPath = ""
-      self.targetType = .GeneratedFile
-
       return nil
     }
 

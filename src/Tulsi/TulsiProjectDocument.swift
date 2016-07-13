@@ -420,17 +420,17 @@ final class TulsiProjectDocument: NSDocument,
 
   override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
     switch item.action() {
-      case Selector("saveDocument:"):
+      case #selector(TulsiProjectDocument.saveDocument(_:)):
         return true
-      case Selector("saveDocumentAs:"):
+      case #selector(TulsiProjectDocument.saveDocumentAs(_:)):
         return true
-      case Selector("renameDocument:"):
+      case #selector(TulsiProjectDocument.renameDocument(_:)):
         return true
-      case Selector("moveDocument:"):
+      case #selector(TulsiProjectDocument.moveDocument(_:)):
         return true
 
       // Unsupported actions.
-      case Selector("duplicateDocument:"):
+      case #selector(TulsiProjectDocument.duplicateDocument(_:)):
         // TODO(abaire): Consider implementing and allowing project duplication.
         return false
 

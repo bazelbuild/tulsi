@@ -204,9 +204,7 @@ final class XcodeProjectGenerator {
     let ruleEntryMap = loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
     var testSuiteRules = Set<RuleEntry>()
-    // Swift 2.1 segfaults when dealing with nested functions using generics of any type, so an
-    // unnecessary type conversion from an array to a set is done instead.
-    func expandTargetLabels(labels: Set<BuildLabel>) {
+    func expandTargetLabels<T: SequenceType where T.Generator.Element == BuildLabel>(labels: T) {
       for label in labels {
         guard let ruleEntry = ruleEntryMap[label] else { continue }
         if ruleEntry.type != "test_suite" {
@@ -217,20 +215,7 @@ final class XcodeProjectGenerator {
         }
       }
     }
-    expandTargetLabels(Set<BuildLabel>(config.buildTargetLabels))
-    // TODO(abaire): Revert to the generic implementation below when Swift 2.1 support is dropped.
-//    func expandTargetLabels<T: SequenceType where T.Generator.Element == BuildLabel>(labels: T) {
-//      for label in labels {
-//        guard let ruleEntry = ruleEntryMap[label] else { continue }
-//        if ruleEntry.type != "test_suite" {
-//          expandedTargetLabels.insert(label)
-//        } else {
-//          testSuiteRules.insert(ruleEntry)
-//          expandTargetLabels(ruleEntry.weakDependencies)
-//        }
-//      }
-//    }
-//    expandTargetLabels(config.buildTargetLabels)
+    expandTargetLabels(config.buildTargetLabels)
 
     var targetRules = Set<RuleEntry>()
     var hostTargetLabels = [BuildLabel: BuildLabel]()

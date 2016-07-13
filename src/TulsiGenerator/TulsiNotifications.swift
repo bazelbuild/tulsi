@@ -76,11 +76,6 @@ public struct LogMessage {
           let levelString = userInfo["level"] as? String,
           let message = userInfo["message"] as? String,
           let level = TulsiMessageLevel(rawValue: levelString) else {
-      // TODO(abaire): Remove useless initialization when Swift 2.1 support is dropped.
-      self.level = .Error
-      self.message = ""
-      self.details = nil
-      self.context = nil
       return nil
     }
 

@@ -157,19 +157,19 @@ final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDel
   func control(control: NSControl, textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
     switch commandSelector {
       // Operations that cancel.
-      case Selector("cancelOperation:"):
+      case #selector(NSControl.cancelOperation(_:)):
         closeReason = .Cancel
 
       // Operations that commit the current value.
-      case Selector("insertNewline:"):
+      case #selector(NSControl.insertNewline(_:)):
         closeReason = .Accept
         popover?.performClose(control)
         return true
 
       // Operations that should be disabled.
-      case Selector("insertBacktab:"):
+      case #selector(NSControl.insertBacktab(_:)):
         fallthrough
-      case Selector("insertTab:"):
+      case #selector(NSControl.insertTab(_:)):
         return true
 
       default:

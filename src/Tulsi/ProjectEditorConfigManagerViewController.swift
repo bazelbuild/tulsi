@@ -152,11 +152,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       guard let projectName = projectDocument.projectName,
                 generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
         projectDocument.saveDocumentWithDelegate(self,
-                                                 didSaveSelector: Selector("document:didSave:contextInfo:"),
+                                                 didSaveSelector: #selector(ProjectEditorConfigManagerViewController.document(_:didSave:contextInfo:)),
                                                  contextInfo: &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig)
         return
       }
-
       let optionSet = projectDocument.optionSet ?? TulsiOptionSet()
       let configDocument = try TulsiGeneratorConfigDocument.makeDocumentWithProjectRuleEntries(projectDocument.ruleInfos,
                                                                                                optionSet: optionSet,

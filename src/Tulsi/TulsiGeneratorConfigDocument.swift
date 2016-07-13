@@ -595,18 +595,18 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
     switch item.action() {
-      case Selector("saveDocument:"):
+      case #selector(TulsiGeneratorConfigDocument.saveDocument(_:)):
         return true
 
-      case Selector("saveDocumentAs:"):
+      case #selector(TulsiGeneratorConfigDocument.saveDocumentAs(_:)):
         return windowForSheet?.contentViewController != nil
 
       // Unsupported actions.
-      case Selector("duplicateDocument:"):
+      case #selector(TulsiGeneratorConfigDocument.duplicateDocument(_:)):
         return false
-      case Selector("renameDocument:"):
+      case #selector(TulsiGeneratorConfigDocument.renameDocument(_:)):
         return false
-      case Selector("moveDocument:"):
+      case #selector(TulsiGeneratorConfigDocument.moveDocument(_:)):
         return false
 
       default:

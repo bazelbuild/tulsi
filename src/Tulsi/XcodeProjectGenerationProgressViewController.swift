@@ -36,7 +36,7 @@ class ProgressItem: NSObject {
 
     let notificationCenter = NSNotificationCenter.defaultCenter()
     notificationCenter.addObserver(self,
-                                   selector: Selector("progressUpdate:"),
+                                   selector: #selector(ProgressItem.progressUpdate(_:)),
                                    name: ProgressUpdatingTaskProgress,
                                    object: notifier)
   }
@@ -70,7 +70,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     super.viewDidLoad()
     let notificationCenter = NSNotificationCenter.defaultCenter()
     notificationCenter.addObserver(self,
-                                   selector: Selector("progressUpdatingTaskDidStart:"),
+                                   selector: #selector(XcodeProjectGenerationProgressViewController.progressUpdatingTaskDidStart(_:)),
                                    name: ProgressUpdatingTaskDidStart,
                                    object: nil)
   }
