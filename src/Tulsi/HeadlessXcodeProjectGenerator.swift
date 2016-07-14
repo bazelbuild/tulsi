@@ -147,11 +147,19 @@ class HeadlessXcodeProjectGenerator {
     let pathExtension = pathString.pathExtension
     var isProject = pathExtension == tulsiProjExtension
     if !isProject && pathExtension.isEmpty {
+      // See if the user provided a Tulsiproj bundle without the extension or if there is a
+      // tulsiproj bundle with the same name as the given directory.
       let projectPath = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
-      let projectURL = NSURL(fileURLWithPath: projectPath, isDirectory: true)
-      if isExistingDirectory(projectURL) {
+      if isExistingDirectory(NSURL(fileURLWithPath: projectPath, isDirectory: true)) {
         isProject = true
         pathString = projectPath as NSString
+      } else {
+        let projectName = (pathString.lastPathComponent as NSString).stringByAppendingPathExtension(tulsiProjExtension)!
+        let projectWithinPath = pathString.stringByAppendingPathComponent(projectName)
+        if isExistingDirectory(NSURL(fileURLWithPath: projectWithinPath, isDirectory: true)) {
+          isProject = true
+          pathString = projectWithinPath as NSString
+        }
       }
     }
     if isProject {
