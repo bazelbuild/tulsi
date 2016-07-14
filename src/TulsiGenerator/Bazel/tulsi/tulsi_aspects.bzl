@@ -363,6 +363,17 @@ def _extract_generated_sources_and_includes(target):
   return file_metadatas, includes
 
 
+def _extract_iphoneos_deployment_target(ctx):
+  """Returns the ios_minimum_version setting from the given ctx."""
+  iphoneos_deployment_target = _get_opt_attr(ctx.fragments,
+                                             'objc.ios_minimum_os')
+  if not iphoneos_deployment_target:
+    return None
+
+  # Convert the DottedVersion to a string suitable for inclusion in a struct.
+  return str(iphoneos_deployment_target)
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -442,6 +453,7 @@ def _tulsi_sources_aspect(target, ctx):
       generated_non_arc_files=generated_non_arc_files,
       generated_includes=generated_includes,
       ipa_output_label=ipa_output_label,
+      iphoneos_deployment_target=_extract_iphoneos_deployment_target(ctx),
       label=str(target.label),
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),

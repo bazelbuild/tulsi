@@ -841,6 +841,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
 
+    if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
+      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
+    }
+
     // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
     // The build script uses the binary label to find and move the dSYM associated with an
     // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application
