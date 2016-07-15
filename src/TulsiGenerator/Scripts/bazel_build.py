@@ -84,10 +84,10 @@ class _OptionsParser(object):
 
     # Options specific to debugger integration in Xcode.
     xcode_lldb_options = [
-      '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
-      '--copt=-Xclang', '--copt=%s' % main_group_path,
-      '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
-      '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
+        '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
+        '--copt=-Xclang', '--copt=%s' % main_group_path,
+        '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
+        '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
     ]
     self.build_options['Debug'].extend(xcode_lldb_options)
     self.build_options['Release'].extend(xcode_lldb_options)
@@ -327,36 +327,54 @@ class BazelBuildBridge(object):
     self.verbose = 0
     self.build_path = None
     self.signing_identities = {}
-    # Whether or not this script is probably being used with Xcode (versus
-    # AppCode or some other IDE).
-    self.likely_xcode = True
-    # Check to see if code signing actions should be skipped or not.
-    codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED', 'NO')
-    self.codesigning_allowed = codesigning_allowed == 'YES'
-
-  def Run(self, args):
-    """Executes a Bazel build based on the environment and given arguments."""
-    xcode_action = os.environ['ACTION']
 
     # Certain potentially expensive patchups need to be made for non-Xcode IDE
     # integrations. There isn't a fool-proof way of determining if the script is
     # being used with Xcode or not, but searching the CODESIGNING_FOLDER_PATH
     # env var for "/Xcode/" should catch the majority of use-cases.
-    codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
-    self.likely_xcode = codesigning_folder_path.find('/Xcode/') != -1
+    self.codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
+    self.likely_xcode = self.codesigning_folder_path.find('/Xcode/') != -1
 
+    # Check to see if code signing actions should be skipped or not.
+    codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED', 'NO')
+    self.codesigning_allowed = codesigning_allowed == 'YES'
+
+    self.xcode_action = os.environ['ACTION']  # The Xcode build action.
     # When invoked as an external build system script, Xcode will set ACTION to
     # an empty string.
-    if not xcode_action:
-      xcode_action = 'build'
-    if xcode_action != 'build':
-      sys.stderr.write('Xcode action is %s, ignoring.' % (xcode_action))
+    if not self.xcode_action:
+      self.xcode_action = 'build'
+
+    self.arch = os.environ.get('CURRENT_ARCH')  # Target architecture.
+    # Path into which generated artifacts should be copied.
+    self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
+    # The full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
+    self.full_product_name = os.environ['FULL_PRODUCT_NAME']
+    # Target SDK version.
+    self.sdk_version = os.environ.get('SDK_VERSION')
+    # The TEST_HOST for unit tests.
+    self.test_host_binary = os.environ.get('TEST_HOST')
+    # The UTI type of the target.
+    self.package_type = os.environ.get('PACKAGE_TYPE')
+    self.platform_name = os.environ['PLATFORM_NAME']  # Target platform.
+    # The name (without any extension) of the target artifact.
+    self.product_name = os.environ['PRODUCT_NAME']
+    # The path to the parent of the xcodeproj bundle.
+    self.project_dir = os.environ['PROJECT_DIR']
+    # Set to the name of the generated bundle for bundle-type targets, None for
+    # single file targets (like static libraries).
+    self.wrapper_name = os.environ.get('WRAPPER_NAME')
+    self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
+    self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+
+  def Run(self, args):
+    """Executes a Bazel build based on the environment and given arguments."""
+    if self.xcode_action != 'build':
+      sys.stderr.write('Xcode action is %s, ignoring.' % (self.xcode_action))
       return 0
 
-    sdk_version = os.environ.get('SDK_VERSION', None)
-    arch = os.environ.get('CURRENT_ARCH', None)
     main_group_path = os.getcwd()
-    parser = _OptionsParser(sdk_version, arch, main_group_path)
+    parser = _OptionsParser(self.sdk_version, self.arch, main_group_path)
     timer = Timer('Parsing options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -371,11 +389,10 @@ class BazelBuildBridge(object):
     if retval:
       return retval
 
-    project_dir = os.environ['PROJECT_DIR']
     timer = Timer('Running Bazel').Start()
     exit_code = self._RunBazelAndPatchOutput(command,
                                              main_group_path,
-                                             project_dir)
+                                             self.project_dir)
     timer.End()
     if exit_code:
       self._PrintError('Bazel build failed.')
@@ -388,13 +405,13 @@ class BazelBuildBridge(object):
 
     if parser.install_generated_artifacts:
       timer = Timer('Installing artifacts').Start()
-      exit_code = self._InstallArtifact(codesigning_folder_path)
+      exit_code = self._InstallArtifact()
       timer.End()
       if exit_code:
         return exit_code
 
       timer = Timer('Installing DSYM bundles').Start()
-      exit_code = self._InstallDSYMBundles(os.environ['BUILT_PRODUCTS_DIR'])
+      exit_code = self._InstallDSYMBundles(self.built_products_dir)
       timer.End()
       if exit_code:
         return exit_code
@@ -402,12 +419,9 @@ class BazelBuildBridge(object):
       # Starting with Xcode 7.3, XCTests inject several supporting frameworks
       # into the test host that need to be signed with the same identity as
       # the host itself.
-      xcode_version = int(os.environ['XCODE_VERSION_MINOR'])
-      platform_name = os.environ['PLATFORM_NAME']
-      test_host_binary = os.environ.get('TEST_HOST', None)
-      if (test_host_binary and xcode_version >= 730 and
-          platform_name != 'iphonesimulator'):
-        test_host_bundle = os.path.dirname(test_host_binary)
+      if (self.test_host_binary and self.xcode_version_minor >= 730 and
+          self.platform_name != 'iphonesimulator'):
+        test_host_bundle = os.path.dirname(self.test_host_binary)
         timer = Timer('Re-signing injected test host artifacts').Start()
         exit_code = self._ResignTestHost(test_host_bundle)
         timer.End()
@@ -426,7 +440,7 @@ class BazelBuildBridge(object):
     if configuration.startswith(test_runner_config_prefix):
       configuration = configuration[len(test_runner_config_prefix):]
     if configuration not in _OptionsParser.KNOWN_CONFIGS:
-      print ('Error: Unknown build configuration "%s"' % configuration)
+      self._PrintError('Unknown build configuration "%s"' % configuration)
       return (None, 1)
 
     bazel_command.extend(options.GetStartupOptions(configuration))
@@ -445,7 +459,9 @@ class BazelBuildBridge(object):
     # Xcode translates anything that looks like ""<path>:<line>:" that is not
     # followed by the word "warning" into an error. Bazel warnings do not fit
     # this scheme and must be patched here.
-    bazel_warning_line_regex = re.compile(r'WARNING: ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
+    bazel_warning_line_regex = re.compile(
+        r'WARNING: ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
+
     def PatchBazelWarningStatements(line):
       match = bazel_warning_line_regex.match(line)
       if match:
@@ -491,7 +507,7 @@ class BazelBuildBridge(object):
     return process.returncode
 
   def _EnsureBazelBinSymlinkIsValid(self):
-    """Ensures that the Bazel binary output symlink points at a real directory."""
+    """Ensures that the Bazel output symlink points at a real directory."""
 
     if not os.path.islink(self.bazel_bin_path):
       self._PrintWarning('Bazel output symlink at "%s" non-existent' %
@@ -508,11 +524,12 @@ class BazelBuildBridge(object):
         return 20
     return 0
 
-  def _InstallArtifact(self, output_path):
+  def _InstallArtifact(self):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
+    output_path = self.codesigning_folder_path
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
-    bundle_artifact = os.environ.get('WRAPPER_NAME', None)
+    bundle_artifact = self.wrapper_name
     if bundle_artifact:
       if os.path.isdir(output_path):
         try:
@@ -529,7 +546,7 @@ class BazelBuildBridge(object):
         if exit_code:
           return exit_code
       else:
-        ipa_artifact = os.environ['PRODUCT_NAME'] + '.ipa'
+        ipa_artifact = self.product_name + '.ipa'
         exit_code = self._UnpackTarget(ipa_artifact, output_path)
         if exit_code:
           return exit_code
@@ -546,7 +563,7 @@ class BazelBuildBridge(object):
           self._PrintError('Failed to remove stale output file ""%s". '
                            '%s' % (output_path, e))
           return 600
-      generated_artifact = os.environ['FULL_PRODUCT_NAME']
+      generated_artifact = self.full_product_name
       full_artifact_path = os.path.join(self.build_path, generated_artifact)
       exit_code = self._CopyFile(generated_artifact,
                                  full_artifact_path,
@@ -597,8 +614,7 @@ class BazelBuildBridge(object):
     # The base of the dirname within the Payload must match the last
     # component of output_path.
     expected_bundle_name = os.path.basename(output_path)
-    package_type = os.environ.get('PACKAGE_TYPE', '')
-    if package_type == 'com.apple.package-type.app-extension':
+    if self.package_type == 'com.apple.package-type.app-extension':
       expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
     else:
       expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
