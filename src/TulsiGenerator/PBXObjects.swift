@@ -91,7 +91,7 @@ final class XCBuildConfiguration: PBXObjectProtocol {
     return "XCBuildConfiguration"
   }
 
-  lazy var hashValue: Int = {
+  lazy var hashValue: Int = { [unowned self] in
     return self.name.hashValue
   }()
 
@@ -124,7 +124,7 @@ class PBXReference: PBXObjectProtocol {
     return ""
   }
 
-  lazy var hashValue: Int = {
+  lazy var hashValue: Int = { [unowned self] in
     return self.name.hashValue &+ (self.path?.hashValue ?? 0)
   }()
 
@@ -132,12 +132,12 @@ class PBXReference: PBXObjectProtocol {
     return name
   }
 
-  lazy var fileExtension: String? = {
+  lazy var fileExtension: String? = { [unowned self] in
     guard let p = self.path else { return nil }
     return p.pbPathExtension
   }()
 
-  lazy var uti: String? = {
+  lazy var uti: String? = { [unowned self] in
     guard let p = self.path else { return nil }
     return p.pbPathUTI
   }()
@@ -220,7 +220,7 @@ final class PBXFileReference: PBXReference, Hashable {
     return self._pbPathUTI
   }
   // memoized copy of the (expensive) pbPathUTI for this PBXFileReference's name.
-  private lazy var _pbPathUTI: String? = {
+  private lazy var _pbPathUTI: String? = { [unowned self] in
     return self.name.pbPathUTI
   }()
 
@@ -458,7 +458,7 @@ final class XCConfigurationList: PBXObjectProtocol {
     return "XCConfigurationList"
   }
 
-  lazy var hashValue: Int = {
+  lazy var hashValue: Int = { [unowned self] in
     return self.comment?.hashValue ?? 0
   }()
 
@@ -606,7 +606,7 @@ final class PBXBuildFile: PBXObjectProtocol {
     self.settings = settings
   }
 
-  lazy var hashValue: Int = {
+  lazy var hashValue: Int = { [unowned self] in
     var val = self.fileRef.hashValue
     if let settings = self.settings {
       for (key, value) in settings {
@@ -669,7 +669,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     return ""
   }
 
-  lazy var hashValue: Int = {
+  lazy var hashValue: Int = { [unowned self] in
     return self.name.hashValue &+ (self.comment?.hashValue ?? 0)
   }()
 

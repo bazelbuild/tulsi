@@ -158,7 +158,7 @@ public final class TaskRunner {
 
   // Provides a thread/runloop that may be used to read NSTask output pipes.
   private class TaskOutputReader: NSObject {
-    lazy var thread: NSThread = {
+    lazy var thread: NSThread = { [unowned self] in
       let value = NSThread(target: self, selector: #selector(threadMain(_:)), object: nil)
       value.name = "com.google.Tulsi.TaskOutputReader"
       return value

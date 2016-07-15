@@ -108,7 +108,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Location of the bazel-bin symlink, relative to the workspace root.
   let bazelBinPath: String
-  private(set) lazy var bazelGenfilesPath: String = {
+  private(set) lazy var bazelGenfilesPath: String = { [unowned self] in
     return self.bazelBinPath.stringByReplacingOccurrencesOfString("-bin", withString: "-genfiles")
   }()
 

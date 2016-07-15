@@ -55,11 +55,11 @@ public class BazelFileInfo {
   /// The type of this file.
   public let targetType: TargetType
 
-  public lazy var fullPath: String = {
+  public lazy var fullPath: String = { [unowned self] in
     return NSString.pathWithComponents([self.rootPath, self.subPath])
   }()
 
-  public lazy var uti: String? = {
+  public lazy var uti: String? = { [unowned self] in
     return self.subPath.pbPathUTI
   }()
 
@@ -202,7 +202,7 @@ public final class RuleEntry: RuleInfo {
     return artifacts
   }
 
-  private(set) lazy var pbxTargetType: PBXTarget.ProductType? = {
+  private(set) lazy var pbxTargetType: PBXTarget.ProductType? = { [unowned self] in
     if self.type == "ios_test",
        let xctestOpt = self.attributes[.xctest] as? Bool where !xctestOpt {
       return BuildTypeToTargetType["ios_application"]

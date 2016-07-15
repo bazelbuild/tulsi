@@ -18,21 +18,21 @@ import Foundation
 public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertible {
   public let value: String
 
-  public var targetName: String? {
-    let components = value.componentsSeparatedByString(":")
+  public lazy var targetName: String? = { [unowned self] in
+    let components = self.value.componentsSeparatedByString(":")
     if components.count > 1 {
       return components.last
     }
 
-    let lastPackageComponent = value.componentsSeparatedByString("/").last!
+    let lastPackageComponent = self.value.componentsSeparatedByString("/").last!
     if lastPackageComponent.isEmpty {
       return nil
     }
     return lastPackageComponent
-  }
+  }()
 
-  public var packageName: String? {
-    guard var package = value.componentsSeparatedByString(":").first else {
+  public lazy var packageName: String? = { [unowned self] in
+    guard var package = self.value.componentsSeparatedByString(":").first else {
       return nil
     }
 
@@ -43,27 +43,27 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
       return ""
     }
     return package
-  }
+  }()
 
-  public var asFileName: String? {
-    guard let package = packageName, target = targetName else {
+  public lazy var asFileName: String? = { [unowned self] in
+    guard let package = self.packageName, target = self.targetName else {
       return nil
     }
     return "\(package)/\(target)"
-  }
+  }()
 
-  public var asFullPBXTargetName: String? {
-    guard let package = packageName, target = targetName else {
+  public lazy var asFullPBXTargetName: String? = { [unowned self] in
+    guard let package = self.packageName, target = self.targetName else {
       return nil
     }
     // Note: The replacement must be done with a value that is not supported in Bazel packages in
     // order to prevent collisions, but is still supported by Xcode (for scheme filenames, etc...).
     return "\(package)/\(target)".stringByReplacingOccurrencesOfString("/", withString: "-")
-  }
+  }()
 
-  public var hashValue: Int {
-    return value.hashValue
-  }
+  public lazy var hashValue: Int = { [unowned self] in
+    return self.value.hashValue
+  }()
 
   public init(_ label: String) {
     self.value = label
