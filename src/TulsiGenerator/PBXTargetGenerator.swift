@@ -28,7 +28,6 @@ protocol PBXTargetGeneratorProtocol: class {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
-       envScriptPath: String,
        stubInfoPlistPath: String,
        tulsiVersion: String,
        options: TulsiOptionSet,
@@ -114,7 +113,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   let project: PBXProject
   let buildScriptPath: String
-  let envScriptPath: String
   let stubInfoPlistPath: String
   let tulsiVersion: String
   let options: TulsiOptionSet
@@ -191,7 +189,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
-       envScriptPath: String,
        stubInfoPlistPath: String,
        tulsiVersion: String,
        options: TulsiOptionSet,
@@ -202,7 +199,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.bazelBinPath = bazelBinPath
     self.project = project
     self.buildScriptPath = buildScriptPath
-    self.envScriptPath = envScriptPath
     self.stubInfoPlistPath = stubInfoPlistPath
     self.tulsiVersion = tulsiVersion
     self.options = options
@@ -890,7 +886,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
     let shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
-        ". \"\(envScriptPath)\"\n" +
         "exec \(commandLine) --install_generated_artifacts"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")

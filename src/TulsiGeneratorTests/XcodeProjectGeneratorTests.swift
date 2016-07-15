@@ -35,7 +35,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let buildScriptURL = NSURL(fileURLWithPath: "/scripts/Build")
   let cleanScriptURL = NSURL(fileURLWithPath: "/scripts/Clean")
-  let envScriptURL = NSURL(fileURLWithPath: "/scripts/Env")
   let stubInfoPlistURL = NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist")
 
   var config: TulsiGeneratorConfig! = nil
@@ -188,7 +187,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       localizedMessageLogger: mockLocalizedMessageLogger,
                                       workspaceInfoExtractor: mockExtractor,
                                       buildScriptURL: buildScriptURL,
-                                      envScriptURL: envScriptURL,
                                       cleanScriptURL: cleanScriptURL,
                                       stubInfoPlistURL: stubInfoPlistURL,
                                       tulsiVersion: testTulsiVersion,
@@ -269,7 +267,6 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 bazelBinPath: String,
                 project: PBXProject,
                 buildScriptPath: String,
-                envScriptPath: String,
                 stubInfoPlistPath: String,
                 tulsiVersion: String,
                 options: TulsiOptionSet,

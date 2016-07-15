@@ -47,7 +47,6 @@ public final class TulsiXcodeProjectGenerator {
     let localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
     let buildScriptURL = bundle.URLForResource("bazel_build", withExtension: "py")!
     let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
-    let envScriptURL = bundle.URLForResource("bazel_env", withExtension: "sh")!
     let stubInfoPlistURL = bundle.URLForResource("StubInfoPlist", withExtension: "plist")!
 
     // Note: A new extractor is created on each generate in order to allow users to modify their
@@ -61,7 +60,6 @@ public final class TulsiXcodeProjectGenerator {
                                                   localizedMessageLogger: localizedMessageLogger,
                                                   workspaceInfoExtractor: extractor,
                                                   buildScriptURL: buildScriptURL,
-                                                  envScriptURL: envScriptURL,
                                                   cleanScriptURL: cleanScriptURL,
                                                   stubInfoPlistURL: stubInfoPlistURL,
                                                   tulsiVersion: tulsiVersion)

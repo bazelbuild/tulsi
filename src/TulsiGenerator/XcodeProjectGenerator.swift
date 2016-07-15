@@ -34,7 +34,6 @@ final class XcodeProjectGenerator {
   static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
-  private static let EnvScript = "bazel_env.sh"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
 
   private let workspaceRootURL: NSURL
@@ -43,7 +42,6 @@ final class XcodeProjectGenerator {
   private let fileManager: NSFileManager
   private let workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
   private let buildScriptURL: NSURL
-  private let envScriptURL: NSURL
   private let cleanScriptURL: NSURL
   private let stubInfoPlistURL: NSURL
   private let tulsiVersion: String
@@ -71,7 +69,6 @@ final class XcodeProjectGenerator {
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol,
        buildScriptURL: NSURL,
-       envScriptURL: NSURL,
        cleanScriptURL: NSURL,
        stubInfoPlistURL: NSURL,
        tulsiVersion: String,
@@ -82,7 +79,6 @@ final class XcodeProjectGenerator {
     self.localizedMessageLogger = localizedMessageLogger
     self.workspaceInfoExtractor = workspaceInfoExtractor
     self.buildScriptURL = buildScriptURL
-    self.envScriptURL = envScriptURL
     self.cleanScriptURL = cleanScriptURL
     self.stubInfoPlistURL = stubInfoPlistURL
     self.tulsiVersion = tulsiVersion
@@ -182,14 +178,12 @@ final class XcodeProjectGenerator {
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
-    let envScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.EnvScript)"
     let stubInfoPlistPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)/\(XcodeProjectGenerator.StubInfoPlistFilename)"
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
-                                                envScriptPath: envScriptPath,
                                                 stubInfoPlistPath: stubInfoPlistPath,
                                                 tulsiVersion: tulsiVersion,
                                                 options: config.options,
@@ -482,7 +476,6 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Installing scripts")
       installFiles([(buildScriptURL, XcodeProjectGenerator.BuildScript),
                     (cleanScriptURL, XcodeProjectGenerator.CleanScript),
-                    (envScriptURL, XcodeProjectGenerator.EnvScript),
                    ],
                    toDirectory: scriptDirectoryURL)
       localizedMessageLogger.logProfilingEnd(profilingToken)
