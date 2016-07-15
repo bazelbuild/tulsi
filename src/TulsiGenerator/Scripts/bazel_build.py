@@ -35,6 +35,7 @@ class Timer(object):
 
   def __init__(self, action_name):
     self.action_name = action_name
+    self._start = None
 
   def Start(self):
     self._start = time.time()
@@ -101,8 +102,10 @@ class _OptionsParser(object):
     self.verbose = 0
     self.install_generated_artifacts = False
     self.bazel_bin_path = 'bazel-bin'
+    self.bazel_executable = None
 
-  def _UsageMessage(self):
+  @staticmethod
+  def _UsageMessage():
     """Returns a usage message string."""
     usage = textwrap.dedent("""\
       Usage: %s <target> [<target2> ...] --bazel <bazel_binary_path> [options]
@@ -298,7 +301,8 @@ class _OptionsParser(object):
       conflicts = conflicts.union(current_set.intersection(new_set))
     return conflicts
 
-  def _GetXcodeVersionString(self):
+  @staticmethod
+  def _GetXcodeVersionString():
     """Returns Xcode version info from the environment as a string."""
     reported_version = os.environ['XCODE_VERSION_ACTUAL']
     match = re.match(r'(\d{2})(\d)(\d)$', reported_version)
@@ -326,6 +330,7 @@ class BazelBuildBridge(object):
   def __init__(self):
     self.verbose = 0
     self.build_path = None
+    self.bazel_bin_path = None
     self.signing_identities = {}
 
     # Certain potentially expensive patchups need to be made for non-Xcode IDE
@@ -462,21 +467,22 @@ class BazelBuildBridge(object):
     bazel_warning_line_regex = re.compile(
         r'WARNING: ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
 
-    def PatchBazelWarningStatements(line):
-      match = bazel_warning_line_regex.match(line)
+    def PatchBazelWarningStatements(output_line):
+      match = bazel_warning_line_regex.match(output_line)
       if match:
-        line = '%s warning: %s' % (match.group(1), match.group(2))
-      return line
+        output_line = '%s warning: %s' % (match.group(1), match.group(2))
+      return output_line
 
     patch_xcode_parsable_line = PatchBazelWarningStatements
     if main_group_path != project_dir:
       # Match (likely) filename:line_number: lines.
       xcode_parsable_line_regex = re.compile(r'([^/][^:]+):\d+:')
-      def PatchOutputLine(line):
-        line = PatchBazelWarningStatements(line)
-        if xcode_parsable_line_regex.match(line):
-          line = '%s/%s' % (main_group_path, line)
-        return line
+
+      def PatchOutputLine(output_line):
+        output_line = PatchBazelWarningStatements(output_line)
+        if xcode_parsable_line_regex.match(output_line):
+          output_line = '%s/%s' % (main_group_path, output_line)
+        return output_line
       patch_xcode_parsable_line = PatchOutputLine
 
     process = subprocess.Popen(command,
@@ -784,15 +790,16 @@ class BazelBuildBridge(object):
       return 0
 
     timer = Timer('\tSigning ' + bundle_path).Start()
-    command = ['xcrun',
-               'codesign',
-               '-f',
-               '--preserve-metadata=identifier,entitlements',
-               '--timestamp=none',
-               '-s',
-               signing_identity,
-               bundle_path,
-              ]
+    command = [
+        'xcrun',
+        'codesign',
+        '-f',
+        '--preserve-metadata=identifier,entitlements',
+        '--timestamp=none',
+        '-s',
+        signing_identity,
+        bundle_path,
+    ]
     process = subprocess.Popen(command,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
@@ -827,7 +834,8 @@ class BazelBuildBridge(object):
     self._PrintError('Failed to extract signing identity from %s' % output)
     return None
 
-  def _SplitPathComponents(self, path):
+  @staticmethod
+  def _SplitPathComponents(path):
     """Splits the given path into an array of all of its components."""
     components = path.split(os.sep)
     # Patch up the first component if path started with an os.sep
@@ -840,11 +848,13 @@ class BazelBuildBridge(object):
       sys.stdout.write(msg + '\n')
       sys.stdout.flush()
 
-  def _PrintWarning(self, msg):
+  @staticmethod
+  def _PrintWarning(msg):
     sys.stdout.write('Warning: %s\n' % msg)
     sys.stdout.flush()
 
-  def _PrintError(self, msg):
+  @staticmethod
+  def _PrintError(msg):
     sys.stderr.write('Error: %s\n' % msg)
     sys.stderr.flush()
 
