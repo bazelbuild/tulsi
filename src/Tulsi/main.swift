@@ -32,7 +32,6 @@ private func main() {
     let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
     do {
       try generator.generate()
-      exit(0)
     } catch HeadlessXcodeProjectGenerator.Error.MissingConfigOption(let option) {
       print("Missing required \(option) param.")
       exit(10)
@@ -61,6 +60,11 @@ private func main() {
       print("An unexpected exception occurred")
       exit(127)
     }
+
+    // Ideally this would go just after generator.generate() inside the do block, but doing so trips
+    // up the coverage tool as exit is @noreturn. It is important that all catch blocks exit with
+    // non-zero codes so that they do not reach this.
+    exit(0)
   }
 
   dispatch_main()

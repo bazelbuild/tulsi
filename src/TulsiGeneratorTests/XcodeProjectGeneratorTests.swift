@@ -295,8 +295,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
-    let namedRuleEntries = ruleEntries.map() {
-      return ($0.label.asFullPBXTargetName!, $0)
+    let namedRuleEntries = ruleEntries.map() { (e: RuleEntry) -> (String, RuleEntry) in
+      return (e.label.asFullPBXTargetName!, e)
     }
 
     var testTargetLinkages = [(PBXTarget, BuildLabel)]()
