@@ -25,6 +25,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import textwrap
 import time
 import zipfile
@@ -84,14 +85,16 @@ class _OptionsParser(object):
         })
 
     # Options specific to debugger integration in Xcode.
-    xcode_lldb_options = [
-        '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
-        '--copt=-Xclang', '--copt=%s' % main_group_path,
-        '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
-        '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
-    ]
-    self.build_options['Debug'].extend(xcode_lldb_options)
-    self.build_options['Release'].extend(xcode_lldb_options)
+    xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
+    if xcode_version_major < 800:
+      xcode_lldb_options = [
+          '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
+          '--copt=-Xclang', '--copt=%s' % main_group_path,
+          '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
+          '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
+      ]
+      self.build_options['Debug'].extend(xcode_lldb_options)
+      self.build_options['Release'].extend(xcode_lldb_options)
 
     self.sdk_version = sdk_version
 
@@ -366,11 +369,17 @@ class BazelBuildBridge(object):
     self.product_name = os.environ['PRODUCT_NAME']
     # The path to the parent of the xcodeproj bundle.
     self.project_dir = os.environ['PROJECT_DIR']
+    # The path to the xcodeproj bundle.
+    self.project_file_path = os.environ['PROJECT_FILE_PATH']
+    # Path to the directory containing the WORKSPACE file.
+    self.workspace_root = os.environ['TULSI_WR']
     # Set to the name of the generated bundle for bundle-type targets, None for
     # single file targets (like static libraries).
     self.wrapper_name = os.environ.get('WRAPPER_NAME')
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+
+    self.main_group_path = os.getcwd()
 
   def Run(self, args):
     """Executes a Bazel build based on the environment and given arguments."""
@@ -378,8 +387,7 @@ class BazelBuildBridge(object):
       sys.stderr.write('Xcode action is %s, ignoring.' % (self.xcode_action))
       return 0
 
-    main_group_path = os.getcwd()
-    parser = _OptionsParser(self.sdk_version, self.arch, main_group_path)
+    parser = _OptionsParser(self.sdk_version, self.arch, self.main_group_path)
     timer = Timer('Parsing options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -395,9 +403,7 @@ class BazelBuildBridge(object):
       return retval
 
     timer = Timer('Running Bazel').Start()
-    exit_code = self._RunBazelAndPatchOutput(command,
-                                             main_group_path,
-                                             self.project_dir)
+    exit_code = self._RunBazelAndPatchOutput(command)
     timer.End()
     if exit_code:
       self._PrintError('Bazel build failed.')
@@ -433,6 +439,11 @@ class BazelBuildBridge(object):
         if exit_code:
           return exit_code
 
+    if self.xcode_version_major >= 800:
+      exit_code = self._UpdateLLDBInit()
+      if exit_code:
+        return exit_code
+
     return 0
 
   def _BuildBazelCommand(self, options):
@@ -455,12 +466,13 @@ class BazelBuildBridge(object):
 
     return (bazel_command, 0)
 
-  def _RunBazelAndPatchOutput(self, command, main_group_path, project_dir):
+  def _RunBazelAndPatchOutput(self, command):
     """Runs subprocess command, patching output as it's received."""
     self._PrintVerbose('Running "%s", patching output for main group path at '
-                       '"%s" with project path at "%s".' % (' '.join(command),
-                                                            main_group_path,
-                                                            project_dir))
+                       '"%s" with project path at "%s".' %
+                       (' '.join(command),
+                        self.main_group_path,
+                        self.project_dir))
     # Xcode translates anything that looks like ""<path>:<line>:" that is not
     # followed by the word "warning" into an error. Bazel warnings do not fit
     # this scheme and must be patched here.
@@ -474,14 +486,14 @@ class BazelBuildBridge(object):
       return output_line
 
     patch_xcode_parsable_line = PatchBazelWarningStatements
-    if main_group_path != project_dir:
+    if self.main_group_path != self.project_dir:
       # Match (likely) filename:line_number: lines.
       xcode_parsable_line_regex = re.compile(r'([^/][^:]+):\d+:')
 
       def PatchOutputLine(output_line):
         output_line = PatchBazelWarningStatements(output_line)
         if xcode_parsable_line_regex.match(output_line):
-          output_line = '%s/%s' % (main_group_path, output_line)
+          output_line = '%s/%s' % (self.main_group_path, output_line)
         return output_line
       patch_xcode_parsable_line = PatchOutputLine
 
@@ -800,14 +812,11 @@ class BazelBuildBridge(object):
         signing_identity,
         bundle_path,
     ]
-    process = subprocess.Popen(command,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
-    stdout, _ = process.communicate()
+    returncode, output = self._RunSubprocess(command)
     timer.End()
-    if process.returncode:
-      self._PrintError('Re-sign command %r failed. %s' % (command, stdout))
-      return 800 + process.returncode
+    if returncode:
+      self._PrintError('Re-sign command %r failed. %s' % (command, output))
+      return 800 + returncode
     return 0
 
   def _ExtractSigningIdentity(self, signed_bundle):
@@ -834,6 +843,103 @@ class BazelBuildBridge(object):
     self._PrintError('Failed to extract signing identity from %s' % output)
     return None
 
+  def _UpdateLLDBInit(self):
+    """Updates ~/.lldbinit-Xcode to enable debugging of Bazel binaries."""
+    timer = Timer(
+        '\tExtracting source paths for ' + self.full_product_name).Start()
+
+    source_paths = self._ExtractTargetSourcePaths()
+    timer.End()
+    if source_paths is None:
+      self._PrintWarning('Failed to extract source paths for LLDB. File-based '
+                         'breakpoints will likely not work.')
+      return 900
+
+    if not source_paths:
+      self._PrintWarning('Extracted 0 source paths from %r. File-based '
+                         'breakpoints may not work. Please report as a bug.' %
+                         self.full_product_name)
+      return 0
+
+    lldbinit_path = os.path.expanduser('~/.lldbinit-Xcode')
+    with tempfile.NamedTemporaryFile(dir=os.path.dirname(lldbinit_path),
+                                     delete=False) as out:
+
+      block_start = '# <TULSI> LLDB bridge [:\n'
+      block_end = '# ]: <TULSI> LLDB bridge\n'
+
+      # Preserve the contents of any existing .lldbinit.
+      if os.path.isfile(lldbinit_path):
+        with open(lldbinit_path) as f:
+          ignoring = False
+          for line in f:
+            if ignoring:
+              if line == block_end:
+                ignoring = False
+              continue
+            if line == block_start:
+              ignoring = True
+              continue
+            out.write(line)
+
+      # Append the source-map settings for this project.
+      out.write(block_start)
+      out.write('# This was autogenerated by Tulsi and is used to map file '
+                'paths used by Bazel to those used by %r.\n' %
+                os.path.basename(self.project_file_path))
+      workspace_root_parent = os.path.dirname(self.workspace_root)
+      source_maps = ['"%s" "%s"' % (p, workspace_root_parent)
+                     for p in source_paths]
+      out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
+      out.write(block_end)
+
+    shutil.copy(out.name, lldbinit_path)
+
+    return 0
+
+  def _ExtractTargetSourcePaths(self):
+    """Extracts a set of source paths from the target's debug symbols.
+
+    Returns:
+      None: if an error occurred.
+      set(str): containing the source paths in the target binary.
+    """
+    if os.path.isfile(self.codesigning_folder_path):
+      binary_path = self.codesigning_folder_path
+    else:
+      binary_path = os.path.join(self.codesigning_folder_path,
+                                 self.product_name)
+
+    if not os.path.isfile(binary_path):
+      self._PrintWarning('No binary at expected path %r' % binary_path)
+      return None
+
+    returncode, output = self._RunSubprocess([
+        'xcrun',
+        'dsymutil',
+        '-s',
+        binary_path
+    ])
+    if returncode:
+      self._PrintWarning('dsymutil returned %d while examining symtable for %r'
+                         % (returncode, binary_path))
+      return None
+
+    # Symbol table lines of interest are of the form:
+    #  [index] n_strx (N_SO ) n_sect n_desc n_value 'source_path'
+    # where source_path is an absolute path (rather than a filename). The path
+    # up to Bazel's execroot is captured.
+    source_path_re = re.compile(
+        r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/.*?\'\s*$')
+    source_path_prefixes = set()
+
+    for line in output.split('\n'):
+      match = source_path_re.match(line)
+      if match:
+        source_path_prefixes.add(match.group(1))
+
+    return source_path_prefixes
+
   @staticmethod
   def _SplitPathComponents(path):
     """Splits the given path into an array of all of its components."""
@@ -842,6 +948,15 @@ class BazelBuildBridge(object):
     if not components[0]:
       components[0] = os.sep
     return components
+
+  @staticmethod
+  def _RunSubprocess(cmd):
+    """Runs the given command as a subprocess, returning (exit_code, output)."""
+    process = subprocess.Popen(cmd,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+    output, _ = process.communicate()
+    return (process.returncode, output)
 
   def _PrintVerbose(self, msg, level=0):
     if self.verbose > level:
