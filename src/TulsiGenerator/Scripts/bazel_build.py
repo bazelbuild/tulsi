@@ -905,7 +905,7 @@ class BazelBuildBridge(object):
       out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
       out.write(block_end)
 
-    shutil.copy(out.name, lldbinit_path)
+    shutil.move(out.name, lldbinit_path)
 
     return 0
 
