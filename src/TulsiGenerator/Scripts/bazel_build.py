@@ -334,6 +334,7 @@ class BazelBuildBridge(object):
     self.verbose = 0
     self.build_path = None
     self.bazel_bin_path = None
+    self.bazel_genfiles_path = None
     self.signing_identities = {}
 
     # Certain potentially expensive patchups need to be made for non-Xcode IDE
@@ -397,6 +398,9 @@ class BazelBuildBridge(object):
 
     self.verbose = parser.verbose
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
+    # bazel_bin_path is assumed to always end in "-bin" and the genfiles symlink
+    # should always share the bin symlink's prefix.
+    self.bazel_genfiles_path = self.bazel_bin_path[:-3] + 'genfiles'
 
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
@@ -888,8 +892,16 @@ class BazelBuildBridge(object):
                 'paths used by Bazel to those used by %r.\n' %
                 os.path.basename(self.project_file_path))
       workspace_root_parent = os.path.dirname(self.workspace_root)
-      source_maps = ['"%s" "%s"' % (p, workspace_root_parent)
-                     for p in source_paths]
+
+      source_maps = []
+      for p, symlink in source_paths:
+        if symlink:
+          local_path = os.path.join(workspace_root_parent, symlink)
+        else:
+          local_path = workspace_root_parent
+        source_maps.append('"%s" "%s"' % (p, local_path))
+      source_maps.sort(reverse=True)
+
       out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
       out.write(block_end)
 
@@ -898,11 +910,14 @@ class BazelBuildBridge(object):
     return 0
 
   def _ExtractTargetSourcePaths(self):
-    """Extracts a set of source paths from the target's debug symbols.
+    """Extracts set((source paths, symlink)) from the target's debug symbols.
 
     Returns:
       None: if an error occurred.
-      set(str): containing the source paths in the target binary.
+      set(str): containing tuples of unique source paths in the target binary
+                associated with the symlink used by Tulsi generated Xcode
+                projects if applicable. For example, a source path to a
+                /genfiles/ directory will be associated with "bazel-genfiles".
     """
     if os.path.isfile(self.codesigning_folder_path):
       binary_path = self.codesigning_folder_path
@@ -927,16 +942,34 @@ class BazelBuildBridge(object):
 
     # Symbol table lines of interest are of the form:
     #  [index] n_strx (N_SO ) n_sect n_desc n_value 'source_path'
-    # where source_path is an absolute path (rather than a filename). The path
-    # up to Bazel's execroot is captured.
+    # where source_path is an absolute path (rather than a filename). There are
+    # several paths of interest:
+    # The path up to "/bin/" is mapped to bazel-bin.
+    # The path up to "/genfiles/" is mapped to bazel-genfiles.
+    # The path up to "execroot" covers any other cases.
     source_path_re = re.compile(
-        r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/.*?\'\s*$')
+        r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/(.*?)\'\s*$')
     source_path_prefixes = set()
 
     for line in output.split('\n'):
       match = source_path_re.match(line)
       if match:
-        source_path_prefixes.add(match.group(1))
+        basepath = match.group(1)
+        # Subpaths of interest will be of the form
+        # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
+        subpath = match.group(2)
+        components = subpath.split(os.sep, 5)
+        if len(components) >= 4 and components[1] == 'bazel-out':
+          symlink_component = components[3]
+          match_path = os.path.join(basepath, *components[:4])
+          if symlink_component == 'bin':
+            source_path_prefixes.add((match_path, self.bazel_bin_path))
+            continue
+          if symlink_component == 'genfiles':
+            source_path_prefixes.add((match_path, self.bazel_genfiles_path))
+            continue
+
+        source_path_prefixes.add((basepath, None))
 
     return source_path_prefixes
 
