@@ -354,8 +354,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       let targetName = indexerNameForRuleEntry(ruleEntry)
-      let indexingTarget = project.createNativeTarget(targetName,
-                                                      targetType: PBXTarget.ProductType.StaticLibrary)
+      let indexingTargetType: PBXTarget.ProductType
+      if (ruleEntry.type == "swift_library") {
+        indexingTargetType = PBXTarget.ProductType.Framework
+      } else {
+        indexingTargetType = PBXTarget.ProductType.StaticLibrary
+      }
+
+
+      let indexingTarget = project.createNativeTarget(targetName, targetType: indexingTargetType)
       generatedIndexerTargets.insert(indexingTarget)
 
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
