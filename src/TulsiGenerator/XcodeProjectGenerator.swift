@@ -198,7 +198,9 @@ final class XcodeProjectGenerator {
     let ruleEntryMap = loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
     var testSuiteRules = Set<RuleEntry>()
-    func expandTargetLabels<T: SequenceType where T.Generator.Element == BuildLabel>(labels: T) {
+    // Ideally this should use a generic SequenceType, but Swift 2.2 sometimes crashes in this case.
+    // TODO(abaire): Go back to using a generic here when support for Swift 2.2 is removed.
+    func expandTargetLabels(labels: Set<BuildLabel>) {
       for label in labels {
         guard let ruleEntry = ruleEntryMap[label] else { continue }
         if ruleEntry.type != "test_suite" {
@@ -209,7 +211,8 @@ final class XcodeProjectGenerator {
         }
       }
     }
-    expandTargetLabels(config.buildTargetLabels)
+    let buildTargetLabels = Set(config.buildTargetLabels)
+    expandTargetLabels(buildTargetLabels)
 
     var targetRules = Set<RuleEntry>()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
