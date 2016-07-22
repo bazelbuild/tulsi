@@ -38,6 +38,29 @@ Transcript for Shown Results" to copy everything to the pasteboard.
 
 ![After expansion](/images/FAQ_Expanded_Build_Log_02.png "After expansion")
 
+# Somebody asked me for a simulator log, where do I get that?
+
+Simulator logs may be retrieved via Console.app (`/Applications/Utilities`) or
+by grabbing the files directly.
+
+Generally you'll need to provide two logs, both of which may be found under
+`~/Library/Logs`.
+
+* `CoreSimulator.log`
+* `<simulator ID>/system.log`
+
+Where `<simulator ID>` is the GUID of the simulator you were using when you
+encountered a problem. If you don't know the simulator ID, you can retrieve it
+through the "Devices" window in Xcode (under the `Window` menu or shift+cmd+2).
+
+# Somebody asked me for a device log, where do I get that?
+
+Device logs may be retrieved via the Xcode "Devices" window (under the `Window`
+menu or shift+cmd+2 in Xcode). If the console log is not already showing, you
+can click the disclosure button on the lower right to open it.
+
+![Opening the console log](/images/FAQ_Device_Log_01.png "Opening the console log")
+
 # Why the name "tulsi"?
 
 tulsi - /ˈto͝olsē/ A kind of [basil](http://bazel.io) that is venerated by
