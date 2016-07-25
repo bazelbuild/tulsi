@@ -100,6 +100,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// in order to make their symbols available to the Xcode indexer.
   static let IndexerTargetPrefix = "_idx_"
 
+  /// Rough sanity limit on indexer name length. Names may be slightly longer than this limit.
+  static let MaxIndexerNameLength = 512
+
   /// Name of the legacy target that will be used to communicate with Bazel during Xcode clean
   /// actions.
   static let BazelCleanTarget = "_bazel_clean_"
@@ -129,21 +132,105 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Stores data about a given RuleEntry to be used in order to generate Xcode indexer targets.
   private struct IndexerData {
-    let name: String
+    /// Provides information about the RuleEntry instances supported by an IndexerData.
+    /// Specifically, NameInfoToken tuples provide the targetName and the full target label hash in
+    /// order to differentiate between rules with the same name but different paths.
+    typealias NameInfoToken = (String, Int)
+
+    let indexerNameInfo: [NameInfoToken]
     let preprocessorDefines: Set<String>
     let otherCFlags: [String]
     let includes: [String]
+    let generatedIncludes: [String]
     let frameworkSearchPaths: [String]
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
     let enableModules: Bool
+
+    /// Returns the full name that should be used when generating a target for this indexer.
+    var indexerName: String {
+      var fullName = ""
+      var fullHash = 0
+
+      for (name, hash) in indexerNameInfo {
+        if fullName.isEmpty {
+          fullName = name
+        } else {
+          fullName += "_\(name)"
+        }
+        fullHash = fullHash &+ hash
+      }
+      return PBXTargetGenerator.indexerNameForTargetName(fullName, hash: fullHash)
+    }
+
+    /// Returns an array of aliases for this indexer data. Each element is the full indexerName of
+    /// an IndexerData instance that has been merged into this IndexerData.
+    var supportedIndexingTargets: [String] {
+      var supportedTargets = [indexerName]
+      if indexerNameInfo.count > 1 {
+        for (name, hash) in indexerNameInfo {
+          supportedTargets.append(PBXTargetGenerator.indexerNameForTargetName(name, hash: hash))
+        }
+      }
+      return supportedTargets
+    }
+
+    static func nameInfoForRuleEntry(ruleEntry: RuleEntry) -> [NameInfoToken] {
+      return [(ruleEntry.label.targetName!, ruleEntry.label.hashValue)]
+    }
+
+    /// Indicates whether or not this indexer may be merged with the given indexer.
+    func canMergeWith(other: IndexerData) -> Bool {
+      if let pchFile = self.pchFile where (other.pchFile == nil || other.pchFile! != pchFile) {
+        return false
+      }
+
+      if let bridgingHeader = self.bridgingHeader
+          where (other.bridgingHeader == nil || other.bridgingHeader! != bridgingHeader) {
+        return false
+      }
+
+      if !(preprocessorDefines == other.preprocessorDefines &&
+          enableModules == other.enableModules &&
+          otherCFlags == other.otherCFlags &&
+          frameworkSearchPaths == other.frameworkSearchPaths &&
+          includes == other.includes) {
+        return false
+      }
+
+      return true
+    }
+
+    /// Returns a new IndexerData instance that is the result of merging this indexer with another.
+    func merging(other: IndexerData) -> IndexerData {
+      let newName = indexerNameInfo + other.indexerNameInfo
+      let newGeneratedIncludes = generatedIncludes + other.generatedIncludes
+      let newBuildPhase = PBXSourcesBuildPhase()
+      newBuildPhase.files = buildPhase.files + other.buildPhase.files
+
+      return IndexerData(indexerNameInfo: newName,
+                         preprocessorDefines: preprocessorDefines,
+                         otherCFlags: otherCFlags,
+                         includes: includes,
+                         generatedIncludes: newGeneratedIncludes,
+                         frameworkSearchPaths: frameworkSearchPaths,
+                         buildPhase: newBuildPhase,
+                         pchFile: pchFile,
+                         bridgingHeader: bridgingHeader,
+                         enableModules: enableModules)
+    }
   }
 
   /// Registered indexers that will be modeled as static libraries.
   private var staticIndexers = [String: IndexerData]()
   /// Registered indexers that will be modeled as dynamic frameworks.
   private var frameworkIndexers = [String: IndexerData]()
+
+  /// Maps the names of indexer targets to the generated target instance in the project. Values are
+  /// not guaranteed to be unique, as several targets may be merged into a single target during
+  /// optimization.
+  private var indexerTargetByName = [String: PBXTarget]()
 
   static func workingDirectoryForPBXGroup(group: PBXGroup) -> String {
     switch group.sourceTree {
@@ -268,16 +355,20 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     // Map of build label to cumulative preprocessor defines and include paths.
-    var processedEntries = [BuildLabel: (Set<String>, NSOrderedSet, NSOrderedSet)]()
-    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>, NSOrderedSet, NSOrderedSet) {
+    var processedEntries = [BuildLabel: (Set<String>, NSOrderedSet, NSOrderedSet, NSOrderedSet)]()
+    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>,
+                                                                          NSOrderedSet,
+                                                                          NSOrderedSet,
+                                                                          NSOrderedSet) {
       if let data = processedEntries[ruleEntry.label] {
         return data
       }
       var defines = Set<String>()
       var includes = NSMutableOrderedSet()
+      var generatedIncludes = NSMutableOrderedSet()
       var frameworkSearchPaths = NSMutableOrderedSet()
 
-      defer { processedEntries[ruleEntry.label] = (defines, includes, frameworkSearchPaths) }
+      defer { processedEntries[ruleEntry.label] = (defines, includes, generatedIncludes, frameworkSearchPaths) }
 
       for dep in ruleEntry.dependencies {
         guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
@@ -287,10 +378,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           continue
         }
 
-        let (inheritedDefines, inheritedIncludes, inheritedFrameworkSearchPaths) =
+        let (inheritedDefines, inheritedIncludes, inheritedGeneratedIncludes, inheritedFrameworkSearchPaths) =
             generateIndexerTargetGraphForRuleEntry(depEntry)
         defines.unionInPlace(inheritedDefines)
         includes.unionOrderedSet(inheritedIncludes)
+        generatedIncludes.unionOrderedSet(inheritedGeneratedIncludes)
         frameworkSearchPaths.unionOrderedSet(inheritedFrameworkSearchPaths)
       }
 
@@ -321,7 +413,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       if let generatedIncludePaths = ruleEntry.generatedIncludePaths {
         let rootedPaths = generatedIncludePaths.map() { "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\($0)" }
-        includes.addObjectsFromArray(rootedPaths)
+        generatedIncludes.addObjectsFromArray(rootedPaths)
       }
 
       // Search path entries are added for all framework imports, regardless of whether the
@@ -350,7 +442,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           nonARCSourceFileInfos.isEmpty &&
           frameworkFileInfos.isEmpty &&
           nonSourceVersionedFileInfos.isEmpty {
-        return (defines, includes, frameworkSearchPaths)
+        return (defines, includes, generatedIncludes, frameworkSearchPaths)
       }
 
       var localPreprocessorDefines = defines
@@ -405,36 +497,42 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
-        let indexerName = PBXTargetGenerator.indexerNameForRuleEntry(ruleEntry)
-        let indexerData = IndexerData(name: indexerName,
+        let indexerData = IndexerData(indexerNameInfo: IndexerData.nameInfoForRuleEntry(ruleEntry),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
                                       includes: localIncludes.array as! [String],
+                                      generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
                                       enableModules: enableModules)
         if (ruleEntry.type == "swift_library") {
-          frameworkIndexers[indexerData.name] = indexerData
+          frameworkIndexers[indexerData.indexerName] = indexerData
         } else {
-          staticIndexers[indexerData.name] = indexerData
+          staticIndexers[indexerData.indexerName] = indexerData
         }
       }
 
-      return (defines, includes, frameworkSearchPaths)
+      return (defines, includes, generatedIncludes, frameworkSearchPaths)
     }
 
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
   }
 
   func generateIndexerTargets() {
+    mergeRegisteredIndexers()
+
     func generateIndexer(name: String,
                          indexerType: PBXTarget.ProductType,
                          data: IndexerData) {
       let indexingTarget = project.createNativeTarget(name, targetType: indexerType)
       indexingTarget.buildPhases.append(data.buildPhase)
       addConfigsForIndexingTarget(indexingTarget, data: data)
+
+      for name in data.supportedIndexingTargets {
+        indexerTargetByName[name] = indexingTarget
+      }
     }
 
     for (name, data) in staticIndexers {
@@ -524,6 +622,35 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // MARK: - Private methods
+
+  /// Attempts to reduce the number of indexers by merging any that have identical settings.
+  private func mergeRegisteredIndexers() {
+
+    func mergeIndexers<T : SequenceType where T.Generator.Element == IndexerData>(indexers: T) -> [String: IndexerData] {
+      var mergedIndexers = [String: IndexerData]()
+      var indexers = Array(indexers)
+
+      while !indexers.isEmpty {
+        var remaining = [IndexerData]()
+        var d1 = indexers.popLast()!
+        for d2 in indexers {
+          if d1.canMergeWith(d2) {
+            d1 = d1.merging(d2)
+          } else {
+            remaining.append(d2)
+          }
+        }
+
+        mergedIndexers[d1.indexerName] = d1
+        indexers = remaining
+      }
+
+      return mergedIndexers
+    }
+
+    staticIndexers = mergeIndexers(staticIndexers.values)
+    frameworkIndexers = mergeIndexers(frameworkIndexers.values)
+  }
 
   private func generateFileReferencesForFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
     var generatedFilePaths = [String]()
@@ -679,8 +806,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["CLANG_ENABLE_MODULES"] = "YES"
     }
 
-    if !data.includes.isEmpty {
-      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + data.includes.joinWithSeparator(" ")
+    if !data.includes.isEmpty || !data.generatedIncludes.isEmpty {
+      let includes = data.includes.joinWithSeparator(" ")
+      let generatedIncludes = data.generatedIncludes.joinWithSeparator(" ")
+      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
     }
 
     if !data.frameworkSearchPaths.isEmpty {
@@ -716,7 +845,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       ]
 
       // Inherit the resolved values from the indexer.
-      let indexerTarget = project.targetByName[PBXTargetGenerator.indexerNameForRuleEntry(ruleEntry)]
+      let indexerName = PBXTargetGenerator.indexerNameForTargetName(ruleEntry.label.targetName!,
+                                                                    hash: ruleEntry.label.hashValue)
+      let indexerTarget = indexerTargetByName[indexerName]
       updateMissingBuildConfigurationsForList(target.buildConfigurationList,
                                               withBuildSettings: testSettings,
                                               inheritingFromConfigurationList: indexerTarget?.buildConfigurationList)
@@ -838,10 +969,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  private static func indexerNameForRuleEntry(ruleEntry: RuleEntry) -> String {
-    let targetName = ruleEntry.label.targetName!
-    let hash = ruleEntry.label.hashValue
-    return String(format: "\(IndexerTargetPrefix)\(targetName)_%08X", hash)
+  private static func indexerNameForTargetName(targetName: String, hash: Int) -> String {
+    let normalizedTargetName: String
+    if targetName.characters.count > MaxIndexerNameLength {
+      let endIndex = targetName.startIndex.advancedBy(MaxIndexerNameLength - 4)
+      normalizedTargetName = targetName.substringToIndex(endIndex) + "_etc"
+    } else {
+      normalizedTargetName = targetName
+    }
+    return String(format: "\(IndexerTargetPrefix)\(normalizedTargetName)_%08X", hash)
   }
 
   // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given

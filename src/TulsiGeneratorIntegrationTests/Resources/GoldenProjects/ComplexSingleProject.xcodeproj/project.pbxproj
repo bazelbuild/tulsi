@@ -44,7 +44,6 @@
 /* Begin PBXFileReference section */
 		43D68C2803714D9600000000 /* watch_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = watch_extension_binary.m; sourceTree = "<group>"; };
 		43D68C28059002BC00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = entitlements.entitlements; sourceTree = "<group>"; };
-		43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_NonPropagatedLibrary_8556858B.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Binary_FD777BDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282F76936E00000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file1; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -60,7 +59,6 @@
 		43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_20EC2F4A.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C284D703CF400000000 /* AssetsTwo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsTwo.xcassets; sourceTree = "<group>"; };
 		43D68C284DAF010A00000000 /* Plist2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist2.plist; sourceTree = "<group>"; };
-		43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_CoreDataResources_3FDF153F.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
 		43D68C28556865D600000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = test.framework; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285F81D61600000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
-		43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_WatchExtensionBinary_020F3F9D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C286CB3C3A800000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28723DC36E00000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
@@ -83,7 +80,6 @@
 		43D68C2886555B1600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = file2.file; sourceTree = "<group>"; };
 		43D68C289349B5E800000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = EN.strings; sourceTree = "<group>"; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
-		43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_TodayExtensionBinary_999643E7.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2897997C9400000000 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_resources.file; sourceTree = "<group>"; };
 		43D68C2897D54C2400000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = ext_entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C28985256C400000000 /* AssetsOne.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsOne.xcassets; sourceTree = "<group>"; };
@@ -91,6 +87,7 @@
 		43D68C28A02DAD1000000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; path = structured_resources.file2; sourceTree = "<group>"; };
 		43D68C28A3F5767600000000 /* app_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_structured_resources.file; sourceTree = "<group>"; };
 		43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28AFFDDDEA00000000 /* lib_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B202E93C00000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; path = Two.storyboard; sourceTree = "<group>"; };
 		43D68C28B4E4432800000000 /* bridging_header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; path = bridging_header.h; sourceTree = "<group>"; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -199,14 +196,11 @@
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */,
-				43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */,
 				43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */,
-				43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */,
+				43D68C28AFFDDDEA00000000 /* lib_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E.a */,
 				43D68C28825E46AA00000000 /* lib_idx_SubLibraryWithDefines_80C072DC.a */,
 				43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */,
 				43D68C285E11926600000000 /* lib_idx_SubLibrary_19588DB9.a */,
-				43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */,
-				43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */,
 				43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */,
 			);
 			name = Products;
@@ -602,6 +596,22 @@
 			productReference = 43D68C283A3B027E00000000 /* TodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3D31C5E66314F73000000000 /* _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558326E9234C00000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
+			productName = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
+			productReference = 43D68C28AFFDDDEA00000000 /* lib_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
@@ -622,7 +632,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */;
 			buildPhases = (
-				605793E20000000000000003 /* Sources */,
+				605793E20000000000000002 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -638,7 +648,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */;
 			buildPhases = (
-				605793E20000000000000005 /* Sources */,
+				605793E20000000000000004 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -654,7 +664,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */;
 			buildPhases = (
-				605793E20000000000000007 /* Sources */,
+				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -670,7 +680,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */;
 			buildPhases = (
-				605793E20000000000000006 /* Sources */,
+				605793E20000000000000005 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -680,38 +690,6 @@
 			name = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			productName = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			productReference = 43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6B0A0066C00000000 /* _idx_WatchExtensionBinary_020F3F9D */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583F2E38A8000000000 /* Build configuration list for PBXNativeTarget "_idx_WatchExtensionBinary_020F3F9D" */;
-			buildPhases = (
-				605793E20000000000000009 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_WatchExtensionBinary_020F3F9D;
-			productName = _idx_WatchExtensionBinary_020F3F9D;
-			productReference = 43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6B2BBEE0000000000 /* _idx_CoreDataResources_3FDF153F */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */;
-			buildPhases = (
-				605793E20000000000000002 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_CoreDataResources_3FDF153F;
-			productName = _idx_CoreDataResources_3FDF153F;
-			productReference = 43D68C284E8B711A00000000 /* lib_idx_CoreDataResources_3FDF153F.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */ = {
@@ -750,7 +728,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */;
 			buildPhases = (
-				605793E2000000000000000A /* Sources */,
+				605793E20000000000000007 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -760,22 +738,6 @@
 			name = _idx_XCTest_7F8584F1;
 			productName = _idx_XCTest_7F8584F1;
 			productReference = 43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3D31C5E6ED9CD46C00000000 /* _idx_TodayExtensionBinary_999643E7 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755834837BD8000000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionBinary_999643E7" */;
-			buildPhases = (
-				605793E20000000000000008 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_TodayExtensionBinary_999643E7;
-			productName = _idx_TodayExtensionBinary_999643E7;
-			productReference = 43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
@@ -795,22 +757,6 @@
 			productName = XCTest;
 			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		3D31C5E6F65076A600000000 /* _idx_NonPropagatedLibrary_8556858B */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */;
-			buildPhases = (
-				605793E20000000000000004 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_NonPropagatedLibrary_8556858B;
-			productName = _idx_NonPropagatedLibrary_8556858B;
-			productReference = 43D68C280EB47D6800000000 /* lib_idx_NonPropagatedLibrary_8556858B.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -841,14 +787,11 @@
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
 				3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */,
-				3D31C5E6B2BBEE0000000000 /* _idx_CoreDataResources_3FDF153F */,
 				3D31C5E688E1600400000000 /* _idx_Library_20EC2F4A */,
-				3D31C5E6F65076A600000000 /* _idx_NonPropagatedLibrary_8556858B */,
+				3D31C5E66314F73000000000 /* _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E */,
 				3D31C5E68AF9EBA000000000 /* _idx_SubLibraryWithDefines_80C072DC */,
 				3D31C5E6AC743AFA00000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC */,
 				3D31C5E6A606B6CC00000000 /* _idx_SubLibrary_19588DB9 */,
-				3D31C5E6ED9CD46C00000000 /* _idx_TodayExtensionBinary_999643E7 */,
-				3D31C5E6B0A0066C00000000 /* _idx_WatchExtensionBinary_020F3F9D */,
 				3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */,
 			);
 		};
@@ -936,14 +879,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49470DE24FD000000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		605793E20000000000000003 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
 				E6AF494745522B5A00000000 /* src5.mm in srcs */,
 				E6AF49475401417600000000 /* src1.m in srcs */,
 				E6AF4947578645F400000000 /* src2.m in srcs */,
@@ -952,15 +887,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000004 /* Sources */ = {
+		605793E20000000000000003 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
 				E6AF4947BC21CCBA00000000 /* non_propagated.m in srcs */,
+				E6AF49470DE24FD000000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
+				E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */,
+				E6AF494703714D9600000000 /* watch_extension_binary.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000005 /* Sources */ = {
+		605793E20000000000000004 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -968,7 +906,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000006 /* Sources */ = {
+		605793E20000000000000005 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -976,7 +914,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000007 /* Sources */ = {
+		605793E20000000000000006 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -984,23 +922,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000008 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		605793E20000000000000009 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				E6AF494703714D9600000000 /* watch_extension_binary.m in srcs */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		605793E2000000000000000A /* Sources */ = {
+		605793E20000000000000007 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -1029,8 +951,9 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -1046,6 +969,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Application;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1088,6 +1012,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TodayExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1101,6 +1026,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = WatchExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1110,7 +1036,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -1120,46 +1046,39 @@
 		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
+				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000007 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
-				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000008 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
+				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
+				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000009 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes";
-				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
-			};
-			name = Fastbuild;
-		};
-		44936BD6300858860000000A /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000B /* Fastbuild */ = {
+		44936BD6300858860000000A /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1168,25 +1087,11 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000C /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
-			};
-			name = Fastbuild;
-		};
-		44936BD6300858860000000D /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
-			};
-			name = Fastbuild;
-		};
-		44936BD6300858860000000E /* Fastbuild */ = {
+		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
@@ -1200,8 +1105,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -1218,6 +1124,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Application;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1262,6 +1169,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TodayExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1276,6 +1184,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = WatchExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1286,7 +1195,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -1296,19 +1205,19 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
+				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
-				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Debug;
 		};
@@ -1316,7 +1225,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
+				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
+				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Debug;
 		};
@@ -1324,23 +1235,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes";
-				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D0000000A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000B /* Debug */ = {
+		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1350,28 +1251,12 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D0000000D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D0000000E /* Debug */ = {
+		44936BD67EED3C4D0000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
@@ -1385,8 +1270,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
@@ -1403,6 +1289,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Application;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1447,6 +1334,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TodayExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1461,6 +1349,7 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = WatchExtension;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 			};
@@ -1471,7 +1360,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
@@ -1481,19 +1370,19 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _idx_CoreDataResources_3FDF153F;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
+				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
+				PRODUCT_NAME = _idx_Library_20EC2F4A;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
-				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Release;
 		};
@@ -1501,7 +1390,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_8556858B;
+				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
+				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
+				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Release;
 		};
@@ -1509,23 +1400,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes";
-				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE90000000A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000B /* Release */ = {
+		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1535,28 +1416,12 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE90000000D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE90000000E /* Release */ = {
+		44936BD6A3D45CE90000000B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
 			};
@@ -1571,8 +1436,9 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1592,6 +1458,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1643,6 +1510,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1661,6 +1529,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1678,8 +1547,9 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1699,6 +1569,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1750,6 +1621,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1768,6 +1640,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1790,21 +1663,21 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755834837BD8000000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionBinary_999643E7" */ = {
+		DE47558326E9234C00000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000C /* Debug */,
-				44936BD6300858860000000C /* Fastbuild */,
-				44936BD6A3D45CE90000000C /* Release */,
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD63008588600000007 /* Fastbuild */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000A /* Debug */,
-				44936BD6300858860000000A /* Fastbuild */,
-				44936BD6A3D45CE90000000A /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD63008588600000009 /* Fastbuild */,
+				44936BD6A3D45CE900000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1822,22 +1695,13 @@
 		DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD63008588600000009 /* Fastbuild */,
-				44936BD6A3D45CE900000009 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583753836A100000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_8556858B" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
 				44936BD67EED3C4D00000008 /* Debug */,
 				44936BD63008588600000008 /* Fastbuild */,
 				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755837866C47600000000 /* Build configuration list for PBXNativeTarget "_idx_CoreDataResources_3FDF153F" */ = {
+		DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1846,21 +1710,12 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755837C63A0C800000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD63008588600000007 /* Fastbuild */,
-				44936BD6A3D45CE900000007 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000B /* Debug */,
-				44936BD6300858860000000B /* Fastbuild */,
-				44936BD6A3D45CE90000000B /* Release */,
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6300858860000000A /* Fastbuild */,
+				44936BD6A3D45CE90000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1904,18 +1759,9 @@
 		DE475583E91C677500000000 /* Build configuration list for PBXNativeTarget "_idx_XCTest_7F8584F1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000E /* Debug */,
-				44936BD6300858860000000E /* Fastbuild */,
-				44936BD6A3D45CE90000000E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583F2E38A8000000000 /* Build configuration list for PBXNativeTarget "_idx_WatchExtensionBinary_020F3F9D" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D0000000D /* Debug */,
-				44936BD6300858860000000D /* Fastbuild */,
-				44936BD6A3D45CE90000000D /* Release */,
+				44936BD67EED3C4D0000000B /* Debug */,
+				44936BD6300858860000000B /* Fastbuild */,
+				44936BD6A3D45CE90000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
