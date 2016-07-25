@@ -403,7 +403,10 @@ def _tulsi_sources_aspect(target, ctx):
   # created as artifacts of java/j2objc rules).
   dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
   compile_deps = [str(l) for l in dep_labels if not l.name.endswith('.jar')]
+
   binary_rule = _get_opt_attr(rule_attr, 'binary')
+  if binary_rule and type(binary_rule) == 'list':
+    binary_rule = binary_rule[0]
 
   supporting_files = (_collect_supporting_files(rule_attr) +
                       _collect_asset_catalogs(rule_attr) +
@@ -412,7 +415,7 @@ def _tulsi_sources_aspect(target, ctx):
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
-      binary=_get_label_attr(rule_attr, 'binary.label'),
+      binary=_get_label_attr(binary_rule, 'label'),
       copts=_get_opt_attr(rule_attr, 'copts'),
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
       supporting_files=supporting_files,
