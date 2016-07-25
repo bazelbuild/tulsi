@@ -223,8 +223,8 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
 
-    profileAction("generating_indexers") {
-      let progressNotifier = ProgressNotifier(name: GeneratingIndexerTargets,
+    profileAction("gathering_sources_for_indexers") {
+      let progressNotifier = ProgressNotifier(name: GatheringIndexerSources,
                                               maxValue: expandedTargetLabels.count)
       for label in expandedTargetLabels {
         progressNotifier.incrementValue()
@@ -239,10 +239,18 @@ final class XcodeProjectGenerator {
         for hostTargetLabel in ruleEntry.linkedTargetLabels {
           hostTargetLabels[hostTargetLabel] = ruleEntry.label
         }
-        generator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                     ruleEntryMap: ruleEntryMap,
-                                                     pathFilters: config.pathFilters)
+        generator.registerRuleEntryForIndexer(ruleEntry,
+                                              ruleEntryMap: ruleEntryMap,
+                                              pathFilters: config.pathFilters)
       }
+    }
+
+    profileAction("generating_indexers") {
+      let progressNotifier = ProgressNotifier(name: GeneratingIndexerTargets,
+                                              maxValue: 1,
+                                              indeterminate: true)
+      generator.generateIndexerTargets()
+      progressNotifier.incrementValue()
     }
 
     // Generate RuleEntry's for any test hosts to ensure that selected tests can be executed in

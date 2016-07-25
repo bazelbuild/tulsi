@@ -104,6 +104,9 @@ public let ProgressUpdatingTaskStartIndeterminate = "startIndeterminate"
 public let ProgressUpdatingTaskProgress = "com.google.tulsi.progressUpdatingTaskProgress"
 public let ProgressUpdatingTaskProgressValue = "value"
 
+/// Sent when building source/setting groupings for indexer libraries.
+public let GatheringIndexerSources = "gatheringIndexerSources"
+
 /// Sent when creating Xcode build targets.
 public let GeneratingBuildTargets = "generatingBuildTargets"
 

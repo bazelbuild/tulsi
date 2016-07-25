@@ -780,9 +780,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
     let targets = project.targetByName
     XCTAssert(targets.isEmpty)
   }
@@ -794,9 +795,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -811,9 +813,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -831,9 +834,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -857,9 +861,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -881,9 +886,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters.union(Set([dataModel])))
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters.union(Set([dataModel])))
+    targetGenerator.generateIndexerTargets()
 
     var allSourceFiles = sourceFileNames
     allSourceFiles.append(dataModel)
@@ -909,9 +915,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: allSourceFiles)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -933,9 +940,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: allSourceFiles)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
@@ -950,9 +958,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
     XCTAssertNil(fileRefForPath(buildFilePath))
   }
 
@@ -964,9 +973,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 
@@ -978,9 +988,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
-    targetGenerator.generateIndexerTargetsForRuleEntry(ruleEntry,
-                                                       ruleEntryMap: [:],
-                                                       pathFilters: pathFilters)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 

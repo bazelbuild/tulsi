@@ -116,6 +116,9 @@
 
 /* Strings mapping progress item notification names to user-friendly names */
 
+/* Sent when the Tulsi generator is gathering source/settings for Xcode indexer targets. */
+"gatheringIndexerSources" = "Gathering sources for Xcode indexers";
+
 /* Sent when creating Xcode build targets. */
 "generatingBuildTargets" = "Generating build targets";
 

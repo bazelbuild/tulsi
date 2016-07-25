@@ -40,7 +40,7 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
 
 
 /// Encapsulates data about a file that may be a Bazel input or output.
-public class BazelFileInfo {
+public class BazelFileInfo: Equatable {
   public enum TargetType {
     case SourceFile
     case GeneratedFile
@@ -89,6 +89,12 @@ public class BazelFileInfo {
     self.subPath = subPath
     self.targetType = targetType
   }
+}
+
+public func ==(lhs: BazelFileInfo, rhs: BazelFileInfo) -> Bool {
+  return lhs.targetType == rhs.targetType &&
+      lhs.rootPath == rhs.rootPath &&
+      lhs.subPath == rhs.subPath
 }
 
 
