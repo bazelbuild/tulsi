@@ -189,12 +189,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     /// Indicates whether or not this indexer may be merged with the given indexer.
     func canMergeWith(other: IndexerData) -> Bool {
-      if let pchFile = self.pchFile where (other.pchFile == nil || other.pchFile! != pchFile) {
-        return false
-      }
-
-      if let bridgingHeader = self.bridgingHeader
-          where (other.bridgingHeader == nil || other.bridgingHeader! != bridgingHeader) {
+      if self.pchFile != other.pchFile || self.bridgingHeader != other.bridgingHeader {
         return false
       }
 

@@ -995,6 +995,111 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
 
+  func testMergesCompatibleIndexers() {
+    let sourceFiles1 = ["1.swift", "1.cc"]
+    let buildLabel1 = BuildLabel("test/app:TestBinary")
+    let ruleEntry1 = makeTestRuleEntry(buildLabel1,
+                                       type: "ios_binary",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFiles1)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+
+    let sourceFiles2 = ["2.swift"]
+    let buildLabel2 = BuildLabel("test/app:TestLibrary")
+    let ruleEntry2 = makeTestRuleEntry(buildLabel2,
+                                       type: "objc_library",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFiles2)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    let indexerTargetName = String(format: "_idx_TestLibrary_TestBinary_%08X",
+                                   buildLabel1.hashValue &+ buildLabel2.hashValue)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: sourceFiles1 + sourceFiles2,
+                          pchFile: pchFile,
+                          inTargets: targets)
+  }
+
+  func testDoesNotMergeIndexerWithPCHMismatch() {
+    let buildLabel1 = BuildLabel("test/app:TestBinary")
+    let ruleEntry1 = makeTestRuleEntry(buildLabel1,
+                                       type: "ios_binary",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFileNames)
+    let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+
+    let buildLabel2 = BuildLabel("test/app:TestLibrary")
+    let ruleEntry2 = makeTestRuleEntry(buildLabel2,
+                                       type: "objc_library",
+                                       attributes: [:],
+                                       sourceFiles: sourceFileNames)
+    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X", buildLabel2.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+    validateIndexerTarget(indexer1TargetName,
+                          sourceFileNames: sourceFileNames,
+                          pchFile: pchFile,
+                          inTargets: targets)
+    validateIndexerTarget(indexer2TargetName,
+                          sourceFileNames: sourceFileNames,
+                          inTargets: targets)
+  }
+
+  func testDoesNotMergeIndexerWithGeneratedBridgingHeaderMismatch() {
+    let bridgingHeaderFilePath = "some/place/bridging-header.h"
+    let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
+                              "root": "bazel-genfiles",
+                              "src": false]
+    let ruleAttributes1 = ["bridging_header": bridgingHeaderInfo]
+
+    let buildLabel1 = BuildLabel("test/app:TestBinary")
+    let ruleEntry1 = makeTestRuleEntry(buildLabel1,
+                                       type: "ios_binary",
+                                       attributes: ruleAttributes1,
+                                       sourceFiles: sourceFileNames)
+    let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+
+    let buildLabel2 = BuildLabel("test/app:TestLibrary")
+    let ruleEntry2 = makeTestRuleEntry(buildLabel2,
+                                       type: "objc_library",
+                                       attributes: [:],
+                                       sourceFiles: sourceFileNames)
+    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X", buildLabel2.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+    validateIndexerTarget(indexer1TargetName,
+                          sourceFileNames: sourceFileNames,
+                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
+                          inTargets: targets)
+    validateIndexerTarget(indexer2TargetName,
+                          sourceFileNames: sourceFileNames,
+                          inTargets: targets)
+  }
+
   // MARK: - Helper methods
 
   private func debugBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
