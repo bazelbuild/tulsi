@@ -373,7 +373,7 @@ class BazelBuildBridge(object):
     # The path to the xcodeproj bundle.
     self.project_file_path = os.environ['PROJECT_FILE_PATH']
     # Path to the directory containing the WORKSPACE file.
-    self.workspace_root = os.environ['TULSI_WR']
+    self.workspace_root = os.path.abspath(os.environ['TULSI_WR'])
     # Set to the name of the generated bundle for bundle-type targets, None for
     # single file targets (like static libraries).
     self.wrapper_name = os.environ.get('WRAPPER_NAME')
