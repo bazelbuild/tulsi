@@ -106,6 +106,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return fullURL?.path
   }
 
+  func extractBuildfiles<T: CollectionType where T.Generator.Element == BuildLabel>(forTargets: T) -> Set<BuildLabel> {
+    return queryExtractor.extractBuildfiles(forTargets)
+  }
+
   // MARK: - Private methods
 
   private func extractTestSuiteRules(labels: [BuildLabel]) {

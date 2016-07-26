@@ -14,6 +14,8 @@
 
 # Complex mock BUILD file for aspect testing.
 
+load(":ComplexSingle.bzl", "test_macro")
+
 config_setting(
     name = "config_test_enabled",
     values = {"define": "TEST=1"},

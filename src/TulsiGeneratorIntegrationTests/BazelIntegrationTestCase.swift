@@ -89,16 +89,17 @@ class BazelIntegrationTestCase: XCTestCase {
     localizedMessageLogger = nil
   }
 
-  /// Copies the .BUILD file bundled under the given name into the test workspace.
+  /// Copies the .BUILD file bundled under the given name into the test workspace, as well as any
+  /// .bzl file with the same root name.
   func installBUILDFile(fileResourceName: String,
                         intoSubdirectory subdirectory: String? = nil,
                         fromResourceDirectory resourceDirectory: String? = nil,
                         file: StaticString = #file,
                         line: UInt = #line) -> NSURL? {
     let bundle = NSBundle(forClass: self.dynamicType)
-    guard let fileURL = bundle.URLForResource(fileResourceName,
-                                              withExtension: "BUILD",
-                                              subdirectory: resourceDirectory) else {
+    guard let buildFileURL = bundle.URLForResource(fileResourceName,
+                                                   withExtension: "BUILD",
+                                                   subdirectory: resourceDirectory) else {
       XCTFail("Missing required test resource file \(fileResourceName).BUILD",
               file: file,
               line: line)
@@ -106,19 +107,33 @@ class BazelIntegrationTestCase: XCTestCase {
     }
 
     guard let directoryURL = getWorkspaceDirectory(subdirectory) else { return nil }
-    let destinationURL = directoryURL.URLByAppendingPathComponent("BUILD", isDirectory: false)
-    do {
-      let fileManager = NSFileManager.defaultManager()
-      if fileManager.fileExistsAtPath(destinationURL.path!) {
-        try fileManager.removeItemAtURL(destinationURL)
+
+    func copyFile(sourceFileURL: NSURL, toFileNamed targetName: String) -> NSURL? {
+      let destinationURL = directoryURL.URLByAppendingPathComponent(targetName, isDirectory: false)
+      do {
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(destinationURL.path!) {
+          try fileManager.removeItemAtURL(destinationURL)
+        }
+        try fileManager.copyItemAtURL(sourceFileURL, toURL: destinationURL)
+        pathsToCleanOnTeardown.insert(destinationURL)
+      } catch let e as NSError {
+        XCTFail("Failed to install '\(sourceFileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)",
+                file: file,
+                line: line)
+        return nil
       }
-      try fileManager.copyItemAtURL(fileURL, toURL: destinationURL)
-      pathsToCleanOnTeardown.insert(destinationURL)
-    } catch let e as NSError {
-      XCTFail("Failed to install BUILD file '\(fileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)",
-              file: file,
-              line: line)
+      return destinationURL
+    }
+
+    guard let destinationURL = copyFile(buildFileURL, toFileNamed: "BUILD") else {
       return nil
+    }
+
+    if let skylarkFileURL = bundle.URLForResource(fileResourceName,
+                                                     withExtension: "bzl",
+                                                     subdirectory: resourceDirectory) {
+      copyFile(skylarkFileURL, toFileNamed: skylarkFileURL.lastPathComponent!)
     }
 
     return destinationURL

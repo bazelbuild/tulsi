@@ -56,4 +56,8 @@ public final class TulsiProjectInfoExtractor {
                                                        startupOptions: startupOptions,
                                                        buildOptions: buildOptions)
   }
+
+  public func extractBuildfiles(targets: [BuildLabel]) -> Set<BuildLabel> {
+    return workspaceInfoExtractor.extractBuildfiles(targets)
+  }
 }

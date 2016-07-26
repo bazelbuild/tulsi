@@ -36,8 +36,9 @@ protocol PBXTargetGeneratorProtocol: class {
        suppressCompilerDefines: Bool)
 
   /// Generates file references for the given file paths in the associated project without adding
-  /// them to an indexer target. The paths must be relative to the workspace root.
-  func generateFileReferencesForFilePaths(paths: [String])
+  /// them to an indexer target. The paths must be relative to the workspace root. If pathFilters is
+  /// non-nil, paths that do not match an entry in the pathFilters set will be omitted.
+  func generateFileReferencesForFilePaths(paths: [String], pathFilters: Set<String>?)
 
   /// Registers the given Bazel rule and its transitive dependencies for inclusion by the Xcode
   /// indexer, adding source files whose directories are present in pathFilters.
@@ -62,6 +63,12 @@ protocol PBXTargetGeneratorProtocol: class {
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws
+}
+
+extension PBXTargetGeneratorProtocol {
+  func generateFileReferencesForFilePaths(paths: [String]) {
+    generateFileReferencesForFilePaths(paths, pathFilters: nil)
+  }
 }
 
 
@@ -317,27 +324,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.suppressCompilerDefines = suppressCompilerDefines
   }
 
-  func generateFileReferencesForFilePaths(paths: [String]) {
-    project.getOrCreateGroupsAndFileReferencesForPaths(paths)
+  func generateFileReferencesForFilePaths(paths: [String], pathFilters: Set<String>?) {
+    if let pathFilters = pathFilters {
+      let filteredPaths = paths.filter(pathFilterFunc(pathFilters))
+      project.getOrCreateGroupsAndFileReferencesForPaths(filteredPaths)
+    } else {
+      project.getOrCreateGroupsAndFileReferencesForPaths(paths)
+    }
   }
 
   func registerRuleEntryForIndexer(ruleEntry: RuleEntry,
                                    ruleEntryMap: [BuildLabel: RuleEntry],
                                    pathFilters: Set<String>) {
-    let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
-      $0.substringToIndex($0.endIndex.advancedBy(-3))
-    })
-
-    func includePathInProject(path: String) -> Bool {
-      let dir = (path as NSString).stringByDeletingLastPathComponent
-      if pathFilters.contains(dir) { return true }
-      let terminatedDir = dir + "/"
-      for filter in recursiveFilters {
-        if terminatedDir.hasPrefix(filter) { return true }
-      }
-      return false
-    }
-
+    let includePathInProject = pathFilterFunc(pathFilters)
     func includeFileInProject(info: BazelFileInfo) -> Bool {
       return includePathInProject(info.fullPath)
     }
@@ -622,6 +621,26 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // MARK: - Private methods
+
+  /// Generates a filter function that may be used to verify that a path string is allowed by the
+  /// given set of pathFilters.
+  private func pathFilterFunc(pathFilters: Set<String>) -> (String) -> Bool {
+    let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
+      $0.substringToIndex($0.endIndex.advancedBy(-3))
+    })
+
+    func includePath(path: String) -> Bool {
+      let dir = (path as NSString).stringByDeletingLastPathComponent
+      if pathFilters.contains(dir) { return true }
+      let terminatedDir = dir + "/"
+      for filter in recursiveFilters {
+        if terminatedDir.hasPrefix(filter) { return true }
+      }
+      return false
+    }
+
+    return includePath
+  }
 
   /// Attempts to reduce the number of indexers by merging any that have identical settings.
   private func mergeRegisteredIndexers() {

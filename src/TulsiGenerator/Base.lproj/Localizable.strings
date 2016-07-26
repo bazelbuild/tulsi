@@ -29,6 +29,9 @@
 /* Extracting path info from bazel failed. The exit code is %1$d. */
 "BazelWorkspaceInfoQueryFailed" = "Failed to query information about the Bazel workspace. Bazel exited with code %1$d";
 
+/* Bazel 'buildfiles' query failed to extract information. */
+"BazelBuildfilesQueryFailed" = "Failed to query information about build files for this Bazel workspace. Skylark files and some BUILD files may be omitted from the project.";
+
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
 "CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
 

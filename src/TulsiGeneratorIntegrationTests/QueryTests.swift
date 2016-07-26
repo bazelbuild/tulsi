@@ -271,6 +271,37 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
 }
 
 
+// Tests for buildfiles extraction.
+class QueryTests_BuildFilesExtraction: BazelIntegrationTestCase {
+  var infoExtractor: BazelQueryInfoExtractor! = nil
+  let testDir = "Buildfiles"
+
+  override func setUp() {
+    super.setUp()
+    infoExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
+                                            workspaceRootURL: workspaceRootURL!,
+                                            localizedMessageLogger: localizedMessageLogger)
+    installBUILDFile("ComplexSingle", intoSubdirectory: testDir)
+  }
+
+  func testExtractBuildfiles() {
+    let targets = [
+      BuildLabel("//\(testDir):Application"),
+      BuildLabel("//\(testDir):TodayExtension"),
+      BuildLabel("//\(testDir):WatchExtension"),
+    ]
+
+    let fileLabels = infoExtractor.extractBuildfiles(targets)
+
+    // Several file labels should've been retrieved, but these can be platform and Bazel version
+    // specific, so they're assumed to be correct if the primary BUILD file and the nop Skylark file
+    // are both located.
+    XCTAssert(fileLabels.contains(BuildLabel("//\(testDir):BUILD")))
+    XCTAssert(fileLabels.contains(BuildLabel("//\(testDir):ComplexSingle.bzl")))
+  }
+}
+
+
 private class InfoChecker {
   let infoMap: [BuildLabel: (RuleInfo, Set<BuildLabel>)]
 

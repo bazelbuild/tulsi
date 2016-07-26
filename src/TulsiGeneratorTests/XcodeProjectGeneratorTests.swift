@@ -276,7 +276,9 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.project = project
   }
 
-  func generateFileReferencesForFilePaths(paths: [String]) {
+  func generateFileReferencesForFilePaths<T : CollectionType where T.Generator.Element == String>(
+      paths: [String],
+      pathFilters: Set<String>? = nil) {
   }
 
   func registerRuleEntryForIndexer(ruleEntry: RuleEntry,

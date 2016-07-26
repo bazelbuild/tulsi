@@ -439,6 +439,23 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
       var processedEntries = Set<BuildLabel>()
 
+      let componentDelimiters = NSCharacterSet(charactersInString: "/:")
+      func addPath(path: String) {
+        let path = (path as NSString).stringByDeletingLastPathComponent
+        if path.isEmpty { return }
+
+        let pathComponents = path.componentsSeparatedByCharactersInSet(componentDelimiters)
+        var cumulativePathComponents = [String]()
+        for component in pathComponents {
+          cumulativePathComponents.append(component)
+          let componentPath = cumulativePathComponents.joinWithSeparator("/")
+          cumulativePathComponents = [componentPath]
+          if sourcePathMap[componentPath] == nil {
+            sourcePathMap[componentPath] = UISourcePath(path: componentPath)
+          }
+        }
+      }
+
       func extractSourcePaths(ruleEntry: RuleEntry) {
         if processedEntries.contains(ruleEntry.label) {
           // Rules that have already been processed will already have all of their transitive
@@ -455,24 +472,21 @@ final class TulsiGeneratorConfigDocument: NSDocument,
           extractSourcePaths(depRuleEntry)
         }
 
-        let componentDelimiters = NSCharacterSet(charactersInString: "/:")
         for fileInfo in ruleEntry.projectArtifacts {
-          let path = (fileInfo.fullPath as NSString).stringByDeletingLastPathComponent
-          if path.isEmpty { continue }
-
-          let pathComponents = path.componentsSeparatedByCharactersInSet(componentDelimiters)
-          var cumulativePathComponents = [String]()
-          for component in pathComponents {
-            cumulativePathComponents.append(component)
-            let componentPath = cumulativePathComponents.joinWithSeparator("/")
-            if sourcePathMap[componentPath] == nil {
-              sourcePathMap[componentPath] = UISourcePath(path: componentPath)
-            }
-          }
+          addPath(fileInfo.fullPath)
         }
       }
+
+      var sourceTargets = [BuildLabel]()
       for entry in sourceRuleEntries {
         extractSourcePaths(entry)
+        sourceTargets.append(entry.label)
+      }
+
+      let buildfiles = self.infoExtractor.extractBuildfiles(sourceTargets)
+      for buildfileLabel in buildfiles {
+        guard let path = buildfileLabel.asFileName else { continue }
+        addPath(path)
       }
 
       NSThread.doOnMainQueue() {

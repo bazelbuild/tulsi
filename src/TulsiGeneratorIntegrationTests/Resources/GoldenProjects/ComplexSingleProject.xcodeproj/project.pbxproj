@@ -108,6 +108,7 @@
 		43D68C28F1F4A85E00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NonLocalized.strings; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FB38EC0400000000 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
+		43D68C28FC6EC1C000000000 /* ComplexSingle.bzl */ = {isa = PBXFileReference; lastKnownFileType = com.google.bazel.skylark; path = ComplexSingle.bzl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -542,6 +543,7 @@
 				966FB6DE6B144ABC00000000 /* Application */,
 				43D68C28B7EA446800000000 /* BUILD */,
 				966FB6DEC5C9C21400000000 /* Binary */,
+				43D68C28FC6EC1C000000000 /* ComplexSingle.bzl */,
 				966FB6DE29C889FA00000000 /* Library */,
 				966FB6DE2890F3CC00000000 /* LibrarySources */,
 				966FB6DE6C00B87400000000 /* NonPropagatedLibrary */,

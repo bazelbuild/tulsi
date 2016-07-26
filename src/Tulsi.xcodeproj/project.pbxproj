@@ -45,6 +45,7 @@
 		3D91B4DC1C78CE6B006ED85C /* TulsiDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */; };
 		3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */; };
 		3D9485411C3193F00026CE41 /* Options.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D9485431C3193F00026CE41 /* Options.strings */; };
+		3D9677C21D467EAE00799275 /* ComplexSingle.bzl in Resources */ = {isa = PBXBuildFile; fileRef = 3D9677C11D467EAE00799275 /* ComplexSingle.bzl */; };
 		3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */; };
 		3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3D9926781C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
@@ -198,6 +199,7 @@
 		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
 		3D9485421C3193F00026CE41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Options.strings; sourceTree = "<group>"; };
+		3D9677C11D467EAE00799275 /* ComplexSingle.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.bzl; path = Resources/ComplexSingle.bzl; sourceTree = "<group>"; };
 		3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.BUILD; path = Resources/ComplexSingle.BUILD; sourceTree = "<group>"; };
 		3D9926631C29F0A20094E098 /* TulsiGenerator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TulsiGenerator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9926671C29F0A20094E098 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */,
+				3D9677C11D467EAE00799275 /* ComplexSingle.bzl */,
 				3D7B77C61C9098A4004786EF /* GoldenProjects */,
 				3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */,
 				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
@@ -723,6 +726,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */,
+				3D9677C21D467EAE00799275 /* ComplexSingle.bzl in Resources */,
 				3DAE206C1CF497D800C2C0D0 /* test.WORKSPACE in Resources */,
 				3DAA08861CF49316007BE8A2 /* PlatformDependent.BUILD in Resources */,
 				3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */,

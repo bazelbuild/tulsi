@@ -32,6 +32,10 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// Xcode. Returns nil if the path could not be resolved for any reason.
   func resolveExternalReferencePath(path: String) -> String?
 
+  /// Extracts labels for the files referenced by the build infrastructure for the given set of
+  /// BUILD targets.
+  func extractBuildfiles<T: CollectionType where T.Generator.Element == BuildLabel>(forTargets: T) -> Set<BuildLabel>
+
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: NSURL {get set}
 

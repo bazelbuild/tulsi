@@ -97,6 +97,42 @@ final class BazelQueryInfoExtractor {
     return infos
   }
 
+  /// Extracts all of the transitive BUILD and skylark (.bzl) files used by the given targets.
+  func extractBuildfiles<T: CollectionType where T.Generator.Element == BuildLabel>(targets: T) -> Set<BuildLabel> {
+    if targets.isEmpty { return Set() }
+
+    let profilingStart = localizedMessageLogger.startProfiling("extracting_skylark_files",
+                                                               message: "Finding Skylark files for \(targets.count) rules")
+
+    let labelDeps = targets.map {"deps(\($0.value))"}
+    let joinedLabelDeps = labelDeps.joinWithSeparator("+")
+    let query = "buildfiles(\(joinedLabelDeps))"
+    let buildFiles: Set<BuildLabel>
+    do {
+      // Errors in the BUILD structure being examined should not prevent partial extraction, so this
+      // command is considered successful if it returns any valid data at all.
+      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query,
+                                                                       outputKind: "xml",
+                                                                       additionalArguments: ["--keep_going"])
+      localizedMessageLogger.infoMessage(debugInfo)
+
+      if let labels = extractSourceFileLabelsFromBazelXMLOutput(data) {
+        buildFiles = Set(labels)
+      } else {
+        localizedMessageLogger.warning("BazelBuildfilesQueryFailed",
+                                       comment: "Bazel 'buildfiles' query failed to extract information.")
+        buildFiles = Set()
+      }
+
+      localizedMessageLogger.logProfilingEnd(profilingStart)
+    } catch {
+      // The error has already been displayed to the user.
+      return Set()
+    }
+
+    return buildFiles
+  }
+
   // MARK: - Private methods
 
   private func showExtractionError(debugInfo: String,
@@ -122,6 +158,7 @@ final class BazelQueryInfoExtractor {
   // to the terminationHandler.
   private func bazelQueryTask(query: String,
                               outputKind: String? = nil,
+                              additionalArguments: [String] = [],
                               message: String = "",
                               terminationHandler: CompletionHandler) throws -> NSTask {
     guard let bazelPath = bazelURL.path where NSFileManager.defaultManager().fileExistsAtPath(bazelPath) else {
@@ -141,6 +178,7 @@ final class BazelQueryInfoExtractor {
         "--noshow_progress",
         query
     ]
+    arguments.appendContentsOf(additionalArguments)
     if let kind = outputKind {
       arguments.appendContentsOf(["--output", kind])
     }
@@ -174,16 +212,20 @@ final class BazelQueryInfoExtractor {
   /// Performs the given Bazel query synchronously in the workspaceRootURL directory.
   private func bazelSynchronousQueryTask(query: String,
                                          outputKind: String? = nil,
-                                         let message: String = "") throws -> (bazelTask: NSTask,
-                                                                              returnedData: NSData,
-                                                                              stderrString: String?,
-                                                                              debugInfo: String) {
+                                         additionalArguments: [String] = [],
+                                         message: String = "") throws -> (bazelTask: NSTask,
+                                                                          returnedData: NSData,
+                                                                          stderrString: String?,
+                                                                          debugInfo: String) {
     let semaphore = dispatch_semaphore_create(0)
     var data: NSData! = nil
     var stderr: String? = nil
     var info: String! = nil
 
-    let task = try bazelQueryTask(query, outputKind: outputKind, message: message) {
+    let task = try bazelQueryTask(query,
+                                  outputKind: outputKind,
+                                  additionalArguments: additionalArguments,
+                                  message: message) {
       (_: NSTask, returnedData: NSData, stderrString: String?, debugInfo: String) in
         data = returnedData
         stderr = stderrString
@@ -260,5 +302,28 @@ final class BazelQueryInfoExtractor {
       return [RuleInfo](infoMap.keys)
     }
     return nil
+  }
+
+  private func extractSourceFileLabelsFromBazelXMLOutput(bazelOutput: NSData) -> Set<BuildLabel>? {
+    do {
+      let doc = try NSXMLDocument(data: bazelOutput, options: 0)
+      let fileLabels = try doc.nodesForXPath("/query/source-file/@name")
+      var extractedLabels = Set<BuildLabel>()
+      for labelNode in fileLabels {
+        guard let value = labelNode.stringValue else {
+          localizedMessageLogger.error("BazelResponseLabelAttributeInvalid",
+                                       comment: "Bazel response XML element %1$@ should have a valid string value but does not.",
+                                       values: labelNode)
+          continue
+        }
+        extractedLabels.insert(BuildLabel(value))
+      }
+      return extractedLabels
+    } catch let e as NSError {
+      localizedMessageLogger.error("BazelResponseXMLParsingFailed",
+                                   comment: "Extractor Bazel output failed to be parsed as XML with error %1$@. This may be a Bazel bug or a bad BUILD file.",
+                                   values: e.localizedDescription)
+      return nil
+    }
   }
 }

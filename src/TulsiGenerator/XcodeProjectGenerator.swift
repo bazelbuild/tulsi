@@ -253,6 +253,12 @@ final class XcodeProjectGenerator {
       progressNotifier.incrementValue()
     }
 
+    profileAction("adding_buildfiles") {
+      let buildfiles = workspaceInfoExtractor.extractBuildfiles(expandedTargetLabels)
+      let paths = buildfiles.map() { $0.asFileName! }
+      generator.generateFileReferencesForFilePaths(paths, pathFilters: config.pathFilters)
+    }
+
     // Generate RuleEntry's for any test hosts to ensure that selected tests can be executed in
     // Xcode.
     for (hostLabel, testLabel) in hostTargetLabels {
