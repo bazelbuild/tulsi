@@ -11,10 +11,30 @@ simply change the build configuration for your target scheme.
 1. Open up the scheme editor. You can do this via cmd-< or through the UI.
 2. Change the current build configuration in the "Info" pane.
 
+# I'm trying to profile my app and am getting a `permission denied` error. What's wrong?
+
+If Instruments reports an error along the lines of
+
+```
+Target failed to run: Permission to debug <your_app_id> was denied.
+The app must be signed with a development identity (e.g. iOS Developer).
+```
+
+it usually means that your entitlements are missing get-task-allow.
+
 # How do I set Bazel options for my project (like --config=awesome)?
 
 The Tulsi options pane provides settings for flags that can be passed through to
 Bazel.
+
+# What should I check in to source control?
+As mentioned in the user guide "The project bundle is entirely shareable apart
+from the `tulsiconf-user` files, which contain settings that are likely to be
+user specific (such as absolute paths)."
+
+So you'll want to `.gitignore` `.tulsiconf-user` files but otherwise the entire
+`.tulsiproj` bundle is encouraged to be revision controlled and shared across
+your team.
 
 # Somebody asked me for a "full Xcode build log," where do I get that?
 
