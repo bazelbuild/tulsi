@@ -110,6 +110,7 @@ public final class RuleEntry: RuleInfo {
       "ios_test": PBXTarget.ProductType.UnitTest,
       "objc_binary": PBXTarget.ProductType.Application,
       "objc_library": PBXTarget.ProductType.StaticLibrary,
+      "swift_library": PBXTarget.ProductType.StaticLibrary,
 
       // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
       // XCTest test rules.
@@ -142,6 +143,9 @@ public final class RuleEntry: RuleInfo {
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
   public let attributes: [Attribute: AnyObject]
+
+  /// Artifacts produced by Bazel when this rule is built.
+  public let artifacts: [BazelFileInfo]
 
   /// Source files associated with this rule.
   public let sourceFiles: [BazelFileInfo]
@@ -224,6 +228,7 @@ public final class RuleEntry: RuleInfo {
   init(label: BuildLabel,
        type: String,
        attributes: [String: AnyObject],
+       artifacts: [BazelFileInfo],
        sourceFiles: [BazelFileInfo],
        nonARCSourceFiles: [BazelFileInfo],
        dependencies: Set<String>,
@@ -246,6 +251,7 @@ public final class RuleEntry: RuleInfo {
     }
     self.attributes = checkedAttributes
 
+    self.artifacts = artifacts
     self.sourceFiles = sourceFiles
     self.nonARCSourceFiles = nonARCSourceFiles
     self.dependencies = dependencies
@@ -270,6 +276,7 @@ public final class RuleEntry: RuleInfo {
   convenience init(label: String,
                    type: String,
                    attributes: [String: AnyObject],
+                   artifacts: [BazelFileInfo],
                    sourceFiles: [BazelFileInfo],
                    nonARCSourceFiles: [BazelFileInfo],
                    dependencies: Set<String>,
@@ -283,6 +290,7 @@ public final class RuleEntry: RuleInfo {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
+              artifacts: artifacts,
               sourceFiles: sourceFiles,
               nonARCSourceFiles: nonARCSourceFiles,
               dependencies: dependencies,

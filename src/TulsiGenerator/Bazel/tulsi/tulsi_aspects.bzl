@@ -387,6 +387,17 @@ def _tulsi_sources_aspect(target, ctx):
       if hasattr(dep, 'tulsi_info_files'):
         tulsi_info_files += dep.tulsi_info_files
 
+  artifacts = _get_opt_attr(target, 'files')
+  if artifacts:
+    # Ignore any generated Xcode projects as they are not useful to Tulsi.
+    artifacts = [_file_metadata(f)
+                 for f in artifacts
+                 if not f.short_path.endswith('project.pbxproj')]
+  else:
+    # artifacts may be an empty set type, in which case it must be explicitly
+    # set to None to allow Skylark's serialization to work.
+    artifacts = None
+
   srcs = (_collect_files(rule, 'attr.srcs') +
           _collect_files(rule, 'attr.hdrs'))
   generated_files = []
@@ -448,6 +459,7 @@ def _tulsi_sources_aspect(target, ctx):
 
   all_attributes = attributes + inheritable_attributes
   info = _struct_omitting_none(
+      artifacts=artifacts,
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       deps=compile_deps,

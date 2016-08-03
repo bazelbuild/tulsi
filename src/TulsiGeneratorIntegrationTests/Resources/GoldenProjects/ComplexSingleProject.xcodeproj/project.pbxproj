@@ -949,8 +949,10 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include ";
@@ -968,8 +970,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Application;
@@ -1011,8 +1015,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				BAZEL_TARGET_TYPE = ios_extension;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TodayExtension;
@@ -1025,8 +1031,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = WatchExtension;
@@ -1102,8 +1110,10 @@
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1122,8 +1132,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1167,8 +1179,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				BAZEL_TARGET_TYPE = ios_extension;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1182,8 +1196,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1267,8 +1283,10 @@
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1287,8 +1305,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1332,8 +1352,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				BAZEL_TARGET_TYPE = ios_extension;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1347,8 +1369,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1432,8 +1456,10 @@
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1455,8 +1481,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -1507,8 +1535,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -1526,8 +1556,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -1543,8 +1575,10 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
@@ -1566,8 +1600,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -1618,8 +1654,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
+				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -1637,8 +1675,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
+				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";

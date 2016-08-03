@@ -313,8 +313,10 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa\nbazel-bin/TestSuite/TestSuiteXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -329,8 +331,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestApplication;
@@ -370,8 +374,10 @@
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteNonXCTest;
@@ -389,8 +395,10 @@
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa\nbazel-bin/TestSuite/TestSuiteXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -406,8 +414,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -449,8 +459,10 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -470,8 +482,10 @@
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa\nbazel-bin/TestSuite/TestSuiteXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -487,8 +501,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -530,8 +546,10 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -551,8 +569,10 @@
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa\nbazel-bin/TestSuite/TestSuiteXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -572,8 +592,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -622,8 +644,10 @@
 		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -639,8 +663,10 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa\nbazel-bin/TestSuite/TestSuiteXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -660,8 +686,10 @@
 			buildSettings = {
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -710,8 +738,10 @@
 		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";

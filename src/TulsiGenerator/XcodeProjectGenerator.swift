@@ -270,6 +270,7 @@ final class XcodeProjectGenerator {
       targetRules.insert(RuleEntry(label: hostLabel,
                                    type: "_test_host_",
                                    attributes: [:],
+                                   artifacts: [],
                                    sourceFiles: [],
                                    nonARCSourceFiles: [],
                                    dependencies: Set(),

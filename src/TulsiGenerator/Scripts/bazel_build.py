@@ -355,6 +355,12 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.arch = os.environ.get('CURRENT_ARCH')  # Target architecture.
+    # Declared outputs of the target.
+    self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS')
+    if self.bazel_outputs:
+      self.bazel_outputs = self.bazel_outputs.split('\n')
+    # Bazel's notion of the type of artifact being generated.
+    self.bazel_target_type = os.environ.get('BAZEL_TARGET_TYPE')
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
     # The full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
@@ -385,7 +391,7 @@ class BazelBuildBridge(object):
   def Run(self, args):
     """Executes a Bazel build based on the environment and given arguments."""
     if self.xcode_action != 'build':
-      sys.stderr.write('Xcode action is %s, ignoring.' % (self.xcode_action))
+      sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
 
     parser = _OptionsParser(self.sdk_version, self.arch, self.main_group_path)
@@ -402,6 +408,8 @@ class BazelBuildBridge(object):
     # should always share the bin symlink's prefix.
     self.bazel_genfiles_path = self.bazel_bin_path[:-3] + 'genfiles'
 
+    self.build_path = os.path.join(self.bazel_bin_path,
+                                   os.environ.get('TULSI_BUILD_PATH', ''))
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
       return retval
@@ -548,50 +556,67 @@ class BazelBuildBridge(object):
 
   def _InstallArtifact(self):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
-    output_path = self.codesigning_folder_path
-    self.build_path = os.path.join(self.bazel_bin_path,
-                                   os.environ.get('TULSI_BUILD_PATH', ''))
-    bundle_artifact = self.wrapper_name
-    if bundle_artifact:
-      if os.path.isdir(output_path):
-        try:
-          shutil.rmtree(output_path)
-        except OSError as e:
-          self._PrintError('Failed to remove stale output directory ""%s". '
-                           '%s' % (output_path, e))
-          return 600
-      full_bundle_artifact_path = os.path.join(self.build_path, bundle_artifact)
-      if os.path.isdir(full_bundle_artifact_path):
-        exit_code = self._CopyBundle(bundle_artifact,
-                                     full_bundle_artifact_path,
-                                     output_path)
-        if exit_code:
-          return exit_code
-      else:
-        ipa_artifact = self.product_name + '.ipa'
-        exit_code = self._UnpackTarget(ipa_artifact, output_path)
-        if exit_code:
-          return exit_code
+    xcode_artifact_path = self.codesigning_folder_path
 
-      exit_code = self._UpdateInfoPlistIfNecessary(output_path)
+    if os.path.isdir(xcode_artifact_path):
+      try:
+        shutil.rmtree(xcode_artifact_path)
+      except OSError as e:
+        self._PrintError('Failed to remove stale output directory ""%s". '
+                         '%s' % (xcode_artifact_path, e))
+        return 600
+    elif os.path.isfile(xcode_artifact_path):
+      try:
+        os.remove(xcode_artifact_path)
+      except OSError as e:
+        self._PrintError('Failed to remove stale output file ""%s". '
+                         '%s' % (xcode_artifact_path, e))
+        return 600
+
+    expected_basename = os.path.basename(xcode_artifact_path)
+    _, expected_extension = os.path.splitext(expected_basename)
+    matching_artifact = None
+
+    # Attempt to heuristically determine which output matches Xcode's
+    # expectation. Outputs are evaluated in the following priority order:
+    # 1) output name == expected name
+    # 2) output extension == expected extension
+    # 3) output extension == '.ipa', in which case the IPA should be extracted
+    for output in self.bazel_outputs:
+      output_basename = os.path.basename(output)
+      if output_basename == expected_basename:
+        matching_artifact = output
+        break
+
+      _, output_extension = os.path.splitext(output_basename)
+      if output_extension == expected_extension:
+        matching_artifact = output
+      elif output_extension == '.ipa' and not matching_artifact:
+        matching_artifact = output
+
+    if not matching_artifact:
+      self._PrintError(
+          'Failed to find a output artifact for target %s in candidates %r' %
+          (xcode_artifact_path, self.bazel_outputs))
+
+    if matching_artifact.endswith('.ipa'):
+      exit_code = self._UnpackTarget(matching_artifact, xcode_artifact_path)
+      if exit_code:
+        return exit_code
+
+      exit_code = self._UpdateInfoPlistIfNecessary(xcode_artifact_path)
+      if exit_code:
+        return exit_code
+    elif os.path.isfile(matching_artifact):
+      exit_code = self._CopyFile(os.path.basename(matching_artifact),
+                                 matching_artifact,
+                                 xcode_artifact_path)
       if exit_code:
         return exit_code
     else:
-      # The artifact is a simple file.
-      if os.path.isfile(output_path):
-        try:
-          os.remove(output_path)
-        except OSError as e:
-          self._PrintError('Failed to remove stale output file ""%s". '
-                           '%s' % (output_path, e))
-          return 600
-      generated_artifact = self.full_product_name
-      full_artifact_path = os.path.join(self.build_path, generated_artifact)
-      exit_code = self._CopyFile(generated_artifact,
-                                 full_artifact_path,
-                                 output_path)
-      if exit_code:
-        return exit_code
+      self._CopyBundle(os.path.basename(matching_artifact),
+                       matching_artifact,
+                       xcode_artifact_path)
 
     return 0
 
@@ -623,11 +648,10 @@ class BazelBuildBridge(object):
       return 650
     return 0
 
-  def _UnpackTarget(self, ipa_artifact, output_path):
+  def _UnpackTarget(self, ipa_path, output_path):
     """Unpacks generated IPA into the given expected output path."""
-    self._PrintVerbose('Unpacking %s to %s' % (ipa_artifact, output_path))
+    self._PrintVerbose('Unpacking %s to %s' % (ipa_path, output_path))
 
-    ipa_path = os.path.join(self.build_path, ipa_artifact)
     if not os.path.isfile(ipa_path):
       self._PrintError('Generated IPA not found at "%s"' % ipa_path)
       return 670

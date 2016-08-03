@@ -118,6 +118,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       ruleEntryCache[ruleInfo.label] = RuleEntry(label: ruleInfo.label,
                                                  type: ruleInfo.type,
                                                  attributes: [:],
+                                                 artifacts: [],
                                                  sourceFiles: [],
                                                  nonARCSourceFiles: [],
                                                  dependencies: Set(),

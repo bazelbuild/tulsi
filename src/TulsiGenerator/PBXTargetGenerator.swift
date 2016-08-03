@@ -1036,6 +1036,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if let ipaTarget = entry.implicitIPATarget {
       buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
     }
+    buildSettings["BAZEL_TARGET_TYPE"] = entry.type
+
+    let output_paths = entry.artifacts.map() { $0.fullPath }
+    if !output_paths.isEmpty {
+      buildSettings["BAZEL_OUTPUTS"] = output_paths.joinWithSeparator("\n")
+    }
 
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
 

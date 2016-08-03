@@ -259,6 +259,7 @@ final class BazelAspectInfoExtractor {
         return bazelFileInfos
       }
 
+      let artifacts = MakeBazelFileInfos("artifacts")
       var sources = MakeBazelFileInfos("srcs")
       let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
       for info in generatedSourceInfos {
@@ -297,6 +298,7 @@ final class BazelAspectInfoExtractor {
       let ruleEntry = RuleEntry(label: ruleLabel,
                                 type: ruleType,
                                 attributes: attributes,
+                                artifacts: artifacts,
                                 sourceFiles: sources,
                                 nonARCSourceFiles: nonARCSources,
                                 dependencies: dependencies,
