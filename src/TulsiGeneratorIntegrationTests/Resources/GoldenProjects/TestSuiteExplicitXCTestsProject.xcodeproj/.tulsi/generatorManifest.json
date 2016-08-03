@@ -1,1 +1,44 @@
-{"manifestVersion":1,"targets":["TestApplication","TestSuite-One-XCTest","TestSuite-Three-XCTest","TestSuite-Two-XCTest","_bazel_clean_","_idx_XCTest_Binary_XCTest_XCTest_B9D951D7"],"artifacts":["TestApplication.app\/**","TestSuite-One-XCTest.xctest\/**","TestSuite-Three-XCTest.xctest\/**","TestSuite-Two-XCTest.xctest\/**","bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist","lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a"],"fileReferences":["..\/..\/TestSuite\/BUILD","..\/..\/TestSuite\/Binary\/srcs\/main.m","..\/..\/TestSuite\/One\/BUILD","..\/..\/TestSuite\/One\/XCTest.m","..\/..\/TestSuite\/Three\/BUILD","..\/..\/TestSuite\/Three\/XCTest.m","..\/..\/TestSuite\/Two\/BUILD","..\/..\/TestSuite\/Two\/XCTest.m"]}
+{
+  "manifestVersion" : 2,
+  "targets" : {
+    "TestApplication" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "TestSuite-Three-XCTest" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa",
+      "bazel-bin\/TestSuite\/Three\/XCTest.ipa"
+    ],
+    "TestSuite-Two-XCTest" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa",
+      "bazel-bin\/TestSuite\/Two\/XCTest.ipa"
+    ],
+    "TestSuite-One-XCTest" : [
+      "bazel-bin\/TestSuite\/One\/XCTest.ipa",
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "_idx_XCTest_Binary_XCTest_XCTest_B9D951D7" : [
+
+    ]
+  },
+  "artifacts" : [
+    "TestApplication.app\/**",
+    "TestSuite-One-XCTest.xctest\/**",
+    "TestSuite-Three-XCTest.xctest\/**",
+    "TestSuite-Two-XCTest.xctest\/**",
+    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
+    "lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a"
+  ],
+  "fileReferences" : [
+    "..\/..\/TestSuite\/BUILD",
+    "..\/..\/TestSuite\/Binary\/srcs\/main.m",
+    "..\/..\/TestSuite\/One\/BUILD",
+    "..\/..\/TestSuite\/One\/XCTest.m",
+    "..\/..\/TestSuite\/Three\/BUILD",
+    "..\/..\/TestSuite\/Three\/XCTest.m",
+    "..\/..\/TestSuite\/Two\/BUILD",
+    "..\/..\/TestSuite\/Two\/XCTest.m"
+  ]
+}

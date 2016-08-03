@@ -712,7 +712,7 @@ final class XcodeProjectGenerator {
   private class GeneratorManifest {
     /// Version number used to track changes to the format of the generated manifest.
     // This number may be used by consumers of the manifest for compatibility detection.
-    private static let ManifestFormatVersion = 1
+    private static let ManifestFormatVersion = 2
     /// Suffix for manifest entries whose recursive contents are used by the Xcode project.
     private static let BundleSuffix = "/**"
     private static let NormalBundleTypes = Set(DirExtensionToUTI.values)
@@ -720,7 +720,7 @@ final class XcodeProjectGenerator {
     private let localizedMessageLogger: LocalizedMessageLogger
     private let pbxProject: PBXProject
     var fileReferences: Set<String>! = nil
-    var targets: Set<String>! = nil
+    var targets: [String: [String]]! = nil
     var artifacts: Set<String>! = nil
 
     init(localizedMessageLogger: LocalizedMessageLogger, pbxProject: PBXProject) {
@@ -735,12 +735,12 @@ final class XcodeProjectGenerator {
       let dict = [
           "manifestVersion": GeneratorManifest.ManifestFormatVersion,
           "fileReferences": Array(fileReferences).sort(),
-          "targets": Array(targets).sort(),
+          "targets": targets,
           "artifacts": Array(artifacts).sort(),
       ]
       do {
         let data = try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                                     options: [])
+                                                                                     options: .PrettyPrinted)
         return data.writeToURL(outputURL, atomically: true)
       } catch let e as NSError {
         localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path!): \(e.localizedDescription)")
@@ -753,7 +753,7 @@ final class XcodeProjectGenerator {
 
     private func parsePBXProject() {
       fileReferences = Set()
-      targets = Set()
+      targets = [String: [String]]()
       artifacts = Set()
 
       for ref in pbxProject.mainGroup.allSources {
@@ -779,7 +779,13 @@ final class XcodeProjectGenerator {
       }
 
       for target in pbxProject.allTargets {
-        targets.insert(target.name)
+        let buildConfigList = target.buildConfigurationList
+        if let debugConfig = buildConfigList.buildConfigurations["Debug"],
+           let bazelOutputs = debugConfig.buildSettings["BAZEL_OUTPUTS"] {
+          targets[target.name] = bazelOutputs.componentsSeparatedByString("\n").sort()
+        } else {
+          targets[target.name] = []
+        }
       }
     }
   }

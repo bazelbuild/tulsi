@@ -1,1 +1,29 @@
-{"manifestVersion":1,"targets":["Application","_bazel_clean_","_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054"],"artifacts":["..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.h","..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.m","..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.h","..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.m","Application.app\/**","bazel-bin\/tulsi_e2e_platform_dependent\/Application-MergedInfo.plist","lib_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054.a"],"fileReferences":["..\/..\/tulsi_e2e_platform_dependent\/BUILD","..\/..\/tulsi_e2e_platform_dependent\/Binary\/srcs\/main.m","..\/..\/tulsi_e2e_platform_dependent\/file.java","..\/..\/tulsi_e2e_platform_dependent\/protolibrary.proto"]}
+{
+  "manifestVersion" : 2,
+  "targets" : {
+    "_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_platform_dependent\/Application.ipa"
+    ]
+  },
+  "artifacts" : [
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.h",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_generated_protos\/ObjCProtoLibrary\/tulsi_e2e_platform_dependent\/Protolibrary.pb.m",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.h",
+    "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.m",
+    "Application.app\/**",
+    "bazel-bin\/tulsi_e2e_platform_dependent\/Application-MergedInfo.plist",
+    "lib_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054.a"
+  ],
+  "fileReferences" : [
+    "..\/..\/tulsi_e2e_platform_dependent\/BUILD",
+    "..\/..\/tulsi_e2e_platform_dependent\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_platform_dependent\/file.java",
+    "..\/..\/tulsi_e2e_platform_dependent\/protolibrary.proto"
+  ]
+}

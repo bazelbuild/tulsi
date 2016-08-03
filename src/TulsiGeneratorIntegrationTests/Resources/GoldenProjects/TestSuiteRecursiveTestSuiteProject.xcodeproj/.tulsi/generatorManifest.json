@@ -1,1 +1,35 @@
-{"manifestVersion":1,"targets":["NonXCTest","TestApplication","TestSuiteXCTest","_bazel_clean_","_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6"],"artifacts":["NonXCTest.app\/**","TestApplication.app\/**","TestSuiteXCTest.xctest\/**","bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist","lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a"],"fileReferences":["..\/..\/TestSuite\/BUILD","..\/..\/TestSuite\/Binary\/srcs\/main.m","..\/..\/TestSuite\/TestSuite\/TestSuiteXCTest.m","..\/..\/TestSuite\/Three\/BUILD","..\/..\/TestSuite\/Three\/nonXCTest.m"]}
+{
+  "manifestVersion" : 2,
+  "targets" : {
+    "TestApplication" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "TestSuiteXCTest" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa",
+      "bazel-bin\/TestSuite\/TestSuiteXCTest.ipa"
+    ],
+    "NonXCTest" : [
+      "bazel-bin\/TestSuite\/Three\/NonXCTest.ipa"
+    ],
+    "_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ]
+  },
+  "artifacts" : [
+    "NonXCTest.app\/**",
+    "TestApplication.app\/**",
+    "TestSuiteXCTest.xctest\/**",
+    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
+    "lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a"
+  ],
+  "fileReferences" : [
+    "..\/..\/TestSuite\/BUILD",
+    "..\/..\/TestSuite\/Binary\/srcs\/main.m",
+    "..\/..\/TestSuite\/TestSuite\/TestSuiteXCTest.m",
+    "..\/..\/TestSuite\/Three\/BUILD",
+    "..\/..\/TestSuite\/Three\/nonXCTest.m"
+  ]
+}

@@ -1,1 +1,50 @@
-{"manifestVersion":1,"targets":["Application","XCTest","_bazel_clean_","_idx_Binary_A56A3DAA","_idx_Library_1A8360DD","_idx_XCTest_8BB84E40"],"artifacts":["Application.app\/**","XCTest.xctest\/**","bazel-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist","lib_idx_Binary_A56A3DAA.a","lib_idx_Library_1A8360DD.a","lib_idx_XCTest_8BB84E40.a"],"fileReferences":["..\/..\/tulsi_e2e_simple\/Application\/Launch.storyboard","..\/..\/tulsi_e2e_simple\/BUILD","..\/..\/tulsi_e2e_simple\/Binary\/Assets.xcassets\/**","..\/..\/tulsi_e2e_simple\/Binary\/Base.lproj\/One.storyboard","..\/..\/tulsi_e2e_simple\/Binary\/bridging_header\/bridging_header.h","..\/..\/tulsi_e2e_simple\/Binary\/srcs\/main.m","..\/..\/tulsi_e2e_simple\/Library\/hdrs\/HdrsHeader.h","..\/..\/tulsi_e2e_simple\/Library\/pch\/PCHFile.pch","..\/..\/tulsi_e2e_simple\/Library\/srcs\/SrcsHeader.h","..\/..\/tulsi_e2e_simple\/Library\/srcs\/src1.m","..\/..\/tulsi_e2e_simple\/Library\/srcs\/src2.m","..\/..\/tulsi_e2e_simple\/Library\/srcs\/src3.m","..\/..\/tulsi_e2e_simple\/Library\/srcs\/src4.m","..\/..\/tulsi_e2e_simple\/Library\/xibs\/xib.xib","..\/..\/tulsi_e2e_simple\/SimpleTest.xcdatamodeld\/**","..\/..\/tulsi_e2e_simple\/XCTest\/srcs\/src1.mm"]}
+{
+  "manifestVersion" : 2,
+  "targets" : {
+    "_idx_Library_1A8360DD" : [
+
+    ],
+    "XCTest" : [
+      "bazel-bin\/tulsi_e2e_simple\/Application.ipa",
+      "bazel-bin\/tulsi_e2e_simple\/XCTest.ipa"
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_simple\/Application.ipa"
+    ],
+    "_idx_Binary_A56A3DAA" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "_idx_XCTest_8BB84E40" : [
+
+    ]
+  },
+  "artifacts" : [
+    "Application.app\/**",
+    "XCTest.xctest\/**",
+    "bazel-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist",
+    "lib_idx_Binary_A56A3DAA.a",
+    "lib_idx_Library_1A8360DD.a",
+    "lib_idx_XCTest_8BB84E40.a"
+  ],
+  "fileReferences" : [
+    "..\/..\/tulsi_e2e_simple\/Application\/Launch.storyboard",
+    "..\/..\/tulsi_e2e_simple\/BUILD",
+    "..\/..\/tulsi_e2e_simple\/Binary\/Assets.xcassets\/**",
+    "..\/..\/tulsi_e2e_simple\/Binary\/Base.lproj\/One.storyboard",
+    "..\/..\/tulsi_e2e_simple\/Binary\/bridging_header\/bridging_header.h",
+    "..\/..\/tulsi_e2e_simple\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/hdrs\/HdrsHeader.h",
+    "..\/..\/tulsi_e2e_simple\/Library\/pch\/PCHFile.pch",
+    "..\/..\/tulsi_e2e_simple\/Library\/srcs\/SrcsHeader.h",
+    "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src1.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src2.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src3.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src4.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/xibs\/xib.xib",
+    "..\/..\/tulsi_e2e_simple\/SimpleTest.xcdatamodeld\/**",
+    "..\/..\/tulsi_e2e_simple\/XCTest\/srcs\/src1.mm"
+  ]
+}
