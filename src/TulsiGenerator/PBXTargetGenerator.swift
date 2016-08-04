@@ -587,7 +587,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
     ]
-    buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
+    buildSettings["USER_HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
@@ -823,7 +823,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if !data.includes.isEmpty || !data.generatedIncludes.isEmpty {
       let includes = data.includes.joinWithSeparator(" ")
       let generatedIncludes = data.generatedIncludes.joinWithSeparator(" ")
-      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
+      buildSettings["USER_HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
     }
 
     if !data.frameworkSearchPaths.isEmpty {
