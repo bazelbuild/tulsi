@@ -33,6 +33,8 @@ class HeadlessXcodeProjectGenerator {
     case GenerationFailed(String)
     /// The path to the Bazel binary given on the commandline is invalid.
     case InvalidBazelPath
+    /// A workspace root override was given but references an invalid param.
+    case InvalidWorkspaceRootOverride
   }
 
   let arguments: TulsiCommandlineParser.Arguments
@@ -99,8 +101,22 @@ class HeadlessXcodeProjectGenerator {
       resolvedConfig = config
     }
 
-    guard let workspaceRootURL = projectDocument.workspaceRootURL else {
-      throw Error.InvalidProjectFileContents("Invalid workspaceRoot")
+    let workspaceRootURL: NSURL
+    let projectWorkspaceRootURL = projectDocument.workspaceRootURL
+    if let workspaceRootOverride = arguments.workspaceRootOverride {
+      workspaceRootURL = NSURL(fileURLWithPath: workspaceRootOverride, isDirectory: true)
+      if !isExistingDirectory(workspaceRootURL) {
+        throw Error.InvalidWorkspaceRootOverride
+      }
+      if projectWorkspaceRootURL != nil {
+        print("Overriding project workspace root (\(projectWorkspaceRootURL!.path!)) with " +
+            "command-line parameter (\(workspaceRootOverride))")
+      }
+    } else {
+      guard let projectWorkspaceRootURL = projectWorkspaceRootURL else {
+        throw Error.InvalidProjectFileContents("Invalid workspaceRoot")
+      }
+      workspaceRootURL = projectWorkspaceRootURL
     }
 
     print("Generating project into \(outputFolderURL.path!) using config at \(configURL.path!) " +
@@ -256,6 +272,7 @@ class TulsiCommandlineParser {
     let bazel: String?
     let generatorConfig: String?
     let outputFolder: String?
+    let workspaceRootOverride: String?
     let verbose: Bool
     let suppressWORKSPACECheck: Bool
     let openXcodeOnSuccess: Bool
@@ -264,6 +281,7 @@ class TulsiCommandlineParser {
       bazel = nil
       generatorConfig = nil
       outputFolder = nil
+      workspaceRootOverride = nil
       verbose = true
       suppressWORKSPACECheck = false
       openXcodeOnSuccess = true
@@ -274,6 +292,7 @@ class TulsiCommandlineParser {
       generatorConfig = dict[TulsiCommandlineParser.ParamGeneratorConfigLong] as? String
       outputFolder = dict[TulsiCommandlineParser.ParamOutputFolderLong] as? String
       verbose = !(dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true)
+      workspaceRootOverride = dict[TulsiCommandlineParser.ParamWorkspaceRootLong] as? String
       suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
     }
@@ -347,12 +366,10 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamOutputFolderLong)
           i += 1
 
-        // TODO(abaire): Remove workspaceRoot entirely.
         case TulsiCommandlineParser.ParamWorkspaceRootShort:
           fallthrough
         case TulsiCommandlineParser.ParamWorkspaceRootLong:
-          print("Note, the \(TulsiCommandlineParser.ParamWorkspaceRootLong) parameter is deprecated " +
-                    "and will be removed in a future release.")
+          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamWorkspaceRootLong)
           i += 1
 
         default:
@@ -370,7 +387,6 @@ class TulsiCommandlineParser {
         "Usage: \(Process.arguments[0]) -- [options]",
         "",
         "Where options are:",
-        "  \(ParamBazel) <path>: Path to the Bazel binary.",
         "  \(ParamGeneratorConfigLong) <config>: (required)",
         "    Generates an Xcode project using the given generator config. The config must be",
         "      expressed as the path to a Tulsi project, optionally followed by a colon \":\"",
@@ -381,6 +397,8 @@ class TulsiCommandlineParser {
         "        \"MyProject.tulsiproj\"",
         "      is equivalent to ",
         "        \"MyProject.tulsiproj:MyProject\"",
+        "  \(ParamBazel) <path>: Path to the Bazel binary.",
+        "  \(ParamWorkspaceRootLong) <path>: Path to the folder containing the Bazel WORKSPACE file.",
         "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
         "  \(ParamOutputFolderLong) <path>: Sets the folder into which the Xcode project should be saved.",
         "  \(ParamHelpLong): Show this help message.",

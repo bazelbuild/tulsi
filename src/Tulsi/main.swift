@@ -50,6 +50,9 @@ private func main() {
     } catch HeadlessXcodeProjectGenerator.Error.GenerationFailed(let reason) {
       print("Generation failed: \(reason)")
       exit(15)
+    } catch HeadlessXcodeProjectGenerator.Error.InvalidWorkspaceRootOverride {
+      print("The parameter given as the workspace root path is not a valid directory")
+      exit(16)
     } catch HeadlessXcodeProjectGenerator.Error.InvalidProjectFileContents(let reason) {
       print("Failed to read the given project: \(reason)")
       exit(20)
