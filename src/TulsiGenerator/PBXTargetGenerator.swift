@@ -591,7 +591,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
     ]
-    buildSettings["USER_HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
+    // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
+    // protocol buffers) make use of system-style includes.
+    buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
@@ -827,7 +829,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if !data.includes.isEmpty || !data.generatedIncludes.isEmpty {
       let includes = data.includes.joinWithSeparator(" ")
       let generatedIncludes = data.generatedIncludes.joinWithSeparator(" ")
-      buildSettings["USER_HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
+      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
     }
 
     if !data.frameworkSearchPaths.isEmpty {

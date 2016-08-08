@@ -442,13 +442,13 @@
 				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Fastbuild;
 		};
@@ -490,21 +490,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Fastbuild;
 		};
@@ -512,18 +512,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
+				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000005 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Fastbuild;
 		};
@@ -536,13 +536,13 @@
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Debug;
 		};
@@ -586,11 +586,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 			};
 			name = Debug;
 		};
@@ -598,10 +598,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Debug;
 		};
@@ -610,9 +610,9 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 			};
 			name = Debug;
 		};
@@ -620,9 +620,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Debug;
 		};
@@ -635,13 +635,13 @@
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Release;
 		};
@@ -685,11 +685,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 			};
 			name = Release;
 		};
@@ -697,10 +697,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Release;
 		};
@@ -709,9 +709,9 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path ";
 			};
 			name = Release;
 		};
@@ -719,9 +719,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = Release;
 		};
@@ -735,6 +735,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -743,7 +744,6 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -792,13 +792,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -812,6 +812,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -820,7 +821,6 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes ";
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -869,13 +869,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
 			};
 			name = __TulsiTestRunner_Release;
 		};
