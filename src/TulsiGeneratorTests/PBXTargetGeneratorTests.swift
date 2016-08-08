@@ -749,8 +749,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "BAZEL_TARGET": "test/test2:\(targetName)",
-          "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
+          "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test2-SameName",
           "TULSI_BUILD_PATH": rule2BuildPath,
@@ -1109,6 +1109,68 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                           inTargets: targets)
   }
 
+  func testImplicitIPATargetListedAsFirstArtifact() {
+    let targetName = "TestTarget"
+    let package = "test/package/1"
+    let target = "\(package):\(targetName)"
+    let targetType = "ios_test"
+    let ipa = BuildLabel("test/app:TestApplication.ipa")
+
+    let testRule = makeTestRuleEntry(target,
+                                     type: targetType,
+                                     artifacts: ["some/path/to/an/ipa.ipa",
+                                                 "test/app/TestApplication.ipa"],
+                                     implicitIPATarget: ipa)
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries([testRule])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    let expectedBuildSettings = [
+      "BAZEL_OUTPUTS": "test/app/TestApplication.ipa\nsome/path/to/an/ipa.ipa",
+      "BAZEL_TARGET_IPA": ipa.asFileName!,
+      "BAZEL_TARGET": target,
+      "BAZEL_TARGET_TYPE": targetType,
+      "INFOPLIST_FILE": "TestInfo.plist",
+      "PRODUCT_NAME": targetName,
+      "TULSI_BUILD_PATH": package,
+    ]
+    let expectedTarget = TargetDefinition(
+        name: "TestTarget",
+        buildConfigurations: [
+            BuildConfigurationDefinition(
+                name: "Debug",
+                expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+            ),
+            BuildConfigurationDefinition(
+                name: "Release",
+                expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+            ),
+            BuildConfigurationDefinition(
+                name: "Fastbuild",
+                expectedBuildSettings: expectedBuildSettings
+            ),
+            BuildConfigurationDefinition(
+                name: "__TulsiTestRunner_Debug",
+                expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+            ),
+            BuildConfigurationDefinition(
+                name: "__TulsiTestRunner_Release",
+                expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+            ),
+        ],
+        expectedBuildPhases: [
+            ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
+        ]
+    )
+    assertTarget(expectedTarget, inTargets: targets)
+  }
+
   // MARK: - Helper methods
 
   private func debugBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
@@ -1152,6 +1214,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   private func makeTestRuleEntry(label: String,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
+                                 artifacts: [String] = [],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set(),
                                  buildFilePath: String? = nil,
@@ -1159,6 +1222,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     return makeTestRuleEntry(BuildLabel(label),
                              type: type,
                              attributes: attributes,
+                             artifacts: artifacts,
                              sourceFiles: sourceFiles,
                              dependencies: dependencies,
                              buildFilePath: buildFilePath,
@@ -1174,15 +1238,17 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   private func makeTestRuleEntry(label: BuildLabel,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
+                                 artifacts: [String] = [],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set(),
                                  buildFilePath: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
+    let artifactInfos = artifacts.map() { TestBazelFileInfo(fullPath: $0) }
     let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
     return RuleEntry(label: label,
                      type: type,
                      attributes: attributes,
-                     artifacts: [],
+                     artifacts: artifactInfos,
                      sourceFiles: sourceInfos,
                      nonARCSourceFiles: [],
                      dependencies: dependencies,

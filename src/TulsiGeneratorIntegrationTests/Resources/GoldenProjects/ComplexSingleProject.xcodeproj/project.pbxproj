@@ -949,7 +949,7 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -1110,7 +1110,7 @@
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -1283,7 +1283,7 @@
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -1456,7 +1456,7 @@
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -1575,7 +1575,7 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/XCTest.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;

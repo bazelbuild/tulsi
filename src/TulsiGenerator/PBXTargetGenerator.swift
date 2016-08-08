@@ -1033,14 +1033,32 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // The following settings are simply passed through the environment for use by build scripts.
     buildSettings["BAZEL_TARGET"] = entry.label.value
-    if let ipaTarget = entry.implicitIPATarget {
-      buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
-    }
     buildSettings["BAZEL_TARGET_TYPE"] = entry.type
 
-    let output_paths = entry.artifacts.map() { $0.fullPath }
-    if !output_paths.isEmpty {
-      buildSettings["BAZEL_OUTPUTS"] = output_paths.joinWithSeparator("\n")
+    let outputPaths = entry.artifacts.map() { $0.fullPath }
+    if !outputPaths.isEmpty {
+      if let ipaTargetFilename = entry.implicitIPATarget?.asFileName {
+        // Bazel targets may generate multiple IPA artifacts as side effects of their generation.
+        // This is most evident in the case of XCTests, which will list both the test bundle and the
+        // test host. To ensure proper handling of the IPA artifact, the artifact list is ordered
+        // such that the IPA matching the RuleEntry being processed comes before any other IPAs.
+        var orderedOutputPaths = [String]()
+        for path in outputPaths {
+          if path.hasSuffix(ipaTargetFilename) {
+            orderedOutputPaths.insert(path, atIndex: 0)
+          } else {
+            orderedOutputPaths.append(path)
+          }
+        }
+        buildSettings["BAZEL_OUTPUTS"] = orderedOutputPaths.joinWithSeparator("\n")
+      } else {
+        buildSettings["BAZEL_OUTPUTS"] = outputPaths.joinWithSeparator("\n")
+      }
+    }
+
+    // TODO(abaire): Deprecate and remove this, it's duplicative with BAZEL_OUTPUTS.
+    if let ipaTarget = entry.implicitIPATarget {
+      buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
     }
 
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
