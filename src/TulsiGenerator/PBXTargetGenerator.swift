@@ -576,6 +576,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
     buildSettings["CODE_SIGN_IDENTITY"] = ""
 
+    // Explicitly setting the FRAMEWORK_SEARCH_PATHS will allow Xcode to resolve references to the
+    // XCTest framework when performing Live issues analysis.
+    buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+
     var sourceDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"

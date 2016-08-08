@@ -205,6 +205,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "CODE_SIGNING_REQUIRED": "NO",
         "CODE_SIGN_IDENTITY": "",
         "ENABLE_TESTABILITY": "YES",
+        "FRAMEWORK_SEARCH_PATHS": "$(PLATFORM_DIR)/Developer/Library/Frameworks",
         "GCC_WARN_64_TO_32_BIT_CONVERSION": "YES",
         "GCC_WARN_ABOUT_RETURN_TYPE": "YES",
         "GCC_WARN_UNDECLARED_SELECTOR": "YES",
