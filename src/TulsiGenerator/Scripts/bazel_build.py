@@ -356,7 +356,7 @@ class BazelBuildBridge(object):
 
     self.arch = os.environ.get('CURRENT_ARCH')  # Target architecture.
     # Declared outputs of the target.
-    self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS')
+    self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS', [])
     if self.bazel_outputs:
       self.bazel_outputs = self.bazel_outputs.split('\n')
     # Bazel's notion of the type of artifact being generated.
