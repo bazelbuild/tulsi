@@ -27,6 +27,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		819366726314F73100000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E66314F73000000000;
+		};
 		819366726921D83500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
@@ -38,6 +44,30 @@
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 3D31C5E66B144ABC00000000;
+		};
+		8193667288E1600500000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E688E1600400000000;
+		};
+		819366728AF9EBA100000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E68AF9EBA000000000;
+		};
+		81936672A606B6CD00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E6A606B6CC00000000;
+		};
+		81936672AC743AFB00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E6AC743AFA00000000;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -602,7 +632,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558326E9234C00000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" */;
 			buildPhases = (
-				605793E20000000000000003 /* Sources */,
+				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -640,6 +670,9 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B428AF9EBA100000000 /* PBXTargetDependency */,
+				4DAD0B42AC743AFB00000000 /* PBXTargetDependency */,
+				4DAD0B42A606B6CD00000000 /* PBXTargetDependency */,
 			);
 			name = _idx_Library_20EC2F4A;
 			productName = _idx_Library_20EC2F4A;
@@ -650,7 +683,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */;
 			buildPhases = (
-				605793E20000000000000004 /* Sources */,
+				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -666,7 +699,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */;
 			buildPhases = (
-				605793E20000000000000006 /* Sources */,
+				605793E20000000000000005 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -682,7 +715,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */;
 			buildPhases = (
-				605793E20000000000000005 /* Sources */,
+				605793E20000000000000004 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -704,6 +737,9 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B4288E1600500000000 /* PBXTargetDependency */,
+				4DAD0B426314F73100000000 /* PBXTargetDependency */,
+				4DAD0B426314F73100000000 /* PBXTargetDependency */,
 			);
 			name = _idx_Binary_FD777BDB;
 			productName = _idx_Binary_FD777BDB;
@@ -736,6 +772,7 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B4288E1600500000000 /* PBXTargetDependency */,
 			);
 			name = _idx_XCTest_7F8584F1;
 			productName = _idx_XCTest_7F8584F1;
@@ -893,10 +930,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947BC21CCBA00000000 /* non_propagated.m in srcs */,
-				E6AF49470DE24FD000000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
-				E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */,
-				E6AF494703714D9600000000 /* watch_extension_binary.m in srcs */,
+				E6AF494755EA71EE00000000 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,7 +938,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494755EA71EE00000000 /* src.mm in srcs */,
+				E6AF494755EA71EE00000001 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -912,7 +946,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494755EA71EE00000001 /* src.mm in srcs */,
+				E6AF494755EA71EE00000002 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,7 +954,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494755EA71EE00000002 /* src.mm in srcs */,
+				E6AF4947BC21CCBA00000000 /* non_propagated.m in srcs */,
+				E6AF49470DE24FD000000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
+				E6AF4947D21BD1AA00000000 /* today_extension_binary.m in srcs */,
+				E6AF494703714D9600000000 /* watch_extension_binary.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -935,6 +972,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4DAD0B426314F73100000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366726314F73100000000 /* PBXContainerItemProxy */;
+		};
 		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
@@ -942,6 +983,22 @@
 		4DAD0B426B144ABD00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 819366726B144ABD00000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B4288E1600500000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 8193667288E1600500000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B428AF9EBA100000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366728AF9EBA100000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B42A606B6CD00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 81936672A606B6CD00000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B42AC743AFB00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 81936672AC743AFB00000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1067,20 +1124,13 @@
 		44936BD63008588600000007 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000008 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000009 /* Fastbuild */ = {
+		44936BD63008588600000008 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes ";
@@ -1089,12 +1139,19 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD6300858860000000A /* Fastbuild */ = {
+		44936BD63008588600000009 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+			};
+			name = Fastbuild;
+		};
+		44936BD6300858860000000A /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Fastbuild;
 		};
@@ -1237,21 +1294,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D00000008 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000009 /* Debug */ = {
+		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1261,13 +1310,21 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D0000000A /* Debug */ = {
+		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D0000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Debug;
 		};
@@ -1411,21 +1468,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE900000008 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_80C072DC;
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000009 /* Release */ = {
+		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1435,13 +1484,21 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE90000000A /* Release */ = {
+		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE90000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E;
 			};
 			name = Release;
 		};
@@ -1713,18 +1770,18 @@
 		DE47558326E9234C00000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD63008588600000007 /* Fastbuild */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6300858860000000A /* Fastbuild */,
+				44936BD6A3D45CE90000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE4755834C4C7FB300000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD63008588600000009 /* Fastbuild */,
-				44936BD6A3D45CE900000009 /* Release */,
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD63008588600000008 /* Fastbuild */,
+				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1742,9 +1799,9 @@
 		DE4755837231FDFE00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDefines_80C072DC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000008 /* Debug */,
-				44936BD63008588600000008 /* Fastbuild */,
-				44936BD6A3D45CE900000008 /* Release */,
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD63008588600000007 /* Fastbuild */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1760,9 +1817,9 @@
 		DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D0000000A /* Debug */,
-				44936BD6300858860000000A /* Fastbuild */,
-				44936BD6A3D45CE90000000A /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD63008588600000009 /* Fastbuild */,
+				44936BD6A3D45CE900000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

@@ -142,9 +142,22 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     /// Provides information about the RuleEntry instances supported by an IndexerData.
     /// Specifically, NameInfoToken tuples provide the targetName and the full target label hash in
     /// order to differentiate between rules with the same name but different paths.
-    typealias NameInfoToken = (String, Int)
+    struct NameInfoToken {
+      let targetName: String
+      let labelHash: Int
+
+      init(ruleEntry: RuleEntry) {
+        self.init(label: ruleEntry.label)
+      }
+
+      init(label: BuildLabel) {
+        targetName = label.targetName!
+        labelHash = label.hashValue
+      }
+    }
 
     let indexerNameInfo: [NameInfoToken]
+    let dependencies: Set<BuildLabel>
     let preprocessorDefines: Set<String>
     let otherCFlags: [String]
     let includes: [String]
@@ -160,13 +173,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       var fullName = ""
       var fullHash = 0
 
-      for (name, hash) in indexerNameInfo {
+      for token in indexerNameInfo {
         if fullName.isEmpty {
-          fullName = name
+          fullName = token.targetName
         } else {
-          fullName += "_\(name)"
+          fullName += "_\(token.targetName)"
         }
-        fullHash = fullHash &+ hash
+        fullHash = fullHash &+ token.labelHash
       }
       return PBXTargetGenerator.indexerNameForTargetName(fullName, hash: fullHash)
     }
@@ -176,15 +189,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var supportedIndexingTargets: [String] {
       var supportedTargets = [indexerName]
       if indexerNameInfo.count > 1 {
-        for (name, hash) in indexerNameInfo {
-          supportedTargets.append(PBXTargetGenerator.indexerNameForTargetName(name, hash: hash))
+        for token in indexerNameInfo {
+          supportedTargets.append(PBXTargetGenerator.indexerNameForTargetName(token.targetName,
+                                                                              hash: token.labelHash))
         }
       }
       return supportedTargets
     }
 
-    static func nameInfoForRuleEntry(ruleEntry: RuleEntry) -> [NameInfoToken] {
-      return [(ruleEntry.label.targetName!, ruleEntry.label.hashValue)]
+    /// Returns an array of indexing target names that this indexer depends on.
+    var indexerNamesForDependencies: [String] {
+      return dependencies.map() {
+        PBXTargetGenerator.indexerNameForTargetName($0.targetName!, hash: $0.hashValue)
+      }
     }
 
     /// Indicates whether or not this indexer may be merged with the given indexer.
@@ -206,12 +223,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     /// Returns a new IndexerData instance that is the result of merging this indexer with another.
     func merging(other: IndexerData) -> IndexerData {
+      let newDependencies = dependencies.union(other.dependencies)
       let newName = indexerNameInfo + other.indexerNameInfo
       let newGeneratedIncludes = generatedIncludes + other.generatedIncludes
       let newBuildPhase = PBXSourcesBuildPhase()
       newBuildPhase.files = buildPhase.files + other.buildPhase.files
 
       return IndexerData(indexerNameInfo: newName,
+                         dependencies: newDependencies,
                          preprocessorDefines: preprocessorDefines,
                          otherCFlags: otherCFlags,
                          includes: includes,
@@ -491,7 +510,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
-        let indexerData = IndexerData(indexerNameInfo: IndexerData.nameInfoForRuleEntry(ruleEntry),
+        let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
+        let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
+                                      dependencies: Set(dependencyLabels),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
                                       includes: localIncludes.array as! [String],
@@ -536,6 +557,28 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     for (name, data) in frameworkIndexers {
       generateIndexer(name, indexerType: PBXTarget.ProductType.Framework, data: data)
     }
+
+    func linkDependencies(dataMap: [String: IndexerData]) {
+      for (name, data) in dataMap {
+        guard let indexerTarget = indexerTargetByName[name] else {
+          localizedMessageLogger.infoMessage("Unexpectedly failed to resolve indexer \(name)")
+          continue
+        }
+
+        for depName in data.indexerNamesForDependencies {
+          guard let indexerDependency = indexerTargetByName[depName] else {
+            continue
+          }
+
+          indexerTarget.createDependencyOn(indexerDependency,
+                                           proxyType: PBXContainerItemProxy.ProxyType.TargetReference,
+                                           inProject: project)
+        }
+      }
+    }
+
+    linkDependencies(staticIndexers)
+    linkDependencies(frameworkIndexers)
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
