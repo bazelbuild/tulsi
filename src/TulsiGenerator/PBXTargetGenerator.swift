@@ -510,12 +510,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
+        // TODO(abaire): Extract STL path via the aspect once it is exposed to Skylark.
+        // Bazel appends a built-in tools/cpp/gcc3 path in CppHelper.java but that path is not
+        // exposed to Skylark. For now Tulsi hardcodes it here to allow proper indexer behavior.
+        // NOTE: this requires tools/cpp/gcc3 to be available from the workspace root, which may
+        // require symlinking on the part of the user. This requirement should go away when it is
+        // retrieved via the aspect (which should resolve the Bazel tool path correctly).
+        var resolvedIncludes = localIncludes.array as! [String]
+        resolvedIncludes.append("$(\(PBXTargetGenerator.WorkspaceRootVarName))/tools/cpp/gcc3")
+
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
                                       dependencies: Set(dependencyLabels),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
-                                      includes: localIncludes.array as! [String],
+                                      includes: resolvedIncludes,
                                       generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       buildPhase: buildPhase,

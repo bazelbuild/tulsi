@@ -1378,6 +1378,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
                                      line: UInt = #line) {
     var expectedBuildSettings = [
+        "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
     ]
     if pchFile != nil {
