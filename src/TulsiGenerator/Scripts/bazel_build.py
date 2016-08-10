@@ -1028,12 +1028,12 @@ class BazelBuildBridge(object):
 
   @staticmethod
   def _PrintWarning(msg):
-    sys.stdout.write('Warning: %s\n' % msg)
+    sys.stdout.write(':: warning: %s\n' % msg)
     sys.stdout.flush()
 
   @staticmethod
   def _PrintError(msg):
-    sys.stderr.write('Error: %s\n' % msg)
+    sys.stderr.write(':: Error: %s\n' % msg)
     sys.stderr.flush()
 
 
