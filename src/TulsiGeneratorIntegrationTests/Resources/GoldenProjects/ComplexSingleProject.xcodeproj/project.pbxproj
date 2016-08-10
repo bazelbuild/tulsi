@@ -1019,6 +1019,7 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Fastbuild;
 		};
@@ -1182,6 +1183,7 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Debug;
 		};
@@ -1356,6 +1358,7 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Release;
 		};
@@ -1533,6 +1536,7 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1653,6 +1657,7 @@
 				PRODUCT_NAME = XCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};

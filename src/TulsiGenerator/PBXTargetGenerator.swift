@@ -905,6 +905,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let testSettings = [
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(hostProduct)/\(hostProductName)",
+          "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
 
       // Inherit the resolved values from the indexer.

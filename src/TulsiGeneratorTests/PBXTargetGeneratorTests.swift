@@ -429,6 +429,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": rule2TargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
       let expectedTarget = TargetDefinition(
           name: rule2TargetName,
@@ -541,6 +542,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": testRuleTargetName,
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": testRuleBuildPath,
+          "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
       let expectedTarget = TargetDefinition(
           name: testRuleTargetName,

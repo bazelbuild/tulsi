@@ -323,6 +323,7 @@
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Fastbuild;
 		};
@@ -407,6 +408,7 @@
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Debug;
 		};
@@ -495,6 +497,7 @@
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = Release;
 		};
@@ -587,6 +590,7 @@
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -682,6 +686,7 @@
 				PRODUCT_NAME = TestSuiteXCTest;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
+				TULSI_TEST_RUNNER_ONLY = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
