@@ -31,7 +31,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
 
-    XCTAssertEqual(infos.count, 5)
+    XCTAssertEqual(infos.count, 4)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_test:Application")
@@ -52,11 +52,6 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:XCTest")
         .hasType("ios_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_test:Application"))
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
-        .hasType("ios_test")
-        .hasNoLinkedTargetLabels()
         .hasNoDependencies()
   }
 
@@ -148,7 +143,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_platformdependent_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_platformdependent_test"])
 
-    XCTAssertEqual(infos.count, 6)
+    XCTAssertEqual(infos.count, 7)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_platformdependent_test:Application")
@@ -178,6 +173,11 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_platformdependent_test:JavaLibrary")
         .hasType("java_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_platformdependent_test:XCTestWithDefaultHost")
+        .hasType("ios_test")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
   }

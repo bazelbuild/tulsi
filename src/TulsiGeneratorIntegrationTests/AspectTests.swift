@@ -98,18 +98,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/XCTest/srcs/src1.mm"])
   }
 
-  func testSimpleXCTestWithDefaultApp() {
-    installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
-    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithDefaultHost")],
-                                                                      startupOptions: bazelStartupOptions,
-                                                                      buildOptions: bazelBuildOptions)
-    let checker = InfoChecker(ruleEntries: ruleEntries)
-    checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
-        .hasTestHost("//tools/objc:xctest_app")
-        .hasAttribute(.xctest, value: true)
-        .hasSources(["tulsi_test/XCTestWithDefaultHost/srcs/src1.mm"])
-  }
-
   func testComplexSingle_DefaultConfig() {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
@@ -325,6 +313,18 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:JavaLibrary")
         .hasSources(["tulsi_test/file.java"])
+  }
+
+  func testPlatformDependentXCTestWithDefaultApp() {
+    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithDefaultHost")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+    checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
+        .hasTestHost("//tools/objc:xctest_app")
+        .hasAttribute(.xctest, value: true)
+        .hasSources(["tulsi_test/XCTestWithDefaultHost/srcs/src1.mm"])
   }
 }
 

@@ -53,3 +53,11 @@ java_library(
     name = "JavaLibrary",
     srcs = ["file.java"],
 )
+
+ios_test(
+    name = "XCTestWithDefaultHost",
+    srcs = [
+        "XCTestWithDefaultHost/srcs/src1.mm",
+    ],
+    xctest = 1,
+)

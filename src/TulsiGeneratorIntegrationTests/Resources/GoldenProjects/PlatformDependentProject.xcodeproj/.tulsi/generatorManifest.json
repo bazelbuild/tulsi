@@ -1,14 +1,24 @@
 {
   "manifestVersion" : 2,
   "targets" : {
-    "_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054" : [
+    "_idx_XCTestWithDefaultHost_BA88D24D" : [
 
+    ],
+    "XCTestWithDefaultHost" : [
+      "bazel-bin\/tools\/objc\/xctest_app.ipa",
+      "bazel-bin\/tulsi_e2e_platform_dependent\/XCTestWithDefaultHost.ipa"
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_platform_dependent\/Application.ipa"
+    ],
+    "xctest_app" : [
+      "bazel-bin\/tools\/objc\/xctest_app.ipa"
     ],
     "_bazel_clean_" : [
 
     ],
-    "Application" : [
-      "bazel-bin\/tulsi_e2e_platform_dependent\/Application.ipa"
+    "_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054" : [
+
     ]
   },
   "artifacts" : [
@@ -17,12 +27,16 @@
     "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.h",
     "..\/..\/bazel-bin\/tulsi_e2e_platform_dependent\/_j2objc\/JavaLibrary\/tulsi_e2e_platform_dependent\/file.m",
     "Application.app\/**",
+    "XCTestWithDefaultHost.xctest\/**",
     "bazel-bin\/tulsi_e2e_platform_dependent\/Application-MergedInfo.plist",
-    "lib_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054.a"
+    "lib_idx_J2ObjCLibrary_ObjCProtoLibrary_Binary_JavaLibrary_5FAB1054.a",
+    "lib_idx_XCTestWithDefaultHost_BA88D24D.a",
+    "xctest_app.app\/**"
   ],
   "fileReferences" : [
     "..\/..\/tulsi_e2e_platform_dependent\/BUILD",
     "..\/..\/tulsi_e2e_platform_dependent\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_platform_dependent\/XCTestWithDefaultHost\/srcs\/src1.mm",
     "..\/..\/tulsi_e2e_platform_dependent\/file.java",
     "..\/..\/tulsi_e2e_platform_dependent\/protolibrary.proto"
   ]

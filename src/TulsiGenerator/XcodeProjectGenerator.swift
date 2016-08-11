@@ -267,10 +267,15 @@ final class XcodeProjectGenerator {
                                      comment: "Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues.",
                                      context: config.projectName,
                                      values: hostLabel.value, testLabel.value)
+      let bazelBinPath = workspaceInfoExtractor.bazelBinPath
+      let expectedArtifact = BazelFileInfo(rootPath: bazelBinPath,
+                                           subPath: "\(hostLabel.asFileName!).ipa",
+                                           targetType: .GeneratedFile)
+
       targetRules.insert(RuleEntry(label: hostLabel,
                                    type: "_test_host_",
                                    attributes: [:],
-                                   artifacts: [],
+                                   artifacts: [expectedArtifact],
                                    sourceFiles: [],
                                    nonARCSourceFiles: [],
                                    dependencies: Set(),
