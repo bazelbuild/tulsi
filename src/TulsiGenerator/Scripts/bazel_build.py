@@ -602,8 +602,9 @@ class BazelBuildBridge(object):
 
     if not matching_artifact:
       self._PrintError(
-          'Failed to find a output artifact for target %s in candidates %r' %
+          'Failed to find an output artifact for target %s in candidates %r' %
           (xcode_artifact_path, self.bazel_outputs))
+      return 601
 
     if matching_artifact.endswith('.ipa'):
       exit_code = self._UnpackTarget(matching_artifact, xcode_artifact_path)
