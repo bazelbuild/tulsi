@@ -22,7 +22,7 @@
             <BuildableReference BlueprintIdentifier="3D31C5E67C4CFB5800000000" BuildableIdentifier="primary" BuildableName="TestSuite-Two-XCTest" BlueprintName="TestSuite-Two-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
     </LaunchAction>
-    <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="Release">
+    <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E67C4CFB5800000000" BuildableIdentifier="primary" BuildableName="TestSuite-Two-XCTest" BlueprintName="TestSuite-Two-XCTest" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

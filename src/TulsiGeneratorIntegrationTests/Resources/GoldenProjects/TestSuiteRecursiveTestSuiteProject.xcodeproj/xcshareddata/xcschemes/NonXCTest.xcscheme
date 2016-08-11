@@ -18,7 +18,7 @@
             <BuildableReference BlueprintIdentifier="3D31C5E686B7E09C00000000" BuildableIdentifier="primary" BuildableName="NonXCTest" BlueprintName="NonXCTest" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
     </LaunchAction>
-    <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="Release">
+    <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E686B7E09C00000000" BuildableIdentifier="primary" BuildableName="NonXCTest" BlueprintName="NonXCTest" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

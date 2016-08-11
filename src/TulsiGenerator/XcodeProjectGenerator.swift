@@ -413,6 +413,7 @@ final class XcodeProjectGenerator {
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                               profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                appExtension: appExtension,
                                launchStyle: launchStyle)
       let xmlDocument = scheme.toXML()
@@ -459,6 +460,7 @@ final class XcodeProjectGenerator {
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                               profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                explicitTests: Array(validTests))
       let xmlDocument = scheme.toXML()
 
