@@ -5,9 +5,6 @@
       "bazel-bin\/tulsi_e2e_complex\/Application.ipa",
       "bazel-bin\/tulsi_e2e_complex\/XCTest.ipa"
     ],
-    "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" : [
-
-    ],
     "_idx_XCTest_7F8584F1" : [
 
     ],
@@ -32,10 +29,13 @@
     "_idx_Library_20EC2F4A" : [
 
     ],
-    "_idx_SubLibraryWithDefines_80C072DC" : [
+    "_idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E" : [
 
     ],
     "_bazel_clean_" : [
+
+    ],
+    "_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E" : [
 
     ]
   },
@@ -53,7 +53,7 @@
     "lib_idx_Binary_FD777BDB.a",
     "lib_idx_Library_20EC2F4A.a",
     "lib_idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_WatchExtensionBinary_60DB1E4E.a",
-    "lib_idx_SubLibraryWithDefines_80C072DC.a",
+    "lib_idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E.a",
     "lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a",
     "lib_idx_SubLibrary_19588DB9.a",
     "lib_idx_XCTest_7F8584F1.a"
@@ -91,6 +91,7 @@
     "..\/..\/tulsi_e2e_complex\/SubLibrary\/srcs\/src.mm",
     "..\/..\/tulsi_e2e_complex\/SubLibraryWithDefines\/srcs\/src.mm",
     "..\/..\/tulsi_e2e_complex\/SubLibraryWithDifferentDefines\/srcs\/src.mm",
+    "..\/..\/tulsi_e2e_complex\/SubLibraryWithIdenticalDefines\/srcs\/sub_library_with_identical_defines.m",
     "..\/..\/tulsi_e2e_complex\/Test.xcdatamodeld\/**",
     "..\/..\/tulsi_e2e_complex\/TodayExtension\/Plist1.plist",
     "..\/..\/tulsi_e2e_complex\/TodayExtension\/Plist2.plist",

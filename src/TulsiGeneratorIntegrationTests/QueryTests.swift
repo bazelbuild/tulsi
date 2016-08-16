@@ -60,7 +60,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_complex_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_complex_test"])
 
-    XCTAssertEqual(infos.count, 21)
+    XCTAssertEqual(infos.count, 22)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_complex_test:Application")
@@ -99,6 +99,11 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:SubLibraryWithDefines")
+        .hasType("objc_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_complex_test:SubLibraryWithIdenticalDefines")
         .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()

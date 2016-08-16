@@ -575,7 +575,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
 
         for depName in data.indexerNamesForDependencies {
-          guard let indexerDependency = indexerTargetByName[depName] else {
+          guard let indexerDependency = indexerTargetByName[depName]
+              where indexerDependency !== indexerTarget else {
             continue
           }
 

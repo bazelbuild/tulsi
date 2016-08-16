@@ -143,6 +143,24 @@ objc_library(
         "SubLibraryWithDefines=1",
         "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
     ],
+    deps = ["SubLibraryWithIdenticalDefines"],
+)
+
+objc_library(
+    name = "SubLibraryWithIdenticalDefines",
+    srcs = [
+        "SubLibraryWithIdenticalDefines/srcs/sub_library_with_identical_defines.m",
+    ],
+    copts = [
+        "-menable-no-nans",
+        "-menable-no-infs",
+        "-I/SubLibraryWithDefines/local/includes",
+        "-Irelative/SubLibraryWithDefines/local/includes",
+    ],
+    defines = [
+        "SubLibraryWithDefines=1",
+        "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
+    ],
 )
 
 objc_library(

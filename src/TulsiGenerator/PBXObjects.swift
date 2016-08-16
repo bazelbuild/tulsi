@@ -689,7 +689,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
                           inProject project: PBXProject,
                           first: Bool = false) {
     if target === self {
-      assert(target !== self, "Targets may not be dependent on themselves. (\(target.name))")
+      assertionFailure("Targets may not be dependent on themselves. (\(target.name))")
       return
     }
 
