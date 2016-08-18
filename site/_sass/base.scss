@@ -28,6 +28,21 @@ a {
   text-decoration: none;
 }
 
+.mdl-layout__content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-flow: column;
+  flex-direction: column;
+}
+
+.mdl-layout__content > *:not(.mdl-layout-spacer) {
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
+}
+
 $scroll-to-top-color: #fff;
 
 footer {
