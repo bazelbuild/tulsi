@@ -1124,6 +1124,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
     }
 
+    // An invalid launch image is set in order to suppress Xcode's warning about missing default
+    // launch images.
+    buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
 
     if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
