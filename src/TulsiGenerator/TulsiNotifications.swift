@@ -116,6 +116,9 @@ public let GeneratingIndexerTargets = "generatingIndexerTargets"
 /// Sent when copying the build scripts into the output Xcode project.
 public let InstallingScripts = "installingScripts"
 
+/// Sent when copying the build utilities into the output Xcode project.
+public let InstallingUtilities = "installingUtilities"
+
 /// Sent when copying the generator config into the output Xcode project.
 public let InstallingGeneratorConfig = "installingGeneratorConfig"
 

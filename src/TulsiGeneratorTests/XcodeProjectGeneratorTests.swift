@@ -33,9 +33,11 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let bazelURL = NSURL(fileURLWithPath: "/test/dir/testBazel")
 
-  let buildScriptURL = NSURL(fileURLWithPath: "/scripts/Build")
-  let cleanScriptURL = NSURL(fileURLWithPath: "/scripts/Clean")
-  let stubInfoPlistURL = NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist")
+  let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
+      buildScript: NSURL(fileURLWithPath: "/scripts/Build"),
+      cleanScript: NSURL(fileURLWithPath: "/scripts/Clean"),
+      covmapPatcher: NSURL(fileURLWithPath: "/utils/covmap_patcher"),
+      stubInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"))
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil
@@ -179,6 +181,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
     mockFileManager.allowedDirectoryCreates.insert(xcschemes.path!)
     let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")
     mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
+    let utils = projectURL.URLByAppendingPathComponent(".tulsi/Utils")
+    mockFileManager.allowedDirectoryCreates.insert(utils.path!)
     let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")
     mockFileManager.allowedDirectoryCreates.insert(resources.path!)
 
@@ -188,9 +192,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       config: config,
                                       localizedMessageLogger: mockLocalizedMessageLogger,
                                       workspaceInfoExtractor: mockExtractor,
-                                      buildScriptURL: buildScriptURL,
-                                      cleanScriptURL: cleanScriptURL,
-                                      stubInfoPlistURL: stubInfoPlistURL,
+                                      resourceURLs: resourceURLs,
                                       tulsiVersion: testTulsiVersion,
                                       fileManager: mockFileManager,
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)

@@ -45,9 +45,14 @@ public final class TulsiXcodeProjectGenerator {
        tulsiVersion: String) {
     let bundle = NSBundle(forClass: self.dynamicType)
     let localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
-    let buildScriptURL = bundle.URLForResource("bazel_build", withExtension: "py")!
-    let cleanScriptURL = bundle.URLForResource("bazel_clean", withExtension: "sh")!
-    let stubInfoPlistURL = bundle.URLForResource("StubInfoPlist", withExtension: "plist")!
+
+    let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
+        buildScript: bundle.URLForResource("bazel_build", withExtension: "py")!,
+        cleanScript: bundle.URLForResource("bazel_clean", withExtension: "sh")!,
+        covmapPatcher: bundle.URLForResource("covmap_patcher",
+                                             withExtension: "",
+                                             subdirectory: "Utilities")!,
+        stubInfoPlist: bundle.URLForResource("StubInfoPlist", withExtension: "plist")!)
 
     // Note: A new extractor is created on each generate in order to allow users to modify their
     // BUILD files (or add new files to glob's) and regenerate without restarting Tulsi.
@@ -59,9 +64,7 @@ public final class TulsiXcodeProjectGenerator {
                                                   config: config,
                                                   localizedMessageLogger: localizedMessageLogger,
                                                   workspaceInfoExtractor: extractor,
-                                                  buildScriptURL: buildScriptURL,
-                                                  cleanScriptURL: cleanScriptURL,
-                                                  stubInfoPlistURL: stubInfoPlistURL,
+                                                  resourceURLs: resourceURLs,
                                                   tulsiVersion: tulsiVersion)
   }
 

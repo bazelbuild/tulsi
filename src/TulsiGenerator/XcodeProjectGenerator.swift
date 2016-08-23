@@ -25,15 +25,26 @@ final class XcodeProjectGenerator {
     case LabelResolutionFailed(Set<BuildLabel>)
   }
 
+  /// Encapsulates the source paths of various resources (scripts, utilities, etc...) that will be
+  /// copied into the generated Xcode project.
+  struct ResourceSourcePathURLs {
+    let buildScript: NSURL  // The script to run on "build" actions.
+    let cleanScript: NSURL  // The script to run on "clean" actions.
+    let covmapPatcher: NSURL  // LLVM coverage map patcher utility.
+    let stubInfoPlist: NSURL  // Stub Info.plist needed for Xcode 8.
+  }
+
   /// Path relative to PROJECT_FILE_PATH in which Tulsi generated files (scripts, artifacts, etc...)
   /// should be placed.
   private static let TulsiArtifactDirectory = ".tulsi"
   static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
+  static let UtilDirectorySubpath = "\(TulsiArtifactDirectory)/Utils"
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
+  private static let CovmapPatcherUtil = "covmap_patcher"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
 
   private let workspaceRootURL: NSURL
@@ -41,9 +52,7 @@ final class XcodeProjectGenerator {
   private let localizedMessageLogger: LocalizedMessageLogger
   private let fileManager: NSFileManager
   private let workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
-  private let buildScriptURL: NSURL
-  private let cleanScriptURL: NSURL
-  private let stubInfoPlistURL: NSURL
+  private let resourceURLs: ResourceSourcePathURLs
   private let tulsiVersion: String
 
   private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
@@ -68,9 +77,7 @@ final class XcodeProjectGenerator {
        config: TulsiGeneratorConfig,
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol,
-       buildScriptURL: NSURL,
-       cleanScriptURL: NSURL,
-       stubInfoPlistURL: NSURL,
+       resourceURLs: ResourceSourcePathURLs,
        tulsiVersion: String,
        fileManager: NSFileManager = NSFileManager.defaultManager(),
        pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type = PBXTargetGenerator.self) {
@@ -78,9 +85,7 @@ final class XcodeProjectGenerator {
     self.config = config
     self.localizedMessageLogger = localizedMessageLogger
     self.workspaceInfoExtractor = workspaceInfoExtractor
-    self.buildScriptURL = buildScriptURL
-    self.cleanScriptURL = cleanScriptURL
-    self.stubInfoPlistURL = stubInfoPlistURL
+    self.resourceURLs = resourceURLs
     self.tulsiVersion = tulsiVersion
     self.fileManager = fileManager
     self.pbxTargetGeneratorType = pbxTargetGeneratorType
@@ -125,6 +130,7 @@ final class XcodeProjectGenerator {
                                           projectURL: projectURL,
                                           projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
+    installUtilities(projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
 
@@ -499,10 +505,25 @@ final class XcodeProjectGenerator {
       let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
       defer { progressNotifier.incrementValue() }
       localizedMessageLogger.infoMessage("Installing scripts")
-      installFiles([(buildScriptURL, XcodeProjectGenerator.BuildScript),
-                    (cleanScriptURL, XcodeProjectGenerator.CleanScript),
+      installFiles([(resourceURLs.buildScript, XcodeProjectGenerator.BuildScript),
+                    (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
                    ],
                    toDirectory: scriptDirectoryURL)
+      localizedMessageLogger.logProfilingEnd(profilingToken)
+    }
+  }
+
+  private func installUtilities(projectURL: NSURL) {
+    let utilDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.UtilDirectorySubpath,
+                                                                  isDirectory: true)
+    if createDirectory(utilDirectoryURL) {
+      let profilingToken = localizedMessageLogger.startProfiling("installing_utilities",
+                                                                 context: config.projectName)
+      let progressNotifier = ProgressNotifier(name: InstallingUtilities, maxValue: 1)
+      defer { progressNotifier.incrementValue() }
+      localizedMessageLogger.infoMessage("Installing utilities")
+      installFiles([(resourceURLs.covmapPatcher, XcodeProjectGenerator.CovmapPatcherUtil)],
+                   toDirectory: utilDirectoryURL)
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
   }
@@ -560,7 +581,7 @@ final class XcodeProjectGenerator {
                                                                context: config.projectName)
     localizedMessageLogger.infoMessage("Installing project resources")
 
-    installFiles([(stubInfoPlistURL, XcodeProjectGenerator.StubInfoPlistFilename)],
+    installFiles([(resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename)],
                  toDirectory: targetDirectoryURL)
     localizedMessageLogger.logProfilingEnd(profilingToken)
   }

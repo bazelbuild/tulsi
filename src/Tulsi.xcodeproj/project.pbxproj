@@ -87,6 +87,7 @@
 		3DB1FBFC1C31DDCB0080198C /* ProjectEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
 		3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */; };
+		3DBA77771D6CB40400BD5B7C /* covmap_patcher in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = 3DBA776F1D6CAF5E00BD5B7C /* covmap_patcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3DBCB5201CCA94E7000801A5 /* BazelErrorExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */; };
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
@@ -142,6 +143,20 @@
 			remoteGlobalIDString = 3D9926621C29F0A20094E098;
 			remoteInfo = TulsiGenerator;
 		};
+		3DBA776E1D6CAF5E00BD5B7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3DBA776A1D6CAF5E00BD5B7C /* covmap_patcher.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DC2E3C51D635C0A00DCF7D3;
+			remoteInfo = covmap_patcher;
+		};
+		3DBA77741D6CB3DB00BD5B7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3DBA776A1D6CAF5E00BD5B7C /* covmap_patcher.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3DC2E3C41D635C0A00DCF7D3;
+			remoteInfo = covmap_patcher;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -154,6 +169,17 @@
 				3D9926791C29F0A30094E098 /* TulsiGenerator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBA77761D6CB3EF00BD5B7C /* Copy Utilty resources */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Utilities;
+			dstSubfolderSpec = 7;
+			files = (
+				3DBA77771D6CB40400BD5B7C /* covmap_patcher in Copy Utilty resources */,
+			);
+			name = "Copy Utilty resources";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -234,6 +260,7 @@
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
 		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; };
+		3DBA776A1D6CAF5E00BD5B7C /* covmap_patcher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = covmap_patcher.xcodeproj; path = tools/covmap_patcher/covmap_patcher.xcodeproj; sourceTree = "<group>"; };
 		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
@@ -467,6 +494,14 @@
 			name = tulsi;
 			sourceTree = "<group>";
 		};
+		3DBA776B1D6CAF5E00BD5B7C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3DBA776F1D6CAF5E00BD5B7C /* covmap_patcher */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3DCFE5CE1C80A64600D7F31B /* Bazel */ = {
 			isa = PBXGroup;
 			children = (
@@ -498,6 +533,7 @@
 		8B8F558E1BE3ECDC0095AF7F = {
 			isa = PBXGroup;
 			children = (
+				3DBA776A1D6CAF5E00BD5B7C /* covmap_patcher.xcodeproj */,
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
 				3D9926641C29F0A20094E098 /* TulsiGenerator */,
@@ -589,10 +625,12 @@
 				3D9926601C29F0A20094E098 /* Headers */,
 				3D9926611C29F0A20094E098 /* Resources */,
 				3DB8F6C71CA9E3440045B0CF /* Copy Tulsi aspect bundle resources */,
+				3DBA77761D6CB3EF00BD5B7C /* Copy Utilty resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3DBA77751D6CB3DB00BD5B7C /* PBXTargetDependency */,
 			);
 			name = TulsiGenerator;
 			productName = TulsiGenerator;
@@ -689,6 +727,12 @@
 			mainGroup = 8B8F558E1BE3ECDC0095AF7F;
 			productRefGroup = 8B8F55981BE3ECDC0095AF7F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3DBA776B1D6CAF5E00BD5B7C /* Products */;
+					ProjectRef = 3DBA776A1D6CAF5E00BD5B7C /* covmap_patcher.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8B8F55961BE3ECDC0095AF7F /* Tulsi */,
@@ -698,6 +742,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3DBA776F1D6CAF5E00BD5B7C /* covmap_patcher */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = covmap_patcher;
+			remoteRef = 3DBA776E1D6CAF5E00BD5B7C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3D9926611C29F0A20094E098 /* Resources */ = {
@@ -905,6 +959,11 @@
 			isa = PBXTargetDependency;
 			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
 			targetProxy = 3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */;
+		};
+		3DBA77751D6CB3DB00BD5B7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = covmap_patcher;
+			targetProxy = 3DBA77741D6CB3DB00BD5B7C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -128,6 +128,9 @@
 /* Sent when the Tulsi generator is copying the build scripts into the output Xcode project. */
 "installingScripts" = "Installing build scripts";
 
+/* Sent when the Tulsi generator is copying the build utilities into the output Xcode project. */
+"installingUtilities" = "Installing build utilities";
+
 /* Sent when the Tulsi generator is copying the generator config into the output Xcode project. */
 "installingGeneratorConfig" = "Installing generator config";
 
