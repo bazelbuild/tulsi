@@ -74,6 +74,9 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  linkedTargetLabels: Set<BuildLabel>()),
                         RuleInfo(label: BuildLabel("//\(testDir):WatchExtension"),
                                  type: "apple_watch1_extension",
+                                 linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: BuildLabel("//\(testDir):Watch2Extension"),
+                                 type: "apple_watch2_extension",
                                  linkedTargetLabels: Set<BuildLabel>())]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 

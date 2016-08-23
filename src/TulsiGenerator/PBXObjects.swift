@@ -651,6 +651,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case InAppPurchaseContent = "com.apple.product-type.in-app-purchase-content"
     case AppExtension = "com.apple.product-type.app-extension"
     case XPCService = "com.apple.product-type.xpc-service"
+    case Watch2App = "com.apple.product-type.application.watchapp2"
   }
 
   var globalID: String = ""
@@ -946,6 +947,8 @@ final class PBXProject: PBXObjectProtocol {
       case .StaticFramework:
         productName = name + ".framework"
         explicitFileType = "wrapper.framework.static"
+      case .Watch2App:
+        fallthrough
       case .Application:
         productName = name + ".app"
         explicitFileType = "wrapper.application"

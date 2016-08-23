@@ -70,6 +70,7 @@ _IPA_GENERATING_RULES = set([
 # Set of rules that generate MergedInfo.plist files as part of the build.
 _MERGEDINFOPLIST_GENERATING_RULES = set([
     'apple_watch1_extension',
+    'apple_watch2_extension',
     'ios_application',
 ])
 

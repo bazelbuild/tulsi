@@ -21,6 +21,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   // This list needs to be kept up to date with whatever Bazel supports.
   static let filteredFileTypes = [
       "apple_watch1_extension",
+      "apple_watch2_extension",
       "objc_binary",  // TODO(abaire): Remove when app-related attributes are removed from Bazel.
       "objc_library",
       "ios_application",

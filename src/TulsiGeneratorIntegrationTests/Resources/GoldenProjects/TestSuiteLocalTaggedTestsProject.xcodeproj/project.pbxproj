@@ -322,6 +322,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteXCTest;
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -340,6 +341,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestApplication;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Fastbuild;
@@ -384,6 +386,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteNonXCTest;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Fastbuild;
@@ -409,6 +412,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteXCTest;
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -428,6 +432,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestApplication;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Debug;
@@ -474,6 +479,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteNonXCTest;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Debug;
@@ -500,6 +506,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteXCTest;
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -519,6 +526,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestApplication;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Release;
@@ -565,6 +573,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = TestSuiteNonXCTest;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = Release;
@@ -595,6 +604,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteXCTest;
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -618,6 +628,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestApplication;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -671,6 +682,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteNonXCTest;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -692,6 +704,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteXCTest;
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -715,6 +728,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestApplication;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Release;
@@ -768,6 +782,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				PRODUCT_NAME = TestSuiteNonXCTest;
+				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 			};
 			name = __TulsiTestRunner_Release;

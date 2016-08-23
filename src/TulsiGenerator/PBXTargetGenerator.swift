@@ -1090,6 +1090,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var buildSettings = options.buildSettingsForTarget(name)
     buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
     buildSettings["PRODUCT_NAME"] = name
+    if let sdkRoot = entry.XcodeSDKRoot {
+      buildSettings["SDKROOT"] = sdkRoot
+    }
 
     // The following settings are simply passed through the environment for use by build scripts.
     buildSettings["BAZEL_TARGET"] = entry.label.value

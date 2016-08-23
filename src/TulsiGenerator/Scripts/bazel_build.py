@@ -57,7 +57,7 @@ class _OptionsParser(object):
   # The build configurations handled by this parser.
   KNOWN_CONFIGS = ['Debug', 'Release', 'Fastbuild']
 
-  def __init__(self, sdk_version, arch, main_group_path):
+  def __init__(self, sdk_version, platform_name, arch, main_group_path):
     self.targets = []
     self.startup_options = collections.defaultdict(list)
     self.build_options = collections.defaultdict(
@@ -97,6 +97,7 @@ class _OptionsParser(object):
       self.build_options['Release'].extend(xcode_lldb_options)
 
     self.sdk_version = sdk_version
+    self.platform_name = platform_name
 
     if arch:
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
@@ -171,7 +172,16 @@ class _OptionsParser(object):
       self._AddDefaultOption(options, '--xcode_version', version_string)
 
     if self.sdk_version:
-      self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
+      if self.platform_name == 'watchos':
+        self._AddDefaultOption(options,
+                               '--watchos_sdk_version',
+                               self.sdk_version)
+      else:
+        # TODO(abaire): This will probably be incorrect in other cases.
+        # SDK Version handling probably has to be kept in sync with
+        # platform_name in a more generic manner in order to support new types
+        # from Apple or Bazel.
+        self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
     return options
 
   @staticmethod
@@ -374,6 +384,8 @@ class BazelBuildBridge(object):
     self.platform_name = os.environ['PLATFORM_NAME']  # Target platform.
     # The name (without any extension) of the target artifact.
     self.product_name = os.environ['PRODUCT_NAME']
+    # The type of the target artifact.
+    self.product_type = os.environ['PRODUCT_TYPE']
     # The path to the parent of the xcodeproj bundle.
     self.project_dir = os.environ['PROJECT_DIR']
     # The path to the xcodeproj bundle.
@@ -394,7 +406,10 @@ class BazelBuildBridge(object):
       sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
 
-    parser = _OptionsParser(self.sdk_version, self.arch, self.main_group_path)
+    parser = _OptionsParser(self.sdk_version,
+                            self.platform_name,
+                            self.arch,
+                            self.main_group_path)
     timer = Timer('Parsing options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -669,6 +684,15 @@ class BazelBuildBridge(object):
     expected_bundle_name = os.path.basename(output_path)
     if self.package_type == 'com.apple.package-type.app-extension':
       expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
+    elif self.product_type == 'com.apple.product-type.application.watchapp2':
+      # apple_watch2_extension apps generate an IPA whose name does not
+      # necessarily match the Bazel target (it uses the app_name attribute).
+      # Tulsi guarantees that the first BAZEL_OUTPUTS value is the primary
+      # artifact so, rather than using the rule name, the first output is used.
+      if self.bazel_outputs:
+        expected_bundle_name = os.path.splitext(
+            os.path.basename(self.bazel_outputs[0]))[0] + '.app'
+      expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
     else:
       expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
 

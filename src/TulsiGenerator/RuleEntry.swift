@@ -104,6 +104,7 @@ public final class RuleEntry: RuleInfo {
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
       "apple_watch1_extension": PBXTarget.ProductType.AppExtension,
+      "apple_watch2_extension": PBXTarget.ProductType.Watch2App,
       "ios_application": PBXTarget.ProductType.Application,
       "ios_extension": PBXTarget.ProductType.AppExtension,
       "ios_framework": PBXTarget.ProductType.Framework,
@@ -219,6 +220,20 @@ public final class RuleEntry: RuleInfo {
     }
 
     return BuildTypeToTargetType[self.type]
+  }()
+
+  /// Returns the value to be used as the Xcode SDKROOT for the build target generated for this
+  /// RuleEntry.
+  private(set) lazy var XcodeSDKRoot: String? = { [unowned self] in
+    guard let targetType = self.pbxTargetType else {
+      return nil
+    }
+
+    if targetType == .Watch2App {
+      return "watchos"
+    }
+
+    return "iphoneos"
   }()
 
   /// For rule types that generate an implicit name.ipa target, returns a BuildLabel usable to

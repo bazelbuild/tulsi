@@ -278,6 +278,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_application",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -316,6 +317,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "objc_library",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -387,6 +389,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_application",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -427,6 +430,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
+          "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": rule2BuildPath,
           "TULSI_TEST_RUNNER_ONLY": "YES",
@@ -499,6 +503,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_application",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -540,6 +545,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
+          "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": testRuleBuildPath,
           "TULSI_TEST_RUNNER_ONLY": "YES",
@@ -645,6 +651,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_test",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": testRuleBuildPath,
       ]
       var testRunnerExpectedBuildSettings = expectedBuildSettings
@@ -717,6 +724,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_application",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test1-SameName",
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -756,6 +764,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test2-SameName",
+          "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -1141,6 +1150,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "BAZEL_TARGET_TYPE": targetType,
       "INFOPLIST_FILE": "TestInfo.plist",
       "PRODUCT_NAME": targetName,
+      "SDKROOT": "iphoneos",
       "TULSI_BUILD_PATH": package,
     ]
     let expectedTarget = TargetDefinition(
