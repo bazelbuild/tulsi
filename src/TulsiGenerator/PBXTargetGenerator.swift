@@ -1139,8 +1139,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let buildLabel = BuildLabel(binaryLabel)
       let binaryPackage = buildLabel.packageName!
       let binaryTarget = buildLabel.targetName!
-      let (binaryBundle, _) = PBXProject.productNameAndTypeForTargetName(binaryTarget,
-                                                                         targetType: pbxTargetType)
+      let binaryBundle = pbxTargetType.productName(binaryTarget)
       let dSYMPath =  "\(binaryPackage)/\(binaryBundle).dSYM"
       buildSettings["BAZEL_BINARY_DSYM"] = dSYMPath
     }

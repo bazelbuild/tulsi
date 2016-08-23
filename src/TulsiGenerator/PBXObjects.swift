@@ -652,6 +652,68 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case AppExtension = "com.apple.product-type.app-extension"
     case XPCService = "com.apple.product-type.xpc-service"
     case Watch2App = "com.apple.product-type.application.watchapp2"
+
+    var explicitFileType: String {
+      switch self {
+        case .StaticLibrary:
+          return "archive.ar"
+        case .DynamicLibrary:
+          return "compiled.mach-o.dylib"
+        case .Tool:
+          return "compiled.mach-o.executable"
+        case .Bundle:
+          return "wrapper.bundle"
+        case .Framework:
+          return "wrapper.framework"
+        case .StaticFramework:
+          return "wrapper.framework.static"
+        case .Watch2App:
+          fallthrough
+        case .Application:
+          return "wrapper.application"
+        case .UnitTest:
+          fallthrough
+        case .UIUnitTest:
+          return "wrapper.cfbundle"
+        case .InAppPurchaseContent:
+          return "folder"
+        case .AppExtension:
+          return "wrapper.app-extension"
+        case .XPCService:
+          return "wrapper.xpc-service"
+      }
+    }
+
+    func productName(name: String) -> String {
+      switch self {
+        case .StaticLibrary:
+          return "lib" + name + ".a"
+        case .DynamicLibrary:
+          return "lib" + name + ".dylib"
+        case .Tool:
+          return name
+        case .Bundle:
+          return name + ".bundle"
+        case .Framework:
+          return name + ".framework"
+        case .StaticFramework:
+          return name + ".framework"
+        case .Watch2App:
+          fallthrough
+        case .Application:
+          return name + ".app"
+        case .UnitTest:
+          fallthrough
+        case .UIUnitTest:
+          return name + ".xctest"
+        case .InAppPurchaseContent:
+          return name
+        case .AppExtension:
+          return name + ".appex"
+        case .XPCService:
+          return name + ".xpc"
+      }
+    }
   }
 
   var globalID: String = ""
@@ -922,75 +984,31 @@ final class PBXProject: PBXObjectProtocol {
     self.mainGroup.serializesName = true
   }
 
-  /// Returns the product name and explicit file type for a target with the given name and product
-  /// type.
-  static func productNameAndTypeForTargetName(name: String,
-                                              targetType: PBXTarget.ProductType) -> (String, String) {
-    let productName: String
-    let explicitFileType: String
-    switch targetType {
-      case .StaticLibrary:
-        productName = "lib" + name + ".a"
-        explicitFileType = "archive.ar"
-      case .DynamicLibrary:
-        productName = "lib" + name + ".dylib"
-        explicitFileType = "compiled.mach-o.dylib"
-      case .Tool:
-        productName = name
-        explicitFileType = "compiled.mach-o.executable"
-      case .Bundle:
-        productName = name + ".bundle"
-        explicitFileType = "wrapper.bundle"
-      case .Framework:
-        productName = name + ".framework"
-        explicitFileType = "wrapper.framework"
-      case .StaticFramework:
-        productName = name + ".framework"
-        explicitFileType = "wrapper.framework.static"
-      case .Watch2App:
-        fallthrough
-      case .Application:
-        productName = name + ".app"
-        explicitFileType = "wrapper.application"
-      case .UnitTest:
-        fallthrough
-      case .UIUnitTest:
-        productName = name + ".xctest"
-        explicitFileType = "wrapper.cfbundle"
-      case .InAppPurchaseContent:
-        productName = name
-        explicitFileType = "folder"
-      case .AppExtension:
-        productName = name + ".appex"
-        explicitFileType = "wrapper.app-extension"
-      case .XPCService:
-        productName = name + ".xpc"
-        explicitFileType = "wrapper.xpc-service"
-    }
-    return (productName, explicitFileType)
-  }
-
   func createNativeTarget(name: String, targetType: PBXTarget.ProductType) -> PBXTarget {
     let value = PBXNativeTarget(name: name, productType: targetType)
     targetByName[name] = value
 
-    let (productName, explicitFileType) = PBXProject.productNameAndTypeForTargetName(name,
-                                                                                     targetType: targetType)
-
     let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
                                                               path: nil)
     productsGroup.serializesName = true
+    let productName = targetType.productName(name)
     let productReference = productsGroup.getOrCreateFileReferenceBySourceTree(.BuiltProductsDir,
                                                                               path: productName)
-    productReference.fileTypeOverride = explicitFileType
+    productReference.fileTypeOverride = targetType.explicitFileType
     productReference.isInputFile = false
     value.productReference = productReference
 
     return value
   }
 
-  func createLegacyTarget(name: String, buildToolPath: String, buildArguments: String, buildWorkingDirectory: String) -> PBXLegacyTarget {
-    let value = PBXLegacyTarget(name: name, buildToolPath: buildToolPath, buildArguments: buildArguments, buildWorkingDirectory: buildWorkingDirectory)
+  func createLegacyTarget(name: String,
+                          buildToolPath: String,
+                          buildArguments: String,
+                          buildWorkingDirectory: String) -> PBXLegacyTarget {
+    let value = PBXLegacyTarget(name: name,
+                                buildToolPath: buildToolPath,
+                                buildArguments: buildArguments,
+                                buildWorkingDirectory: buildWorkingDirectory)
     targetByName[name] = value
     return value
   }
