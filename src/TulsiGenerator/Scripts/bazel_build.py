@@ -344,6 +344,10 @@ class BazelBuildBridge(object):
     self.verbose = 0
     self.build_path = None
     self.bazel_bin_path = None
+    # The actual path to the Bazel output directory (not a symlink)
+    self.real_bazel_bin_path = None
+    # The actual path to the Bazel execution root.
+    self.real_bazel_execroot = None
     self.bazel_genfiles_path = None
     self.signing_identities = {}
 
@@ -364,7 +368,8 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
-    self.arch = os.environ.get('CURRENT_ARCH')  # Target architecture.
+    # Target architecture.
+    self.arch = os.environ.get('CURRENT_ARCH')
     # Declared outputs of the target.
     self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS', [])
     if self.bazel_outputs:
@@ -373,23 +378,29 @@ class BazelBuildBridge(object):
     self.bazel_target_type = os.environ.get('BAZEL_TARGET_TYPE')
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
-    # The full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
+    # Whether or not code coverage information should be generated.
+    self.code_coverage_enabled = (
+        os.environ.get('CLANG_COVERAGE_MAPPING') == 'YES')
+    # Full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
     self.full_product_name = os.environ['FULL_PRODUCT_NAME']
     # Target SDK version.
     self.sdk_version = os.environ.get('SDK_VERSION')
-    # The TEST_HOST for unit tests.
+    # TEST_HOST for unit tests.
     self.test_host_binary = os.environ.get('TEST_HOST')
-    # The UTI type of the target.
+    # UTI type of the target.
     self.package_type = os.environ.get('PACKAGE_TYPE')
-    self.platform_name = os.environ['PLATFORM_NAME']  # Target platform.
-    # The name (without any extension) of the target artifact.
+    # Target platform.
+    self.platform_name = os.environ['PLATFORM_NAME']
+    # Name (without any extension) of the target artifact.
     self.product_name = os.environ['PRODUCT_NAME']
-    # The type of the target artifact.
+    # Type of the target artifact.
     self.product_type = os.environ['PRODUCT_TYPE']
-    # The path to the parent of the xcodeproj bundle.
+    # Path to the parent of the xcodeproj bundle.
     self.project_dir = os.environ['PROJECT_DIR']
-    # The path to the xcodeproj bundle.
+    # Path to the xcodeproj bundle.
     self.project_file_path = os.environ['PROJECT_FILE_PATH']
+    # Path to the parent of the Xcode project's mainGroup.
+    self.source_root = os.environ['SOURCE_ROOT']
     # Path to the directory containing the WORKSPACE file.
     self.workspace_root = os.path.abspath(os.environ['TULSI_WR'])
     # Set to the name of the generated bundle for bundle-type targets, None for
@@ -467,7 +478,16 @@ class BazelBuildBridge(object):
           return exit_code
 
     if self.xcode_version_major >= 800:
+      timer = Timer('Updating .lldbinit').Start()
       exit_code = self._UpdateLLDBInit()
+      timer.End()
+      if exit_code:
+        return exit_code
+
+    if self.code_coverage_enabled:
+      timer = Timer('Patching LLVM covmap').Start()
+      exit_code = self._PatchLLVMCovmapPaths()
+      timer.End()
       if exit_code:
         return exit_code
 
@@ -495,6 +515,13 @@ class BazelBuildBridge(object):
     bazel_command.extend(options.GetStartupOptions(configuration))
     bazel_command.append('build')
     bazel_command.extend(options.GetBuildOptions(configuration))
+
+    if self.code_coverage_enabled:
+      self._PrintVerbose('Enabling code coverage information.')
+      bazel_command.extend([
+          '--collect_code_coverage',
+          '--experimental_use_llvm_covmap'])
+
     bazel_command.extend(options.targets)
 
     return (bazel_command, 0)
@@ -565,14 +592,21 @@ class BazelBuildBridge(object):
                          (self.bazel_bin_path))
       return 0
 
-    real_path = os.path.realpath(self.bazel_bin_path)
-    if not os.path.isdir(real_path):
+    self.real_bazel_bin_path = os.path.realpath(self.bazel_bin_path)
+    if not os.path.isdir(self.real_bazel_bin_path):
       try:
-        os.makedirs(real_path)
+        os.makedirs(self.real_bazel_bin_path)
       except OSError as e:
         self._PrintError('Failed to create Bazel binary dir at "%s". %s' %
-                         (real_path, e))
+                         (self.real_bazel_bin_path, e))
         return 20
+
+    path_components = self.real_bazel_bin_path.split('/execroot/')
+    if len(path_components) < 2:
+      self._PrintWarning('Failed to derive execroot path from %r' %
+                         self.real_bazel_bin_path)
+    else:
+      self.real_bazel_execroot = path_components[0] + '/execroot'
     return 0
 
   def _InstallArtifact(self):
@@ -961,6 +995,38 @@ class BazelBuildBridge(object):
       out.write(block_end)
 
     shutil.move(out.name, lldbinit_path)
+
+    return 0
+
+  def _PatchLLVMCovmapPaths(self):
+    """Invokes covmap_patcher to fix source paths in LLVM coverage maps."""
+    if not self.real_bazel_execroot:
+      self._PrintWarning('No Bazel execroot was detected, unable to determine '
+                         'coverage paths to patch. Code coverage will probably '
+                         'fail.')
+      return 0
+
+    executable_name = os.environ['EXECUTABLE_NAME']
+    target_binary = os.path.join(self.codesigning_folder_path, executable_name)
+    if not os.path.isfile(target_binary):
+      return 0
+
+    covmap_patcher = os.path.join(self.project_file_path,
+                                  '.tulsi',
+                                  'Utils',
+                                  'covmap_patcher')
+
+    returncode, output = self._RunSubprocess([
+        covmap_patcher,
+        target_binary,
+        self.real_bazel_execroot,
+        self.source_root
+    ])
+    if returncode:
+      self._PrintWarning('Coverage map patching failed on binary %r. Code '
+                         'coverage will probably fail.' % target_binary)
+      self._PrintWarning('Output: %r' % output)
+      return 0
 
     return 0
 
