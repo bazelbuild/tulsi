@@ -273,6 +273,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
@@ -313,6 +314,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
           "BAZEL_TARGET_TYPE": "objc_library",
           "INFOPLIST_FILE": infoPlistPath,
@@ -384,6 +386,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
@@ -424,6 +427,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
@@ -498,6 +502,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 2)
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
@@ -539,6 +544,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": testIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
@@ -646,6 +652,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
@@ -719,6 +726,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/test1:\(targetName)",
           "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
@@ -759,6 +767,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/test2:\(targetName)",
           "BAZEL_TARGET_TYPE": "ios_application",
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
@@ -1144,14 +1153,15 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
 
     let expectedBuildSettings = [
-      "BAZEL_OUTPUTS": "test/app/TestApplication.ipa\nsome/path/to/an/ipa.ipa",
-      "BAZEL_TARGET_IPA": ipa.asFileName!,
-      "BAZEL_TARGET": target,
-      "BAZEL_TARGET_TYPE": targetType,
-      "INFOPLIST_FILE": "TestInfo.plist",
-      "PRODUCT_NAME": targetName,
-      "SDKROOT": "iphoneos",
-      "TULSI_BUILD_PATH": package,
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_OUTPUTS": "test/app/TestApplication.ipa\nsome/path/to/an/ipa.ipa",
+        "BAZEL_TARGET_IPA": ipa.asFileName!,
+        "BAZEL_TARGET": target,
+        "BAZEL_TARGET_TYPE": targetType,
+        "INFOPLIST_FILE": "TestInfo.plist",
+        "PRODUCT_NAME": targetName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": package,
     ]
     let expectedTarget = TargetDefinition(
         name: "TestTarget",
