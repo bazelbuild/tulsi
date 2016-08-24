@@ -432,13 +432,24 @@ final class XcodeProjectGenerator {
       var suiteHostTarget: PBXTarget? = nil
       var validTests = Set<PBXTarget>()
       for testEntryLabel in suite.weakDependencies {
-        guard let testTarget = targetForLabel(testEntryLabel) else {
+        guard let testTarget = targetForLabel(testEntryLabel) as? PBXNativeTarget else {
           localizedMessageLogger.warning("TestSuiteUsesUnresolvedTarget",
                                          comment: "Warning shown when a test_suite %1$@ refers to a test label %2$@ that was not resolved and will be ignored",
                                          context: config.projectName,
                                          values: suite.label.value, testEntryLabel.value)
           continue
         }
+
+        // Non XCTests are treated as standalone applications and cannot be included in an Xcode
+        // test scheme.
+        if testTarget.productType == .Application {
+          localizedMessageLogger.warning("TestSuiteIncludesNonXCTest",
+                                         comment: "Warning shown when a non XCTest %1$@ is included in a test suite %2$@ and will be ignored.",
+                                         context: config.projectName,
+                                         values: testEntryLabel.value, suite.label.value)
+          continue
+        }
+
         guard let testHostTarget = info.project.linkedHostForTestTarget(testTarget) as? PBXNativeTarget else {
           localizedMessageLogger.warning("TestSuiteTestHostResolutionFailed",
                                          comment: "Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported.",

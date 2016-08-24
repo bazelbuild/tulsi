@@ -59,6 +59,9 @@
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
 
+/* Warning shown when a non XCTest %1$@ is included in a test suite %2$@ and will be ignored. */
+"TestSuiteIncludesNonXCTest" = "test_suite '%2$@' includes non-xctest '%1$@'. Xcode test schemes cannot include targets of this type so it will be ignored when running the suite.";
+
 /* Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported. */
 "TestSuiteTestHostResolutionFailed" = "Failed to resolve host for test '%1$@', it will be ignored in test_suite '%2$@'. This is an unexpected problem and should be reported as a Tulsi bug.";
 
