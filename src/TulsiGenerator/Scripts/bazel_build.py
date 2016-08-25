@@ -504,8 +504,8 @@ class BazelBuildBridge(object):
       configuration = configuration[len(test_runner_config_prefix):]
     elif os.environ.get('TULSI_TEST_RUNNER_ONLY') == 'YES':
       self._PrintError('Building test targets with configuration "%s" is not '
-                       'allowed. Please use the "Test" action instead.' %
-                       configuration)
+                       'allowed. Please use the "Test" action or "Build for" > '
+                       '"Testing" instead.' % configuration)
       return (None, 1)
 
     if configuration not in _OptionsParser.KNOWN_CONFIGS:
