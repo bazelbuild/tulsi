@@ -33,7 +33,10 @@ public enum TulsiOptionKey: String {
       // project.
       SuppressSwiftUpdateCheck,
       // The path from a config file to its associated workspace root.
-      WorkspaceRootPath
+      WorkspaceRootPath,
+      // Whether to patch LLDB CWD
+      // TODO(dmishe): Remove this option once it is enabled by default.
+      PatchLLDBWorkingDirectory
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -252,6 +255,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
+    addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])

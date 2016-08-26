@@ -1197,6 +1197,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "--bazel_bin_path \"\(bazelBinPath)\" " +
         "--verbose "
 
+    if let value = options[.PatchLldbWorkingDirectory].commonValueAsBool where value {
+      commandLine += "--patch_lldb_cwd "
+    }
+
     func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey], optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be
       // collapsed.

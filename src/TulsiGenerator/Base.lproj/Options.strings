@@ -26,3 +26,6 @@
 
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
+
+"PatchLLDBWorkingDirectory" = "Patch LLDB working directory for Swift builds";
+"PatchLLDBWorkingDirectory_DESC" = "Sets the LLDB working directory path to Bazel's workspace root. This allows LLDB to load Swift modules during debugging";
