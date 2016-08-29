@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COVMAP_PATCHER_RETURNCODE_H_
-#define COVMAP_PATCHER_RETURNCODE_H_
+#ifndef POST_PROCESSOR_RETURNCODE_H_
+#define POST_PROCESSOR_RETURNCODE_H_
 
 
-namespace covmap_patcher {
+namespace post_processor {
 
 enum ReturnCode {
     ERR_OK = 0,
@@ -27,6 +27,6 @@ enum ReturnCode {
     ERR_WRITE_FAILED = 20,
 };
 
-}  // namespace covmap_patcher
+}  // namespace post_processor
 
-#endif  // COVMAP_PATCHER_RETURNCODE_H_
+#endif  // POST_PROCESSOR_RETURNCODE_H_

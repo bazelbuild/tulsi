@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "MachLoadCommandResolver.h"
+#include "mach_load_command_resolver.h"
 
 #include <mach-o/loader.h>
 
-namespace covmap_patcher {
+namespace post_processor {
 
 MachLoadCommandResolver::MachLoadCommandResolver() {
   command_to_info_[LC_SEGMENT] =
@@ -111,4 +111,4 @@ MachLoadCommandResolver::MachLoadCommandResolver() {
       "LC_VERSION_MIN_WATCHOS * build for Watch min OS version";
 }
 
-}  // namespace covmap_patcher
+}  // namespace post_processor

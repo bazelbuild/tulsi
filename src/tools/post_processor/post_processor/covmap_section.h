@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COVMAP_PATCHER_COVMAPSECTION_H_
-#define COVMAP_PATCHER_COVMAPSECTION_H_
+#ifndef POST_PROCESSOR_COVMAPSECTION_H_
+#define POST_PROCESSOR_COVMAPSECTION_H_
 
 #include <string>
 #include <sys/types.h>
@@ -22,7 +22,7 @@
 #include "return_code.h"
 
 
-namespace covmap_patcher {
+namespace post_processor {
 
 /// Provides utilities to read and manipulate __llvm_covmap sections in Mach
 /// binaries.
@@ -92,6 +92,6 @@ class CovmapSection {
   std::vector<FilenameGroup> filename_groups_;
 };
 
-}  // namespace covmap_patcher
+}  // namespace post_processor
 
-#endif  //COVMAP_PATCHER_COVMAPSECTION_H_
+#endif  // POST_PROCESSOR_COVMAPSECTION_H_

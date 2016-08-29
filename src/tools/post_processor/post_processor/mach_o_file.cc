@@ -15,22 +15,24 @@
 #include "mach_o_file.h"
 
 #include <assert.h>
+#include <mach-o/stab.h>
 
-#include "MachLoadCommandResolver.h"
+#include "mach_load_command_resolver.h"
+#include "symtab_nlist_resolver.h"
 
 
-namespace covmap_patcher {
+namespace post_processor {
 
 MachOFile::MachOFile(const std::string &filename, bool verbose) :
     filename_(filename),
     file_(nullptr),
     file_format_(FF_INVALID),
     has_32_bit_(false),
-    has_64_bit_(false),
-    command_resolver_(nullptr) {
+    has_64_bit_(false) {
   host_byte_order_ = NXHostByteOrder();
   if (verbose) {
-    command_resolver_.reset(new MachLoadCommandResolver());
+    resolver_set_.command_resolver.reset(new MachLoadCommandResolver());
+    resolver_set_.symtab_nlist_resolver.reset(new SymtabNListResolver());
   }
 }
 
@@ -62,7 +64,8 @@ ReturnCode MachOFile::Read() {
       header_32_.swap_byte_ordering = swap_byte_ordering;
       retval = header_32_.Read(host_byte_order_,
                                file_,
-                               command_resolver_.get());
+                               resolver_set_);
+      has_32_bit_ = true;
       break;
 
     case FF_64:
@@ -70,7 +73,8 @@ ReturnCode MachOFile::Read() {
       header_64_.swap_byte_ordering = swap_byte_ordering;
       retval = header_64_.Read(host_byte_order_,
                                file_,
-                               command_resolver_.get());
+                               resolver_set_);
+      has_64_bit_ = true;
       break;
 
     case FF_FAT:
@@ -128,15 +132,17 @@ ReturnCode MachOFile::PeekMagicHeader(FileFormat *fileFormat,
 template <typename HeaderType,
           void (*SwapHeaderFunc)(HeaderType*, NXByteOrder),
           const uint32_t kSegmentLoadCommandID,
-          typename MachSegmentType>
+          typename MachSegmentType,
+          typename SymbolTableNListType>
 ReturnCode
 MachOFile::MachContent<HeaderType,
                        SwapHeaderFunc,
                        kSegmentLoadCommandID,
-                       MachSegmentType>::Read(
+                       MachSegmentType,
+                       SymbolTableNListType>::Read(
     NXByteOrder host_byte_order,
     FILE *file,
-    const MachLoadCommandResolver *command_resolver) {
+    const ResolverSet &resolver_set) {
   file_offset = (size_t)ftell(file);
   if (fread(&header, sizeof(header), 1, file) != 1) {
     return ERR_READ_FAILED;
@@ -145,6 +151,8 @@ MachOFile::MachContent<HeaderType,
     SwapHeaderFunc(&header, host_byte_order);
   }
 
+  const MachLoadCommandResolver *command_resolver =
+      resolver_set.command_resolver.get();
   segments.clear();
   for (auto i = 0; i < header.ncmds; ++i) {
     load_command cmd;
@@ -159,7 +167,7 @@ MachOFile::MachContent<HeaderType,
 
     if (command_resolver) {
       const std::string &&info = command_resolver->GetLoadCommandInfo(cmd.cmd);
-      printf("%s\n", info.c_str());
+      printf("@%lu: %s\n", ftell(file), info.c_str());
     }
 
     if (cmd.cmd == kSegmentLoadCommandID) {
@@ -171,6 +179,17 @@ MachOFile::MachContent<HeaderType,
         return retval;
       }
       segments.push_back(segment);
+    } else if (cmd.cmd == LC_SYMTAB) {
+      size_t cmd_end_offset = (size_t)ftell(file) + cmd.cmdsize;
+      ReturnCode retval = symbolTable.Read(swap_byte_ordering,
+                                           host_byte_order,
+                                           file_offset,
+                                           file,
+                                           resolver_set);
+      if (retval != ERR_OK) {
+        return retval;
+      }
+      fseek(file, cmd_end_offset, SEEK_SET);
     } else {
       fseek(file, cmd.cmdsize, SEEK_CUR);
     }
@@ -212,6 +231,100 @@ MachOFile::MachSegment<SegmentCommandType,
     }
 
     sections.push_back(section);
+  }
+
+  return ERR_OK;
+}
+
+template <typename NListType,
+          void (*SwapNlistFunc)(NListType*, uint32_t, NXByteOrder)>
+ReturnCode MachOFile::SymbolTable<NListType, SwapNlistFunc>::Read(
+    bool swap_byte_ordering,
+    NXByteOrder host_byte_order,
+    size_t file_offset,
+    FILE *file,
+    const ResolverSet &resolver_set) {
+  symtab_command command;
+  if (fread(&command, sizeof(command), 1, file) != 1) {
+    fprintf(stderr, "Failed to read symtab command.\n");
+    return ERR_READ_FAILED;
+  }
+  if (swap_byte_ordering) {
+    swap_symtab_command(&command, host_byte_order);
+  }
+
+  size_t string_table_offset = command.stroff + file_offset;
+  std::unique_ptr<char> string_table(new char[command.strsize]);
+  fseek(file, string_table_offset, SEEK_SET);
+  if (fread(string_table.get(), 1, command.strsize, file) != command.strsize) {
+    fprintf(stderr, "Failed to read symbol string table.\n");
+    return ERR_READ_FAILED;
+  }
+
+  size_t symbol_table_offset = command.symoff + file_offset;
+  fseek(file, symbol_table_offset, SEEK_SET);
+
+  const SymtabNListResolver *resolver =
+      resolver_set.symtab_nlist_resolver.get();
+  for (uint32_t i = 0; i < command.nsyms; ++i) {
+    NListType nlist_entry;
+    if (fread(&nlist_entry, sizeof(nlist_entry), 1, file) != 1) {
+      fprintf(stderr, "Failed to read symbol table nlist data.\n");
+      return ERR_READ_FAILED;
+    }
+    if (swap_byte_ordering) {
+      SwapNlistFunc(&nlist_entry, 1, host_byte_order);
+    }
+
+    if (!(nlist_entry.n_type & N_STAB)) {
+      // Skip non-debug symbols.
+      continue;
+    }
+
+    if (resolver) {
+      const std::string &&info = resolver->GetDebugTypeInfo(nlist_entry.n_type);
+      printf("%s\n", info.c_str());
+    }
+
+    switch (nlist_entry.n_type) {
+      case N_SO:
+        // TODO(abaire): Implement.
+        printf("N_SO - source file name: name,,n_sect,0,address\n");
+        printf("\tn_strx: %d - %s\n",
+               nlist_entry.n_un.n_strx,
+               string_table.get() + nlist_entry.n_un.n_strx);
+        printf("\tn_sect: %u\n", nlist_entry.n_sect);
+        printf("\tn_desc: %d (expected 0)\n", (int32_t) nlist_entry.n_desc);
+        printf("\tn_value (address): %u\n",
+               (uint32_t)nlist_entry.n_value);
+        break;
+
+      case N_OSO:
+        {
+        // TODO(abaire): Implement.
+          printf("N_OSO - object file name: name,,0,0,st_mtime\n");
+          printf("\tn_strx: %d - %s\n",
+                 nlist_entry.n_un.n_strx,
+                 string_table.get() + nlist_entry.n_un.n_strx);
+          printf("\tn_sect: %u (expected 0)\n", nlist_entry.n_sect);
+          printf("\tn_desc: %d (expected 0)\n", (int32_t) nlist_entry.n_desc);
+          time_t modification_time = (time_t) nlist_entry.n_value;
+          char buffer[32] = {0};
+          struct tm modification_time_tm;
+          localtime_r(&modification_time, &modification_time_tm);
+          strftime(buffer,
+                   sizeof(buffer),
+                   "%b %d %H:%M",
+                   &modification_time_tm);
+          printf("\tst_mtime: %u %s\n",
+                 (uint32_t)nlist_entry.n_value,
+                 buffer);
+        }
+        break;
+
+      default:
+        break;
+    }
   }
 
   return ERR_OK;
@@ -259,7 +372,7 @@ ReturnCode MachOFile::ReadHeaderFat(bool swap_byte_ordering) {
       header_32_.swap_byte_ordering = swap;
       retval = header_32_.Read(host_byte_order_,
                                file_,
-                               command_resolver_.get());
+                               resolver_set_);
       if (retval != ERR_OK) {
         return retval;
       }
@@ -268,7 +381,7 @@ ReturnCode MachOFile::ReadHeaderFat(bool swap_byte_ordering) {
       header_64_.swap_byte_ordering = swap;
       retval = header_64_.Read(host_byte_order_,
                                file_,
-                               command_resolver_.get());
+                               resolver_set_);
       if (retval != ERR_OK) {
         return retval;
       }
@@ -288,7 +401,7 @@ bool MachOFile::GetSectionInfo32(const std::string &segment_name,
                                  const std::string &section_name,
                                  size_t *file_offset,
                                  size_t *section_size,
-                                 bool *swap_byte_ordering) {
+                                 bool *swap_byte_ordering) const {
   assert(file_offset && section_size);
   if (!has_32_bit_) {
     return false;
@@ -320,7 +433,7 @@ bool MachOFile::GetSectionInfo64(const std::string &segment_name,
                                  const std::string &section_name,
                                  size_t *file_offset,
                                  size_t *section_size,
-                                 bool *swap_byte_ordering) {
+                                 bool *swap_byte_ordering) const {
   assert(file_offset && section_size);
   if (!has_64_bit_) {
     return false;
@@ -348,4 +461,4 @@ bool MachOFile::GetSectionInfo64(const std::string &segment_name,
   return false;
 }
 
-}  // namespace covmap_patcher
+}  // namespace post_processor

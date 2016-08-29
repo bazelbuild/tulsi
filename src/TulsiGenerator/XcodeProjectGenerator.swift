@@ -30,7 +30,7 @@ final class XcodeProjectGenerator {
   struct ResourceSourcePathURLs {
     let buildScript: NSURL  // The script to run on "build" actions.
     let cleanScript: NSURL  // The script to run on "clean" actions.
-    let covmapPatcher: NSURL  // LLVM coverage map patcher utility.
+    let postProcessor: NSURL  // Binary post processor utility.
     let stubInfoPlist: NSURL  // Stub Info.plist needed for Xcode 8.
   }
 
@@ -44,7 +44,7 @@ final class XcodeProjectGenerator {
   static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
-  private static let CovmapPatcherUtil = "covmap_patcher"
+  private static let PostProcessorUtil = "post_processor"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
 
   private let workspaceRootURL: NSURL
@@ -533,7 +533,7 @@ final class XcodeProjectGenerator {
       let progressNotifier = ProgressNotifier(name: InstallingUtilities, maxValue: 1)
       defer { progressNotifier.incrementValue() }
       localizedMessageLogger.infoMessage("Installing utilities")
-      installFiles([(resourceURLs.covmapPatcher, XcodeProjectGenerator.CovmapPatcherUtil)],
+      installFiles([(resourceURLs.postProcessor, XcodeProjectGenerator.PostProcessorUtil)],
                    toDirectory: utilDirectoryURL)
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }

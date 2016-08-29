@@ -418,6 +418,11 @@ class BazelBuildBridge(object):
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
 
+    self.post_processor_binary = os.path.join(self.project_file_path,
+                                              '.tulsi',
+                                              'Utils',
+                                              'post_processor')
+
     self.main_group_path = os.getcwd()
 
   def Run(self, args):
@@ -1017,7 +1022,7 @@ class BazelBuildBridge(object):
     return 0
 
   def _PatchLLVMCovmapPaths(self):
-    """Invokes covmap_patcher to fix source paths in LLVM coverage maps."""
+    """Invokes post_processor to fix source paths in LLVM coverage maps."""
     if not self.real_bazel_execroot:
       self._PrintWarning('No Bazel execroot was detected, unable to determine '
                          'coverage paths to patch. Code coverage will probably '
@@ -1029,13 +1034,9 @@ class BazelBuildBridge(object):
     if not os.path.isfile(target_binary):
       return 0
 
-    covmap_patcher = os.path.join(self.project_file_path,
-                                  '.tulsi',
-                                  'Utils',
-                                  'covmap_patcher')
-
     returncode, output = self._RunSubprocess([
-        covmap_patcher,
+        self.post_processor_binary,
+        '-c',
         target_binary,
         self.real_bazel_execroot,
         self.source_root

@@ -49,7 +49,7 @@ public final class TulsiXcodeProjectGenerator {
     let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
         buildScript: bundle.URLForResource("bazel_build", withExtension: "py")!,
         cleanScript: bundle.URLForResource("bazel_clean", withExtension: "sh")!,
-        covmapPatcher: bundle.URLForResource("covmap_patcher",
+        postProcessor: bundle.URLForResource("post_processor",
                                              withExtension: "",
                                              subdirectory: "Utilities")!,
         stubInfoPlist: bundle.URLForResource("StubInfoPlist", withExtension: "plist")!)

@@ -27,7 +27,7 @@ char filename_buffer[4096];
 
 }  // namespace
 
-namespace covmap_patcher {
+namespace post_processor {
 
 CovmapSection::CovmapSection(const std::string &filename,
                              size_t section_offset,
@@ -451,4 +451,4 @@ void CovmapSection::FilenameGroup::CalculateSize() {
   }
 }
 
-}  // namespace covmap_patcher
+}  // namespace post_processor

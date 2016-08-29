@@ -36,7 +36,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
       buildScript: NSURL(fileURLWithPath: "/scripts/Build"),
       cleanScript: NSURL(fileURLWithPath: "/scripts/Clean"),
-      covmapPatcher: NSURL(fileURLWithPath: "/utils/covmap_patcher"),
+      postProcessor: NSURL(fileURLWithPath: "/utils/covmap_patcher"),
       stubInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"))
 
   var config: TulsiGeneratorConfig! = nil

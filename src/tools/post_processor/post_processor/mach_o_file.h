@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COVMAP_PATCHER_MACHOFILE_H_
-#define COVMAP_PATCHER_MACHOFILE_H_
+#ifndef POST_PROCESSOR_MACHOFILE_H_
+#define POST_PROCESSOR_MACHOFILE_H_
 
 #include <cstdio>
 #include <string>
@@ -27,9 +27,10 @@
 #include "return_code.h"
 
 
-namespace covmap_patcher {
+namespace post_processor {
 
 class MachLoadCommandResolver;
+class SymtabNListResolver;
 
 /// Provides basic interaction for Mach-O files.
 class MachOFile {
@@ -58,23 +59,31 @@ class MachOFile {
                         const std::string &section_name,
                         size_t *file_offset,
                         size_t *section_size,
-                        bool *swap_byte_ordering);
+                        bool *swap_byte_ordering) const;
   bool GetSectionInfo64(const std::string &segment_name,
                         const std::string &section_name,
                         size_t *file_offset,
                         size_t *section_size,
-                        bool *swap_byte_ordering);
+                        bool *swap_byte_ordering) const;
 
  private:
+
+  // Provides a set of lookup tables converting data types to strings for
+  // verbose-mode output.
+  struct ResolverSet {
+    std::unique_ptr<MachLoadCommandResolver> command_resolver;
+    std::unique_ptr<SymtabNListResolver> symtab_nlist_resolver;
+  };
 
   template <typename HeaderType,
             void (*SwapHeaderFunc)(HeaderType*, NXByteOrder),
             const uint32_t kSegmentLoadCommandID,
-            typename MachSegmentType>
+            typename MachSegmentType,
+            typename SymbolTableType>
   struct MachContent {
     ReturnCode Read(NXByteOrder host_byte_order,
                     FILE *file,
-                    const MachLoadCommandResolver *command_resolver);
+                    const ResolverSet &resolverSet);
 
     // Absolute offset within the container file to the start of this Mach-O
     // content. Any file offsets used within segments will be relative to this
@@ -83,6 +92,7 @@ class MachOFile {
     bool swap_byte_ordering;
     HeaderType header;
     std::vector<MachSegmentType> segments;
+    SymbolTableType symbolTable;
   };
 
   template <typename SegmentCommandType,
@@ -98,7 +108,23 @@ class MachOFile {
     std::vector<SectionType> sections;
   };
 
+  template <typename NListType,
+            void (*SwapNlistFunc)(NListType*, uint32_t, NXByteOrder)>
+  struct SymbolTable {
+    ReturnCode Read(bool swap_byte_ordering,
+                    NXByteOrder host_byte_order,
+                    size_t file_offset,
+                    FILE *file,
+                    const ResolverSet &resolverSet);
+
+    std::vector<NListType> debugSymbols;
+  };
+
  private:
+  MachOFile() = delete;
+  MachOFile(const MachOFile &) = delete;
+  MachOFile &operator=(const MachOFile &) = delete;
+
   ReturnCode PeekMagicHeader(FileFormat *fileFormat, bool *swap);
   ReturnCode ReadHeaderFat(bool swap_byte_ordering);
 
@@ -114,24 +140,27 @@ class MachOFile {
 
   typedef MachSegment<segment_command, swap_segment_command,
                       section, swap_section> MachSegment32;
+  typedef SymbolTable<struct nlist, swap_nlist> SymbolTable32;
   typedef MachContent<mach_header,
                       swap_mach_header,
                       LC_SEGMENT,
-                      MachSegment32> MachContent32;
+                      MachSegment32,
+                      SymbolTable32> MachContent32;
   MachContent32 header_32_;
 
   typedef MachSegment<segment_command_64, swap_segment_command_64,
                       section_64, swap_section_64> MachSegment64;
+  typedef SymbolTable<struct nlist_64, swap_nlist_64> SymbolTable64;
   typedef MachContent<mach_header_64,
                       swap_mach_header_64,
                       LC_SEGMENT_64,
-                      MachSegment64> MachContent64;
+                      MachSegment64,
+                      SymbolTable64> MachContent64;
   MachContent64 header_64_;
 
-  std::unique_ptr<MachLoadCommandResolver> command_resolver_;
+  ResolverSet resolver_set_;
 };
 
+}  // namespace post_processor
 
-}  // namespace covmap_patcher
-
-#endif  //COVMAP_PATCHER_MACHOFILE_H_
+#endif  //POST_PROCESSOR_MACHOFILE_H_

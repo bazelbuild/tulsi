@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3DC2E3C91D635C0A00DCF7D3 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3DC2E3C81D635C0A00DCF7D3 /* main.cc */; };
-		AB18C2949FFB1788F849D501 /* MachLoadCommandResolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18C25F7DBB623DF72455FB /* MachLoadCommandResolver.cc */; };
+		AB18C220E0250070E2A7B288 /* symtab_nlist_resolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18CE7D5CA828ECAB9E338B /* symtab_nlist_resolver.cc */; };
+		AB18C2949FFB1788F849D501 /* mach_load_command_resolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18C25F7DBB623DF72455FB /* mach_load_command_resolver.cc */; };
 		AB18C987DB72D66B473B709D /* mach_o_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18C070A95084F2FBE4AFF5 /* mach_o_file.cc */; };
 		AB18CA53B536D78FC0B34A51 /* covmap_section.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18CB8CB0AE195372AE7B25 /* covmap_section.cc */; };
 /* End PBXBuildFile section */
@@ -26,15 +27,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3DC2E3C51D635C0A00DCF7D3 /* covmap_patcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = covmap_patcher; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DC2E3C51D635C0A00DCF7D3 /* post_processor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = post_processor; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DC2E3C81D635C0A00DCF7D3 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
 		AB18C070A95084F2FBE4AFF5 /* mach_o_file.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_o_file.cc; sourceTree = "<group>"; };
 		AB18C0E3DCD4BF5F5F1DD249 /* covmap_section.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = covmap_section.h; sourceTree = "<group>"; };
-		AB18C25F7DBB623DF72455FB /* MachLoadCommandResolver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MachLoadCommandResolver.cc; sourceTree = "<group>"; };
+		AB18C25F7DBB623DF72455FB /* mach_load_command_resolver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_load_command_resolver.cc; sourceTree = "<group>"; };
 		AB18C6F0892DB7DDFA6689F2 /* mach_o_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_o_file.h; sourceTree = "<group>"; };
+		AB18C93BF8C893F0F4B893DF /* symtab_nlist_resolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = symtab_nlist_resolver.h; sourceTree = "<group>"; };
 		AB18CB8CB0AE195372AE7B25 /* covmap_section.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = covmap_section.cc; sourceTree = "<group>"; };
-		AB18CC202741A5FCF0B50DAD /* MachLoadCommandResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachLoadCommandResolver.h; sourceTree = "<group>"; };
+		AB18CC202741A5FCF0B50DAD /* mach_load_command_resolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_load_command_resolver.h; sourceTree = "<group>"; };
 		AB18CC4B7C618AB62CCF8149 /* return_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = return_code.h; sourceTree = "<group>"; };
+		AB18CE7D5CA828ECAB9E338B /* symtab_nlist_resolver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = symtab_nlist_resolver.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +54,7 @@
 		3DC2E3BC1D635C0A00DCF7D3 = {
 			isa = PBXGroup;
 			children = (
-				3DC2E3C71D635C0A00DCF7D3 /* covmap_patcher */,
+				3DC2E3C71D635C0A00DCF7D3 /* post_processor */,
 				3DC2E3C61D635C0A00DCF7D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,32 +62,35 @@
 		3DC2E3C61D635C0A00DCF7D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3DC2E3C51D635C0A00DCF7D3 /* covmap_patcher */,
+				3DC2E3C51D635C0A00DCF7D3 /* post_processor */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3DC2E3C71D635C0A00DCF7D3 /* covmap_patcher */ = {
+		3DC2E3C71D635C0A00DCF7D3 /* post_processor */ = {
 			isa = PBXGroup;
 			children = (
-				3DC2E3C81D635C0A00DCF7D3 /* main.cc */,
-				AB18C070A95084F2FBE4AFF5 /* mach_o_file.cc */,
-				AB18C6F0892DB7DDFA6689F2 /* mach_o_file.h */,
 				AB18CB8CB0AE195372AE7B25 /* covmap_section.cc */,
 				AB18C0E3DCD4BF5F5F1DD249 /* covmap_section.h */,
-				AB18C25F7DBB623DF72455FB /* MachLoadCommandResolver.cc */,
-				AB18CC202741A5FCF0B50DAD /* MachLoadCommandResolver.h */,
+				AB18C25F7DBB623DF72455FB /* mach_load_command_resolver.cc */,
+				AB18CC202741A5FCF0B50DAD /* mach_load_command_resolver.h */,
+				AB18C070A95084F2FBE4AFF5 /* mach_o_file.cc */,
+				AB18C6F0892DB7DDFA6689F2 /* mach_o_file.h */,
+				3DC2E3C81D635C0A00DCF7D3 /* main.cc */,
 				AB18CC4B7C618AB62CCF8149 /* return_code.h */,
+				AB18CE7D5CA828ECAB9E338B /* symtab_nlist_resolver.cc */,
+				AB18C93BF8C893F0F4B893DF /* symtab_nlist_resolver.h */,
 			);
-			path = covmap_patcher;
+			name = post_processor;
+			path = post_processor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3DC2E3C41D635C0A00DCF7D3 /* covmap_patcher */ = {
+		3DC2E3C41D635C0A00DCF7D3 /* post_processor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3DC2E3CC1D635C0A00DCF7D3 /* Build configuration list for PBXNativeTarget "covmap_patcher" */;
+			buildConfigurationList = 3DC2E3CC1D635C0A00DCF7D3 /* Build configuration list for PBXNativeTarget "post_processor" */;
 			buildPhases = (
 				3DC2E3C11D635C0A00DCF7D3 /* Sources */,
 				3DC2E3C21D635C0A00DCF7D3 /* Frameworks */,
@@ -94,9 +100,9 @@
 			);
 			dependencies = (
 			);
-			name = covmap_patcher;
-			productName = covmap_patcher;
-			productReference = 3DC2E3C51D635C0A00DCF7D3 /* covmap_patcher */;
+			name = post_processor;
+			productName = post_processor;
+			productReference = 3DC2E3C51D635C0A00DCF7D3 /* post_processor */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -113,7 +119,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3DC2E3C01D635C0A00DCF7D3 /* Build configuration list for PBXProject "covmap_patcher" */;
+			buildConfigurationList = 3DC2E3C01D635C0A00DCF7D3 /* Build configuration list for PBXProject "post_processor" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -125,7 +131,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3DC2E3C41D635C0A00DCF7D3 /* covmap_patcher */,
+				3DC2E3C41D635C0A00DCF7D3 /* post_processor */,
 			);
 		};
 /* End PBXProject section */
@@ -138,7 +144,8 @@
 				3DC2E3C91D635C0A00DCF7D3 /* main.cc in Sources */,
 				AB18C987DB72D66B473B709D /* mach_o_file.cc in Sources */,
 				AB18CA53B536D78FC0B34A51 /* covmap_section.cc in Sources */,
-				AB18C2949FFB1788F849D501 /* MachLoadCommandResolver.cc in Sources */,
+				AB18C2949FFB1788F849D501 /* mach_load_command_resolver.cc in Sources */,
+				AB18C220E0250070E2A7B288 /* symtab_nlist_resolver.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,21 +236,21 @@
 		3DC2E3CD1D635C0A00DCF7D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = post_processor;
 			};
 			name = Debug;
 		};
 		3DC2E3CE1D635C0A00DCF7D3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = post_processor;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3DC2E3C01D635C0A00DCF7D3 /* Build configuration list for PBXProject "covmap_patcher" */ = {
+		3DC2E3C01D635C0A00DCF7D3 /* Build configuration list for PBXProject "post_processor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DC2E3CA1D635C0A00DCF7D3 /* Debug */,
@@ -252,13 +259,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3DC2E3CC1D635C0A00DCF7D3 /* Build configuration list for PBXNativeTarget "covmap_patcher" */ = {
+		3DC2E3CC1D635C0A00DCF7D3 /* Build configuration list for PBXNativeTarget "post_processor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3DC2E3CD1D635C0A00DCF7D3 /* Debug */,
 				3DC2E3CE1D635C0A00DCF7D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

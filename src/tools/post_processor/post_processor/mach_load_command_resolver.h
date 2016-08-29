@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef COVMAP_PATCHER_MACH_LOAD_COMMAND_RESOLVER_H_
-#define COVMAP_PATCHER_MACH_LOAD_COMMAND_RESOLVER_H_
+#ifndef POST_PROCESSOR_MACHLOADCOMMANDRESOLVER_H_
+#define POST_PROCESSOR_MACHLOADCOMMANDRESOLVER_H_
 
 #include <map>
 #include <string>
 
-namespace covmap_patcher {
+namespace post_processor {
 
 /// Provides functionality to resolve a Mach-O load command to a user-readable
 /// string.
@@ -38,6 +38,6 @@ class MachLoadCommandResolver {
   std::map<uint32_t, std::string> command_to_info_;
 };
 
-}  // namespace covmap_patcher
+}  // namespace post_processor
 
-#endif  //COVMAP_PATCHER_MACH_LOAD_COMMAND_RESOLVER_H_
+#endif  // POST_PROCESSOR_MACHLOADCOMMANDRESOLVER_H_
