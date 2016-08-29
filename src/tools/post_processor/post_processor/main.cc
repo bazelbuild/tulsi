@@ -27,12 +27,12 @@ using post_processor::ReturnCode;
 namespace {
 
 struct PatchSettings {
-  std::string filename;
-  std::string old_prefix;
-  std::string new_prefix;
+  std::string filename;  // The path of the file to act on.
+  std::string old_prefix;  // The path prefix to be replaced.
+  std::string new_prefix;  // The new path prefix to replace old_prefix.
 
-  bool patch_dwarf_symbols;
-  bool patch_coverage_maps;
+  bool patch_dwarf_symbols;  // Whether or not to patch DWARF paths.
+  bool patch_coverage_maps;  // Whether or not to patch LLVM coverage maps.
 };
 
 void PrintUsage(const char *executable_name);
@@ -58,21 +58,31 @@ int main(int argc, const char* argv[]) {
 
   bool verbose = false;
   PatchSettings patch_settings;
-  for (int i = 1; i < argc - 3; ++i) {
+  std::vector<std::string> filenames;
+  for (int i = 1; i < argc - 2; ++i) {
     const char *arg = argv[i];
 
     if (!strcmp(arg, "-v") || !strcmp(arg, "--verbose")) {
       verbose = true;
       continue;
-    } else if (!strcmp(arg, "-c") || !strcmp(arg, "--covmap")) {
+    }
+
+    if (!strcmp(arg, "-c") || !strcmp(arg, "--covmap")) {
       patch_settings.patch_coverage_maps = true;
       continue;
-    } else if (!strcmp(arg, "-d") || !strcmp(arg, "--dwarf")) {
+    }
+
+    if (!strcmp(arg, "-d") || !strcmp(arg, "--dwarf")) {
       patch_settings.patch_dwarf_symbols = true;
       continue;
     }
-    fprintf(stderr, "Unknown option %s\n", arg);
-    return 1;
+
+    if (arg[0] == '-') {
+      fprintf(stderr, "Unknown option %s\n", arg);
+      return 1;
+    }
+
+    filenames.push_back(arg);
   }
 
   if (!verbose &&
@@ -82,7 +92,6 @@ int main(int argc, const char* argv[]) {
     return 1;
   }
 
-  patch_settings.filename = argv[argc - 3];
   patch_settings.old_prefix = argv[argc - 2];
   patch_settings.new_prefix = argv[argc - 1];
 
@@ -93,28 +102,31 @@ int main(int argc, const char* argv[]) {
     return 1;
   }
 
-  MachOFile f(patch_settings.filename, verbose);
-  {
-    ReturnCode retval = f.Read();
-    if (retval != post_processor::ERR_OK) {
-      fprintf(stderr,
-              "ERROR: Failed to read Mach-O content from %s.\n",
-              patch_settings.filename.c_str());
-      return (int)retval;
+  for (auto &filename : filenames) {
+    patch_settings.filename = filename;
+    MachOFile f(filename, verbose);
+    {
+      ReturnCode retval = f.Read();
+      if (retval != post_processor::ERR_OK) {
+        fprintf(stderr,
+                "ERROR: Failed to read Mach-O content from %s.\n",
+                filename.c_str());
+        return (int)retval;
+      }
     }
-  }
 
-  if (f.Has32Bit()) {
-    int retval = Patch32(f, patch_settings);
-    if (retval) {
-      return retval;
+    if (f.Has32Bit()) {
+      int retval = Patch32(f, patch_settings);
+      if (retval) {
+        return retval;
+      }
     }
-  }
 
-  if (f.Has64Bit()) {
-    int retval = Patch64(f, patch_settings);
-    if (retval) {
-      return retval;
+    if (f.Has64Bit()) {
+      int retval = Patch64(f, patch_settings);
+      if (retval) {
+        return retval;
+      }
     }
   }
 

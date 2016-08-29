@@ -75,7 +75,6 @@ class _OptionsParser(object):
 
             'Release': [
                 '--compilation_mode=opt',
-                '--apple_generate_dsym',
                 '--strip=always',
             ],
 
@@ -377,6 +376,8 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
+    self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
+
     # Target architecture.
     self.arch = os.environ.get('CURRENT_ARCH')
     # Declared outputs of the target.
@@ -474,11 +475,18 @@ class BazelBuildBridge(object):
       if exit_code:
         return exit_code
 
-      timer = Timer('Installing DSYM bundles').Start()
-      exit_code = self._InstallDSYMBundles(self.built_products_dir)
-      timer.End()
-      if exit_code:
-        return exit_code
+      if self.generate_dsym:
+        timer = Timer('Installing DSYM bundles').Start()
+        exit_code, dsym_path = self._InstallDSYMBundles(self.built_products_dir)
+        timer.End()
+        if exit_code:
+          return exit_code
+        if dsym_path:
+          timer = Timer('Patching DSYM source file paths').Start()
+          exit_code = self._PatchdSYMPaths(dsym_path)
+          timer.End()
+          if exit_code:
+            return exit_code
 
       # Starting with Xcode 7.3, XCTests inject several supporting frameworks
       # into the test host that need to be signed with the same identity as
@@ -536,6 +544,9 @@ class BazelBuildBridge(object):
       bazel_command.extend([
           '--collect_code_coverage',
           '--experimental_use_llvm_covmap'])
+
+    if self.generate_dsym:
+      bazel_command.append('--apple_generate_dsym')
 
     bazel_command.extend(options.targets)
 
@@ -848,7 +859,9 @@ class BazelBuildBridge(object):
     # TODO(abaire): Support mapping the dSYM generated for an obc_binary.
     # ios_application's will have a dSYM generated with the linked obj_binary's
     # filename, so the target_dsym will never actually match.
-    target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME', None)
+    target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME')
+    if not target_dsym:
+      return 0, None
     output_full_path = os.path.join(output_dir, target_dsym)
     if os.path.isdir(output_full_path):
       try:
@@ -856,13 +869,14 @@ class BazelBuildBridge(object):
       except OSError as e:
         self._PrintError('Failed to remove stale output dSYM bundle ""%s". '
                          '%s' % (output_full_path, e))
-        return 700
+        return 700, None
 
     input_dsym_full_path = os.path.join(self.build_path, target_dsym)
     if os.path.isdir(input_dsym_full_path):
-      return self._CopyBundle(target_dsym,
-                              input_dsym_full_path,
-                              output_full_path)
+      exit_code = self._CopyBundle(target_dsym,
+                                   input_dsym_full_path,
+                                   output_full_path)
+      return exit_code, output_full_path
 
     if 'BAZEL_BINARY_DSYM' in os.environ:
       # TODO(abaire): Remove this hack once Bazel generates dSYMs for
@@ -874,10 +888,12 @@ class BazelBuildBridge(object):
         bazel_dsym_path = bazel_dsym_path[len(build_path_prefix) + 1:]
       input_dsym_full_path = os.path.join(self.build_path, bazel_dsym_path)
       if os.path.isdir(input_dsym_full_path):
-        return self._CopyBundle(bazel_dsym_path,
-                                input_dsym_full_path,
-                                output_full_path)
-    return 0
+        exit_code = self._CopyBundle(bazel_dsym_path,
+                                     input_dsym_full_path,
+                                     output_full_path)
+        return exit_code, output_full_path
+
+    return 0, None
 
   def _ResignTestHost(self, test_host):
     """Re-signs the support frameworks in the given test host bundle."""
@@ -1044,7 +1060,33 @@ class BazelBuildBridge(object):
     if returncode:
       self._PrintWarning('Coverage map patching failed on binary %r. Code '
                          'coverage will probably fail.' % target_binary)
-      self._PrintWarning('Output: %r' % output)
+      self._PrintWarning('Output: %s' % output or '<no output>')
+      return 0
+
+    return 0
+
+  def _PatchdSYMPaths(self, dsym_bundle_path):
+    """Invokes post_processor to fix source paths in dSYM DWARF data."""
+
+    dwarf_subpath = os.path.join(dsym_bundle_path,
+                                 'Contents',
+                                 'Resources',
+                                 'DWARF')
+    binaries = [os.path.join(dwarf_subpath, b)
+                for b in os.listdir(dwarf_subpath)]
+    for binary_path in binaries:
+      os.chmod(binary_path, 0755)
+
+    args = [self.post_processor_binary, '-d']
+    args.extend(binaries)
+    args.extend([self.real_bazel_execroot, self.source_root])
+
+    returncode, output = self._RunSubprocess(args)
+    if returncode:
+      self._PrintWarning('DWARF path patching failed on dSYM %r. Breakpoints '
+                         'and other debugging actions will probably fail.' %
+                         dsym_bundle_path)
+      self._PrintWarning('Output: %s' % output or '<no output>')
       return 0
 
     return 0

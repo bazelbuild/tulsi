@@ -277,10 +277,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
@@ -317,10 +319,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
           "BAZEL_TARGET_TYPE": "objc_library",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: rule2TargetName,
@@ -390,10 +394,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
@@ -432,12 +438,14 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
           "BUNDLE_LOADER": "$(TEST_HOST)",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": rule2BuildPath,
           "TULSI_TEST_RUNNER_ONLY": "YES",
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: rule2TargetName,
@@ -506,10 +514,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/app:TestApplication",
           "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: rule1TargetName,
@@ -549,12 +559,14 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": testIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
           "BUNDLE_LOADER": "$(TEST_HOST)",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": testRuleBuildPath,
           "TULSI_TEST_RUNNER_ONLY": "YES",
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: testRuleTargetName,
@@ -656,10 +668,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": testRuleBuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       var testRunnerExpectedBuildSettings = expectedBuildSettings
       testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
@@ -730,10 +744,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/test1:\(targetName)",
           "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test1-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: "test-test1-SameName",
@@ -771,10 +787,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/test2:\(targetName)",
           "BAZEL_TARGET_TYPE": "ios_application",
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": infoPlistPath,
           "PRODUCT_NAME": "test-test2-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
           name: "test-test2-SameName",
@@ -1158,10 +1176,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "BAZEL_TARGET_IPA": ipa.asFileName!,
         "BAZEL_TARGET": target,
         "BAZEL_TARGET_TYPE": targetType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": "TestInfo.plist",
         "PRODUCT_NAME": targetName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": package,
+        "TULSI_USE_DSYM": "NO",
     ]
     let expectedTarget = TargetDefinition(
         name: "TestTarget",
@@ -1202,9 +1222,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     return newSettings
   }
 
-  private func releaseBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+  private func releaseBuildSettingsFromSettings(settings: [String: String],
+                                                indexerSettingsOnly: Bool = false) -> [String: String] {
     var newSettings = settings
     newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "NDEBUG=1"
+    if !indexerSettingsOnly {
+      newSettings["TULSI_USE_DSYM"] = "YES"
+    }
     return newSettings
   }
 
@@ -1220,10 +1244,15 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   private func addTestRunnerSettings(settings: [String: String]) -> [String: String] {
     var testRunnerSettings = settings
-    testRunnerSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
+    if let _ = testRunnerSettings["DEBUG_INFORMATION_FORMAT"] {
+      testRunnerSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
+    }
     testRunnerSettings["ONLY_ACTIVE_ARCH"] = "YES"
     testRunnerSettings["OTHER_CFLAGS"] = "-help"
     testRunnerSettings["OTHER_LDFLAGS"] = "-help"
+    if let val = testRunnerSettings["TULSI_USE_DSYM"] where val == "YES" {
+      testRunnerSettings["TULSI_USE_DSYM"] = "NO"
+    }
     return testRunnerSettings
   }
 
@@ -1423,7 +1452,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             ),
             BuildConfigurationDefinition(
               name: "Release",
-              expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+              expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings,
+                                                                      indexerSettingsOnly: true)
             ),
             BuildConfigurationDefinition(
               name: "Fastbuild",
