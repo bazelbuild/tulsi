@@ -353,8 +353,8 @@ class BazelBuildBridge(object):
     self.bazel_bin_path = None
     # The actual path to the Bazel output directory (not a symlink)
     self.real_bazel_bin_path = None
-    # The actual path to the Bazel execution root.
-    self.real_bazel_execroot = None
+    # The path to the Bazel's sandbox source root.
+    self.bazel_build_workspace_root = None
     self.bazel_genfiles_path = None
     self.signing_identities = {}
     self.patch_lldb_cwd = False
@@ -627,12 +627,17 @@ class BazelBuildBridge(object):
                          (self.real_bazel_bin_path, e))
         return 20
 
-    path_components = self.real_bazel_bin_path.split('/execroot/')
-    if len(path_components) < 2:
-      self._PrintWarning('Failed to derive execroot path from %r' %
+    # The Bazel bin path will be of the form:
+    #   <sandbox>/execroot/<workspace_path>/bazel-out/<arch>/bin
+    # As the workspace root is user-configurable and could be set to
+    # "bazel-out," the workspace path is obtained by slicing off the last
+    # three components.
+    path_components = self.real_bazel_bin_path.split(os.sep)
+    if len(path_components) < 5:
+      self._PrintWarning('Failed to derive Bazel build root path from %r' %
                          self.real_bazel_bin_path)
     else:
-      self.real_bazel_execroot = path_components[0] + '/execroot'
+      self.bazel_build_workspace_root = os.path.join(*path_components[:-3])
     return 0
 
   def _InstallArtifact(self):
@@ -1039,10 +1044,10 @@ class BazelBuildBridge(object):
 
   def _PatchLLVMCovmapPaths(self):
     """Invokes post_processor to fix source paths in LLVM coverage maps."""
-    if not self.real_bazel_execroot:
-      self._PrintWarning('No Bazel execroot was detected, unable to determine '
-                         'coverage paths to patch. Code coverage will probably '
-                         'fail.')
+    if not self.bazel_build_workspace_root:
+      self._PrintWarning('No Bazel sandbox root was detected, unable to '
+                         'determine coverage paths to patch. Code coverage '
+                         'will probably fail.')
       return 0
 
     executable_name = os.environ['EXECUTABLE_NAME']
@@ -1050,12 +1055,14 @@ class BazelBuildBridge(object):
     if not os.path.isfile(target_binary):
       return 0
 
+    self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
+                                              self.workspace_root), 1)
     returncode, output = self._RunSubprocess([
         self.post_processor_binary,
         '-c',
         target_binary,
-        self.real_bazel_execroot,
-        self.source_root
+        self.bazel_build_workspace_root,
+        self.workspace_root
     ])
     if returncode:
       self._PrintWarning('Coverage map patching failed on binary %r. Code '
@@ -1067,6 +1074,11 @@ class BazelBuildBridge(object):
 
   def _PatchdSYMPaths(self, dsym_bundle_path):
     """Invokes post_processor to fix source paths in dSYM DWARF data."""
+    if not self.bazel_build_workspace_root:
+      self._PrintWarning('No Bazel sandbox root was detected, unable to '
+                         'determine DWARF paths to patch. Debugging will '
+                         'probably fail.')
+      return 0
 
     dwarf_subpath = os.path.join(dsym_bundle_path,
                                  'Contents',
@@ -1079,8 +1091,10 @@ class BazelBuildBridge(object):
 
     args = [self.post_processor_binary, '-d']
     args.extend(binaries)
-    args.extend([self.real_bazel_execroot, self.source_root])
+    args.extend([self.bazel_build_workspace_root, self.workspace_root])
 
+    self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
+                                              self.workspace_root), 1)
     returncode, output = self._RunSubprocess(args)
     if returncode:
       self._PrintWarning('DWARF path patching failed on dSYM %r. Breakpoints '
