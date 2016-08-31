@@ -129,11 +129,10 @@ class HeadlessXcodeProjectGenerator {
                                                                            messageLog: nil)
     switch result {
       case .Success(let url):
+        print("Generated project at \"\(url.path!)\"")
         if arguments.openXcodeOnSuccess {
           print("Opening generated project in Xcode")
           NSWorkspace.sharedWorkspace().openURL(url)
-        } else {
-          print("Generated project at \"\(url.path!)\"")
         }
       case .Failure(let errorInfo):
         throw Error.GenerationFailed(errorInfo)
