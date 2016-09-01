@@ -20,7 +20,9 @@ import XCTest
 class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
-  let infoPlistPath = "TestInfo.plist"
+  let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
+                                          watchOS2Stub: "TestWatchOS2Info.plist",
+                                          watchOS2AppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
   var project: PBXProject! = nil
   var targetGenerator: PBXTargetGenerator! = nil
@@ -32,7 +34,7 @@ class PBXTargetGeneratorTests: XCTestCase {
                                          bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
-                                         stubInfoPlistPath: infoPlistPath,
+                                         stubInfoPlistPaths: stubPlistPaths,
                                          tulsiVersion: testTulsiVersion,
                                          options: TulsiOptionSet(),
                                          localizedMessageLogger: MockLocalizedMessageLogger(),
@@ -100,7 +102,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
-  let infoPlistPath = "TestInfo.plist"
+  let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
+                                          watchOS2Stub: "TestWatchOS2Info.plist",
+                                          watchOS2AppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
 
   var project: PBXProject! = nil
@@ -127,7 +131,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                          bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
-                                         stubInfoPlistPath: infoPlistPath,
+                                         stubInfoPlistPaths: stubPlistPaths,
                                          tulsiVersion: testTulsiVersion,
                                          options: options,
                                          localizedMessageLogger: messageLogger,
@@ -278,7 +282,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
@@ -320,7 +324,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET": "test/objclib:ObjectiveCLibrary",
           "BAZEL_TARGET_TYPE": "objc_library",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
@@ -395,7 +399,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
@@ -439,7 +443,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_test",
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
@@ -515,7 +519,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
@@ -560,7 +564,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_test",
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
@@ -669,7 +673,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_test",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": testRuleBuildPath,
@@ -745,7 +749,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": "test-test1-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
@@ -788,7 +792,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_TYPE": "ios_application",
           "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": infoPlistPath,
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": "test-test2-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,

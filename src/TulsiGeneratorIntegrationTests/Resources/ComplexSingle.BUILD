@@ -28,6 +28,7 @@ ios_application(
     extensions = [
         ":TodayExtension",
         ":WatchExtension",
+        ":Watch2Extension",
     ],
     structured_resources = [
         "Application/structured_resources.file1",
@@ -280,7 +281,7 @@ apple_watch2_extension(
     app_infoplists = [
         "Watch2Extension/app_infoplists/Info.plist",
     ],
-    app_name = "WatchApp",
+    app_name = "WatchOS2App",
     app_resources = [
         "Watch2Extension/app_resources.file",
     ],

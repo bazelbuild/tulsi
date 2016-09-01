@@ -141,6 +141,7 @@
 		43D68C28C05E0C0A00000001 /* app_asset_catalogs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = app_asset_catalogs.xcassets; sourceTree = "<group>"; };
 		43D68C28C54C350C00000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnotherPCHFile.pch; sourceTree = "<group>"; };
 		43D68C28C7966CBA00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HdrsHeader.h; sourceTree = "<group>"; };
+		43D68C28CC682DC200000000 /* _tulsi_appex_Watch2Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = _tulsi_appex_Watch2Extension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CF0D8AD000000000 /* lib_idx_XCTest_7F8584F1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCTest_7F8584F1.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D21BD1AA00000000 /* today_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = today_extension_binary.m; sourceTree = "<group>"; };
 		43D68C28D52A290A00000000 /* defaultTestSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = defaultTestSource.m; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 				43D68C28E2B74A9200000000 /* Watch2Extension.app */,
 				43D68C28BBC8EE6A00000000 /* WatchExtension.appex */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
+				43D68C28CC682DC200000000 /* _tulsi_appex_Watch2Extension.appex */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */,
 				43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */,
@@ -827,6 +829,20 @@
 			productReference = 43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		3D31C5E6C9760C9E00000000 /* _tulsi_appex_Watch2Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755838DDDB28500000000 /* Build configuration list for PBXNativeTarget "_tulsi_appex_Watch2Extension" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = _tulsi_appex_Watch2Extension;
+			productName = _tulsi_appex_Watch2Extension;
+			productReference = 43D68C28CC682DC200000000 /* _tulsi_appex_Watch2Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		3D31C5E6CC548BE600000000 /* _idx_Binary_FD777BDB */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583E500CE6900000000 /* Build configuration list for PBXNativeTarget "_idx_Binary_FD777BDB" */;
@@ -933,6 +949,7 @@
 				3D31C5E6AC743AFA00000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC */,
 				3D31C5E6A606B6CC00000000 /* _idx_SubLibrary_19588DB9 */,
 				3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */,
+				3D31C5E6C9760C9E00000000 /* _tulsi_appex_Watch2Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -1220,11 +1237,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchApp.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Watch2Extension;
 				SDKROOT = watchos;
@@ -1317,6 +1335,15 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+			};
+			name = Fastbuild;
+		};
+		44936BD6300858860000000D /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
+				SDKROOT = watchos;
 			};
 			name = Fastbuild;
 		};
@@ -1424,12 +1451,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchApp.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Watch2Extension;
 				SDKROOT = watchos;
@@ -1530,6 +1558,16 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D0000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
+				SDKROOT = watchos;
 			};
 			name = Debug;
 		};
@@ -1638,12 +1676,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchApp.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Watch2Extension;
 				SDKROOT = watchos;
@@ -1744,6 +1783,17 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE90000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
+				SDKROOT = watchos;
+				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -1861,12 +1911,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchApp.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -1899,6 +1950,19 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000006 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
+				SDKROOT = watchos;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -2017,12 +2081,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchApp.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
+				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -2054,6 +2119,20 @@
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000006 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
+				SDKROOT = watchos;
 				TULSI_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
@@ -2127,6 +2206,17 @@
 				44936BD67EED3C4D00000007 /* Debug */,
 				44936BD63008588600000007 /* Fastbuild */,
 				44936BD6A3D45CE900000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755838DDDB28500000000 /* Build configuration list for PBXNativeTarget "_tulsi_appex_Watch2Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D0000000D /* Debug */,
+				44936BD6300858860000000D /* Fastbuild */,
+				44936BD6A3D45CE90000000D /* Release */,
+				44936BD6C928366700000006 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000006 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

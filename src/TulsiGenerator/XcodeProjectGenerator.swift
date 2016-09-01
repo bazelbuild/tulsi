@@ -31,7 +31,9 @@ final class XcodeProjectGenerator {
     let buildScript: NSURL  // The script to run on "build" actions.
     let cleanScript: NSURL  // The script to run on "clean" actions.
     let postProcessor: NSURL  // Binary post processor utility.
-    let stubInfoPlist: NSURL  // Stub Info.plist needed for Xcode 8.
+    let stubInfoPlist: NSURL  // Stub Info.plist (needed for Xcode 8).
+    let stubWatchOS2InfoPlist: NSURL  // Stub Info.plist (needed for watchOS2 app targets).
+    let stubWatchOS2AppExInfoPlist: NSURL  // Stub Info.plist (needed for watchOS2 appex targets).
   }
 
   /// Path relative to PROJECT_FILE_PATH in which Tulsi generated files (scripts, artifacts, etc...)
@@ -46,6 +48,8 @@ final class XcodeProjectGenerator {
   private static let CleanScript = "bazel_clean.sh"
   private static let PostProcessorUtil = "post_processor"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
+  private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
+  private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
 
   private let workspaceRootURL: NSURL
   private let config: TulsiGeneratorConfig
@@ -184,13 +188,17 @@ final class XcodeProjectGenerator {
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
-    let stubInfoPlistPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)/\(XcodeProjectGenerator.StubInfoPlistFilename)"
+    let projectResourcesDirectory = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)"
+    let plistPaths = StubInfoPlistPaths(
+        defaultStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoPlistFilename)",
+        watchOS2Stub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
+        watchOS2AppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
-                                                stubInfoPlistPath: stubInfoPlistPath,
+                                                stubInfoPlistPaths: plistPaths,
                                                 tulsiVersion: tulsiVersion,
                                                 options: config.options,
                                                 localizedMessageLogger: localizedMessageLogger,
@@ -210,8 +218,11 @@ final class XcodeProjectGenerator {
       for label in labels {
         guard let ruleEntry = ruleEntryMap[label] else { continue }
         if ruleEntry.type != "test_suite" {
+          // Add the RuleEntry itself and any registered extensions.
           expandedTargetLabels.insert(label)
+          expandedTargetLabels.unionInPlace(ruleEntry.extensions)
         } else {
+          // Expand the test_suite to its set of tests.
           testSuiteRules.insert(ruleEntry)
           expandTargetLabels(ruleEntry.weakDependencies)
         }
@@ -386,12 +397,23 @@ final class XcodeProjectGenerator {
       return nil
     }
 
+    // Build a map of extension targets to hosts so the hosts may be referenced as additional build
+    // requirements. This is necessary for watchOS2 targets (Xcode will spawn an error when
+    // attempting to run the app without the scheme linkage, even though Bazel will create the
+    // embedded host correctly) and does not harm other extensions.
+    var extensionHosts = [BuildLabel: RuleEntry]()
+    for entry in info.buildRuleEntries {
+      for extensionLabel in entry.extensions {
+        extensionHosts[extensionLabel] = entry
+      }
+    }
+
     let runTestTargetBuildConfigPrefix = pbxTargetGeneratorType.getRunTestTargetBuildConfigPrefix()
     for entry in info.buildRuleEntries {
       // Generate an XcodeScheme with a test action set up to allow tests to be run without Xcode
       // attempting to compile code.
-      let target: PBXTarget
-      if let pbxTarget = targetForLabel(entry.label) {
+      let target: PBXNativeTarget
+      if let pbxTarget = targetForLabel(entry.label) as? PBXNativeTarget {
         target = pbxTarget
       } else {
         localizedMessageLogger.warning("XCSchemeGenerationFailed",
@@ -404,24 +426,50 @@ final class XcodeProjectGenerator {
       let filename = target.name + ".xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
       let appExtension: Bool
-      let launchStyle: XcodeScheme.LaunchAutomaticallySubstyle
+      let launchStyle: XcodeScheme.LaunchStyle
+      let runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode
       let targetType = entry.pbxTargetType ?? .Application
       switch targetType {
         case .AppExtension:
           appExtension = true
           launchStyle = .AppExtension
+          runnableDebuggingMode = .Default
+
+        case .Watch2App:
+          appExtension = false
+          launchStyle = .Normal
+          runnableDebuggingMode = .WatchOS
 
         default:
           appExtension = false
           launchStyle = .Normal
+          runnableDebuggingMode = .Default
       }
+
+      var additionalBuildTargets = target.buildActionDependencies.map() {
+        ($0, projectBundleName)
+      }
+      if let host = extensionHosts[entry.label] {
+        guard let hostTarget = targetForLabel(host.label) else {
+          localizedMessageLogger.warning("XCSchemeGenerationFailed",
+                                         comment: "Warning shown when generation of an Xcode scheme failed for build target %1$@",
+                                         details: "Extension host could not be resolved.",
+                                         context: config.projectName,
+                                         values: entry.label.value)
+          continue
+        }
+        additionalBuildTargets.append((hostTarget, projectBundleName))
+      }
+
       let scheme = XcodeScheme(target: target,
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                appExtension: appExtension,
-                               launchStyle: launchStyle)
+                               launchStyle: launchStyle,
+                               runnableDebuggingMode: runnableDebuggingMode,
+                               additionalBuildTargets: additionalBuildTargets)
       let xmlDocument = scheme.toXML()
 
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
@@ -592,7 +640,10 @@ final class XcodeProjectGenerator {
                                                                context: config.projectName)
     localizedMessageLogger.infoMessage("Installing project resources")
 
-    installFiles([(resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename)],
+    installFiles([(resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename),
+                  (resourceURLs.stubWatchOS2InfoPlist, XcodeProjectGenerator.StubWatchOS2InfoPlistFilename),
+                  (resourceURLs.stubWatchOS2AppExInfoPlist, XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename),
+                 ],
                  toDirectory: targetDirectoryURL)
     localizedMessageLogger.logProfilingEnd(profilingToken)
   }

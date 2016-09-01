@@ -61,6 +61,8 @@ _SUPPORTING_FILE_ATTRIBUTES = [
 # Set of rules with implicit <label>.ipa IPA outputs.
 _IPA_GENERATING_RULES = set([
     'apple_watch1_extension',
+    # apple_watch2_extension also generates an implicit IPA but the naming
+    # cannot be derived from the target label alone so it is special cased.
     'ios_application',
     'ios_extension',
     'ios_test',
@@ -455,8 +457,14 @@ def _tulsi_sources_aspect(target, ctx):
     inheritable_attributes = binary_attributes + inheritable_attributes
 
   ipa_output_label = None
-  if target_kind in _IPA_GENERATING_RULES:
+  if target_kind == 'apple_watch2_extension':
+    # watch2 extensions need to use the IPA produced for the app_name attribute.
+    ipa_name = _get_opt_attr(rule_attr, 'app_name') + '.ipa'
+    ipa_output_label = '//' + target.label.package + ':' + ipa_name
+  elif target_kind in _IPA_GENERATING_RULES:
     ipa_output_label = str(target.label) + '.ipa'
+
+  extensions = [str(t.label) for t in _getattr_as_list(rule_attr, 'extensions')]
 
   all_attributes = attributes + inheritable_attributes
   info = _struct_omitting_none(
@@ -464,6 +472,7 @@ def _tulsi_sources_aspect(target, ctx):
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       deps=compile_deps,
+      extensions=extensions,
       framework_imports=_collect_framework_imports(rule_attr),
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,

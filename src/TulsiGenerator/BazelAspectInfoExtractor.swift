@@ -294,6 +294,12 @@ final class BazelAspectInfoExtractor {
         implictIPATarget = nil
       }
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
+      let extensions: Set<BuildLabel>?
+      if let extensionList = dict["extensions"] as? [String] {
+        extensions = Set(extensionList.map({ BuildLabel($0) }))
+      } else {
+        extensions = nil
+      }
 
       let ruleEntry = RuleEntry(label: ruleLabel,
                                 type: ruleType,
@@ -305,6 +311,7 @@ final class BazelAspectInfoExtractor {
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
                                 iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
+                                extensions: extensions,
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,
                                 implicitIPATarget: implictIPATarget)

@@ -52,7 +52,9 @@ public final class TulsiXcodeProjectGenerator {
         postProcessor: bundle.URLForResource("post_processor",
                                              withExtension: "",
                                              subdirectory: "Utilities")!,
-        stubInfoPlist: bundle.URLForResource("StubInfoPlist", withExtension: "plist")!)
+        stubInfoPlist: bundle.URLForResource("StubInfoPlist", withExtension: "plist")!,
+        stubWatchOS2InfoPlist: bundle.URLForResource("StubWatchOS2InfoPlist", withExtension: "plist")!,
+        stubWatchOS2AppExInfoPlist: bundle.URLForResource("StubWatchOS2AppExtensionInfoPlist", withExtension: "plist")!)
 
     // Note: A new extractor is created on each generate in order to allow users to modify their
     // BUILD files (or add new files to glob's) and regenerate without restarting Tulsi.

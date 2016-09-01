@@ -18,14 +18,17 @@ import Cocoa
 /// View controller allowing certain Bazel build targets from the project to be selected for Xcode
 /// project generation.
 final class ConfigEditorBuildTargetSelectorViewController: NSViewController, WizardSubviewProtocol {
-  // This list needs to be kept up to date with whatever Bazel supports.
+  // This list needs to be kept up to date with whatever Bazel supports and determines the set of
+  // user-selectable target types displayed in the Tulsi UI.
+  // This filter does not limit Tulsi from generating targets for other types, however. Notably,
+  // since apple_watch2_extension extensions are tightly bound to their host binary, Tulsi
+  // automatically generates all targets referenced in an ios_application's "extensions" attribute
+  // rather than risk the user accidentally selecting the extension without the host. For this
+  // reason, apple_watch1_extension and ios_extension are both omitted as well.
   static let filteredFileTypes = [
-      "apple_watch1_extension",
-      "apple_watch2_extension",
       "objc_binary",  // TODO(abaire): Remove when app-related attributes are removed from Bazel.
       "objc_library",
       "ios_application",
-      "ios_extension",
       "ios_framework",
       "ios_test",
       "swift_library",

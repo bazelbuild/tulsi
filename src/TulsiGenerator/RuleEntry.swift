@@ -159,6 +159,9 @@ public final class RuleEntry: RuleInfo {
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
 
+  /// Set of ios_application extension labels that this rule utilizes.
+  public let extensions: Set<BuildLabel>
+
   /// .framework bundles provided by this rule.
   public let frameworkImports: [BazelFileInfo]
 
@@ -251,6 +254,7 @@ public final class RuleEntry: RuleInfo {
        secondaryArtifacts: [BazelFileInfo],
        iPhoneOSDeploymentTarget: String? = nil,
        weakDependencies: Set<BuildLabel>? = nil,
+       extensions: Set<BuildLabel>? = nil,
        buildFilePath: String? = nil,
        generatedIncludePaths: [String]? = nil,
        implicitIPATarget: BuildLabel? = nil) {
@@ -276,6 +280,11 @@ public final class RuleEntry: RuleInfo {
     if let weakDependencies = weakDependencies {
       self.weakDependencies = weakDependencies
     }
+    if let extensions = extensions {
+      self.extensions = extensions
+    } else {
+      self.extensions = Set()
+    }
     self.buildFilePath = buildFilePath
     self.generatedIncludePaths = generatedIncludePaths
     self.implicitIPATarget = implicitIPATarget
@@ -299,6 +308,7 @@ public final class RuleEntry: RuleInfo {
                    secondaryArtifacts: [BazelFileInfo],
                    iPhoneOSDeploymentTarget: String? = nil,
                    weakDependencies: Set<BuildLabel>? = nil,
+                   extensions: Set<BuildLabel>? = nil,
                    buildFilePath: String? = nil,
                    generatedIncludePaths: [String]? = nil,
                    implicitIPATarget: BuildLabel? = nil) {
@@ -313,6 +323,7 @@ public final class RuleEntry: RuleInfo {
               secondaryArtifacts: secondaryArtifacts,
               iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
               weakDependencies: weakDependencies,
+              extensions: extensions,
               buildFilePath: buildFilePath,
               generatedIncludePaths: generatedIncludePaths,
               implicitIPATarget: implicitIPATarget)

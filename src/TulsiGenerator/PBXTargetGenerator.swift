@@ -14,6 +14,25 @@
 
 import Foundation
 
+/// Provides a set of project paths to stub Info.plist files to be used by generated targets.
+struct StubInfoPlistPaths {
+  let defaultStub: String
+  let watchOS2Stub: String
+  let watchOS2AppExStub: String
+
+  func stubPlist(type: PBXTarget.ProductType) -> String {
+    switch type {
+      case .Watch2App:
+        return watchOS2Stub
+
+      case .Watch2Extension:
+        return watchOS2AppExStub
+
+      default:
+        return defaultStub
+    }
+  }
+}
 
 /// Defines an object that can populate a PBXProject based on RuleEntry's.
 protocol PBXTargetGeneratorProtocol: class {
@@ -28,7 +47,7 @@ protocol PBXTargetGeneratorProtocol: class {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
-       stubInfoPlistPath: String,
+       stubInfoPlistPaths: StubInfoPlistPaths,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -110,6 +129,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Rough sanity limit on indexer name length. Names may be slightly longer than this limit.
   static let MaxIndexerNameLength = 512
 
+  // Name prefix for auto-generated nop-app extension targets necessary to get Xcode to debug watch
+  // Apps.
+  private static let watchAppExtensionTargetPrefix = "_tulsi_appex_"
+
   /// Name of the legacy target that will be used to communicate with Bazel during Xcode clean
   /// actions.
   static let BazelCleanTarget = "_bazel_clean_"
@@ -128,7 +151,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   let project: PBXProject
   let buildScriptPath: String
-  let stubInfoPlistPath: String
+  let stubInfoPlistPaths: StubInfoPlistPaths
   let tulsiVersion: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
@@ -320,7 +343,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
-       stubInfoPlistPath: String,
+       stubInfoPlistPaths: StubInfoPlistPaths,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -330,7 +353,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.bazelBinPath = bazelBinPath
     self.project = project
     self.buildScriptPath = buildScriptPath
-    self.stubInfoPlistPath = stubInfoPlistPath
+    self.stubInfoPlistPaths = stubInfoPlistPaths
     self.tulsiVersion = tulsiVersion
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
@@ -665,6 +688,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let hostLabel = BuildLabel(hostLabelString)
         testTargetLinkages.append((target, hostLabel, entry))
       }
+
+      if entry.pbxTargetType == .Watch2App {
+        let appExTarget = generateWatchOSAppExtension(target, entry: entry)
+        target.createBuildActionDependencyOn(appExTarget)
+      }
     }
 
     for (testTarget, testHostLabel, entry) in testTargetLinkages {
@@ -675,6 +703,25 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // MARK: - Private methods
+
+  /// Generates a nop watch
+  private func generateWatchOSAppExtension(target: PBXNativeTarget, entry: RuleEntry) -> PBXNativeTarget {
+    let name = PBXTargetGenerator.watchAppExtensionTargetPrefix + target.name
+    let target = project.createNativeTarget(name, targetType: .Watch2Extension)
+
+    var buildSettings = [String: String]()
+    // TODO(abaire): Set the bundle ID of the extension; without this Xcode can't launch the app.
+    if let sdkRoot = entry.XcodeSDKRoot {
+      buildSettings["SDKROOT"] = sdkRoot
+    }
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(.Watch2Extension)
+    buildSettings["PRODUCT_NAME"] = name
+
+    createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
+    addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
+
+    return target
+  }
 
   /// Generates a filter function that may be used to verify that a path string is allowed by the
   /// given set of pathFilters.
@@ -1083,7 +1130,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   private func createBuildTargetForRuleEntry(entry: RuleEntry,
-                                             named name: String) throws -> PBXTarget {
+                                             named name: String) throws -> PBXNativeTarget {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.UnsupportedTargetType(entry.type)
     }
@@ -1139,7 +1186,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // An invalid launch image is set in order to suppress Xcode's warning about missing default
     // launch images.
     buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
-    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPath
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(pbxTargetType)
 
     if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
       buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget

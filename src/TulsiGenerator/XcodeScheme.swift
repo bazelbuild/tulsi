@@ -18,8 +18,14 @@ import Foundation
 /// Models an xcscheme file, providing information to Xcode on how to build targets.
 final class XcodeScheme {
 
-  enum LaunchAutomaticallySubstyle {
-    case Normal, AppExtension
+  enum LaunchStyle: String {
+    case Normal = "0"
+    case AppExtension = "2"
+  }
+
+  enum RunnableDebuggingMode: String {
+    case Default = "0"
+    case WatchOS = "2"
   }
 
   let version: String
@@ -32,8 +38,12 @@ final class XcodeScheme {
   let analyzeActionBuildConfig: String
   let archiveActionBuildConfig: String
   let appExtension: Bool
-  let launchStyle: LaunchAutomaticallySubstyle
+  let launchStyle: LaunchStyle
+  let runnableDebuggingMode: RunnableDebuggingMode
   let explicitTests: [PBXTarget]?
+  // List of additional targets and their project bundle names that should be built along with the
+  // primary target.
+  let additionalBuildTargets: [(PBXTarget, String)]?
 
   let primaryTargetBuildableReference: BuildableReference
 
@@ -46,9 +56,11 @@ final class XcodeScheme {
        analyzeActionBuildConfig: String = "Debug",
        archiveActionBuildConfig: String = "Release",
        appExtension: Bool = false,
-       launchStyle: LaunchAutomaticallySubstyle = .Normal,
+       launchStyle: LaunchStyle = .Normal,
+       runnableDebuggingMode: RunnableDebuggingMode = .Default,
        version: String = "1.3",
-       explicitTests: [PBXTarget]? = nil) {
+       explicitTests: [PBXTarget]? = nil,
+       additionalBuildTargets: [(PBXTarget, String)]? = nil) {
     self.version = version
     self.target = target
     self.project = project
@@ -60,7 +72,9 @@ final class XcodeScheme {
     self.archiveActionBuildConfig = archiveActionBuildConfig
     self.appExtension = appExtension
     self.launchStyle = launchStyle
+    self.runnableDebuggingMode = runnableDebuggingMode
     self.explicitTests = explicitTests
+    self.additionalBuildTargets = additionalBuildTargets
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -100,7 +114,6 @@ final class XcodeScheme {
 
     let buildActionEntries = NSXMLElement(name: "BuildActionEntries")
 
-    let buildActionEntry = NSXMLElement(name: "BuildActionEntry")
     let buildActionEntryAttributes = [
         "buildForTesting": "YES",
         "buildForRunning": "YES",
@@ -108,9 +121,20 @@ final class XcodeScheme {
         "buildForArchiving": "YES",
         "buildForAnalyzing": "YES",
     ]
-    buildActionEntry.setAttributesWithDictionary(buildActionEntryAttributes)
-    buildActionEntry.addChild(primaryTargetBuildableReference.toXML())
-    buildActionEntries.addChild(buildActionEntry)
+    func addBuildActionEntry(buildableReference: BuildableReference) {
+      let buildActionEntry = NSXMLElement(name: "BuildActionEntry")
+      buildActionEntry.setAttributesWithDictionary(buildActionEntryAttributes)
+      buildActionEntry.addChild(buildableReference.toXML())
+      buildActionEntries.addChild(buildActionEntry)
+    }
+
+    addBuildActionEntry(primaryTargetBuildableReference)
+    if let additionalBuildTargets = additionalBuildTargets {
+      for (target, bundleName) in additionalBuildTargets {
+        addBuildActionEntry(BuildableReference(target: target, projectBundleName: bundleName))
+      }
+    }
+
     element.addChild(buildActionEntries)
 
     return element
@@ -182,13 +206,13 @@ final class XcodeScheme {
     if launchStyle == .AppExtension {
       attributes["selectedDebuggerIdentifier"] = ""
       attributes["selectedLauncherIdentifier"] = "Xcode.IDEFoundation.Launcher.PosixSpawn"
-      attributes["launchAutomaticallySubstyle"] = "2"
+      attributes["launchAutomaticallySubstyle"] = launchStyle.rawValue
     }
 
     element.setAttributesWithDictionary(attributes)
 
     if launchStyle != .AppExtension {
-      element.addChild(buildableProductRunnable())
+      element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
       let macroExpansion = NSXMLElement(name: "MacroExpansion")
       macroExpansion.addChild(primaryTargetBuildableReference.toXML())
@@ -207,7 +231,11 @@ final class XcodeScheme {
         "debugDocumentVersioning": "YES",
     ]
     element.setAttributesWithDictionary(attributes)
-    element.addChild(buildableProductRunnable())
+    if launchStyle != .AppExtension {
+      element.addChild(buildableProductRunnable(runnableDebuggingMode))
+    } else {
+      element.addChild(buildableProductRunnable(.Default))
+    }
 
     return element
   }
@@ -230,10 +258,24 @@ final class XcodeScheme {
   }
 
   /// Container for BuildReference instances that may be run by Xcode.
-  private func buildableProductRunnable(runnableDebuggingMode: Bool = false) -> NSXMLElement {
-    let element = NSXMLElement(name: "BuildableProductRunnable")
-    let debugModeString = runnableDebuggingMode ? "1" : "0"
-    element.setAttributesWithDictionary(["runnableDebuggingMode": debugModeString])
+  private func buildableProductRunnable(runnableDebuggingMode: RunnableDebuggingMode) -> NSXMLElement {
+    let element: NSXMLElement
+    var attributes = ["runnableDebuggingMode": runnableDebuggingMode.rawValue]
+    switch runnableDebuggingMode {
+      case .WatchOS:
+        element = NSXMLElement(name: "RemoteRunnable")
+        // This is presumably watchOS's equivalent of SpringBoard on iOS and comes from the schemes
+        // generated by Xcode 7.
+        attributes["BundleIdentifier"] = "com.apple.carousel"
+        if let productName = target.productName {
+          // This should be CFBundleDisplayName for the target but doesn't seem to actually matter.
+          attributes["RemotePath"] = "/\(productName)"
+        }
+
+      default:
+        element = NSXMLElement(name: "BuildableProductRunnable")
+    }
+    element.setAttributesWithDictionary(attributes)
     element.addChild(primaryTargetBuildableReference.toXML())
     return element
   }

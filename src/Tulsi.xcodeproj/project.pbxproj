@@ -43,6 +43,7 @@
 		3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */; };
 		3D8B34C21C4ED5D50090F3AD /* WizardSubviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */; };
 		3D8B37ED1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D8B37EF1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib */; };
+		3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */; };
 		3D91B4DC1C78CE6B006ED85C /* TulsiDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */; };
 		3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */; };
 		3D9485411C3193F00026CE41 /* Options.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D9485431C3193F00026CE41 /* Options.strings */; };
@@ -94,6 +95,7 @@
 		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
 		3DC5CE0E1CFF3BAC00688AD6 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */; };
 		3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */; };
+		3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
 		3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */; };
@@ -222,6 +224,7 @@
 		3D8B34B91C4EB37C0090F3AD /* TulsiNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiNotifications.swift; sourceTree = "<group>"; };
 		3D8B34C11C4ED5D50090F3AD /* WizardSubviewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardSubviewProtocol.swift; sourceTree = "<group>"; };
 		3D8B37EE1C4F100F0090F3AD /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BazelOpenSheetAccessoryView.xib; sourceTree = "<group>"; };
+		3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubWatchOS2InfoPlist.plist; path = GeneratedProjectResources/StubWatchOS2InfoPlist.plist; sourceTree = "<group>"; };
 		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
 		3D9485421C3193F00026CE41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Options.strings; sourceTree = "<group>"; };
@@ -267,6 +270,7 @@
 		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
 		3DC5CE0F1CFF3BAC00688AD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NewProjectViewController.xib; sourceTree = "<group>"; };
 		3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryTests.swift; sourceTree = "<group>"; };
+		3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = StubWatchOS2AppExtensionInfoPlist.plist; path = GeneratedProjectResources/StubWatchOS2AppExtensionInfoPlist.plist; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
 		3DCFE5DD1C80B70700D7F31B /* BazelAspectInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelAspectInfoExtractor.swift; sourceTree = "<group>"; };
@@ -353,6 +357,8 @@
 			isa = PBXGroup;
 			children = (
 				3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */,
+				3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */,
+				3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */,
 			);
 			name = GeneratedProjectResources;
 			sourceTree = "<group>";
@@ -758,13 +764,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
-				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
-				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
-				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
+				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
+				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
+				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
+				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
+				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,
+				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

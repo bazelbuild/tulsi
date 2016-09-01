@@ -18,7 +18,7 @@
 
     ],
     "Watch2Extension" : [
-      "bazel-bin\/tulsi_e2e_complex\/WatchApp.ipa"
+      "bazel-bin\/tulsi_e2e_complex\/WatchOS2App.ipa"
     ],
     "WatchExtension" : [
       "bazel-bin\/tulsi_e2e_complex\/WatchExtension.ipa"
@@ -40,6 +40,9 @@
     ],
     "_idx_XCTest_7F8584F1" : [
 
+    ],
+    "_tulsi_appex_Watch2Extension" : [
+
     ]
   },
   "artifacts" : [
@@ -52,6 +55,7 @@
     "Watch2Extension.app\/**",
     "WatchExtension.appex\/**",
     "XCTest.xctest\/**",
+    "_tulsi_appex_Watch2Extension.appex\/**",
     "bazel-bin\/tulsi_e2e_complex\/Application-MergedInfo.plist",
     "bazel-bin\/tulsi_e2e_complex\/Watch2Extension-MergedInfo.plist",
     "bazel-bin\/tulsi_e2e_complex\/WatchExtension-MergedInfo.plist",

@@ -176,7 +176,7 @@ class _OptionsParser(object):
       self._AddDefaultOption(options, '--xcode_version', version_string)
 
     if self.sdk_version:
-      if self.platform_name == 'watchos':
+      if self.platform_name.startswith('watch'):
         self._AddDefaultOption(options,
                                '--watchos_sdk_version',
                                self.sdk_version)
@@ -643,7 +643,6 @@ class BazelBuildBridge(object):
   def _InstallArtifact(self):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
     xcode_artifact_path = self.codesigning_folder_path
-
     if os.path.isdir(xcode_artifact_path):
       try:
         shutil.rmtree(xcode_artifact_path)
@@ -659,50 +658,30 @@ class BazelBuildBridge(object):
                          '%s' % (xcode_artifact_path, e))
         return 600
 
-    expected_basename = os.path.basename(xcode_artifact_path)
-    _, expected_extension = os.path.splitext(expected_basename)
-    matching_artifact = None
-
-    # Attempt to heuristically determine which output matches Xcode's
-    # expectation. Outputs are evaluated in the following priority order:
-    # 1) output name == expected name
-    # 2) output extension == expected extension
-    # 3) output extension == '.ipa', in which case the IPA should be extracted
-    for output in self.bazel_outputs:
-      output_basename = os.path.basename(output)
-      if output_basename == expected_basename:
-        matching_artifact = output
-        break
-
-      _, output_extension = os.path.splitext(output_basename)
-      if output_extension == expected_extension:
-        matching_artifact = output
-      elif output_extension == '.ipa' and not matching_artifact:
-        matching_artifact = output
-
-    if not matching_artifact:
+    if not self.bazel_outputs:
       self._PrintError(
           'Failed to find an output artifact for target %s in candidates %r' %
           (xcode_artifact_path, self.bazel_outputs))
       return 601
 
-    if matching_artifact.endswith('.ipa'):
-      exit_code = self._UnpackTarget(matching_artifact, xcode_artifact_path)
+    primary_artifact = self.bazel_outputs[0]
+    if primary_artifact.endswith('.ipa'):
+      exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path)
       if exit_code:
         return exit_code
 
       exit_code = self._UpdateInfoPlistIfNecessary(xcode_artifact_path)
       if exit_code:
         return exit_code
-    elif os.path.isfile(matching_artifact):
-      exit_code = self._CopyFile(os.path.basename(matching_artifact),
-                                 matching_artifact,
+    elif os.path.isfile(primary_artifact):
+      exit_code = self._CopyFile(os.path.basename(primary_artifact),
+                                 primary_artifact,
                                  xcode_artifact_path)
       if exit_code:
         return exit_code
     else:
-      self._CopyBundle(os.path.basename(matching_artifact),
-                       matching_artifact,
+      self._CopyBundle(os.path.basename(primary_artifact),
+                       primary_artifact,
                        xcode_artifact_path)
 
     return 0
@@ -753,7 +732,7 @@ class BazelBuildBridge(object):
       # apple_watch2_extension apps generate an IPA whose name does not
       # necessarily match the Bazel target (it uses the app_name attribute).
       # Tulsi guarantees that the first BAZEL_OUTPUTS value is the primary
-      # artifact so, rather than using the rule name, the first output is used.
+      # artifact so, rather than using the rule name, it is used.
       if self.bazel_outputs:
         expected_bundle_name = os.path.splitext(
             os.path.basename(self.bazel_outputs[0]))[0] + '.app'

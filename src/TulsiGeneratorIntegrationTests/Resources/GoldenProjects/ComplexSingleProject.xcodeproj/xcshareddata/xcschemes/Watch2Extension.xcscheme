@@ -5,6 +5,12 @@
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6C9760C9E00000000" BuildableIdentifier="primary" BuildableName="_tulsi_appex_Watch2Extension" BlueprintName="_tulsi_appex_Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
@@ -14,14 +20,14 @@
         </MacroExpansion>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
             <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-        </BuildableProductRunnable>
+        </RemoteRunnable>
     </LaunchAction>
     <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
             <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-        </BuildableProductRunnable>
+        </RemoteRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
     <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>

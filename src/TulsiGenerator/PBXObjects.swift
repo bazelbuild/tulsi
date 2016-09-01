@@ -652,33 +652,46 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case AppExtension = "com.apple.product-type.app-extension"
     case XPCService = "com.apple.product-type.xpc-service"
     case Watch2App = "com.apple.product-type.application.watchapp2"
+    case Watch2Extension = "com.apple.product-type.watchkit2-extension"
 
     var explicitFileType: String {
       switch self {
         case .StaticLibrary:
           return "archive.ar"
+
         case .DynamicLibrary:
           return "compiled.mach-o.dylib"
+
         case .Tool:
           return "compiled.mach-o.executable"
+
         case .Bundle:
           return "wrapper.bundle"
+
         case .Framework:
           return "wrapper.framework"
+
         case .StaticFramework:
           return "wrapper.framework.static"
+
         case .Watch2App:
           fallthrough
         case .Application:
           return "wrapper.application"
+
         case .UnitTest:
           fallthrough
         case .UIUnitTest:
           return "wrapper.cfbundle"
+
         case .InAppPurchaseContent:
           return "folder"
+
+        case .Watch2Extension:
+          fallthrough
         case .AppExtension:
           return "wrapper.app-extension"
+
         case .XPCService:
           return "wrapper.xpc-service"
       }
@@ -688,28 +701,40 @@ class PBXTarget: PBXObjectProtocol, Hashable {
       switch self {
         case .StaticLibrary:
           return "lib" + name + ".a"
+
         case .DynamicLibrary:
           return "lib" + name + ".dylib"
+
         case .Tool:
           return name
+
         case .Bundle:
           return name + ".bundle"
+
         case .Framework:
           return name + ".framework"
+
         case .StaticFramework:
           return name + ".framework"
+
         case .Watch2App:
           fallthrough
         case .Application:
           return name + ".app"
+
         case .UnitTest:
           fallthrough
         case .UIUnitTest:
           return name + ".xctest"
+
         case .InAppPurchaseContent:
           return name
+
+        case .Watch2Extension:
+          fallthrough
         case .AppExtension:
           return name + ".appex"
+
         case .XPCService:
           return name + ".xpc"
       }
@@ -724,6 +749,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   }()
   /// The targets on which this target depends.
   var dependencies = [PBXTargetDependency]()
+  /// Any targets which must be built by XCSchemes generated for this target.
+  var buildActionDependencies = Set<PBXTarget>()
   /// The build phases to be executed to generate this target.
   var buildPhases = [PBXBuildPhase]()
 
@@ -762,6 +789,12 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     } else {
       dependencies.append(dependency)
     }
+  }
+
+  /// Creates a BuildAction-only dependency on the given target. Unlike a true dependency, this
+  /// linkage is only intended to affect generated XCSchemes.
+  func createBuildActionDependencyOn(target: PBXTarget) {
+    buildActionDependencies.insert(target)
   }
 
   func serializeInto(serializer: PBXProjFieldSerializer) throws {
@@ -984,7 +1017,7 @@ final class PBXProject: PBXObjectProtocol {
     self.mainGroup.serializesName = true
   }
 
-  func createNativeTarget(name: String, targetType: PBXTarget.ProductType) -> PBXTarget {
+  func createNativeTarget(name: String, targetType: PBXTarget.ProductType) -> PBXNativeTarget {
     let value = PBXNativeTarget(name: name, productType: targetType)
     targetByName[name] = value
 

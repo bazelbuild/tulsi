@@ -37,7 +37,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
       buildScript: NSURL(fileURLWithPath: "/scripts/Build"),
       cleanScript: NSURL(fileURLWithPath: "/scripts/Clean"),
       postProcessor: NSURL(fileURLWithPath: "/utils/covmap_patcher"),
-      stubInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"))
+      stubInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
+      stubWatchOS2InfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
+      stubWatchOS2AppExInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"))
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil
@@ -271,7 +273,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 bazelBinPath: String,
                 project: PBXProject,
                 buildScriptPath: String,
-                stubInfoPlistPath: String,
+                stubInfoPlistPaths: StubInfoPlistPaths,
                 tulsiVersion: String,
                 options: TulsiOptionSet,
                 localizedMessageLogger: LocalizedMessageLogger,
