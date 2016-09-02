@@ -158,7 +158,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      sourceFiles: sourceFiles,
                      nonARCSourceFiles: nonARCSourceFiles,
                      dependencies: dependencies,
-                     frameworkImports: [],
                      secondaryArtifacts: secondaryArtifacts,
                      weakDependencies: weakDependencies,
                      buildFilePath: buildFilePath,

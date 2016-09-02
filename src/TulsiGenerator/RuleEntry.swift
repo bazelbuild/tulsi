@@ -182,6 +182,12 @@ public final class RuleEntry: RuleInfo {
   /// The BUILD file that this rule was defined in.
   public let buildFilePath: String?
 
+  // The CFBundleIdentifier associated with the target for this rule, if any.
+  public let bundleID: String?
+
+  /// The CFBundleIdentifier of the watchOS extension target associated with this rule, if any.
+  public let extensionBundleID: String?
+
   /// Returns the set of non-versioned artifacts that are not source files.
   public var normalNonSourceArtifacts: [BazelFileInfo] {
     var artifacts = [BazelFileInfo]()
@@ -246,15 +252,17 @@ public final class RuleEntry: RuleInfo {
   init(label: BuildLabel,
        type: String,
        attributes: [String: AnyObject],
-       artifacts: [BazelFileInfo],
-       sourceFiles: [BazelFileInfo],
-       nonARCSourceFiles: [BazelFileInfo],
-       dependencies: Set<String>,
-       frameworkImports: [BazelFileInfo],
-       secondaryArtifacts: [BazelFileInfo],
-       iPhoneOSDeploymentTarget: String? = nil,
+       artifacts: [BazelFileInfo] = [],
+       sourceFiles: [BazelFileInfo] = [],
+       nonARCSourceFiles: [BazelFileInfo] = [],
+       dependencies: Set<String> = Set(),
+       frameworkImports: [BazelFileInfo] = [],
+       secondaryArtifacts: [BazelFileInfo] = [],
        weakDependencies: Set<BuildLabel>? = nil,
        extensions: Set<BuildLabel>? = nil,
+       bundleID: String? = nil,
+       extensionBundleID: String? = nil,
+       iPhoneOSDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
        generatedIncludePaths: [String]? = nil,
        implicitIPATarget: BuildLabel? = nil) {
@@ -276,7 +284,6 @@ public final class RuleEntry: RuleInfo {
     self.dependencies = dependencies
     self.frameworkImports = frameworkImports
     self.secondaryArtifacts = secondaryArtifacts
-    self.iPhoneOSDeploymentTarget = iPhoneOSDeploymentTarget
     if let weakDependencies = weakDependencies {
       self.weakDependencies = weakDependencies
     }
@@ -285,6 +292,9 @@ public final class RuleEntry: RuleInfo {
     } else {
       self.extensions = Set()
     }
+    self.bundleID = bundleID
+    self.extensionBundleID = extensionBundleID
+    self.iPhoneOSDeploymentTarget = iPhoneOSDeploymentTarget
     self.buildFilePath = buildFilePath
     self.generatedIncludePaths = generatedIncludePaths
     self.implicitIPATarget = implicitIPATarget
@@ -300,15 +310,17 @@ public final class RuleEntry: RuleInfo {
   convenience init(label: String,
                    type: String,
                    attributes: [String: AnyObject],
-                   artifacts: [BazelFileInfo],
-                   sourceFiles: [BazelFileInfo],
-                   nonARCSourceFiles: [BazelFileInfo],
-                   dependencies: Set<String>,
-                   frameworkImports: [BazelFileInfo],
-                   secondaryArtifacts: [BazelFileInfo],
-                   iPhoneOSDeploymentTarget: String? = nil,
+                   artifacts: [BazelFileInfo] = [],
+                   sourceFiles: [BazelFileInfo] = [],
+                   nonARCSourceFiles: [BazelFileInfo] = [],
+                   dependencies: Set<String> = Set(),
+                   frameworkImports: [BazelFileInfo] = [],
+                   secondaryArtifacts: [BazelFileInfo] = [],
                    weakDependencies: Set<BuildLabel>? = nil,
                    extensions: Set<BuildLabel>? = nil,
+                   bundleID: String? = nil,
+                   extensionBundleID: String? = nil,
+                   iPhoneOSDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
                    generatedIncludePaths: [String]? = nil,
                    implicitIPATarget: BuildLabel? = nil) {
@@ -321,9 +333,11 @@ public final class RuleEntry: RuleInfo {
               dependencies: dependencies,
               frameworkImports: frameworkImports,
               secondaryArtifacts: secondaryArtifacts,
-              iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
               weakDependencies: weakDependencies,
               extensions: extensions,
+              bundleID: bundleID,
+              extensionBundleID: extensionBundleID,
+              iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
               buildFilePath: buildFilePath,
               generatedIncludePaths: generatedIncludePaths,
               implicitIPATarget: implicitIPATarget)

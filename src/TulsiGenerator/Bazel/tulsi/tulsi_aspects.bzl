@@ -466,12 +466,18 @@ def _tulsi_sources_aspect(target, ctx):
 
   extensions = [str(t.label) for t in _getattr_as_list(rule_attr, 'extensions')]
 
+  bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
+  if not bundle_id:
+    bundle_id = _get_opt_attr(rule_attr, 'app_bundle_id')
+
   all_attributes = attributes + inheritable_attributes
   info = _struct_omitting_none(
       artifacts=artifacts,
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
+      bundle_id=bundle_id,
       deps=compile_deps,
+      ext_bundle_id=_get_opt_attr(rule_attr, 'ext_bundle_id'),
       extensions=extensions,
       framework_imports=_collect_framework_imports(rule_attr),
       generated_files=generated_files,

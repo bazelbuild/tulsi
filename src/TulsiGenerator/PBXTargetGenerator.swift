@@ -715,6 +715,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["SDKROOT"] = sdkRoot
     }
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(.Watch2Extension)
+    if let extensionBundleID = entry.extensionBundleID {
+      buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = extensionBundleID
+    } else {
+      localizedMessageLogger.warning("SettingWatchExtensionBundleIDFailed",
+                                     comment: "Message to show when the bundle identifier for watchOS app extension %1$@ could not be found and the resulting project will not be able to launch the watch app.",
+                                     values: entry.label.value)
+    }
     buildSettings["PRODUCT_NAME"] = name
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
@@ -1142,10 +1149,24 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     var buildSettings = options.buildSettingsForTarget(name)
     buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
+
     buildSettings["PRODUCT_NAME"] = name
+    if let bundleID = entry.bundleID {
+      buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleID
+    }
     if let sdkRoot = entry.XcodeSDKRoot {
       buildSettings["SDKROOT"] = sdkRoot
     }
+
+    // An invalid launch image is set in order to suppress Xcode's warning about missing default
+    // launch images.
+    buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(pbxTargetType)
+
+    if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
+      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
+    }
+
     // Disable dSYM generation in general.
     buildSettings["TULSI_USE_DSYM"] = "NO"
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
@@ -1181,15 +1202,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // TODO(abaire): Deprecate and remove this, it's duplicative with BAZEL_OUTPUTS.
     if let ipaTarget = entry.implicitIPATarget {
       buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
-    }
-
-    // An invalid launch image is set in order to suppress Xcode's warning about missing default
-    // launch images.
-    buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
-    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(pbxTargetType)
-
-    if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
-      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
     }
 
     // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.

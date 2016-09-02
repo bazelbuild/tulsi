@@ -292,12 +292,7 @@ final class XcodeProjectGenerator {
       targetRules.insert(RuleEntry(label: hostLabel,
                                    type: "_test_host_",
                                    attributes: [:],
-                                   artifacts: [expectedArtifact],
-                                   sourceFiles: [],
-                                   nonARCSourceFiles: [],
-                                   dependencies: Set(),
-                                   frameworkImports: [],
-                                   secondaryArtifacts: []))
+                                   artifacts: [expectedArtifact]))
     }
 
     let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)

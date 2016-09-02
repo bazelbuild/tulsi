@@ -830,6 +830,241 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateTargetWithBundleID() {
+    let targetName = "targetName"
+    let buildPath = "test/test1"
+    let buildTarget = "\(buildPath):\(targetName)"
+    let ipa = BuildLabel("\(buildPath):\(targetName).ipa")
+    let bundleID = "bundleID"
+    let rules = Set([
+      makeTestRuleEntry(buildTarget,
+                        type: "ios_application",
+                        bundleID: bundleID,
+                        implicitIPATarget: ipa),
+    ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules)
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    do {
+      let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+          "BAZEL_TARGET": buildTarget,
+          "BAZEL_TARGET_IPA": ipa.asFileName!,
+          "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+          "PRODUCT_BUNDLE_IDENTIFIER": bundleID,
+          "PRODUCT_NAME": targetName,
+          "SDKROOT": "iphoneos",
+          "TULSI_BUILD_PATH": buildPath,
+          "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: targetName,
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+          ],
+          expectedBuildPhases: [
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateWatchOS2TargetWithExtensionBundleID() {
+    let appTargetName = "targetName"
+    let appBuildPath = "test/app"
+    let appBuildTarget = "\(appBuildPath):\(appTargetName)"
+    let appIPA = BuildLabel("\(appBuildPath):\(appTargetName).ipa")
+    let watchAppTargetName = "watchAppTargetName"
+    let watchAppBuildPath = "test/watchapp"
+    let watchAppBuildTarget = "\(watchAppBuildPath):\(watchAppTargetName)"
+    let watchAppIPA = BuildLabel("\(watchAppBuildPath):\(watchAppTargetName).ipa")
+    let watchExtTargetName = "_tulsi_appex_\(watchAppTargetName)"
+
+    let appBundleID = "appBundleID"
+    let watchAppBundleID = "watchAppBundleID"
+    let watchExtBundleID = "watchAppExtBundleID"
+    let rules = Set([
+      makeTestRuleEntry(appBuildTarget,
+                        type: "ios_application",
+                        extensions: Set([BuildLabel(watchAppBuildTarget)]),
+                        bundleID: appBundleID,
+                        implicitIPATarget: appIPA),
+      makeTestRuleEntry(watchAppBuildTarget,
+                        type: "apple_watch2_extension",
+                        bundleID: watchAppBundleID,
+                        extensionBundleID: watchExtBundleID,
+                        implicitIPATarget: watchAppIPA)
+    ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules)
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 3)
+
+    do {
+      let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+          "BAZEL_TARGET": appBuildTarget,
+          "BAZEL_TARGET_IPA": appIPA.asFileName!,
+          "BAZEL_TARGET_TYPE": "ios_application",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
+          "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+          "PRODUCT_BUNDLE_IDENTIFIER": appBundleID,
+          "PRODUCT_NAME": appTargetName,
+          "SDKROOT": "iphoneos",
+          "TULSI_BUILD_PATH": appBuildPath,
+          "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: appTargetName,
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+          ],
+          expectedBuildPhases: [
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+          "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+          "BAZEL_TARGET": watchAppBuildTarget,
+          "BAZEL_TARGET_IPA": watchAppIPA.asFileName!,
+          "BAZEL_TARGET_TYPE": "apple_watch2_extension",
+          "DEBUG_INFORMATION_FORMAT": "dwarf",
+          "INFOPLIST_FILE": stubPlistPaths.watchOS2Stub,
+          "PRODUCT_BUNDLE_IDENTIFIER": watchAppBundleID,
+          "PRODUCT_NAME": watchAppTargetName,
+          "SDKROOT": "watchos",
+          "TULSI_BUILD_PATH": watchAppBuildPath,
+          "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: watchAppTargetName,
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+          ],
+          expectedBuildPhases: [
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: watchAppBuildTarget)
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+          "INFOPLIST_FILE": stubPlistPaths.watchOS2AppExStub,
+          "PRODUCT_BUNDLE_IDENTIFIER": watchExtBundleID,
+          "PRODUCT_NAME": watchExtTargetName,
+          "SDKROOT": "watchos",
+      ]
+      let expectedTarget = TargetDefinition(
+          name: watchExtTargetName,
+          buildConfigurations: [
+              BuildConfigurationDefinition(
+                  name: "Debug",
+                  expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Release",
+                  expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "Fastbuild",
+                  expectedBuildSettings: expectedBuildSettings
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Debug",
+                  expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+              BuildConfigurationDefinition(
+                  name: "__TulsiTestRunner_Release",
+                  expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+              ),
+          ],
+          expectedBuildPhases: []
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
@@ -1273,6 +1508,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  artifacts: [String] = [],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set(),
+                                 extensions: Set<BuildLabel>? = nil,
+                                 bundleID: String? = nil,
+                                 extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
@@ -1281,6 +1519,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              artifacts: artifacts,
                              sourceFiles: sourceFiles,
                              dependencies: dependencies,
+                             extensions: extensions,
+                             bundleID: bundleID,
+                             extensionBundleID: extensionBundleID,
                              buildFilePath: buildFilePath,
                              implicitIPATarget: implicitIPATarget)
   }
@@ -1297,6 +1538,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  artifacts: [String] = [],
                                  sourceFiles: [String] = [],
                                  dependencies: Set<String> = Set(),
+                                 extensions: Set<BuildLabel>? = nil,
+                                 bundleID: String? = nil,
+                                 extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     let artifactInfos = artifacts.map() { TestBazelFileInfo(fullPath: $0) }
@@ -1306,10 +1550,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      attributes: attributes,
                      artifacts: artifactInfos,
                      sourceFiles: sourceInfos,
-                     nonARCSourceFiles: [],
                      dependencies: dependencies,
-                     frameworkImports: [],
-                     secondaryArtifacts: [],
+                     extensions: extensions,
+                     bundleID: bundleID,
+                     extensionBundleID: extensionBundleID,
                      buildFilePath: buildFilePath,
                      implicitIPATarget: implicitIPATarget)
   }
@@ -1399,9 +1643,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let script = scriptBuildPhase.shellScript
 
       // TODO(abaire): Consider doing deeper validation of the script.
-      XCTAssert(script.containsString(bazelURL.path!), line: line)
-      XCTAssert(script.containsString(buildTarget), line: line)
-    }
+      XCTAssert(script.containsString(bazelURL.path!),
+                "Build script does not contain \(bazelURL.path!)",
+                line: line)
+      XCTAssert(script.containsString(buildTarget),
+                "Build script does not contain build target \(buildTarget)",
+                line: line)    }
   }
 
   private func fileRefForPath(path: String) -> PBXReference? {

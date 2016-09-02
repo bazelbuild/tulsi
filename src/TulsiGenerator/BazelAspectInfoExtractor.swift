@@ -300,6 +300,8 @@ final class BazelAspectInfoExtractor {
       } else {
         extensions = nil
       }
+      let bundleID = dict["bundle_id"] as? String
+      let extensionBundleID = dict["ext_bundle_id"] as? String
 
       let ruleEntry = RuleEntry(label: ruleLabel,
                                 type: ruleType,
@@ -310,8 +312,10 @@ final class BazelAspectInfoExtractor {
                                 dependencies: dependencies,
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
-                                iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                                 extensions: extensions,
+                                bundleID: bundleID,
+                                extensionBundleID: extensionBundleID,
+                                iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,
                                 implicitIPATarget: implictIPATarget)
