@@ -142,6 +142,8 @@ final class BazelAspectInfoExtractor {
     var arguments = startupOptions
     arguments.appendContentsOf([
         "build",
+        "-c",
+        "dbg",  // The aspect is run in debug mode to match the default Xcode build configuration.
         "--symlink_prefix",  // Generate artifacts without overwriting the normal build symlinks.
         BazelAspectInfoExtractor.SymlinkPrefix,
         "--announce_rc",  // Print the RC files used by this operation.
