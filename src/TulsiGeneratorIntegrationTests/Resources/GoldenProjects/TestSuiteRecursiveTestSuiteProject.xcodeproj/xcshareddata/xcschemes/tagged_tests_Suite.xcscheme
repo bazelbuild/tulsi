@@ -10,13 +10,10 @@
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6420BCBAA00000000" BuildableIdentifier="primary" BuildableName="TestSuiteXCTest" BlueprintName="TestSuiteXCTest" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E67E0D424800000000" BuildableIdentifier="primary" BuildableName="tagged_xctest_1" BlueprintName="tagged_xctest_1" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
                 <BuildableReference BlueprintIdentifier="3D31C5E67E0C424E00000000" BuildableIdentifier="primary" BuildableName="tagged_xctest_2" BlueprintName="tagged_xctest_2" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
-            </TestableReference>
-            <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E67E0D424800000000" BuildableIdentifier="primary" BuildableName="tagged_xctest_1" BlueprintName="tagged_xctest_1" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
             </TestableReference>
         </Testables>
         <MacroExpansion>

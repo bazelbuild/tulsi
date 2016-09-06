@@ -8,28 +8,35 @@
       "bazel-bin\/TestSuite\/TestApplication.ipa",
       "bazel-bin\/TestSuite\/TestSuiteXCTest.ipa"
     ],
-    "NonXCTest" : [
-      "bazel-bin\/TestSuite\/Three\/NonXCTest.ipa"
-    ],
-    "_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6" : [
-
+    "tagged_xctest_2" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa",
+      "bazel-bin\/TestSuite\/Three\/tagged_xctest_2.ipa"
     ],
     "_bazel_clean_" : [
 
+    ],
+    "_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E" : [
+
+    ],
+    "tagged_xctest_1" : [
+      "bazel-bin\/TestSuite\/TestApplication.ipa",
+      "bazel-bin\/TestSuite\/Three\/tagged_xctest_1.ipa"
     ]
   },
   "artifacts" : [
-    "NonXCTest.app\/**",
     "TestApplication.app\/**",
     "TestSuiteXCTest.xctest\/**",
     "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
-    "lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a"
+    "lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a",
+    "tagged_xctest_1.xctest\/**",
+    "tagged_xctest_2.xctest\/**"
   ],
   "fileReferences" : [
     "..\/..\/TestSuite\/BUILD",
     "..\/..\/TestSuite\/Binary\/srcs\/main.m",
     "..\/..\/TestSuite\/TestSuite\/TestSuiteXCTest.m",
     "..\/..\/TestSuite\/Three\/BUILD",
-    "..\/..\/TestSuite\/Three\/nonXCTest.m"
+    "..\/..\/TestSuite\/Three\/tagged_xctest_1.m",
+    "..\/..\/TestSuite\/Three\/tagged_xctest_2.m"
   ]
 }

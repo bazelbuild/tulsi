@@ -10,7 +10,10 @@
 		E6AF4947330B5D6000000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
 		E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
 		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
-		E6AF494751A7DA1A00000000 /* nonXCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2851A7DA1A00000000 /* nonXCTest.m */; };
+		E6AF494790A3170600000000 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2890A3170600000000 /* tagged_xctest_1.m */; };
+		E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2890A3170600000000 /* tagged_xctest_1.m */; };
+		E6AF494798A50B0400000000 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2898A50B0400000000 /* tagged_xctest_2.m */; };
+		E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2898A50B0400000000 /* tagged_xctest_2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +32,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = tagged_xctest_2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28330B5D6000000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteXCTest.m; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		43D68C2851A7DA1A00000000 /* nonXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nonXCTest.m; sourceTree = "<group>"; };
 		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2865470F8600000000 /* NonXCTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = NonXCTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2890A3170600000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_1.m; sourceTree = "<group>"; };
+		43D68C2898A50B0400000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_2.m; sourceTree = "<group>"; };
+		43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28B121A9CE00000000 /* lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28F35B462E00000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
@@ -45,11 +50,12 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2865470F8600000000 /* NonXCTest.app */,
 				43D68C285A2F8B6E00000000 /* TestApplication.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
-				43D68C28B121A9CE00000000 /* lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a */,
+				43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */,
+				43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */,
+				43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,7 +91,8 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28B7EA446800000001 /* BUILD */,
-				43D68C2851A7DA1A00000000 /* nonXCTest.m */,
+				43D68C2890A3170600000000 /* tagged_xctest_1.m */,
+				43D68C2898A50B0400000000 /* tagged_xctest_2.m */,
 			);
 			path = Three;
 			sourceTree = "<group>";
@@ -144,22 +151,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E60DE2A9B400000000 /* _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755832CD2521000000000 /* Build configuration list for PBXNativeTarget "_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6" */;
-			buildPhases = (
-				605793E20000000000000001 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6;
-			productName = _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6;
-			productReference = 43D68C28B121A9CE00000000 /* lib_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E6420BCBAA00000000 /* TestSuiteXCTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558395C0260B00000000 /* Build configuration list for PBXNativeTarget "TestSuiteXCTest" */;
@@ -178,21 +169,57 @@
 			productReference = 43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E686B7E09C00000000 /* NonXCTest */ = {
+		3D31C5E67E0C424E00000000 /* tagged_xctest_2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558321D3C18400000000 /* Build configuration list for PBXNativeTarget "NonXCTest" */;
+			buildConfigurationList = DE475583CC86731D00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_2" */;
 			buildPhases = (
-				84B422715A20D9DE00000002 /* ShellScript */,
+				84B422716D6B03D000000000 /* ShellScript */,
+				605793E20000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42EC64700500000000 /* PBXTargetDependency */,
+			);
+			name = tagged_xctest_2;
+			productName = tagged_xctest_2;
+			productReference = 43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3D31C5E67E0D424800000000 /* tagged_xctest_1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755838C86721A00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_1" */;
+			buildPhases = (
+				84B422716D6B03D000000001 /* ShellScript */,
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42EC64700500000000 /* PBXTargetDependency */,
+			);
+			name = tagged_xctest_1;
+			productName = tagged_xctest_1;
+			productReference = 43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3D31C5E6CA8B153E00000000 /* _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558399AEB25C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = NonXCTest;
-			productName = NonXCTest;
-			productReference = 43D68C2865470F8600000000 /* NonXCTest.app */;
-			productType = "com.apple.product-type.application";
+			name = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+			productName = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+			productReference = 43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EC64700400000000 /* TestApplication */ = {
 			isa = PBXNativeTarget;
@@ -222,6 +249,12 @@
 					3D31C5E6420BCBAA00000000 = {
 						TestTargetID = 3D31C5E6EC64700400000000;
 					};
+					3D31C5E67E0C424E00000000 = {
+						TestTargetID = 3D31C5E6EC64700400000000;
+					};
+					3D31C5E67E0D424800000000 = {
+						TestTargetID = 3D31C5E6EC64700400000000;
+					};
 				};
 			};
 			buildConfigurationList = DE4755833C2D621E00000000 /* Build configuration list for PBXProject "TestSuiteRecursiveTestSuiteProject" */;
@@ -233,11 +266,12 @@
 			);
 			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
-				3D31C5E686B7E09C00000000 /* NonXCTest */,
 				3D31C5E6EC64700400000000 /* TestApplication */,
 				3D31C5E6420BCBAA00000000 /* TestSuiteXCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E60DE2A9B400000000 /* _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6 */,
+				3D31C5E6CA8B153E00000000 /* _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E */,
+				3D31C5E67E0D424800000000 /* tagged_xctest_1 */,
+				3D31C5E67E0C424E00000000 /* tagged_xctest_2 */,
 			);
 		};
 /* End PBXProject section */
@@ -271,7 +305,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422715A20D9DE00000002 /* ShellScript */ = {
+		84B422716D6B03D000000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -282,7 +316,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:NonXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_2 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B422716D6B03D000000001 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_1 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -300,9 +348,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494751A7DA1A00000000 /* nonXCTest.m in Three */,
+				E6AF494798A50B0400000000 /* tagged_xctest_2.m in Three */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF494790A3170600000000 /* tagged_xctest_1.m in Three */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */,
 				E6AF49473611DBCE00000000 /* main.m in srcs */,
 				E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */,
+				E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +432,52 @@
 		44936BD63008588600000002 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
+				PRODUCT_NAME = tagged_xctest_2;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000003 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
+				PRODUCT_NAME = tagged_xctest_1;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Fastbuild;
+		};
+		44936BD63008588600000004 /* Fastbuild */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -394,30 +505,11 @@
 			};
 			name = Fastbuild;
 		};
-		44936BD63008588600000003 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/NonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.NonXCTest;
-				PRODUCT_NAME = NonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite/Three;
-				TULSI_USE_DSYM = NO;
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000004 /* Fastbuild */ = {
+		44936BD63008588600000005 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
-				PRODUCT_NAME = _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6;
+				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
 			};
 			name = Fastbuild;
 		};
@@ -470,6 +562,54 @@
 		44936BD67EED3C4D00000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
+				PRODUCT_NAME = tagged_xctest_2;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
+				PRODUCT_NAME = tagged_xctest_1;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -498,32 +638,12 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000003 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/NonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.NonXCTest;
-				PRODUCT_NAME = NonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite/Three;
-				TULSI_USE_DSYM = NO;
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D00000004 /* Debug */ = {
+		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
-				PRODUCT_NAME = _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6;
+				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
 			};
 			name = Debug;
 		};
@@ -576,6 +696,54 @@
 		44936BD6A3D45CE900000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
+				PRODUCT_NAME = tagged_xctest_2;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
+				PRODUCT_NAME = tagged_xctest_1;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -605,32 +773,12 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000003 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/NonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.NonXCTest;
-				PRODUCT_NAME = NonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite/Three;
-				TULSI_USE_DSYM = YES;
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE900000004 /* Release */ = {
+		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
-				PRODUCT_NAME = _idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6;
+				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
 			};
 			name = Release;
 		};
@@ -689,6 +837,60 @@
 		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
+				PRODUCT_NAME = tagged_xctest_2;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
+				PRODUCT_NAME = tagged_xctest_1;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000004 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -716,29 +918,6 @@
 				SDKROOT = iphoneos;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-			};
-			name = __TulsiTestRunner_Debug;
-		};
-		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/NonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.NonXCTest;
-				PRODUCT_NAME = NonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite/Three;
-				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -797,6 +976,60 @@
 		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
+				PRODUCT_NAME = tagged_xctest_2;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
+				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
+				BAZEL_TARGET_TYPE = ios_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
+				PRODUCT_NAME = tagged_xctest_1;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
+				TULSI_BUILD_PATH = TestSuite/Three;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000004 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -828,29 +1061,6 @@
 			};
 			name = __TulsiTestRunner_Release;
 		};
-		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/NonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite/Three:NonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/NonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.NonXCTest;
-				PRODUCT_NAME = NonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite/Three;
-				TULSI_USE_DSYM = YES;
-			};
-			name = __TulsiTestRunner_Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -865,7 +1075,18 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558321D3C18400000000 /* Build configuration list for PBXNativeTarget "NonXCTest" */ = {
+		DE4755833C2D621E00000000 /* Build configuration list for PBXProject "TestSuiteRecursiveTestSuiteProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD63008588600000004 /* Fastbuild */,
+				44936BD6A3D45CE900000004 /* Release */,
+				44936BD6C928366700000004 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000004 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755838C86721A00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000003 /* Debug */,
@@ -873,26 +1094,6 @@
 				44936BD6A3D45CE900000003 /* Release */,
 				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755832CD2521000000000 /* Build configuration list for PBXNativeTarget "_idx_NonXCTest_Binary_TestSuiteXCTest_EDFCB0C6" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
-				44936BD6A3D45CE900000004 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755833C2D621E00000000 /* Build configuration list for PBXProject "TestSuiteRecursiveTestSuiteProject" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000002 /* Debug */,
-				44936BD63008588600000002 /* Fastbuild */,
-				44936BD6A3D45CE900000002 /* Release */,
-				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -907,9 +1108,29 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
+		DE47558399AEB25C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD63008588600000005 /* Fastbuild */,
+				44936BD6A3D45CE900000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583CC86731D00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000002 /* Debug */,
+				44936BD63008588600000002 /* Fastbuild */,
+				44936BD6A3D45CE900000002 /* Release */,
+				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

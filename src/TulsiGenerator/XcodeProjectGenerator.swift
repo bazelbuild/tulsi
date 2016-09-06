@@ -166,8 +166,8 @@ final class XcodeProjectGenerator {
     /// set of targets selected by the user as part of the generator config.
     let buildRuleEntries: Set<RuleEntry>
 
-    /// RuleEntry's for test_suite's for whichspecial test schemes should be created.
-    let testSuiteRuleEntries: Set<RuleEntry>
+    /// RuleEntry's for test_suite's for which special test schemes should be created.
+    let testSuiteRuleEntries: [BuildLabel: RuleEntry]
   }
 
   /// Invokes Bazel to load any missing information in the config file.
@@ -211,7 +211,7 @@ final class XcodeProjectGenerator {
 
     let ruleEntryMap = loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
-    var testSuiteRules = Set<RuleEntry>()
+    var testSuiteRules = [BuildLabel: RuleEntry]()
     // Ideally this should use a generic SequenceType, but Swift 2.2 sometimes crashes in this case.
     // TODO(abaire): Go back to using a generic here when support for Swift 2.2 is removed.
     func expandTargetLabels(labels: Set<BuildLabel>) {
@@ -223,7 +223,7 @@ final class XcodeProjectGenerator {
           expandedTargetLabels.unionInPlace(ruleEntry.extensions)
         } else {
           // Expand the test_suite to its set of tests.
-          testSuiteRules.insert(ruleEntry)
+          testSuiteRules[ruleEntry.label] = ruleEntry
           expandTargetLabels(ruleEntry.weakDependencies)
         }
       }
@@ -471,15 +471,24 @@ final class XcodeProjectGenerator {
       try writeDataHandler(url, data)
     }
 
-    func installSchemeForTestSuite(suite: RuleEntry, named suiteName: String) throws {
+    func extractTestTargets(testSuite: RuleEntry) -> (Set<PBXTarget>, PBXTarget?) {
       var suiteHostTarget: PBXTarget? = nil
       var validTests = Set<PBXTarget>()
-      for testEntryLabel in suite.weakDependencies {
+      for testEntryLabel in testSuite.weakDependencies {
+        if let recursiveTestSuite = info.testSuiteRuleEntries[testEntryLabel] {
+          let (recursiveTests, recursiveSuiteHostTarget) = extractTestTargets(recursiveTestSuite)
+          validTests.unionInPlace(recursiveTests)
+          if suiteHostTarget == nil {
+            suiteHostTarget = recursiveSuiteHostTarget
+          }
+          continue
+        }
+
         guard let testTarget = targetForLabel(testEntryLabel) as? PBXNativeTarget else {
           localizedMessageLogger.warning("TestSuiteUsesUnresolvedTarget",
                                          comment: "Warning shown when a test_suite %1$@ refers to a test label %2$@ that was not resolved and will be ignored",
                                          context: config.projectName,
-                                         values: suite.label.value, testEntryLabel.value)
+                                         values: testSuite.label.value, testEntryLabel.value)
           continue
         }
 
@@ -489,7 +498,7 @@ final class XcodeProjectGenerator {
           localizedMessageLogger.warning("TestSuiteIncludesNonXCTest",
                                          comment: "Warning shown when a non XCTest %1$@ is included in a test suite %2$@ and will be ignored.",
                                          context: config.projectName,
-                                         values: testEntryLabel.value, suite.label.value)
+                                         values: testEntryLabel.value, testSuite.label.value)
           continue
         }
 
@@ -497,23 +506,30 @@ final class XcodeProjectGenerator {
           localizedMessageLogger.warning("TestSuiteTestHostResolutionFailed",
                                          comment: "Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported.",
                                          context: config.projectName,
-                                         values: testEntryLabel.value, suite.label.value)
+                                         values: testEntryLabel.value, testSuite.label.value)
           continue
         }
-        // The first target host is arbitrarily chosen as the scheme target.
+
         if suiteHostTarget == nil {
           suiteHostTarget = testHostTarget
         }
+
         validTests.insert(testTarget)
       }
 
-      guard let concreteTarget = suiteHostTarget else {
+      return (validTests, suiteHostTarget)
+    }
+
+    func installSchemeForTestSuite(suite: RuleEntry, named suiteName: String) throws {
+      let (validTests, extractedHostTarget) = extractTestTargets(suite)
+      guard let concreteTarget = extractedHostTarget where !validTests.isEmpty else {
         localizedMessageLogger.warning("TestSuiteHasNoValidTests",
                                        comment: "Warning shown when none of the tests of a test suite %1$@ were able to be resolved.",
                                        context: config.projectName,
                                        values: suite.label.value)
         return
       }
+
       let filename = suiteName + "_Suite.xcscheme"
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
       let scheme = XcodeScheme(target: concreteTarget,
@@ -529,8 +545,8 @@ final class XcodeProjectGenerator {
     }
 
     var testSuiteSchemes = [String: [RuleEntry]]()
-    for entry in info.testSuiteRuleEntries {
-      let shortName = entry.label.targetName!
+    for (label, entry) in info.testSuiteRuleEntries {
+      let shortName = label.targetName!
       if let _ = testSuiteSchemes[shortName] {
         testSuiteSchemes[shortName]!.append(entry)
       } else {

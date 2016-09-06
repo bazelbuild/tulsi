@@ -29,6 +29,21 @@ ios_test(
 ios_test(
     name = "NonXCTest",
     srcs = ["nonXCTest.m"],
-    tags = ["tagged"],
     xctest = 0,
+)
+
+ios_test(
+    name = "tagged_xctest_1",
+    srcs = ["tagged_xctest_1.m"],
+    tags = ["tagged"],
+    xctest = 1,
+    xctest_app = "//TestSuite:TestApplication",
+)
+
+ios_test(
+    name = "tagged_xctest_2",
+    srcs = ["tagged_xctest_2.m"],
+    tags = ["tagged"],
+    xctest = 1,
+    xctest_app = "//TestSuite:TestApplication",
 )
