@@ -1,6 +1,6 @@
 
 <Scheme LastUpgradeVersion="0610" version="1.3">
-    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
+    <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>

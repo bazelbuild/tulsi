@@ -106,8 +106,14 @@ final class XcodeScheme {
   /// Settings for the Xcode "Build" action.
   private func buildAction() -> NSXMLElement {
     let element = NSXMLElement(name: "BuildAction")
+    let parallelizeBuildables: String
+    if runnableDebuggingMode == .WatchOS {
+      parallelizeBuildables = "NO"
+    } else {
+      parallelizeBuildables = "YES"
+    }
     let buildActionAttributes = [
-        "parallelizeBuildables": "YES",
+        "parallelizeBuildables": parallelizeBuildables,
         "buildImplicitDependencies": "YES",
     ]
     element.setAttributesWithDictionary(buildActionAttributes)
