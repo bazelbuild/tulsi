@@ -107,6 +107,7 @@
     "..\/..\/tulsi_e2e_complex\/TodayExtension\/resources\/file1",
     "..\/..\/tulsi_e2e_complex\/TodayExtension\/resources\/file2.file",
     "..\/..\/tulsi_e2e_complex\/TodayExtensionBinary\/srcs\/today_extension_binary.m",
+    "..\/..\/tulsi_e2e_complex\/Watch2Extension\/Interface.storyboard",
     "..\/..\/tulsi_e2e_complex\/Watch2Extension\/app_asset_catalogs.xcassets\/**",
     "..\/..\/tulsi_e2e_complex\/Watch2Extension\/app_entitlements.entitlements",
     "..\/..\/tulsi_e2e_complex\/Watch2Extension\/app_infoplists\/Info.plist",

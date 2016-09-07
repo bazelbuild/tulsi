@@ -285,6 +285,9 @@ apple_watch2_extension(
     app_resources = [
         "Watch2Extension/app_resources.file",
     ],
+    app_storyboards = [
+        "Watch2Extension/Interface.storyboard",
+    ],
     app_structured_resources = [
         "Watch2Extension/app_structured_resources.file",
     ],

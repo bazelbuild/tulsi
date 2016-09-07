@@ -151,6 +151,7 @@
 		43D68C28EF237CF400000000 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
 		43D68C28EF237CF400000001 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
 		43D68C28F1F4A85E00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NonLocalized.strings; sourceTree = "<group>"; };
+		43D68C28F295667A00000000 /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Interface.storyboard; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FB38EC0400000000 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C28FB38EC0400000001 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
@@ -209,6 +210,7 @@
 		966FB6DE18CF8FA800000000 /* Watch2Extension */ = {
 			isa = PBXGroup;
 			children = (
+				43D68C28F295667A00000000 /* Interface.storyboard */,
 				43D68C28C05E0C0A00000000 /* app_asset_catalogs.xcassets */,
 				43D68C28FB38EC0400000000 /* app_entitlements.entitlements */,
 				966FB6DE331AF5B000000000 /* app_infoplists */,

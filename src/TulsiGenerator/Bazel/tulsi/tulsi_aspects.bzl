@@ -40,6 +40,7 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'app_entitlements',
     'app_infoplists',
     'app_resources',
+    'app_storyboards',
     'app_strings',
     'app_structured_resources',
     'ext_entitlements',
