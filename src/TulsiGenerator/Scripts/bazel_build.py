@@ -99,8 +99,15 @@ class _OptionsParser(object):
     self.platform_name = platform_name
 
     if arch:
+      if self.platform_name.startswith('watch'):
+        config_platform = 'watchos'
+      elif self.platform_name.startswith('iphone'):
+        config_platform = 'ios'
+      else:
+        self._WarnUnknownPlatform()
+        config_platform = 'ios'
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
-          '--config=ios_' + arch)
+          '--config=%s_%s' % (config_platform, arch))
 
     self.verbose = 0
     self.install_generated_artifacts = False
@@ -180,11 +187,10 @@ class _OptionsParser(object):
         self._AddDefaultOption(options,
                                '--watchos_sdk_version',
                                self.sdk_version)
+      elif self.platform_name.startswith('iphone'):
+        self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
       else:
-        # TODO(abaire): This will probably be incorrect in other cases.
-        # SDK Version handling probably has to be kept in sync with
-        # platform_name in a more generic manner in order to support new types
-        # from Apple or Bazel.
+        self._WarnUnknownPlatform()
         self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
     return options
 
@@ -204,6 +210,11 @@ class _OptionsParser(object):
     if config != _OptionsParser.ALL_CONFIGS:
       options.extend(option_set[config])
     return options
+
+  def _WarnUnknownPlatform(self):
+    sys.stdout.write('Warning: unknown platform "%s" will be treated as '
+                     'iOS\n' % self.platform_name)
+    sys.stdout.flush()
 
   def _ParseVariableOptions(self, args):
     """Parses flag-based args, returning (message, exit_code)."""
