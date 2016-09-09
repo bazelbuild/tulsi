@@ -71,7 +71,12 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
   // MARK: - NSUserInterfaceValidations
 
   func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-    if item.action() == #selector(copy(_:)) {
+#if swift(>=2.3)
+    let itemAction = item.action
+#else
+    let itemAction = item.action()
+#endif
+    if itemAction == #selector(copy(_:)) {
       return !messageArrayController.selectedObjects.isEmpty
     }
     return false

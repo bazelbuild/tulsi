@@ -78,7 +78,11 @@ public final class TulsiProject {
 
   public static func load(projectBundleURL: NSURL) throws -> TulsiProject {
     let fileManager = NSFileManager.defaultManager()
+#if swift(>=2.3)
+    let projectFileURL = projectBundleURL.URLByAppendingPathComponent(TulsiProject.ProjectFilename)!
+#else
     let projectFileURL = projectBundleURL.URLByAppendingPathComponent(TulsiProject.ProjectFilename)
+#endif
     guard let path = projectFileURL.path, data = fileManager.contentsAtPath(path) else {
       throw Error.BadInputFilePath
     }
@@ -127,8 +131,13 @@ public final class TulsiProject {
         throw Error.DeserializationFailed("\(TulsiProject.WorkspaceRootKey) may not be an absolute path")
       }
 
+#if swift(>=2.3)
+      var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspacePath,
+                                                                          isDirectory: true)!
+#else
       var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspacePath,
                                                                           isDirectory: true)
+#endif
       // Get rid of any ..'s and //'s if possible.
       if let standardizedWorkspaceRootURL = workspaceRootURL.URLByStandardizingPath {
         workspaceRootURL = standardizedWorkspaceRootURL

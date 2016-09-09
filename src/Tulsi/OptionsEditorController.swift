@@ -37,7 +37,12 @@ final class OptionsEditorOutlineView: NSOutlineView {
       return
     }
 
-    if let delegate = self.delegate() as? OptionsEditorOutlineViewDelegate {
+#if swift(>=2.3)
+    let selfDelegate = self.delegate
+#else
+    let selfDelegate = self.delegate()
+#endif
+    if let delegate = selfDelegate as? OptionsEditorOutlineViewDelegate {
       let scalars = eventCharacters.unicodeScalars
       if scalars.count == 1 {
         let character = scalars[scalars.startIndex]
@@ -225,7 +230,11 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     projectValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.projectColumnIdentifier)!
     targetValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.targetColumnIdentifier)!
     super.init()
+#if swift(>=2.3)
+    self.view.delegate = self
+#else
     self.view.setDelegate(self)
+#endif
   }
 
   /// Prepares the editor view to edit options with the most specialized column set to the given

@@ -187,7 +187,11 @@ final class TulsiProjectDocument: NSDocument,
     // Default the bundleURL to a sibling of the selected workspace file.
     let bundleName = "\(projectName).\(bundleExtension)"
     let workspaceRootURL = workspaceFileURL.URLByDeletingLastPathComponent!
+#if swift(>=2.3)
+    let tempProjectBundleURL = workspaceRootURL.URLByAppendingPathComponent(bundleName)!
+#else
     let tempProjectBundleURL = workspaceRootURL.URLByAppendingPathComponent(bundleName)
+#endif
 
     project = TulsiProject(projectName: projectName,
                            projectBundleURL: tempProjectBundleURL,
@@ -285,8 +289,13 @@ final class TulsiProjectDocument: NSDocument,
 
     // Verify that the workspace is a valid one.
     if !TulsiProjectDocument.suppressWORKSPACECheck {
+#if swift(>=2.3)
+      let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
+                                                                               isDirectory: false)!
+#else
       let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
                                                                                isDirectory: false)
+#endif
       var isDirectory = ObjCBool(false)
       if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
                                                           isDirectory: &isDirectory) || isDirectory {
@@ -419,7 +428,12 @@ final class TulsiProjectDocument: NSDocument,
   // MARK: - NSUserInterfaceValidations
 
   override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-    switch item.action() {
+#if swift(>=2.3)
+    let itemAction = item.action
+#else
+    let itemAction = item.action()
+#endif
+    switch itemAction {
       case #selector(TulsiProjectDocument.saveDocument(_:)):
         return true
       case #selector(TulsiProjectDocument.saveDocumentAs(_:)):
@@ -435,7 +449,7 @@ final class TulsiProjectDocument: NSDocument,
         return false
 
       default:
-        print("Unhandled menu action: \(item.action())")
+        print("Unhandled menu action: \(itemAction)")
     }
     return false
   }
@@ -571,7 +585,11 @@ class ErrorAlertView: NSAlert {
     let alert = ErrorAlertView()
     alert.messageText = "\(message)\n\nA fatal error occurred. Please check the message window " +
         "and file a bug if appropriate."
+#if swift(>=2.3)
+    alert.alertStyle = .Critical
+#else
     alert.alertStyle = .CriticalAlertStyle
+#endif
 
     if let details = details {
       alert.text = details

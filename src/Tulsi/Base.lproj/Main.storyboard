@@ -937,7 +937,7 @@ CA
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="CBU-Sg-l40">
-                                                            <rect key="frame" x="1" y="1" width="432.56771211344841" height="19"/>
+                                                            <rect key="frame" x="1" y="1" width="433" height="19"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="qef-HC-mDi">
@@ -1147,25 +1147,28 @@ Please check this project's packages.</string>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <binding destination="MAv-2d-F3q" name="enabled2" keyPath="objectValue.explicitlyRecursive" previousBinding="NbV-h0-mgh" id="A5y-DE-h2H">
+                                                                        <binding destination="MAv-2d-F3q" name="enabled2" keyPath="objectValue.explicitlyRecursive" previousBinding="cKt-OO-Afo" id="xZg-Ef-SCo">
                                                                             <dictionary key="options">
                                                                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                                                                 <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                                                 <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                                                 <integer key="NSNullPlaceholder" value="-1"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                                             </dictionary>
                                                                         </binding>
-                                                                        <binding destination="MAv-2d-F3q" name="enabled" keyPath="objectValue.hasRecursiveEnabledParent" id="NbV-h0-mgh">
+                                                                        <binding destination="MAv-2d-F3q" name="enabled" keyPath="objectValue.hasRecursiveEnabledParent" id="cKt-OO-Afo">
                                                                             <dictionary key="options">
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                                             </dictionary>
                                                                         </binding>
                                                                         <binding destination="MAv-2d-F3q" name="title" keyPath="objectValue.name" id="tOM-VN-EdR"/>
-                                                                        <binding destination="MAv-2d-F3q" name="value" keyPath="objectValue.state" id="VwS-88-inI">
+                                                                        <binding destination="MAv-2d-F3q" name="value" keyPath="objectValue.state" id="fah-f1-u3k">
                                                                             <dictionary key="options">
                                                                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                 <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                 <bool key="NSValidatesImmediately" value="YES"/>
                                                                             </dictionary>
                                                                         </binding>
@@ -1354,7 +1357,7 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="zTg-OF-d5x">
-                                                                    <rect key="frame" x="1" y="1" width="152.07722604057193" height="17"/>
+                                                                    <rect key="frame" x="1" y="1" width="152" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="XIV-JA-QLS">
@@ -1374,7 +1377,11 @@ Please check this project's packages.</string>
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
-                                                                                <binding destination="zTg-OF-d5x" name="toolTip" keyPath="objectValue.toolTip" id="tnF-2g-ofY"/>
+                                                                                <binding destination="zTg-OF-d5x" name="toolTip" keyPath="objectValue.toolTip" id="1RF-bJ-PO2">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                    </dictionary>
+                                                                                </binding>
                                                                             </connections>
                                                                         </textField>
                                                                     </subviews>
@@ -1451,7 +1458,11 @@ Please check this project's packages.</string>
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
-                                                                                <binding destination="97C-ck-8nj" name="toolTip" keyPath="objectValue.toolTip" id="0cM-Am-j6P"/>
+                                                                                <binding destination="97C-ck-8nj" name="toolTip" keyPath="objectValue.toolTip" id="kHj-T4-wSz">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                    </dictionary>
+                                                                                </binding>
                                                                             </connections>
                                                                         </textField>
                                                                     </subviews>
@@ -1636,9 +1647,10 @@ Please check this project's packages.</string>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
-                                                                                <binding destination="zKg-DP-uTh" name="value" keyPath="objectValue.defaultValueDisplayItem" id="Prj-XV-NfX">
+                                                                                <binding destination="zKg-DP-uTh" name="value" keyPath="objectValue.defaultValueDisplayItem" id="i6l-FM-gAQ">
                                                                                     <dictionary key="options">
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>

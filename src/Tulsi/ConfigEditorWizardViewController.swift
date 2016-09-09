@@ -128,9 +128,24 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     return vc
   }
 
+#if swift(>=2.3)
+  func pageController(pageController: NSPageController,
+                      prepareViewController viewController: NSViewController,
+                      withObject object: AnyObject?) {
+    _pageController(pageController, prepareViewController: viewController, withObject: object!)
+  }
+#else
   func pageController(pageController: NSPageController,
                       prepareViewController viewController: NSViewController,
                       withObject object: AnyObject) {
+    _pageController(pageController, prepareViewController: viewController, withObject: object)
+  }
+#endif
+
+  // TODO(abaire): Roll into the function body above when Swift 2.2 is dropped.
+  private func _pageController(pageController: NSPageController,
+                               prepareViewController viewController: NSViewController,
+                               withObject object: AnyObject) {
     // By default, the viewController will have its representedObject set to the currently selected
     // member of the pageController's arrangedObjects. Wizard pages need to represent the underlying
     // TulsiDocument, so it's set here.

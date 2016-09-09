@@ -870,10 +870,17 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // result in Xcode picking an arbitrary version.
   private func setCurrentVersionForXCVersionGroup(group: XCVersionGroup,
                                                   atPath sourcePath: String) {
+#if swift(>=2.3)
+    let versionedBundleURL = workspaceRootURL.URLByAppendingPathComponent(sourcePath,
+                                                                          isDirectory: true)!
+    let currentVersionPlistURL = versionedBundleURL.URLByAppendingPathComponent(".xccurrentversion",
+                                                                                isDirectory: false)!
+#else
     let versionedBundleURL = workspaceRootURL.URLByAppendingPathComponent(sourcePath,
                                                                           isDirectory: true)
     let currentVersionPlistURL = versionedBundleURL.URLByAppendingPathComponent(".xccurrentversion",
                                                                                 isDirectory: false)
+#endif
     let path = currentVersionPlistURL.path!
     guard let data = NSFileManager.defaultManager().contentsAtPath(path) else {
       self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",

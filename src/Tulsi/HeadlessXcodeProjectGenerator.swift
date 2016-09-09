@@ -196,7 +196,11 @@ class HeadlessXcodeProjectGenerator {
       throw Error.InvalidConfigPath("The given Tulsi project does not exist")
     }
 
+#if swift(>=2.3)
+    let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)!
+#else
     let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
+#endif
     if !isExistingDirectory(configDirectoryURL) {
       throw Error.InvalidConfigPath("The given Tulsi project does not contain any configs")
     }
@@ -207,7 +211,11 @@ class HeadlessXcodeProjectGenerator {
     } else {
       configFilename = "\(configName).\(TulsiGeneratorConfig.FileExtension)"
     }
+#if swift(>=2.3)
+    let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)!
+#else
     let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)
+#endif
     if NSFileManager.defaultManager().isReadableFileAtPath(configFileURL.path!) {
       return (configFileURL, tulsiProjectURL.URLByDeletingLastPathComponent!)
     }

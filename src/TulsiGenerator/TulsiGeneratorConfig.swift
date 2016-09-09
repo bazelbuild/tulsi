@@ -81,7 +81,11 @@ public class TulsiGeneratorConfig {
 
     let additionalOptionData: NSData?
     let optionsFolderURL = inputFile.URLByDeletingLastPathComponent!
+#if swift(>=2.3)
+    let additionalOptionsFileURL = optionsFolderURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)!
+#else
     let additionalOptionsFileURL = optionsFolderURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)
+#endif
     if let perUserPath = additionalOptionsFileURL.path where fileManager.isReadableFileAtPath(perUserPath) {
       additionalOptionData = fileManager.contentsAtPath(perUserPath)
       if additionalOptionData == nil {

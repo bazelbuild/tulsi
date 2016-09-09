@@ -77,7 +77,11 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
     self.view = view
     self.delegate = delegate
     super.init()
+#if swift(>=2.3)
+    self.view.delegate = self
+#else
     self.view.setDelegate(self)
+#endif
   }
 
   func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {

@@ -128,7 +128,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // The display name for this config.
   var configName: String? = nil {
     didSet {
+#if swift(>=2.3)
+      // setDisplayName has been removed from the SDK.
+#else
       setDisplayName(configName)
+#endif
       updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
@@ -608,7 +612,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // MARK: - NSUserInterfaceValidations
 
   override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-    switch item.action() {
+#if swift(>=2.3)
+    let itemAction = item.action
+#else
+    let itemAction = item.action()
+#endif
+    switch itemAction {
       case #selector(TulsiGeneratorConfigDocument.saveDocument(_:)):
         return true
 
@@ -624,7 +633,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         return false
 
       default:
-        print("Unhandled menu action: \(item.action())")
+        print("Unhandled menu action: \(itemAction)")
     }
     return false
   }

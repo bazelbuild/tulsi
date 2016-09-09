@@ -206,8 +206,13 @@ final class BazelAspectInfoExtractor {
   private func removeGeneratedSymlinks() {
     let fileManager = NSFileManager.defaultManager()
     for outputSymlink in BazelAspectInfoExtractor.BazelOutputSymlinks {
+#if swift(>=2.3)
+      let symlinkURL = workspaceRootURL.URLByAppendingPathComponent(outputSymlink,
+                                                                    isDirectory: true)!
+#else
       let symlinkURL = workspaceRootURL.URLByAppendingPathComponent(outputSymlink,
                                                                     isDirectory: true)
+#endif
       do {
         let attributes = try fileManager.attributesOfItemAtPath(symlinkURL.path!)
         guard let type = attributes[NSFileType] as? String where type == NSFileTypeSymbolicLink else {

@@ -121,11 +121,19 @@ final class XcodeProjectGenerator {
     localizedMessageLogger.logProfilingEnd(serializingProfileToken)
 
     let projectBundleName = config.xcodeProjectFilename
+#if swift(>=2.3)
+    let projectURL = outputFolderURL.URLByAppendingPathComponent(projectBundleName)!
+#else
     let projectURL = outputFolderURL.URLByAppendingPathComponent(projectBundleName)
+#endif
     if !createDirectory(projectURL) {
       throw Error.SerializationFailed("Project directory creation failed")
     }
+#if swift(>=2.3)
+    let pbxproj = projectURL.URLByAppendingPathComponent("project.pbxproj")!
+#else
     let pbxproj = projectURL.URLByAppendingPathComponent("project.pbxproj")
+#endif
     try writeDataHandler(pbxproj, serializedXcodeProject)
     serializingProgressNotifier.incrementValue()
 
@@ -145,8 +153,13 @@ final class XcodeProjectGenerator {
 
     let manifestProfileToken = localizedMessageLogger.startProfiling("writing_manifest",
                                                                      context: config.projectName)
+#if swift(>=2.3)
+    let manifestFileURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
+                                                                 isDirectory: false)!
+#else
     let manifestFileURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
                                                                  isDirectory: false)
+#endif
     let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
                                      pbxProject: projectInfo.project)
     manifest.writeToURL(manifestFileURL)
@@ -182,9 +195,15 @@ final class XcodeProjectGenerator {
   // Generates a PBXProject and a returns it along with a set of
   private func buildXcodeProjectWithMainGroup(mainGroup: PBXGroup) throws -> GeneratedProjectInfo {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
+#if swift(>=2.3)
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool where enabled {
       xcodeProject.lastSwiftUpdateCheck = "0710"
     }
+#else
+    if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool where enabled {
+      xcodeProject.lastSwiftUpdateCheck = "0710"
+    }
+#endif
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
@@ -343,7 +362,11 @@ final class XcodeProjectGenerator {
     func writeWorkspaceSettings(workspaceSettings: [String: AnyObject],
                                 toDirectoryAtURL directoryURL: NSURL,
                                 replaceIfExists: Bool = false) throws {
+#if swift(>=2.3)
+      let workspaceSettingsURL = directoryURL.URLByAppendingPathComponent("WorkspaceSettings.xcsettings")!
+#else
       let workspaceSettingsURL = directoryURL.URLByAppendingPathComponent("WorkspaceSettings.xcsettings")
+#endif
 
       if (!replaceIfExists && fileManager.fileExistsAtPath(workspaceSettingsURL.path!)) ||
           !createDirectory(directoryURL) {
@@ -356,13 +379,20 @@ final class XcodeProjectGenerator {
       try writeDataHandler(workspaceSettingsURL, data)
     }
 
-
+#if swift(>=2.3)
+    let workspaceSharedDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")!
+#else
     let workspaceSharedDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
+#endif
     try writeWorkspaceSettings(["IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded": false],
                                toDirectoryAtURL: workspaceSharedDataURL,
                                replaceIfExists: true)
 
+#if swift(>=2.3)
+    let workspaceUserDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/\(usernameFetcher()).xcuserdatad")!
+#else
     let workspaceUserDataURL = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/\(usernameFetcher()).xcuserdatad")
+#endif
     let perUserWorkspaceSettings = [
         "LiveSourceIssuesEnabled": true,
         "IssueFilterStyle": "ShowAll",
@@ -380,7 +410,11 @@ final class XcodeProjectGenerator {
   private func installXcodeSchemesForProjectInfo(info: GeneratedProjectInfo,
                                                  projectURL: NSURL,
                                                  projectBundleName: String) throws {
+#if swift(>=2.3)
+    let xcschemesURL = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")!
+#else
     let xcschemesURL = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
+#endif
     guard createDirectory(xcschemesURL) else { return }
 
     func targetForLabel(label: BuildLabel) -> PBXTarget? {
@@ -419,7 +453,11 @@ final class XcodeProjectGenerator {
       }
 
       let filename = target.name + ".xcscheme"
+#if swift(>=2.3)
+      let url = xcschemesURL.URLByAppendingPathComponent(filename)!
+#else
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
+#endif
       let appExtension: Bool
       let launchStyle: XcodeScheme.LaunchStyle
       let runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode
@@ -467,7 +505,11 @@ final class XcodeProjectGenerator {
                                additionalBuildTargets: additionalBuildTargets)
       let xmlDocument = scheme.toXML()
 
+#if swift(>=2.3)
+      let data = xmlDocument.XMLDataWithOptions(Int(NSXMLNodeOptions.NodePrettyPrint.rawValue))
+#else
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
+#endif
       try writeDataHandler(url, data)
     }
 
@@ -531,7 +573,11 @@ final class XcodeProjectGenerator {
       }
 
       let filename = suiteName + "_Suite.xcscheme"
+#if swift(>=2.3)
+      let url = xcschemesURL.URLByAppendingPathComponent(filename)!
+#else
       let url = xcschemesURL.URLByAppendingPathComponent(filename)
+#endif
       let scheme = XcodeScheme(target: concreteTarget,
                                project: info.project,
                                projectBundleName: projectBundleName,
@@ -540,7 +586,11 @@ final class XcodeProjectGenerator {
                                explicitTests: Array(validTests))
       let xmlDocument = scheme.toXML()
 
+#if swift(>=2.3)
+      let data = xmlDocument.XMLDataWithOptions(Int(NSXMLNodeOptions.NodePrettyPrint.rawValue))
+#else
       let data = xmlDocument.XMLDataWithOptions(NSXMLNodePrettyPrint)
+#endif
       try writeDataHandler(url, data)
     }
 
@@ -567,8 +617,13 @@ final class XcodeProjectGenerator {
   }
 
   private func installTulsiScripts(projectURL: NSURL) {
+#if swift(>=2.3)
+    let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
+                                                                    isDirectory: true)!
+#else
     let scriptDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
+#endif
     if createDirectory(scriptDirectoryURL) {
       let profilingToken = localizedMessageLogger.startProfiling("installing_scripts",
                                                                  context: config.projectName)
@@ -584,8 +639,13 @@ final class XcodeProjectGenerator {
   }
 
   private func installUtilities(projectURL: NSURL) {
+#if swift(>=2.3)
+    let utilDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.UtilDirectorySubpath,
+                                                                  isDirectory: true)!
+#else
     let utilDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.UtilDirectorySubpath,
                                                                   isDirectory: true)
+#endif
     if createDirectory(utilDirectoryURL) {
       let profilingToken = localizedMessageLogger.startProfiling("installing_utilities",
                                                                  context: config.projectName)
@@ -599,8 +659,13 @@ final class XcodeProjectGenerator {
   }
 
   private func installGeneratorConfig(projectURL: NSURL) {
+#if swift(>=2.3)
+    let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
+                                                                    isDirectory: true)!
+#else
     let configDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ConfigDirectorySubpath,
                                                                     isDirectory: true)
+#endif
     guard createDirectory(configDirectoryURL, failSilently: true) else { return }
     let profilingToken = localizedMessageLogger.startProfiling("installing_generator_config",
                                                                context: config.projectName)
@@ -608,7 +673,11 @@ final class XcodeProjectGenerator {
     defer { progressNotifier.incrementValue() }
     localizedMessageLogger.infoMessage("Installing generator config")
 
+#if swift(>=2.3)
+    let configURL = configDirectoryURL.URLByAppendingPathComponent(config.defaultFilename)!
+#else
     let configURL = configDirectoryURL.URLByAppendingPathComponent(config.defaultFilename)
+#endif
     var errorInfo: String? = nil
     do {
       let data = try config.save()
@@ -624,7 +693,11 @@ final class XcodeProjectGenerator {
       return
     }
 
+#if swift(>=2.3)
+    let perUserConfigURL = configDirectoryURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)!
+#else
     let perUserConfigURL = configDirectoryURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)
+#endif
     errorInfo = nil
     do {
       if let data = try config.savePerUserSettings() {
@@ -644,8 +717,13 @@ final class XcodeProjectGenerator {
   }
 
   private func installGeneratedProjectResources(projectURL: NSURL) {
+#if swift(>=2.3)
+    let targetDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ProjectResourcesDirectorySubpath,
+                                                                    isDirectory: true)!
+#else
     let targetDirectoryURL = projectURL.URLByAppendingPathComponent(XcodeProjectGenerator.ProjectResourcesDirectorySubpath,
                                                                     isDirectory: true)
+#endif
     guard createDirectory(targetDirectoryURL) else { return }
     let profilingToken = localizedMessageLogger.startProfiling("installing_project_resources",
                                                                context: config.projectName)
@@ -702,10 +780,15 @@ final class XcodeProjectGenerator {
         errorInfo = "Unexpected exception"
       }
       if !failSilently, let errorInfo = errorInfo {
+#if swift(>=2.3)
+        let targetURLString = targetURL.absoluteString!
+#else
+        let targetURLString = targetURL.absoluteString
+#endif
         localizedMessageLogger.error("CopyingResourceFailed",
                                      comment: "Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported.",
                                      context: config.projectName,
-                                     values: sourceURL, targetURL.absoluteString, errorInfo)
+                                     values: sourceURL, targetURLString, errorInfo)
       }
     }
   }
@@ -716,7 +799,11 @@ final class XcodeProjectGenerator {
 
     let generatedFolders = PathTrie()
     for artifact in generatedArtifacts {
+#if swift(>=2.3)
+      let url = path.URLByAppendingPathComponent(artifact.sourceRootRelativePath)!
+#else
       let url = path.URLByAppendingPathComponent(artifact.sourceRootRelativePath)
+#endif
       if let absoluteURL = url.URLByDeletingLastPathComponent?.URLByStandardizingPath {
         generatedFolders.insert(absoluteURL)
       }
