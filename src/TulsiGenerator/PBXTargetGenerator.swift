@@ -1258,9 +1258,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "exec \(commandLine) --install_generated_artifacts"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
-    #if DEBUG
     buildPhase.showEnvVarsInLog = true
-    #endif
     return buildPhase
   }
 
