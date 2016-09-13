@@ -20,7 +20,15 @@ Target failed to run: Permission to debug <your_app_id> was denied.
 The app must be signed with a development identity (e.g. iOS Developer).
 ```
 
-it usually means that your entitlements are missing get-task-allow.
+it usually means that your entitlements are missing `get-task-allow`. To fix
+this, you will want to add
+
+```
+<key>get-task-allow</key><true/>
+```
+
+to your entitlements file for builds which you do not plan to submit to Apple
+for signing.
 
 # How do I set Bazel options for my project (like --config=awesome)?
 
@@ -35,6 +43,14 @@ user specific (such as absolute paths)."
 So you'll want to `.gitignore` `.tulsiconf-user` files but otherwise the entire
 `.tulsiproj` bundle is encouraged to be revision controlled and shared across
 your team.
+
+# How can I run all of my tests in a single Xcode scheme?
+
+Tests can be grouped via Bazel's `test_suite` rule, with one small caveat. Tests
+that are not xctest-based (where the `xctest` attribute is set to the
+non-default `0`) must be run as standalone targets. When building the Xcode
+scheme for a `test_suite` rule, Tulsi will print a warning and ignore any
+non-xctest tests that are included in the suite.
 
 # Somebody asked me for a "full Xcode build log," where do I get that?
 
