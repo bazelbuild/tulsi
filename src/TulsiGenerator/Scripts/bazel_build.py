@@ -377,10 +377,6 @@ class BazelBuildBridge(object):
     self.codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
     self.likely_xcode = self.codesigning_folder_path.find('/Xcode/') != -1
 
-    # Check to see if code signing actions should be skipped or not.
-    codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED', 'NO')
-    self.codesigning_allowed = codesigning_allowed == 'YES'
-
     self.xcode_action = os.environ['ACTION']  # The Xcode build action.
     # When invoked as an external build system script, Xcode will set ACTION to
     # an empty string.
@@ -429,6 +425,12 @@ class BazelBuildBridge(object):
     self.wrapper_name = os.environ.get('WRAPPER_NAME')
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+
+    # Check to see if code signing actions should be skipped or not.
+    if self.platform_name.endswith('simulator'):
+      self.codesigning_allowed = False
+    else:
+      self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
 
     self.post_processor_binary = os.path.join(self.project_file_path,
                                               '.tulsi',
@@ -503,7 +505,7 @@ class BazelBuildBridge(object):
       # into the test host that need to be signed with the same identity as
       # the host itself.
       if (self.test_host_binary and self.xcode_version_minor >= 730 and
-          self.platform_name != 'iphonesimulator'):
+          self.codesigning_allowed):
         test_host_bundle = os.path.dirname(self.test_host_binary)
         timer = Timer('Re-signing injected test host artifacts').Start()
         exit_code = self._ResignTestHost(test_host_bundle)
