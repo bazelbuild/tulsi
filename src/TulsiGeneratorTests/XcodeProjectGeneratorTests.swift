@@ -174,17 +174,41 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                   bazelURL: bazelURL)
     let projectURL = NSURL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
     mockFileManager.allowedDirectoryCreates.insert(projectURL.path!)
+#if swift(>=2.3)
+    let xcshareddata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")!
+#else
     let xcshareddata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path!)
+#if swift(>=2.3)
+    let xcuserdata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")!
+#else
     let xcuserdata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(xcuserdata.path!)
+#if swift(>=2.3)
+    let xcschemes = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")!
+#else
     let xcschemes = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(xcschemes.path!)
+#if swift(>=2.3)
+    let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")!
+#else
     let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
+#if swift(>=2.3)
+    let utils = projectURL.URLByAppendingPathComponent(".tulsi/Utils")!
+#else
     let utils = projectURL.URLByAppendingPathComponent(".tulsi/Utils")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(utils.path!)
+#if swift(>=2.3)
+    let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")!
+#else
     let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")
+#endif
     mockFileManager.allowedDirectoryCreates.insert(resources.path!)
 
     mockExtractor.labelToRuleEntry = ruleEntries
