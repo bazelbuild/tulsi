@@ -79,7 +79,10 @@ fi
 # while in a subdirectory.
 readonly tmp_file_dirname=$(dirname "${tmp_file}")
 readonly tmp_file_basename=$(basename "${tmp_file}")
-pushd ${tmp_file_dirname} > /dev/null
+if [[ ! -d "${tmp_file_dirname}" ]]; then
+  mkdir -p "${tmp_file_dirname}"
+fi
+pushd "${tmp_file_dirname}" > /dev/null
 readonly tmp_file_abs_path="$(pwd)/${tmp_file_basename}"
 popd > /dev/null
 function cleanup {
