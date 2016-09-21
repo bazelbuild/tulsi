@@ -416,6 +416,11 @@ def _tulsi_sources_aspect(target, ctx):
     generated_non_arc_files, generated_includes = (
         _extract_generated_sources_and_includes(target))
 
+  raw_swift_transitive_modules = _getattr_as_list(target,
+                                                  'swift.transitive_modules')
+  swift_transitive_modules = [_file_metadata(f)
+                              for f in raw_swift_transitive_modules]
+
   # Collect the dependencies of this rule, dropping any .jar files (which may be
   # created as artifacts of java/j2objc rules).
   dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
@@ -492,6 +497,7 @@ def _tulsi_sources_aspect(target, ctx):
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
+      swift_transitive_modules=swift_transitive_modules,
       type=target_kind,
   )
 

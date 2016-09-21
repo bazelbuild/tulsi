@@ -186,6 +186,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let includes: [String]
     let generatedIncludes: [String]
     let frameworkSearchPaths: [String]
+    let swiftIncludePaths: [String]
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
@@ -237,7 +238,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           enableModules == other.enableModules &&
           otherCFlags == other.otherCFlags &&
           frameworkSearchPaths == other.frameworkSearchPaths &&
-          includes == other.includes) {
+          includes == other.includes &&
+          swiftIncludePaths == other.swiftIncludePaths) {
         return false
       }
 
@@ -259,6 +261,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          includes: includes,
                          generatedIncludes: newGeneratedIncludes,
                          frameworkSearchPaths: frameworkSearchPaths,
+                         swiftIncludePaths: swiftIncludePaths,
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
                          bridgingHeader: bridgingHeader,
@@ -404,7 +407,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       var generatedIncludes = NSMutableOrderedSet()
       var frameworkSearchPaths = NSMutableOrderedSet()
 
-      defer { processedEntries[ruleEntry.label] = (defines, includes, generatedIncludes, frameworkSearchPaths) }
+      defer {
+        processedEntries[ruleEntry.label] = (defines, includes, generatedIncludes, frameworkSearchPaths)
+      }
 
       for dep in ruleEntry.dependencies {
         guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
@@ -542,6 +547,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         var resolvedIncludes = localIncludes.array as! [String]
         resolvedIncludes.append("$(\(PBXTargetGenerator.WorkspaceRootVarName))/tools/cpp/gcc3")
 
+        let swiftIncludePaths = NSMutableOrderedSet()
+        for module in ruleEntry.swiftTransitiveModules {
+          let fullPath = module.fullPath as NSString
+          let includePath = fullPath.stringByDeletingLastPathComponent
+          swiftIncludePaths.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(includePath)")
+        }
+
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
                                       dependencies: Set(dependencyLabels),
@@ -550,6 +562,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       includes: resolvedIncludes,
                                       generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
+                                      swiftIncludePaths: swiftIncludePaths.array as! [String],
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
@@ -948,6 +961,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if !data.frameworkSearchPaths.isEmpty {
       buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + data.frameworkSearchPaths.joinWithSeparator(" ")
+    }
+
+    // There is currently no way to make Bazel use any SWIFT_VERSION other than the default for
+    // Xcode 8+, so SWIFT_VERSION is hardcoded to 3.0 for now.
+    buildSettings["SWIFT_VERSION"] = "3.0"
+
+    if !data.swiftIncludePaths.isEmpty {
+      let paths = data.swiftIncludePaths.joinWithSeparator(" ")
+      buildSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) \(paths)"
     }
 
     createBuildConfigurationsForList(target.buildConfigurationList,
