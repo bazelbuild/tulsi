@@ -113,6 +113,10 @@ public final class RuleEntry: RuleInfo {
       "objc_library": PBXTarget.ProductType.StaticLibrary,
       "swift_library": PBXTarget.ProductType.StaticLibrary,
 
+      // Support new rules that have underscore-prefixed names because they are wrapped by macros.
+      "_ios_application": PBXTarget.ProductType.Application,
+      "_ios_extension": PBXTarget.ProductType.AppExtension,
+
       // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
       // XCTest test rules.
       "_test_host_": PBXTarget.ProductType.Application,
