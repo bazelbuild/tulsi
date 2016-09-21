@@ -1680,6 +1680,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     var expectedBuildSettings = [
         "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
+        "SWIFT_VERSION": "3.0",
     ]
     if pchFile != nil {
       expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WR)/\(pchFile!.path!)"
