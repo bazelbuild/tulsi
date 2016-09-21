@@ -519,14 +519,16 @@ class BazelBuildBridge(object):
       exit_code = self._UpdateLLDBInit()
       timer.End()
       if exit_code:
-        return exit_code
+        self._PrintWarning('Updating .lldbinit action failed with code %d' %
+                           exit_code)
 
     if self.code_coverage_enabled:
       timer = Timer('Patching LLVM covmap').Start()
       exit_code = self._PatchLLVMCovmapPaths()
       timer.End()
       if exit_code:
-        return exit_code
+        self._PrintWarning('Patch LLVM covmap action failed with code %d' %
+                           exit_code)
 
     return 0
 
