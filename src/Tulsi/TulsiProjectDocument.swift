@@ -46,6 +46,14 @@ final class TulsiProjectDocument: NSDocument,
   /// available locally (e.g., in a remote-build scenario).
   static var suppressWORKSPACECheck = false
 
+  /// Override to prevent rule entries from being extracted immediately during loading of project
+  /// documents. This is only useful if the Bazel binary is expected to be set after the project
+  /// document is loaded but before any other actions.
+  // TODO(abaire): Refactor project loading to make this unnecessary.
+  // Ideally the project document should be loaded in a sparse form and rules should be updated on
+  // demand later.
+  static var suppressRuleEntryUpdateOnLoad = false
+
   /// The project model.
   var project: TulsiProject! = nil
 
@@ -306,7 +314,9 @@ final class TulsiProjectDocument: NSDocument,
       }
     }
 
-    updateRuleEntries()
+    if !TulsiProjectDocument.suppressRuleEntryUpdateOnLoad {
+      updateRuleEntries()
+    }
   }
 
   override func makeWindowControllers() {

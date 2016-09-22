@@ -47,9 +47,22 @@ class HeadlessXcodeProjectGenerator {
   func generate() throws {
     TulsiProjectDocument.showAlertsOnErrors = false
     TulsiProjectDocument.suppressWORKSPACECheck = arguments.suppressWORKSPACECheck
+
+    let explicitBazelURL: NSURL?
+    if let bazelPath = arguments.bazel {
+      if !NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) {
+        throw Error.InvalidBazelPath
+      }
+      explicitBazelURL = NSURL(fileURLWithPath: bazelPath)
+      TulsiProjectDocument.suppressRuleEntryUpdateOnLoad = true
+    } else {
+      explicitBazelURL = nil
+    }
+
     defer {
       TulsiProjectDocument.showAlertsOnErrors = true
       TulsiProjectDocument.suppressWORKSPACECheck = false
+      TulsiProjectDocument.suppressRuleEntryUpdateOnLoad = false
     }
 
     guard let configPath = arguments.generatorConfig else {
@@ -72,16 +85,6 @@ class HeadlessXcodeProjectGenerator {
     }
     guard let projectDocument = doc as? TulsiProjectDocument else {
       throw Error.InvalidProjectFileContents("\(doc) is not of the expected type.")
-    }
-
-    let explicitBazelURL: NSURL?
-    if let bazelPath = arguments.bazel {
-      if !NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) {
-        throw Error.InvalidBazelPath
-      }
-      explicitBazelURL = NSURL(fileURLWithPath: bazelPath)
-    } else {
-      explicitBazelURL = nil
     }
 
     let outputFolderURL: NSURL
@@ -119,8 +122,10 @@ class HeadlessXcodeProjectGenerator {
       workspaceRootURL = projectWorkspaceRootURL
     }
 
-    print("Generating project into \(outputFolderURL.path!) using config at \(configURL.path!) " +
-              "and Bazel workspace at \(workspaceRootURL.path!).\n" +
+    print("Generating project into '\(outputFolderURL.path!)' using:\n" +
+              "\tconfig at '\(configURL.path!)'\n" +
+              "\tBazel workspace at '\(workspaceRootURL.path!)'\n" +
+              "\tBazel at '\(resolvedConfig.bazelURL.path!)'.\n" +
               "This may take a while.")
 
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
@@ -295,11 +300,19 @@ class TulsiCommandlineParser {
     }
 
     init(dict: [String: AnyObject]) {
-      bazel = dict[TulsiCommandlineParser.ParamBazel] as? String
-      generatorConfig = dict[TulsiCommandlineParser.ParamGeneratorConfigLong] as? String
-      outputFolder = dict[TulsiCommandlineParser.ParamOutputFolderLong] as? String
+
+      func standardizedPath(key: String) -> String? {
+        if let path = dict[key] as? NSString {
+          return path.stringByStandardizingPath
+        }
+        return nil
+      }
+
+      bazel = standardizedPath(TulsiCommandlineParser.ParamBazel)
+      generatorConfig = standardizedPath(TulsiCommandlineParser.ParamGeneratorConfigLong)
+      outputFolder = standardizedPath(TulsiCommandlineParser.ParamOutputFolderLong)
       verbose = !(dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true)
-      workspaceRootOverride = dict[TulsiCommandlineParser.ParamWorkspaceRootLong] as? String
+      workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
       suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
     }
