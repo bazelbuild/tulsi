@@ -322,7 +322,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateTopLevelBuildConfigurations() {
   }
 
-  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
+  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws {
     let namedRuleEntries = ruleEntries.map() { (e: RuleEntry) -> (String, RuleEntry) in
       return (e.label.asFullPBXTargetName!, e)
     }

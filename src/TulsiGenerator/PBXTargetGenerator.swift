@@ -81,7 +81,8 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws
+  func generateBuildTargetsForRuleEntries(entries: Set<RuleEntry>,
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws
 }
 
 extension PBXTargetGeneratorProtocol {
@@ -688,14 +689,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
   }
 
-  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>) throws {
+  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
                                             maxValue: namedRuleEntries.count)
     for (name, entry) in namedRuleEntries {
       progressNotifier.incrementValue()
-      let target = try createBuildTargetForRuleEntry(entry, named: name)
+      let target = try createBuildTargetForRuleEntry(entry, named: name, ruleEntryMap: ruleEntryMap)
 
       if let hostLabelString = entry.attributes[.xctest_app] as? String {
         let hostLabel = BuildLabel(hostLabelString)
@@ -1166,7 +1168,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   private func createBuildTargetForRuleEntry(entry: RuleEntry,
-                                             named name: String) throws -> PBXNativeTarget {
+                                             named name: String,
+                                             ruleEntryMap: [BuildLabel: RuleEntry]) throws -> PBXNativeTarget {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.UnsupportedTargetType(entry.type)
     }
@@ -1196,8 +1199,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
     }
 
-    // Disable dSYM generation in general.
-    buildSettings["TULSI_USE_DSYM"] = "NO"
+    // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are
+    // necessary for debugging Swift targets in Xcode 8; at some point this should be able to be
+    // removed, but requires changes to LLDB.
+    let dSYMEnabled = hasSwiftDependencies(entry, ruleEntryMap: ruleEntryMap) ? "YES" : "NO"
+    buildSettings["TULSI_USE_DSYM"] = dSYMEnabled
+
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually
     // compile anything).
@@ -1262,6 +1269,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     return target
+  }
+
+  private func hasSwiftDependencies(entry: RuleEntry,
+                                    ruleEntryMap: [BuildLabel: RuleEntry]) -> Bool {
+    if entry.type == "swift_library" {
+      return true
+    }
+    for dep in entry.dependencies {
+      guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else { continue }
+
+      if hasSwiftDependencies(dependentEntry, ruleEntryMap: ruleEntryMap) {
+        return true
+      }
+    }
+    return false
   }
 
   private func createBuildPhaseForRuleEntry(entry: RuleEntry) -> PBXShellScriptBuildPhase? {

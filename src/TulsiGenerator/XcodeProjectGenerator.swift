@@ -323,7 +323,7 @@ final class XcodeProjectGenerator {
     }
 
     try profileAction("generating_build_targets") {
-      try generator.generateBuildTargetsForRuleEntries(targetRules)
+      try generator.generateBuildTargetsForRuleEntries(targetRules, ruleEntryMap: ruleEntryMap)
     }
 
     profileAction("patching_external_repository_references") {
