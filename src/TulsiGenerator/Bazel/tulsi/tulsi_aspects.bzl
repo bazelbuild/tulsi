@@ -371,8 +371,15 @@ def _extract_generated_sources_and_includes(target):
 
 def _extract_iphoneos_deployment_target(ctx):
   """Returns the ios_minimum_version setting from the given ctx."""
-  iphoneos_deployment_target = _get_opt_attr(ctx.fragments,
-                                             'objc.ios_minimum_os')
+  # TODO(cparsons): Remove after minimum_os_for_platform_type is available.
+  apple_frag = _get_opt_attr(ctx.fragments, 'apple')
+  if apple_frag and hasattr(apple_frag, 'minimum_os_for_platform_type'):
+    iphoneos_deployment_target = apple_frag.minimum_os_for_platform_type(
+        apple_common.platform_type.ios)
+  else:
+    iphoneos_deployment_target = _get_opt_attr(ctx.fragments,
+                                               'objc.ios_minimum_os')
+
   if not iphoneos_deployment_target:
     return None
 
@@ -523,5 +530,5 @@ def _tulsi_sources_aspect(target, ctx):
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
     attr_aspects=_TULSI_COMPILE_DEPS,
-    fragments=['cpp', 'objc'],
+    fragments=['cpp', 'objc', 'apple'],
 )
