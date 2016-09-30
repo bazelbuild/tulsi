@@ -17,10 +17,12 @@
 #include <vector>
 
 #include "covmap_section.h"
+#include "mach_o_container.h"
 #include "mach_o_file.h"
 
 
 using post_processor::CovmapSection;
+using post_processor::MachOContainer;
 using post_processor::MachOFile;
 using post_processor::ReturnCode;
 
@@ -36,17 +38,8 @@ struct PatchSettings {
 };
 
 void PrintUsage(const char *executable_name);
+int Patch(MachOFile *, const PatchSettings &);
 
-int Patch32(const MachOFile &, const PatchSettings &);
-int Patch64(const MachOFile &, const PatchSettings &);
-
-int PatchCovmapSection(const PatchSettings &settings,
-                       size_t offset,
-                       size_t length,
-                       bool swap_byte_ordering);
-int PatchDWARFStringSection(const PatchSettings &settings,
-                            size_t offset,
-                            size_t length);
 }  // namespace
 
 
@@ -104,30 +97,30 @@ int main(int argc, const char* argv[]) {
 
   for (auto &filename : filenames) {
     patch_settings.filename = filename;
-    MachOFile f(filename, verbose);
-    {
-      ReturnCode retval = f.Read();
-      if (retval != post_processor::ERR_OK) {
-        fprintf(stderr,
-                "ERROR: Failed to read Mach-O content from %s.\n",
-                filename.c_str());
-        return (int)retval;
-      }
+    MachOContainer f(filename, verbose);
+    ReturnCode retval = f.Read();
+    if (retval != post_processor::ERR_OK) {
+      fprintf(stderr,
+              "ERROR: Failed to read Mach-O content from %s.\n",
+              filename.c_str());
+      return (int)retval;
     }
 
     if (f.Has32Bit()) {
-      int retval = Patch32(f, patch_settings);
+      int retval = Patch(&f.GetMachOFile32(), patch_settings);
       if (retval) {
         return retval;
       }
     }
 
     if (f.Has64Bit()) {
-      int retval = Patch64(f, patch_settings);
+      int retval = Patch(&f.GetMachOFile64(), patch_settings);
       if (retval) {
         return retval;
       }
     }
+
+    // TODO(abaire): Process any deferred writes.
   }
 
   return 0;
@@ -150,90 +143,8 @@ void PrintUsage(const char *executable_name) {
          "\t  Patch paths in DWARF symbols.\n");
 }
 
-int Patch32(const MachOFile &f, const PatchSettings &settings) {
-  size_t offset = 0, len = 0;
-  bool swap_byte_ordering = false;
-
-  if (settings.patch_coverage_maps) {
-    if (!f.GetSectionInfo32("__DATA",
-                            "__llvm_covmap",
-                            &offset,
-                            &len,
-                            &swap_byte_ordering)) {
-      fprintf(stderr, "Warning: Failed to find __llvm_covmap section in "
-          "32-bit data.\n");
-    } else {
-      int retval = PatchCovmapSection(settings,
-                                      offset,
-                                      len,
-                                      swap_byte_ordering);
-      if (retval) {
-        return retval;
-      }
-    }
-  }
-
-  if (settings.patch_dwarf_symbols) {
-    if (!f.GetSectionInfo32("__DWARF",
-                            "__debug_str",
-                            &offset,
-                            &len,
-                            &swap_byte_ordering)) {
-      fprintf(stderr, "Warning: Failed to find __debug_str section in "
-          "32-bit data.\n");
-    } else {
-      int retval = PatchDWARFStringSection(settings, offset, len);
-      if (retval) {
-        return retval;
-      }
-    }
-  }
-  return 0;
-}
-
-int Patch64(const MachOFile &f, const PatchSettings &settings) {
-  size_t offset = 0, len = 0;
-  bool swap_byte_ordering = false;
-
-  if (settings.patch_coverage_maps) {
-    if (!f.GetSectionInfo64("__DATA",
-                            "__llvm_covmap",
-                            &offset,
-                            &len,
-                            &swap_byte_ordering)) {
-      fprintf(stderr, "Warning: Failed to find __llvm_covmap section in "
-          "64-bit data.\n");
-    } else {
-      int retval = PatchCovmapSection(settings,
-                                      offset,
-                                      len,
-                                      swap_byte_ordering);
-      if (retval) {
-        return retval;
-      }
-    }
-  }
-
-  if (settings.patch_dwarf_symbols) {
-    if (!f.GetSectionInfo64("__DWARF",
-                            "__debug_str",
-                            &offset,
-                            &len,
-                            &swap_byte_ordering)) {
-      fprintf(stderr, "Warning: Failed to find __debug_str section in "
-          "64-bit data.\n");
-    } else {
-      int retval = PatchDWARFStringSection(settings, offset, len);
-      if (retval) {
-        return retval;
-      }
-    }
-  }
-  return 0;
-}
-
 int PatchCovmapSection(const PatchSettings &settings,
-                       size_t offset,
+                       off_t offset,
                        size_t length,
                        bool swap_byte_ordering) {
   CovmapSection covmap_section(settings.filename,
@@ -251,42 +162,22 @@ int PatchCovmapSection(const PatchSettings &settings,
                                             settings.new_prefix);
 }
 
-int PatchDWARFStringSection(const PatchSettings &settings,
-                            size_t offset,
-                            size_t length) {
-  FILE *file = fopen(settings.filename.c_str(), "rb+");
-  if (!file) {
-    fprintf(stderr,
-            "ERROR: Failed to open %s for r/w.\n",
-            settings.filename.c_str());
-    return ReturnCode::ERR_OPEN_FAILED;
-  }
-  fseek(file, offset, SEEK_SET);
-
-  std::unique_ptr<char[]> data(new char[length + 1]);
-  if (fread(data.get(), 1, length, file) != length) {
-    fprintf(stderr, "ERROR: Failed to read DWARF string section.\n");
-    fclose(file);
-    return ReturnCode::ERR_READ_FAILED;
-  }
+void UpdateDWARFStringSectionInPlace(char *data,
+                                     size_t data_length,
+                                     const std::string &old_prefix,
+                                     const std::string &new_prefix) {
+  size_t old_prefix_length = old_prefix.length();
+  const char *old_prefix_cstr = old_prefix.c_str();
+  size_t new_prefix_length = new_prefix.length();
+  const char *new_prefix_cstr = new_prefix.c_str();
 
   // The data table is an offset-indexed contiguous array of null terminated
   // ASCII or UTF-8 strings, so strings whose lengths are being reduced or
   // maintained may be modified in place without changing the run-time
   // behavior.
-
-  // A null is inserted into the buffer to ensure that a malformed table can be
-  // processed in a predictable manner.
-  data[length] = 0;
-
-  size_t old_prefix_length = settings.old_prefix.length();
-  const char *old_prefix_cstr = settings.old_prefix.c_str();
-  size_t new_prefix_length = settings.new_prefix.length();
-  const char *new_prefix_cstr = settings.new_prefix.c_str();
-
   // TODO(abaire): Support UTF-8.
-  char *start = data.get();
-  char *end = start + length;
+  char *start = data;
+  char *end = start + data_length;
   while (start < end) {
     size_t entry_length = strlen(start);
     if (entry_length >= old_prefix_length &&
@@ -300,16 +191,89 @@ int PatchDWARFStringSection(const PatchSettings &settings,
     }
     start += entry_length + 1;
   }
+}
 
-  fseek(file, offset, SEEK_SET);
-  if (fwrite(data.get(), 1, length, file) != length) {
-    fprintf(stderr, "ERROR: Failed to write updated DWARF string section.\n");
-    fclose(file);
-    return ReturnCode::ERR_WRITE_FAILED;
+// A null must be appended to the data buffer to ensure that a malformed
+// table can be processed in a predictable manner.
+// *data_length must be set to the size of the data array in bytes on input
+// and will be updated to the returned buffer size on successful output.
+std::unique_ptr<uint8_t[]> PatchDWARFStringSection(
+    const std::string &old_prefix,
+    const std::string &new_prefix,
+    std::unique_ptr<uint8_t[]> data,
+    size_t *data_length) {
+
+  if (new_prefix.length() <= old_prefix.length()) {
+    UpdateDWARFStringSectionInPlace(reinterpret_cast<char *>(data.get()),
+                                    *data_length,
+                                    old_prefix,
+                                    new_prefix);
+    // Remove the trailing null.
+    --(*data_length);
+    return data;
   }
-  fclose(file);
 
-  return ReturnCode::ERR_OK;
+  // TODO(abaire): Implement section growth.
+  return nullptr;
+}
+
+int Patch(MachOFile *f, const PatchSettings &settings) {
+  off_t offset = 0, len = 0;
+  bool swap_byte_ordering = f->swap_byte_ordering();
+
+  if (settings.patch_coverage_maps) {
+    if (!f->GetSectionInfo("__DATA",
+                           "__llvm_covmap",
+                           &offset,
+                           &len)) {
+      fprintf(stderr, "Warning: Failed to find __llvm_covmap section in "
+          "64-bit data.\n");
+    } else {
+      int retval = PatchCovmapSection(settings,
+                                      offset,
+                                      (size_t)len,
+                                      swap_byte_ordering);
+      if (retval) {
+        return retval;
+      }
+    }
+  }
+
+  if (settings.patch_dwarf_symbols) {
+    const std::string segment("__DWARF");
+    const std::string section("__debug_str");
+    off_t data_length;
+    std::unique_ptr<uint8_t[]> &&data =
+        f->ReadSectionData(segment,
+                           section,
+                           &data_length,
+                           1 /* null terminate the data */);
+    if (!data) {
+      fprintf(stderr, "Warning: Failed to find __debug_str section in "
+          "64-bit data.\n");
+    } else {
+      size_t new_data_length = (size_t)data_length;
+      std::unique_ptr<uint8_t[]> &&new_section_data = PatchDWARFStringSection(
+          settings.old_prefix,
+          settings.new_prefix,
+          std::move(data),
+          &new_data_length);
+      if (!new_section_data) {
+        return 1;
+      }
+
+      MachOFile::WriteReturnCode retval = f->WriteSectionData(
+          segment,
+          section,
+          std::move(new_section_data),
+          new_data_length);
+      if (retval == MachOFile::WRITE_FAILED) {
+        return 1;
+      }
+    }
+  }
+
+  return 0;
 }
 
 }  // namespace

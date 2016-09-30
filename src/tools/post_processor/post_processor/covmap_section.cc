@@ -30,8 +30,8 @@ char filename_buffer[4096];
 namespace post_processor {
 
 CovmapSection::CovmapSection(const std::string &filename,
-                             size_t section_offset,
-                             size_t section_length,
+                             off_t section_offset,
+                             off_t section_length,
                              bool swap_byte_ordering) :
     filename_(filename),
     file_(nullptr),
@@ -57,7 +57,7 @@ ReturnCode CovmapSection::Read() {
     return ERR_OPEN_FAILED;
   }
 
-  fseek(file_, section_offset_, SEEK_SET);
+  fseeko(file_, section_offset_, SEEK_SET);
   bool has_more = true;
   while (has_more) {
     ReturnCode retval = ReadCoverageMapping(&has_more);
@@ -66,11 +66,11 @@ ReturnCode CovmapSection::Read() {
     }
   }
 
-  size_t position = (size_t)ftell(file_);
+  off_t position = ftello(file_);
   if (position != section_end_) {
     fprintf(stderr,
             "ERROR: read covmap offset does not match end of section "
-                "(%lu != %lu).\n",
+                "(%llu != %llu).\n",
             position,
             section_end_);
     return ERR_INVALID_FILE;
@@ -157,7 +157,7 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
       return ERR_INVALID_FILE;
   }
 
-  auto data_start = ftell(file_);
+  off_t data_start = ftello(file_);
 
   FilenameGroup filename_group;
   ReturnCode retval = ReadFilenameGroup(&filename_group);
@@ -167,7 +167,7 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
   filename_groups_.push_back(filename_group);
 
   // Skip past the rest of the data.
-  auto data_end = data_start + filenames_size + coverage_size;
+  off_t data_end = data_start + filenames_size + coverage_size;
   if (data_end == section_end_) {
     *has_more = false;
   } else {
@@ -177,7 +177,7 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
       data_end += 8 - misalign;
     }
   }
-  fseek(file_, data_end, SEEK_SET);
+  fseeko(file_, data_end, SEEK_SET);
 
   return ERR_OK;
 }
@@ -186,16 +186,16 @@ ReturnCode CovmapSection::ReadFilenameGroup(
     CovmapSection::FilenameGroup *g) {
   assert(g);
 
-  g->offset = (size_t)ftell(file_);
+  g->offset = ftello(file_);
   uint num_filenames;
   if (!ReadLEB128(&num_filenames)) {
     fprintf(stderr, "Failed to read filename count\n.");
     return ERR_INVALID_FILE;
   }
-  g->size = (size_t)ftell(file_) - g->offset;
+  g->size = ftello(file_) - g->offset;
 
   for (auto i = 0; i < num_filenames; ++i) {
-    long offset = ftell(file_);
+    off_t offset = ftello(file_);
     uint filename_len;
     if (!ReadLEB128(&filename_len)) {
       fprintf(stderr, "Failed to read filename length\n.");
@@ -215,11 +215,11 @@ ReturnCode CovmapSection::ReadFilenameGroup(
 
     filename_ptr[filename_len] = 0;
     if (fread(filename_ptr, 1, filename_len, file_) != filename_len) {
-      fprintf(stderr, "Failed to read filename at %lu\n", offset);
+      fprintf(stderr, "Failed to read filename at %llu\n", offset);
       return ERR_READ_FAILED;
     }
     g->filenames.push_back(filename_ptr);
-    g->size += ftell(file_) - offset;
+    g->size += ftello(file_) - offset;
   }
 
   return ERR_OK;
@@ -350,7 +350,7 @@ ReturnCode CovmapSection::WriteFilenameGroup(
   // refers to filenames by index. This also means that it is safe to inject
   // additional filenames as they will not be referenced by the data.
 
-  fseek(file_, g.offset, SEEK_SET);
+  fseeko(file_, g.offset, SEEK_SET);
 
   size_t string_count = g.filenames.size();
   size_t padding_strings_needed = 0;

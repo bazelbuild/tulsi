@@ -34,8 +34,8 @@ class CovmapSection {
   /// "section_length" bytes. If "swap_byte_ordering" is true, values read will
   /// be translated to host byte order.
   CovmapSection(const std::string &filename,
-                size_t section_offset,
-                size_t section_length,
+                off_t section_offset,
+                off_t section_length,
                 bool swap_byte_ordering);
 
   ~CovmapSection();
@@ -52,8 +52,8 @@ class CovmapSection {
   struct FilenameGroup {
     void CalculateSize();
 
-    size_t size;  // Serialized size of this group in bytes.
-    size_t offset;  // Offset of this FilenameGroup in the file.
+    off_t size;  // Serialized size of this group in bytes.
+    off_t offset;  // Offset of this FilenameGroup in the file.
     std::vector<std::string> filenames;
   };
 
@@ -82,8 +82,8 @@ class CovmapSection {
   ReturnCode WriteFilenameGroup(const FilenameGroup &, size_t padding = 0);
 
  private:
-  size_t section_offset_;
-  size_t section_end_;
+  off_t section_offset_;
+  off_t section_end_;
   std::string filename_;
   FILE *file_;
 
