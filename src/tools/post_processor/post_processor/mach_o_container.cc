@@ -85,14 +85,11 @@ ReturnCode MachOContainer::Read() {
     }
 
     case FF_FAT:
-      retval = ReadFatContainer(swap_byte_ordering);
-      break;
+      return ReadFatContainer(swap_byte_ordering);
 
     case FF_INVALID:
       return ERR_INVALID_FILE;
   }
-
-  return ERR_INVALID_FILE;
 }
 
 ReturnCode MachOContainer::PerformDeferredWrites() {

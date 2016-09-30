@@ -32,6 +32,7 @@ MachOFile::MachOFile(const std::string &filename,
   }
 
   file_ = fopen(filename.c_str(), "rb+");
+  fseeko(file_, content_offset_, SEEK_SET);
 }
 
 MachOFile::~MachOFile() {
