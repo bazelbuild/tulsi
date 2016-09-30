@@ -138,35 +138,42 @@ void PrintUsage(const char *executable_name) {
          "\t  Patch paths in DWARF symbols.\n");
 }
 
-int PatchCovmapSection(const PatchSettings &settings,
-                       off_t offset,
-                       size_t length,
-                       bool swap_byte_ordering) {
-  if (settings.new_prefix.length() > settings.old_prefix.length()) {
+std::unique_ptr<uint8_t[]> PatchCovmapSection(
+    const std::string &old_prefix,
+    const std::string &new_prefix,
+    std::unique_ptr<uint8_t[]> data,
+    size_t *data_length,
+    bool *data_was_modified,
+    bool swap_byte_ordering) {
+  if (new_prefix.length() > old_prefix.length()) {
     fprintf(stderr,
             "Cannot grow paths (new_path length must be <= old_path length\n");
-    return 1;
+    return nullptr;
   }
 
-  CovmapSection covmap_section(settings.filename,
-                               offset,
-                               length,
+  CovmapSection covmap_section(std::move(data),
+                               *data_length,
                                swap_byte_ordering);
 
-  ReturnCode retval = covmap_section.Read();
+  ReturnCode retval = covmap_section.Parse();
   if (retval != post_processor::ERR_OK) {
     fprintf(stderr, "ERROR: Failed to read LLVM coverage data.\n");
-    return (int)retval;
+    return nullptr;
   }
 
-  return (int)covmap_section.PatchFilenames(settings.old_prefix,
-                                            settings.new_prefix);
+  return covmap_section.PatchFilenamesAndInvalidate(old_prefix,
+                                                    new_prefix,
+                                                    data_length,
+                                                    data_was_modified);
 }
 
 void UpdateDWARFStringSectionInPlace(char *data,
                                      size_t data_length,
                                      const std::string &old_prefix,
-                                     const std::string &new_prefix) {
+                                     const std::string &new_prefix,
+                                     bool *data_was_modified) {
+  assert(data && data_was_modified);
+  *data_was_modified = false;
   size_t old_prefix_length = old_prefix.length();
   const char *old_prefix_cstr = old_prefix.c_str();
   size_t new_prefix_length = new_prefix.length();
@@ -183,6 +190,7 @@ void UpdateDWARFStringSectionInPlace(char *data,
     size_t entry_length = strlen(start);
     if (entry_length >= old_prefix_length &&
         !memcmp(start, old_prefix_cstr, old_prefix_length)) {
+      *data_was_modified = true;
       size_t suffix_length = entry_length - old_prefix_length;
       memcpy(start, new_prefix_cstr, new_prefix_length);
       memmove(start + new_prefix_length,
@@ -199,8 +207,10 @@ std::unique_ptr<uint8_t[]> UpdateDWARFStringSection(
     size_t data_length,
     const std::string &old_prefix,
     const std::string &new_prefix,
-    size_t *new_data_length) {
-  assert(new_data_length);
+    size_t *new_data_length,
+    bool *data_was_modified) {
+  assert(data && new_data_length && data_was_modified);
+  *data_was_modified = false;
   auto old_prefix_begin = old_prefix.begin();
   auto old_prefix_end = old_prefix.end();
   size_t old_prefix_length = old_prefix.length();
@@ -218,6 +228,7 @@ std::unique_ptr<uint8_t[]> UpdateDWARFStringSection(
 
     if (len >= old_prefix_length &&
         std::equal(old_prefix_begin, old_prefix_end, entry.begin())) {
+      *data_was_modified = true;
       entry.replace(0, old_prefix_length, new_prefix);
       *new_data_length += delta_length;
     }
@@ -243,13 +254,15 @@ std::unique_ptr<uint8_t[]> PatchDWARFStringSection(
     const std::string &old_prefix,
     const std::string &new_prefix,
     std::unique_ptr<uint8_t[]> data,
-    size_t *data_length) {
+    size_t *data_length,
+    bool *data_was_modified) {
 
   if (new_prefix.length() <= old_prefix.length()) {
     UpdateDWARFStringSectionInPlace(reinterpret_cast<char *>(data.get()),
                                     *data_length,
                                     old_prefix,
-                                    new_prefix);
+                                    new_prefix,
+                                    data_was_modified);
     // Remove the trailing null.
     --(*data_length);
     return data;
@@ -261,29 +274,47 @@ std::unique_ptr<uint8_t[]> PatchDWARFStringSection(
       *data_length,
       old_prefix,
       new_prefix,
-      &new_data_length);
+      &new_data_length,
+      data_was_modified);
   // The last entry need not be null terminated.
   *data_length = new_data_length - 1;
   return std::move(new_data);
 }
 
 int Patch(MachOFile *f, const PatchSettings &settings) {
-  off_t offset = 0, len = 0;
-  bool swap_byte_ordering = f->swap_byte_ordering();
-
   if (settings.patch_coverage_maps) {
-    if (!f->GetSectionInfo("__DATA",
-                           "__llvm_covmap",
-                           &offset,
-                           &len)) {
+    const std::string segment("__DATA");
+    const std::string section("__llvm_covmap");
+    off_t data_length;
+    std::unique_ptr<uint8_t[]> &&data =
+        f->ReadSectionData(segment,
+                           section,
+                           &data_length);
+    if (!data) {
       fprintf(stderr, "Warning: Failed to find __llvm_covmap section.\n");
     } else {
-      int retval = PatchCovmapSection(settings,
-                                      offset,
-                                      (size_t)len,
-                                      swap_byte_ordering);
-      if (retval) {
-        return retval;
+      size_t new_data_length = (size_t)data_length;
+      bool data_was_modified = false;
+      std::unique_ptr<uint8_t[]> &&new_section_data = PatchCovmapSection(
+          settings.old_prefix,
+          settings.new_prefix,
+          std::move(data),
+          &new_data_length,
+          &data_was_modified,
+          f->swap_byte_ordering());
+      if (!new_section_data) {
+        return 1;
+      }
+
+      if (data_was_modified) {
+        MachOFile::WriteReturnCode retval = f->WriteSectionData(
+            segment,
+            section,
+            std::move(new_section_data),
+            new_data_length);
+        if (retval == MachOFile::WRITE_FAILED) {
+          return 1;
+        }
       }
     }
   }
@@ -301,22 +332,26 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
       fprintf(stderr, "Warning: Failed to find __debug_str section.\n");
     } else {
       size_t new_data_length = (size_t)data_length;
+      bool data_was_modified = false;
       std::unique_ptr<uint8_t[]> &&new_section_data = PatchDWARFStringSection(
           settings.old_prefix,
           settings.new_prefix,
           std::move(data),
-          &new_data_length);
+          &new_data_length,
+          &data_was_modified);
       if (!new_section_data) {
         return 1;
       }
 
-      MachOFile::WriteReturnCode retval = f->WriteSectionData(
-          segment,
-          section,
-          std::move(new_section_data),
-          new_data_length);
-      if (retval == MachOFile::WRITE_FAILED) {
-        return 1;
+      if (data_was_modified) {
+        MachOFile::WriteReturnCode retval = f->WriteSectionData(
+            segment,
+            section,
+            std::move(new_section_data),
+            new_data_length);
+        if (retval == MachOFile::WRITE_FAILED) {
+          return 1;
+        }
       }
     }
   }

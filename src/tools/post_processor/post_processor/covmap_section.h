@@ -15,8 +15,9 @@
 #ifndef POST_PROCESSOR_COVMAPSECTION_H_
 #define POST_PROCESSOR_COVMAPSECTION_H_
 
-#include <string>
 #include <sys/types.h>
+
+#include <string>
 #include <vector>
 
 #include "return_code.h"
@@ -29,39 +30,66 @@ namespace post_processor {
 /// WARNING: This class is not thread-safe.
 class CovmapSection {
  public:
-  /// Creates a CovmapSection that will manipulate the MachO file given by
-  /// "filename" with __llvm_covmap data at "section_offset" of
-  /// "section_length" bytes. If "swap_byte_ordering" is true, values read will
-  /// be translated to host byte order.
-  CovmapSection(const std::string &filename,
-                off_t section_offset,
-                off_t section_length,
+  /// Creates a CovmapSection that may be used to manipulate the given coverage
+  /// map data. If "swap_byte_ordering" is true, values read will be translated
+  /// to host byte order.
+  CovmapSection(std::unique_ptr<uint8_t[]> covmap_section,
+                size_t section_length,
                 bool swap_byte_ordering);
 
-  ~CovmapSection();
+  /// Parses the section data.
+  ReturnCode Parse();
 
-  /// Reads covmap data from the file.
-  ReturnCode Read();
   /// Patches all filenames in the covmap data, replacing any paths that start
   /// with "old_prefix" with "new_prefix".
-  ReturnCode PatchFilenames(const std::string &old_prefix,
-                            const std::string &new_prefix);
+  /// WARNING: As an optimization, this method may move and invalidate this
+  ///          CovmapSection's data member. It is unsafe to invoke any method on
+  ///          this instance after this method returns.
+  std::unique_ptr<uint8_t[]> PatchFilenamesAndInvalidate(
+      const std::string &old_prefix,
+      const std::string &new_prefix,
+      size_t *section_length,
+      bool *data_was_modified);
+
+  inline const uint8_t *section_data() const { return section_data_.get(); }
+  inline size_t section_length() const { return section_length_; }
 
  private:
   /// Models an array of filenames associated with a given coverage mapping.
   struct FilenameGroup {
     void CalculateSize();
+    /// Appends the serialized form of this FilenameGroup to the given vector,
+    /// inserting additional empty filenames if necessary to pad to min_size.
+    bool Serialize(std::vector<uint8_t> *v, size_t min_size = 0) const;
 
-    off_t size;  // Serialized size of this group in bytes.
+    size_t size;  // Serialized size of this group in bytes.
     off_t offset;  // Offset of this FilenameGroup in the file.
     std::vector<std::string> filenames;
   };
 
  private:
+  inline ptrdiff_t read_position() const {
+    return read_ptr_ - section_data_.get();
+  }
+
+  inline ptrdiff_t  bytes_remaining() const { return section_end_ - read_ptr_; }
+
   bool ReadDWORD(uint32_t *);
   bool ReadQWORD(uint64_t *);
   /// Reads a DWARF Little Endian Base 128-encoded value.
   bool ReadLEB128(uint *value);
+  inline bool ReadCharacters(char *value, size_t length) {
+    if (length > bytes_remaining()) { return false; }
+    memcpy(value, read_ptr_, length);
+    read_ptr_ += length;
+    return true;
+  }
+  inline bool ReadByte(uint8_t *byte) {
+    if (bytes_remaining() < 1) { return false; }
+    *byte = *read_ptr_;
+    ++read_ptr_;
+    return true;
+  }
 
   /// Reads an LLVM coverage mapping. has_more is set to true if additional
   /// coverage mappings may be read from this covmap section.
@@ -73,19 +101,13 @@ class CovmapSection {
   /// Reads a filename array within an LLVM coverage mapping.
   ReturnCode ReadFilenameGroup(FilenameGroup *);
 
-  static size_t EncodedLEB128Size(size_t value);
-  /// Little Endian Base 128-encodes a value.
-  static std::vector<uint8_t> EncodeLEB128(size_t value);
-  ReturnCode WriteLEB128(size_t value);
-  /// Writes the given FilenameGroup at its offset, inserting "padding" bytes
-  /// as additional empty filenames.
-  ReturnCode WriteFilenameGroup(const FilenameGroup &, size_t padding = 0);
-
  private:
-  off_t section_offset_;
-  off_t section_end_;
-  std::string filename_;
-  FILE *file_;
+  std::unique_ptr<uint8_t[]> section_data_;
+  size_t section_length_;
+  uint8_t *read_ptr_;
+
+  // Convenience pointer to one byte past the end of the section_data_;
+  uint8_t const *section_end_;
 
   bool swap_byte_ordering_;
 

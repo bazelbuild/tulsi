@@ -17,6 +17,8 @@
 #include <assert.h>
 #include <libkern/OSByteOrder.h>
 
+#include <list>
+
 namespace {
 
 // Temporary buffer used when reading and writing filenames in
@@ -25,39 +27,49 @@ namespace {
 // only because CovmapSection is explicitly not thread-safe).
 char filename_buffer[4096];
 
+size_t EncodedLEB128Size(size_t value) {
+  size_t encoded_len = 1;
+  for (size_t val = value >> 7; val; val >>= 7, ++encoded_len) {
+    // Intentionally empty.
+  }
+  return encoded_len;
+}
+
+/// Appends the given value encoded in ULEB128 form to the given vector.
+void EncodeLEB128(std::vector<uint8_t> *v, size_t value) {
+  do {
+    uint8_t b = (uint8_t)(value & 0x7F);
+    value >>= 7;
+    if (value != 0) {
+      b |= 0x80;
+    }
+    v->push_back(b);
+  } while (value != 0);
+}
+
 }  // namespace
 
 namespace post_processor {
 
-CovmapSection::CovmapSection(const std::string &filename,
-                             off_t section_offset,
-                             off_t section_length,
+CovmapSection::CovmapSection(std::unique_ptr<uint8_t[]> covmap_section,
+                             size_t section_length,
                              bool swap_byte_ordering) :
-    filename_(filename),
-    file_(nullptr),
-    section_offset_(section_offset),
-    section_end_(section_offset + section_length),
+    section_data_(std::move(covmap_section)),
+    section_length_(section_length),
+    read_ptr_(section_data_.get()),
+    section_end_(read_ptr_ + section_length_),
     swap_byte_ordering_(swap_byte_ordering) {
 }
 
-CovmapSection::~CovmapSection() {
-  if (file_) {
-    fclose(file_);
-  }
-}
-
-ReturnCode CovmapSection::Read() {
-  if (file_) {
-    fclose(file_);
+ReturnCode CovmapSection::Parse() {
+  read_ptr_ = section_data_.get();
+  section_end_ = read_ptr_ + section_length_;
+  if (!read_ptr_) {
+    fprintf(stderr,
+            "ERROR: Attempt to parse invalid coverage map section data.\n");
+    return ERR_INVALID_FILE;
   }
 
-  file_ = fopen(filename_.c_str(), "rb+");
-  if (!file_) {
-    fprintf(stderr, "ERROR: Failed to open %s for r/w.\n", filename_.c_str());
-    return ERR_OPEN_FAILED;
-  }
-
-  fseeko(file_, section_offset_, SEEK_SET);
   bool has_more = true;
   while (has_more) {
     ReturnCode retval = ReadCoverageMapping(&has_more);
@@ -66,25 +78,40 @@ ReturnCode CovmapSection::Read() {
     }
   }
 
-  off_t position = ftello(file_);
-  if (position != section_end_) {
+  size_t read_offset = read_ptr_ - section_data_.get();
+  if (read_offset != section_length_) {
     fprintf(stderr,
             "ERROR: read covmap offset does not match end of section "
-                "(%llu != %llu).\n",
-            position,
-            section_end_);
+                "(%lu != %lu).\n",
+            read_offset,
+            section_length_);
     return ERR_INVALID_FILE;
   }
 
   return ERR_OK;
 }
 
-ReturnCode CovmapSection::PatchFilenames(
+std::unique_ptr<uint8_t[]> CovmapSection::PatchFilenamesAndInvalidate(
     const std::string &old_prefix,
-    const std::string &new_prefix) {
+    const std::string &new_prefix,
+    size_t *section_length,
+    bool *data_was_modified) {
+  assert(section_length && data_was_modified);
+
   size_t prefix_size = old_prefix.size();
   auto old_prefix_begin = old_prefix.cbegin();
   auto old_prefix_end = old_prefix.cend();
+
+  *data_was_modified = false;
+  bool may_write_in_place = true;
+
+  struct FilenameGroupReplacement {
+    off_t offset;
+    size_t original_size;
+    std::vector<uint8_t> serialized_data;
+  };
+
+  std::list<FilenameGroupReplacement> replacement_groups;
 
   for (FilenameGroup g : filename_groups_) {
     FilenameGroup new_group = g;
@@ -101,22 +128,52 @@ ReturnCode CovmapSection::PatchFilenames(
       std::string new_filename = filename;
       new_filename.replace(0, prefix_size, new_prefix);
       new_group.filenames.push_back(new_filename);
+      *data_was_modified = true;
       needs_rewrite = true;
     }
 
-    if (needs_rewrite) {
-      new_group.CalculateSize();
-      assert(g.size >= new_group.size);
-      size_t padding = g.size - new_group.size;
-      ReturnCode retval = WriteFilenameGroup(new_group, padding);
-      if (retval != ERR_OK) {
-        return retval;
-      }
-    }
-  }
-  return ERR_OK;
-}
+    if (!needs_rewrite) { continue; }
 
+    new_group.CalculateSize();
+    std::vector<uint8_t> new_filegroup_data;
+    if (!new_group.Serialize(&new_filegroup_data, g.size)) {
+      return nullptr;
+    }
+
+    if (new_filegroup_data.size() != g.size) {
+      may_write_in_place = false;
+    }
+
+    replacement_groups.push_back(FilenameGroupReplacement {
+        g.offset,
+        g.size,
+        std::move(new_filegroup_data)
+    });
+  }
+
+  if (!*data_was_modified) {
+    *section_length = section_length_;
+    return std::move(section_data_);
+  }
+
+  // If the new data is the same size as the old, simply overwrite it and return
+  // the current buffer.
+  if (may_write_in_place) {
+    uint8_t *section_data = section_data_.get();
+    for (const auto &replacement : replacement_groups) {
+      memcpy(section_data + replacement.offset,
+             replacement.serialized_data.data(),
+             replacement.original_size);
+    }
+
+    *section_length = section_length_;
+    return std::move(section_data_);
+  }
+
+  // TODO(abaire): Produce a new section.
+  fprintf(stderr, "Changing covmap section size is not yet supported.\n");
+  return nullptr;
+}
 
 ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
   assert(has_more);
@@ -157,7 +214,7 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
       return ERR_INVALID_FILE;
   }
 
-  off_t data_start = ftello(file_);
+  uint8_t *data_start = read_ptr_;
 
   FilenameGroup filename_group;
   ReturnCode retval = ReadFilenameGroup(&filename_group);
@@ -167,17 +224,17 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
   filename_groups_.push_back(filename_group);
 
   // Skip past the rest of the data.
-  off_t data_end = data_start + filenames_size + coverage_size;
+  uint8_t *data_end = data_start + filenames_size + coverage_size;
   if (data_end == section_end_) {
     *has_more = false;
   } else {
     *has_more = true;
-    auto misalign = data_end & 0x07;
+    auto misalign = (uintptr_t)data_end & 0x07;
     if (misalign) {
       data_end += 8 - misalign;
     }
   }
-  fseeko(file_, data_end, SEEK_SET);
+  read_ptr_ = data_end;
 
   return ERR_OK;
 }
@@ -186,16 +243,16 @@ ReturnCode CovmapSection::ReadFilenameGroup(
     CovmapSection::FilenameGroup *g) {
   assert(g);
 
-  g->offset = ftello(file_);
+  g->offset = read_position();
   uint num_filenames;
   if (!ReadLEB128(&num_filenames)) {
     fprintf(stderr, "Failed to read filename count\n.");
     return ERR_INVALID_FILE;
   }
-  g->size = ftello(file_) - g->offset;
+  g->size = size_t(read_position() - g->offset);
 
   for (auto i = 0; i < num_filenames; ++i) {
-    off_t offset = ftello(file_);
+    off_t offset = read_position();
     uint filename_len;
     if (!ReadLEB128(&filename_len)) {
       fprintf(stderr, "Failed to read filename length\n.");
@@ -214,12 +271,12 @@ ReturnCode CovmapSection::ReadFilenameGroup(
     }
 
     filename_ptr[filename_len] = 0;
-    if (fread(filename_ptr, 1, filename_len, file_) != filename_len) {
+    if (!ReadCharacters(filename_ptr, filename_len)) {
       fprintf(stderr, "Failed to read filename at %llu\n", offset);
       return ERR_READ_FAILED;
     }
     g->filenames.push_back(filename_ptr);
-    g->size += ftello(file_) - offset;
+    g->size += read_position() - offset;
   }
 
   return ERR_OK;
@@ -227,10 +284,12 @@ ReturnCode CovmapSection::ReadFilenameGroup(
 
 bool CovmapSection::ReadDWORD(uint32_t *out) {
   assert(out);
-  if (fread(out, sizeof(*out), 1, file_) != 1) {
+  if (bytes_remaining() < sizeof(*out)) {
     fprintf(stderr, "Failed to read DWORD value.\n");
     return false;
   }
+  *out = *(reinterpret_cast<uint32_t*>(read_ptr_));
+  read_ptr_ += sizeof(*out);
   if (swap_byte_ordering_) {
     OSSwapInt32(*out);
   }
@@ -239,10 +298,12 @@ bool CovmapSection::ReadDWORD(uint32_t *out) {
 
 bool CovmapSection::ReadQWORD(uint64_t *out) {
   assert(out);
-  if (fread(out, sizeof(*out), 1, file_) != 1) {
+  if (bytes_remaining() < sizeof(*out)) {
     fprintf(stderr, "Failed to read QWORD value.\n");
     return false;
   }
+  *out = *(reinterpret_cast<uint64_t*>(read_ptr_));
+  read_ptr_ += sizeof(*out);
   if (swap_byte_ordering_) {
     OSSwapInt64(*out);
   }
@@ -256,7 +317,7 @@ bool CovmapSection::ReadLEB128(uint *value) {
   uint8_t b = 0;
 
   do {
-    if (fread(&b, sizeof(b), 1, file_) != 1) {
+    if (!ReadByte(&b)) {
       fprintf(stderr, "Failed to read LE128 value.\n");
       return false;
     }
@@ -306,53 +367,29 @@ ReturnCode CovmapSection::ReadV2FunctionRecords(uint32_t count) {
   return ERR_OK;
 }
 
-size_t CovmapSection::EncodedLEB128Size(size_t value) {
-  size_t encoded_len = 1;
-  for (size_t val = value >> 7; val; val >>= 7, ++encoded_len) {
-    // Intentionally empty.
+void CovmapSection::FilenameGroup::CalculateSize() {
+  size = EncodedLEB128Size(filenames.size());
+
+  for (const auto &filename : filenames) {
+    size_t filename_size = filename.size();
+    size += EncodedLEB128Size(filename_size);
+    size += filename_size;
   }
-  return encoded_len;
 }
 
-std::vector<uint8_t> CovmapSection::EncodeLEB128(size_t value) {
-  std::vector<uint8_t> ret;
+bool CovmapSection::FilenameGroup::Serialize(std::vector<uint8_t> *v,
+                                             size_t minimum_size) const {
+  // Note that the order in which the strings are written must be preserved as
+  // encoded coverage data refers to filenames by index. This also means that it
+  // is safe to inject additional filenames as they will not be referenced by
+  // the coverage mapping data.
 
-  do {
-    uint8_t b = (uint8_t)(value & 0x7F);
-    value >>= 7;
-    if (value != 0) {
-      b |= 0x80;
-    }
-    ret.push_back(b);
-  } while (value != 0);
-
-  return ret;
-}
-
-ReturnCode CovmapSection::WriteLEB128(size_t value) {
-  auto encoded_val = CovmapSection::EncodeLEB128(value);
-  size_t val_size = encoded_val.size();
-  if (fwrite(encoded_val.data(), 1, val_size, file_) != val_size) {
-    fprintf(stderr, "Failed to write LE128 value (%lu).\n", value);
-    return ERR_WRITE_FAILED;
+  size_t padding = 0;
+  if (size < minimum_size) {
+    padding = minimum_size - size;
   }
 
-  return ERR_OK;
-}
-
-ReturnCode CovmapSection::WriteFilenameGroup(
-    const FilenameGroup &g,
-    size_t padding) {
-
-  // The given FilenameGroup is written back to its offset within the file and
-  // null strings are inserted to fill "padding" bytes. Note that the order in
-  // which the strings are written must be preserved as encoded coverage data
-  // refers to filenames by index. This also means that it is safe to inject
-  // additional filenames as they will not be referenced by the data.
-
-  fseeko(file_, g.offset, SEEK_SET);
-
-  size_t string_count = g.filenames.size();
+  size_t string_count = filenames.size();
   size_t padding_strings_needed = 0;
   if (padding) {
     padding_strings_needed = (padding + 127) / 128;
@@ -364,34 +401,26 @@ ReturnCode CovmapSection::WriteFilenameGroup(
         padded_string_count_size - real_string_count_size;
 
     if (additional_bytes_used >= padding) {
-      // TODO(abaire): Support this by combining padding across covmaps.
+      // TODO(abaire): Support this by combining padding across covmaps or by
+      //               ignoring the minimum_size and rewriting the entire covmap
+      //               section.
       fprintf(stderr,
               "Edge case encountered: Can't fit padding. %lu bytes needed but "
                   "string count requires %lu bytes\n",
               padding,
               additional_bytes_used);
-      return ERR_INVALID_FILE;
+      return false;
     }
   }
 
-  ReturnCode retval = WriteLEB128(string_count);
-  if (retval != ERR_OK) {
-    return retval;
-  }
+  v->reserve(v->size() + size + padding);
+  EncodeLEB128(v, string_count);
 
-  for (const auto &filename : g.filenames) {
-    size_t filename_size = filename.size();
-    retval = WriteLEB128(filename_size);
-    if (retval != ERR_OK) {
-      return retval;
-    }
-
-    if (fwrite(filename.c_str(), 1, filename_size, file_) != filename_size) {
-      fprintf(stderr,
-              "Failed to write filename of %lu bytes.\n",
-              filename_size);
-      return ERR_WRITE_FAILED;
-    }
+  for (const auto &filename : filenames) {
+    EncodeLEB128(v, filename.size());
+    std::copy(filename.cbegin(),
+              filename.cend(),
+              std::back_inserter<std::vector<uint8_t>>(*v));
   }
 
   if (padding) {
@@ -404,10 +433,9 @@ ReturnCode CovmapSection::WriteFilenameGroup(
     // whereas any other value will fit into 1 filename.
     filename_buffer[0] = 127;
     while (padding > 129) {
-      if (fwrite(filename_buffer, 1, 128, file_) != 128) {
-        fprintf(stderr, "Failed to write padding filename of 128 bytes.\n");
-        return ERR_WRITE_FAILED;
-      }
+      std::copy(filename_buffer,
+                filename_buffer + 128,
+                std::back_inserter(*v));
       padding -= 128;
     }
 
@@ -415,40 +443,25 @@ ReturnCode CovmapSection::WriteFilenameGroup(
     // padding, which is impossible to express as a length-prefixed filename.
     if (padding == 129) {
       filename_buffer[0] = 126;
-      if (fwrite(filename_buffer, 1, 127, file_) != 127) {
-        fprintf(stderr, "Failed to write padding filename of 127 bytes\n");
-        return ERR_WRITE_FAILED;
-      }
+      std::copy(filename_buffer,
+                filename_buffer + 127,
+                std::back_inserter(*v));
       padding -= 127;
     }
 
     // Write out any remaining padding. At this point there are 128 or fewer
     // bytes left to write. So everything can fit in a single string.
     if (padding) {
-      filename_buffer[0] = (char)(padding - 1);
-      if (fwrite(filename_buffer, 1, padding, file_) != padding) {
-        fprintf(stderr,
-                "Failed to write padding filename of %lu bytes\n",
-                padding);
-        return ERR_WRITE_FAILED;
+      filename_buffer[0] = static_cast<char>(padding - 1);
+      if (padding > 1) {
+        std::copy(filename_buffer,
+                  filename_buffer + padding,
+                  std::back_inserter(*v));
       }
     }
   }
 
-  return ERR_OK;
-}
-
-void CovmapSection::FilenameGroup::CalculateSize() {
-  size = 0;
-  auto encoded_val = CovmapSection::EncodeLEB128(filenames.size());
-  size += encoded_val.size();
-
-  for (const auto &filename : filenames) {
-    size_t filename_size = filename.size();
-    encoded_val = CovmapSection::EncodeLEB128(filename_size);
-    size += encoded_val.size();
-    size += filename_size;
-  }
+  return true;
 }
 
 }  // namespace post_processor
