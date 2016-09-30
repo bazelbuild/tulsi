@@ -301,6 +301,7 @@ final class BazelAspectInfoExtractor {
         implictIPATarget = nil
       }
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
+      let swiftLanguageVersion = dict["swift_langague_version"] as? String
       let swiftTransitiveModules = MakeBazelFileInfos("swift_transitive_modules")
       let extensions: Set<BuildLabel>?
       if let extensionList = dict["extensions"] as? [String] {
@@ -326,6 +327,7 @@ final class BazelAspectInfoExtractor {
                                 iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,
+                                swiftLanguageVersion: swiftLanguageVersion,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 implicitIPATarget: implictIPATarget)
       progressNotifier?.incrementValue()

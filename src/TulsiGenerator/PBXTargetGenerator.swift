@@ -187,6 +187,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let includes: [String]
     let generatedIncludes: [String]
     let frameworkSearchPaths: [String]
+    let swiftLanguageVersion: String?
     let swiftIncludePaths: [String]
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
@@ -240,6 +241,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           otherCFlags == other.otherCFlags &&
           frameworkSearchPaths == other.frameworkSearchPaths &&
           includes == other.includes &&
+          swiftLanguageVersion == other.swiftLanguageVersion &&
           swiftIncludePaths == other.swiftIncludePaths) {
         return false
       }
@@ -262,6 +264,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          includes: includes,
                          generatedIncludes: newGeneratedIncludes,
                          frameworkSearchPaths: frameworkSearchPaths,
+                         swiftLanguageVersion: swiftLanguageVersion,
                          swiftIncludePaths: swiftIncludePaths,
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
@@ -563,6 +566,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       includes: resolvedIncludes,
                                       generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
+                                      swiftLanguageVersion: ruleEntry.swiftLanguageVersion,
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,

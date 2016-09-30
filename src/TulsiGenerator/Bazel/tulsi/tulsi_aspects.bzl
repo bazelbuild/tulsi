@@ -387,6 +387,21 @@ def _extract_iphoneos_deployment_target(ctx):
   return str(iphoneos_deployment_target)
 
 
+def _extract_swift_language_version(ctx):
+  """Returns the Swift version set by the xcode_toolchain option for ctx."""
+  swift_toolchain = _get_opt_attr(ctx, 'fragments.apple.xcode_toolchain')
+  if swift_toolchain == 'com.apple.dt.toolchain.Swift_2_3':
+    return '2.3'
+  elif swift_toolchain:
+    return '3.0'
+
+  # TODO(abaire): Remove the fallback check for swift_library once
+  #               xcode_toolchain is available everywhere.
+  if ctx.rule.kind == 'swift_library':
+    return '3.0'
+  return None
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -504,6 +519,7 @@ def _tulsi_sources_aspect(target, ctx):
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
+      swift_language_version=_extract_swift_language_version(ctx),
       swift_transitive_modules=swift_transitive_modules,
       type=target_kind,
   )
@@ -530,5 +546,5 @@ def _tulsi_sources_aspect(target, ctx):
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
     attr_aspects=_TULSI_COMPILE_DEPS,
-    fragments=['cpp', 'objc', 'apple'],
+    fragments=['apple', 'cpp', 'objc'],
 )
