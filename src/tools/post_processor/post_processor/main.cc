@@ -14,6 +14,8 @@
 
 #include <assert.h>
 #include <stdio.h>
+
+#include <list>
 #include <vector>
 
 #include "covmap_section.h"
@@ -88,13 +90,6 @@ int main(int argc, const char* argv[]) {
   patch_settings.old_prefix = argv[argc - 2];
   patch_settings.new_prefix = argv[argc - 1];
 
-  // TODO(abaire): Support growing paths by appending sections.
-  if (patch_settings.new_prefix.length() > patch_settings.old_prefix.length()) {
-    fprintf(stderr,
-            "Cannot grow paths (new_path length must be <= old_path length\n");
-    return 1;
-  }
-
   for (auto &filename : filenames) {
     patch_settings.filename = filename;
     MachOContainer f(filename, verbose);
@@ -147,6 +142,12 @@ int PatchCovmapSection(const PatchSettings &settings,
                        off_t offset,
                        size_t length,
                        bool swap_byte_ordering) {
+  if (settings.new_prefix.length() > settings.old_prefix.length()) {
+    fprintf(stderr,
+            "Cannot grow paths (new_path length must be <= old_path length\n");
+    return 1;
+  }
+
   CovmapSection covmap_section(settings.filename,
                                offset,
                                length,
@@ -193,6 +194,47 @@ void UpdateDWARFStringSectionInPlace(char *data,
   }
 }
 
+std::unique_ptr<uint8_t[]> UpdateDWARFStringSection(
+    char *data,
+    size_t data_length,
+    const std::string &old_prefix,
+    const std::string &new_prefix,
+    size_t *new_data_length) {
+  assert(new_data_length);
+  auto old_prefix_begin = old_prefix.begin();
+  auto old_prefix_end = old_prefix.end();
+  size_t old_prefix_length = old_prefix.length();
+  size_t delta_length = new_prefix.length() - old_prefix.length();
+
+  std::list<std::string> new_string_table;
+  *new_data_length = 0;
+  char *start = data;
+  char *end = start + data_length;
+  while (start < end) {
+    std::string entry(start);
+    size_t len = entry.length();
+    start += len + 1;
+    *new_data_length += len + 1;
+
+    if (len >= old_prefix_length &&
+        std::equal(old_prefix_begin, old_prefix_end, entry.begin())) {
+      entry.replace(0, old_prefix_length, new_prefix);
+      *new_data_length += delta_length;
+    }
+    new_string_table.push_back(entry);
+  }
+
+  std::unique_ptr<uint8_t[]> new_data(new uint8_t[*new_data_length]);
+  uint8_t *offset = new_data.get();
+  for (auto str : new_string_table) {
+    auto str_length = str.length();
+    memcpy(offset, str.c_str(), str_length);
+    offset += str_length + 1;
+  }
+
+  return new_data;
+}
+
 // A null must be appended to the data buffer to ensure that a malformed
 // table can be processed in a predictable manner.
 // *data_length must be set to the size of the data array in bytes on input
@@ -213,8 +255,16 @@ std::unique_ptr<uint8_t[]> PatchDWARFStringSection(
     return data;
   }
 
-  // TODO(abaire): Implement section growth.
-  return nullptr;
+  size_t new_data_length;
+  std::unique_ptr<uint8_t[]> &&new_data = UpdateDWARFStringSection(
+      reinterpret_cast<char *>(data.get()),
+      *data_length,
+      old_prefix,
+      new_prefix,
+      &new_data_length);
+  // The last entry need not be null terminated.
+  *data_length = new_data_length - 1;
+  return std::move(new_data);
 }
 
 int Patch(MachOFile *f, const PatchSettings &settings) {
@@ -226,8 +276,7 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
                            "__llvm_covmap",
                            &offset,
                            &len)) {
-      fprintf(stderr, "Warning: Failed to find __llvm_covmap section in "
-          "64-bit data.\n");
+      fprintf(stderr, "Warning: Failed to find __llvm_covmap section.\n");
     } else {
       int retval = PatchCovmapSection(settings,
                                       offset,
@@ -249,8 +298,7 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
                            &data_length,
                            1 /* null terminate the data */);
     if (!data) {
-      fprintf(stderr, "Warning: Failed to find __debug_str section in "
-          "64-bit data.\n");
+      fprintf(stderr, "Warning: Failed to find __debug_str section.\n");
     } else {
       size_t new_data_length = (size_t)data_length;
       std::unique_ptr<uint8_t[]> &&new_section_data = PatchDWARFStringSection(
