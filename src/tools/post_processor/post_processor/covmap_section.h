@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 
+#include "dwarf_buffer_reader.h"
 #include "return_code.h"
 
 
@@ -68,29 +69,6 @@ class CovmapSection {
   };
 
  private:
-  inline ptrdiff_t read_position() const {
-    return read_ptr_ - section_data_.get();
-  }
-
-  inline ptrdiff_t  bytes_remaining() const { return section_end_ - read_ptr_; }
-
-  bool ReadDWORD(uint32_t *);
-  bool ReadQWORD(uint64_t *);
-  /// Reads a DWARF Little Endian Base 128-encoded value.
-  bool ReadLEB128(uint *value);
-  inline bool ReadCharacters(char *value, size_t length) {
-    if (length > bytes_remaining()) { return false; }
-    memcpy(value, read_ptr_, length);
-    read_ptr_ += length;
-    return true;
-  }
-  inline bool ReadByte(uint8_t *byte) {
-    if (bytes_remaining() < 1) { return false; }
-    *byte = *read_ptr_;
-    ++read_ptr_;
-    return true;
-  }
-
   /// Reads an LLVM coverage mapping. has_more is set to true if additional
   /// coverage mappings may be read from this covmap section.
   ReturnCode ReadCoverageMapping(bool *has_more);
@@ -104,13 +82,7 @@ class CovmapSection {
  private:
   std::unique_ptr<uint8_t[]> section_data_;
   size_t section_length_;
-  uint8_t *read_ptr_;
-
-  // Convenience pointer to one byte past the end of the section_data_;
-  uint8_t const *section_end_;
-
-  bool swap_byte_ordering_;
-
+  DWARFBufferReader reader_;
   std::vector<FilenameGroup> filename_groups_;
 };
 

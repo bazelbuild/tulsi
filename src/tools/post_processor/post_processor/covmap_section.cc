@@ -56,15 +56,11 @@ CovmapSection::CovmapSection(std::unique_ptr<uint8_t[]> covmap_section,
                              bool swap_byte_ordering) :
     section_data_(std::move(covmap_section)),
     section_length_(section_length),
-    read_ptr_(section_data_.get()),
-    section_end_(read_ptr_ + section_length_),
-    swap_byte_ordering_(swap_byte_ordering) {
+    reader_(section_data_.get(), section_length, swap_byte_ordering) {
 }
 
 ReturnCode CovmapSection::Parse() {
-  read_ptr_ = section_data_.get();
-  section_end_ = read_ptr_ + section_length_;
-  if (!read_ptr_) {
+  if (!section_data()) {
     fprintf(stderr,
             "ERROR: Attempt to parse invalid coverage map section data.\n");
     return ERR_INVALID_FILE;
@@ -78,12 +74,11 @@ ReturnCode CovmapSection::Parse() {
     }
   }
 
-  size_t read_offset = read_ptr_ - section_data_.get();
-  if (read_offset != section_length_) {
+  if (reader_.bytes_remaining()) {
     fprintf(stderr,
             "ERROR: read covmap offset does not match end of section "
                 "(%lu != %lu).\n",
-            read_offset,
+            reader_.read_position(),
             section_length_);
     return ERR_INVALID_FILE;
   }
@@ -181,10 +176,10 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
   uint32_t filenames_size = 0;
   uint32_t coverage_size = 0;
   uint32_t version = 0;
-  if (!(ReadDWORD(&function_records_size) &&
-        ReadDWORD(&filenames_size) &&
-        ReadDWORD(&coverage_size) &&
-        ReadDWORD(&version))) {
+  if (!(reader_.ReadDWORD(&function_records_size) &&
+        reader_.ReadDWORD(&filenames_size) &&
+        reader_.ReadDWORD(&coverage_size) &&
+        reader_.ReadDWORD(&version))) {
     fprintf(stderr, "Failed to read coverage mapping\n.");
     return ERR_INVALID_FILE;
   }
@@ -214,7 +209,7 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
       return ERR_INVALID_FILE;
   }
 
-  uint8_t *data_start = read_ptr_;
+  size_t data_start_offset = reader_.read_position();
 
   FilenameGroup filename_group;
   ReturnCode retval = ReadFilenameGroup(&filename_group);
@@ -224,17 +219,23 @@ ReturnCode CovmapSection::ReadCoverageMapping(bool *has_more) {
   filename_groups_.push_back(filename_group);
 
   // Skip past the rest of the data.
-  uint8_t *data_end = data_start + filenames_size + coverage_size;
-  if (data_end == section_end_) {
+  size_t data_end_offset = data_start_offset + filenames_size + coverage_size;
+  if (data_end_offset > reader_.buffer_length()) {
+    fprintf(stderr,
+            "ERROR: Invalid covmap data (beyond end of section).\n");
+    return ERR_READ_FAILED;
+  }
+  reader_.SeekToOffset(data_end_offset);
+
+  if (data_end_offset >= reader_.buffer_length()) {
     *has_more = false;
   } else {
     *has_more = true;
-    auto misalign = (uintptr_t)data_end & 0x07;
+    auto misalign = data_end_offset & 0x07;
     if (misalign) {
-      data_end += 8 - misalign;
+      reader_.SkipForward(8 - misalign);
     }
   }
-  read_ptr_ = data_end;
 
   return ERR_OK;
 }
@@ -243,18 +244,18 @@ ReturnCode CovmapSection::ReadFilenameGroup(
     CovmapSection::FilenameGroup *g) {
   assert(g);
 
-  g->offset = read_position();
-  uint num_filenames;
-  if (!ReadLEB128(&num_filenames)) {
+  g->offset = static_cast<off_t>(reader_.read_position());
+  uint64_t num_filenames;
+  if (!reader_.ReadULEB128(&num_filenames)) {
     fprintf(stderr, "Failed to read filename count\n.");
     return ERR_INVALID_FILE;
   }
-  g->size = size_t(read_position() - g->offset);
+  g->size = size_t(reader_.read_position() - g->offset);
 
   for (auto i = 0; i < num_filenames; ++i) {
-    off_t offset = read_position();
-    uint filename_len;
-    if (!ReadLEB128(&filename_len)) {
+    off_t offset = static_cast<off_t>(reader_.read_position());
+    uint64_t filename_len;
+    if (!reader_.ReadULEB128(&filename_len)) {
       fprintf(stderr, "Failed to read filename length\n.");
       return ERR_INVALID_FILE;
     }
@@ -271,62 +272,15 @@ ReturnCode CovmapSection::ReadFilenameGroup(
     }
 
     filename_ptr[filename_len] = 0;
-    if (!ReadCharacters(filename_ptr, filename_len)) {
+    if (!reader_.ReadCharacters(filename_ptr, filename_len)) {
       fprintf(stderr, "Failed to read filename at %llu\n", offset);
       return ERR_READ_FAILED;
     }
     g->filenames.push_back(filename_ptr);
-    g->size += read_position() - offset;
+    g->size += reader_.read_position() - offset;
   }
 
   return ERR_OK;
-}
-
-bool CovmapSection::ReadDWORD(uint32_t *out) {
-  assert(out);
-  if (bytes_remaining() < sizeof(*out)) {
-    fprintf(stderr, "Failed to read DWORD value.\n");
-    return false;
-  }
-  *out = *(reinterpret_cast<uint32_t*>(read_ptr_));
-  read_ptr_ += sizeof(*out);
-  if (swap_byte_ordering_) {
-    OSSwapInt32(*out);
-  }
-  return true;
-}
-
-bool CovmapSection::ReadQWORD(uint64_t *out) {
-  assert(out);
-  if (bytes_remaining() < sizeof(*out)) {
-    fprintf(stderr, "Failed to read QWORD value.\n");
-    return false;
-  }
-  *out = *(reinterpret_cast<uint64_t*>(read_ptr_));
-  read_ptr_ += sizeof(*out);
-  if (swap_byte_ordering_) {
-    OSSwapInt64(*out);
-  }
-  return true;
-}
-
-bool CovmapSection::ReadLEB128(uint *value) {
-  assert(value);
-  *value = 0;
-  uint shift = 0;
-  uint8_t b = 0;
-
-  do {
-    if (!ReadByte(&b)) {
-      fprintf(stderr, "Failed to read LE128 value.\n");
-      return false;
-    }
-
-    *value += ((uint)(b & 0x7F)) << shift;
-    shift += 7;
-  } while (b & 0x80);
-
-  return true;
 }
 
 ReturnCode CovmapSection::ReadFunctionRecords(uint32_t count) {
@@ -336,10 +290,10 @@ ReturnCode CovmapSection::ReadFunctionRecords(uint32_t count) {
     uint32_t data_size;
     uint64_t func_hash;
 
-    if (!(ReadQWORD(&name_ref) &&
-          ReadDWORD(&name_len) &&
-          ReadDWORD(&data_size) &&
-          ReadQWORD(&func_hash))) {
+    if (!(reader_.ReadQWORD(&name_ref) &&
+          reader_.ReadDWORD(&name_len) &&
+          reader_.ReadDWORD(&data_size) &&
+          reader_.ReadQWORD(&func_hash))) {
       return ERR_INVALID_FILE;
     }
 
@@ -355,9 +309,9 @@ ReturnCode CovmapSection::ReadV2FunctionRecords(uint32_t count) {
     uint32_t data_size;
     uint64_t func_hash;
 
-    if (!(ReadQWORD(&name_md5) &&
-          ReadDWORD(&data_size) &&
-          ReadQWORD(&func_hash))) {
+    if (!(reader_.ReadQWORD(&name_md5) &&
+          reader_.ReadDWORD(&data_size) &&
+          reader_.ReadQWORD(&func_hash))) {
       return ERR_INVALID_FILE;
     }
 

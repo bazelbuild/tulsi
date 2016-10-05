@@ -15,14 +15,18 @@
 #ifndef POST_PROCESSOR_DWARFSTRINGPATCHER_H_
 #define POST_PROCESSOR_DWARFSTRINGPATCHER_H_
 
+#include <sys/types.h>
+
 #include <map>
 #include <string>
+#include <vector>
 
 #include "return_code.h"
 
 
 namespace post_processor {
 
+class DWARFBufferReader;
 class MachOFile;
 
 /// Provides utilities to patch DWARF string table entries.
@@ -34,20 +38,38 @@ class DWARFStringPatcher {
   ReturnCode Patch(MachOFile *f);
 
  private:
-  void UpdateDWARFStringSectionInPlace(char *data,
-                                       size_t data_length,
-                                       bool *data_was_modified);
+  // DWARF attributes consist of a "name" value and a form type.
+  typedef std::pair<uint64_t, uint64_t> Attribute;
 
-  std::unique_ptr<uint8_t[]> RewriteDWARFStringSection(
+  struct Abbreviation {
+    uint64_t abbreviation_code;
+    uint64_t tag;
+    bool has_children;
+    std::vector<Attribute> attributes;
+  };
+
+  typedef std::map<uint64_t, Abbreviation> AbbreviationTable;
+
+ private:
+  void UpdateStringSectionInPlace(char *data,
+                                  size_t data_length,
+                                  bool *data_was_modified);
+
+  std::unique_ptr<uint8_t[]> RewriteStringSection(
       char *data,
       size_t data_length,
       std::map<size_t, size_t> *relocation_table,
       size_t *new_data_length,
       bool *data_was_modified);
 
+  ReturnCode ProcessAbbrevSection(const MachOFile &f) const;
+  ReturnCode ProcessAbbreviation(DWARFBufferReader *reader,
+                                 Abbreviation *out,
+                                 bool *end_of_table) const;
+
  private:
-  const std::string old_prefix;
-  const std::string new_prefix;
+  const std::string old_prefix_;
+  const std::string new_prefix_;
 };
 
 }  // namespace post_processor

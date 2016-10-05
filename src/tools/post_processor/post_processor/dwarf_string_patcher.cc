@@ -14,18 +14,22 @@
 
 #include "dwarf_string_patcher.h"
 
+#include "dwarf_buffer_reader.h"
 #include "mach_o_file.h"
+
 
 namespace post_processor {
 
 DWARFStringPatcher::DWARFStringPatcher(
     const std::string &old_prefix,
     const std::string &new_prefix) :
-    old_prefix(old_prefix),
-    new_prefix(new_prefix) {
+    old_prefix_(old_prefix),
+    new_prefix_(new_prefix) {
 }
 
 ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
+  assert(f);
+
   const std::string segment("__DWARF");
   const std::string string_section("__debug_str");
   off_t data_length;
@@ -47,10 +51,10 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   bool data_was_modified = false;
 
   // Handle the simple in-place update case.
-  if (new_prefix.length() <= old_prefix.length()) {
-    UpdateDWARFStringSectionInPlace(reinterpret_cast<char *>(data.get()),
-                                    static_cast<size_t>(data_length),
-                                    &data_was_modified);
+  if (new_prefix_.length() <= old_prefix_.length()) {
+    UpdateStringSectionInPlace(reinterpret_cast<char *>(data.get()),
+                               static_cast<size_t>(data_length),
+                               &data_was_modified);
     if (data_was_modified) {
       // Remove the trailing null.
       --data_length;
@@ -69,7 +73,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
 
   size_t new_data_length = (size_t)data_length;
   std::map<size_t, size_t> string_relocation_table;
-  std::unique_ptr<uint8_t[]> &&new_data = RewriteDWARFStringSection(
+  std::unique_ptr<uint8_t[]> &&new_data = RewriteStringSection(
       reinterpret_cast<char *>(data.get()),
       static_cast<size_t>(data_length),
       &string_relocation_table,
@@ -85,8 +89,12 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
                                           string_section,
                                           std::move(new_data),
                                           new_data_length);
-  if (retval != post_processor::ERR_OK &&
-      retval != post_processor::ERR_WRITE_DEFERRED) {
+  if (retval != ERR_OK && retval != ERR_WRITE_DEFERRED) {
+    return retval;
+  }
+
+  retval = ProcessAbbrevSection(*f);
+  if (retval != ERR_OK) {
     return retval;
   }
 
@@ -95,15 +103,17 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   return ERR_NOT_IMPLEMENTED;
 }
 
-void DWARFStringPatcher::UpdateDWARFStringSectionInPlace(
+void DWARFStringPatcher::UpdateStringSectionInPlace(
     char *data,
     size_t data_length,
     bool *data_was_modified) {
+  assert(data && data_was_modified);
+
   *data_was_modified = false;
-  size_t old_prefix_length = old_prefix.length();
-  const char *old_prefix_cstr = old_prefix.c_str();
-  size_t new_prefix_length = new_prefix.length();
-  const char *new_prefix_cstr = new_prefix.c_str();
+  size_t old_prefix_length = old_prefix_.length();
+  const char *old_prefix_cstr = old_prefix_.c_str();
+  size_t new_prefix_length = new_prefix_.length();
+  const char *new_prefix_cstr = new_prefix_.c_str();
 
   // The data table is an offset-indexed contiguous array of null terminated
   // ASCII or UTF-8 strings, so strings whose lengths are being reduced or
@@ -128,19 +138,20 @@ void DWARFStringPatcher::UpdateDWARFStringSectionInPlace(
   }
 }
 
-std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteDWARFStringSection(
+std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteStringSection(
     char *data,
     size_t data_length,
     std::map<size_t, size_t> *relocation_table,
     size_t *new_data_length,
     bool *data_was_modified) {
+  assert(data && relocation_table && new_data_length && data_was_modified);
 
   relocation_table->clear();
   *data_was_modified = false;
-  auto old_prefix_begin = old_prefix.begin();
-  auto old_prefix_end = old_prefix.end();
-  size_t old_prefix_length = old_prefix.length();
-  size_t delta_length = new_prefix.length() - old_prefix.length();
+  auto old_prefix_begin = old_prefix_.begin();
+  auto old_prefix_end = old_prefix_.end();
+  size_t old_prefix_length = old_prefix_.length();
+  size_t delta_length = new_prefix_.length() - old_prefix_.length();
 
   std::list<std::string> new_string_table;
   *new_data_length = 0;
@@ -158,7 +169,7 @@ std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteDWARFStringSection(
     if (len >= old_prefix_length &&
         std::equal(old_prefix_begin, old_prefix_end, entry.begin())) {
       *data_was_modified = true;
-      entry.replace(0, old_prefix_length, new_prefix);
+      entry.replace(0, old_prefix_length, new_prefix_);
       *new_data_length += delta_length;
     }
     new_string_table.push_back(entry);
@@ -177,6 +188,91 @@ std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteDWARFStringSection(
   }
 
   return new_data;
+}
+
+ReturnCode DWARFStringPatcher::ProcessAbbrevSection(const MachOFile &f) const {
+  off_t data_length;
+  std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData("__DWARF",
+                                                        "__debug_abbrev",
+                                                        &data_length);
+  if (!data) {
+    fprintf(stderr, "Warning: Failed to find __debug_abbrev section.\n");
+    return ERR_OK;
+  }
+
+  DWARFBufferReader reader(data.get(),
+                           static_cast<size_t>(data_length),
+                           f.swap_byte_ordering());
+
+  size_t cur_table_offset = 0;
+  std::map<size_t, AbbreviationTable> table_map;
+
+  while (reader.bytes_remaining()) {
+    Abbreviation abbreviation;
+    bool end_of_table;
+    ReturnCode retval = ProcessAbbreviation(&reader,
+                                            &abbreviation,
+                                            &end_of_table);
+    if (retval != ERR_OK) {
+      return retval;
+    }
+
+    if (end_of_table) {
+      cur_table_offset = reader.read_position();
+    } else {
+      if (table_map.find(cur_table_offset) == table_map.end()) {
+        table_map[cur_table_offset] = AbbreviationTable();
+      }
+      AbbreviationTable &table = table_map[cur_table_offset];
+      table[abbreviation.abbreviation_code] = std::move(abbreviation);
+    }
+  }
+
+  return ERR_NOT_IMPLEMENTED;
+}
+
+ReturnCode DWARFStringPatcher::ProcessAbbreviation(DWARFBufferReader *reader,
+                                                   Abbreviation *out,
+                                                   bool *end_of_table) const {
+  assert(reader && out && end_of_table);
+  if (!reader->ReadULEB128(&out->abbreviation_code)) {
+    fprintf(stderr, "Failed to read DWARF abbreviation table.\n");
+    return ERR_INVALID_FILE;
+  }
+
+  *end_of_table = (out->abbreviation_code == 0);
+  if (*end_of_table) {
+    return ERR_OK;
+  }
+
+  if (!reader->ReadULEB128(&out->tag)) {
+    fprintf(stderr, "Failed to read DWARF abbreviation table.\n");
+    return ERR_INVALID_FILE;
+  }
+
+  uint8_t has_children;
+  if (!reader->ReadByte(&has_children)) {
+    fprintf(stderr, "Failed to read DWARF abbreviation table.\n");
+    return ERR_INVALID_FILE;
+  }
+  out->has_children = has_children != 0;
+
+  out->attributes.clear();
+  while (true) {
+    uint64_t name, form;
+    if (!reader->ReadULEB128(&name) || !reader->ReadULEB128(&form)) {
+      fprintf(stderr, "Failed to read DWARF abbreviation table.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    if (name == 0 && form == 0) {
+      break;
+    }
+
+    out->attributes.push_back(Attribute(name, form));
+  }
+
+  return ERR_OK;
 }
 
 }  // namespace post_processor
