@@ -24,7 +24,12 @@ enum ReturnCode {
     ERR_READ_FAILED,
     ERR_INVALID_FILE,
     ERR_OUT_OF_MEMORY,
+    ERR_NOT_IMPLEMENTED,
     ERR_WRITE_FAILED = 20,
+
+    /// The write operation was deferred and will not be performed until a
+    /// serialization method is called.
+    ERR_WRITE_DEFERRED
 };
 
 }  // namespace post_processor

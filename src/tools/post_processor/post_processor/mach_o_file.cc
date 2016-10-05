@@ -72,7 +72,7 @@ std::unique_ptr<uint8_t[]> MachOFile::ReadSectionData(
   return data;
 }
 
-MachOFile::WriteReturnCode MachOFile::WriteSectionData(
+ReturnCode MachOFile::WriteSectionData(
     const std::string &segment_name,
     const std::string &section_name,
     std::unique_ptr<uint8_t[]> data,
@@ -88,7 +88,7 @@ MachOFile::WriteReturnCode MachOFile::WriteSectionData(
             "ERROR: Attempt to write non-existent section %s:%s.\n",
             segment_name.c_str(),
             section_name.c_str());
-    return WRITE_FAILED;
+    return ERR_WRITE_FAILED;
   }
 
   // Perform the write immediately if possible.
@@ -99,10 +99,10 @@ MachOFile::WriteReturnCode MachOFile::WriteSectionData(
               "ERROR: Failed to write updated section %s:%s.\n",
               segment_name.c_str(),
               section_name.c_str());
-      return WRITE_FAILED;
+      return ERR_WRITE_FAILED;
     }
 
-    return WRITE_OK;
+    return ERR_OK;
   }
 
   SectionPath key(segment_name, section_name);
@@ -112,7 +112,20 @@ MachOFile::WriteReturnCode MachOFile::WriteSectionData(
       (size_t)existing_section_size
   };
 
-  return WRITE_DEFERRED;
+  return ERR_WRITE_DEFERRED;
+}
+
+ReturnCode MachOFile::LoadBuffer(std::vector<uint8_t> *buffer) const {
+  assert(buffer);
+  size_t write_offset = buffer->size();
+  buffer->resize(write_offset + content_size_);
+  uint8_t *dest = buffer->data() + write_offset;
+  fseeko(file_, content_offset_, SEEK_SET);
+  if (fread(dest, 1, content_size_, file_) != content_size_) {
+    return ERR_READ_FAILED;
+  }
+
+  return ERR_OK;
 }
 
 }  // namespace post_processor

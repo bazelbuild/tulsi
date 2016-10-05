@@ -61,7 +61,7 @@ ReturnCode MachOContainer::Read() {
     fclose(file_);
   }
 
-  file_ = fopen(filename_.c_str(), "rb");
+  file_ = fopen(filename_.c_str(), "rb+");
   if (!file_) {
     return ERR_OPEN_FAILED;
   }
@@ -93,6 +93,46 @@ ReturnCode MachOContainer::Read() {
 }
 
 ReturnCode MachOContainer::PerformDeferredWrites() {
+  bool content_32_rewrite_needed =
+      Has32Bit() && content_32_->has_deferred_writes();
+  bool content_64_rewrite_needed =
+      Has64Bit() && content_64_->has_deferred_writes();
+
+  // TODO(abaire): Support full container rewrite.
+  // In practice this is not required for Tulsi since it does not support the
+  // generation of true fat binaries (Bazel always produces a fat container but
+  // only one Mach-O file will be present therein).
+  // Since each Mach-O file returns its entire data map and the various
+  // architectures are completely independent, this should be straightforward to
+  // implement and is omitted for the sake of maintenance/test reduction.
+  if (content_32_rewrite_needed && content_64_rewrite_needed) {
+    fprintf(stderr, "fat binaries are not yet supported.\n");
+    return ERR_NOT_IMPLEMENTED;
+  }
+
+  // TODO(abaire): If this is a single-archive fat container, patch the size
+  // member of the appropriate fat_arch member.
+
+  if (content_32_rewrite_needed) {
+    std::vector<uint8_t> data_32;
+    ReturnCode retval = content_32_->SerializeWithDeferredWrites(&data_32);
+    if (retval) {
+      return retval;
+    }
+    fseeko(file_, content_32_->content_offset(), SEEK_SET);
+    fwrite(data_32.data(), 1, data_32.size(), file_);
+  }
+
+  if (content_64_rewrite_needed) {
+    std::vector<uint8_t> data_64;
+    ReturnCode retval = content_64_->SerializeWithDeferredWrites(&data_64);
+    if (retval) {
+      return retval;
+    }
+    fseeko(file_, content_64_->content_offset(), SEEK_SET);
+    fwrite(data_64.data(), 1, data_64.size(), file_);
+  }
+
   return ERR_OK;
 }
 
@@ -138,34 +178,43 @@ ReturnCode MachOContainer::PeekMagicHeader(FileFormat *fileFormat,
 }
 
 ReturnCode MachOContainer::ReadFatContainer(bool swap_byte_ordering) {
-  fat_header header;
-  if (fread(&header, sizeof(header), 1, file_) != 1) {
+  fat_container_header.reset(new fat_header);
+  if (fread(fat_container_header.get(),
+            sizeof(fat_header),
+            1,
+            file_) != 1) {
     fprintf(stderr, "Failed to read fat header.\n");
     return ERR_READ_FAILED;
   }
   if (swap_byte_ordering) {
-    swap_fat_header(&header, host_byte_order_);
+    swap_fat_header(fat_container_header.get(), host_byte_order_);
   }
 
-  std::unique_ptr<fat_arch[]> archs(new fat_arch[header.nfat_arch]);
-  if (!archs.get()) {
-    fprintf(stderr, "Failed to allocate %d fat headers.\n", header.nfat_arch);
+  fat_archs.reset(new fat_arch[fat_container_header->nfat_arch]);
+  if (!fat_archs.get()) {
+    fprintf(stderr,
+            "Failed to allocate %d fat headers.\n",
+            fat_container_header->nfat_arch);
     return ERR_OUT_OF_MEMORY;
   }
 
-  if (fread(archs.get(),
-            sizeof(archs[0]),
-            header.nfat_arch,
-            file_) != header.nfat_arch) {
-    fprintf(stderr, "Failed to read %d fat headers.\n", header.nfat_arch);
+  if (fread(fat_archs.get(),
+            sizeof(fat_archs[0]),
+            fat_container_header->nfat_arch,
+            file_) != fat_container_header->nfat_arch) {
+    fprintf(stderr,
+            "Failed to read %d fat headers.\n",
+            fat_container_header->nfat_arch);
     return ERR_READ_FAILED;
   }
   if (swap_byte_ordering) {
-    swap_fat_arch(archs.get(), header.nfat_arch, host_byte_order_);
+    swap_fat_arch(fat_archs.get(),
+                  fat_container_header->nfat_arch,
+                  host_byte_order_);
   }
 
-  for (auto i = 0; i < header.nfat_arch; ++i) {
-    const fat_arch &arch_info = archs[i];
+  for (auto i = 0; i < fat_container_header->nfat_arch; ++i) {
+    const fat_arch &arch_info = fat_archs[i];
     fseeko(file_, arch_info.offset, SEEK_SET);
 
     FileFormat format;

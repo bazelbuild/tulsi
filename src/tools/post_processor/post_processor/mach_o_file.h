@@ -24,6 +24,7 @@
 #include <mach-o/swap.h>
 
 #include <cstdio>
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -41,20 +42,6 @@ class SymtabNListResolver;
 /// Base class for Mach-O file manipulation.
 class MachOFile {
  public:
-  /// Status codes for write operations.
-  enum WriteReturnCode {
-    /// The write operation was deferred and will not be performed until
-    /// PerformDeferredWrites is invoked.
-    WRITE_DEFERRED,
-
-    /// The write was completed successfully.
-    WRITE_OK,
-
-    /// The write was attempted but failed.
-    WRITE_FAILED
-  };
-
- public:
   /// Constructs a parser instance for MachO content in the the given filename
   /// with the given offest and size. If verbose is true, user-friendly strings
   /// will be emitted as the file is parsed.
@@ -70,6 +57,7 @@ class MachOFile {
   inline bool has_deferred_writes() const {
     return !deferred_write_actions_.empty();
   }
+  inline off_t content_offset() const { return content_offset_; }
 
   virtual ReturnCode Read() = 0;
 
@@ -89,14 +77,14 @@ class MachOFile {
                                              size_t trailing_bytes = 0) const;
 
   /// Replaces the given section's data with the given data array.
-  WriteReturnCode WriteSectionData(const std::string &segment_name,
-                                   const std::string &section_name,
-                                   std::unique_ptr<uint8_t[]> data,
-                                   size_t data_size);
+  ReturnCode WriteSectionData(const std::string &segment_name,
+                              const std::string &section_name,
+                              std::unique_ptr<uint8_t[]> data,
+                              size_t data_size);
 
-  /// Returns a new buffer containing this Mach-O file's content with any
-  /// deferred writes applied to it.
-  virtual std::vector<uint8_t> SerializeWithDeferredWrites() = 0;
+  /// Appends this Mach-O file's content (with any deferred writes applied to
+  /// it) to the given buffer.
+  virtual ReturnCode SerializeWithDeferredWrites(std::vector<uint8_t> *) = 0;
 
  protected:
   // Provides a set of lookup tables converting data types to strings for
@@ -106,14 +94,19 @@ class MachOFile {
     std::unique_ptr<SymtabNListResolver> symtab_nlist_resolver;
   };
 
-  // (segment, section) used to identify a particular section.
-  typedef std::pair<std::string, std::string> SectionPath;
-
   struct DeferredWriteData {
     std::unique_ptr<uint8_t[]> data;
     size_t data_size;
     size_t existing_data_size;
   };
+
+  // (segment, section) used to identify a particular section.
+  typedef std::pair<std::string, std::string> SectionPath;
+
+ protected:
+  /// Appends the Mach-O file data represented by this instance to the given
+  /// buffer.
+  ReturnCode LoadBuffer(std::vector<uint8_t> *buffer) const;
 
  protected:
   // File from which Mach-O content will be read/written.
@@ -185,7 +178,7 @@ class MachOFileImpl: public MachOFile {
                               off_t *file_offset,
                               off_t *section_size) const;
 
-  virtual std::vector<uint8_t> SerializeWithDeferredWrites();
+  virtual ReturnCode SerializeWithDeferredWrites(std::vector<uint8_t> *);
 
  private:
   struct MachSegment {
@@ -193,6 +186,21 @@ class MachOFileImpl: public MachOFile {
                     NXByteOrder host_byte_order,
                     FILE *file);
 
+    /// Returns the content offset of the section with the given name or -1 if
+    /// no such section exists.
+    inline off_t GetSectionInfoOffset(const std::string &section_name) const {
+      off_t section_info_offset = command_offset + sizeof(command);
+      for (const auto &section : sections) {
+        if (section_name == section.sectname) {
+          return section_info_offset;
+        }
+        section_info_offset += sizeof(section);
+      }
+      return -1;
+    }
+
+    // Offset of this segment's command entry in the Mach-O file.
+    off_t command_offset;
     SegmentCommandType command;
     std::vector<SectionType> sections;
   };
@@ -207,10 +215,24 @@ class MachOFileImpl: public MachOFile {
     std::vector<NListType> debugSymbols;
   };
 
+  // TODO(abaire): Support multiple segments with the same name.
+  struct SegmentResizeInfo {
+    // Delta size for the segment overall.
+    size_t total_size_adjustment;
+
+    // All of the sections within this segment that will be rewritten by
+    // deferred writes.
+    std::list<SectionPath> resized_sections;
+  };
+
  private:
   MachOFileImpl() = delete;
   MachOFileImpl(const MachOFileImpl &) = delete;
   MachOFileImpl &operator=(const MachOFileImpl &) = delete;
+
+  inline ReturnCode CalculateDeferredWriteSegmentResizes(
+      std::map<std::string, SegmentResizeInfo> *resizes,
+      off_t *total_resize) const;
 
  private:
   HeaderType header_;
@@ -280,14 +302,17 @@ MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::Read() {
       if (retval != ERR_OK) {
         return retval;
       }
+      // Update the segment offset such that it is relative to the Mach-O file's
+      // start and not the container.
+      segment.command_offset -= content_offset_;
       segments_.push_back(segment);
     } else if (cmd.cmd == LC_SYMTAB) {
       off_t cmd_end_offset = ftello(file_) + cmd.cmdsize;
       ReturnCode retval = symbol_table_.Read(swap_byte_ordering_,
-                                           host_byte_order_,
-                                           content_offset_,
-                                           file_,
-                                           resolver_set_);
+                                             host_byte_order_,
+                                             content_offset_,
+                                             file_,
+                                             resolver_set_);
       if (retval != ERR_OK) {
         return retval;
       }
@@ -306,6 +331,7 @@ MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::MachSegment::
 Read(bool swap_byte_ordering,
      NXByteOrder host_byte_order,
      FILE *file) {
+  command_offset = ftello(file);
   if (fread(&command, sizeof(command), 1, file) != 1) {
     fprintf(stderr, "Failed to read segment load command.\n");
     return ERR_READ_FAILED;
@@ -453,10 +479,147 @@ MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::GetSectionInfo(
 }
 
 template<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_DECL>
-std::vector<uint8_t>
+ReturnCode
 MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::
-SerializeWithDeferredWrites() {
-  return std::vector<uint8_t>();
+SerializeWithDeferredWrites(std::vector<uint8_t> *buffer) {
+  assert(buffer);
+  size_t mach_o_data_offset = buffer->size();
+  ReturnCode retval = LoadBuffer(buffer);
+  if (retval != ERR_OK) {
+    return retval;
+  }
+  if (deferred_write_actions_.empty()) { return ERR_OK; }
+
+  off_t total_resize = 0;
+  std::map<std::string, SegmentResizeInfo> segment_resizes;
+  retval = CalculateDeferredWriteSegmentResizes(&segment_resizes,
+                                                &total_resize);
+  if (retval != ERR_OK) {
+    return retval;
+  }
+
+  // Handle the segments in reverse order, moving each to its new location and
+  // patching relevant offsets.
+  auto i = segments_.rbegin();
+
+  // Offset of the first byte after the end of the segment data for the Mach-O
+  // image in the buffer.
+  size_t segment_data_end_offset =
+      (mach_o_data_offset + i->command.fileoff + i->command.filesize);
+  size_t trailing_bytes = buffer->size() - segment_data_end_offset;
+
+  buffer->resize(buffer->size() + total_resize);
+
+  // Shift up any trailing data.
+  if (trailing_bytes) {
+    uint8_t *trailing_data = buffer->data() + segment_data_end_offset;
+    uint8_t *trailing_data_new = trailing_data + total_resize;
+    memmove(trailing_data_new, trailing_data, trailing_bytes);
+  }
+
+  uint8_t *mach_data = buffer->data() + mach_o_data_offset;
+  auto i_end = segments_.rend();
+  for (; i != i_end && total_resize; ++i) {
+    off_t command_offset = i->command_offset;
+    const SegmentCommandType &command = i->command;
+
+    uint8_t *segment_data = mach_data + command.fileoff;
+    uint8_t *segment_data_new = segment_data + total_resize;
+
+    size_t segment_resize_bytes = 0;
+    auto resize = segment_resizes.find(command.segname);
+    if (resize != segment_resizes.end()) {
+      const SegmentResizeInfo &resize_info = resize->second;
+      segment_resize_bytes = resize_info.total_size_adjustment;
+    }
+
+    // Resize this segment by shifting the target pointer down.
+    segment_data_new -= segment_resize_bytes;
+    total_resize -= segment_resize_bytes;
+
+    // Move the existing data to the new location, then patch the segment
+    // command to reflect the changes.
+    SegmentCommandType *command_new =
+        reinterpret_cast<SegmentCommandType *>(mach_data + command_offset);
+    off_t new_data_offset = off_t(segment_data_new - mach_data);
+    command_new->fileoff = new_data_offset;
+    command_new->filesize += segment_resize_bytes;
+
+    if (resize == segment_resizes.end()) {
+      // If no sections are changed, the existing data is simply moved to the
+      // new location.
+      memmove(segment_data_new, segment_data, command.filesize);
+    } else {
+      // Walk the section list, copying unmodified sections and applying the new
+      // write data to modified ones, patching the section table offsets as
+      // necessary.
+      size_t section_info_offset = command_offset + sizeof(SegmentCommandType);
+      SectionType *first_section_info =
+          reinterpret_cast<SectionType *>(mach_data + section_info_offset);
+
+      // segment_resize_bytes provides the total size increase for this segment,
+      // sections that are not being replaced are shifted up by the resize
+      // amount and the resize is decremented as replacement sections are
+      // injected.
+      size_t section_shift = segment_resize_bytes;
+      SectionType *cur_section_info =
+          &first_section_info[command_new->nsects - 1];
+      for (; cur_section_info >= first_section_info; --cur_section_info) {
+        SectionPath path(command.segname, cur_section_info->sectname);
+        const auto write_data_it = deferred_write_actions_.find(path);
+        if (write_data_it == deferred_write_actions_.end()) {
+          uint8_t *section_data = mach_data + cur_section_info->offset;
+          uint8_t *section_data_new = section_data + section_shift;
+          cur_section_info->offset += section_shift;
+          memmove(section_data_new, section_data, cur_section_info->size);
+        } else {
+          const DeferredWriteData &write_data = write_data_it->second;
+          section_shift -= write_data.data_size - write_data.existing_data_size;
+          cur_section_info->offset += section_shift;
+          uint8_t *section_data_new = mach_data + cur_section_info->offset;
+          memcpy(section_data_new, write_data.data.get(), write_data.data_size);
+        }
+      }
+    }
+  }
+  // Any remaining segments are unchanged and can be ignored.
+
+  return ERR_OK;
+}
+
+template<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_DECL>
+ReturnCode
+MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::
+CalculateDeferredWriteSegmentResizes(
+    std::map<std::string, SegmentResizeInfo> *resizes,
+    off_t *total_resize) const {
+  assert(resizes && total_resize);
+
+  *total_resize = 0;
+  for (const auto &write_action : deferred_write_actions_) {
+    const auto &write_data = write_action.second;
+    if (write_data.data_size < write_data.existing_data_size) {
+      fprintf(stderr, "Shrinking segments is not yet implemented.\n");
+      return ERR_NOT_IMPLEMENTED;
+    }
+    auto adjustment = write_data.data_size - write_data.existing_data_size;
+
+    const auto &segment_name = write_action.first.first;
+    auto resize_it = resizes->find(segment_name);
+    if (resize_it == resizes->end()) {
+      SegmentResizeInfo resize_info;
+      resize_info.total_size_adjustment = adjustment;
+      resize_info.resized_sections.push_back(write_action.first);
+      (*resizes)[segment_name] = std::move(resize_info);
+    } else {
+      SegmentResizeInfo &resize_info = resize_it->second;
+      resize_info.total_size_adjustment += adjustment;
+      resize_info.resized_sections.push_back(write_action.first);
+    }
+    *total_resize += adjustment;
+  }
+
+  return ERR_OK;
 }
 
 #undef POST_PROCESSOR_MACHOFILE_H_TEMPLATE_DECL

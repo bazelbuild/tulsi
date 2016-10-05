@@ -16,6 +16,7 @@
 #define POST_PROCESSOR_MACHOCONTAINER_H_
 
 #include <architecture/byte_order.h>
+#include <mach-o/fat.h>
 
 #include <string>
 
@@ -74,6 +75,9 @@ class MachOContainer {
   NXByteOrder host_byte_order_;
   std::unique_ptr<MachOFile> content_32_;
   std::unique_ptr<MachOFile> content_64_;
+
+  std::unique_ptr<fat_header> fat_container_header;
+  std::unique_ptr<fat_arch[]> fat_archs;
 };
 
 }  // namespace post_processor

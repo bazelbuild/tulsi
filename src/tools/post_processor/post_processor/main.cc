@@ -115,7 +115,10 @@ int main(int argc, const char* argv[]) {
       }
     }
 
-    // TODO(abaire): Process any deferred writes.
+    retval = f.PerformDeferredWrites();
+    if (retval) {
+      return retval;
+    }
   }
 
   return 0;
@@ -307,12 +310,13 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
       }
 
       if (data_was_modified) {
-        MachOFile::WriteReturnCode retval = f->WriteSectionData(
+        ReturnCode retval = f->WriteSectionData(
             segment,
             section,
             std::move(new_section_data),
             new_data_length);
-        if (retval == MachOFile::WRITE_FAILED) {
+        if (retval != post_processor::ERR_OK &&
+            retval != post_processor::ERR_WRITE_DEFERRED) {
           return 1;
         }
       }
@@ -344,12 +348,12 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
       }
 
       if (data_was_modified) {
-        MachOFile::WriteReturnCode retval = f->WriteSectionData(
-            segment,
-            section,
-            std::move(new_section_data),
-            new_data_length);
-        if (retval == MachOFile::WRITE_FAILED) {
+        ReturnCode retval = f->WriteSectionData(segment,
+                                                section,
+                                                std::move(new_section_data),
+                                                new_data_length);
+        if (retval != post_processor::ERR_OK &&
+            retval != post_processor::ERR_WRITE_DEFERRED) {
           return 1;
         }
       }
