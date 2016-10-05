@@ -19,11 +19,13 @@
 #include <vector>
 
 #include "covmap_section.h"
+#include "dwarf_string_patcher.h"
 #include "mach_o_container.h"
 #include "mach_o_file.h"
 
 
 using post_processor::CovmapSection;
+using post_processor::DWARFStringPatcher;
 using post_processor::MachOContainer;
 using post_processor::MachOFile;
 using post_processor::ReturnCode;
@@ -170,120 +172,6 @@ std::unique_ptr<uint8_t[]> PatchCovmapSection(
                                                     data_was_modified);
 }
 
-void UpdateDWARFStringSectionInPlace(char *data,
-                                     size_t data_length,
-                                     const std::string &old_prefix,
-                                     const std::string &new_prefix,
-                                     bool *data_was_modified) {
-  assert(data && data_was_modified);
-  *data_was_modified = false;
-  size_t old_prefix_length = old_prefix.length();
-  const char *old_prefix_cstr = old_prefix.c_str();
-  size_t new_prefix_length = new_prefix.length();
-  const char *new_prefix_cstr = new_prefix.c_str();
-
-  // The data table is an offset-indexed contiguous array of null terminated
-  // ASCII or UTF-8 strings, so strings whose lengths are being reduced or
-  // maintained may be modified in place without changing the run-time
-  // behavior.
-  // TODO(abaire): Support UTF-8.
-  char *start = data;
-  char *end = start + data_length;
-  while (start < end) {
-    size_t entry_length = strlen(start);
-    if (entry_length >= old_prefix_length &&
-        !memcmp(start, old_prefix_cstr, old_prefix_length)) {
-      *data_was_modified = true;
-      size_t suffix_length = entry_length - old_prefix_length;
-      memcpy(start, new_prefix_cstr, new_prefix_length);
-      memmove(start + new_prefix_length,
-              start + old_prefix_length,
-              suffix_length);
-      start[new_prefix_length + suffix_length] = 0;
-    }
-    start += entry_length + 1;
-  }
-}
-
-std::unique_ptr<uint8_t[]> UpdateDWARFStringSection(
-    char *data,
-    size_t data_length,
-    const std::string &old_prefix,
-    const std::string &new_prefix,
-    size_t *new_data_length,
-    bool *data_was_modified) {
-  assert(data && new_data_length && data_was_modified);
-  *data_was_modified = false;
-  auto old_prefix_begin = old_prefix.begin();
-  auto old_prefix_end = old_prefix.end();
-  size_t old_prefix_length = old_prefix.length();
-  size_t delta_length = new_prefix.length() - old_prefix.length();
-
-  std::list<std::string> new_string_table;
-  *new_data_length = 0;
-  char *start = data;
-  char *end = start + data_length;
-  while (start < end) {
-    std::string entry(start);
-    size_t len = entry.length();
-    start += len + 1;
-    *new_data_length += len + 1;
-
-    if (len >= old_prefix_length &&
-        std::equal(old_prefix_begin, old_prefix_end, entry.begin())) {
-      *data_was_modified = true;
-      entry.replace(0, old_prefix_length, new_prefix);
-      *new_data_length += delta_length;
-    }
-    new_string_table.push_back(entry);
-  }
-
-  std::unique_ptr<uint8_t[]> new_data(new uint8_t[*new_data_length]);
-  uint8_t *offset = new_data.get();
-  for (auto str : new_string_table) {
-    auto str_length = str.length();
-    memcpy(offset, str.c_str(), str_length);
-    offset += str_length + 1;
-  }
-
-  return new_data;
-}
-
-// A null must be appended to the data buffer to ensure that a malformed
-// table can be processed in a predictable manner.
-// *data_length must be set to the size of the data array in bytes on input
-// and will be updated to the returned buffer size on successful output.
-std::unique_ptr<uint8_t[]> PatchDWARFStringSection(
-    const std::string &old_prefix,
-    const std::string &new_prefix,
-    std::unique_ptr<uint8_t[]> data,
-    size_t *data_length,
-    bool *data_was_modified) {
-
-  if (new_prefix.length() <= old_prefix.length()) {
-    UpdateDWARFStringSectionInPlace(reinterpret_cast<char *>(data.get()),
-                                    *data_length,
-                                    old_prefix,
-                                    new_prefix,
-                                    data_was_modified);
-    // Remove the trailing null.
-    --(*data_length);
-    return data;
-  }
-
-  size_t new_data_length;
-  std::unique_ptr<uint8_t[]> &&new_data = UpdateDWARFStringSection(
-      reinterpret_cast<char *>(data.get()),
-      *data_length,
-      old_prefix,
-      new_prefix,
-      &new_data_length,
-      data_was_modified);
-  // The last entry need not be null terminated.
-  *data_length = new_data_length - 1;
-  return std::move(new_data);
-}
-
 int Patch(MachOFile *f, const PatchSettings &settings) {
   if (settings.patch_coverage_maps) {
     const std::string segment("__DATA");
@@ -324,39 +212,11 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
   }
 
   if (settings.patch_dwarf_symbols) {
-    const std::string segment("__DWARF");
-    const std::string section("__debug_str");
-    off_t data_length;
-    std::unique_ptr<uint8_t[]> &&data =
-        f->ReadSectionData(segment,
-                           section,
-                           &data_length,
-                           1 /* null terminate the data */);
-    if (!data) {
-      fprintf(stderr, "Warning: Failed to find __debug_str section.\n");
-    } else {
-      size_t new_data_length = (size_t)data_length;
-      bool data_was_modified = false;
-      std::unique_ptr<uint8_t[]> &&new_section_data = PatchDWARFStringSection(
-          settings.old_prefix,
-          settings.new_prefix,
-          std::move(data),
-          &new_data_length,
-          &data_was_modified);
-      if (!new_section_data) {
-        return 1;
-      }
-
-      if (data_was_modified) {
-        ReturnCode retval = f->WriteSectionData(segment,
-                                                section,
-                                                std::move(new_section_data),
-                                                new_data_length);
-        if (retval != post_processor::ERR_OK &&
-            retval != post_processor::ERR_WRITE_DEFERRED) {
-          return 1;
-        }
-      }
+    DWARFStringPatcher patcher(settings.old_prefix, settings.new_prefix);
+    ReturnCode retval = patcher.Patch(f);
+    if (retval != post_processor::ERR_OK &&
+        retval != post_processor::ERR_WRITE_DEFERRED) {
+      return 1;
     }
   }
 

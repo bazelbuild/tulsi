@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D448E8E1D9DB8AD00177F7E /* mach_o_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D448E8D1D9DB8AD00177F7E /* mach_o_file.cc */; };
+		3D70F5E51DA541EC0047C19B /* dwarf_string_patcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D70F5E31DA541EC0047C19B /* dwarf_string_patcher.cc */; };
 		3D82482A1D9D73CD0092A343 /* mach_o_container.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D8248281D9D73CD0092A343 /* mach_o_container.cc */; };
 		3DC2E3C91D635C0A00DCF7D3 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3DC2E3C81D635C0A00DCF7D3 /* main.cc */; };
 		AB18C220E0250070E2A7B288 /* symtab_nlist_resolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = AB18CE7D5CA828ECAB9E338B /* symtab_nlist_resolver.cc */; };
@@ -29,6 +30,8 @@
 
 /* Begin PBXFileReference section */
 		3D448E8D1D9DB8AD00177F7E /* mach_o_file.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_o_file.cc; sourceTree = "<group>"; };
+		3D70F5E31DA541EC0047C19B /* dwarf_string_patcher.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dwarf_string_patcher.cc; sourceTree = "<group>"; };
+		3D70F5E41DA541EC0047C19B /* dwarf_string_patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dwarf_string_patcher.h; sourceTree = "<group>"; };
 		3D8248281D9D73CD0092A343 /* mach_o_container.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_o_container.cc; sourceTree = "<group>"; };
 		3D8248291D9D73CD0092A343 /* mach_o_container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_o_container.h; sourceTree = "<group>"; };
 		3DC2E3C51D635C0A00DCF7D3 /* post_processor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = post_processor; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +78,8 @@
 			children = (
 				AB18CB8CB0AE195372AE7B25 /* covmap_section.cc */,
 				AB18C0E3DCD4BF5F5F1DD249 /* covmap_section.h */,
+				3D70F5E31DA541EC0047C19B /* dwarf_string_patcher.cc */,
+				3D70F5E41DA541EC0047C19B /* dwarf_string_patcher.h */,
 				AB18C25F7DBB623DF72455FB /* mach_load_command_resolver.cc */,
 				AB18CC202741A5FCF0B50DAD /* mach_load_command_resolver.h */,
 				3D8248281D9D73CD0092A343 /* mach_o_container.cc */,
@@ -149,6 +154,7 @@
 				3D82482A1D9D73CD0092A343 /* mach_o_container.cc in Sources */,
 				3DC2E3C91D635C0A00DCF7D3 /* main.cc in Sources */,
 				AB18CA53B536D78FC0B34A51 /* covmap_section.cc in Sources */,
+				3D70F5E51DA541EC0047C19B /* dwarf_string_patcher.cc in Sources */,
 				AB18C2949FFB1788F849D501 /* mach_load_command_resolver.cc in Sources */,
 				AB18C220E0250070E2A7B288 /* symtab_nlist_resolver.cc in Sources */,
 			);
