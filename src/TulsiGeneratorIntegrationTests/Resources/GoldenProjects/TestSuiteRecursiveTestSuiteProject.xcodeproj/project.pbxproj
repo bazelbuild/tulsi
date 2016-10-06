@@ -401,7 +401,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
 				PRODUCT_NAME = TestSuiteXCTest;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -446,7 +445,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
 				PRODUCT_NAME = tagged_xctest_2;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -470,7 +468,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
 				PRODUCT_NAME = tagged_xctest_1;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -513,7 +510,6 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
-				SWIFT_VERSION = 3.0;
 			};
 			name = Fastbuild;
 		};
@@ -534,7 +530,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
 				PRODUCT_NAME = TestSuiteXCTest;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -581,7 +576,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
 				PRODUCT_NAME = tagged_xctest_2;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -606,7 +600,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
 				PRODUCT_NAME = tagged_xctest_1;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -651,7 +644,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -672,7 +664,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
 				PRODUCT_NAME = TestSuiteXCTest;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -719,7 +710,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
 				PRODUCT_NAME = tagged_xctest_2;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -744,7 +734,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
 				PRODUCT_NAME = tagged_xctest_1;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -790,7 +779,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -814,7 +802,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
 				PRODUCT_NAME = TestSuiteXCTest;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -867,7 +854,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
 				PRODUCT_NAME = tagged_xctest_2;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -895,7 +881,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
 				PRODUCT_NAME = tagged_xctest_1;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -956,7 +941,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
 				PRODUCT_NAME = TestSuiteXCTest;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -1009,7 +993,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_2;
 				PRODUCT_NAME = tagged_xctest_2;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -1037,7 +1020,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.tagged_xctest_1;
 				PRODUCT_NAME = tagged_xctest_1;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;

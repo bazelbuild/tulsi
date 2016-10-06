@@ -1,0 +1,24 @@
+{
+  "manifestVersion" : 2,
+  "targets" : {
+    "_idx_SwiftLibrary_EA7FC891" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_swift\/Application.ipa"
+    ]
+  },
+  "artifacts" : [
+    "Application.app\/**",
+    "_idx_SwiftLibrary_EA7FC891.framework\/**",
+    "bazel-bin\/tulsi_e2e_swift\/Application-MergedInfo.plist"
+  ],
+  "fileReferences" : [
+    "..\/..\/tulsi_e2e_swift\/BUILD",
+    "..\/..\/tulsi_e2e_swift\/SwiftLibrary\/srcs\/a.swift",
+    "..\/..\/tulsi_e2e_swift\/SwiftLibrary\/srcs\/b.swift"
+  ]
+}

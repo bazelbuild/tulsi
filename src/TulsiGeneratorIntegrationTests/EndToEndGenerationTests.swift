@@ -39,7 +39,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
-    guard let projectURL = generateProjectNamed("SimpleProject",
+    let projectName = "SimpleProject"
+    guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
                                                 additionalFilePaths: additionalFilePaths,
@@ -48,7 +49,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
       return
     }
 
-    let diffLines = diffProjectAt(projectURL, againstGoldenProject: "SimpleProject")
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
@@ -71,7 +72,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
-    guard let projectURL = generateProjectNamed("ComplexSingleProject",
+    let projectName = "ComplexSingleProject"
+    guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/...",
                                                               "bazel-bin/...",
@@ -82,7 +84,33 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
       return
     }
 
-    let diffLines = diffProjectAt(projectURL, againstGoldenProject: "ComplexSingleProject")
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
+  func test_SwiftProject() {
+    let testDir = "tulsi_e2e_swift"
+    installBUILDFile("Swift", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: Set<BuildLabel>())]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "SwiftProject"
+    guard let projectURL = generateProjectNamed(projectName,
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/...",
+                                                              "bazel-bin/...",
+                                                              "bazel-genfiles/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
+      // The test has already been marked as failed.
+      return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 }
@@ -119,7 +147,8 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
                  linkedTargetLabels: Set<BuildLabel>()),
     ]
 
-    guard let projectURL = generateProjectNamed("TestSuiteExplicitXCTestsProject",
+    let projectName = "TestSuiteExplicitXCTestsProject"
+    guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
                                                 outputDir: "tulsi_e2e_output/") else {
@@ -128,7 +157,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     }
 
     let diffLines = diffProjectAt(projectURL,
-                                  againstGoldenProject: "TestSuiteExplicitXCTestsProject")
+                                  againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
@@ -140,7 +169,8 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
                  linkedTargetLabels: Set<BuildLabel>()),
     ]
 
-    guard let projectURL = generateProjectNamed("TestSuiteLocalTaggedTestsProject",
+    let projectName = "TestSuiteLocalTaggedTestsProject"
+    guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
                                                 outputDir: "tulsi_e2e_output/") else {
@@ -149,7 +179,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     }
 
     let diffLines = diffProjectAt(projectURL,
-                                  againstGoldenProject: "TestSuiteLocalTaggedTestsProject")
+                                  againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
@@ -161,7 +191,8 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
                  linkedTargetLabels: Set<BuildLabel>()),
     ]
 
-    guard let projectURL = generateProjectNamed("TestSuiteRecursiveTestSuiteProject",
+    let projectName = "TestSuiteRecursiveTestSuiteProject"
+    guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
                                                 outputDir: "tulsi_e2e_output/") else {
@@ -170,7 +201,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     }
 
     let diffLines = diffProjectAt(projectURL,
-                                  againstGoldenProject: "TestSuiteRecursiveTestSuiteProject")
+                                  againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 }

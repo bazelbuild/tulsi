@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D029B581C6421B400779E8E /* TaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029B571C6421B400779E8E /* TaskRunner.swift */; };
 		3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */; };
+		3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3D062FA11DA6C76900E79AD4 /* Swift.BUILD */; };
 		3D0849F11C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */; };
 		3D0849FC1C73AE77005F5ABA /* ProjectEditorTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */; };
 		3D084A021C73C902005F5ABA /* OptionsEditorModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D084A011C73C902005F5ABA /* OptionsEditorModelProtocol.swift */; };
@@ -189,6 +190,7 @@
 /* Begin PBXFileReference section */
 		3D029B571C6421B400779E8E /* TaskRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskRunner.swift; sourceTree = "<group>"; };
 		3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorPackageManagerViewController.swift; sourceTree = "<group>"; };
+		3D062FA11DA6C76900E79AD4 /* Swift.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Swift.BUILD; path = Resources/Swift.BUILD; sourceTree = "<group>"; };
 		3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigDocument.swift; sourceTree = "<group>"; };
 		3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorTabViewController.swift; sourceTree = "<group>"; };
 		3D084A011C73C902005F5ABA /* OptionsEditorModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorModelProtocol.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				3D7B77C61C9098A4004786EF /* GoldenProjects */,
 				3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */,
 				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
+				3D062FA11DA6C76900E79AD4 /* Swift.BUILD */,
 				3DAE206B1CF497D800C2C0D0 /* test.WORKSPACE */,
 				3DC463B71CA2DAAB00DD8A42 /* TestSuite */,
 			);
@@ -793,6 +796,7 @@
 				3DAA08861CF49316007BE8A2 /* PlatformDependent.BUILD in Resources */,
 				3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */,
 				3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */,
+				3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */,
 				3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

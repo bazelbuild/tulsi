@@ -85,7 +85,9 @@ class BazelIntegrationTestCase: XCTestCase {
     super.tearDown()
     cleanCreatedFiles()
     packagePathFetcher = nil
-    localizedMessageLogger.stopLogging()
+    if localizedMessageLogger != nil {
+      localizedMessageLogger.stopLogging()
+    }
     localizedMessageLogger = nil
   }
 

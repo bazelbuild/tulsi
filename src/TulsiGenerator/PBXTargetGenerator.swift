@@ -969,9 +969,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + data.frameworkSearchPaths.joinWithSeparator(" ")
     }
 
-    // There is currently no way to make Bazel use any SWIFT_VERSION other than the default for
-    // Xcode 8+, so SWIFT_VERSION is hardcoded to 3.0 for now.
-    buildSettings["SWIFT_VERSION"] = "3.0"
+    if let swiftVersion = data.swiftLanguageVersion {
+      buildSettings["SWIFT_VERSION"] = swiftVersion
+    }
 
     if !data.swiftIncludePaths.isEmpty {
       let paths = data.swiftIncludePaths.joinWithSeparator(" ")

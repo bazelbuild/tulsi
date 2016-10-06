@@ -1237,6 +1237,28 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     validateIndexerTarget(indexerTargetName, sourceFileNames: sourceFileNames, inTargets: targets)
   }
 
+  func testGenerateIndexerWithSwiftLanguageVersion() {
+    let buildLabel = BuildLabel("test/app:TestApp")
+    let swiftLanguageVersion = "99"
+    let ruleEntry = makeTestRuleEntry("test/app:TestApp",
+                                      type: "ios_application",
+                                      swiftLanguageVersion: swiftLanguageVersion,
+                                      sourceFiles: sourceFileNames)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: sourceFileNames,
+                          swiftLanguageVersion: swiftLanguageVersion,
+                          inTargets: targets)
+  }
+
   func testGenerateBUILDRefsWithoutSourceFilter() {
     let buildFilePath = "this/file/should/not/BUILD"
     pathFilters.insert("this/file/should")
@@ -1576,6 +1598,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
+                                 swiftLanguageVersion: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
                              type: type,
@@ -1587,6 +1610,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              bundleID: bundleID,
                              extensionBundleID: extensionBundleID,
                              buildFilePath: buildFilePath,
+                             swiftLanguageVersion: swiftLanguageVersion,
                              implicitIPATarget: implicitIPATarget)
   }
 
@@ -1606,6 +1630,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
+                                 swiftLanguageVersion: String? = nil,
                                  implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     let artifactInfos = artifacts.map() { TestBazelFileInfo(fullPath: $0) }
     let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
@@ -1619,6 +1644,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      bundleID: bundleID,
                      extensionBundleID: extensionBundleID,
                      buildFilePath: buildFilePath,
+                     swiftLanguageVersion: swiftLanguageVersion,
                      implicitIPATarget: implicitIPATarget)
   }
 
@@ -1739,18 +1765,21 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      sourceFileNames: [String]?,
                                      pchFile: PBXFileReference? = nil,
                                      bridgingHeader: String? = nil,
+                                     swiftLanguageVersion: String? = nil,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
                                      line: UInt = #line) {
     var expectedBuildSettings = [
         "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
-        "SWIFT_VERSION": "3.0",
     ]
     if pchFile != nil {
       expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WR)/\(pchFile!.path!)"
     }
     if bridgingHeader != nil {
         expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!
+    }
+    if let swiftLanguageVersion = swiftLanguageVersion {
+      expectedBuildSettings["SWIFT_VERSION"] = swiftLanguageVersion
     }
 
     var expectedBuildPhases = [BuildPhaseDefinition]()
