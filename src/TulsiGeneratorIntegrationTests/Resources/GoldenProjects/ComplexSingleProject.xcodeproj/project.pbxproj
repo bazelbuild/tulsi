@@ -1142,6 +1142,7 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
@@ -1161,6 +1162,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
@@ -1281,67 +1283,81 @@
 		44936BD63008588600000006 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000007 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000008 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000009 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD6300858860000000A /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD6300858860000000B /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_Watch2ExtensionBinary_WatchExtensionBinary_53B2291C;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD6300858860000000C /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
@@ -1358,6 +1374,7 @@
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
@@ -1378,6 +1395,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -1503,74 +1521,88 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D0000000B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_Watch2ExtensionBinary_WatchExtensionBinary_53B2291C;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D0000000C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -1588,6 +1620,7 @@
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
@@ -1608,6 +1641,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -1734,74 +1768,88 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_FD777BDB;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/BridgingHeaderGenerator/outs/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_WR)/relative/SubLibraryWithDefines/local/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE90000000B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_TodayExtensionBinary_Watch2ExtensionBinary_WatchExtensionBinary_53B2291C;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE90000000C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-bin/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/Binary/includes/second/include $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_XCTest_7F8584F1;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -1820,6 +1868,7 @@
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
@@ -1842,6 +1891,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1995,6 +2045,7 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
@@ -2017,6 +2068,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Release;
 		};

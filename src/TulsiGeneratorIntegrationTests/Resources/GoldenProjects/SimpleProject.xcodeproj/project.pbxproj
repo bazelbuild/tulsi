@@ -449,6 +449,7 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_simple/XCTest.ipa\nbazel-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
@@ -467,6 +468,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
@@ -524,35 +526,42 @@
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000004 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000005 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_simple/XCTest.ipa\nbazel-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
@@ -572,6 +581,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -631,38 +641,45 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_simple/XCTest.ipa\nbazel-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
@@ -682,6 +699,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -742,38 +760,45 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_simple/XCTest.ipa\nbazel-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
@@ -795,6 +820,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -859,6 +885,7 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_simple/XCTest.ipa\nbazel-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
@@ -880,6 +907,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Release;
 		};

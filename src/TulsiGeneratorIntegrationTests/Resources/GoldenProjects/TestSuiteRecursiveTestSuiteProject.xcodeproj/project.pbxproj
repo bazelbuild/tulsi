@@ -388,6 +388,7 @@
 		44936BD63008588600000000 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
@@ -405,6 +406,7 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
@@ -432,6 +434,7 @@
 		44936BD63008588600000002 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
@@ -449,12 +452,14 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD63008588600000003 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
@@ -472,6 +477,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
@@ -508,14 +514,17 @@
 		44936BD63008588600000005 /* Fastbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
 		};
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
@@ -534,6 +543,7 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -562,6 +572,7 @@
 		44936BD67EED3C4D00000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
@@ -580,12 +591,14 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
@@ -604,6 +617,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -641,15 +655,18 @@
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
@@ -668,6 +685,7 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -696,6 +714,7 @@
 		44936BD6A3D45CE900000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
@@ -714,12 +733,14 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
@@ -738,6 +759,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -776,15 +798,18 @@
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
@@ -806,6 +831,7 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -837,6 +863,7 @@
 		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
@@ -858,12 +885,14 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
 		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
@@ -885,6 +914,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -924,6 +954,7 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
@@ -945,6 +976,7 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -976,6 +1008,7 @@
 		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
@@ -997,12 +1030,14 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Release;
 		};
 		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
@@ -1024,6 +1059,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
+				VALID_ARCHS = x86_64;
 			};
 			name = __TulsiTestRunner_Release;
 		};
