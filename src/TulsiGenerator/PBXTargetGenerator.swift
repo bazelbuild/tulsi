@@ -1277,17 +1277,34 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   private func hasSwiftDependencies(entry: RuleEntry,
                                     ruleEntryMap: [BuildLabel: RuleEntry]) -> Bool {
-    if entry.type == "swift_library" {
-      return true
-    }
-    for dep in entry.dependencies {
-      guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else { continue }
+    var processedEntries = [String: Bool]()
 
-      if hasSwiftDependencies(dependentEntry, ruleEntryMap: ruleEntryMap) {
+    func _hasSwiftDependencies(entry: RuleEntry) -> Bool {
+      if entry.type == "swift_library" {
         return true
       }
+      for dep in entry.dependencies {
+        if let val = processedEntries[dep] {
+          if val {
+            return true
+          }
+          continue
+        }
+
+        guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else {
+          processedEntries[dep] = false
+          continue
+        }
+
+        let depHasSwift = _hasSwiftDependencies(dependentEntry)
+        processedEntries[dep] = depHasSwift
+        if depHasSwift {
+          return true
+        }
+      }
+      return false
     }
-    return false
+    return _hasSwiftDependencies(entry)
   }
 
   private func createBuildPhaseForRuleEntry(entry: RuleEntry) -> PBXShellScriptBuildPhase? {
