@@ -634,7 +634,8 @@ class BazelBuildBridge(object):
                          (self.bazel_bin_path))
       return 0
 
-    self.real_bazel_bin_path = os.path.realpath(self.bazel_bin_path)
+    self.real_bazel_bin_path = (
+        os.path.abspath(os.path.realpath(self.bazel_bin_path)))
     if not os.path.isdir(self.real_bazel_bin_path):
       try:
         os.makedirs(self.real_bazel_bin_path)
@@ -653,7 +654,8 @@ class BazelBuildBridge(object):
       self._PrintWarning('Failed to derive Bazel build root path from %r' %
                          self.real_bazel_bin_path)
     else:
-      self.bazel_build_workspace_root = os.path.join(*path_components[:-3])
+      self.bazel_build_workspace_root = (
+          os.sep + os.path.join(*path_components[:-3]))
     return 0
 
   def _InstallArtifact(self):
