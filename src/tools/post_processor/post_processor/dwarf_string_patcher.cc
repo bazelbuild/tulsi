@@ -20,6 +20,49 @@
 
 namespace post_processor {
 
+namespace {
+
+enum DW_FORM {
+  DW_FORM_addr = 0x01,
+  DW_FORM_block2 = 0x03,
+  DW_FORM_block4 = 0x04,
+  DW_FORM_data2 = 0x05,
+  DW_FORM_data4 = 0x06,
+  DW_FORM_data8 = 0x07,
+  DW_FORM_string = 0x08,
+  DW_FORM_block = 0x09,
+  DW_FORM_block1 = 0x0a,
+  DW_FORM_data1 = 0x0b,
+  DW_FORM_flag = 0x0c,
+  DW_FORM_sdata = 0x0d,
+  DW_FORM_strp = 0x0e,
+  DW_FORM_udata = 0x0f,
+  DW_FORM_ref_addr = 0x10,
+  DW_FORM_ref1 = 0x11,
+  DW_FORM_ref2 = 0x12,
+  DW_FORM_ref4 = 0x13,
+  DW_FORM_ref8 = 0x14,
+  DW_FORM_ref_udata = 0x15,
+  DW_FORM_indirect = 0x16,
+};
+
+enum DataSize {
+  DataSize_DWORD,
+  DataSize_QWORD,
+};
+
+inline ReturnCode PatchfoAttributeValue(
+    std::function<bool(uint64_t, size_t)> write_func,
+    const std::map<size_t, size_t> &string_relocation_table,
+    DWARFBufferReader *reader,
+    uint64_t form_code,
+    uint8_t address_size,
+    uint16_t dwarf_version,
+    std::function<bool(uint64_t *)> read_func);
+
+}  // namespace
+
+
 DWARFStringPatcher::DWARFStringPatcher(
     const std::string &old_prefix,
     const std::string &new_prefix) :
@@ -38,12 +81,12 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   // table can be processed in a predictable manner (DWARF string tables
   // generally omit the final NULL terminator and use the section size to
   // delimit the final string).
-  std::unique_ptr<uint8_t[]> &&data =
+  std::unique_ptr<uint8_t[]> &&string_data =
       f->ReadSectionData(segment,
                          string_section,
                          &data_length,
                          1 /* null terminate the data */);
-  if (!data) {
+  if (!string_data) {
     fprintf(stderr, "Warning: Failed to find __debug_str section.\n");
     return ERR_OK;
   }
@@ -52,7 +95,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
 
   // Handle the simple in-place update case.
   if (new_prefix_.length() <= old_prefix_.length()) {
-    UpdateStringSectionInPlace(reinterpret_cast<char *>(data.get()),
+    UpdateStringSectionInPlace(reinterpret_cast<char *>(string_data.get()),
                                static_cast<size_t>(data_length),
                                &data_was_modified);
     if (data_was_modified) {
@@ -60,7 +103,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
       --data_length;
       return f->WriteSectionData(segment,
                                  string_section,
-                                 std::move(data),
+                                 std::move(string_data),
                                  static_cast<size_t>(data_length));
     }
     return ERR_OK;
@@ -74,7 +117,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   size_t new_data_length = (size_t)data_length;
   std::map<size_t, size_t> string_relocation_table;
   std::unique_ptr<uint8_t[]> &&new_data = RewriteStringSection(
-      reinterpret_cast<char *>(data.get()),
+      reinterpret_cast<char *>(string_data.get()),
       static_cast<size_t>(data_length),
       &string_relocation_table,
       &new_data_length,
@@ -93,14 +136,13 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
     return retval;
   }
 
-  retval = ProcessAbbrevSection(*f);
+  std::map<size_t, AbbreviationTable> abbreviation_table_map;
+  retval = ProcessAbbrevSection(*f, &abbreviation_table_map);
   if (retval != ERR_OK) {
     return retval;
   }
 
-  // TODO(abaire): Patch string refs in the other DWARF sections.
-
-  return ERR_NOT_IMPLEMENTED;
+  return PatchInfoSection(f, string_relocation_table, abbreviation_table_map);
 }
 
 void DWARFStringPatcher::UpdateStringSectionInPlace(
@@ -190,7 +232,10 @@ std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteStringSection(
   return new_data;
 }
 
-ReturnCode DWARFStringPatcher::ProcessAbbrevSection(const MachOFile &f) const {
+ReturnCode DWARFStringPatcher::ProcessAbbrevSection(
+    const MachOFile &f,
+    std::map<size_t, AbbreviationTable> *table_map) const {
+  assert(table_map);
   off_t data_length;
   std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData("__DWARF",
                                                         "__debug_abbrev",
@@ -205,7 +250,6 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(const MachOFile &f) const {
                            f.swap_byte_ordering());
 
   size_t cur_table_offset = 0;
-  std::map<size_t, AbbreviationTable> table_map;
 
   while (reader.bytes_remaining()) {
     Abbreviation abbreviation;
@@ -220,15 +264,18 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(const MachOFile &f) const {
     if (end_of_table) {
       cur_table_offset = reader.read_position();
     } else {
-      if (table_map.find(cur_table_offset) == table_map.end()) {
-        table_map[cur_table_offset] = AbbreviationTable();
+      auto table_map_it = table_map->find(cur_table_offset);
+      if (table_map_it == table_map->end()) {
+        auto result = table_map->insert(
+            std::make_pair(cur_table_offset, AbbreviationTable()));
+        table_map_it = result.first;
       }
-      AbbreviationTable &table = table_map[cur_table_offset];
+      AbbreviationTable &table = table_map_it->second;
       table[abbreviation.abbreviation_code] = std::move(abbreviation);
     }
   }
 
-  return ERR_NOT_IMPLEMENTED;
+  return ERR_OK;
 }
 
 ReturnCode DWARFStringPatcher::ProcessAbbreviation(DWARFBufferReader *reader,
@@ -274,5 +321,309 @@ ReturnCode DWARFStringPatcher::ProcessAbbreviation(DWARFBufferReader *reader,
 
   return ERR_OK;
 }
+
+ReturnCode DWARFStringPatcher::PatchInfoSection(
+    MachOFile *f,
+    const std::map<size_t, size_t> &string_relocation_table,
+    const std::map<size_t, AbbreviationTable> &abbreviation_table_map) const {
+  const std::string segment = "__DWARF";
+  const std::string section = "__debug_info";
+  off_t data_length;
+  std::unique_ptr<uint8_t[]> &&data =
+    f->ReadSectionData(segment,
+                       section,
+                       &data_length);
+  if (!data) {
+    fprintf(stderr, "Failed to find __debug_info section.\n");
+    return ERR_INVALID_FILE;
+  }
+
+  bool data_was_modified = false;
+  DWARFBufferReader reader(data.get(),
+                           static_cast<size_t>(data_length),
+                           f->swap_byte_ordering());
+
+  while (reader.bytes_remaining() > 0) {
+    uint64_t compilation_unit_length;
+    uint32_t compilation_unit_length_32;
+    if (!reader.ReadDWORD(&compilation_unit_length_32)) {
+      fprintf(stderr, "Failed to read DWARF info section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    std::function<bool(uint64_t *)> read_func;
+    std::function<bool(uint64_t, size_t)> write_func;
+
+    if (compilation_unit_length_32 & 0x80000000) {
+      if (!reader.ReadQWORD(&compilation_unit_length)) {
+        fprintf(stderr, "Failed to read DWARF info section.\n");
+        return ERR_INVALID_FILE;
+      }
+      read_func = [&](uint64_t *out) -> bool {
+        return reader.ReadQWORD(out);
+      };
+      write_func = [&](uint64_t value, size_t offset) -> bool {
+        uint64_t *target = reinterpret_cast<uint64_t*>(data.get() + offset);
+        if (f->swap_byte_ordering()) {
+          OSSwapInt64(value);
+        }
+        *target = value;
+        data_was_modified = true;
+        return true;
+      };
+    } else {
+      compilation_unit_length = compilation_unit_length_32;
+      read_func = [&](uint64_t *out) -> bool {
+        uint32_t val;
+        if (!reader.ReadDWORD(&val)) {
+          fprintf(stderr, "Failed to read DWARF info section.\n");
+          return false;
+        }
+        *out = val;
+        return true;
+      };
+      write_func = [&](uint64_t value, size_t offset) -> bool {
+        uint32_t actual_value = static_cast<uint32_t>(value);
+        uint32_t *target = reinterpret_cast<uint32_t*>(data.get() + offset);
+        if (f->swap_byte_ordering()) {
+          OSSwapInt32(actual_value);
+        }
+        *target = actual_value;
+        data_was_modified = true;
+        return true;
+      };
+    }
+
+    size_t unit_end_position = reader.read_position() + compilation_unit_length;
+
+    uint16_t dwarf_version;
+    if (!reader.ReadWORD(&dwarf_version)) {
+      fprintf(stderr, "Failed to read DWARF info section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    uint64_t abbrev_offset;
+    if (!read_func(&abbrev_offset)) {
+      return ERR_INVALID_FILE;
+    }
+    uint8_t address_size;
+    if (!reader.ReadByte(&address_size)) {
+      fprintf(stderr, "Failed to read DWARF info section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    auto abbreviation_table_it = abbreviation_table_map.find(abbrev_offset);
+    if (abbreviation_table_it == abbreviation_table_map.end()) {
+      fprintf(stderr,
+              "Invalid abbreviation table reference %llu in DWARF info "
+                  "section.\n",
+              abbrev_offset);
+      return ERR_INVALID_FILE;
+    }
+    const AbbreviationTable &abbreviation_table = abbreviation_table_it->second;
+
+    while (reader.read_position() < unit_end_position) {
+      uint64_t abbrev_code;
+      if (!reader.ReadULEB128(&abbrev_code)) {
+        fprintf(stderr, "Failed to read DWARF info section.\n");
+        return ERR_INVALID_FILE;
+      }
+      if (abbrev_code == 0) {
+        // Skip this null padding entry.
+        continue;
+      }
+
+      auto abbreviation_it = abbreviation_table.find(abbrev_code);
+      if (abbreviation_it == abbreviation_table.end()) {
+        fprintf(stderr, "Failed to read DWARF info section.\n");
+        return ERR_INVALID_FILE;
+      }
+      const Abbreviation &abbreviation = abbreviation_it->second;
+      for (auto &attribute : abbreviation.attributes) {
+        ReturnCode retval = PatchfoAttributeValue(write_func,
+                                                  string_relocation_table,
+                                                  &reader,
+                                                  attribute.second,
+                                                  address_size,
+                                                  dwarf_version,
+                                                  read_func);
+        if (retval != ERR_OK) {
+          fprintf(stderr, "Invalid entry in DWARF info section.\n");
+          return retval;
+        }
+      }
+    }
+  }
+
+  if (!data_was_modified) {
+    return ERR_OK;
+  }
+
+  return f->WriteSectionData(segment,
+                             section,
+                             std::move(data),
+                             static_cast<size_t>(data_length));
+}
+
+namespace {
+
+inline ReturnCode PatchfoAttributeValue(
+    std::function<bool(uint64_t, size_t)> write_func,
+    const std::map<size_t, size_t> &string_relocation_table,
+    DWARFBufferReader *reader,
+    uint64_t form_code,
+    uint8_t address_size,
+    uint16_t dwarf_version,
+    std::function<bool(uint64_t *)> read_func) {
+  assert(reader);
+
+  switch (form_code) {
+    case DW_FORM_addr:
+      reader->SkipForward(address_size);
+      return ERR_OK;
+
+    case  DW_FORM_block2: {
+      uint16_t block_len;
+      if (!reader->ReadWORD(&block_len)) {
+        return ERR_INVALID_FILE;
+      }
+      reader->SkipForward(block_len);
+      return ERR_OK;
+    }
+
+    case DW_FORM_block4: {
+      uint32_t block_len;
+      if (!reader->ReadDWORD(&block_len)) {
+        return ERR_INVALID_FILE;
+      }
+      reader->SkipForward(block_len);
+      return ERR_OK;
+    }
+
+    case DW_FORM_data1:
+    case DW_FORM_ref1:
+    case DW_FORM_flag:
+      reader->SkipForward(1);
+      return ERR_OK;
+
+    case DW_FORM_data2:
+    case DW_FORM_ref2:
+      reader->SkipForward(2);
+      return ERR_OK;
+
+    case DW_FORM_data4:
+    case DW_FORM_ref4:
+      reader->SkipForward(4);
+      return ERR_OK;
+
+    case DW_FORM_data8:
+    case DW_FORM_ref8:
+      reader->SkipForward(8);
+      return ERR_OK;
+
+    case DW_FORM_string: {
+      std::string str;
+      if (!reader->ReadASCIIZ(&str)) {
+        return ERR_INVALID_FILE;
+      }
+      return ERR_OK;
+    }
+
+    case DW_FORM_block: {
+      uint64_t block_len;
+      if (!reader->ReadULEB128(&block_len)) {
+        return ERR_INVALID_FILE;
+      }
+      reader->SkipForward(block_len);
+      return ERR_OK;
+    }
+
+    case DW_FORM_block1: {
+      uint8_t block_len;
+      if (!reader->ReadByte(&block_len)) {
+        return ERR_INVALID_FILE;
+      }
+      reader->SkipForward(block_len);
+      return ERR_OK;
+    }
+
+    case DW_FORM_sdata: {
+      // TODO(abaire): Should be a signed LEB128 (if this data is ever used).
+      uint64_t data;
+      if (!reader->ReadULEB128(&data)) {
+        return ERR_INVALID_FILE;
+      }
+      return ERR_OK;
+    }
+
+    case DW_FORM_strp: {
+      size_t pos = reader->read_position();
+      uint64_t string_offset;
+      if (!read_func(&string_offset)) {
+        return ERR_INVALID_FILE;
+      }
+
+      // TODO(abaire): Patch the offset;
+      auto table_relocation = string_relocation_table.find(string_offset);
+      if (table_relocation == string_relocation_table.end()) {
+        fprintf(stderr,
+                "Failed to relocate string offset %llu.\n",
+                string_offset);
+        return ERR_INVALID_FILE;
+      }
+
+      size_t new_offset = table_relocation->second;
+      if (new_offset != string_offset) {
+        if (!write_func(new_offset, pos)) {
+          return ERR_WRITE_FAILED;
+        }
+      }
+      return ERR_OK;
+    }
+
+    case DW_FORM_udata:
+    case DW_FORM_ref_udata: {
+      uint64_t data;
+      if (!reader->ReadULEB128(&data)) {
+        return ERR_INVALID_FILE;
+      }
+      return ERR_OK;
+    }
+
+    case DW_FORM_ref_addr: {
+      if (dwarf_version <= 2) {
+        reader->SkipForward(address_size);
+        return ERR_OK;
+      }
+      uint64_t addr;
+      if (!read_func(&addr)) {
+        return ERR_INVALID_FILE;
+      }
+      return ERR_OK;
+    }
+
+    case DW_FORM_indirect: {
+      uint64_t real_encoding;
+      if (!reader->ReadULEB128(&real_encoding)) {
+        return ERR_INVALID_FILE;
+      }
+      return PatchfoAttributeValue(write_func,
+                                   string_relocation_table,
+                                   reader,
+                                   real_encoding,
+                                   address_size,
+                                   dwarf_version,
+                                   read_func);
+    }
+
+    default:
+      fprintf(stderr, "Unknown attribute form 0x%llX\n", form_code);
+      return ERR_NOT_IMPLEMENTED;
+  }
+
+  return ERR_NOT_IMPLEMENTED;
+}
+
+}  // namespace
 
 }  // namespace post_processor

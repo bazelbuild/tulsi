@@ -62,10 +62,18 @@ class DWARFStringPatcher {
       size_t *new_data_length,
       bool *data_was_modified);
 
-  ReturnCode ProcessAbbrevSection(const MachOFile &f) const;
+  ReturnCode ProcessAbbrevSection(
+      const MachOFile &f,
+      std::map<size_t, AbbreviationTable> *abbreviation_table) const;
+
   ReturnCode ProcessAbbreviation(DWARFBufferReader *reader,
                                  Abbreviation *out,
                                  bool *end_of_table) const;
+
+  ReturnCode PatchInfoSection(
+    MachOFile *f,
+    const std::map<size_t, size_t> &string_relocation_table,
+    const std::map<size_t, AbbreviationTable> &abbreviation_table_map) const;
 
  private:
   const std::string old_prefix_;

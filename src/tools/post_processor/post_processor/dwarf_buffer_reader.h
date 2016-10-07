@@ -15,12 +15,8 @@
 #ifndef POST_PROCESSOR_DWARFBUFFERREADER_H_
 #define POST_PROCESSOR_DWARFBUFFERREADER_H_
 
-#include <sys/types.h>
-
 #include <cassert>
-#include <cstddef>
-#include <cstdint>
-#include <cstring>
+#include <string>
 
 namespace post_processor {
 
@@ -67,6 +63,9 @@ class DWARFBufferReader {
     read_ptr_ += length;
     return true;
   }
+
+  /// Reads a null-terminated ASCII string into the given buffer.
+  bool ReadASCIIZ(std::string *out);
 
   /// Sets the read pointer to the given offset. No validation is performed so
   /// care must be taken to ensure that the given offset is not past the end of

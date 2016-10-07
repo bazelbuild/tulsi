@@ -76,7 +76,7 @@ bool DWARFBufferReader::ReadQWORD(uint64_t *out) {
 bool DWARFBufferReader::ReadULEB128(uint64_t *out) {
   assert(out);
   *out = 0;
-  uint shift = 0;
+  uint64_t shift = 0;
   uint8_t b = 0;
 
   do {
@@ -85,9 +85,30 @@ bool DWARFBufferReader::ReadULEB128(uint64_t *out) {
       return false;
     }
 
-    *out += ((uint)(b & 0x7F)) << shift;
+    *out += ((uint64_t)(b & 0x7F)) << shift;
     shift += 7;
   } while (b & 0x80);
+
+  return true;
+}
+
+bool DWARFBufferReader::ReadASCIIZ(std::string *out) {
+  assert(out);
+  out->clear();
+
+  uint8_t c;
+  while (1) {
+    if (!ReadByte(&c)) {
+      fprintf(stderr, "Failed to read ASCIIZ value.\n");
+      return false;
+    }
+
+    if (c) {
+      out->push_back(static_cast<char>(c));
+    } else {
+      break;
+    }
+  }
 
   return true;
 }
