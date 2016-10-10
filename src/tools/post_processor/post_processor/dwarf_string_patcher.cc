@@ -51,6 +51,13 @@ enum DataSize {
   DataSize_QWORD,
 };
 
+inline bool PatchString(std::string *value,
+                        size_t value_len,
+                        size_t old_prefix_length,
+                        const std::string::const_iterator &old_prefix_begin,
+                        const std::string::const_iterator &old_prefix_end,
+                        const std::string &new_prefix);
+
 inline ReturnCode PatchfoAttributeValue(
     std::function<bool(uint64_t, size_t)> write_func,
     const std::map<size_t, size_t> &string_relocation_table,
@@ -63,16 +70,24 @@ inline ReturnCode PatchfoAttributeValue(
 }  // namespace
 
 
-DWARFStringPatcher::DWARFStringPatcher(
-    const std::string &old_prefix,
-    const std::string &new_prefix) :
+DWARFStringPatcher::DWARFStringPatcher(const std::string &old_prefix,
+                                       const std::string &new_prefix,
+                                       bool verbose) :
     old_prefix_(old_prefix),
-    new_prefix_(new_prefix) {
+    new_prefix_(new_prefix),
+    verbose_(verbose) {
 }
 
 ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   assert(f);
 
+  ReturnCode retval = PatchLineInfoSection(f);
+  if (retval != ERR_OK) {
+    return retval;
+  }
+
+  // Patch the string table and any references into it.
+  VerbosePrint("Processing string section.\n");
   const std::string segment("__DWARF");
   const std::string string_section("__debug_str");
   off_t data_length;
@@ -99,6 +114,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
                                static_cast<size_t>(data_length),
                                &data_was_modified);
     if (data_was_modified) {
+      VerbosePrint("Updating string section in-place.\n");
       // Remove the trailing null.
       --data_length;
       return f->WriteSectionData(segment,
@@ -128,10 +144,11 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
 
   // The last entry need not be null terminated.
   --new_data_length;
-  ReturnCode retval = f->WriteSectionData(segment,
-                                          string_section,
-                                          std::move(new_data),
-                                          new_data_length);
+  VerbosePrint("Rewriting string section.\n");
+  retval = f->WriteSectionData(segment,
+                               string_section,
+                               std::move(new_data),
+                               new_data_length);
   if (retval != ERR_OK && retval != ERR_WRITE_DEFERRED) {
     return retval;
   }
@@ -208,10 +225,13 @@ std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteStringSection(
     start += len_plus_one;
     *new_data_length += len_plus_one;
 
-    if (len >= old_prefix_length &&
-        std::equal(old_prefix_begin, old_prefix_end, entry.begin())) {
+    if (PatchString(&entry,
+                    len,
+                    old_prefix_length,
+                    old_prefix_begin,
+                    old_prefix_end,
+                    new_prefix_)) {
       *data_was_modified = true;
-      entry.replace(0, old_prefix_length, new_prefix_);
       *new_data_length += delta_length;
     }
     new_string_table.push_back(entry);
@@ -236,6 +256,8 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(
     const MachOFile &f,
     std::map<size_t, AbbreviationTable> *table_map) const {
   assert(table_map);
+  VerbosePrint("Processing abbreviation section.\n");
+
   off_t data_length;
   std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData("__DWARF",
                                                         "__debug_abbrev",
@@ -326,6 +348,9 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
     MachOFile *f,
     const std::map<size_t, size_t> &string_relocation_table,
     const std::map<size_t, AbbreviationTable> &abbreviation_table_map) const {
+  assert(f);
+  VerbosePrint("Patching info section.\n");
+
   const std::string segment = "__DWARF";
   const std::string section = "__debug_info";
   off_t data_length;
@@ -376,7 +401,6 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
       read_func = [&](uint64_t *out) -> bool {
         uint32_t val;
         if (!reader.ReadDWORD(&val)) {
-          fprintf(stderr, "Failed to read DWARF info section.\n");
           return false;
         }
         *out = val;
@@ -465,7 +489,238 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
                              static_cast<size_t>(data_length));
 }
 
+ReturnCode DWARFStringPatcher::PatchLineInfoSection(MachOFile *f) {
+  assert(f);
+  VerbosePrint("Patching line info section.\n");
+  const std::string segment = "__DWARF";
+  const std::string section = "__debug_line";
+  off_t data_length;
+  std::unique_ptr<uint8_t[]> &&data =
+    f->ReadSectionData(segment,
+                       section,
+                       &data_length);
+  if (!data) {
+    fprintf(stderr, "Warning: Failed to find __debug_line section.\n");
+    return ERR_OK;
+  }
+
+  std::list<LineInfoPatch> patch_actions;
+  size_t patched_section_size_increase = 0;
+  ReturnCode retval = ProcessLineInfoData(data.get(),
+                                          data_length,
+                                          f->swap_byte_ordering(),
+                                          &patch_actions,
+                                          &patched_section_size_increase);
+  if (retval != ERR_OK) {
+    return retval;
+  }
+
+  if (patch_actions.empty()) {
+    return ERR_OK;
+  }
+
+  // If the section does not need to be resized, patches can simply be applied
+  // in place without adjusting any lengths (string tables are never reduced in
+  // size).
+  if (!patched_section_size_increase) {
+    VerbosePrint("Updating line info section in-place.\n");
+    uint8_t *data_ptr = data.get();
+    for (const auto &action : patch_actions) {
+      memcpy(data_ptr + action.string_table_start_offset,
+             action.new_string_table.get(),
+             action.string_table_length);
+    }
+
+    return f->WriteSectionData(segment,
+                               section,
+                               std::move(data),
+                               static_cast<size_t>(data_length));
+  }
+
+  // TODO(abaire): Generate a new section.
+  VerbosePrint("Rewriting line info section.\n");
+  return ERR_NOT_IMPLEMENTED;
+}
+
+ReturnCode DWARFStringPatcher::ProcessLineInfoData(
+    uint8_t *data,
+    off_t data_length,
+    bool swap_byte_ordering,
+    std::list<LineInfoPatch> *patch_actions,
+    size_t *patched_section_size_increase) {
+  assert(data && patch_actions && patched_section_size_increase);
+  DWARFBufferReader reader(data,
+                           static_cast<size_t>(data_length),
+                           swap_byte_ordering);
+
+  auto old_prefix_begin = old_prefix_.begin();
+  auto old_prefix_end = old_prefix_.end();
+  size_t old_prefix_length = old_prefix_.length();
+
+  // The number of additional bytes required by the patched strings.
+  *patched_section_size_increase = 0;
+
+  while (reader.bytes_remaining() > 0) {
+    size_t compilation_unit_length_offset = reader.read_position();
+    uint64_t compilation_unit_length;
+    uint32_t compilation_unit_length_32;
+    if (!reader.ReadDWORD(&compilation_unit_length_32)) {
+      fprintf(stderr, "Failed to read DWARF line section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    std::function<bool(uint64_t *)> read_func;
+    if (compilation_unit_length_32 == 0xffffffff) {
+      if (!reader.ReadQWORD(&compilation_unit_length)) {
+        fprintf(stderr, "Failed to read DWARF line section.\n");
+        return ERR_INVALID_FILE;
+      }
+      read_func = [&](uint64_t *out) -> bool {
+          return reader.ReadQWORD(out);
+      };
+    } else {
+      compilation_unit_length = compilation_unit_length_32;
+      read_func = [&](uint64_t *out) -> bool {
+        uint32_t val;
+        if (!reader.ReadDWORD(&val)) {
+          return false;
+        }
+        *out = val;
+        return true;
+      };
+    }
+    size_t end_offset = reader.read_position() + compilation_unit_length;
+
+    uint16_t version;
+    if (!reader.ReadWORD(&version)) {
+      fprintf(stderr, "Failed to read DWARF line section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    size_t header_length_offset = reader.read_position();
+    uint64_t header_length;
+    if (!read_func(&header_length)) {
+      fprintf(stderr, "Failed to read DWARF line section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    // Skip the minimum_instruction_length (ubyte).
+    size_t bytes_to_skip = 1;
+
+    if (version == 4) {
+      // Skip maximum_operations_per_instruction.
+      ++bytes_to_skip;
+    }
+
+    // Skip default_is_stmt, line_base, and line_range, each a ubyte.
+    bytes_to_skip += 3;
+    reader.SkipForward(bytes_to_skip);
+
+    uint8_t opcode_base;
+    if (!reader.ReadByte(&opcode_base)) {
+      fprintf(stderr, "Failed to read DWARF line section.\n");
+      return ERR_INVALID_FILE;
+    }
+
+    // Skip standard_opcode_lengths, each a ubyte from opcode 1 to
+    // opcode_base - 1.
+    reader.SkipForward(static_cast<size_t>(opcode_base) - 1);
+
+    // Parse the directory table, a set of contiguous ASCIIZ values followed by
+    // a null.
+    size_t string_table_start_offset = reader.read_position();
+    bool data_was_modified = false;
+    std::list<std::string> patched_string_table;
+    size_t new_string_table_length = 1;  // Count the null termination byte.
+    while (1) {
+      std::string entry;
+      if (!reader.ReadASCIIZ(&entry)) {
+        fprintf(stderr, "Failed to read DWARF line section.\n");
+        return ERR_INVALID_FILE;
+      }
+      if (entry.empty()) {
+        break;
+      }
+
+      if (PatchString(&entry,
+                      entry.length(),
+                      old_prefix_length,
+                      old_prefix_begin,
+                      old_prefix_end,
+                      new_prefix_)) {
+        data_was_modified = true;
+      }
+      patched_string_table.push_back(entry);
+      new_string_table_length += entry.length() + 1;
+    }
+
+    if (data_was_modified) {
+      size_t string_table_length =
+          reader.read_position() - string_table_start_offset;
+
+      if (new_string_table_length == string_table_length - 1) {
+        // If the new string table is exactly one byte shorter than the old, the
+        // table must be grown by two bytes (as an empty string signifies the
+        // end of the table).
+        patched_string_table.push_back("!");
+        new_string_table_length += 2;
+      } else if (new_string_table_length < string_table_length) {
+        // Whenever possible, the string table is patched in place by adding a
+        // padding string.
+        size_t padded_string_length =
+            string_table_length - new_string_table_length - 1;
+        patched_string_table.push_back(std::string(padded_string_length, '!'));
+        new_string_table_length = string_table_length;
+      }
+
+      std::unique_ptr<uint8_t[]> new_string_table(
+          new uint8_t[new_string_table_length]);
+      char *buf = reinterpret_cast<char *>(new_string_table.get());
+      for (const auto &s : patched_string_table) {
+        size_t len = s.size();
+        memcpy(buf, s.data(), len);
+        buf += len;
+        *buf = 0;
+        ++buf;
+      }
+      new_string_table[new_string_table_length - 1] = 0;
+
+      patch_actions->push_back(LineInfoPatch {
+          compilation_unit_length,
+          compilation_unit_length_offset,
+          header_length,
+          header_length_offset,
+          string_table_start_offset,
+          string_table_length,
+          std::move(new_string_table),
+          new_string_table_length
+      });
+
+      patched_section_size_increase +=
+          new_string_table_length - string_table_length;
+    }
+
+    reader.SeekToOffset(end_offset);
+  }
+  return ERR_OK;
+}
+
 namespace {
+
+inline bool PatchString(std::string *value,
+                        size_t value_len,
+                        size_t old_prefix_length,
+                        const std::string::const_iterator &old_prefix_begin,
+                        const std::string::const_iterator &old_prefix_end,
+                        const std::string &new_prefix) {
+  assert(value);
+  if (value_len < old_prefix_length ||
+      !std::equal(old_prefix_begin, old_prefix_end, value->begin())) {
+    return false;
+  }
+  value->replace(0, old_prefix_length, new_prefix);
+  return true;
+}
 
 inline ReturnCode PatchfoAttributeValue(
     std::function<bool(uint64_t, size_t)> write_func,

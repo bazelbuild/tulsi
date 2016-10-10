@@ -25,8 +25,9 @@ MachOFile::MachOFile(const std::string &filename,
     content_offset_(content_offset),
     content_size_(content_size),
     host_byte_order_(NXHostByteOrder()),
-    swap_byte_ordering_(swap_byte_ordering) {
-  if (verbose) {
+    swap_byte_ordering_(swap_byte_ordering),
+    verbose_(verbose) {
+  if (verbose_) {
     resolver_set_.command_resolver.reset(new MachLoadCommandResolver());
     resolver_set_.symtab_nlist_resolver.reset(new SymtabNListResolver());
   }
@@ -77,7 +78,9 @@ ReturnCode MachOFile::WriteSectionData(
     const std::string &section_name,
     std::unique_ptr<uint8_t[]> data,
     size_t data_size) {
-
+  VerbosePrint("Writing section data: %s::%s.\n",
+               segment_name.c_str(),
+               section_name.c_str());
   off_t file_offset;
   off_t existing_section_size;
   if (!GetSectionInfo(segment_name,

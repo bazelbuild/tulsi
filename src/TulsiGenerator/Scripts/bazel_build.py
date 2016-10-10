@@ -220,14 +220,13 @@ class _OptionsParser(object):
   def _ParseVariableOptions(self, args):
     """Parses flag-based args, returning (message, exit_code)."""
 
+    verbose_re = re.compile('-(v+)$')
+
     while args:
       arg = args[0]
       args = args[1:]
 
-      if arg == '--verbose' or arg == '-v':
-        self.verbose += 1
-
-      elif arg == '--install_generated_artifacts':
+      if arg == '--install_generated_artifacts':
         self.install_generated_artifacts = True
 
       elif arg.startswith('--bazel_startup_options'):
@@ -269,8 +268,15 @@ class _OptionsParser(object):
       elif arg == '--patch_lldb_cwd':
         self.patch_lldb_cwd = True
 
+      elif arg == '--verbose':
+        self.verbose += 1
+
       else:
-        return ('Unknown option "%s"\n%s' % (arg, self._UsageMessage()), 1)
+        match = verbose_re.match(arg)
+        if match:
+          self.verbose += len(match.group(1))
+        else:
+          return ('Unknown option "%s"\n%s' % (arg, self._UsageMessage()), 1)
 
     return (None, 0)
 
@@ -1062,16 +1068,22 @@ class BazelBuildBridge(object):
 
     self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
                                               self.workspace_root), 1)
-    returncode, output = self._RunSubprocess([
+    args = [
         self.post_processor_binary,
         '-c',
+    ]
+    if self.verbose > 1:
+      args.append('-v')
+    args.extend([
         target_binary,
         self.bazel_build_workspace_root,
         self.workspace_root
     ])
+    returncode, output = self._RunSubprocess(args)
     if returncode:
-      self._PrintWarning('Coverage map patching failed on binary %r. Code '
-                         'coverage will probably fail.' % target_binary)
+      self._PrintWarning('Coverage map patching failed on binary %r (%d). Code '
+                         'coverage will probably fail.' %
+                         (target_binary, returncode))
       self._PrintWarning('Output: %s' % output or '<no output>')
       return 0
 
@@ -1095,6 +1107,8 @@ class BazelBuildBridge(object):
       os.chmod(binary_path, 0755)
 
     args = [self.post_processor_binary, '-d']
+    if self.verbose > 1:
+      args.append('-v')
     args.extend(binaries)
     args.extend([self.bazel_build_workspace_root, self.workspace_root])
 
@@ -1102,9 +1116,9 @@ class BazelBuildBridge(object):
                                               self.workspace_root), 1)
     returncode, output = self._RunSubprocess(args)
     if returncode:
-      self._PrintWarning('DWARF path patching failed on dSYM %r. Breakpoints '
-                         'and other debugging actions will probably fail.' %
-                         dsym_bundle_path)
+      self._PrintWarning('DWARF path patching failed on dSYM %r (%d). '
+                         'Breakpoints and other debugging actions will '
+                         'probably fail.' % (dsym_bundle_path, returncode))
       self._PrintWarning('Output: %s' % output or '<no output>')
       return 0
 
@@ -1183,9 +1197,9 @@ class BazelBuildBridge(object):
       components[0] = os.sep
     return components
 
-  @staticmethod
-  def _RunSubprocess(cmd):
+  def _RunSubprocess(self, cmd):
     """Runs the given command as a subprocess, returning (exit_code, output)."""
+    self._PrintVerbose('%r' % cmd, 1)
     process = subprocess.Popen(cmd,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)

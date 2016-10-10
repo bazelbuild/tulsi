@@ -17,6 +17,7 @@
 
 #include <sys/types.h>
 
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -33,7 +34,8 @@ class MachOFile;
 class DWARFStringPatcher {
  public:
   DWARFStringPatcher(const std::string &old_prefix,
-                     const std::string &new_prefix);
+                     const std::string &new_prefix,
+                     bool verbose = false);
 
   ReturnCode Patch(MachOFile *f);
 
@@ -49,6 +51,30 @@ class DWARFStringPatcher {
   };
 
   typedef std::map<uint64_t, Abbreviation> AbbreviationTable;
+
+  /// Encapsulates the set of information needed to patch a since compilation
+  /// unit's line info.
+  struct LineInfoPatch {
+    uint64_t compilation_unit_length;
+
+    /// The original offset of the unit_length field.
+    size_t compilation_unit_length_offset;
+
+    uint64_t header_length;
+
+    /// The original offset of the header_length field.
+    size_t header_length_offset;
+
+    // The original offset of the string table.
+    size_t string_table_start_offset;
+    // The length in bytes of the unmodified string table, including the null
+    // delimiter.
+    size_t string_table_length;
+
+    std::unique_ptr<uint8_t[]> new_string_table;
+    // The updated length of the string table.
+    size_t new_string_table_length;
+  };
 
  private:
   void UpdateStringSectionInPlace(char *data,
@@ -75,9 +101,28 @@ class DWARFStringPatcher {
     const std::map<size_t, size_t> &string_relocation_table,
     const std::map<size_t, AbbreviationTable> &abbreviation_table_map) const;
 
+  ReturnCode PatchLineInfoSection(MachOFile *f);
+  ReturnCode ProcessLineInfoData(uint8_t *data,
+                                 off_t data_length,
+                                 bool swap_byte_ordering,
+                                 std::list<LineInfoPatch> *patch_actions,
+                                 size_t *patched_section_size_increase);
+
+  inline void VerbosePrint(const char *fmt, ...) const {
+    if (!verbose_) {
+      return;
+    }
+
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+  }
+
  private:
   const std::string old_prefix_;
   const std::string new_prefix_;
+  bool verbose_;
 };
 
 }  // namespace post_processor

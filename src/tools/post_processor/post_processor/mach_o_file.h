@@ -86,6 +86,17 @@ class MachOFile {
   /// it) to the given buffer.
   virtual ReturnCode SerializeWithDeferredWrites(std::vector<uint8_t> *) = 0;
 
+  inline void VerbosePrint(const char *fmt, ...) const {
+    if (!verbose_) {
+      return;
+    }
+
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+  }
+
  protected:
   // Provides a set of lookup tables converting data types to strings for
   // verbose-mode output.
@@ -122,6 +133,7 @@ class MachOFile {
   NXByteOrder host_byte_order_;
   bool swap_byte_ordering_;
 
+  bool verbose_;
   ResolverSet resolver_set_;
 
   std::map<SectionPath, DeferredWriteData> deferred_write_actions_;
@@ -376,7 +388,7 @@ Read(bool swap_byte_ordering,
   }
 
   size_t string_table_offset = command.stroff + file_offset;
-  std::unique_ptr<char> string_table(new char[command.strsize]);
+  std::unique_ptr<char[]> string_table(new char[command.strsize]);
   fseek(file, string_table_offset, SEEK_SET);
   if (fread(string_table.get(), 1, command.strsize, file) != command.strsize) {
     fprintf(stderr, "Failed to read symbol string table.\n");
@@ -541,8 +553,9 @@ SerializeWithDeferredWrites(std::vector<uint8_t> *buffer) {
     // command to reflect the changes.
     SegmentCommandType *command_new =
         reinterpret_cast<SegmentCommandType *>(mach_data + command_offset);
-    off_t new_data_offset = off_t(segment_data_new - mach_data);
-    command_new->fileoff = new_data_offset;
+    size_t new_data_offset = segment_data_new - mach_data;
+    command_new->fileoff =
+        static_cast<__typeof__(command_new->fileoff)>(new_data_offset);
     command_new->filesize += segment_resize_bytes;
 
     if (resize == segment_resizes.end()) {

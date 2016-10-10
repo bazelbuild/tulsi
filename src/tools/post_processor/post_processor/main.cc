@@ -39,10 +39,12 @@ struct PatchSettings {
 
   bool patch_dwarf_symbols;  // Whether or not to patch DWARF paths.
   bool patch_coverage_maps;  // Whether or not to patch LLVM coverage maps.
+
+  bool verbose;  // Enables verbose output.
 };
 
 void PrintUsage(const char *executable_name);
-int Patch(MachOFile *, const PatchSettings &);
+ReturnCode Patch(MachOFile *, const PatchSettings &);
 
 }  // namespace
 
@@ -50,17 +52,19 @@ int Patch(MachOFile *, const PatchSettings &);
 int main(int argc, const char* argv[]) {
   if (argc < 4) {
     PrintUsage(argv[0]);
-    return 1;
+    return 127;
   }
 
-  bool verbose = false;
   PatchSettings patch_settings;
+  patch_settings.patch_coverage_maps = false;
+  patch_settings.patch_dwarf_symbols = false;
+  patch_settings.verbose = false;
   std::vector<std::string> filenames;
   for (int i = 1; i < argc - 2; ++i) {
     const char *arg = argv[i];
 
     if (!strcmp(arg, "-v") || !strcmp(arg, "--verbose")) {
-      verbose = true;
+      patch_settings.verbose = true;
       continue;
     }
 
@@ -76,17 +80,17 @@ int main(int argc, const char* argv[]) {
 
     if (arg[0] == '-') {
       fprintf(stderr, "Unknown option %s\n", arg);
-      return 1;
+      return 127;
     }
 
     filenames.push_back(arg);
   }
 
-  if (!verbose &&
+  if (!patch_settings.verbose &&
       !patch_settings.patch_dwarf_symbols &&
       !patch_settings.patch_coverage_maps) {
     PrintUsage(argv[0]);
-    return 1;
+    return 127;
   }
 
   patch_settings.old_prefix = argv[argc - 2];
@@ -94,35 +98,38 @@ int main(int argc, const char* argv[]) {
 
   for (auto &filename : filenames) {
     patch_settings.filename = filename;
-    MachOContainer f(filename, verbose);
+    MachOContainer f(filename, patch_settings.verbose);
     ReturnCode retval = f.Read();
     if (retval != post_processor::ERR_OK) {
       fprintf(stderr,
               "ERROR: Failed to read Mach-O content from %s.\n",
               filename.c_str());
-      return (int)retval;
+      return retval;
     }
 
     if (f.Has32Bit()) {
-      int retval = Patch(&f.GetMachOFile32(), patch_settings);
-      if (retval) {
+      retval = Patch(&f.GetMachOFile32(), patch_settings);
+      if (retval != post_processor::ERR_OK) {
         return retval;
       }
     }
 
     if (f.Has64Bit()) {
-      int retval = Patch(&f.GetMachOFile64(), patch_settings);
-      if (retval) {
+      retval = Patch(&f.GetMachOFile64(), patch_settings);
+      if (retval != post_processor::ERR_OK) {
         return retval;
       }
     }
 
     retval = f.PerformDeferredWrites();
-    if (retval) {
+    if (retval != post_processor::ERR_OK) {
       return retval;
     }
   }
 
+  if (patch_settings.verbose) {
+    printf("Patching completed successfully.\n");
+  }
   return 0;
 }
 
@@ -172,7 +179,7 @@ std::unique_ptr<uint8_t[]> PatchCovmapSection(
                                                     data_was_modified);
 }
 
-int Patch(MachOFile *f, const PatchSettings &settings) {
+ReturnCode Patch(MachOFile *f, const PatchSettings &settings) {
   if (settings.patch_coverage_maps) {
     const std::string segment("__DATA");
     const std::string section("__llvm_covmap");
@@ -194,7 +201,7 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
           &data_was_modified,
           f->swap_byte_ordering());
       if (!new_section_data) {
-        return 1;
+        return post_processor::ERR_OUT_OF_MEMORY;
       }
 
       if (data_was_modified) {
@@ -205,22 +212,24 @@ int Patch(MachOFile *f, const PatchSettings &settings) {
             new_data_length);
         if (retval != post_processor::ERR_OK &&
             retval != post_processor::ERR_WRITE_DEFERRED) {
-          return 1;
+          return retval;
         }
       }
     }
   }
 
   if (settings.patch_dwarf_symbols) {
-    DWARFStringPatcher patcher(settings.old_prefix, settings.new_prefix);
+    DWARFStringPatcher patcher(settings.old_prefix,
+                               settings.new_prefix,
+                               settings.verbose);
     ReturnCode retval = patcher.Patch(f);
     if (retval != post_processor::ERR_OK &&
         retval != post_processor::ERR_WRITE_DEFERRED) {
-      return 1;
+      return retval;
     }
   }
 
-  return 0;
+  return post_processor::ERR_OK;
 }
 
 }  // namespace
