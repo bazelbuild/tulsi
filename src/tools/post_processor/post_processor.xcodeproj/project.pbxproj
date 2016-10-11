@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D41A2091DA55D2E00E3AD19 /* dwarf_buffer_reader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D41A2071DA55D2E00E3AD19 /* dwarf_buffer_reader.cc */; };
 		3D448E8E1D9DB8AD00177F7E /* mach_o_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D448E8D1D9DB8AD00177F7E /* mach_o_file.cc */; };
+		3D5392721DAD55F2006587A9 /* covmap_patcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D5392701DAD55F2006587A9 /* covmap_patcher.cc */; };
 		3D70F5E51DA541EC0047C19B /* dwarf_string_patcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D70F5E31DA541EC0047C19B /* dwarf_string_patcher.cc */; };
 		3D82482A1D9D73CD0092A343 /* mach_o_container.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D8248281D9D73CD0092A343 /* mach_o_container.cc */; };
 		3DC2E3C91D635C0A00DCF7D3 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3DC2E3C81D635C0A00DCF7D3 /* main.cc */; };
@@ -33,12 +34,15 @@
 		3D41A2071DA55D2E00E3AD19 /* dwarf_buffer_reader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dwarf_buffer_reader.cc; sourceTree = "<group>"; };
 		3D41A2081DA55D2E00E3AD19 /* dwarf_buffer_reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dwarf_buffer_reader.h; sourceTree = "<group>"; };
 		3D448E8D1D9DB8AD00177F7E /* mach_o_file.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_o_file.cc; sourceTree = "<group>"; };
+		3D5392701DAD55F2006587A9 /* covmap_patcher.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = covmap_patcher.cc; sourceTree = "<group>"; };
+		3D5392711DAD55F2006587A9 /* covmap_patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = covmap_patcher.h; sourceTree = "<group>"; };
 		3D70F5E31DA541EC0047C19B /* dwarf_string_patcher.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dwarf_string_patcher.cc; sourceTree = "<group>"; };
 		3D70F5E41DA541EC0047C19B /* dwarf_string_patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dwarf_string_patcher.h; sourceTree = "<group>"; };
 		3D8248281D9D73CD0092A343 /* mach_o_container.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_o_container.cc; sourceTree = "<group>"; };
 		3D8248291D9D73CD0092A343 /* mach_o_container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_o_container.h; sourceTree = "<group>"; };
 		3DC2E3C51D635C0A00DCF7D3 /* post_processor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = post_processor; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DC2E3C81D635C0A00DCF7D3 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
+		3DDCD8D31DAD570500C0704F /* patcher_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patcher_base.h; sourceTree = "<group>"; };
 		AB18C0E3DCD4BF5F5F1DD249 /* covmap_section.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = covmap_section.h; sourceTree = "<group>"; };
 		AB18C25F7DBB623DF72455FB /* mach_load_command_resolver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mach_load_command_resolver.cc; sourceTree = "<group>"; };
 		AB18C6F0892DB7DDFA6689F2 /* mach_o_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_o_file.h; sourceTree = "<group>"; };
@@ -79,6 +83,8 @@
 		3DC2E3C71D635C0A00DCF7D3 /* post_processor */ = {
 			isa = PBXGroup;
 			children = (
+				3D5392701DAD55F2006587A9 /* covmap_patcher.cc */,
+				3D5392711DAD55F2006587A9 /* covmap_patcher.h */,
 				AB18CB8CB0AE195372AE7B25 /* covmap_section.cc */,
 				AB18C0E3DCD4BF5F5F1DD249 /* covmap_section.h */,
 				3D41A2071DA55D2E00E3AD19 /* dwarf_buffer_reader.cc */,
@@ -92,6 +98,7 @@
 				3D448E8D1D9DB8AD00177F7E /* mach_o_file.cc */,
 				AB18C6F0892DB7DDFA6689F2 /* mach_o_file.h */,
 				3DC2E3C81D635C0A00DCF7D3 /* main.cc */,
+				3DDCD8D31DAD570500C0704F /* patcher_base.h */,
 				AB18CC4B7C618AB62CCF8149 /* return_code.h */,
 				AB18CE7D5CA828ECAB9E338B /* symtab_nlist_resolver.cc */,
 				AB18C93BF8C893F0F4B893DF /* symtab_nlist_resolver.h */,
@@ -161,6 +168,7 @@
 				AB18CA53B536D78FC0B34A51 /* covmap_section.cc in Sources */,
 				3D70F5E51DA541EC0047C19B /* dwarf_string_patcher.cc in Sources */,
 				AB18C2949FFB1788F849D501 /* mach_load_command_resolver.cc in Sources */,
+				3D5392721DAD55F2006587A9 /* covmap_patcher.cc in Sources */,
 				AB18C220E0250070E2A7B288 /* symtab_nlist_resolver.cc in Sources */,
 				3D41A2091DA55D2E00E3AD19 /* dwarf_buffer_reader.cc in Sources */,
 			);

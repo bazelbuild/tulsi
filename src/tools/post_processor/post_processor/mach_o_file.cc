@@ -45,7 +45,7 @@ MachOFile::~MachOFile() {
 std::unique_ptr<uint8_t[]> MachOFile::ReadSectionData(
     const std::string &segment_name,
     const std::string &section_name,
-    off_t *size,
+    size_t *size,
     size_t trailing_bytes) const {
   off_t offset;
   if (!GetSectionInfo(segment_name,
@@ -82,7 +82,7 @@ ReturnCode MachOFile::WriteSectionData(
                segment_name.c_str(),
                section_name.c_str());
   off_t file_offset;
-  off_t existing_section_size;
+  size_t existing_section_size;
   if (!GetSectionInfo(segment_name,
                       section_name,
                       &file_offset,

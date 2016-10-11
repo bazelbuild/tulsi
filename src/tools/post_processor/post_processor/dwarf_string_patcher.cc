@@ -85,15 +85,6 @@ void UpdateLineInfoSizeInfo(uint8_t *existing_data_ptr,
                             uint64_t new_header_length);
 }  // namespace
 
-
-DWARFStringPatcher::DWARFStringPatcher(const std::string &old_prefix,
-                                       const std::string &new_prefix,
-                                       bool verbose) :
-    old_prefix_(old_prefix),
-    new_prefix_(new_prefix),
-    verbose_(verbose) {
-}
-
 ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   assert(f);
 
@@ -104,7 +95,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
 
   // Patch the string table and any references into it.
   VerbosePrint("Processing string section.\n");
-  off_t data_length;
+  size_t data_length;
 
   // Note that a NULL is added to the section data buffer to ensure that the
   // table can be processed in a predictable manner (DWARF string tables
@@ -125,7 +116,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   // Handle the simple in-place update case.
   if (new_prefix_.length() <= old_prefix_.length()) {
     UpdateStringSectionInPlace(reinterpret_cast<char *>(string_data.get()),
-                               static_cast<size_t>(data_length),
+                               data_length,
                                &data_was_modified);
     if (data_was_modified) {
       VerbosePrint("Updating string section in-place.\n");
@@ -134,7 +125,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
       return f->WriteSectionData(kSegment,
                                  kStringSection,
                                  std::move(string_data),
-                                 static_cast<size_t>(data_length));
+                                 data_length);
     }
     return ERR_OK;
   }
@@ -144,11 +135,11 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   // sections and updating any string references to point at their new
   // locations.
 
-  size_t new_data_length = (size_t)data_length;
+  size_t new_data_length = data_length;
   std::map<size_t, size_t> string_relocation_table;
   std::unique_ptr<uint8_t[]> &&new_data = RewriteStringSection(
       reinterpret_cast<char *>(string_data.get()),
-      static_cast<size_t>(data_length),
+      data_length,
       &string_relocation_table,
       &new_data_length,
       &data_was_modified);
@@ -272,7 +263,7 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(
   assert(table_map);
   VerbosePrint("Processing abbreviation section.\n");
 
-  off_t data_length;
+  size_t data_length;
   std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData(kSegment,
                                                         kAbbreviationSection,
                                                         &data_length);
@@ -282,7 +273,7 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(
   }
 
   DWARFBufferReader reader(data.get(),
-                           static_cast<size_t>(data_length),
+                           data_length,
                            f.swap_byte_ordering());
 
   size_t cur_table_offset = 0;
@@ -365,7 +356,7 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
   assert(f);
   VerbosePrint("Patching info section.\n");
 
-  off_t data_length;
+  size_t data_length;
   std::unique_ptr<uint8_t[]> &&data =
     f->ReadSectionData(kSegment,
                        kInfoSection,
@@ -377,7 +368,7 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
 
   bool data_was_modified = false;
   DWARFBufferReader reader(data.get(),
-                           static_cast<size_t>(data_length),
+                           data_length,
                            f->swap_byte_ordering());
 
   while (reader.bytes_remaining() > 0) {
@@ -498,13 +489,13 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
   return f->WriteSectionData(kSegment,
                              kInfoSection,
                              std::move(data),
-                             static_cast<size_t>(data_length));
+                             data_length);
 }
 
 ReturnCode DWARFStringPatcher::PatchLineInfoSection(MachOFile *f) {
   assert(f);
   VerbosePrint("Patching line info section.\n");
-  off_t data_length;
+  size_t data_length;
   std::unique_ptr<uint8_t[]> &&data =
     f->ReadSectionData(kSegment,
                        kLineInfoSection,
@@ -532,31 +523,30 @@ ReturnCode DWARFStringPatcher::PatchLineInfoSection(MachOFile *f) {
   // If the section does not need to be resized, patches can simply be applied
   // in place without adjusting any lengths (string tables are never reduced in
   // size).
-  size_t existing_data_size = static_cast<size_t>(data_length);
   if (!patched_section_size_increase) {
     return ApplyLineInfoPatchesInPlace(f,
                                        std::move(data),
-                                       existing_data_size,
+                                       data_length,
                                        patch_actions);
   }
 
-  size_t new_data_size = existing_data_size + patched_section_size_increase;
+  size_t new_data_size = data_length + patched_section_size_increase;
   return ApplyLineInfoPatches(f,
                               std::move(data),
-                              existing_data_size,
+                              data_length,
                               new_data_size,
                               patch_actions);
 }
 
 ReturnCode DWARFStringPatcher::ProcessLineInfoData(
     uint8_t *data,
-    off_t data_length,
+    size_t data_length,
     bool swap_byte_ordering,
     std::list<LineInfoPatch> *patch_actions,
     size_t *patched_section_size_increase) {
   assert(data && patch_actions && patched_section_size_increase);
   DWARFBufferReader reader(data,
-                           static_cast<size_t>(data_length),
+                           data_length,
                            swap_byte_ordering);
 
   auto old_prefix_begin = old_prefix_.begin();
@@ -728,7 +718,7 @@ ReturnCode DWARFStringPatcher::ApplyLineInfoPatchesInPlace(
   return f->WriteSectionData(kSegment,
                              kLineInfoSection,
                              std::move(data),
-                             static_cast<size_t>(data_length));
+                             data_length);
 }
 
 ReturnCode DWARFStringPatcher::ApplyLineInfoPatches(

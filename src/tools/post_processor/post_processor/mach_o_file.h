@@ -66,14 +66,14 @@ class MachOFile {
   virtual bool GetSectionInfo(const std::string &segment_name,
                               const std::string &section_name,
                               off_t *file_offset,
-                              off_t *section_size) const = 0;
+                              size_t *section_size) const = 0;
 
   /// Reads the data referenced by the given section and returns it. If the
   /// section is found, the returned buffer will contain the data referenced by
   /// the section with trailing_bytes additional 0's following it.
   std::unique_ptr<uint8_t[]> ReadSectionData(const std::string &segment_name,
                                              const std::string &section_name,
-                                             off_t *size,
+                                             size_t *size,
                                              size_t trailing_bytes = 0) const;
 
   /// Replaces the given section's data with the given data array.
@@ -188,7 +188,7 @@ class MachOFileImpl: public MachOFile {
   virtual bool GetSectionInfo(const std::string &segment_name,
                               const std::string &section_name,
                               off_t *file_offset,
-                              off_t *section_size) const;
+                              size_t *section_size) const;
 
   virtual ReturnCode SerializeWithDeferredWrites(std::vector<uint8_t> *);
 
@@ -469,7 +469,7 @@ MachOFileImpl<POST_PROCESSOR_MACHOFILE_H_TEMPLATE_PARAMS>::GetSectionInfo(
     const std::string &segment_name,
     const std::string &section_name,
     off_t *file_offset,
-    off_t *section_size) const {
+    size_t *section_size) const {
   assert(file_offset && section_size);
   for (const auto &segment : segments_) {
     if (segment_name != segment.command.segname) {

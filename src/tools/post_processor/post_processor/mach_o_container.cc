@@ -143,7 +143,7 @@ ReturnCode MachOContainer::PeekMagicHeader(FileFormat *fileFormat,
   *swap = false;
 
   uint32_t magic_header;
-  off_t magic_header_size = sizeof(magic_header);
+  size_t magic_header_size = sizeof(magic_header);
   if (fread(&magic_header, magic_header_size, 1, file_) != 1) {
     fprintf(stderr, "Failed to read magic header.\n");
     return ERR_READ_FAILED;

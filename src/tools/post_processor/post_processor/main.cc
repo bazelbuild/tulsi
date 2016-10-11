@@ -18,13 +18,13 @@
 #include <list>
 #include <vector>
 
-#include "covmap_section.h"
+#include "covmap_patcher.h"
 #include "dwarf_string_patcher.h"
 #include "mach_o_container.h"
 #include "mach_o_file.h"
 
 
-using post_processor::CovmapSection;
+using post_processor::CovmapPatcher;
 using post_processor::DWARFStringPatcher;
 using post_processor::MachOContainer;
 using post_processor::MachOFile;
@@ -150,71 +150,16 @@ void PrintUsage(const char *executable_name) {
          "\t  Patch paths in DWARF symbols.\n");
 }
 
-std::unique_ptr<uint8_t[]> PatchCovmapSection(
-    const std::string &old_prefix,
-    const std::string &new_prefix,
-    std::unique_ptr<uint8_t[]> data,
-    size_t *data_length,
-    bool *data_was_modified,
-    bool swap_byte_ordering) {
-  if (new_prefix.length() > old_prefix.length()) {
-    fprintf(stderr,
-            "Cannot grow paths (new_path length must be <= old_path length\n");
-    return nullptr;
-  }
-
-  CovmapSection covmap_section(std::move(data),
-                               *data_length,
-                               swap_byte_ordering);
-
-  ReturnCode retval = covmap_section.Parse();
-  if (retval != post_processor::ERR_OK) {
-    fprintf(stderr, "ERROR: Failed to read LLVM coverage data.\n");
-    return nullptr;
-  }
-
-  return covmap_section.PatchFilenamesAndInvalidate(old_prefix,
-                                                    new_prefix,
-                                                    data_length,
-                                                    data_was_modified);
-}
-
 ReturnCode Patch(MachOFile *f, const PatchSettings &settings) {
   if (settings.patch_coverage_maps) {
-    const std::string segment("__DATA");
-    const std::string section("__llvm_covmap");
-    off_t data_length;
-    std::unique_ptr<uint8_t[]> &&data =
-        f->ReadSectionData(segment,
-                           section,
-                           &data_length);
-    if (!data) {
-      fprintf(stderr, "Warning: Failed to find __llvm_covmap section.\n");
-    } else {
-      size_t new_data_length = (size_t)data_length;
-      bool data_was_modified = false;
-      std::unique_ptr<uint8_t[]> &&new_section_data = PatchCovmapSection(
-          settings.old_prefix,
-          settings.new_prefix,
-          std::move(data),
-          &new_data_length,
-          &data_was_modified,
-          f->swap_byte_ordering());
-      if (!new_section_data) {
-        return post_processor::ERR_OUT_OF_MEMORY;
-      }
+    CovmapPatcher patcher(settings.old_prefix,
+                          settings.new_prefix,
+                          settings.verbose);
 
-      if (data_was_modified) {
-        ReturnCode retval = f->WriteSectionData(
-            segment,
-            section,
-            std::move(new_section_data),
-            new_data_length);
-        if (retval != post_processor::ERR_OK &&
-            retval != post_processor::ERR_WRITE_DEFERRED) {
-          return retval;
-        }
-      }
+    ReturnCode retval = patcher.Patch(f);
+    if (retval != post_processor::ERR_OK &&
+        retval != post_processor::ERR_WRITE_DEFERRED) {
+      return retval;
     }
   }
 

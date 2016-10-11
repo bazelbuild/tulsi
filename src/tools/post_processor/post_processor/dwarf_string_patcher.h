@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "return_code.h"
+#include "patcher_base.h"
 
 
 namespace post_processor {
@@ -31,13 +31,15 @@ class DWARFBufferReader;
 class MachOFile;
 
 /// Provides utilities to patch DWARF string table entries.
-class DWARFStringPatcher {
+class DWARFStringPatcher : public PatcherBase {
  public:
   DWARFStringPatcher(const std::string &old_prefix,
                      const std::string &new_prefix,
-                     bool verbose = false);
+                     bool verbose = false) :
+      PatcherBase(old_prefix, new_prefix, verbose) {
+  }
 
-  ReturnCode Patch(MachOFile *f);
+  virtual ReturnCode Patch(MachOFile *f);
 
  private:
   // DWARF attributes consist of a "name" value and a form type.
@@ -103,7 +105,7 @@ class DWARFStringPatcher {
 
   ReturnCode PatchLineInfoSection(MachOFile *f);
   ReturnCode ProcessLineInfoData(uint8_t *data,
-                                 off_t data_length,
+                                 size_t data_length,
                                  bool swap_byte_ordering,
                                  std::list<LineInfoPatch> *patch_actions,
                                  size_t *patched_section_size_increase);
@@ -119,22 +121,6 @@ class DWARFStringPatcher {
       size_t data_length,
       size_t new_data_length,
       const std::list<LineInfoPatch> &patch_actions) const;
-
-  inline void VerbosePrint(const char *fmt, ...) const {
-    if (!verbose_) {
-      return;
-    }
-
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
-  }
-
- private:
-  const std::string old_prefix_;
-  const std::string new_prefix_;
-  bool verbose_;
 };
 
 }  // namespace post_processor
