@@ -22,6 +22,13 @@ namespace post_processor {
 
 namespace {
 
+const char *kSegment = "__DWARF";
+
+const char *kAbbreviationSection = "__debug_abbrev";
+const char *kInfoSection = "__debug_info";
+const char *kLineInfoSection = "__debug_line";
+const char *kStringSection = "__debug_str";
+
 enum DW_FORM {
   DW_FORM_addr = 0x01,
   DW_FORM_block2 = 0x03,
@@ -67,6 +74,15 @@ inline ReturnCode PatchfoAttributeValue(
     uint16_t dwarf_version,
     std::function<bool(uint64_t *)> read_func);
 
+// Updates size information contained in a DWARF line info header. T must be
+// uint64_t if the unit length is 64-bit or uint32_t if it is 32-bit.
+template <typename T>
+void UpdateLineInfoSizeInfo(uint8_t *existing_data_ptr,
+                            size_t compilation_unit_length_offset,
+                            size_t header_length_offset,
+                            bool swap_byte_ordering,
+                            uint64_t new_compilation_unit_length,
+                            uint64_t new_header_length);
 }  // namespace
 
 
@@ -88,8 +104,6 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
 
   // Patch the string table and any references into it.
   VerbosePrint("Processing string section.\n");
-  const std::string segment("__DWARF");
-  const std::string string_section("__debug_str");
   off_t data_length;
 
   // Note that a NULL is added to the section data buffer to ensure that the
@@ -97,8 +111,8 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   // generally omit the final NULL terminator and use the section size to
   // delimit the final string).
   std::unique_ptr<uint8_t[]> &&string_data =
-      f->ReadSectionData(segment,
-                         string_section,
+      f->ReadSectionData(kSegment,
+                         kStringSection,
                          &data_length,
                          1 /* null terminate the data */);
   if (!string_data) {
@@ -117,8 +131,8 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
       VerbosePrint("Updating string section in-place.\n");
       // Remove the trailing null.
       --data_length;
-      return f->WriteSectionData(segment,
-                                 string_section,
+      return f->WriteSectionData(kSegment,
+                                 kStringSection,
                                  std::move(string_data),
                                  static_cast<size_t>(data_length));
     }
@@ -145,8 +159,8 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   // The last entry need not be null terminated.
   --new_data_length;
   VerbosePrint("Rewriting string section.\n");
-  retval = f->WriteSectionData(segment,
-                               string_section,
+  retval = f->WriteSectionData(kSegment,
+                               kStringSection,
                                std::move(new_data),
                                new_data_length);
   if (retval != ERR_OK && retval != ERR_WRITE_DEFERRED) {
@@ -259,8 +273,8 @@ ReturnCode DWARFStringPatcher::ProcessAbbrevSection(
   VerbosePrint("Processing abbreviation section.\n");
 
   off_t data_length;
-  std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData("__DWARF",
-                                                        "__debug_abbrev",
+  std::unique_ptr<uint8_t[]> &&data = f.ReadSectionData(kSegment,
+                                                        kAbbreviationSection,
                                                         &data_length);
   if (!data) {
     fprintf(stderr, "Warning: Failed to find __debug_abbrev section.\n");
@@ -351,12 +365,10 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
   assert(f);
   VerbosePrint("Patching info section.\n");
 
-  const std::string segment = "__DWARF";
-  const std::string section = "__debug_info";
   off_t data_length;
   std::unique_ptr<uint8_t[]> &&data =
-    f->ReadSectionData(segment,
-                       section,
+    f->ReadSectionData(kSegment,
+                       kInfoSection,
                        &data_length);
   if (!data) {
     fprintf(stderr, "Failed to find __debug_info section.\n");
@@ -483,8 +495,8 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
     return ERR_OK;
   }
 
-  return f->WriteSectionData(segment,
-                             section,
+  return f->WriteSectionData(kSegment,
+                             kInfoSection,
                              std::move(data),
                              static_cast<size_t>(data_length));
 }
@@ -492,12 +504,10 @@ ReturnCode DWARFStringPatcher::PatchInfoSection(
 ReturnCode DWARFStringPatcher::PatchLineInfoSection(MachOFile *f) {
   assert(f);
   VerbosePrint("Patching line info section.\n");
-  const std::string segment = "__DWARF";
-  const std::string section = "__debug_line";
   off_t data_length;
   std::unique_ptr<uint8_t[]> &&data =
-    f->ReadSectionData(segment,
-                       section,
+    f->ReadSectionData(kSegment,
+                       kLineInfoSection,
                        &data_length);
   if (!data) {
     fprintf(stderr, "Warning: Failed to find __debug_line section.\n");
@@ -522,24 +532,20 @@ ReturnCode DWARFStringPatcher::PatchLineInfoSection(MachOFile *f) {
   // If the section does not need to be resized, patches can simply be applied
   // in place without adjusting any lengths (string tables are never reduced in
   // size).
+  size_t existing_data_size = static_cast<size_t>(data_length);
   if (!patched_section_size_increase) {
-    VerbosePrint("Updating line info section in-place.\n");
-    uint8_t *data_ptr = data.get();
-    for (const auto &action : patch_actions) {
-      memcpy(data_ptr + action.string_table_start_offset,
-             action.new_string_table.get(),
-             action.string_table_length);
-    }
-
-    return f->WriteSectionData(segment,
-                               section,
-                               std::move(data),
-                               static_cast<size_t>(data_length));
+    return ApplyLineInfoPatchesInPlace(f,
+                                       std::move(data),
+                                       existing_data_size,
+                                       patch_actions);
   }
 
-  // TODO(abaire): Generate a new section.
-  VerbosePrint("Rewriting line info section.\n");
-  return ERR_NOT_IMPLEMENTED;
+  size_t new_data_size = existing_data_size + patched_section_size_increase;
+  return ApplyLineInfoPatches(f,
+                              std::move(data),
+                              existing_data_size,
+                              new_data_size,
+                              patch_actions);
 }
 
 ReturnCode DWARFStringPatcher::ProcessLineInfoData(
@@ -696,13 +702,105 @@ ReturnCode DWARFStringPatcher::ProcessLineInfoData(
           new_string_table_length
       });
 
-      patched_section_size_increase +=
+      *patched_section_size_increase +=
           new_string_table_length - string_table_length;
     }
 
     reader.SeekToOffset(end_offset);
   }
   return ERR_OK;
+}
+
+ReturnCode DWARFStringPatcher::ApplyLineInfoPatchesInPlace(
+    MachOFile *f,
+    std::unique_ptr<uint8_t[]> data,
+    size_t data_length,
+    const std::list<LineInfoPatch> &patch_actions) const {
+  assert(f);
+  VerbosePrint("Updating line info section in-place.\n");
+  uint8_t *data_ptr = data.get();
+  for (const auto &action : patch_actions) {
+    memcpy(data_ptr + action.string_table_start_offset,
+           action.new_string_table.get(),
+           action.string_table_length);
+  }
+
+  return f->WriteSectionData(kSegment,
+                             kLineInfoSection,
+                             std::move(data),
+                             static_cast<size_t>(data_length));
+}
+
+ReturnCode DWARFStringPatcher::ApplyLineInfoPatches(
+    MachOFile *f,
+    std::unique_ptr<uint8_t[]> existing_data,
+    size_t data_length,
+    size_t new_data_length,
+    const std::list<LineInfoPatch> &patch_actions) const {
+  assert(f);
+
+  VerbosePrint("Rewriting line info section.\n");
+  std::unique_ptr<uint8_t[]> new_data(new uint8_t[new_data_length]);
+  uint8_t *existing_data_ptr = existing_data.get();
+  uint8_t *next_copy_start = existing_data_ptr;
+  uint8_t *new_data_ptr = new_data.get();
+  for (const auto &a : patch_actions) {
+    size_t string_table_delta_size =
+        a.new_string_table_length - a.string_table_length;
+    uint64_t new_compilation_unit_length =
+        a.compilation_unit_length + string_table_delta_size;
+    uint64_t new_header_length = a.header_length + string_table_delta_size;
+
+    bool existing_data_is_64_bit = a.compilation_unit_length > 0xffffffff;
+    bool new_data_is_64_bit = new_compilation_unit_length > 0xffffffff;
+    if (existing_data_is_64_bit != new_data_is_64_bit) {
+      fprintf(stderr,
+              "ERROR: compilation unit growth past the 32-bit boundary is not "
+                  "implemented.\n");
+      return ERR_NOT_IMPLEMENTED;
+    }
+
+    // Patch the data sizes prior to copying the block.
+    if (existing_data_is_64_bit) {
+      UpdateLineInfoSizeInfo<uint64_t>(existing_data_ptr,
+                                       a.compilation_unit_length_offset,
+                                       a.header_length_offset,
+                                       f->swap_byte_ordering(),
+                                       new_compilation_unit_length,
+                                       new_header_length);
+    } else {
+      UpdateLineInfoSizeInfo<uint32_t>(existing_data_ptr,
+                                       a.compilation_unit_length_offset,
+                                       a.header_length_offset,
+                                       f->swap_byte_ordering(),
+                                       new_compilation_unit_length,
+                                       new_header_length);
+    }
+
+    // Copy everything from the end of the previous string table to the
+    // beginning of this unit's string table.
+    uint8_t *existing_string_table =
+        existing_data_ptr + a.string_table_start_offset;
+    size_t copy_len = existing_string_table - next_copy_start;
+    memcpy(new_data_ptr, next_copy_start, copy_len);
+    new_data_ptr += copy_len;
+    next_copy_start = existing_string_table + a.string_table_length;
+
+    // Install the new string table.
+    memcpy(new_data_ptr, a.new_string_table.get(), a.new_string_table_length);
+    new_data_ptr += a.new_string_table_length;
+  }
+
+  // Copy any remaining data.
+  size_t remaining_len = (existing_data_ptr + data_length) - next_copy_start;
+  if (remaining_len) {
+    memcpy(new_data_ptr, next_copy_start, remaining_len);
+  }
+
+  return f->WriteSectionData(kSegment,
+                             kLineInfoSection,
+                             std::move(new_data),
+                             new_data_length);
 }
 
 namespace {
@@ -877,6 +975,31 @@ inline ReturnCode PatchfoAttributeValue(
   }
 
   return ERR_NOT_IMPLEMENTED;
+}
+
+template <typename T>
+inline void UpdateLineInfoSizeInfo(uint8_t *existing_data_ptr,
+                                   size_t compilation_unit_length_offset,
+                                   size_t header_length_offset,
+                                   bool swap_byte_ordering,
+                                   uint64_t new_compilation_unit_length,
+                                   uint64_t new_header_length) {
+  T *unit_length_ptr = reinterpret_cast<T *>(
+      existing_data_ptr + compilation_unit_length_offset);
+  T *header_length_ptr = reinterpret_cast<T *>(
+      existing_data_ptr + header_length_offset);
+
+  *unit_length_ptr = static_cast<T>(new_compilation_unit_length);
+  *header_length_ptr = static_cast<T>(new_header_length);
+  if (swap_byte_ordering) {
+    if (sizeof(T) == sizeof(uint64_t)) {
+      OSSwapInt64(*unit_length_ptr);
+      OSSwapInt64(*header_length_ptr);
+    } else {
+      OSSwapInt32(*unit_length_ptr);
+      OSSwapInt32(*header_length_ptr);
+    }
+  }
 }
 
 }  // namespace

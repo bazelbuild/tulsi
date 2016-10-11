@@ -108,6 +108,18 @@ class DWARFStringPatcher {
                                  std::list<LineInfoPatch> *patch_actions,
                                  size_t *patched_section_size_increase);
 
+  ReturnCode ApplyLineInfoPatchesInPlace(
+      MachOFile *f,
+      std::unique_ptr<uint8_t[]> data,
+      size_t data_length,
+      const std::list<LineInfoPatch> &patch_actions) const;
+  ReturnCode ApplyLineInfoPatches(
+      MachOFile *f,
+      std::unique_ptr<uint8_t[]> existing_data,
+      size_t data_length,
+      size_t new_data_length,
+      const std::list<LineInfoPatch> &patch_actions) const;
+
   inline void VerbosePrint(const char *fmt, ...) const {
     if (!verbose_) {
       return;
