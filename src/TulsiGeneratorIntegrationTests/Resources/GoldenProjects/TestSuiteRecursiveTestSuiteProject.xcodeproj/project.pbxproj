@@ -517,6 +517,7 @@
 				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
@@ -659,6 +660,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -802,6 +804,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;

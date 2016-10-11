@@ -1772,6 +1772,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ARCHS": "x86_64",
         "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
+        "SDKROOT": "iphonesimulator",
         "VALID_ARCHS": "x86_64",
     ]
     if pchFile != nil {

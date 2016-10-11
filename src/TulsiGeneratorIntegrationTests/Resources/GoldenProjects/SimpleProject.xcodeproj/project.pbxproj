@@ -530,6 +530,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
+				SDKROOT = iphonesimulator;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 				VALID_ARCHS = x86_64;
 			};
@@ -543,6 +544,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
@@ -554,6 +556,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Fastbuild;
@@ -646,6 +649,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
+				SDKROOT = iphonesimulator;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 				VALID_ARCHS = x86_64;
 			};
@@ -660,6 +664,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -672,6 +677,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -765,6 +771,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
+				SDKROOT = iphonesimulator;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Binary/bridging_header/bridging_header.h";
 				VALID_ARCHS = x86_64;
 			};
@@ -779,6 +786,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -791,6 +799,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
+				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
