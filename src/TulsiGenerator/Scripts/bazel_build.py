@@ -520,7 +520,13 @@ class BazelBuildBridge(object):
         if exit_code:
           return exit_code
 
-    if self.xcode_version_major >= 800:
+    # Starting with Xcode 8, .lldbinit files are honored during Xcode debugging
+    # sessions. This allows use of the target.source-map field to remap the
+    # debug symbol paths encoded in the binary to the paths expected by Xcode.
+    # In cases where a dSYM bundle was produced, the post_processor will have
+    # already corrected the paths and use of target.source-map is redundant (and
+    # appears to trigger actual problems in Xcode 8.1 betas).
+    if self.xcode_version_major >= 800 and not self.generate_dsym:
       timer = Timer('Updating .lldbinit').Start()
       exit_code = self._UpdateLLDBInit()
       timer.End()
