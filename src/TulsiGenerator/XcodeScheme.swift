@@ -46,6 +46,7 @@ final class XcodeScheme {
   let additionalBuildTargets: [(PBXTarget, String)]?
 
   let primaryTargetBuildableReference: BuildableReference
+  let launchActionEnvVars: [String : String]
 
   init(target: PBXTarget,
        project: PBXProject,
@@ -60,7 +61,8 @@ final class XcodeScheme {
        runnableDebuggingMode: RunnableDebuggingMode = .Default,
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil,
-       additionalBuildTargets: [(PBXTarget, String)]? = nil) {
+       additionalBuildTargets: [(PBXTarget, String)]? = nil,
+       launchActionEnvVars: [String: String]? = nil) {
     self.version = version
     self.target = target
     self.project = project
@@ -75,6 +77,20 @@ final class XcodeScheme {
     self.runnableDebuggingMode = runnableDebuggingMode
     self.explicitTests = explicitTests
     self.additionalBuildTargets = additionalBuildTargets
+
+    var envVars: [String: String]
+    if let launchActionEnvVars = launchActionEnvVars {
+      envVars = launchActionEnvVars
+    } else {
+      envVars = [:]
+    }
+
+    // Disable OS_ACTIVITY_MODE by default to cut down on Xcode 8 logging.
+    // b/31544656
+    if envVars["OS_ACTIVITY_MODE"] == nil {
+      envVars["OS_ACTIVITY_MODE"] = "disable"
+    }
+    self.launchActionEnvVars = envVars
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -216,7 +232,7 @@ final class XcodeScheme {
     }
 
     element.setAttributesWithDictionary(attributes)
-
+    element.addChild(envVars(self.launchActionEnvVars))
     if launchStyle != .AppExtension {
       element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
@@ -286,6 +302,19 @@ final class XcodeScheme {
     return element
   }
 
+  /// Generates a EnvironmentVariables element based on vars.
+  private func envVars(vars: [String: String]) -> NSXMLElement {
+    let element = NSXMLElement(name:"EnvironmentVariables")
+    for (key, value) in vars {
+      let envVar = NSXMLElement(name:"EnvironmentVariable")
+      envVar.setAttributesWithDictionary([
+        "key": key,
+        "value": value,
+        "isEnabled": "YES"])
+      element.addChild(envVar)
+    }
+    return element
+  }
 
   /// Information about a PBXTarget that may be built.
   class BuildableReference {
