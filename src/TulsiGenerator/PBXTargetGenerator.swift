@@ -184,6 +184,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let dependencies: Set<BuildLabel>
     let preprocessorDefines: Set<String>
     let otherCFlags: [String]
+    let otherSwiftFlags: [String]
     let includes: [String]
     let generatedIncludes: [String]
     let frameworkSearchPaths: [String]
@@ -239,6 +240,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if !(preprocessorDefines == other.preprocessorDefines &&
           enableModules == other.enableModules &&
           otherCFlags == other.otherCFlags &&
+          otherSwiftFlags == other.otherSwiftFlags &&
           frameworkSearchPaths == other.frameworkSearchPaths &&
           includes == other.includes &&
           swiftLanguageVersion == other.swiftLanguageVersion &&
@@ -261,6 +263,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          dependencies: newDependencies,
                          preprocessorDefines: preprocessorDefines,
                          otherCFlags: otherCFlags,
+                         otherSwiftFlags: otherSwiftFlags,
                          includes: includes,
                          generatedIncludes: newGeneratedIncludes,
                          frameworkSearchPaths: frameworkSearchPaths,
@@ -558,11 +561,20 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           swiftIncludePaths.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(includePath)")
         }
 
+        // Load module maps explicitly instead of letting Clang discover them on search paths. This
+        // is needed to avoid a case where Clang may load the same header both in modular and
+        // non-modular contexts, leading to duplicate definitions in the same file.
+        // See llvm.org/bugs/show_bug.cgi?id=19501
+        let otherSwiftFlags = ruleEntry.objCModuleMaps.map() {
+           "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.WorkspaceRootVarName))/\($0.fullPath)"
+        }
+
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
                                       dependencies: Set(dependencyLabels),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
+                                      otherSwiftFlags: otherSwiftFlags,
                                       includes: resolvedIncludes,
                                       generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
@@ -976,6 +988,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if !data.swiftIncludePaths.isEmpty {
       let paths = data.swiftIncludePaths.joinWithSeparator(" ")
       buildSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) \(paths)"
+    }
+
+    if !data.otherSwiftFlags.isEmpty {
+      buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joinWithSeparator(" ")
     }
 
     // Force the indexers to target the x86_64 simulator. This minimizes issues triggered by

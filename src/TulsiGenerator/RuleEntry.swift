@@ -180,6 +180,9 @@ public final class RuleEntry: RuleInfo {
   /// List containing the transitive swiftmodules on which this rule depends.
   public let swiftTransitiveModules: [BazelFileInfo]
 
+  /// List containing the transitive ObjC modulemaps on which this rule depends.
+  public let objCModuleMaps: [BazelFileInfo]
+
   /// The minimum iOS version supported by this target.
   public let iPhoneOSDeploymentTarget: String?
 
@@ -285,6 +288,7 @@ public final class RuleEntry: RuleInfo {
        generatedIncludePaths: [String]? = nil,
        swiftLanguageVersion: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
+       objCModuleMaps: [BazelFileInfo] = [],
        implicitIPATarget: BuildLabel? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
@@ -319,6 +323,7 @@ public final class RuleEntry: RuleInfo {
     self.generatedIncludePaths = generatedIncludePaths
     self.swiftLanguageVersion = swiftLanguageVersion
     self.swiftTransitiveModules = swiftTransitiveModules
+    self.objCModuleMaps = objCModuleMaps
     self.implicitIPATarget = implicitIPATarget
 
     var linkedTargetLabels = Set<BuildLabel>()
@@ -347,6 +352,7 @@ public final class RuleEntry: RuleInfo {
                    generatedIncludePaths: [String]? = nil,
                    swiftLanguageVersion: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
+                   objCModuleMaps: [BazelFileInfo] = [],
                    implicitIPATarget: BuildLabel? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
@@ -366,6 +372,7 @@ public final class RuleEntry: RuleInfo {
               generatedIncludePaths: generatedIncludePaths,
               swiftLanguageVersion: swiftLanguageVersion,
               swiftTransitiveModules: swiftTransitiveModules,
+              objCModuleMaps: objCModuleMaps,
               implicitIPATarget: implicitIPATarget)
   }
 

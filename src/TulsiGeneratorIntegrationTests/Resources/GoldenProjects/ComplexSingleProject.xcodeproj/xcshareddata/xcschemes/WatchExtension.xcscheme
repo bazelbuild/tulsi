@@ -17,6 +17,9 @@
         </MacroExpansion>
     </TestAction>
     <LaunchAction launchAutomaticallySubstyle="2" debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="" buildConfiguration="Debug">
+        <EnvironmentVariables>
+            <EnvironmentVariable isEnabled="YES" key="OS_ACTIVITY_MODE" value="disable"></EnvironmentVariable>
+        </EnvironmentVariables>
         <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </MacroExpansion>

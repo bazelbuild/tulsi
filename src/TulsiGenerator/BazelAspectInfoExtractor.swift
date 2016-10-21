@@ -303,6 +303,7 @@ final class BazelAspectInfoExtractor {
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
       let swiftLanguageVersion = dict["swift_language_version"] as? String
       let swiftTransitiveModules = MakeBazelFileInfos("swift_transitive_modules")
+      let objCModuleMaps = MakeBazelFileInfos("objc_module_maps")
       let extensions: Set<BuildLabel>?
       if let extensionList = dict["extensions"] as? [String] {
         extensions = Set(extensionList.map({ BuildLabel($0) }))
@@ -329,6 +330,7 @@ final class BazelAspectInfoExtractor {
                                 generatedIncludePaths: generatedIncludePaths,
                                 swiftLanguageVersion: swiftLanguageVersion,
                                 swiftTransitiveModules: swiftTransitiveModules,
+                                objCModuleMaps: objCModuleMaps,
                                 implicitIPATarget: implictIPATarget)
       progressNotifier?.incrementValue()
       return ruleEntry

@@ -1244,7 +1244,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
@@ -1487,7 +1487,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
@@ -1741,7 +1741,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
@@ -2005,7 +2005,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
@@ -2183,7 +2183,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa";
+				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
 				BAZEL_TARGET_TYPE = apple_watch2_extension;

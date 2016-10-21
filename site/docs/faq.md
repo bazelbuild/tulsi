@@ -30,6 +30,23 @@ this, you will want to add
 to your entitlements file for builds which you do not plan to submit to Apple
 for signing.
 
+# I'm attempting to debug Objective-C projects with Xcode 8 or later and breakpoints aren't working. Why?
+
+Xcode 8 fixes a bug preventing the use of LLDB's target.source-map setting via
+`~/.lldbinit-Xcode` files. Tulsi makes use of this feature to remove the need to
+inject environment-specific information into Bazel-generated binaries.
+
+Unfortunately, the lldbinit file is parsed by Xcode once and then cached until
+Xcode restarts, meaning that loading additional projects without restarting
+Xcode will lead to incorrect behavior. Anytime you load a different
+Tulsi-generated Xcode project and find that breakpoints no longer work, you
+should close any other projects and restart Xcode in order to resolve the issue.
+
+As background: the use of `.lldbinit` was initially an attempt to fix Swift
+debugging but various other issues were discovered, necessitating the addition
+of a dSYM post-processor which may someday replace Tulsi's use of lldbinit
+entirely.
+
 # How do I set Bazel options for my project (like --config=awesome)?
 
 The Tulsi options pane provides settings for flags that can be passed through to

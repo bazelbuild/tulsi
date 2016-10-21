@@ -21,6 +21,9 @@
         </MacroExpansion>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
+        <EnvironmentVariables>
+            <EnvironmentVariable isEnabled="YES" key="OS_ACTIVITY_MODE" value="disable"></EnvironmentVariable>
+        </EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E6EC64700400000000" BuildableIdentifier="primary" BuildableName="TestApplication" BlueprintName="TestApplication" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

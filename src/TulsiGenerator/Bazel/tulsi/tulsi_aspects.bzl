@@ -440,6 +440,12 @@ def _tulsi_sources_aspect(target, ctx):
   swift_transitive_modules = [_file_metadata(f)
                               for f in raw_swift_transitive_modules]
 
+  # Collect ObjC module maps dependencies for Swift targets.
+  objc_module_maps = set()
+  if hasattr(target, 'swift'):
+    for module_maps in _getattr_as_list(target, 'objc.module_map'):
+      objc_module_maps += set([_file_metadata(f) for f in module_maps])
+
   # Collect the dependencies of this rule, dropping any .jar files (which may be
   # created as artifacts of java/j2objc rules).
   dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
@@ -518,6 +524,7 @@ def _tulsi_sources_aspect(target, ctx):
       srcs=srcs,
       swift_language_version=_extract_swift_language_version(ctx),
       swift_transitive_modules=swift_transitive_modules,
+      objc_module_maps=list(objc_module_maps),
       type=target_kind,
   )
 

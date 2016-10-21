@@ -264,7 +264,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
 				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = x86_64;
 			};
@@ -331,7 +331,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
 				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = x86_64;
 			};
@@ -399,7 +399,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/bazel-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
 				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = x86_64;
 			};
