@@ -153,49 +153,6 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_complex_test:Application"))
         .hasNoDependencies()
   }
-
-  func testPlatformDependent() {
-    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_platformdependent_test")
-    let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_platformdependent_test"])
-
-    XCTAssertEqual(infos.count, 7)
-    let checker = InfoChecker(ruleInfos: infos)
-
-    checker.assertThat("//tulsi_platformdependent_test:Application")
-        .hasType("ios_application")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:Binary")
-        .hasType("objc_binary")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:ObjCProtoLibrary")
-        .hasType("objc_proto_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:ProtoLibrary")
-        .hasType("proto_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:J2ObjCLibrary")
-        .hasType("j2objc_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:JavaLibrary")
-        .hasType("java_library")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_platformdependent_test:XCTestWithDefaultHost")
-        .hasType("ios_test")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-  }
 }
 
 

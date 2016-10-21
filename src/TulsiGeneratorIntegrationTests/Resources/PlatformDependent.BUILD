@@ -61,3 +61,28 @@ ios_test(
     ],
     xctest = 1,
 )
+
+## Skylark-based tvOS rules.
+# TODO(abaire): Move to ComplexSingle.BUILD when the rules are open sourecd.
+load(
+    "//tools/build_defs/apple:tvos.bzl",
+    "skylark_tvos_application",
+    "skylark_tvos_extension",
+)
+
+skylark_tvos_application(
+    name = "tvOSApplication",
+    bundle_id = "c.test.tvOSApplication",
+    extensions = [":tvOSExtension"],
+    infoplists = [
+        "tvOSApplication/Info.plist",
+    ],
+)
+
+skylark_tvos_extension(
+    name = "tvOSExtension",
+    bundle_id = "c.test.tvOSExtension",
+    infoplists = [
+        "tvOSExtension/Info.plist",
+    ],
+)
