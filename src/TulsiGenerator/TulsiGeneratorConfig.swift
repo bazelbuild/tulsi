@@ -239,4 +239,14 @@ public class TulsiGeneratorConfig {
                                 options: resolvedOptions,
                                 bazelURL: bazelURL)
   }
+
+  public func configByAppendingPathFilters(additionalPathFilters: Set<String>) -> TulsiGeneratorConfig {
+    let newPathFilters = pathFilters.union(additionalPathFilters)
+    return TulsiGeneratorConfig(projectName: projectName,
+                                buildTargetLabels: buildTargetLabels,
+                                pathFilters: newPathFilters,
+                                additionalFilePaths: additionalFilePaths,
+                                options: options,
+                                bazelURL: bazelURL)
+  }
 }

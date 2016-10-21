@@ -96,12 +96,11 @@ class HeadlessXcodeProjectGenerator {
       throw Error.ExplicitOutputOptionRequired
     }
 
-    let config = try loadConfig(configURL, bazelURL: explicitBazelURL)
-    let resolvedConfig: TulsiGeneratorConfig
+    var config = try loadConfig(configURL, bazelURL: explicitBazelURL)
+    config = config.configByAppendingPathFilters(arguments.additionalPathFilters)
+
     if let projectOptionSet = projectDocument.optionSet {
-      resolvedConfig = config.configByResolvingInheritedOptions(projectOptionSet)
-    } else {
-      resolvedConfig = config
+      config = config.configByResolvingInheritedOptions(projectOptionSet)
     }
 
     let workspaceRootURL: NSURL
@@ -125,11 +124,11 @@ class HeadlessXcodeProjectGenerator {
     print("Generating project into '\(outputFolderURL.path!)' using:\n" +
               "\tconfig at '\(configURL.path!)'\n" +
               "\tBazel workspace at '\(workspaceRootURL.path!)'\n" +
-              "\tBazel at '\(resolvedConfig.bazelURL.path!)'.\n" +
+              "\tBazel at '\(config.bazelURL.path!)'.\n" +
               "This may take a while.")
 
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
-                                                                           withGeneratorConfig: resolvedConfig,
+                                                                           withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
                                                                            messageLog: nil)
     switch result {
@@ -267,6 +266,7 @@ class TulsiCommandlineParser {
   static let ParamQuietShort = "-q"
   static let ParamQuietLong = "--quiet"
 
+  static let ParamAdditionalPathFilters = "--additionalSourceFilters"
   static let ParamBazel = "--bazel"
   static let ParamGeneratorConfigShort = "-c"
   static let ParamGeneratorConfigLong = "--genconfig"
@@ -288,6 +288,7 @@ class TulsiCommandlineParser {
     let verbose: Bool
     let suppressWORKSPACECheck: Bool
     let openXcodeOnSuccess: Bool
+    let additionalPathFilters: Set<String>
 
     init() {
       bazel = nil
@@ -297,6 +298,7 @@ class TulsiCommandlineParser {
       verbose = true
       suppressWORKSPACECheck = false
       openXcodeOnSuccess = true
+      additionalPathFilters = Set()
     }
 
     init(dict: [String: AnyObject]) {
@@ -315,12 +317,12 @@ class TulsiCommandlineParser {
       workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
       suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
+      additionalPathFilters = dict[TulsiCommandlineParser.ParamAdditionalPathFilters] as? Set<String> ?? Set()
     }
   }
 
   init() {
     var args = [String](Process.arguments.dropFirst())
-
     // See if the arguments are intended to be interpreted as commandline args.
     if args.first != TulsiCommandlineParser.ParamCommandlineArgumentSentinal {
       commandlineSentinalFound = false
@@ -339,12 +341,14 @@ class TulsiCommandlineParser {
     args = [String](args.dropFirst())
 
     var parsedArguments = [String: AnyObject]()
-    func storeValueAt(index: Int, forArgument argumentName: String) {
+    func storeValueAt(index: Int,
+                      forArgument argumentName: String,
+                      transform: (AnyObject -> AnyObject) = { return $0 }) {
       guard index < args.count else {
         print("Missing required parameter for \(argumentName) option.")
         exit(1)
       }
-      let value = args[index]
+      let value = transform(args[index])
       parsedArguments[argumentName] = value
     }
 
@@ -392,6 +396,20 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamWorkspaceRootLong)
           i += 1
 
+        case TulsiCommandlineParser.ParamAdditionalPathFilters:
+          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamAdditionalPathFilters) { value -> AnyObject in
+            guard let valueString = value as? String else { return Set<String>() }
+
+            let pathFilters = valueString.componentsSeparatedByString(" ").map() { path -> String in
+              if path.hasPrefix("//") {
+                return path.substringFromIndex(path.startIndex.advancedBy(2))
+              }
+              return path
+            }
+            return Set(pathFilters)
+          }
+          i += 1
+
         default:
           print("Ignoring unknown option \"\(arg)\"")
       }
@@ -423,6 +441,7 @@ class TulsiCommandlineParser {
         "  \(ParamOutputFolderLong) <path>: Sets the folder into which the Xcode project should be saved.",
         "  \(ParamHelpLong): Show this help message.",
         "  \(ParamQuietLong): Hide verbose info messages (warning: may also hide some error details).",
+        "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project."
     ]
     print(usage.joinWithSeparator("\n") + "\n")
   }

@@ -653,6 +653,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case XPCService = "com.apple.product-type.xpc-service"
     case Watch2App = "com.apple.product-type.application.watchapp2"
     case Watch2Extension = "com.apple.product-type.watchkit2-extension"
+    case TVAppExtension = "com.apple.product-type.tv-app-extension"
 
     var explicitFileType: String {
       switch self {
@@ -688,6 +689,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
           return "folder"
 
         case .Watch2Extension:
+          fallthrough
+        case .TVAppExtension:
           fallthrough
         case .AppExtension:
           return "wrapper.app-extension"
@@ -731,6 +734,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
           return name
 
         case .Watch2Extension:
+          fallthrough
+        case .TVAppExtension:
           fallthrough
         case .AppExtension:
           return name + ".appex"

@@ -34,6 +34,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
       "swift_library",
       "test_suite",
       "_ios_application",
+      "_tvos_application",
   ]
 
   @IBOutlet weak var buildTargetTable: NSTableView!
