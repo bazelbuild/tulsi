@@ -24,10 +24,6 @@ public enum TulsiOptionKey: String {
       ALWAYS_SEARCH_USER_PATHS,
       // The path to the Bazel binary.
       BazelPath,
-      // The SDK to use.
-      // TODO(abaire): This can probably be inferred from the BUILD file or better exposed through
-      //     more specific flags.
-      SDKROOT,
       // Whether or not to claim Swift code was created at the same version as Tulsi itself.
       // Suppresses the Xcode warning and automated update on first opening of the generated
       // project.
@@ -253,7 +249,6 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
-    addStringOption(.SDKROOT, .TargetSpecializableBuildSetting, "iphoneos")
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
     addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)
 

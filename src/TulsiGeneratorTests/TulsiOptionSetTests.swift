@@ -30,7 +30,6 @@ class TulsiOptionSetTests: XCTestCase {
     let target1 = "Target1"
     let target2 = "Target2"
     let optionSet = TulsiOptionSet()
-    optionSet[.SDKROOT].projectValue = "SDKROOT!"
     optionSet[.ALWAYS_SEARCH_USER_PATHS].projectValue = "YES"
     optionSet[.BazelBuildOptionsDebug].targetValues = [
         target1: "Target-Value1",

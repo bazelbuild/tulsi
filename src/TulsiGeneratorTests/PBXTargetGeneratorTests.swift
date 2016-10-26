@@ -125,7 +125,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     rebuildSourceFileReferences()
     pchFile = project.mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     let options = TulsiOptionSet()
-    options[.SDKROOT].projectValue = sdkRoot
     messageLogger = MockLocalizedMessageLogger()
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
                                          bazelBinPath: "bazel-bin",
@@ -218,7 +217,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
         "ONLY_ACTIVE_ARCH": "YES",
-        "SDKROOT": sdkRoot,
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
     ]
