@@ -1,5 +1,5 @@
 {
-  "manifestVersion" : 2,
+  "manifestVersion" : 3,
   "targets" : {
     "_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C" : [
 
@@ -25,6 +25,17 @@
     "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
     "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a"
   ],
+  "intermediateArtifacts" : {
+    "TestApplication" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin"
+    ],
+    "TestSuiteXCTest" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin",
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ]
+  },
   "fileReferences" : [
     "..\/..\/TestSuite\/BUILD",
     "..\/..\/TestSuite\/Binary\/srcs\/main.m",

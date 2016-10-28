@@ -1233,8 +1233,18 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are
     // necessary for debugging Swift targets in Xcode 8; at some point this should be able to be
     // removed, but requires changes to LLDB.
-    let dSYMEnabled = hasSwiftDependencies(entry, ruleEntryMap: ruleEntryMap) ? "YES" : "NO"
-    buildSettings["TULSI_USE_DSYM"] = dSYMEnabled
+    let dSYMEnabled = hasSwiftDependencies(entry, ruleEntryMap: ruleEntryMap)
+    buildSettings["TULSI_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
+    if !dSYMEnabled {
+      // For targets that will not generate dSYMs, the set of intermediate libraries generated for
+      // dependencies is provided so that downstream utilities may locate them (e.g., to patch DWARF
+      // symbols).
+      let intermediateArtifacts = entry.discoverIntermediateArtifacts(ruleEntryMap)
+      if !intermediateArtifacts.isEmpty {
+        buildSettings["BAZEL_INTERMEDIATE_ARTIFACTS"] =
+            intermediateArtifacts.map({ $0.fullPath }).sort().joinWithSeparator("\n")
+      }
+    }
 
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually

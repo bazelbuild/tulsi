@@ -900,7 +900,7 @@ final class XcodeProjectGenerator {
   private class GeneratorManifest {
     /// Version number used to track changes to the format of the generated manifest.
     // This number may be used by consumers of the manifest for compatibility detection.
-    private static let ManifestFormatVersion = 2
+    private static let ManifestFormatVersion = 3
     /// Suffix for manifest entries whose recursive contents are used by the Xcode project.
     private static let BundleSuffix = "/**"
     private static let NormalBundleTypes = Set(DirExtensionToUTI.values)
@@ -909,6 +909,7 @@ final class XcodeProjectGenerator {
     private let pbxProject: PBXProject
     var fileReferences: Set<String>! = nil
     var targets: [String: [String]]! = nil
+    var intermediateArtifacts: [String: [String]]! = nil
     var artifacts: Set<String>! = nil
 
     init(localizedMessageLogger: LocalizedMessageLogger, pbxProject: PBXProject) {
@@ -924,6 +925,7 @@ final class XcodeProjectGenerator {
           "manifestVersion": GeneratorManifest.ManifestFormatVersion,
           "fileReferences": Array(fileReferences).sort(),
           "targets": targets,
+          "intermediateArtifacts": intermediateArtifacts,
           "artifacts": Array(artifacts).sort(),
       ]
       do {
@@ -941,7 +943,8 @@ final class XcodeProjectGenerator {
 
     private func parsePBXProject() {
       fileReferences = Set()
-      targets = [String: [String]]()
+      targets = [:]
+      intermediateArtifacts = [:]
       artifacts = Set()
 
       for ref in pbxProject.mainGroup.allSources {
@@ -971,6 +974,11 @@ final class XcodeProjectGenerator {
         if let debugConfig = buildConfigList.buildConfigurations["Debug"],
            let bazelOutputs = debugConfig.buildSettings["BAZEL_OUTPUTS"] {
           targets[target.name] = bazelOutputs.componentsSeparatedByString("\n").sort()
+          if let intermediates = debugConfig.buildSettings["BAZEL_INTERMEDIATE_ARTIFACTS"]
+             where !intermediates.isEmpty {
+            intermediateArtifacts[target.name] =
+                intermediates.componentsSeparatedByString("\n").sort()
+          }
         } else {
           targets[target.name] = []
         }

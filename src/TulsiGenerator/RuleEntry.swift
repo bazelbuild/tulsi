@@ -15,7 +15,7 @@
 import Foundation
 
 /// Models the label and type of a single supported Bazel target.
-/// See http://bazel.io/docs/build-ref.html#targets.
+/// See http://bazel.build/docs/build-ref.html#targets.
 public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   public let label: BuildLabel
   public let type: String
@@ -40,8 +40,8 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
 
 
 /// Encapsulates data about a file that may be a Bazel input or output.
-public class BazelFileInfo: Equatable {
-  public enum TargetType {
+public class BazelFileInfo: Equatable, Hashable {
+  public enum TargetType: Int {
     case SourceFile
     case GeneratedFile
   }
@@ -61,6 +61,10 @@ public class BazelFileInfo: Equatable {
 
   public lazy var uti: String? = { [unowned self] in
     return self.subPath.pbPathUTI
+  }()
+
+  public lazy var hashValue: Int = { [unowned self] in
+    return self.subPath.hashValue &+ self.rootPath.hashValue &+ self.targetType.hashValue
   }()
 
   init?(info: AnyObject?) {
@@ -99,7 +103,7 @@ public func ==(lhs: BazelFileInfo, rhs: BazelFileInfo) -> Bool {
 
 
 /// Models the full metadata of a single supported Bazel target.
-/// See http://bazel.io/docs/build-ref.html#targets.
+/// See http://bazel.build/docs/build-ref.html#targets.
 public final class RuleEntry: RuleInfo {
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
@@ -125,7 +129,7 @@ public final class RuleEntry: RuleInfo {
   ]
 
   /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
-  /// Encyclopedia (see http://bazel.io/docs/be/overview.html).
+  /// Encyclopedia (see http://bazel.build/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.
   public enum Attribute: String {
     case binary
@@ -193,6 +197,10 @@ public final class RuleEntry: RuleInfo {
   // test_suite and the test rules themselves, but that expansion is done prior to the application
   // of the aspect.
   public var weakDependencies = Set<BuildLabel>()
+
+  /// Transitive set of artifacts produced by the dependencies of this RuleEntry. Note that this
+  /// must be populated via the discoverIntermediateArtifacts method.
+  private(set) public var intermediateArtifacts: Set<BazelFileInfo>? = nil
 
   /// The BUILD file that this rule was defined in.
   public let buildFilePath: String?
@@ -374,6 +382,26 @@ public final class RuleEntry: RuleInfo {
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
               implicitIPATarget: implicitIPATarget)
+  }
+
+  public func discoverIntermediateArtifacts(ruleEntryMap: [BuildLabel: RuleEntry]) -> Set<BazelFileInfo> {
+    if intermediateArtifacts != nil { return intermediateArtifacts! }
+
+    var collectedArtifacts = Set<BazelFileInfo>()
+    for dep in dependencies {
+      guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else {
+        // TODO(abaire): Consider making this a standard Tulsi warning.
+        // In theory it shouldn't happen and the unknown dep should be tracked elsewhere.
+        print("Tulsi rule '\(label.value)' - Ignoring unknown dependency '\(dep)'")
+        continue
+      }
+
+      collectedArtifacts.unionInPlace(dependentEntry.artifacts)
+      collectedArtifacts.unionInPlace(dependentEntry.discoverIntermediateArtifacts(ruleEntryMap))
+    }
+
+    intermediateArtifacts = collectedArtifacts
+    return intermediateArtifacts!
   }
 
   // MARK: Private methods

@@ -14,7 +14,7 @@
 
 import Foundation
 
-// Represents a label in a build file - http://bazel.io/docs/build-ref.html#labels
+// Represents a label in a build file - http://bazel.build/docs/build-ref.html#labels
 public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertible {
   public let value: String
 

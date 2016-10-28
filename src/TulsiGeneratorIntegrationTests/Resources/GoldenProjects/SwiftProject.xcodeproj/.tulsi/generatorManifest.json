@@ -1,5 +1,5 @@
 {
-  "manifestVersion" : 2,
+  "manifestVersion" : 3,
   "targets" : {
     "_idx_SwiftLibrary_EA7FC891" : [
 
@@ -16,6 +16,9 @@
     "_idx_SwiftLibrary_EA7FC891.framework\/**",
     "bazel-bin\/tulsi_e2e_swift\/Application-MergedInfo.plist"
   ],
+  "intermediateArtifacts" : {
+
+  },
   "fileReferences" : [
     "..\/..\/tulsi_e2e_swift\/BUILD",
     "..\/..\/tulsi_e2e_swift\/SwiftLibrary\/srcs\/a.swift",

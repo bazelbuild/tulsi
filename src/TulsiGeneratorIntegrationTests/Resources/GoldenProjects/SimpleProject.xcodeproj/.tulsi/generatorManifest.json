@@ -1,5 +1,5 @@
 {
-  "manifestVersion" : 2,
+  "manifestVersion" : 3,
   "targets" : {
     "_idx_Library_1A8360DD" : [
 
@@ -29,6 +29,19 @@
     "lib_idx_Library_1A8360DD.a",
     "lib_idx_XCTest_8BB84E40.a"
   ],
+  "intermediateArtifacts" : {
+    "XCTest" : [
+      "bazel-bin\/tulsi_e2e_simple\/Application.ipa",
+      "bazel-bin\/tulsi_e2e_simple\/Binary.ipa",
+      "bazel-bin\/tulsi_e2e_simple\/Binary_bin",
+      "bazel-bin\/tulsi_e2e_simple\/libLibrary.a"
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_simple\/Binary.ipa",
+      "bazel-bin\/tulsi_e2e_simple\/Binary_bin",
+      "bazel-bin\/tulsi_e2e_simple\/libLibrary.a"
+    ]
+  },
   "fileReferences" : [
     "..\/..\/tulsi_e2e_simple\/Application\/Launch.storyboard",
     "..\/..\/tulsi_e2e_simple\/BUILD",

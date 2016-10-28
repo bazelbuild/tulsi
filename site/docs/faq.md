@@ -116,5 +116,5 @@ can click the disclosure button on the lower right to open it.
 
 # Why the name "tulsi"?
 
-tulsi - /ˈto͝olsē/ A kind of [basil](http://bazel.io) that is venerated by
+tulsi - /ˈto͝olsē/ A kind of [basil](http://bazel.build) that is venerated by
 Hindus as a sacred plant.

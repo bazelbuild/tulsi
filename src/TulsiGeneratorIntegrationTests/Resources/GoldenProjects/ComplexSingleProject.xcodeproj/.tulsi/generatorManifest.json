@@ -1,5 +1,5 @@
 {
-  "manifestVersion" : 2,
+  "manifestVersion" : 3,
   "targets" : {
     "XCTest" : [
       "bazel-bin\/tulsi_e2e_complex\/Application.ipa",
@@ -68,6 +68,52 @@
     "lib_idx_SubLibrary_19588DB9.a",
     "lib_idx_XCTest_7F8584F1.a"
   ],
+  "intermediateArtifacts" : {
+    "XCTest" : [
+      "bazel-bin\/tulsi_e2e_complex\/Application.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/Binary.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/Binary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
+      "bazel-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/libLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
+    ],
+    "Application" : [
+      "bazel-bin\/tulsi_e2e_complex\/Binary.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/Binary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
+      "bazel-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
+      "bazel-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
+      "bazel-bin\/tulsi_e2e_complex\/libLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibrary.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
+      "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
+    ],
+    "TodayExtension" : [
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin"
+    ],
+    "Watch2Extension" : [
+      "bazel-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin"
+    ],
+    "WatchExtension" : [
+      "bazel-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin"
+    ]
+  },
   "fileReferences" : [
     "..\/..\/tulsi_e2e_complex\/Application\/entitlements.entitlements",
     "..\/..\/tulsi_e2e_complex\/Application\/structured_resources.file1",

@@ -15,7 +15,7 @@
 import Foundation
 
 
-// Provides methods utilizing Bazel query (http://bazel.io/docs/query.html) to extract
+// Provides methods utilizing Bazel query (http://bazel.build/docs/query.html) to extract
 // information from a workspace.
 final class BazelQueryInfoExtractor {
 
@@ -82,7 +82,9 @@ final class BazelQueryInfoExtractor {
     let joinedLabelDeps = labelDeps.joinWithSeparator("+")
     let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
     do {
-      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query, outputKind: "xml")
+      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query,
+                                                                       outputKind: "xml",
+                                                                       additionalArguments: ["--keep_going"])
       if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
         infos = entries
       }

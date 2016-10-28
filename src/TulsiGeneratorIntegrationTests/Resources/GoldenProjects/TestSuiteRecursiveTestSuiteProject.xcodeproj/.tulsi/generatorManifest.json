@@ -1,5 +1,5 @@
 {
-  "manifestVersion" : 2,
+  "manifestVersion" : 3,
   "targets" : {
     "TestApplication" : [
       "bazel-bin\/TestSuite\/TestApplication.ipa"
@@ -31,6 +31,27 @@
     "tagged_xctest_1.xctest\/**",
     "tagged_xctest_2.xctest\/**"
   ],
+  "intermediateArtifacts" : {
+    "TestApplication" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin"
+    ],
+    "TestSuiteXCTest" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin",
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "tagged_xctest_2" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin",
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "tagged_xctest_1" : [
+      "bazel-bin\/TestSuite\/Binary.ipa",
+      "bazel-bin\/TestSuite\/Binary_bin",
+      "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ]
+  },
   "fileReferences" : [
     "..\/..\/TestSuite\/BUILD",
     "..\/..\/TestSuite\/Binary\/srcs\/main.m",

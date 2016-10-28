@@ -134,7 +134,7 @@
 			<key>UTTypeIdentifier</key>
 			<string>com.google.bazel.skylark</string>
 			<key>UTTypeReferenceURL</key>
-			<string>http://bazel.io/docs/skylark/index.html</string>
+			<string>http://bazel.build/docs/skylark/index.html</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

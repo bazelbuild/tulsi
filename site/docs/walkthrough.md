@@ -15,7 +15,7 @@ The app team is roughly divided into two groups:
 1. A UI team, responsible for the application's user interface
 
 The team just finished switching over to build their app with
-[Bazel](https://bazel.io) and have an `ios_application` rule called
+[Bazel](https://bazel.build) and have an `ios_application` rule called
 `//albahaca:Application` under the `albahaca` folder, an `objc_binary` rule
 called `AppBinary` in the `albahaca/App` folder and an `objc_library` named
 `Vision` in the `albahaca/Vision` folder.
