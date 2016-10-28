@@ -411,6 +411,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
@@ -523,6 +524,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
@@ -636,6 +638,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;

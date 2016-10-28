@@ -190,6 +190,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let frameworkSearchPaths: [String]
     let swiftLanguageVersion: String?
     let swiftIncludePaths: [String]
+    let iPhoneOSDeploymentTarget: String?
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
@@ -244,7 +245,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           frameworkSearchPaths == other.frameworkSearchPaths &&
           includes == other.includes &&
           swiftLanguageVersion == other.swiftLanguageVersion &&
-          swiftIncludePaths == other.swiftIncludePaths) {
+          swiftIncludePaths == other.swiftIncludePaths &&
+          iPhoneOSDeploymentTarget == other.iPhoneOSDeploymentTarget) {
         return false
       }
 
@@ -269,6 +271,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          frameworkSearchPaths: frameworkSearchPaths,
                          swiftLanguageVersion: swiftLanguageVersion,
                          swiftIncludePaths: swiftIncludePaths,
+                         iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
                          bridgingHeader: bridgingHeader,
@@ -585,6 +588,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       swiftLanguageVersion: ruleEntry.swiftLanguageVersion,
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
+                                      iPhoneOSDeploymentTarget: ruleEntry.iPhoneOSDeploymentTarget,
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
@@ -998,6 +1002,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if !data.otherSwiftFlags.isEmpty {
       buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joinWithSeparator(" ")
+    }
+
+    if let iPhoneOSDeploymentTarget = data.iPhoneOSDeploymentTarget {
+      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
     }
 
     // Force the indexers to target the x86_64 simulator. This minimizes issues triggered by

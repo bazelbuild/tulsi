@@ -529,6 +529,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SDKROOT = iphonesimulator;
@@ -543,6 +544,7 @@
 				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
 				SDKROOT = iphonesimulator;
@@ -555,6 +557,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 				SDKROOT = iphonesimulator;
@@ -649,6 +652,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SDKROOT = iphonesimulator;
@@ -664,6 +668,7 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
 				SDKROOT = iphonesimulator;
@@ -677,6 +682,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 				SDKROOT = iphonesimulator;
@@ -772,6 +778,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Binary_A56A3DAA;
 				SDKROOT = iphonesimulator;
@@ -787,6 +794,7 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_WR)/relative/Library/include/path $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD;
 				SDKROOT = iphonesimulator;
@@ -800,6 +808,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-bin/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/bazel-genfiles/tulsi_e2e_simple/Binary/includes $(TULSI_WR)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCTest_8BB84E40;
 				SDKROOT = iphonesimulator;
