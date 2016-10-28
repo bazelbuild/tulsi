@@ -31,13 +31,18 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
 
-    XCTAssertEqual(infos.count, 4)
+    XCTAssertEqual(infos.count, 5)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_test:Application")
         .hasType("ios_application")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
+
+    checker.assertThat("//tulsi_test:TargetApplication")
+      .hasType("ios_application")
+      .hasNoLinkedTargetLabels()
+      .hasNoDependencies()
 
     checker.assertThat("//tulsi_test:Binary")
         .hasType("objc_binary")

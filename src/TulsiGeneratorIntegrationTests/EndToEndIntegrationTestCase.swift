@@ -81,11 +81,11 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                   buildTargets: [RuleInfo],
                                   pathFilters: [String],
                                   additionalFilePaths: [String] = [],
-                                  outputDir: String) -> NSURL? {
+                                  outputDir: String,
+                                  options: TulsiOptionSet = TulsiOptionSet()) -> NSURL? {
     let userDefaults = NSUserDefaults.standardUserDefaults()
     let buildOptions =  userDefaults.stringForKey("testBazelBuildOptions") ?? ""
 
-    let options = TulsiOptionSet()
     if let startupOptions = userDefaults.stringForKey("testBazelStartupOptions") {
       options[.BazelBuildStartupOptionsDebug].projectValue = startupOptions
     }

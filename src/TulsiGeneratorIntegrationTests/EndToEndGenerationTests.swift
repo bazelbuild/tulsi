@@ -30,8 +30,12 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                        inSubdirectory: "\(testDir)/SimpleTest.xcdatamodeld")
 
     let appLabel = BuildLabel("//\(testDir):Application")
+    let targetLabel = BuildLabel("//\(testDir):TargetApplication")
     let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: targetLabel,
                                  type: "ios_application",
                                  linkedTargetLabels: Set<BuildLabel>()),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
@@ -40,11 +44,21 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "SimpleProject"
+
+    let options = TulsiOptionSet()
+    options.options[.CommandlineArguments]?.projectValue = "--project-flag"
+    options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag"
+
+    options.options[.EnvironmentVariables]?.projectValue = "projectKey=projectValue"
+    options.options[.EnvironmentVariables]?.targetValues?[targetLabel.value] =
+        "targetKey1=targetValue1\ntargetKey2=targetValue2=\ntargetKey3="
+
     guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
                                                 additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
+                                                outputDir: "tulsi_e2e_output/",
+                                                options: options) else {
       // The test has already been marked as failed.
       return
     }

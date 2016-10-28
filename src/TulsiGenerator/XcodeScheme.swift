@@ -46,7 +46,8 @@ final class XcodeScheme {
   let additionalBuildTargets: [(PBXTarget, String)]?
 
   let primaryTargetBuildableReference: BuildableReference
-  let launchActionEnvVars: [String : String]
+  let commandlineArguments: [String]
+  let environmentVariables: [String: String]
 
   init(target: PBXTarget,
        project: PBXProject,
@@ -62,7 +63,8 @@ final class XcodeScheme {
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil,
        additionalBuildTargets: [(PBXTarget, String)]? = nil,
-       launchActionEnvVars: [String: String]? = nil) {
+       commandlineArguments: [String] = [],
+       environmentVariables: [String: String] = [:]) {
     self.version = version
     self.target = target
     self.project = project
@@ -78,19 +80,8 @@ final class XcodeScheme {
     self.explicitTests = explicitTests
     self.additionalBuildTargets = additionalBuildTargets
 
-    var envVars: [String: String]
-    if let launchActionEnvVars = launchActionEnvVars {
-      envVars = launchActionEnvVars
-    } else {
-      envVars = [:]
-    }
-
-    // Disable OS_ACTIVITY_MODE by default to cut down on Xcode 8 logging.
-    // b/31544656
-    if envVars["OS_ACTIVITY_MODE"] == nil {
-      envVars["OS_ACTIVITY_MODE"] = "disable"
-    }
-    self.launchActionEnvVars = envVars
+    self.commandlineArguments = commandlineArguments
+    self.environmentVariables = environmentVariables
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -232,7 +223,10 @@ final class XcodeScheme {
     }
 
     element.setAttributesWithDictionary(attributes)
-    element.addChild(envVars(self.launchActionEnvVars))
+    if !self.commandlineArguments.isEmpty {
+      element.addChild(commandlineArgumentsElement(self.commandlineArguments))
+    }
+    element.addChild(environmentVariablesElement(self.environmentVariables))
     if launchStyle != .AppExtension {
       element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
@@ -302,16 +296,31 @@ final class XcodeScheme {
     return element
   }
 
-  /// Generates a EnvironmentVariables element based on vars.
-  private func envVars(vars: [String: String]) -> NSXMLElement {
+  /// Generates a CommandlineArguments element based on arguments.
+  private func commandlineArgumentsElement(arguments: [String]) -> NSXMLElement {
+    let element = NSXMLElement(name: "CommandLineArguments")
+    for argument in arguments {
+      let argumentElement = NSXMLElement(name: "CommandLineArgument")
+      argumentElement.setAttributesAsDictionary([
+        "argument": argument,
+        "isEnabled": "YES"
+      ])
+      element.addChild(argumentElement)
+    }
+    return element
+  }
+
+  /// Generates an EnvironmentVariables element based on vars.
+  private func environmentVariablesElement(variables: [String: String]) -> NSXMLElement {
     let element = NSXMLElement(name:"EnvironmentVariables")
-    for (key, value) in vars {
-      let envVar = NSXMLElement(name:"EnvironmentVariable")
-      envVar.setAttributesWithDictionary([
+    for (key, value) in variables {
+      let environmentVariable = NSXMLElement(name:"EnvironmentVariable")
+      environmentVariable.setAttributesWithDictionary([
         "key": key,
         "value": value,
-        "isEnabled": "YES"])
-      element.addChild(envVar)
+        "isEnabled": "YES"
+      ])
+      element.addChild(environmentVariable)
     }
     return element
   }

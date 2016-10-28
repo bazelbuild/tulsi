@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -386,7 +386,6 @@
                                             </connections>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="djX-rJ-ZSo"/>
@@ -575,7 +574,7 @@ Gw
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" columnReordering="NO" columnResizing="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="55y-Mb-WtM" customClass="MessageTableView" customModule="Tulsi" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="625" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="625" height="103"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="3"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -647,7 +646,6 @@ Gw
                                             </connections>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2me-bz-ws8"/>
@@ -797,7 +795,6 @@ CA
                                             </connections>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="R2s-sg-d9M"/>
@@ -1012,7 +1009,6 @@ CA
                                             </connections>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="Wis-qF-tm6"/>
@@ -1142,6 +1138,7 @@ Please check this project's packages.</string>
                                                             <subviews>
                                                                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLo-XP-BR6">
                                                                     <rect key="frame" x="1" y="-1" width="400" height="18"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <buttonCell key="cell" type="check" title="Source tree node" bezelStyle="regularSquare" imagePosition="left" state="on" allowsMixedState="YES" inset="2" id="Sfl-Jd-gW5">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1197,6 +1194,7 @@ Please check this project's packages.</string>
                                                             <subviews>
                                                                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OTA-vT-aoA">
                                                                     <rect key="frame" x="19" y="1" width="18" height="18"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="only" state="on" allowsMixedState="YES" inset="2" id="H5g-ng-xOR">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1226,7 +1224,6 @@ Please check this project's packages.</string>
                                             </connections>
                                         </outlineView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="AYg-bA-SSY">
                                     <rect key="frame" x="1" y="348" width="639" height="15"/>
@@ -1337,7 +1334,7 @@ Please check this project's packages.</string>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="tnI-CS-8hc" id="75z-V0-1ht">
-                                                    <rect key="frame" x="0.0" y="0.0" width="155" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="157" height="280"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1402,7 +1399,6 @@ Please check this project's packages.</string>
                                                     </connections>
                                                 </outlineView>
                                             </subviews>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="JkT-Y5-i6n">
                                             <rect key="frame" x="0.0" y="347" width="157" height="15"/>
@@ -1468,7 +1464,7 @@ Please check this project's packages.</string>
                                                                     </subviews>
                                                                     <constraints>
                                                                         <constraint firstItem="ypQ-IN-W6z" firstAttribute="leading" secondItem="97C-ck-8nj" secondAttribute="leading" constant="2" id="6rL-Zj-DH8"/>
-                                                                        <constraint firstItem="ypQ-IN-W6z" firstAttribute="centerY" secondItem="97C-ck-8nj" secondAttribute="centerY" id="cce-lO-Vnz"/>
+                                                                        <constraint firstItem="ypQ-IN-W6z" firstAttribute="top" secondItem="97C-ck-8nj" secondAttribute="top" id="cce-lO-Vnz"/>
                                                                         <constraint firstAttribute="trailing" secondItem="ypQ-IN-W6z" secondAttribute="trailing" constant="2" id="ieB-te-fNE"/>
                                                                     </constraints>
                                                                     <connections>
@@ -1509,7 +1505,7 @@ Please check this project's packages.</string>
                                                                     <constraints>
                                                                         <constraint firstItem="dNR-lb-Qb0" firstAttribute="leading" secondItem="YMp-DA-LoX" secondAttribute="leading" constant="2" id="1pd-Vb-a3c"/>
                                                                         <constraint firstAttribute="trailing" secondItem="dNR-lb-Qb0" secondAttribute="trailing" constant="2" id="NFG-kS-Wqo"/>
-                                                                        <constraint firstItem="dNR-lb-Qb0" firstAttribute="centerY" secondItem="YMp-DA-LoX" secondAttribute="centerY" id="hLx-wt-Qfg"/>
+                                                                        <constraint firstItem="dNR-lb-Qb0" firstAttribute="top" secondItem="YMp-DA-LoX" secondAttribute="top" constant="2" id="hLx-wt-Qfg"/>
                                                                     </constraints>
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
@@ -1641,6 +1637,7 @@ Please check this project's packages.</string>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGM-OR-kqV">
                                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" sendsActionOnEndEditing="YES" title="Default (via bindings)" id="4eQ-7P-ir6">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1669,7 +1666,6 @@ Please check this project's packages.</string>
                                                     </connections>
                                                 </outlineView>
                                             </subviews>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.81162232486347241" horizontal="YES" id="YBR-09-mtm">
                                             <rect key="frame" x="0.0" y="347" width="592" height="15"/>

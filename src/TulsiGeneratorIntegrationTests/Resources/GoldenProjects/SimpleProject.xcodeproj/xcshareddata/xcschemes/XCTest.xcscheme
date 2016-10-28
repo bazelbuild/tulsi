@@ -18,8 +18,11 @@
         </MacroExpansion>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
+        <CommandLineArguments>
+            <CommandLineArgument isEnabled="YES" argument="--project-flag"></CommandLineArgument>
+        </CommandLineArguments>
         <EnvironmentVariables>
-            <EnvironmentVariable isEnabled="YES" key="OS_ACTIVITY_MODE" value="disable"></EnvironmentVariable>
+            <EnvironmentVariable isEnabled="YES" key="projectKey" value="projectValue"></EnvironmentVariable>
         </EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>

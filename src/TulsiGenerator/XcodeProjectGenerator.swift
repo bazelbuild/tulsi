@@ -427,6 +427,23 @@ final class XcodeProjectGenerator {
       return nil
     }
 
+    func commandlineArguments(for ruleEntry: RuleEntry) -> [String] {
+      return config.options[.CommandlineArguments, ruleEntry.label.value]?.componentsSeparatedByString(" ") ?? []
+    }
+
+    func environmentVariables(for ruleEntry: RuleEntry) -> [String: String] {
+      var environmentVariables: [String: String] = [:]
+      config.options[.EnvironmentVariables, ruleEntry.label.value]?.componentsSeparatedByCharactersInSet(.newlineCharacterSet()).forEach() { keyValueString in
+        let components = keyValueString.componentsSeparatedByString("=")
+        let key = components.first ?? ""
+        if !key.isEmpty {
+          let value = components[1..<components.count].joinWithSeparator("=")
+          environmentVariables[key] = value
+        }
+      }
+      return environmentVariables
+    }
+
     // Build a map of extension targets to hosts so the hosts may be referenced as additional build
     // requirements. This is necessary for watchOS2 targets (Xcode will spawn an error when
     // attempting to run the app without the scheme linkage, even though Bazel will create the
@@ -503,7 +520,9 @@ final class XcodeProjectGenerator {
                                appExtension: appExtension,
                                launchStyle: launchStyle,
                                runnableDebuggingMode: runnableDebuggingMode,
-                               additionalBuildTargets: additionalBuildTargets)
+                               additionalBuildTargets: additionalBuildTargets,
+                               commandlineArguments: commandlineArguments(for: entry),
+                               environmentVariables: environmentVariables(for: entry))
       let xmlDocument = scheme.toXML()
 
 #if swift(>=2.3)
@@ -584,7 +603,9 @@ final class XcodeProjectGenerator {
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
-                               explicitTests: Array(validTests))
+                               explicitTests: Array(validTests),
+                               commandlineArguments: commandlineArguments(for: suite),
+                               environmentVariables: environmentVariables(for: suite))
       let xmlDocument = scheme.toXML()
 
 #if swift(>=2.3)

@@ -32,7 +32,13 @@ public enum TulsiOptionKey: String {
       WorkspaceRootPath,
       // Whether to patch LLDB CWD
       // TODO(dmishe): Remove this option once it is enabled by default.
-      PatchLLDBWorkingDirectory
+      PatchLLDBWorkingDirectory,
+
+      // Commandline Arguments used by the run phase of the generated scheme.
+      CommandlineArguments,
+
+      // Environment Variables used by the run phase of the generated scheme.
+      EnvironmentVariables
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -251,6 +257,11 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
     addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)
+
+    addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
+
+    // Disable OS_ACTIVITY_MODE by default to cut down on Xcode 8 logging. b/31544656
+    addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword], "OS_ACTIVITY_MODE=disable")
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])

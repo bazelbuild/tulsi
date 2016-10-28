@@ -22,6 +22,9 @@
 
 "CODE_SIGN_IDENTITY" = "Code signing identity";
 
+"CommandlineArguments" = "Commandline Arguments";
+"EnvironmentVariables" = "Environment Variables";
+
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
 

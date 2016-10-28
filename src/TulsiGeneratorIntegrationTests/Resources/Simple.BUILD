@@ -21,6 +21,13 @@ ios_application(
     launch_storyboard = "Application/Launch.storyboard",
 )
 
+ios_application(
+    name = "TargetApplication",
+    binary = ":Binary",
+    launch_image = "Binary_Assets_LaunchImage",
+    launch_storyboard = "Application/Launch.storyboard",
+)
+
 objc_binary(
     name = "Binary",
     srcs = [
