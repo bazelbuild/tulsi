@@ -374,6 +374,7 @@ class BazelBuildBridge(object):
     # The path to the Bazel's sandbox source root.
     self.bazel_build_workspace_root = None
     self.bazel_genfiles_path = None
+    self.bazel_symlink_prefix = None
     self.signing_identities = {}
     self.patch_lldb_cwd = False
 
@@ -466,9 +467,9 @@ class BazelBuildBridge(object):
     self.verbose = parser.verbose
     self.patch_lldb_cwd = parser.patch_lldb_cwd
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
-    # bazel_bin_path is assumed to always end in "-bin" and the genfiles symlink
-    # should always share the bin symlink's prefix.
-    self.bazel_genfiles_path = self.bazel_bin_path[:-3] + 'genfiles'
+    # bazel_bin_path is assumed to always end in "-bin".
+    self.bazel_symlink_prefix = self.bazel_bin_path[:-3]
+    self.bazel_genfiles_path = self.bazel_symlink_prefix + 'genfiles'
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -1204,6 +1205,7 @@ class BazelBuildBridge(object):
         r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/(.*?)\'\s*$')
     source_path_prefixes = set()
 
+    bazel_out_symlink = self.bazel_symlink_prefix + 'out'
     for line in output.split('\n'):
       match = source_path_re.match(line)
       if match:
@@ -1212,7 +1214,7 @@ class BazelBuildBridge(object):
         # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
         subpath = match.group(2)
         components = subpath.split(os.sep, 5)
-        if len(components) >= 4 and components[1] == 'bazel-out':
+        if len(components) >= 4 and components[1] == bazel_out_symlink:
           symlink_component = components[3]
           match_path = os.path.join(basepath, *components[:4])
           if symlink_component == 'bin':
