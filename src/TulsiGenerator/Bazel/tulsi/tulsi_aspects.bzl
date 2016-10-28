@@ -151,14 +151,17 @@ def _file_metadata(f):
   )
 
 
-def _file_metadata_by_replacing_path(f, new_path):
+def _file_metadata_by_replacing_path(f, new_path, new_is_dir=None):
   """Returns a copy of the f _file_metadata struct with the given path."""
   root_path = _get_opt_attr(f, 'rootPath')
+  if new_is_dir == None:
+    new_is_dir = f.is_dir
+
   return _struct_omitting_none(
       path=new_path,
       src=f.src,
       root=root_path,
-      is_dir=f.is_dir
+      is_dir=new_is_dir
   )
 
 
@@ -206,7 +209,9 @@ def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
       if full_path in discovered_paths:
         continue
       discovered_paths += [full_path]
-      bundles.append(_file_metadata_by_replacing_path(f, path))
+      # Generally Xcode treats bundles as special files so they should not be
+      # flagged as directories.
+      bundles.append(_file_metadata_by_replacing_path(f, path, False))
   return bundles
 
 
@@ -250,7 +255,7 @@ def _collect_xcdatamodeld_files(obj, attr_path):
     if full_path in discovered_paths:
       continue
     discovered_paths += [full_path]
-    datamodelds.append(_file_metadata_by_replacing_path(f, path))
+    datamodelds.append(_file_metadata_by_replacing_path(f, path, False))
   return datamodelds
 
 
