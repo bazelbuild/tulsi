@@ -136,10 +136,18 @@ def _file_metadata(f):
   else:
     root_execution_path_fragment = None
 
+  # TODO(abaire): Remove once Skylark File objects can reference directories.
+  # At the moment (Oct. 2016), Bazel disallows most files without extensions.
+  # As a temporary hack, Tulsi treats File instances pointing at extension-less
+  # paths as directories. This is extremely fragile and must be replaced with
+  # logic properly homed in Bazel.
+  is_dir = (f.basename.find('.') == -1)
+
   return _struct_omitting_none(
       path=f.short_path,
       src=f.is_source,
-      root=root_execution_path_fragment
+      root=root_execution_path_fragment,
+      is_dir=is_dir
   )
 
 
@@ -149,7 +157,8 @@ def _file_metadata_by_replacing_path(f, new_path):
   return _struct_omitting_none(
       path=new_path,
       src=f.src,
-      root=root_path
+      root=root_path,
+      is_dir=f.is_dir
   )
 
 
@@ -365,7 +374,7 @@ def _extract_generated_sources_and_includes(target):
     all_files += objc_provider.header
     file_metadatas = [_file_metadata(f) for f in all_files]
 
-  if objc_provider and hasattr(objc_provider, 'include'):
+  if hasattr(objc_provider, 'include'):
     includes = [_convert_outpath_to_symlink_path(x)
                 for x in objc_provider.include]
   return file_metadatas, includes

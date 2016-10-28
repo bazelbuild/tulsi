@@ -268,28 +268,43 @@ final class BazelAspectInfoExtractor {
 
       let artifacts = MakeBazelFileInfos("artifacts")
       var sources = MakeBazelFileInfos("srcs")
-      let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
-      for info in generatedSourceInfos {
-        guard let pathInfo = BazelFileInfo(info: info),
-                  fileUTI = pathInfo.uti
-              where fileUTI.hasPrefix("sourcecode.") else {
-          continue
+
+      // Appends BazelFileInfo objects to the given array for any info dictionaries representing
+      // source code or (potential) source code containers. The directoryArtifacts set is also
+      // populated as a side effect.
+      var directoryArtifacts = Set<String>()
+      func appendGeneratedSourceArtifacts(infos: [[String: AnyObject]],
+                                          inout to artifacts: [BazelFileInfo]) {
+        for info in infos {
+          guard let pathInfo = BazelFileInfo(info: info) else {
+            continue
+          }
+          if pathInfo.isDirectory {
+            directoryArtifacts.insert(pathInfo.fullPath)
+          } else {
+            guard let fileUTI = pathInfo.uti where fileUTI.hasPrefix("sourcecode.") else {
+              continue
+            }
+          }
+          artifacts.append(pathInfo)
         }
-        sources.append(pathInfo)
       }
+
+      let generatedSourceInfos = dict["generated_files"] as? [[String: AnyObject]] ?? []
+      appendGeneratedSourceArtifacts(generatedSourceInfos, to: &sources)
 
       var nonARCSources = MakeBazelFileInfos("non_arc_srcs")
       let generatedNonARCSourceInfos = dict["generated_non_arc_files"] as? [[String: AnyObject]] ?? []
-      for info in generatedNonARCSourceInfos {
-        guard let pathInfo = BazelFileInfo(info: info),
-                  fileUTI = pathInfo.uti
-              where fileUTI.hasPrefix("sourcecode.") else {
-          continue
-        }
-        nonARCSources.append(pathInfo)
-      }
+      appendGeneratedSourceArtifacts(generatedNonARCSourceInfos, to: &nonARCSources)
 
-      let generatedIncludePaths = dict["generated_includes"] as? [String]
+      let generatedIncludePaths: [RuleEntry.IncludePath]?
+      if let includes = dict["generated_includes"] as? [String] {
+        generatedIncludePaths = includes.map() {
+          RuleEntry.IncludePath($0, directoryArtifacts.contains($0))
+        }
+      } else {
+        generatedIncludePaths = nil
+      }
       let dependencies = Set(dict["deps"] as? [String] ?? [])
       let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String

@@ -149,7 +149,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     secondaryArtifacts: [BazelFileInfo] = [],
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
-                                    generatedIncludePaths: [String]? = nil,
+                                    generatedIncludePaths: [RuleEntry.IncludePath]? = nil,
                                     implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
     return RuleEntry(label: label,
                      type: type,

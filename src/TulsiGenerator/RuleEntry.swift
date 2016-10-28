@@ -40,7 +40,7 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
 
 
 /// Encapsulates data about a file that may be a Bazel input or output.
-public class BazelFileInfo: Equatable, Hashable {
+public class BazelFileInfo: Equatable, Hashable, CustomDebugStringConvertible {
   public enum TargetType: Int {
     case SourceFile
     case GeneratedFile
@@ -55,6 +55,9 @@ public class BazelFileInfo: Equatable, Hashable {
   /// The type of this file.
   public let targetType: TargetType
 
+  /// Whether or not this file object is a directory.
+  public let isDirectory: Bool
+
   public lazy var fullPath: String = { [unowned self] in
     return NSString.pathWithComponents([self.rootPath, self.subPath])
   }()
@@ -64,7 +67,10 @@ public class BazelFileInfo: Equatable, Hashable {
   }()
 
   public lazy var hashValue: Int = { [unowned self] in
-    return self.subPath.hashValue &+ self.rootPath.hashValue &+ self.targetType.hashValue
+    return self.subPath.hashValue &+
+        self.rootPath.hashValue &+
+        self.targetType.hashValue &+
+        self.isDirectory.hashValue
   }()
 
   init?(info: AnyObject?) {
@@ -86,25 +92,38 @@ public class BazelFileInfo: Equatable, Hashable {
       self.rootPath = ""
     }
     self.targetType = isSourceFile ? .SourceFile : .GeneratedFile
+
+    self.isDirectory = info["is_dir"] as? Bool ?? false
   }
 
-  init(rootPath: String, subPath: String, targetType: TargetType) {
+  init(rootPath: String, subPath: String, isDirectory: Bool, targetType: TargetType) {
     self.rootPath = rootPath
     self.subPath = subPath
+    self.isDirectory = isDirectory
     self.targetType = targetType
   }
+
+  // MARK: - CustomDebugStringConvertible
+  public lazy var debugDescription: String = { [unowned self] in
+    return "{\(self.fullPath) \(self.isDirectory ? "<DIR> " : "")\(self.targetType)}"
+  }()
 }
 
 public func ==(lhs: BazelFileInfo, rhs: BazelFileInfo) -> Bool {
   return lhs.targetType == rhs.targetType &&
       lhs.rootPath == rhs.rootPath &&
-      lhs.subPath == rhs.subPath
+      lhs.subPath == rhs.subPath &&
+      lhs.isDirectory == rhs.isDirectory
 }
 
 
 /// Models the full metadata of a single supported Bazel target.
 /// See http://bazel.build/docs/build-ref.html#targets.
 public final class RuleEntry: RuleInfo {
+  // Include paths are represented by a string and a boolean indicating whether they should be
+  // searched recursively or not.
+  public typealias IncludePath = (String, Bool)
+
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
       "apple_watch1_extension": PBXTarget.ProductType.AppExtension,
@@ -164,7 +183,8 @@ public final class RuleEntry: RuleInfo {
   /// Non-ARC source files associated with this rule.
   public let nonARCSourceFiles: [BazelFileInfo]
 
-  public let generatedIncludePaths: [String]?
+  /// Paths to generated directories that will include header files.
+  public let generatedIncludePaths: [IncludePath]?
 
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
@@ -293,7 +313,7 @@ public final class RuleEntry: RuleInfo {
        extensionBundleID: String? = nil,
        iPhoneOSDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
-       generatedIncludePaths: [String]? = nil,
+       generatedIncludePaths: [IncludePath]? = nil,
        swiftLanguageVersion: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
@@ -357,7 +377,7 @@ public final class RuleEntry: RuleInfo {
                    extensionBundleID: String? = nil,
                    iPhoneOSDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
-                   generatedIncludePaths: [String]? = nil,
+                   generatedIncludePaths: [IncludePath]? = nil,
                    swiftLanguageVersion: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],

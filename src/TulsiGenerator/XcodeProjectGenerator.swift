@@ -306,6 +306,7 @@ final class XcodeProjectGenerator {
       let bazelBinPath = workspaceInfoExtractor.bazelBinPath
       let expectedArtifact = BazelFileInfo(rootPath: bazelBinPath,
                                            subPath: "\(hostLabel.asFileName!).ipa",
+                                           isDirectory: false,
                                            targetType: .GeneratedFile)
 
       targetRules.insert(RuleEntry(label: hostLabel,

@@ -1614,7 +1614,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   private class TestBazelFileInfo : BazelFileInfo {
     init(fullPath: String) {
-      super.init(rootPath: "", subPath: fullPath, targetType: .SourceFile)
+      super.init(rootPath: "", subPath: fullPath, isDirectory: false, targetType: .SourceFile)
     }
   }
 

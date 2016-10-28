@@ -47,7 +47,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
         .hasAttribute(.bridging_header,
-                      value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
+                      value: ["is_dir": false,
+                              "path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasListAttribute(.compiler_defines,
@@ -55,25 +56,31 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                        "A_COMMANDLINE_DEFINE_WITH_VALUE=1",
                                        "A_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'"])
         .hasAttribute(.includes, value: ["Binary/includes"])
-        .hasAttribute(.launch_storyboard, value: ["path": "tulsi_test/Application/Launch.storyboard",
+        .hasAttribute(.launch_storyboard, value: ["is_dir": false,
+                                                  "path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true])
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/Binary/srcs/main.m"])
         .hasAttribute(.bridging_header,
-                      value: ["path": "tulsi_test/Binary/bridging_header/bridging_header.h",
+                      value: ["is_dir": false,
+                              "path": "tulsi_test/Binary/bridging_header/bridging_header.h",
                               "src": true])
-        .hasAttribute(.datamodels, value: [["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel",
+        .hasAttribute(.datamodels, value: [["is_dir": false,
+                                            "path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel",
                                             "src": true],
-                                           ["path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
+                                           ["is_dir": false,
+                                            "path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
                                             "src": true], ])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasAttribute(.includes, value: ["Binary/includes"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Assets.xcassets",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/Assets.xcassets",
                                "src": true],])
 
     checker.assertThat("//tulsi_test:Library")
@@ -87,9 +94,13 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-I/Library/absolute/include/path",
                                       "-Irelative/Library/include/path"])
         .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"])
-        .hasAttribute(.pch, value: ["path": "tulsi_test/Library/pch/PCHFile.pch", "src": true])
+        .hasAttribute(.pch, value: ["is_dir": false,
+                                    "path": "tulsi_test/Library/pch/PCHFile.pch",
+                                    "src": true])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Library/xibs/xib.xib", "src": true]])
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/Library/xibs/xib.xib",
+                               "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
@@ -113,18 +124,22 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
         .hasAttribute(.bridging_header,
-                      value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
+                      value: ["is_dir": false,
+                              "path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
                               "root": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Application/entitlements.entitlements",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/Application/entitlements.entitlements",
                                "src": true],
-                              ["path": "tulsi_test/Application/structured_resources.file1",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Application/structured_resources.file1",
                                "src": true],
-                              ["path": "tulsi_test/Application/structured_resources.file2",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Application/structured_resources.file2",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:Binary")
@@ -136,47 +151,62 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                     ])
         .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
         .hasAttribute(.bridging_header,
-                      value: ["path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
+                      value: ["is_dir": false,
+                              "path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
                               "root": "bazel-genfiles",
                               "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Binary/Info.plist",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/Binary/Info.plist",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Base.lproj/Localizable.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/Base.lproj/Localizable.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Base.lproj/Localized.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/Base.lproj/Localized.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/en.lproj/Localized.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/en.lproj/Localized.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/en.lproj/EN.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/en.lproj/EN.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/es.lproj/Localized.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/es.lproj/Localized.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/NonLocalized.strings",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/NonLocalized.strings",
                                "src": true],
-                              ["path": "tulsi_test/Binary/Base.lproj/One.storyboard",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
-                              ["path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
+                              ["is_dir": false,
+                               "path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
                                "root": "bazel-genfiles",
                                "src": false],
-                              ["path": "tulsi_test/Binary/AssetsOne.xcassets",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/AssetsOne.xcassets",
                                "src": true],
-                              ["path": "tulsi_test/Binary/AssetsTwo.xcassets",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Binary/AssetsTwo.xcassets",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:ObjCBundle")
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/ObjCBundle.bundle",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/ObjCBundle.bundle",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:CoreDataResources")
         .hasAttribute(.datamodels,
-                      value: [["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel",
                                "src": true],
-                              ["path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
+                              ["is_dir": false,
+                               "path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
                                "src": true], ])
 
     checker.assertThat("//tulsi_test:Library")
@@ -191,15 +221,17 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1",
                                         "'LIBRARY SECOND DEFINE'=2",
                                         "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
-        .hasAttribute(.pch, value: ["path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
+        .hasAttribute(.pch, value: ["is_dir": false,
+                                    "path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
                                     "root": "bazel-genfiles",
                                     "src": false])
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/Library/xib.xib", "src": true]])
+                      value: [["is_dir": false, "path": "tulsi_test/Library/xib.xib", "src": true]])
 
     checker.assertThat("//tulsi_test:SubLibrary")
         .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])
-        .hasAttribute(.pch, value: ["path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
+        .hasAttribute(.pch, value: ["is_dir": false,
+                                    "path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
                                     "src": true])
         .hasAttribute(.enable_modules, value: 1)
 
@@ -241,23 +273,32 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:WatchExtension")
         .dependsOn("//tulsi_test:WatchExtensionBinary")
         .hasAttribute(.supporting_files,
-                      value: [["path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
+                      value: [["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/app_infoplists/Info.plist",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/app_infoplists/Info.plist",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/app_resources.file",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/app_resources.file",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/app_structured_resources.file",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/app_structured_resources.file",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/ext_entitlements.entitlements",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/ext_entitlements.entitlements",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/ext_infoplists/Info.plist",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/ext_infoplists/Info.plist",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/ext_resources.file",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/ext_resources.file",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/ext_structured_resources.file",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/ext_structured_resources.file",
                                "src": true],
-                              ["path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
+                              ["is_dir": false,
+                               "path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
                                "src": true]])
 
     checker.assertThat("//tulsi_test:XCTest")

@@ -460,7 +460,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       if let generatedIncludePaths = ruleEntry.generatedIncludePaths {
-        let rootedPaths = generatedIncludePaths.map() { "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\($0)" }
+        let rootedPaths: [String] = generatedIncludePaths.map() { (path, recursive) in
+          let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
+          if recursive {
+            return "\(rootedPath)/**"
+          }
+          return rootedPath
+        }
         generatedIncludes.addObjectsFromArray(rootedPaths)
       }
 
@@ -472,7 +478,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(fullPath.stringByDeletingLastPathComponent)"
         frameworkSearchPaths.addObject(rootedPath)
       }
-
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
       let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles.filter(includeFileInProject)
       let frameworkFileInfos = ruleEntry.frameworkImports.filter(includeFileInProject)
@@ -811,6 +816,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   private func generateFileReferencesForFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
+    guard !infos.isEmpty else { return [] }
     var generatedFilePaths = [String]()
     var sourceFilePaths = [String]()
     for info in infos {
