@@ -1393,7 +1393,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       commandLine += "--patch_lldb_cwd "
     }
 
-    func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey], optionFlag: String) {
+    func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey],
+                                      additionalFlags: String = "",
+                                      optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be
       // collapsed.
       var configValues = [TulsiOptionKey: String?]()
@@ -1412,7 +1414,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if !valuesDiffer {
         // Return early if nothing was set.
         guard let concreteValue = firstValue else { return }
-        commandLine += "\(optionFlag) \(concreteValue) -- "
+        commandLine += "\(optionFlag) \(concreteValue) "
+        if !additionalFlags.isEmpty {
+          commandLine += "\(additionalFlags) "
+        }
+        commandLine += "-- "
+
         return
       }
 
@@ -1431,14 +1438,24 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           assertionFailure("Failed to map option key \(optionKey) to a build config.")
           configKey = "Fastbuild"
         }
-        commandLine += "\(optionFlag)[\(configKey)] \(concreteValue) -- "
+        commandLine += "\(optionFlag)[\(configKey)] \(concreteValue) "
+        commandLine += additionalFlags.isEmpty ? "-- " : "\(additionalFlags) -- "
       }
+    }
+
+    let additionalFlags: String
+    if let shouldContinueBuildingAfterError = options[.BazelContinueBuildingAfterError].commonValueAsBool where
+        shouldContinueBuildingAfterError {
+      additionalFlags = "--keep_going"
+    } else {
+      additionalFlags = ""
     }
 
     addPerConfigValuesForOptions([.BazelBuildOptionsDebug,
                                   .BazelBuildOptionsFastbuild,
-                                  .BazelBuildOptionsRelease
+                                  .BazelBuildOptionsRelease,
                                  ],
+                                 additionalFlags: additionalFlags,
                                  optionFlag: "--bazel_options")
 
     addPerConfigValuesForOptions([.BazelBuildStartupOptionsDebug,

@@ -38,7 +38,10 @@ public enum TulsiOptionKey: String {
       CommandlineArguments,
 
       // Environment Variables used by the run phase of the generated scheme.
-      EnvironmentVariables
+      EnvironmentVariables,
+
+      // Option to enable compilation after error.
+      BazelContinueBuildingAfterError
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -249,6 +252,7 @@ public class TulsiOptionSet: Equatable {
     }
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
+    addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])

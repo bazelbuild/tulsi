@@ -46,6 +46,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectName = "SimpleProject"
 
     let options = TulsiOptionSet()
+    options.options[.BazelContinueBuildingAfterError]?.projectValue = "YES"
+
     options.options[.CommandlineArguments]?.projectValue = "--project-flag"
     options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag"
 
