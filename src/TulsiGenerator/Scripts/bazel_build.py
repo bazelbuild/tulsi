@@ -1081,7 +1081,7 @@ class BazelBuildBridge(object):
     content = self._ExtractLLDBInitContent(lldbinit_path)
     if not content:
       if os.path.isfile(lldbinit_path):
-        sys.unlink(lldbinit_path)
+        os.unlink(lldbinit_path)
       return 0
 
     with tempfile.NamedTemporaryFile(dir=os.path.dirname(lldbinit_path),
