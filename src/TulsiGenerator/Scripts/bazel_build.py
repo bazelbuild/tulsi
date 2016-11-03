@@ -484,7 +484,7 @@ class BazelBuildBridge(object):
       self._PrintError('Bazel build failed.')
       return exit_code
 
-    exit_code = self._EnsureBazelBinSymlinkIsValid()
+    exit_code = self._EnsureBazelBinIsValid()
     if exit_code:
       self._PrintError('Failed to ensure existence of bazel-bin directory.')
       return exit_code
@@ -642,11 +642,11 @@ class BazelBuildBridge(object):
 
     return process.returncode
 
-  def _EnsureBazelBinSymlinkIsValid(self):
-    """Ensures that the Bazel output symlink points at a real directory."""
+  def _EnsureBazelBinIsValid(self):
+    """Ensures that the Bazel output path points at a real directory."""
 
-    if not os.path.islink(self.bazel_bin_path):
-      self._PrintWarning('Bazel output symlink at "%s" non-existent' %
+    if not os.path.isdir(self.bazel_bin_path):
+      self._PrintWarning('Bazel "-bin" path at "%s" non-existent' %
                          (self.bazel_bin_path))
       return 0
 
