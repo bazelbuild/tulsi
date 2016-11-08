@@ -2,14 +2,17 @@
 <Scheme LastUpgradeVersion="0610" version="1.3">
     <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
+            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
+            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6C9760C9E00000000" BuildableIdentifier="primary" BuildableName="_tulsi_appex_Watch2Extension" BlueprintName="_tulsi_appex_Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForProfiling="YES" buildForTesting="YES" buildForRunning="YES" buildForArchiving="YES">
+            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForArchiving="NO" buildForAnalyzing="YES" buildForTesting="NO" buildForRunning="NO" buildForProfiling="NO">
+                <BuildableReference BlueprintIdentifier="3D31C5E656E3F8DE00000000" BuildableIdentifier="primary" BuildableName="_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598" BlueprintName="_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

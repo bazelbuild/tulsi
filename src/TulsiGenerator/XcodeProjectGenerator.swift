@@ -181,6 +181,9 @@ final class XcodeProjectGenerator {
 
     /// RuleEntry's for test_suite's for which special test schemes should be created.
     let testSuiteRuleEntries: [BuildLabel: RuleEntry]
+
+    /// A mapping of indexer targets by name.
+    let indexerTargets: [String: PBXTarget]
   }
 
   /// Invokes Bazel to load any missing information in the config file.
@@ -280,12 +283,12 @@ final class XcodeProjectGenerator {
                                               pathFilters: config.pathFilters)
       }
     }
-
+    var indexerTargets = [String: PBXTarget]()
     profileAction("generating_indexers") {
       let progressNotifier = ProgressNotifier(name: GeneratingIndexerTargets,
                                               maxValue: 1,
                                               indeterminate: true)
-      generator.generateIndexerTargets()
+      indexerTargets = generator.generateIndexerTargets()
       progressNotifier.incrementValue()
     }
 
@@ -332,7 +335,8 @@ final class XcodeProjectGenerator {
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
-                                testSuiteRuleEntries: testSuiteRules)
+                                testSuiteRuleEntries: testSuiteRules,
+                                indexerTargets: indexerTargets)
   }
 
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
@@ -498,7 +502,7 @@ final class XcodeProjectGenerator {
       }
 
       var additionalBuildTargets = target.buildActionDependencies.map() {
-        ($0, projectBundleName)
+        ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
       }
       if let host = extensionHosts[entry.label] {
         guard let hostTarget = targetForLabel(host.label) else {
@@ -509,7 +513,30 @@ final class XcodeProjectGenerator {
                                          values: entry.label.value)
           continue
         }
-        additionalBuildTargets.append((hostTarget, projectBundleName))
+        let hostTargetTuple =
+            (hostTarget, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
+        additionalBuildTargets.append(hostTargetTuple)
+      }
+
+      // Certain rules, like `ios_application`, only refer to their sources through a binary target.
+      let buildLabel: BuildLabel
+      if let binaryName = entry.attributes[.binary] as? String {
+        buildLabel = BuildLabel(binaryName)
+      } else {
+        buildLabel = entry.label
+      }
+
+      let indexerName = PBXTargetGenerator.indexerNameForTargetName(buildLabel.targetName!,
+                                                                    hash: buildLabel.hashValue)
+      if let indexerTarget = info.indexerTargets[indexerName] {
+        let indexerBuildActionEntryAttributes =
+            XcodeScheme.makeBuildActionEntryAttributes(test: false,
+                                                       run: false,
+                                                       profile: false,
+                                                       archive: false)
+        let indexerTargetTuple =
+            (indexerTarget, projectBundleName, indexerBuildActionEntryAttributes)
+        additionalBuildTargets.append(indexerTargetTuple)
       }
 
       let scheme = XcodeScheme(target: target,

@@ -68,7 +68,8 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Generates indexer targets for rules that were previously registered through
   /// registerRuleEntryForIndexer. This method may only be called once, after all rule entries have
   /// been registered.
-  func generateIndexerTargets()
+  /// Returns a map of indexer targets, keyed by the name of the indexer.
+  func generateIndexerTargets() -> [String: PBXTarget]
 
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
@@ -606,7 +607,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
   }
 
-  func generateIndexerTargets() {
+  func generateIndexerTargets() -> [String: PBXTarget] {
     mergeRegisteredIndexers()
 
     func generateIndexer(name: String,
@@ -651,6 +652,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     linkDependencies(staticIndexers)
     linkDependencies(frameworkIndexers)
+
+    return indexerTargetByName
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
@@ -1179,7 +1182,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  private static func indexerNameForTargetName(targetName: String, hash: Int) -> String {
+  static func indexerNameForTargetName(targetName: String, hash: Int) -> String {
     let normalizedTargetName: String
     if targetName.characters.count > MaxIndexerNameLength {
       let endIndex = targetName.startIndex.advancedBy(MaxIndexerNameLength - 4)

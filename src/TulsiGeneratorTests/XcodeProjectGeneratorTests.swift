@@ -313,7 +313,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                                    pathFilters: Set<String>) {
   }
 
-  func generateIndexerTargets() {
+  func generateIndexerTargets() -> [String: PBXTarget] {
+    return [:]
   }
 
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String) {

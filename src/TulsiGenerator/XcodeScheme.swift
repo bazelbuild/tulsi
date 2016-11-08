@@ -18,6 +18,7 @@ import Foundation
 /// Models an xcscheme file, providing information to Xcode on how to build targets.
 final class XcodeScheme {
 
+  typealias BuildActionEntryAttributes = [String: String]
   enum LaunchStyle: String {
     case Normal = "0"
     case AppExtension = "2"
@@ -43,7 +44,7 @@ final class XcodeScheme {
   let explicitTests: [PBXTarget]?
   // List of additional targets and their project bundle names that should be built along with the
   // primary target.
-  let additionalBuildTargets: [(PBXTarget, String)]?
+  let additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]?
 
   let primaryTargetBuildableReference: BuildableReference
   let commandlineArguments: [String]
@@ -62,7 +63,7 @@ final class XcodeScheme {
        runnableDebuggingMode: RunnableDebuggingMode = .Default,
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil,
-       additionalBuildTargets: [(PBXTarget, String)]? = nil,
+       additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]? = nil,
        commandlineArguments: [String] = [],
        environmentVariables: [String: String] = [:]) {
     self.version = version
@@ -127,24 +128,21 @@ final class XcodeScheme {
 
     let buildActionEntries = NSXMLElement(name: "BuildActionEntries")
 
-    let buildActionEntryAttributes = [
-        "buildForTesting": "YES",
-        "buildForRunning": "YES",
-        "buildForProfiling": "YES",
-        "buildForArchiving": "YES",
-        "buildForAnalyzing": "YES",
-    ]
-    func addBuildActionEntry(buildableReference: BuildableReference) {
+    func addBuildActionEntry(buildableReference: BuildableReference,
+                             buildActionEntryAttributes: BuildActionEntryAttributes) {
       let buildActionEntry = NSXMLElement(name: "BuildActionEntry")
       buildActionEntry.setAttributesWithDictionary(buildActionEntryAttributes)
       buildActionEntry.addChild(buildableReference.toXML())
       buildActionEntries.addChild(buildActionEntry)
     }
 
-    addBuildActionEntry(primaryTargetBuildableReference)
+    let primaryTargetEntryAttributes = XcodeScheme.makeBuildActionEntryAttributes()
+    addBuildActionEntry(primaryTargetBuildableReference,
+                        buildActionEntryAttributes: primaryTargetEntryAttributes)
     if let additionalBuildTargets = additionalBuildTargets {
-      for (target, bundleName) in additionalBuildTargets {
-        addBuildActionEntry(BuildableReference(target: target, projectBundleName: bundleName))
+      for (target, bundleName, entryAttributes) in additionalBuildTargets {
+        let buildableReference = BuildableReference(target: target, projectBundleName: bundleName)
+        addBuildActionEntry(buildableReference, buildActionEntryAttributes: entryAttributes)
       }
     }
 
@@ -323,6 +321,20 @@ final class XcodeScheme {
       element.addChild(environmentVariable)
     }
     return element
+  }
+
+  static func makeBuildActionEntryAttributes(analyze: Bool = true,
+                                      test: Bool = true,
+                                      run: Bool = true,
+                                      profile: Bool = true,
+                                      archive: Bool = true) -> BuildActionEntryAttributes {
+    return [
+      "buildForAnalyzing": analyze ? "YES" : "NO",
+      "buildForTesting": test ? "YES" : "NO",
+      "buildForRunning": run ? "YES" : "NO",
+      "buildForProfiling": profile ? "YES" : "NO",
+      "buildForArchiving": archive ? "YES" : "NO"
+    ]
   }
 
   /// Information about a PBXTarget that may be built.
