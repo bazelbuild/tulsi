@@ -324,7 +324,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws {
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = ruleEntries.map() { (e: RuleEntry) -> (String, RuleEntry) in
       return (e.label.asFullPBXTargetName!, e)
     }
@@ -343,5 +343,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
       let hostTarget = project.targetByName(testHostLabel.asFullPBXTargetName!) as! PBXNativeTarget
       project.linkTestTarget(testTarget, toHostTarget: hostTarget)
     }
+
+    return [:]
   }
 }

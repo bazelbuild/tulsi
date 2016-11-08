@@ -34,6 +34,9 @@
       "bazel-bin\/TestSuite\/Binary.ipa",
       "bazel-bin\/TestSuite\/Binary_bin",
       "bazel-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "TestSuiteNonXCTest" : [
+
     ]
   },
   "fileReferences" : [

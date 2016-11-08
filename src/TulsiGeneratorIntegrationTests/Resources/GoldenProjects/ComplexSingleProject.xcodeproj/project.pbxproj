@@ -1196,7 +1196,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
@@ -1225,7 +1224,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
@@ -1276,7 +1274,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
@@ -1298,7 +1295,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
@@ -1320,7 +1316,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
@@ -1470,7 +1465,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
@@ -1500,7 +1494,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
@@ -1553,7 +1546,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
@@ -1576,7 +1568,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
@@ -1599,7 +1590,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
@@ -1760,7 +1750,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
@@ -1790,7 +1779,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
@@ -1844,7 +1832,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
@@ -1867,7 +1854,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
@@ -1890,7 +1876,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
@@ -2052,7 +2037,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
@@ -2084,7 +2068,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
@@ -2142,7 +2125,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
@@ -2168,7 +2150,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
@@ -2194,7 +2175,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;
@@ -2233,7 +2213,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Application.ipa\nbazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/XCTest.ipa\nbazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/XCTest.ipa;
@@ -2265,7 +2244,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Binary.ipa\nbazel-bin/tulsi_e2e_complex/Binary_bin\nbazel-bin/tulsi_e2e_complex/TodayExtension.ipa\nbazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa\nbazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin\nbazel-bin/tulsi_e2e_complex/WatchExtension.ipa\nbazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin\nbazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/libLibrary.a\nbazel-bin/tulsi_e2e_complex/libNonPropagatedLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibrary.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithDifferentDefines.a\nbazel-bin/tulsi_e2e_complex/libSubLibraryWithIdenticalDefines.a";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/Application.ipa;
@@ -2324,7 +2302,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/TodayExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/TodayExtension.ipa;
@@ -2350,7 +2327,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/Watch2ExtensionBinary_lipobin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchOS2App.ipa\nbazel-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchOS2App.ipa;
@@ -2376,7 +2352,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/tulsi_e2e_complex/WatchExtensionBinary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_IPA = tulsi_e2e_complex/WatchExtension.ipa;

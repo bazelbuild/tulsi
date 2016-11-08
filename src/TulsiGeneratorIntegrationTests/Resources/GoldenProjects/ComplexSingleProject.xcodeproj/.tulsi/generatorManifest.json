@@ -95,6 +95,9 @@
       "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
       "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
     ],
+    "TodayExtension" : [
+      "bazel-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin"
+    ],
     "Application" : [
       "bazel-bin\/tulsi_e2e_complex\/Binary.ipa",
       "bazel-bin\/tulsi_e2e_complex\/Binary_bin",
@@ -111,9 +114,6 @@
       "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
       "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
       "bazel-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
-    ],
-    "TodayExtension" : [
-      "bazel-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin"
     ],
     "Watch2Extension" : [
       "bazel-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin"

@@ -81,9 +81,10 @@ protocol PBXTargetGeneratorProtocol: class {
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
+  /// Returns a map of target name to associated intermediate build artifacts.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(entries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]]
 }
 
 extension PBXTargetGeneratorProtocol {
@@ -717,15 +718,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
   }
 
+  /// Generates build targets for the given rule entries and returns a map of target name to the
+  /// list of any intermediate artifacts produced when building that target.
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws {
+                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
                                             maxValue: namedRuleEntries.count)
+    var allIntermediateArtifacts = [String: [String]]()
     for (name, entry) in namedRuleEntries {
       progressNotifier.incrementValue()
-      let target = try createBuildTargetForRuleEntry(entry, named: name, ruleEntryMap: ruleEntryMap)
+      let (target, intermediateArtifacts) = try createBuildTargetForRuleEntry(entry,
+                                                                              named: name,
+                                                                              ruleEntryMap: ruleEntryMap)
+      allIntermediateArtifacts[name] = intermediateArtifacts
 
       if let hostLabelString = entry.attributes[.xctest_app] as? String {
         let hostLabel = BuildLabel(hostLabelString)
@@ -743,6 +750,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                        withLinkageToHostTarget: testHostLabel,
                        ruleEntry: entry)
     }
+
+    return allIntermediateArtifacts
   }
 
   // MARK: - Private methods
@@ -1215,9 +1224,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return buildPhase
   }
 
+  /// Creates a PBXNativeTarget for the given rule entry, returning it and any intermediate build
+  /// artifacts.
   private func createBuildTargetForRuleEntry(entry: RuleEntry,
                                              named name: String,
-                                             ruleEntryMap: [BuildLabel: RuleEntry]) throws -> PBXNativeTarget {
+                                             ruleEntryMap: [BuildLabel: RuleEntry]) throws -> (PBXNativeTarget, [String]) {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.UnsupportedTargetType(entry.type)
     }
@@ -1252,15 +1263,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // removed, but requires changes to LLDB.
     let dSYMEnabled = hasSwiftDependencies(entry, ruleEntryMap: ruleEntryMap)
     buildSettings["TULSI_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
+    let intermediateArtifacts: [String]
     if !dSYMEnabled {
       // For targets that will not generate dSYMs, the set of intermediate libraries generated for
       // dependencies is provided so that downstream utilities may locate them (e.g., to patch DWARF
       // symbols).
-      let intermediateArtifacts = entry.discoverIntermediateArtifacts(ruleEntryMap)
-      if !intermediateArtifacts.isEmpty {
-        buildSettings["BAZEL_INTERMEDIATE_ARTIFACTS"] =
-            intermediateArtifacts.map({ $0.fullPath }).sort().joinWithSeparator("\n")
-      }
+      intermediateArtifacts =
+          entry.discoverIntermediateArtifacts(ruleEntryMap).flatMap({ $0.fullPath }).sort()
+    } else {
+      intermediateArtifacts = []
     }
 
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
@@ -1326,7 +1337,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                 first: true)
     }
 
-    return target
+    return (target, intermediateArtifacts)
   }
 
   private func hasSwiftDependencies(entry: RuleEntry,

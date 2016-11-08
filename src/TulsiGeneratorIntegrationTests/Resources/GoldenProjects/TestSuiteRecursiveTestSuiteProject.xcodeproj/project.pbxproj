@@ -390,7 +390,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
@@ -417,7 +416,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
@@ -438,7 +436,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
@@ -464,7 +461,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
@@ -531,7 +527,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
@@ -559,7 +554,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
@@ -581,7 +575,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
@@ -608,7 +601,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
@@ -678,7 +670,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
@@ -706,7 +697,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
@@ -728,7 +718,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
@@ -755,7 +744,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
@@ -826,7 +814,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
@@ -857,7 +844,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
@@ -882,7 +868,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
@@ -912,7 +897,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
@@ -974,7 +958,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
@@ -1005,7 +988,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
@@ -1030,7 +1012,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
@@ -1060,7 +1041,6 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_INTERMEDIATE_ARTIFACTS = "bazel-bin/TestSuite/Binary.ipa\nbazel-bin/TestSuite/Binary_bin\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;

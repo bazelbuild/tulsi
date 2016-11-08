@@ -17,7 +17,9 @@
     "bazel-bin\/tulsi_e2e_swift\/Application-MergedInfo.plist"
   ],
   "intermediateArtifacts" : {
+    "Application" : [
 
+    ]
   },
   "fileReferences" : [
     "..\/..\/tulsi_e2e_swift\/BUILD",

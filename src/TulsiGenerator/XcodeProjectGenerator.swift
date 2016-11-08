@@ -161,7 +161,8 @@ final class XcodeProjectGenerator {
                                                                  isDirectory: false)
 #endif
     let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
-                                     pbxProject: projectInfo.project)
+                                     pbxProject: projectInfo.project,
+                                     intermediateArtifacts: projectInfo.intermediateArtifacts)
     manifest.writeToURL(manifestFileURL)
     localizedMessageLogger.logProfilingEnd(manifestProfileToken)
 
@@ -184,6 +185,9 @@ final class XcodeProjectGenerator {
 
     /// A mapping of indexer targets by name.
     let indexerTargets: [String: PBXTarget]
+
+    /// Map of target name to any intermediate artifact files.
+    let intermediateArtifacts: [String: [String]]
   }
 
   /// Invokes Bazel to load any missing information in the config file.
@@ -326,8 +330,10 @@ final class XcodeProjectGenerator {
       generator.generateTopLevelBuildConfigurations()
     }
 
+    var intermediateArtifacts = [String: [String]]()
     try profileAction("generating_build_targets") {
-      try generator.generateBuildTargetsForRuleEntries(targetRules, ruleEntryMap: ruleEntryMap)
+      intermediateArtifacts = try generator.generateBuildTargetsForRuleEntries(targetRules,
+                                                                               ruleEntryMap: ruleEntryMap)
     }
 
     profileAction("patching_external_repository_references") {
@@ -336,7 +342,8 @@ final class XcodeProjectGenerator {
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
-                                indexerTargets: indexerTargets)
+                                indexerTargets: indexerTargets,
+                                intermediateArtifacts: intermediateArtifacts)
   }
 
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
@@ -958,12 +965,15 @@ final class XcodeProjectGenerator {
     private let pbxProject: PBXProject
     var fileReferences: Set<String>! = nil
     var targets: [String: [String]]! = nil
-    var intermediateArtifacts: [String: [String]]! = nil
+    let intermediateArtifacts: [String: [String]]
     var artifacts: Set<String>! = nil
 
-    init(localizedMessageLogger: LocalizedMessageLogger, pbxProject: PBXProject) {
+    init(localizedMessageLogger: LocalizedMessageLogger,
+         pbxProject: PBXProject,
+         intermediateArtifacts: [String: [String]]) {
       self.localizedMessageLogger = localizedMessageLogger
       self.pbxProject = pbxProject
+      self.intermediateArtifacts = intermediateArtifacts
     }
 
     func writeToURL(outputURL: NSURL) -> Bool {
@@ -993,7 +1003,6 @@ final class XcodeProjectGenerator {
     private func parsePBXProject() {
       fileReferences = Set()
       targets = [:]
-      intermediateArtifacts = [:]
       artifacts = Set()
 
       for ref in pbxProject.mainGroup.allSources {
@@ -1023,11 +1032,6 @@ final class XcodeProjectGenerator {
         if let debugConfig = buildConfigList.buildConfigurations["Debug"],
            let bazelOutputs = debugConfig.buildSettings["BAZEL_OUTPUTS"] {
           targets[target.name] = bazelOutputs.componentsSeparatedByString("\n").sort()
-          if let intermediates = debugConfig.buildSettings["BAZEL_INTERMEDIATE_ARTIFACTS"]
-             where !intermediates.isEmpty {
-            intermediateArtifacts[target.name] =
-                intermediates.componentsSeparatedByString("\n").sort()
-          }
         } else {
           targets[target.name] = []
         }
