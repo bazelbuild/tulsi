@@ -1048,6 +1048,7 @@ class BazelBuildBridge(object):
                 'edited.\n')
 
       if clear_source_map:
+        out.write('settings clear target.source-map\n')
         return 0
 
       timer = Timer(
