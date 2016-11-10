@@ -385,18 +385,16 @@ def _extract_generated_sources_and_includes(target):
   return file_metadatas, includes
 
 
-def _extract_iphoneos_deployment_target(ctx):
-  """Returns the ios_minimum_version setting from the given ctx."""
+def _extract_minimum_os_for_platform(ctx, platform):
+  """Extracts the minimum OS version for the given apple_common.platform."""
   apple_frag = _get_opt_attr(ctx.fragments, 'apple')
-  iphoneos_deployment_target = apple_frag.minimum_os_for_platform_type(
-      apple_common.platform_type.ios)
+  min_os = apple_frag.minimum_os_for_platform_type(platform)
 
-  if not iphoneos_deployment_target:
+  if not min_os:
     return None
 
   # Convert the DottedVersion to a string suitable for inclusion in a struct.
-  return str(iphoneos_deployment_target)
-
+  return str(min_os)
 
 def _extract_swift_language_version(ctx):
   """Returns the Swift version set by the xcode_toolchain option for ctx."""
@@ -531,7 +529,15 @@ def _tulsi_sources_aspect(target, ctx):
       generated_non_arc_files=generated_non_arc_files,
       generated_includes=generated_includes,
       ipa_output_label=ipa_output_label,
-      iphoneos_deployment_target=_extract_iphoneos_deployment_target(ctx),
+      iphoneos_deployment_target=_extract_minimum_os_for_platform(
+          ctx, apple_common.platform_type.ios),
+      # TODO(abaire): Uncomment if/when Bazel supports macOS.
+      # macos_deployment_target=_extract_minimum_os_for_platform(
+      #     ctx, apple_common.platform_type.macosx),
+      tvos_deployment_target=_extract_minimum_os_for_platform(
+          ctx, apple_common.platform_type.tvos),
+      watchos_deployment_target=_extract_minimum_os_for_platform(
+          ctx, apple_common.platform_type.watchos),
       label=str(target.label),
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),

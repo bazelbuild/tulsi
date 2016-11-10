@@ -193,6 +193,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let swiftLanguageVersion: String?
     let swiftIncludePaths: [String]
     let iPhoneOSDeploymentTarget: String?
+    let macOSDeploymentTarget: String?
+    let tvOSDeploymentTarget: String?
+    let watchOSDeploymentTarget: String?
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
@@ -248,7 +251,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           includes == other.includes &&
           swiftLanguageVersion == other.swiftLanguageVersion &&
           swiftIncludePaths == other.swiftIncludePaths &&
-          iPhoneOSDeploymentTarget == other.iPhoneOSDeploymentTarget) {
+          iPhoneOSDeploymentTarget == other.iPhoneOSDeploymentTarget &&
+          macOSDeploymentTarget == other.macOSDeploymentTarget &&
+          tvOSDeploymentTarget == other.tvOSDeploymentTarget &&
+          watchOSDeploymentTarget == other.watchOSDeploymentTarget) {
         return false
       }
 
@@ -274,6 +280,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          swiftLanguageVersion: swiftLanguageVersion,
                          swiftIncludePaths: swiftIncludePaths,
                          iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
+                         macOSDeploymentTarget: macOSDeploymentTarget,
+                         tvOSDeploymentTarget: tvOSDeploymentTarget,
+                         watchOSDeploymentTarget: watchOSDeploymentTarget,
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
                          bridgingHeader: bridgingHeader,
@@ -591,6 +600,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       swiftLanguageVersion: ruleEntry.swiftLanguageVersion,
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
                                       iPhoneOSDeploymentTarget: ruleEntry.iPhoneOSDeploymentTarget,
+                                      macOSDeploymentTarget: ruleEntry.macOSDeploymentTarget,
+                                      tvOSDeploymentTarget: ruleEntry.tvOSDeploymentTarget,
+                                      watchOSDeploymentTarget: ruleEntry.watchOSDeploymentTarget,
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
@@ -1020,6 +1032,18 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
     }
 
+    if let macOSDeploymentTarget = data.macOSDeploymentTarget {
+      buildSettings["MACOSX_DEPLOYMENT_TARGET"] = macOSDeploymentTarget
+    }
+
+    if let tvOSDeploymentTarget = data.tvOSDeploymentTarget {
+      buildSettings["TVOS_DEPLOYMENT_TARGET"] = tvOSDeploymentTarget
+    }
+
+    if let watchOSDeploymentTarget = data.watchOSDeploymentTarget {
+      buildSettings["WATCHOS_DEPLOYMENT_TARGET"] = watchOSDeploymentTarget
+    }
+
     // Force the indexers to target the x86_64 simulator. This minimizes issues triggered by
     // Xcode's use of SourceKit to parse Swift-based code. Specifically, Xcode appears to use the
     // first ARCHS value that also appears in VALID_ARCHS when attempting to process swiftmodule's
@@ -1256,6 +1280,18 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
       buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
+    }
+
+    if let macOSDeploymentTarget = entry.macOSDeploymentTarget {
+      buildSettings["MACOSX_DEPLOYMENT_TARGET"] = macOSDeploymentTarget
+    }
+
+    if let tvOSDeploymentTarget = entry.tvOSDeploymentTarget {
+      buildSettings["TVOS_DEPLOYMENT_TARGET"] = tvOSDeploymentTarget
+    }
+
+    if let watchOSDeploymentTarget = entry.watchOSDeploymentTarget {
+      buildSettings["WATCHOS_DEPLOYMENT_TARGET"] = watchOSDeploymentTarget
     }
 
     // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are

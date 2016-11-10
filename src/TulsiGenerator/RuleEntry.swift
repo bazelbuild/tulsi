@@ -210,6 +210,15 @@ public final class RuleEntry: RuleInfo {
   /// The minimum iOS version supported by this target.
   public let iPhoneOSDeploymentTarget: String?
 
+  /// The minimum macOS version supported by this target.
+  public let macOSDeploymentTarget: String?
+
+  /// The minimum tvOS version supported by this target.
+  public let tvOSDeploymentTarget: String?
+
+  /// The minimum watchOS version supported by this target.
+  public let watchOSDeploymentTarget: String?
+
   /// Set of labels that this rule depends on but does not require.
   // NOTE(abaire): This is a hack used for test_suite rules, where the possible expansions retrieved
   // via queries are filtered by the existence of the selected labels extracted via the normal
@@ -312,6 +321,9 @@ public final class RuleEntry: RuleInfo {
        bundleID: String? = nil,
        extensionBundleID: String? = nil,
        iPhoneOSDeploymentTarget: String? = nil,
+       macOSDeploymentTarget: String? = nil,
+       tvOSDeploymentTarget: String? = nil,
+       watchOSDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
        generatedIncludePaths: [IncludePath]? = nil,
        swiftLanguageVersion: String? = nil,
@@ -347,6 +359,9 @@ public final class RuleEntry: RuleInfo {
     self.bundleID = bundleID
     self.extensionBundleID = extensionBundleID
     self.iPhoneOSDeploymentTarget = iPhoneOSDeploymentTarget
+    self.macOSDeploymentTarget = macOSDeploymentTarget
+    self.tvOSDeploymentTarget = tvOSDeploymentTarget
+    self.watchOSDeploymentTarget = watchOSDeploymentTarget
     self.buildFilePath = buildFilePath
     self.generatedIncludePaths = generatedIncludePaths
     self.swiftLanguageVersion = swiftLanguageVersion
@@ -376,6 +391,9 @@ public final class RuleEntry: RuleInfo {
                    bundleID: String? = nil,
                    extensionBundleID: String? = nil,
                    iPhoneOSDeploymentTarget: String? = nil,
+                   macOSDeploymentTarget: String? = nil,
+                   tvOSDeploymentTarget: String? = nil,
+                   watchOSDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
                    generatedIncludePaths: [IncludePath]? = nil,
                    swiftLanguageVersion: String? = nil,
@@ -396,6 +414,9 @@ public final class RuleEntry: RuleInfo {
               bundleID: bundleID,
               extensionBundleID: extensionBundleID,
               iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
+              macOSDeploymentTarget: macOSDeploymentTarget,
+              tvOSDeploymentTarget: tvOSDeploymentTarget,
+              watchOSDeploymentTarget: watchOSDeploymentTarget,
               buildFilePath: buildFilePath,
               generatedIncludePaths: generatedIncludePaths,
               swiftLanguageVersion: swiftLanguageVersion,

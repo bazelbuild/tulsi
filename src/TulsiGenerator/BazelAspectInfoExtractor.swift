@@ -309,6 +309,9 @@ final class BazelAspectInfoExtractor {
       let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String
       let iPhoneOSDeploymentTarget = dict["iphoneos_deployment_target"] as? String
+      let macOSDeploymentTarget = dict["macos_deployment_target"] as? String
+      let tvOSDeploymentTarget = dict["tvos_deployment_target"] as? String
+      let watchOSDeploymentTarget = dict["watchos_deployment_target"] as? String
       let implictIPATarget: BuildLabel?
       if let ipaLabel = dict["ipa_output_label"] as? String {
         implictIPATarget = BuildLabel(ipaLabel)
@@ -341,6 +344,9 @@ final class BazelAspectInfoExtractor {
                                 bundleID: bundleID,
                                 extensionBundleID: extensionBundleID,
                                 iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
+                                macOSDeploymentTarget: macOSDeploymentTarget,
+                                tvOSDeploymentTarget: tvOSDeploymentTarget,
+                                watchOSDeploymentTarget: watchOSDeploymentTarget,
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,
                                 swiftLanguageVersion: swiftLanguageVersion,
