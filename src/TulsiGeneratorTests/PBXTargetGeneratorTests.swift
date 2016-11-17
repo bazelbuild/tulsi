@@ -190,7 +190,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTopLevelBuildConfigurations() {
-    targetGenerator.generateTopLevelBuildConfigurations()
+    targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: nil)
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
     XCTAssertEqual(topLevelConfigs.count, 5)
@@ -216,6 +216,56 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
+        "ONLY_ACTIVE_ARCH": "YES",
+        "TULSI_VERSION": testTulsiVersion,
+        "TULSI_WR": "$(SRCROOT)",
+    ]
+
+    XCTAssertNotNil(topLevelConfigs["Debug"])
+    XCTAssertEqual(topLevelConfigs["Debug"]!.buildSettings,
+                   debugBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertNotNil(topLevelConfigs["Release"])
+    XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings,
+                   releaseBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertNotNil(topLevelConfigs["Fastbuild"])
+    XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
+    XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Debug"])
+    XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Debug"]!.buildSettings,
+                   debugTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
+    XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Release"])
+    XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Release"]!.buildSettings,
+                   releaseTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
+  }
+
+  func testGenerateTopLevelBuildConfigurationsWithAnSDKROOT() {
+    let projectSDKROOT = "projectSDKROOT"
+    targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: projectSDKROOT)
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 5)
+
+    let topLevelBuildSettings = [
+        "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CLANG_ENABLE_OBJC_ARC": "YES",
+        "CLANG_WARN_BOOL_CONVERSION": "YES",
+        "CLANG_WARN_CONSTANT_CONVERSION": "YES",
+        "CLANG_WARN_EMPTY_BODY": "YES",
+        "CLANG_WARN_ENUM_CONVERSION": "YES",
+        "CLANG_WARN_INT_CONVERSION": "YES",
+        "CLANG_WARN_UNREACHABLE_CODE": "YES",
+        "CLANG_WARN__DUPLICATE_METHOD_MATCH": "YES",
+        "CODE_SIGNING_REQUIRED": "NO",
+        "CODE_SIGN_IDENTITY": "",
+        "ENABLE_TESTABILITY": "YES",
+        "FRAMEWORK_SEARCH_PATHS": "$(PLATFORM_DIR)/Developer/Library/Frameworks",
+        "GCC_WARN_64_TO_32_BIT_CONVERSION": "YES",
+        "GCC_WARN_ABOUT_RETURN_TYPE": "YES",
+        "GCC_WARN_UNDECLARED_SELECTOR": "YES",
+        "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
+        "GCC_WARN_UNUSED_FUNCTION": "YES",
+        "GCC_WARN_UNUSED_VARIABLE": "YES",
+        "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
+        "SDKROOT": projectSDKROOT,
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",

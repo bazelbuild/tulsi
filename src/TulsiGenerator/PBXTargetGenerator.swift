@@ -76,8 +76,8 @@ protocol PBXTargetGeneratorProtocol: class {
   /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
 
-  /// Generates project-level build configurations.
-  func generateTopLevelBuildConfigurations()
+  /// Generates project-level build configurations, using the given SDKROOT value.
+  func generateTopLevelBuildConfigurations(projectSDKROOT projectSDKROOT: String?)
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
@@ -690,8 +690,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  func generateTopLevelBuildConfigurations() {
+  func generateTopLevelBuildConfigurations(projectSDKROOT projectSDKROOT: String?) {
     var buildSettings = options.commonBuildSettings()
+
+    if let projectSDKROOT = projectSDKROOT {
+      buildSettings["SDKROOT"] = projectSDKROOT
+    }
+
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
     // Fixes an Xcode "Upgrade to recommended settings" warning. Technically the warning only
     // requires this to be added to the Debug build configuration but as code is never compiled

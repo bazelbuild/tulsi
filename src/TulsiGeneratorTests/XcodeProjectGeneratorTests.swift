@@ -129,6 +129,26 @@ class XcodeProjectGeneratorTests: XCTestCase {
     }
   }
 
+  func testProjectSDKROOT() {
+    func validate(types: [String], _ expectedSDKROOT: String?, line: UInt = #line) {
+      let rules = types.map() {
+        XcodeProjectGeneratorTests.makeRuleEntry(BuildLabel($0), type: $0)
+      }
+      let sdkroot = XcodeProjectGenerator.projectSDKROOT(rules)
+      XCTAssertEqual(sdkroot, expectedSDKROOT, line: line)
+    }
+
+    validate(["ios_application"], "iphoneos")
+    validate(["ios_application", "ios_application"], "iphoneos")
+    validate(["ios_application", "apple_watch2_extension"], "iphoneos")
+    validate(["apple_watch2_extension"], "watchos")
+    validate(["apple_watch2_extension", "apple_watch2_extension"], "watchos")
+    validate(["apple_watch2_extension", "_tvos_extension"], nil)
+    validate(["ios_application", "apple_watch2_extension", "_tvos_extension"], nil)
+    validate(["ios_application", "_tvos_extension"], nil)
+    validate(["_tvos_extension"], "appletvos")
+  }
+
   // MARK: - Private methods
 
   private static func labelToRuleEntryMapForLabels(labels: [BuildLabel]) -> [BuildLabel: RuleEntry] {
@@ -320,7 +340,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String) {
   }
 
-  func generateTopLevelBuildConfigurations() {
+  func generateTopLevelBuildConfigurations(projectSDKROOT _: String?) {
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,

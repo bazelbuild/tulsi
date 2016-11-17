@@ -95,6 +95,42 @@ final class XcodeProjectGenerator {
     self.pbxTargetGeneratorType = pbxTargetGeneratorType
   }
 
+  /// Determines the "best" common SDKROOT for a sequence of RuleEntries.
+  static func projectSDKROOT<T where T: SequenceType, T.Generator.Element == RuleEntry>(targetRules: T) -> String? {
+    var discoveredSDKs = Set<String>()
+    for entry in targetRules {
+      if let sdkroot = entry.XcodeSDKRoot {
+        discoveredSDKs.insert(sdkroot)
+      }
+    }
+
+    if discoveredSDKs.count == 1 {
+      return discoveredSDKs.first!
+    }
+
+    if discoveredSDKs.isEmpty {
+      // In practice this should not happen since it'd indicate a project that won't be able to
+      // build. It is possible that the user is in the process of creating a new project, so
+      // rather than fail the generation a default is selected. Since iOS happens to be the best
+      // supported type by Bazel at the time of this writing, it is chosen as the default.
+      return "iphoneos"
+    }
+
+    if discoveredSDKs == ["iphoneos", "watchos"] {
+      // Projects containing just an iPhone host and a watchOS app use iphoneos as the project SDK
+      // to match Xcode's behavior.
+      return "iphoneos"
+    }
+
+    // Projects that have a collection that is not mappable to a standard Xcode project simply
+    // do not set the SDKROOT. Unfortunately this will cause "My Mac" to be listed as a target
+    // device regardless of whether or not the selected build target supports it, but this is
+    // a somewhat better user experience when compared to any other device SDK (in which Xcode
+    // will display every simulator for that platform regardless of whether or not the build
+    // target can be run on them).
+    return nil
+  }
+
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
   func generateXcodeProjectInFolder(outputFolderURL: NSURL) throws -> NSURL {
@@ -327,7 +363,8 @@ final class XcodeProjectGenerator {
       generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
     }
     profileAction("generating_top_level_build_configs") {
-      generator.generateTopLevelBuildConfigurations()
+      let sdkroot = XcodeProjectGenerator.projectSDKROOT(targetRules)
+      generator.generateTopLevelBuildConfigurations(projectSDKROOT: sdkroot)
     }
 
     var intermediateArtifacts = [String: [String]]()
