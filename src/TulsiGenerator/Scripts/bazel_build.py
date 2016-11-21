@@ -416,8 +416,6 @@ class BazelBuildBridge(object):
     self.package_type = os.environ.get('PACKAGE_TYPE')
     # Target platform.
     self.platform_name = os.environ['PLATFORM_NAME']
-    # Name (without any extension) of the target artifact.
-    self.product_name = os.environ['PRODUCT_NAME']
     # Type of the target artifact.
     self.product_type = os.environ['PRODUCT_TYPE']
     # Path to the parent of the xcodeproj bundle.
@@ -431,6 +429,7 @@ class BazelBuildBridge(object):
     # Set to the name of the generated bundle for bundle-type targets, None for
     # single file targets (like static libraries).
     self.wrapper_name = os.environ.get('WRAPPER_NAME')
+    self.wrapper_suffix = os.environ.get('WRAPPER_SUFFIX', '')
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
 
@@ -696,6 +695,16 @@ class BazelBuildBridge(object):
       return 601
 
     primary_artifact = self.bazel_outputs[0]
+
+    # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
+    # modified by the user and, more importantly, may have been modified by
+    # Tulsi to disambiguate multiple targets with the same name.
+    # To work around this, the product name is determined by dropping any
+    # extension from the primary artifact.
+    # TODO(abaire): Consider passing this value to the script explicitly.
+    self.bazel_product_name = os.path.splitext(
+        os.path.basename(self.bazel_outputs[0]))[0]
+
     if primary_artifact.endswith('.ipa'):
       exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path)
       if exit_code:
@@ -753,20 +762,15 @@ class BazelBuildBridge(object):
       self._PrintError('Generated IPA not found at "%s"' % ipa_path)
       return 670
 
-    # IPA file contents will be something like Payload/<app>.app/...
-    # The base of the dirname within the Payload must match the last
-    # component of output_path.
-    expected_bundle_name = os.path.basename(output_path)
+    # Tulsi expects the bundle within the IPA to be the product name with the
+    # suffix expected by Xcode attached to it.
+    expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
+
+    # The directory structure within the IPA is then determined based on Bazel's
+    # package type.
     if self.package_type == 'com.apple.package-type.app-extension':
       expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
     elif self.product_type == 'com.apple.product-type.application.watchapp2':
-      # apple_watch2_extension apps generate an IPA whose name does not
-      # necessarily match the Bazel target (it uses the app_name attribute).
-      # Tulsi guarantees that the first BAZEL_OUTPUTS value is the primary
-      # artifact so, rather than using the rule name, it is used.
-      if self.bazel_outputs:
-        expected_bundle_name = os.path.splitext(
-            os.path.basename(self.bazel_outputs[0]))[0] + '.app'
       expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
     else:
       expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
@@ -1177,7 +1181,7 @@ class BazelBuildBridge(object):
       binary_path = self.codesigning_folder_path
     else:
       binary_path = os.path.join(self.codesigning_folder_path,
-                                 self.product_name)
+                                 self.bazel_product_name)
 
     if not os.path.isfile(binary_path):
       self._PrintWarning('No binary at expected path %r' % binary_path)
