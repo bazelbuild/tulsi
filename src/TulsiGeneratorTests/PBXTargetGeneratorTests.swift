@@ -1626,6 +1626,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     testRunnerSettings["ONLY_ACTIVE_ARCH"] = "YES"
     testRunnerSettings["OTHER_CFLAGS"] = "-help"
     testRunnerSettings["OTHER_LDFLAGS"] = "-help"
+    testRunnerSettings["FRAMEWORK_SEARCH_PATHS"] = ""
+    testRunnerSettings["HEADER_SEARCH_PATHS"] = ""
     return testRunnerSettings
   }
 
