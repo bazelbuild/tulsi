@@ -154,7 +154,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558368BD242900000000 /* Build configuration list for PBXNativeTarget "TestSuiteNonXCTest" */;
 			buildPhases = (
-				84B42271826ABCD900000000 /* ShellScript */,
+				84B42271984BA55C00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -170,7 +170,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558395C0260B00000000 /* Build configuration list for PBXNativeTarget "TestSuiteXCTest" */;
 			buildPhases = (
-				84B42271300099A000000000 /* ShellScript */,
+				84B422712955584100000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -188,7 +188,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558305B5AF7800000000 /* Build configuration list for PBXNativeTarget "TestApplication" */;
 			buildPhases = (
-				84B42271300099A000000001 /* ShellScript */,
+				84B422712955584100000001 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -233,7 +233,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271300099A000000000 /* ShellScript */ = {
+		84B422712955584100000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -244,10 +244,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271300099A000000001 /* ShellScript */ = {
+		84B422712955584100000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -258,10 +258,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271826ABCD900000000 /* ShellScript */ = {
+		84B42271984BA55C00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -272,7 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteNonXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Fastbuild] --define=TULSI_TEST=fst  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteNonXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -310,121 +310,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		44936BD63008588600000000 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = x86_64;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
-				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
-				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteXCTest;
-				PRODUCT_NAME = TestSuiteXCTest;
-				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
-				TULSI_BUILD_PATH = TestSuite;
-				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000001 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
-				BAZEL_TARGET = "//TestSuite:TestApplication";
-				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
-				BAZEL_TARGET_TYPE = ios_application;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.TestApplication;
-				PRODUCT_NAME = TestApplication;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite;
-				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000002 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				CODE_SIGN_IDENTITY = "";
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/../..";
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000003 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteNonXCTest.ipa";
-				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
-				BAZEL_TARGET_IPA = TestSuite/TestSuiteNonXCTest.ipa;
-				BAZEL_TARGET_TYPE = ios_test;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.TestSuiteNonXCTest;
-				PRODUCT_NAME = TestSuiteNonXCTest;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = TestSuite;
-				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
-			};
-			name = Fastbuild;
-		};
-		44936BD63008588600000004 /* Fastbuild */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = x86_64;
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C;
-				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
-			};
-			name = Fastbuild;
-		};
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -916,7 +801,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000001 /* Debug */,
-				44936BD63008588600000001 /* Fastbuild */,
 				44936BD6A3D45CE900000001 /* Release */,
 				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
@@ -927,7 +811,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD63008588600000004 /* Fastbuild */,
 				44936BD6A3D45CE900000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -936,7 +819,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD63008588600000003 /* Fastbuild */,
 				44936BD6A3D45CE900000003 /* Release */,
 				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
@@ -947,7 +829,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000000 /* Debug */,
-				44936BD63008588600000000 /* Fastbuild */,
 				44936BD6A3D45CE900000000 /* Release */,
 				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
@@ -958,7 +839,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000002 /* Debug */,
-				44936BD63008588600000002 /* Fastbuild */,
 				44936BD6A3D45CE900000002 /* Release */,
 				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,

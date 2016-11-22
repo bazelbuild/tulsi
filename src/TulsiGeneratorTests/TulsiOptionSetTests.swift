@@ -89,10 +89,8 @@ class TulsiOptionSetTests: XCTestCase {
     let parentValue = "ParentValue"
     let parent = TulsiOptionSet()
     parent[.BazelBuildOptionsDebug].projectValue = parentValue
-    parent[.BazelBuildOptionsFastbuild].projectValue = parentValue
     parent[.BazelBuildOptionsRelease].projectValue = parentValue
     parent[.BazelBuildStartupOptionsDebug].projectValue = parentValue
-    parent[.BazelBuildStartupOptionsFastbuild].projectValue = parentValue
     parent[.BazelBuildStartupOptionsRelease].projectValue = parentValue
     parent[.ALWAYS_SEARCH_USER_PATHS].projectValue = "YES"
     parent[.SuppressSwiftUpdateCheck].projectValue = "NO"
@@ -101,19 +99,14 @@ class TulsiOptionSetTests: XCTestCase {
     let childValue = "ChildValue"
     let child = TulsiOptionSet(withInheritanceEnabled: true)
     child[.BazelBuildOptionsDebug].projectValue = childValue
-    child[.BazelBuildOptionsFastbuild].projectValue = "$(inherited) \(childValue)"
     child[.BazelBuildOptionsRelease].projectValue = "\(childValue) $(inherited)"
     child[.BazelBuildStartupOptionsDebug].targetValues?["test"] = childValue
-    child[.BazelBuildStartupOptionsFastbuild].targetValues?["test"] = "\(childValue) $(inherited)"
     child[.SuppressSwiftUpdateCheck].projectValue = "YES"
 
     let merged = child.optionSetByInheritingFrom(parent)
     XCTAssertEqual(merged[.BazelBuildOptionsDebug].commonValue, childValue)
-    XCTAssertEqual(merged[.BazelBuildOptionsFastbuild].commonValue, "\(parentValue) \(childValue)")
     XCTAssertEqual(merged[.BazelBuildOptionsRelease].commonValue, "\(childValue) \(parentValue)")
     XCTAssertEqual(merged[.BazelBuildStartupOptionsDebug].targetValues?["test"], childValue)
-    XCTAssertEqual(merged[.BazelBuildStartupOptionsFastbuild].targetValues?["test"], "\(childValue) \(parentValue)")
-    XCTAssertEqual(merged[.BazelBuildStartupOptionsFastbuild].commonValue, parentValue)
     XCTAssertEqual(merged[.ALWAYS_SEARCH_USER_PATHS].commonValueAsBool, true)
     XCTAssertEqual(merged[.SuppressSwiftUpdateCheck].commonValueAsBool, true)
   }

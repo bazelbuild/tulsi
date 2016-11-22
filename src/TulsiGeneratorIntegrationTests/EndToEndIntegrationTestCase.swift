@@ -91,7 +91,6 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     }
 
     options[.BazelBuildOptionsDebug].projectValue = "--define=TULSI_TEST=dbg " + buildOptions
-    options[.BazelBuildOptionsFastbuild].projectValue = "--define=TULSI_TEST=fst " + buildOptions
     options[.BazelBuildOptionsRelease].projectValue = "--define=TULSI_TEST=rel " + buildOptions
 
     let config = TulsiGeneratorConfig(projectName: projectName,

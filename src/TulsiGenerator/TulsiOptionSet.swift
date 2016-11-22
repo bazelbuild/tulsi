@@ -45,12 +45,10 @@ public enum TulsiOptionKey: String {
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
-       BazelBuildOptionsFastbuild,
        BazelBuildOptionsRelease
 
   // Startup options for build invocations.
   case BazelBuildStartupOptionsDebug,
-       BazelBuildStartupOptionsFastbuild,
        BazelBuildStartupOptionsRelease
 }
 
@@ -74,10 +72,8 @@ public class TulsiOptionSet: Equatable {
 
   static let OptionKeyGroups: [TulsiOptionKey: TulsiOptionKeyGroup] = [
       .BazelBuildOptionsDebug: .BazelBuildOptions,
-      .BazelBuildOptionsFastbuild: .BazelBuildOptions,
       .BazelBuildOptionsRelease: .BazelBuildOptions,
       .BazelBuildStartupOptionsDebug: .BazelBuildStartupOptions,
-      .BazelBuildStartupOptionsFastbuild: .BazelBuildStartupOptions,
       .BazelBuildStartupOptionsRelease: .BazelBuildStartupOptions
   ]
 
@@ -254,10 +250,8 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
-    addStringOption(.BazelBuildOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
-    addStringOption(.BazelBuildStartupOptionsFastbuild, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
     addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)

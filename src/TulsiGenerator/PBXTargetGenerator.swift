@@ -105,7 +105,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Names of Xcode build configurations to generate.
   // NOTE: Must be kept in sync with the CONFIGURATION environment variable use in the build script.
-  static let buildConfigNames = ["Debug", "Fastbuild", "Release"]
+  static let buildConfigNames = ["Debug", "Release"]
 
   /// Tuples consisting of a test runner config name and the base config name (from
   /// buildConfigNames) that it inherits from.
@@ -1496,7 +1496,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
         if configKey == nil {
           assertionFailure("Failed to map option key \(optionKey) to a build config.")
-          configKey = "Fastbuild"
+          configKey = "Debug"
         }
         commandLine += "\(optionFlag)[\(configKey)] \(concreteValue) "
         commandLine += additionalFlags.isEmpty ? "-- " : "\(additionalFlags) -- "
@@ -1512,14 +1512,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     addPerConfigValuesForOptions([.BazelBuildOptionsDebug,
-                                  .BazelBuildOptionsFastbuild,
                                   .BazelBuildOptionsRelease,
                                  ],
                                  additionalFlags: additionalFlags,
                                  optionFlag: "--bazel_options")
 
     addPerConfigValuesForOptions([.BazelBuildStartupOptionsDebug,
-                                  .BazelBuildStartupOptionsFastbuild,
                                   .BazelBuildStartupOptionsRelease
                                  ],
                                  optionFlag: "--bazel_startup_options")

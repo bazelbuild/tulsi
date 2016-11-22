@@ -193,7 +193,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: nil)
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 5)
+    XCTAssertEqual(topLevelConfigs.count, 4)
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
@@ -227,8 +227,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertNotNil(topLevelConfigs["Release"])
     XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings,
                    releaseBuildSettingsFromSettings(topLevelBuildSettings))
-    XCTAssertNotNil(topLevelConfigs["Fastbuild"])
-    XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
     XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Debug"])
     XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Debug"]!.buildSettings,
                    debugTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
@@ -242,7 +240,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: projectSDKROOT)
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
-    XCTAssertEqual(topLevelConfigs.count, 5)
+    XCTAssertEqual(topLevelConfigs.count, 4)
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
@@ -277,8 +275,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertNotNil(topLevelConfigs["Release"])
     XCTAssertEqual(topLevelConfigs["Release"]!.buildSettings,
                    releaseBuildSettingsFromSettings(topLevelBuildSettings))
-    XCTAssertNotNil(topLevelConfigs["Fastbuild"])
-    XCTAssertEqual(topLevelConfigs["Fastbuild"]!.buildSettings, topLevelBuildSettings)
     XCTAssertNotNil(topLevelConfigs["__TulsiTestRunner_Debug"])
     XCTAssertEqual(topLevelConfigs["__TulsiTestRunner_Debug"]!.buildSettings,
                    debugTestRunnerBuildSettingsFromSettings(topLevelBuildSettings))
@@ -348,10 +344,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -388,10 +380,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -465,10 +453,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -509,10 +493,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -585,10 +565,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -630,10 +606,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -744,10 +716,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -815,10 +783,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -856,10 +820,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -927,10 +887,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -1014,10 +970,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -1058,10 +1010,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
               ),
               BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
-              ),
-              BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
                   expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
               ),
@@ -1093,10 +1041,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               BuildConfigurationDefinition(
                   name: "Release",
                   expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-              ),
-              BuildConfigurationDefinition(
-                  name: "Fastbuild",
-                  expectedBuildSettings: expectedBuildSettings
               ),
               BuildConfigurationDefinition(
                   name: "__TulsiTestRunner_Debug",
@@ -1504,10 +1448,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                 expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
             ),
             BuildConfigurationDefinition(
-                name: "Fastbuild",
-                expectedBuildSettings: expectedBuildSettings
-            ),
-            BuildConfigurationDefinition(
                 name: "__TulsiTestRunner_Debug",
                 expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
             ),
@@ -1569,10 +1509,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             BuildConfigurationDefinition(
                 name: "Release",
                 expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-            ),
-            BuildConfigurationDefinition(
-                name: "Fastbuild",
-                expectedBuildSettings: expectedBuildSettings
             ),
             BuildConfigurationDefinition(
                 name: "__TulsiTestRunner_Debug",
@@ -1852,10 +1788,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               name: "Release",
               expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings,
                                                                       indexerSettingsOnly: true)
-            ),
-            BuildConfigurationDefinition(
-              name: "Fastbuild",
-              expectedBuildSettings: expectedBuildSettings
             ),
         ],
         expectedBuildPhases: expectedBuildPhases
