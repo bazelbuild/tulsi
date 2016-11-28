@@ -361,10 +361,6 @@ class _OptionsParser(object):
 class BazelBuildBridge(object):
   """Handles invoking Bazel and unpacking generated binaries."""
 
-  # Tuple of paths that are allowed as siblings of the Payload directory in IPA
-  # bundles.
-  _IPA_SUPPORT_DIRECTORIES = ('WatchKitSupport', 'SwiftSupport')
-
   def __init__(self):
     self.verbose = 0
     self.build_path = None
@@ -781,7 +777,7 @@ class BazelBuildBridge(object):
 
         # Support directories do not seem to be needed by the debugger and are
         # skipped.
-        if filename.startswith(self._IPA_SUPPORT_DIRECTORIES):
+        if filename.split(os.sep)[0].endswith('Support'):
           continue
 
         if len(filename) < len(expected_ipa_subpath):
