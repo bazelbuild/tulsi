@@ -357,7 +357,7 @@ def _collect_secondary_artifacts(target, ctx):
   artifacts = []
   rule = ctx.rule
   if rule.kind in _MERGEDINFOPLIST_GENERATING_RULES:
-    bin_dir = _convert_outpath_to_symlink_path(ctx.configuration.bin_dir.path)
+    bin_dir = _convert_outpath_to_symlink_path(ctx.bin_dir.path)
     package = target.label.package
     basename = target.label.name
     artifacts.append(_struct_omitting_none(
