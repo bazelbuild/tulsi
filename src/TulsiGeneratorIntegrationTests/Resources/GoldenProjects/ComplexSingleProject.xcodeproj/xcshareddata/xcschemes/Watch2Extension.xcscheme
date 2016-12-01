@@ -23,9 +23,7 @@
         </MacroExpansion>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
-        <EnvironmentVariables>
-            <EnvironmentVariable isEnabled="YES" key="OS_ACTIVITY_MODE" value="disable"></EnvironmentVariable>
-        </EnvironmentVariables>
+        <EnvironmentVariables></EnvironmentVariables>
         <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
             <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </RemoteRunnable>

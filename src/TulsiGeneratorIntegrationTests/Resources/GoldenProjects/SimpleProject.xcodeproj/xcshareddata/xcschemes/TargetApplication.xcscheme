@@ -20,11 +20,7 @@
         <CommandLineArguments>
             <CommandLineArgument isEnabled="YES" argument="--target-specific-test-flag"></CommandLineArgument>
         </CommandLineArguments>
-        <EnvironmentVariables>
-            <EnvironmentVariable isEnabled="YES" key="targetKey1" value="targetValue1"></EnvironmentVariable>
-            <EnvironmentVariable isEnabled="YES" key="targetKey3" value=""></EnvironmentVariable>
-            <EnvironmentVariable isEnabled="YES" key="targetKey2" value="targetValue2="></EnvironmentVariable>
-        </EnvironmentVariables>
+        <EnvironmentVariables></EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E63956EB9A00000000" BuildableIdentifier="primary" BuildableName="TargetApplication" BlueprintName="TargetApplication" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
