@@ -253,8 +253,8 @@ final class XcodeProjectGenerator {
     let projectResourcesDirectory = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)"
     let plistPaths = StubInfoPlistPaths(
         defaultStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoPlistFilename)",
-        watchOS2Stub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
-        watchOS2AppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
+        watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
+        watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
@@ -534,6 +534,8 @@ final class XcodeProjectGenerator {
           launchStyle = .AppExtension
           runnableDebuggingMode = .Default
 
+        case .Watch1App:
+          fallthrough
         case .Watch2App:
           appExtension = false
           launchStyle = .Normal

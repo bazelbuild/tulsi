@@ -78,6 +78,7 @@
 		43D68C28059002BC00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C2819C34A7800000000 /* watch2_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = watch2_extension_binary.m; sourceTree = "<group>"; };
 		43D68C281DD9724600000000 /* lib_idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2822AA150C00000000 /* _tulsi_appex_WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = _tulsi_appex_WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Binary_FD777BDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282F76936E00000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file1; sourceTree = "<group>"; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -138,7 +139,7 @@
 		43D68C28B7B6EFA200000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B82DAD1200000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; path = structured_resources.file1; sourceTree = "<group>"; };
-		43D68C28BBC8EE6A00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28BBC8EE6A00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28BC21CCBA00000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = non_propagated.m; sourceTree = "<group>"; };
 		43D68C28C05E0C0A00000000 /* app_asset_catalogs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = app_asset_catalogs.xcassets; sourceTree = "<group>"; };
 		43D68C28C05E0C0A00000001 /* app_asset_catalogs.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = app_asset_catalogs.xcassets; sourceTree = "<group>"; };
@@ -263,6 +264,7 @@
 				43D68C28BBC8EE6A00000000 /* WatchExtension.appex */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				43D68C28CC682DC200000000 /* _tulsi_appex_Watch2Extension.appex */,
+				43D68C2822AA150C00000000 /* _tulsi_appex_WatchExtension.appex */,
 				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C2826C1BB7800000000 /* lib_idx_Binary_FD777BDB.a */,
 				43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */,
@@ -803,6 +805,20 @@
 			productReference = 43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		3D31C5E6946D443400000000 /* _tulsi_appex_WatchExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558302999D5000000000 /* Build configuration list for PBXNativeTarget "_tulsi_appex_WatchExtension" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = _tulsi_appex_WatchExtension;
+			productName = _tulsi_appex_WatchExtension;
+			productReference = 43D68C2822AA150C00000000 /* _tulsi_appex_WatchExtension.appex */;
+			productType = "com.apple.product-type.watchkit-extension";
+		};
 		3D31C5E6A606B6CC00000000 /* _idx_SubLibrary_19588DB9 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755839504F6DC00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9" */;
@@ -898,7 +914,7 @@
 			name = WatchExtension;
 			productName = WatchExtension;
 			productReference = 43D68C28BBC8EE6A00000000 /* WatchExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
+			productType = "com.apple.product-type.application.watchapp";
 		};
 		3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */ = {
 			isa = PBXNativeTarget;
@@ -990,6 +1006,7 @@
 				3D31C5E6B0A0066C00000000 /* _idx_WatchExtensionBinary_020F3F9D */,
 				3D31C5E6D16FCABE00000000 /* _idx_XCTest_7F8584F1 */,
 				3D31C5E6C9760C9E00000000 /* _tulsi_appex_Watch2Extension */,
+				3D31C5E6946D443400000000 /* _tulsi_appex_WatchExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1334,11 +1351,13 @@
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.app.WatchApp;
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -1503,6 +1522,17 @@
 			};
 			name = Debug;
 		};
+		44936BD67EED3C4D00000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = example.ext.WatchExtension;
+				PRODUCT_NAME = _tulsi_appex_WatchExtension;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1647,11 +1677,13 @@
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.app.WatchApp;
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -1813,6 +1845,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.ext.Watch2Extension;
 				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
 				SDKROOT = watchos;
+				TULSI_USE_DSYM = YES;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000010 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = example.ext.WatchExtension;
+				PRODUCT_NAME = _tulsi_appex_WatchExtension;
+				SDKROOT = iphoneos;
 				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
@@ -1981,7 +2025,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -1989,6 +2033,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.app.WatchApp;
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -2009,6 +2055,22 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.ext.Watch2Extension;
 				PRODUCT_NAME = _tulsi_appex_Watch2Extension;
 				SDKROOT = watchos;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000007 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.ext.WatchExtension;
+				PRODUCT_NAME = _tulsi_appex_WatchExtension;
+				SDKROOT = iphoneos;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -2177,7 +2239,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
@@ -2185,6 +2247,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = example.app.WatchApp;
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -2209,9 +2273,36 @@
 			};
 			name = __TulsiTestRunner_Release;
 		};
+		44936BD6FCBCA00300000007 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.ext.WatchExtension;
+				PRODUCT_NAME = _tulsi_appex_WatchExtension;
+				SDKROOT = iphoneos;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DE47558302999D5000000000 /* Build configuration list for PBXNativeTarget "_tulsi_appex_WatchExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000010 /* Debug */,
+				44936BD6A3D45CE900000010 /* Release */,
+				44936BD6C928366700000007 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000007 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		DE4755830C5D00A000000000 /* Build configuration list for PBXNativeTarget "_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

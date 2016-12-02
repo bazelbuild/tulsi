@@ -767,8 +767,9 @@ class BazelBuildBridge(object):
     expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
 
     # The directory structure within the IPA is then determined based on Bazel's
-    # package type.
-    if self.package_type == 'com.apple.package-type.app-extension':
+    # package and/or product type.
+    if (self.package_type == 'com.apple.package-type.app-extension' or
+        self.product_type == 'com.apple.product-type.application.watchapp'):
       expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
     elif self.product_type == 'com.apple.product-type.application.watchapp2':
       expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)

@@ -21,8 +21,8 @@ class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
-                                          watchOS2Stub: "TestWatchOS2Info.plist",
-                                          watchOS2AppExStub: "TestWatchOS2AppExInfo.plist")
+                                          watchOSStub: "TestWatchOS2Info.plist",
+                                          watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
   var project: PBXProject! = nil
   var targetGenerator: PBXTargetGenerator! = nil
@@ -103,8 +103,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
-                                          watchOS2Stub: "TestWatchOS2Info.plist",
-                                          watchOS2AppExStub: "TestWatchOS2AppExInfo.plist")
+                                          watchOSStub: "TestWatchOS2Info.plist",
+                                          watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
 
   var project: PBXProject! = nil
@@ -991,7 +991,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BAZEL_TARGET_IPA": watchAppIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "apple_watch2_extension",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
-          "INFOPLIST_FILE": stubPlistPaths.watchOS2Stub,
+          "INFOPLIST_FILE": stubPlistPaths.watchOSStub,
           "PRODUCT_BUNDLE_IDENTIFIER": watchAppBundleID,
           "PRODUCT_NAME": watchAppTargetName,
           "SDKROOT": "watchos",
@@ -1026,7 +1026,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     do {
       let expectedBuildSettings = [
-          "INFOPLIST_FILE": stubPlistPaths.watchOS2AppExStub,
+          "INFOPLIST_FILE": stubPlistPaths.watchOSAppExStub,
           "PRODUCT_BUNDLE_IDENTIFIER": watchExtBundleID,
           "PRODUCT_NAME": watchExtTargetName,
           "SDKROOT": "watchos",

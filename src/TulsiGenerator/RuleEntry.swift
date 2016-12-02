@@ -126,7 +126,7 @@ public final class RuleEntry: RuleInfo {
 
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
-      "apple_watch1_extension": PBXTarget.ProductType.AppExtension,
+      "apple_watch1_extension": PBXTarget.ProductType.Watch1App,
       "apple_watch2_extension": PBXTarget.ProductType.Watch2App,
       "ios_application": PBXTarget.ProductType.Application,
       "ios_extension": PBXTarget.ProductType.AppExtension,
@@ -290,6 +290,8 @@ public final class RuleEntry: RuleInfo {
       return nil
     }
 
+    // Watch1App intentionally uses the iphoneos SDK, the watchos SDK was only added by Apple for
+    // watchOS2 and later.
     if targetType == .Watch2App {
       return "watchos"
     }

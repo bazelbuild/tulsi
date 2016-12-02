@@ -17,16 +17,20 @@ import Foundation
 /// Provides a set of project paths to stub Info.plist files to be used by generated targets.
 struct StubInfoPlistPaths {
   let defaultStub: String
-  let watchOS2Stub: String
-  let watchOS2AppExStub: String
+  let watchOSStub: String
+  let watchOSAppExStub: String
 
   func stubPlist(type: PBXTarget.ProductType) -> String {
     switch type {
+      case .Watch1App:
+        fallthrough
       case .Watch2App:
-        return watchOS2Stub
+        return watchOSStub
 
+      case .Watch1Extension:
+        fallthrough
       case .Watch2Extension:
-        return watchOS2AppExStub
+        return watchOSAppExStub
 
       default:
         return defaultStub
@@ -756,7 +760,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         testTargetLinkages.append((target, hostLabel, entry))
       }
 
-      if entry.pbxTargetType == .Watch2App {
+      if let type = entry.pbxTargetType where type.isWatchApp {
         let appExTarget = generateWatchOSAppExtension(target, entry: entry)
         target.createBuildActionDependencyOn(appExTarget)
       }
@@ -776,14 +780,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Generates a nop watch
   private func generateWatchOSAppExtension(target: PBXNativeTarget, entry: RuleEntry) -> PBXNativeTarget {
     let name = PBXTargetGenerator.watchAppExtensionTargetPrefix + target.name
-    let target = project.createNativeTarget(name, targetType: .Watch2Extension)
+    // Invoking this method on anything without an associated watchAppExtensionType is a programmer
+    // error.
+    let extensionTargetType = entry.pbxTargetType!.watchAppExtensionType!
+    let target = project.createNativeTarget(name, targetType: extensionTargetType)
 
     var buildSettings = [String: String]()
-    // TODO(abaire): Set the bundle ID of the extension; without this Xcode can't launch the app.
     if let sdkRoot = entry.XcodeSDKRoot {
       buildSettings["SDKROOT"] = sdkRoot
     }
-    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(.Watch2Extension)
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(extensionTargetType)
     if let extensionBundleID = entry.extensionBundleID {
       buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = extensionBundleID
     } else {
@@ -1305,6 +1311,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if let watchOSDeploymentTarget = entry.watchOSDeploymentTarget {
       buildSettings["WATCHOS_DEPLOYMENT_TARGET"] = watchOSDeploymentTarget
+    }
+
+    // watchOS1 apps require TARGETED_DEVICE_FAMILY to be overridden as they are a specialization of
+    // an iOS target rather than a true standalone (like watchOS2 and later).
+    if pbxTargetType == .Watch1App {
+      buildSettings["TARGETED_DEVICE_FAMILY"] = "4"
+      buildSettings["TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]"] = "1,4"
     }
 
     // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are

@@ -651,9 +651,29 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case InAppPurchaseContent = "com.apple.product-type.in-app-purchase-content"
     case AppExtension = "com.apple.product-type.app-extension"
     case XPCService = "com.apple.product-type.xpc-service"
+    case Watch1App = "com.apple.product-type.application.watchapp"
     case Watch2App = "com.apple.product-type.application.watchapp2"
+    case Watch1Extension = "com.apple.product-type.watchkit-extension"
     case Watch2Extension = "com.apple.product-type.watchkit2-extension"
     case TVAppExtension = "com.apple.product-type.tv-app-extension"
+
+    /// Whether or not this ProductType denotes a watch application.
+    var isWatchApp: Bool {
+      return self == .Watch1App || self == .Watch2App
+    }
+
+    /// Returns the extension type associated with this watch app type (or nil if this ProductType
+    /// is not a WatchApp type).
+    var watchAppExtensionType: ProductType? {
+      switch self {
+        case .Watch1App:
+          return .Watch1Extension
+        case .Watch2App:
+          return .Watch2Extension
+        default:
+          return nil
+      }
+    }
 
     var explicitFileType: String {
       switch self {
@@ -675,6 +695,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .StaticFramework:
           return "wrapper.framework.static"
 
+        case .Watch1App:
+          fallthrough
         case .Watch2App:
           fallthrough
         case .Application:
@@ -688,6 +710,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .InAppPurchaseContent:
           return "folder"
 
+        case .Watch1Extension:
+          fallthrough
         case .Watch2Extension:
           fallthrough
         case .TVAppExtension:
@@ -733,6 +757,11 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .InAppPurchaseContent:
           return name
 
+        case .Watch1App:
+          // watchOS1 apps are packaged as extensions.
+          fallthrough
+        case .Watch1Extension:
+          fallthrough
         case .Watch2Extension:
           fallthrough
         case .TVAppExtension:

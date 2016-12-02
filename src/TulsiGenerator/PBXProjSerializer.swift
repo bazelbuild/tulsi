@@ -86,10 +86,6 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
   // Dictionary containing data for the object currently being serialized.
   private var currentDict: RawDict!
 
-  // Regex used to determine whether a string value can be printed without quotes or not.
-  private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9._/]+$", options: [.CaseInsensitive])
-
-
   init(rootObject: PBXProject, gidGenerator: GIDGeneratorProtocol) {
     self.rootObject = rootObject
     self.gidGenerator = gidGenerator
@@ -279,26 +275,6 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     try data.tulsi_appendString("/* End \(key) section */\n")
   }
 
-  private func escapeString(val: String) -> String {
-    var val = val
-    // The quotation marks can be omitted if the string is composed strictly of alphanumeric
-    // characters and contains no white space (numbers are handled as strings in property lists).
-    // Though the property list format uses ASCII for strings, note that Cocoa uses Unicode. Since
-    // string encodings vary from region to region, this representation makes the format fragile.
-    // You may see strings containing unreadable sequences of ASCII characters; these are used to
-    // represent Unicode characters.
-    let valueRange = NSMakeRange(0, val.characters.count)
-    if unquotedSerializableStringRegex.firstMatchInString(val, options: NSMatchingOptions.Anchored, range: valueRange) != nil {
-      return val
-    } else {
-      val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
-      val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
-      val = val.stringByReplacingOccurrencesOfString("\n", withString: "\\n")
-      return "\"\(val)\""
-    }
-  }
-
-
   /// Intermediate representation of a raw dictionary.
   private class RawDict {
     var dict = [String: AnyObject]()
@@ -326,6 +302,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       let newIndent = indent + "\t"
       var leadingSpacer = ""
       for (key, value) in dict.sort({ $0.0 < $1.0 }) {
+        let key = escapeString(key)
         if let rawDictValue = value as? RawDict {
           try data.tulsi_appendString("\(leadingSpacer)\(key) = ")
           try rawDictValue.appendToData(data, indent: newIndent)
@@ -385,5 +362,29 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       try appendContentsToData(data, indent: indent, spacer: spacer)
       try data.tulsi_appendString("\(closingSpacer)};\n")
     }
+  }
+}
+
+
+// Regex used to determine whether a string value can be printed without quotes or not.
+private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9._/]+$",
+                                                                       options: [.CaseInsensitive])
+
+private func escapeString(val: String) -> String {
+  var val = val
+  // The quotation marks can be omitted if the string is composed strictly of alphanumeric
+  // characters and contains no white space (numbers are handled as strings in property lists).
+  // Though the property list format uses ASCII for strings, note that Cocoa uses Unicode. Since
+  // string encodings vary from region to region, this representation makes the format fragile.
+  // You may see strings containing unreadable sequences of ASCII characters; these are used to
+  // represent Unicode characters.
+  let valueRange = NSMakeRange(0, val.characters.count)
+  if unquotedSerializableStringRegex.firstMatchInString(val, options: NSMatchingOptions.Anchored, range: valueRange) != nil {
+    return val
+  } else {
+    val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
+    val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+    val = val.stringByReplacingOccurrencesOfString("\n", withString: "\\n")
+    return "\"\(val)\""
   }
 }
