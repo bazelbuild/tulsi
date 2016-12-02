@@ -400,7 +400,6 @@
 		44936BD67EED3C4D00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
@@ -420,7 +419,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -452,7 +450,6 @@
 		44936BD67EED3C4D00000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Two/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
@@ -472,7 +469,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -480,7 +476,6 @@
 		44936BD67EED3C4D00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/One/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
@@ -500,7 +495,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -554,7 +548,6 @@
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
@@ -574,7 +567,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -606,7 +598,6 @@
 		44936BD6A3D45CE900000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Two/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
@@ -626,7 +617,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -634,7 +624,6 @@
 		44936BD6A3D45CE900000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/One/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
@@ -654,7 +643,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -709,7 +697,6 @@
 		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
@@ -733,7 +720,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -770,7 +756,6 @@
 		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Two/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
@@ -794,7 +779,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -802,7 +786,6 @@
 		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/One/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
@@ -826,7 +809,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -867,7 +849,6 @@
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
@@ -891,7 +872,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -928,7 +908,6 @@
 		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Two/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
@@ -952,7 +931,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -960,7 +938,6 @@
 		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "bazel-bin/TestSuite/One/XCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
@@ -984,7 +961,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
-				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
