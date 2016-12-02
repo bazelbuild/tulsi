@@ -21,6 +21,7 @@ class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
+                                          iOSAppExStub: "TestIOSAppExStub.plist",
                                           watchOSStub: "TestWatchOS2Info.plist",
                                           watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
@@ -103,6 +104,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
+                                          iOSAppExStub: "TestIOSAppExStub.plist",
                                           watchOSStub: "TestWatchOS2Info.plist",
                                           watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"

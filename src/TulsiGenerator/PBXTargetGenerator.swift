@@ -17,6 +17,7 @@ import Foundation
 /// Provides a set of project paths to stub Info.plist files to be used by generated targets.
 struct StubInfoPlistPaths {
   let defaultStub: String
+  let iOSAppExStub: String
   let watchOSStub: String
   let watchOSAppExStub: String
 
@@ -31,6 +32,9 @@ struct StubInfoPlistPaths {
         fallthrough
       case .Watch2Extension:
         return watchOSAppExStub
+
+      case .AppExtension:
+        return iOSAppExStub
 
       default:
         return defaultStub

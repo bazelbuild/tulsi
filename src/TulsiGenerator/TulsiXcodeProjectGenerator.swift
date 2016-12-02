@@ -53,6 +53,7 @@ public final class TulsiXcodeProjectGenerator {
                                              withExtension: "",
                                              subdirectory: "Utilities")!,
         stubInfoPlist: bundle.URLForResource("StubInfoPlist", withExtension: "plist")!,
+        stubIOSAppExInfoPlist: bundle.URLForResource("StubIOSAppExtensionInfoPlist", withExtension: "plist")!,
         stubWatchOS2InfoPlist: bundle.URLForResource("StubWatchOS2InfoPlist", withExtension: "plist")!,
         stubWatchOS2AppExInfoPlist: bundle.URLForResource("StubWatchOS2AppExtensionInfoPlist", withExtension: "plist")!)
 

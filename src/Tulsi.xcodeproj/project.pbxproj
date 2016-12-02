@@ -87,6 +87,7 @@
 		3DAEE4681C85EB6100BA1C67 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3DAEE46F1C85ECEC00BA1C67 /* AspectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAEE46E1C85ECEC00BA1C67 /* AspectTests.swift */; };
 		3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3DAEE4701C8600B800BA1C67 /* Simple.BUILD */; };
+		3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */; };
 		3DB1FBFC1C31DDCB0080198C /* ProjectEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
 		3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */; };
@@ -260,6 +261,7 @@
 		3DAEE4671C85EB6100BA1C67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DAEE46E1C85ECEC00BA1C67 /* AspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AspectTests.swift; sourceTree = "<group>"; };
 		3DAEE4701C8600B800BA1C67 /* Simple.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Simple.BUILD; path = Resources/Simple.BUILD; sourceTree = "<group>"; };
+		3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubIOSAppExtensionInfoPlist.plist; path = GeneratedProjectResources/StubIOSAppExtensionInfoPlist.plist; sourceTree = "<group>"; };
 		3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorSplitViewController.swift; sourceTree = "<group>"; };
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */,
+				3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */,
 				3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */,
 				3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */,
 			);
@@ -773,6 +776,7 @@
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
+				3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */,
 				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
 				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,
 				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,

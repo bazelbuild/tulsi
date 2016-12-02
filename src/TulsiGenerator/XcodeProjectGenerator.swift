@@ -32,6 +32,7 @@ final class XcodeProjectGenerator {
     let cleanScript: NSURL  // The script to run on "clean" actions.
     let postProcessor: NSURL  // Binary post processor utility.
     let stubInfoPlist: NSURL  // Stub Info.plist (needed for Xcode 8).
+    let stubIOSAppExInfoPlist: NSURL  // Stub Info.plist (needed for app extension targets).
     let stubWatchOS2InfoPlist: NSURL  // Stub Info.plist (needed for watchOS2 app targets).
     let stubWatchOS2AppExInfoPlist: NSURL  // Stub Info.plist (needed for watchOS2 appex targets).
   }
@@ -48,6 +49,7 @@ final class XcodeProjectGenerator {
   private static let CleanScript = "bazel_clean.sh"
   private static let PostProcessorUtil = "post_processor"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
+  private static let StubInfoIOSAppExPlistFilename = "StubIOSAppExInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
 
@@ -253,6 +255,7 @@ final class XcodeProjectGenerator {
     let projectResourcesDirectory = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)"
     let plistPaths = StubInfoPlistPaths(
         defaultStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoPlistFilename)",
+        iOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoIOSAppExPlistFilename)",
         watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
         watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
@@ -825,6 +828,7 @@ final class XcodeProjectGenerator {
     localizedMessageLogger.infoMessage("Installing project resources")
 
     installFiles([(resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename),
+                  (resourceURLs.stubIOSAppExInfoPlist, XcodeProjectGenerator.StubInfoIOSAppExPlistFilename),
                   (resourceURLs.stubWatchOS2InfoPlist, XcodeProjectGenerator.StubWatchOS2InfoPlistFilename),
                   (resourceURLs.stubWatchOS2AppExInfoPlist, XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename),
                  ],
