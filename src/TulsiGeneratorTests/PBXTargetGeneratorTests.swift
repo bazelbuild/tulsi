@@ -217,10 +217,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
+        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_BWRS)/bazel-bin $(TULSI_BWRS)/bazel-genfiles",
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
+        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -264,11 +265,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_WR) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
+        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_BWRS)/bazel-bin $(TULSI_BWRS)/bazel-genfiles",
         "SDKROOT": projectSDKROOT,
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
+        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -1124,7 +1126,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WR)/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_BWRS)/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -1151,7 +1153,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_BWRS)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -1396,7 +1398,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 2)
     validateIndexerTarget(indexer1TargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_BWRS)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
     validateIndexerTarget(indexer2TargetName,
                           sourceFileNames: sourceFileNames,
@@ -1758,13 +1760,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      line: UInt = #line) {
     var expectedBuildSettings = [
         "ARCHS": "x86_64",
-        "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_WR)/tools/cpp/gcc3 ",
+        "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
         "SDKROOT": "iphonesimulator",
         "VALID_ARCHS": "x86_64",
     ]
     if pchFile != nil {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_WR)/\(pchFile!.path!)"
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile!.path!)"
     }
     if bridgingHeader != nil {
         expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!

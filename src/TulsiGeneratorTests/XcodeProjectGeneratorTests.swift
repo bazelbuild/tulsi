@@ -322,7 +322,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 options: TulsiOptionSet,
                 localizedMessageLogger: LocalizedMessageLogger,
                 workspaceRootURL: NSURL,
-                suppressCompilerDefines: Bool) {
+                suppressCompilerDefines: Bool,
+                redactWorkspaceSymlink: Bool) {
     self.project = project
   }
 
