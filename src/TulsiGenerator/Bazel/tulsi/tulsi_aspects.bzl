@@ -436,7 +436,8 @@ def _tulsi_sources_aspect(target, ctx):
     artifacts = None
 
   srcs = (_collect_files(rule, 'attr.srcs') +
-          _collect_files(rule, 'attr.hdrs'))
+          _collect_files(rule, 'attr.hdrs') +
+          _collect_files(rule, 'attr.textual_hdrs'))
   generated_files = []
   generated_non_arc_files = []
   generated_includes = []

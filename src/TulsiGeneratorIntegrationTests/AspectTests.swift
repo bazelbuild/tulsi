@@ -89,7 +89,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Library/srcs/src3.m",
                      "tulsi_test/Library/srcs/src4.m",
                      "tulsi_test/Library/srcs/SrcsHeader.h",
-                     "tulsi_test/Library/hdrs/HdrsHeader.h"])
+                     "tulsi_test/Library/hdrs/HdrsHeader.h",
+                     "tulsi_test/Library/textual_hdrs/TextualHdrsHeader.h"])
         .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE",
                                       "-I/Library/absolute/include/path",
                                       "-Irelative/Library/include/path"])

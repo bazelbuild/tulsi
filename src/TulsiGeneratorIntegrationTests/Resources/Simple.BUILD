@@ -66,6 +66,9 @@ objc_library(
     ],
     defines = ["LIBRARY_DEFINES_DEFINE=1"],
     pch = "Library/pch/PCHFile.pch",
+    textual_hdrs = [
+        "Library/textual_hdrs/TextualHdrsHeader.h",
+    ],
     xibs = ["Library/xibs/xib.xib"],
 )
 

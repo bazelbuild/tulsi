@@ -66,6 +66,7 @@
     "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src2.m",
     "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src3.m",
     "..\/..\/tulsi_e2e_simple\/Library\/srcs\/src4.m",
+    "..\/..\/tulsi_e2e_simple\/Library\/textual_hdrs\/TextualHdrsHeader.h",
     "..\/..\/tulsi_e2e_simple\/Library\/xibs\/xib.xib",
     "..\/..\/tulsi_e2e_simple\/SimpleTest.xcdatamodeld\/**",
     "..\/..\/tulsi_e2e_simple\/XCTest\/srcs\/src1.mm"

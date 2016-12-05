@@ -47,6 +47,7 @@
 		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
 		43D68C28517E0F5200000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
+		43D68C2851D95C9600000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextualHdrsHeader.h; sourceTree = "<group>"; };
 		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
 		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
 		43D68C28577B7A7A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src3.m; sourceTree = "<group>"; };
@@ -73,6 +74,7 @@
 				966FB6DE3B86E64800000000 /* hdrs */,
 				966FB6DE2F22F61E00000000 /* pch */,
 				966FB6DEB73A031C00000001 /* srcs */,
+				966FB6DE66EF840400000000 /* textual_hdrs */,
 				966FB6DE40F68AF600000000 /* xibs */,
 			);
 			path = Library;
@@ -114,6 +116,14 @@
 				43D68C2862292A3400000000 /* xib.xib */,
 			);
 			path = xibs;
+			sourceTree = "<group>";
+		};
+		966FB6DE66EF840400000000 /* textual_hdrs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2851D95C9600000000 /* TextualHdrsHeader.h */,
+			);
+			path = textual_hdrs;
 			sourceTree = "<group>";
 		};
 		966FB6DE6B144ABC00000000 /* Application */ = {
