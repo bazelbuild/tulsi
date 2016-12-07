@@ -3,32 +3,32 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="NO" buildForAnalyzing="YES" buildForTesting="NO" buildForRunning="NO" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6D16FCABE00000000" BuildableIdentifier="primary" BuildableName="_idx_XCTest_7F8584F1" BlueprintName="_idx_XCTest_7F8584F1" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6D16FCABE00000000" BuildableIdentifier="primary" BuildableName="lib_idx_XCTest_7F8584F1.a" BlueprintName="_idx_XCTest_7F8584F1" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </TestableReference>
         </Testables>
-        <MacroExpansion>
-            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-        </MacroExpansion>
+        <BuildableProductRunnable runnableDebuggingMode="0">
+            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+        </BuildableProductRunnable>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
         <EnvironmentVariables></EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
     </LaunchAction>
     <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>

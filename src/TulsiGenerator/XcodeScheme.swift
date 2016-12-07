@@ -194,9 +194,13 @@ final class XcodeScheme {
 
     element.addChild(testables)
 
-    let macroExpansion = NSXMLElement(name: "MacroExpansion")
-    macroExpansion.addChild(primaryTargetBuildableReference.toXML())
-    element.addChild(macroExpansion)
+    // Test hosts must be emitted as buildableProductRunnables to ensure that Xcode attempts to run
+    // the test host binary.
+    if explicitTests == nil {
+      element.addChild(buildableProductRunnable(runnableDebuggingMode))
+    } else {
+      element.addChild(macroReference())
+    }
     return element
   }
 
@@ -228,9 +232,7 @@ final class XcodeScheme {
     if launchStyle != .AppExtension {
       element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
-      let macroExpansion = NSXMLElement(name: "MacroExpansion")
-      macroExpansion.addChild(primaryTargetBuildableReference.toXML())
-      element.addChild(macroExpansion)
+      element.addChild(macroReference())
     }
     return element
   }
@@ -294,6 +296,14 @@ final class XcodeScheme {
     return element
   }
 
+  /// Container for the primary BuildableReference to be used in situations where it is not
+  /// runnable.
+  private func macroReference() -> NSXMLElement {
+    let macroExpansion = NSXMLElement(name: "MacroExpansion")
+    macroExpansion.addChild(primaryTargetBuildableReference.toXML())
+    return macroExpansion
+  }
+
   /// Generates a CommandlineArguments element based on arguments.
   private func commandlineArgumentsElement(arguments: [String]) -> NSXMLElement {
     let element = NSXMLElement(name: "CommandLineArguments")
@@ -350,7 +360,7 @@ final class XcodeScheme {
 
     convenience init(target: PBXTarget, projectBundleName: String) {
       self.init(buildableGID: target.globalID,
-                buildableName: target.productName!,
+                buildableName: target.buildableName,
                 targettName: target.name,
                 projectBundleName: projectBundleName)
     }

@@ -3,34 +3,34 @@
     <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6946D443400000000" BuildableIdentifier="primary" BuildableName="_tulsi_appex_WatchExtension" BlueprintName="_tulsi_appex_WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6946D443400000000" BuildableIdentifier="primary" BuildableName="_tulsi_appex_WatchExtension.appex" BlueprintName="_tulsi_appex_WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application.app" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="NO" buildForAnalyzing="YES" buildForTesting="NO" buildForRunning="NO" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6B0A0066C00000000" BuildableIdentifier="primary" BuildableName="_idx_WatchExtensionBinary_020F3F9D" BlueprintName="_idx_WatchExtensionBinary_020F3F9D" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6B0A0066C00000000" BuildableIdentifier="primary" BuildableName="lib_idx_WatchExtensionBinary_020F3F9D.a" BlueprintName="_idx_WatchExtensionBinary_020F3F9D" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
-        <MacroExpansion>
-            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
-        </MacroExpansion>
+        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/WatchExtension" runnableDebuggingMode="2">
+            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+        </RemoteRunnable>
     </TestAction>
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
         <EnvironmentVariables></EnvironmentVariables>
         <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/WatchExtension" runnableDebuggingMode="2">
-            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </RemoteRunnable>
     </LaunchAction>
     <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
         <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/WatchExtension" runnableDebuggingMode="2">
-            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6CD47F3C600000000" BuildableIdentifier="primary" BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
         </RemoteRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
