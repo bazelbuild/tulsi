@@ -29,33 +29,58 @@ private func main() {
 
   let queue = dispatch_queue_create("com.google.Tulsi.xcodeProjectGenerator", DISPATCH_QUEUE_SERIAL)
   dispatch_async(queue) {
-    let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
     do {
-      try generator.generate()
-    } catch HeadlessXcodeProjectGenerator.Error.MissingConfigOption(let option) {
-      print("Missing required \(option) param.")
-      exit(10)
-    } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigPath(let reason) {
+      switch commandlineParser.mode {
+        case .invalid:
+          print("Missing mode parameter. Please see the help message.")
+          exit(2)
+
+        case .tulsiProjectCreator:
+          let generator = HeadlessTulsiProjectCreator(arguments: commandlineParser.arguments)
+          try generator.generate()
+
+        case .xcodeProjectGenerator:
+          let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
+          try generator.generate()
+      }
+    } catch HeadlessModeError.InvalidConfigPath(let reason) {
       print("Invalid \(TulsiCommandlineParser.ParamGeneratorConfigLong) param: \(reason)")
       exit(11)
-    } catch HeadlessXcodeProjectGenerator.Error.InvalidConfigFileContents(let reason) {
+    } catch HeadlessModeError.InvalidConfigFileContents(let reason) {
       print("Failed to read the given generator config: \(reason)")
       exit(12)
-    } catch HeadlessXcodeProjectGenerator.Error.ExplicitOutputOptionRequired {
+    } catch HeadlessModeError.ExplicitOutputOptionRequired {
       print("The \(TulsiCommandlineParser.ParamOutputFolderLong) option is required for the selected config")
       exit(13)
-    } catch HeadlessXcodeProjectGenerator.Error.InvalidBazelPath {
+    } catch HeadlessModeError.InvalidBazelPath {
       print("The path to the bazel binary is invalid")
       exit(14)
-    } catch HeadlessXcodeProjectGenerator.Error.GenerationFailed(let reason) {
+    } catch HeadlessModeError.GenerationFailed(let reason) {
       print("Generation failed: \(reason)")
       exit(15)
-    } catch HeadlessXcodeProjectGenerator.Error.InvalidWorkspaceRootOverride {
+    } catch HeadlessModeError.InvalidWorkspaceRootOverride {
       print("The parameter given as the workspace root path is not a valid directory")
       exit(16)
-    } catch HeadlessXcodeProjectGenerator.Error.InvalidProjectFileContents(let reason) {
+    } catch HeadlessModeError.InvalidProjectFileContents(let reason) {
       print("Failed to read the given project: \(reason)")
       exit(20)
+    } catch HeadlessModeError.MissingBazelPath {
+      print("The path to the bazel binary must be specified")
+      exit(21)
+    } catch HeadlessModeError.MissingWORKSPACEFile(let path) {
+      print("The workspace root at '\(path)' does not contain a Bazel WORKSPACE file.")
+      exit(21)
+    } catch HeadlessModeError.MissingBuildTargets {
+      print("At least one build target must be specified with the \(TulsiCommandlineParser.ParamBuildTargetLong) parameter.")
+      exit(22)
+    } catch HeadlessModeError.InvalidProjectBundleName {
+      print("The parameter given to \(TulsiCommandlineParser.ParamCreateTulsiProj) is invalid. " +
+                "It must be the name of the .tulsiproj bundle to be created, without any other " +
+                "path elements.")
+      exit(23)
+    } catch HeadlessModeError.BazelTargetProcessingFailed {
+      print("Failed to identify any valid build targets.")
+      exit(24)
     } catch let e as NSError {
       print("An unexpected exception occurred: \(e.localizedDescription)")
       exit(126)

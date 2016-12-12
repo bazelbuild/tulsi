@@ -119,7 +119,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// Array of paths containing source files related to the selectedUIRuleEntries.
-  private var sourcePaths = [UISourcePath]()
+  var sourcePaths = [UISourcePath]()
 
   private var selectedSourcePaths: [UISourcePath] {
     return sourcePaths.filter { $0.selected || $0.recursive }
@@ -304,6 +304,37 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     // TODO(abaire): Consider supporting restoration of config subwindows.
     windowController.window?.restorable = false
     addWindowController(windowController)
+  }
+
+  /// Performs the save process for this config, bypassing any steps that would spawn UI elements.
+  func headlessSave(configName: String) {
+    // Ensure that the output folder exists to prevent saveToURL from freezing.
+    do {
+      try NSFileManager.defaultManager().createDirectoryAtURL(saveFolderURL,
+                                                              withIntermediateDirectories: true,
+                                                              attributes: nil)
+    } catch let e as NSError {
+      if let completionHandler = saveCompletionHandler {
+        completionHandler(canceled: false, error: e)
+        saveCompletionHandler = nil
+      }
+      return
+    }
+
+    guard let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName,
+                                                                         inFolderURL: saveFolderURL) else {
+      if let completionHandler = saveCompletionHandler {
+        completionHandler(canceled: false, error: TulsiError(code: .ConfigNotSaveable))
+        saveCompletionHandler = nil
+      }
+      return
+    }
+
+    saveToURL(targetURL,
+              ofType: TulsiGeneratorConfigDocument.FileType,
+              forSaveOperation: .SaveOperation) { (error: NSError?) in
+      // Note that saveToURL handles invocation/clearning of saveCompletionHandler.
+    }
   }
 
   override func saveToURL(url: NSURL,
@@ -651,34 +682,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
-    // Ensure that the output folder exists to prevent saveToURL from freezing.
-    do {
-      try NSFileManager.defaultManager().createDirectoryAtURL(saveFolderURL,
-                                                              withIntermediateDirectories: true,
-                                                              attributes: nil)
-    } catch let e as NSError {
-      if let completionHandler = saveCompletionHandler {
-        completionHandler(canceled: false, error: e)
-        saveCompletionHandler = nil
-      }
-      return
-    }
-
-    configName = vc.configName!
-    guard let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName!,
-                                                                         inFolderURL: saveFolderURL) else {
-      if let completionHandler = saveCompletionHandler {
-        completionHandler(canceled: false, error: TulsiError(code: .ConfigNotSaveable))
-        saveCompletionHandler = nil
-      }
-      return
-    }
-
-    saveToURL(targetURL,
-              ofType: TulsiGeneratorConfigDocument.FileType,
-              forSaveOperation: .SaveOperation) { (error: NSError?) in
-      // Note that saveToURL handles invocation/clearning of saveCompletionHandler.
-    }
+    headlessSave(vc.configName!)
   }
 
   // MARK: - Private methods

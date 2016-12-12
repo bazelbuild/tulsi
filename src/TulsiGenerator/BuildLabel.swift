@@ -65,8 +65,12 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
     return self.value.hashValue
   }()
 
-  public init(_ label: String) {
-    self.value = label
+  public init(_ label: String, normalize: Bool = false) {
+    var value = label
+    if normalize && !value.hasPrefix("//") {
+      value = "//\(value)"
+    }
+    self.value = value
   }
 
   // MARK: - CustomStringConvertible

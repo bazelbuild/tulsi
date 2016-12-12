@@ -123,6 +123,9 @@
 		8B8F55C81BE4100A0095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */; };
 		8BC3D1051CF3643800D6D10E /* SplashScreenRecentDocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BC3D1031CF3643800D6D10E /* SplashScreenRecentDocumentView.xib */; };
 		AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */; };
+		AB18C7AE39198BE26CB112C0 /* HeadlessModeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */; };
+		AB18CB663B4A10F9BA45D02F /* TulsiCommandlineParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */; };
+		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -310,7 +313,10 @@
 		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
+		AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiCommandlineParser.swift; sourceTree = "<group>"; };
+		AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessModeError.swift; sourceTree = "<group>"; };
 		AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelIntegrationTestCase.swift; sourceTree = "<group>"; };
+		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -577,6 +583,8 @@
 				8B8F559C1BE3ECDC0095AF7F /* ConfigEditorWizardViewController.swift */,
 				3D53323B1D2425E600951579 /* EventLogger.swift */,
 				3DD0DE481C656C15008B0CDF /* FilteredOpenPanel.swift */,
+				AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */,
+				AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */,
 				3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */,
 				3D9E11B61C6D4D750026EE68 /* main.swift */,
 				3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */,
@@ -593,6 +601,7 @@
 				3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */,
 				3DFAD2691C4FE05900C7D7AF /* Resources */,
 				3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */,
+				AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */,
 				3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */,
 				3D387BB71C761B8800544AE0 /* TulsiError.swift */,
 				3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */,
@@ -955,6 +964,9 @@
 				3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */,
 				8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */,
 				3DD0EB0E1C40AEC7005C0469 /* OptionsEditorController.swift in Sources */,
+				AB18CB663B4A10F9BA45D02F /* TulsiCommandlineParser.swift in Sources */,
+				AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */,
+				AB18C7AE39198BE26CB112C0 /* HeadlessModeError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,31 +17,8 @@ import TulsiGenerator
 
 
 /// Provides functionality to generate an Xcode project from a TulsiGeneratorConfig
-class HeadlessXcodeProjectGenerator {
-  enum Error: ErrorType {
-    /// The given required commandline option was not provided.
-    case MissingConfigOption(String)
-    /// The config file path was invalid for the given reason.
-    case InvalidConfigPath(String)
-    /// The config file contents were invalid for the given reason.
-    case InvalidConfigFileContents(String)
-    /// The project file contents were invalid for the given reason.
-    case InvalidProjectFileContents(String)
-    /// The given configuration file requires that an explicit output path be given.
-    case ExplicitOutputOptionRequired
-    /// XCode project generation failed for the given reason.
-    case GenerationFailed(String)
-    /// The path to the Bazel binary given on the commandline is invalid.
-    case InvalidBazelPath
-    /// A workspace root override was given but references an invalid param.
-    case InvalidWorkspaceRootOverride
-  }
-
+struct HeadlessXcodeProjectGenerator {
   let arguments: TulsiCommandlineParser.Arguments
-
-  init(arguments: TulsiCommandlineParser.Arguments) {
-    self.arguments = arguments
-  }
 
   /// Performs project generation.
   func generate() throws {
@@ -51,7 +28,7 @@ class HeadlessXcodeProjectGenerator {
     let explicitBazelURL: NSURL?
     if let bazelPath = arguments.bazel {
       if !NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) {
-        throw Error.InvalidBazelPath
+        throw HeadlessModeError.InvalidBazelPath
       }
       explicitBazelURL = NSURL(fileURLWithPath: bazelPath)
       TulsiProjectDocument.suppressRuleEntryUpdateOnLoad = true
@@ -66,7 +43,7 @@ class HeadlessXcodeProjectGenerator {
     }
 
     guard let configPath = arguments.generatorConfig else {
-      throw Error.MissingConfigOption(TulsiCommandlineParser.ParamGeneratorConfigLong)
+      fatalError("HeadlessXcodeProjectGenerator invoked without a valid generatorConfig")
     }
 
     let (projectURL, configURL, defaultOutputFolderURL) = try resolveConfigPath(configPath)
@@ -77,14 +54,14 @@ class HeadlessXcodeProjectGenerator {
       doc = try documentController.makeDocumentWithContentsOfURL(projectURL,
                                                                  ofType: "com.google.tulsi.project")
     } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
-      throw Error.InvalidProjectFileContents("Failed to load project due to invalid workspace: \(info)")
+      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to invalid workspace: \(info)")
     } catch let e as NSError {
-      throw Error.InvalidProjectFileContents("Failed to load project due to unexpected exception: \(e)")
+      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to unexpected exception: \(e)")
     } catch {
-      throw Error.InvalidProjectFileContents("Failed to load project due to unexpected exception.")
+      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to unexpected exception.")
     }
     guard let projectDocument = doc as? TulsiProjectDocument else {
-      throw Error.InvalidProjectFileContents("\(doc) is not of the expected type.")
+      throw HeadlessModeError.InvalidProjectFileContents("\(doc) is not of the expected type.")
     }
 
     let outputFolderURL: NSURL
@@ -93,7 +70,7 @@ class HeadlessXcodeProjectGenerator {
     } else if let defaultOutputFolderURL = defaultOutputFolderURL {
       outputFolderURL = defaultOutputFolderURL
     } else {
-      throw Error.ExplicitOutputOptionRequired
+      throw HeadlessModeError.ExplicitOutputOptionRequired
     }
 
     var config = try loadConfig(configURL, bazelURL: explicitBazelURL)
@@ -108,7 +85,7 @@ class HeadlessXcodeProjectGenerator {
     if let workspaceRootOverride = arguments.workspaceRootOverride {
       workspaceRootURL = NSURL(fileURLWithPath: workspaceRootOverride, isDirectory: true)
       if !isExistingDirectory(workspaceRootURL) {
-        throw Error.InvalidWorkspaceRootOverride
+        throw HeadlessModeError.InvalidWorkspaceRootOverride
       }
       if projectWorkspaceRootURL != nil {
         print("Overriding project workspace root (\(projectWorkspaceRootURL!.path!)) with " +
@@ -116,7 +93,7 @@ class HeadlessXcodeProjectGenerator {
       }
     } else {
       guard let projectWorkspaceRootURL = projectWorkspaceRootURL else {
-        throw Error.InvalidProjectFileContents("Invalid workspaceRoot")
+        throw HeadlessModeError.InvalidProjectFileContents("Invalid workspaceRoot")
       }
       workspaceRootURL = projectWorkspaceRootURL
     }
@@ -139,7 +116,7 @@ class HeadlessXcodeProjectGenerator {
           NSWorkspace.sharedWorkspace().openURL(url)
         }
       case .Failure(let errorInfo):
-        throw Error.GenerationFailed(errorInfo)
+        throw HeadlessModeError.GenerationFailed(errorInfo)
     }
   }
 
@@ -190,14 +167,14 @@ class HeadlessXcodeProjectGenerator {
       return (projectURL, configURL, defaultOutputFolderURL)
     }
 
-    throw Error.InvalidConfigPath("The given config is invalid")
+    throw HeadlessModeError.InvalidConfigPath("The given config is invalid")
   }
 
   private func locateConfigNamed(configName: String,
                                  inTulsiProject tulsiProj: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
     let tulsiProjectURL = NSURL(fileURLWithPath: tulsiProj, isDirectory: true)
     if !isExistingDirectory(tulsiProjectURL) {
-      throw Error.InvalidConfigPath("The given Tulsi project does not exist")
+      throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not exist")
     }
 
 #if swift(>=2.3)
@@ -206,7 +183,7 @@ class HeadlessXcodeProjectGenerator {
     let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
 #endif
     if !isExistingDirectory(configDirectoryURL) {
-      throw Error.InvalidConfigPath("The given Tulsi project does not contain any configs")
+      throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not contain any configs")
     }
 
     let configFilename: String
@@ -223,7 +200,7 @@ class HeadlessXcodeProjectGenerator {
     if NSFileManager.defaultManager().isReadableFileAtPath(configFileURL.path!) {
       return (configFileURL, tulsiProjectURL.URLByDeletingLastPathComponent!)
     }
-    throw Error.InvalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
+    throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
   }
 
   private func isExistingDirectory(url: NSURL) -> Bool {
@@ -239,210 +216,18 @@ class HeadlessXcodeProjectGenerator {
     do {
       config = try TulsiGeneratorConfig.load(url, bazelURL: bazelURL)
     } catch TulsiGeneratorConfig.Error.BadInputFilePath {
-      throw Error.InvalidConfigFileContents("Failed to read config file at \(url.path!)")
+      throw HeadlessModeError.InvalidConfigFileContents("Failed to read config file at \(url.path!)")
     } catch TulsiGeneratorConfig.Error.FailedToReadAdditionalOptionsData(let info) {
-      throw Error.InvalidConfigFileContents("Failed to read per-user config file: \(info)")
+      throw HeadlessModeError.InvalidConfigFileContents("Failed to read per-user config file: \(info)")
     } catch TulsiGeneratorConfig.Error.DeserializationFailed(let info) {
-      throw Error.InvalidConfigFileContents("Config file at \(url.path!) is invalid: \(info)")
+      throw HeadlessModeError.InvalidConfigFileContents("Config file at \(url.path!) is invalid: \(info)")
     } catch {
-      throw Error.InvalidConfigFileContents("Unexpected exception reading config file at \(url.path!)")
+      throw HeadlessModeError.InvalidConfigFileContents("Unexpected exception reading config file at \(url.path!)")
     }
 
     if !config.bazelURL.fileURL {
-      throw Error.InvalidBazelPath
+      throw HeadlessModeError.InvalidBazelPath
     }
     return config
-  }
-}
-
-
-class TulsiCommandlineParser {
-  /// Commandline argument indicating that the following arguments are meant to be consumed as
-  /// commandline arguments.
-  static let ParamCommandlineArgumentSentinal = "--"
-
-  static let ParamHelpShort = "-h"
-  static let ParamHelpLong = "--help"
-  static let ParamQuietShort = "-q"
-  static let ParamQuietLong = "--quiet"
-
-  static let ParamAdditionalPathFilters = "--additionalSourceFilters"
-  static let ParamBazel = "--bazel"
-  static let ParamGeneratorConfigShort = "-c"
-  static let ParamGeneratorConfigLong = "--genconfig"
-  static let ParamOutputFolderShort = "-o"
-  static let ParamOutputFolderLong = "--outputfolder"
-  static let ParamWorkspaceRootShort = "-w"
-  static let ParamWorkspaceRootLong = "--workspaceroot"
-  static let ParamNoWorkspaceCheck = "--no-workspace-check"
-  static let ParamNoOpenXcode = "--no-open-xcode"
-
-  let arguments: Arguments
-  let commandlineSentinalFound: Bool
-
-  struct Arguments {
-    let bazel: String?
-    let generatorConfig: String?
-    let outputFolder: String?
-    let workspaceRootOverride: String?
-    let verbose: Bool
-    let suppressWORKSPACECheck: Bool
-    let openXcodeOnSuccess: Bool
-    let additionalPathFilters: Set<String>
-
-    init() {
-      bazel = nil
-      generatorConfig = nil
-      outputFolder = nil
-      workspaceRootOverride = nil
-      verbose = true
-      suppressWORKSPACECheck = false
-      openXcodeOnSuccess = true
-      additionalPathFilters = Set()
-    }
-
-    init(dict: [String: AnyObject]) {
-
-      func standardizedPath(key: String) -> String? {
-        if let path = dict[key] as? NSString {
-          return path.stringByStandardizingPath
-        }
-        return nil
-      }
-
-      bazel = standardizedPath(TulsiCommandlineParser.ParamBazel)
-      generatorConfig = standardizedPath(TulsiCommandlineParser.ParamGeneratorConfigLong)
-      outputFolder = standardizedPath(TulsiCommandlineParser.ParamOutputFolderLong)
-      verbose = !(dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true)
-      workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
-      suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
-      openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
-      additionalPathFilters = dict[TulsiCommandlineParser.ParamAdditionalPathFilters] as? Set<String> ?? Set()
-    }
-  }
-
-  init() {
-    var args = [String](Process.arguments.dropFirst())
-    // See if the arguments are intended to be interpreted as commandline args.
-    if args.first != TulsiCommandlineParser.ParamCommandlineArgumentSentinal {
-      commandlineSentinalFound = false
-      arguments = Arguments()
-      return
-    }
-    commandlineSentinalFound = true
-    let version: String
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
-      version = cfBundleVersion
-    } else {
-      version = ""
-    }
-    LogMessage.postSyslog("Tulsi CLI: version \(version)")
-
-    args = [String](args.dropFirst())
-
-    var parsedArguments = [String: AnyObject]()
-    func storeValueAt(index: Int,
-                      forArgument argumentName: String,
-                      transform: (AnyObject -> AnyObject) = { return $0 }) {
-      guard index < args.count else {
-        print("Missing required parameter for \(argumentName) option.")
-        exit(1)
-      }
-      let value = transform(args[index])
-      parsedArguments[argumentName] = value
-    }
-
-    var i = 0
-    while i < args.count {
-      let arg = args[i]
-      i += 1
-      switch arg {
-        case TulsiCommandlineParser.ParamHelpShort:
-          fallthrough
-        case TulsiCommandlineParser.ParamHelpLong:
-          TulsiCommandlineParser.printUsage()
-          exit(1)
-
-        case TulsiCommandlineParser.ParamQuietShort:
-          fallthrough
-        case TulsiCommandlineParser.ParamQuietLong:
-          parsedArguments[TulsiCommandlineParser.ParamQuietLong] = true
-
-        case TulsiCommandlineParser.ParamBazel:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBazel)
-          i += 1
-
-        case TulsiCommandlineParser.ParamGeneratorConfigShort:
-          fallthrough
-        case TulsiCommandlineParser.ParamGeneratorConfigLong:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamGeneratorConfigLong)
-          i += 1
-
-        case TulsiCommandlineParser.ParamNoOpenXcode:
-          parsedArguments[TulsiCommandlineParser.ParamNoOpenXcode] = true
-
-        case TulsiCommandlineParser.ParamNoWorkspaceCheck:
-          parsedArguments[TulsiCommandlineParser.ParamNoWorkspaceCheck] = true
-
-        case TulsiCommandlineParser.ParamOutputFolderShort:
-          fallthrough
-        case TulsiCommandlineParser.ParamOutputFolderLong:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamOutputFolderLong)
-          i += 1
-
-        case TulsiCommandlineParser.ParamWorkspaceRootShort:
-          fallthrough
-        case TulsiCommandlineParser.ParamWorkspaceRootLong:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamWorkspaceRootLong)
-          i += 1
-
-        case TulsiCommandlineParser.ParamAdditionalPathFilters:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamAdditionalPathFilters) { value -> AnyObject in
-            guard let valueString = value as? String else { return Set<String>() }
-
-            let pathFilters = valueString.componentsSeparatedByString(" ").map() { path -> String in
-              if path.hasPrefix("//") {
-                return path.substringFromIndex(path.startIndex.advancedBy(2))
-              }
-              return path
-            }
-            return Set(pathFilters)
-          }
-          i += 1
-
-        default:
-          print("Ignoring unknown option \"\(arg)\"")
-      }
-    }
-
-    arguments = Arguments(dict: parsedArguments)
-  }
-
-  // MARK: - Private methods
-
-  private static func printUsage() {
-    let usage = [
-        "Usage: \(Process.arguments[0]) -- [options]",
-        "",
-        "Where options are:",
-        "  \(ParamGeneratorConfigLong) <config>: (required)",
-        "    Generates an Xcode project using the given generator config. The config must be",
-        "      expressed as the path to a Tulsi project, optionally followed by a colon \":\"",
-        "      and a config name.",
-        "        e.g., \"/path/to/MyProject.tulsiproj:MyConfig\"",
-        "      omitting the trailing colon/config will attempt to use a config with the same name",
-        "      as the project. i.e.",
-        "        \"MyProject.tulsiproj\"",
-        "      is equivalent to ",
-        "        \"MyProject.tulsiproj:MyProject\"",
-        "  \(ParamBazel) <path>: Path to the Bazel binary.",
-        "  \(ParamWorkspaceRootLong) <path>: Path to the folder containing the Bazel WORKSPACE file.",
-        "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
-        "  \(ParamOutputFolderLong) <path>: Sets the folder into which the Xcode project should be saved.",
-        "  \(ParamHelpLong): Show this help message.",
-        "  \(ParamQuietLong): Hide verbose info messages (warning: may also hide some error details).",
-        "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project."
-    ]
-    print(usage.joinWithSeparator("\n") + "\n")
   }
 }
