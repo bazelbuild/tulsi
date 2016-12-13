@@ -5,7 +5,7 @@
       "bazel-bin\/tulsi_e2e_complex\/Application.ipa",
       "bazel-bin\/tulsi_e2e_complex\/XCTest.ipa"
     ],
-    "_idx_XCTest_7F8584F1" : [
+    "_idx_Binary_XCTest_7CFD00CC" : [
 
     ],
     "_idx_SubLibraryWithDifferentDefines_32E5A9BC" : [
@@ -33,9 +33,6 @@
     "TodayExtension" : [
       "bazel-bin\/tulsi_e2e_complex\/TodayExtension.ipa"
     ],
-    "_idx_Binary_FD777BDB" : [
-
-    ],
     "_tulsi_appex_WatchExtension" : [
 
     ],
@@ -56,7 +53,6 @@
     ]
   },
   "artifacts" : [
-    "..\/..\/bazel-genfiles\/tulsi_e2e_complex\/BridgingHeaderGenerator\/outs\/bridging_header.h",
     "..\/..\/bazel-genfiles\/tulsi_e2e_complex\/PCHGenerator\/outs\/PCHFile.pch",
     "..\/..\/bazel-genfiles\/tulsi_e2e_complex\/SrcGenerator\/outs\/output.m",
     "..\/..\/bazel-genfiles\/tulsi_e2e_complex\/StoryboardGenerator\/outs\/Two.storyboard",
@@ -70,15 +66,14 @@
     "bazel-bin\/tulsi_e2e_complex\/Application-MergedInfo.plist",
     "bazel-bin\/tulsi_e2e_complex\/Watch2Extension-MergedInfo.plist",
     "bazel-bin\/tulsi_e2e_complex\/WatchExtension-MergedInfo.plist",
-    "lib_idx_Binary_FD777BDB.a",
+    "lib_idx_Binary_XCTest_7CFD00CC.a",
     "lib_idx_Library_20EC2F4A.a",
     "lib_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598.a",
     "lib_idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E.a",
     "lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a",
     "lib_idx_SubLibrary_19588DB9.a",
     "lib_idx_TodayExtensionBinary_999643E7.a",
-    "lib_idx_WatchExtensionBinary_020F3F9D.a",
-    "lib_idx_XCTest_7F8584F1.a"
+    "lib_idx_WatchExtensionBinary_020F3F9D.a"
   ],
   "intermediateArtifacts" : {
     "XCTest" : [

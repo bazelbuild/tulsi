@@ -77,6 +77,7 @@ skylark_tvos_application(
     infoplists = [
         "tvOSApplication/Info.plist",
     ],
+    deps = [":tvOSLibrary"],
 )
 
 skylark_tvos_extension(
@@ -85,4 +86,11 @@ skylark_tvos_extension(
     infoplists = [
         "tvOSExtension/Info.plist",
     ],
+    deps = [":tvOSLibrary"],
+)
+
+objc_library(
+    name = "tvOSLibrary",
+    srcs = ["tvOSLibrary/srcs/src.m"],
+    enable_modules = True,
 )

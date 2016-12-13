@@ -6,7 +6,7 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application.app" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="NO" buildForAnalyzing="YES" buildForTesting="NO" buildForRunning="NO" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6CC548BE600000000" BuildableIdentifier="primary" BuildableName="lib_idx_Binary_FD777BDB.a" BlueprintName="_idx_Binary_FD777BDB" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6BC93D08E00000000" BuildableIdentifier="primary" BuildableName="lib_idx_Binary_XCTest_7CFD00CC.a" BlueprintName="_idx_Binary_XCTest_7CFD00CC" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

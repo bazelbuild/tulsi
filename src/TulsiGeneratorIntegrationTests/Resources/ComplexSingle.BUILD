@@ -47,7 +47,6 @@ objc_binary(
         "Binary/AssetsOne.xcassets/another_file.ico",
         "Binary/AssetsTwo.xcassets/png_file.png",
     ],
-    bridging_header = ":BridgingHeaderGenerator",
     bundles = [":ObjCBundle"],
     defines = [
         "A=BINARY_DEFINE",
@@ -322,13 +321,6 @@ filegroup(
         "LibrarySources/srcs/src3.m",
         "LibrarySources/srcs/src4.m",
     ],
-)
-
-genrule(
-    name = "BridgingHeaderGenerator",
-    srcs = ["BridgingHeaderGenerator/srcs/bridging_header.h"],
-    outs = ["BridgingHeaderGenerator/outs/bridging_header.h"],
-    cmd = "cp $< $@",
 )
 
 genrule(

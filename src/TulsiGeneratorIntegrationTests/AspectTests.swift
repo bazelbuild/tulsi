@@ -46,10 +46,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
-        .hasAttribute(.bridging_header,
-                      value: ["is_dir": false,
-                              "path": "tulsi_test/Binary/bridging_header/bridging_header.h",
-                              "src": true])
         .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
         .hasListAttribute(.compiler_defines,
                           containing: ["A_COMMANDLINE_DEFINE",
@@ -63,10 +59,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
         .hasSources(["tulsi_test/Binary/srcs/main.m"])
-        .hasAttribute(.bridging_header,
-                      value: ["is_dir": false,
-                              "path": "tulsi_test/Binary/bridging_header/bridging_header.h",
-                              "src": true])
         .hasAttribute(.datamodels, value: [["is_dir": false,
                                             "path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel",
                                             "src": true],
@@ -124,11 +116,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
-        .hasAttribute(.bridging_header,
-                      value: ["is_dir": false,
-                              "path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "root": "bazel-genfiles",
-                              "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])
@@ -151,11 +138,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
-        .hasAttribute(.bridging_header,
-                      value: ["is_dir": false,
-                              "path": "tulsi_test/BridgingHeaderGenerator/outs/bridging_header.h",
-                              "root": "bazel-genfiles",
-                              "src": false])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
                                          "Binary/includes/second/include"])

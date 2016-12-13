@@ -14,13 +14,10 @@
     "TargetApplication" : [
       "bazel-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
     ],
-    "_idx_Binary_A56A3DAA" : [
+    "_idx_XCTest_Binary_31228BEA" : [
 
     ],
     "_bazel_clean_" : [
-
-    ],
-    "_idx_XCTest_8BB84E40" : [
 
     ]
   },
@@ -30,9 +27,8 @@
     "XCTest.xctest\/**",
     "bazel-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist",
     "bazel-bin\/tulsi_e2e_simple\/TargetApplication-MergedInfo.plist",
-    "lib_idx_Binary_A56A3DAA.a",
     "lib_idx_Library_1A8360DD.a",
-    "lib_idx_XCTest_8BB84E40.a"
+    "lib_idx_XCTest_Binary_31228BEA.a"
   ],
   "intermediateArtifacts" : {
     "XCTest" : [
@@ -57,7 +53,6 @@
     "..\/..\/tulsi_e2e_simple\/BUILD",
     "..\/..\/tulsi_e2e_simple\/Binary\/Assets.xcassets\/**",
     "..\/..\/tulsi_e2e_simple\/Binary\/Base.lproj\/One.storyboard",
-    "..\/..\/tulsi_e2e_simple\/Binary\/bridging_header\/bridging_header.h",
     "..\/..\/tulsi_e2e_simple\/Binary\/srcs\/main.m",
     "..\/..\/tulsi_e2e_simple\/Library\/hdrs\/HdrsHeader.h",
     "..\/..\/tulsi_e2e_simple\/Library\/pch\/PCHFile.pch",
