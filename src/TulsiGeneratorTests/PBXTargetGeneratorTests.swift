@@ -192,7 +192,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTopLevelBuildConfigurations() {
-    targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: nil)
+    targetGenerator.generateTopLevelBuildConfigurations()
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
     XCTAssertEqual(topLevelConfigs.count, 4)
@@ -240,7 +240,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTopLevelBuildConfigurationsWithAnSDKROOT() {
     let projectSDKROOT = "projectSDKROOT"
-    targetGenerator.generateTopLevelBuildConfigurations(projectSDKROOT: projectSDKROOT)
+    targetGenerator.generateTopLevelBuildConfigurations(["SDKROOT": projectSDKROOT])
 
     let topLevelConfigs = project.buildConfigurationList.buildConfigurations
     XCTAssertEqual(topLevelConfigs.count, 4)
@@ -1231,28 +1231,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName, sourceFileNames: sourceFileNames, inTargets: targets)
-  }
-
-  func testGenerateIndexerWithSwiftLanguageVersion() {
-    let buildLabel = BuildLabel("test/app:TestApp")
-    let swiftLanguageVersion = "99"
-    let ruleEntry = makeTestRuleEntry("test/app:TestApp",
-                                      type: "ios_application",
-                                      swiftLanguageVersion: swiftLanguageVersion,
-                                      sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
-
-    targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
-                                                pathFilters: pathFilters)
-    targetGenerator.generateIndexerTargets()
-
-    let targets = project.targetByName
-    XCTAssertEqual(targets.count, 1)
-    validateIndexerTarget(indexerTargetName,
-                          sourceFileNames: sourceFileNames,
-                          swiftLanguageVersion: swiftLanguageVersion,
-                          inTargets: targets)
   }
 
   func testGenerateBUILDRefsWithoutSourceFilter() {

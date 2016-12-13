@@ -232,6 +232,8 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_BWRS)/bazel-bin $(TULSI_BWRS)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -272,7 +274,6 @@
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
-				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
@@ -305,6 +306,8 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_BWRS)/bazel-bin $(TULSI_BWRS)/bazel-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
@@ -346,7 +349,6 @@
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
-				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
@@ -381,6 +383,8 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -444,6 +448,8 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;

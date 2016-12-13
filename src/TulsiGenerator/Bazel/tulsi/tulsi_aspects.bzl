@@ -396,19 +396,22 @@ def _extract_minimum_os_for_platform(ctx, platform):
   # Convert the DottedVersion to a string suitable for inclusion in a struct.
   return str(min_os)
 
+
 def _extract_swift_language_version(ctx):
   """Returns the Swift version set by the xcode_toolchain option for ctx."""
   swift_toolchain = _get_opt_attr(ctx, 'fragments.apple.xcode_toolchain')
   if swift_toolchain == 'com.apple.dt.toolchain.Swift_2_3':
-    return '2.3'
+    return ('2.3', swift_toolchain)
   elif swift_toolchain:
-    return '3.0'
+    # TODO(abaire): Adjust as necessary once versions > 3.0 come out.
+    return ('3.0', swift_toolchain)
 
   # TODO(abaire): Remove the fallback check for swift_library once
   #               xcode_toolchain is available everywhere.
   if ctx.rule.kind == 'swift_library':
-    return '3.0'
-  return None
+    return ('3.0', 'com.apple.dt.toolchain.XcodeDefault')
+
+  return (None, None)
 
 
 def _tulsi_sources_aspect(target, ctx):
@@ -418,11 +421,14 @@ def _tulsi_sources_aspect(target, ctx):
   rule_attr = _get_opt_attr(rule, 'attr')
 
   tulsi_info_files = set()
+  transitive_attributes = dict()
   for attr_name in _TULSI_COMPILE_DEPS:
     deps = _getattr_as_list(rule_attr, attr_name)
     for dep in deps:
       if hasattr(dep, 'tulsi_info_files'):
         tulsi_info_files += dep.tulsi_info_files
+      if hasattr(dep, 'transitive_attributes'):
+        transitive_attributes += dep.transitive_attributes
 
   artifacts = _get_opt_attr(target, 'files')
   if artifacts:
@@ -516,7 +522,16 @@ def _tulsi_sources_aspect(target, ctx):
   if not bundle_id:
     bundle_id = _get_opt_attr(rule_attr, 'app_bundle_id')
 
-  all_attributes = attributes + inheritable_attributes
+  # Build up any local transitive attributes and apply them.
+  swift_language_version, swift_toolchain = _extract_swift_language_version(ctx)
+  if swift_language_version:
+    transitive_attributes['swift_language_version'] = swift_language_version
+    transitive_attributes['has_swift_dependency'] = True
+  if swift_toolchain:
+    transitive_attributes['swift_toolchain'] = swift_toolchain
+    transitive_attributes['has_swift_dependency'] = True
+
+  all_attributes = attributes + inheritable_attributes + transitive_attributes
   info = _struct_omitting_none(
       artifacts=artifacts,
       attr=_struct_omitting_none(**all_attributes),
@@ -543,7 +558,6 @@ def _tulsi_sources_aspect(target, ctx):
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
-      swift_language_version=_extract_swift_language_version(ctx),
       swift_transitive_modules=swift_transitive_modules,
       objc_module_maps=list(objc_module_maps),
       type=target_kind,
@@ -565,6 +579,9 @@ def _tulsi_sources_aspect(target, ctx):
       # The inheritable attributes of this rule, expressed as a dict instead of
       # a struct to allow easy joining.
       inheritable_attributes=inheritable_attributes,
+      # Transitive info that should be applied to every rule that depends on
+      # this rule.
+      transitive_attributes=transitive_attributes,
   )
 
 

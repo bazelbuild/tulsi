@@ -342,7 +342,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String) {
   }
 
-  func generateTopLevelBuildConfigurations(projectSDKROOT _: String?) {
+  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String]) {
   }
 
   func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,

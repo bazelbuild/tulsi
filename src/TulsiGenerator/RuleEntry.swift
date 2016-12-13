@@ -160,9 +160,12 @@ public final class RuleEntry: RuleInfo {
     case datamodels
     case defines
     case enable_modules
+    case has_swift_dependency
     case includes
     case launch_storyboard
     case pch
+    case swift_language_version
+    case swift_toolchain
     // Contains various files that are used as part of the build process but need no special
     // handling in the generated Xcode project. For example, asset_catalog, storyboard, and xibs
     // attributes all end up as supporting_files.
@@ -200,6 +203,10 @@ public final class RuleEntry: RuleInfo {
 
   /// The Swift language version used by this target.
   public let swiftLanguageVersion: String?
+
+  /// The swift toolchain argument used by this target.
+  // TODO(abaire): It is hoped that this may be removed when support for Swift 2.3 is dropped.
+  public let swiftToolchain: String?
 
   /// List containing the transitive swiftmodules on which this rule depends.
   public let swiftTransitiveModules: [BazelFileInfo]
@@ -329,6 +336,7 @@ public final class RuleEntry: RuleInfo {
        buildFilePath: String? = nil,
        generatedIncludePaths: [IncludePath]? = nil,
        swiftLanguageVersion: String? = nil,
+       swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
        implicitIPATarget: BuildLabel? = nil) {
@@ -367,6 +375,7 @@ public final class RuleEntry: RuleInfo {
     self.buildFilePath = buildFilePath
     self.generatedIncludePaths = generatedIncludePaths
     self.swiftLanguageVersion = swiftLanguageVersion
+    self.swiftToolchain = swiftToolchain
     self.swiftTransitiveModules = swiftTransitiveModules
     self.objCModuleMaps = objCModuleMaps
     self.implicitIPATarget = implicitIPATarget
@@ -399,6 +408,7 @@ public final class RuleEntry: RuleInfo {
                    buildFilePath: String? = nil,
                    generatedIncludePaths: [IncludePath]? = nil,
                    swiftLanguageVersion: String? = nil,
+                   swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],
                    implicitIPATarget: BuildLabel? = nil) {
@@ -422,6 +432,7 @@ public final class RuleEntry: RuleInfo {
               buildFilePath: buildFilePath,
               generatedIncludePaths: generatedIncludePaths,
               swiftLanguageVersion: swiftLanguageVersion,
+              swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
               implicitIPATarget: implicitIPATarget)

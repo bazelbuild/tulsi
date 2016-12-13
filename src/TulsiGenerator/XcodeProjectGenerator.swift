@@ -371,8 +371,20 @@ final class XcodeProjectGenerator {
       generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
     }
     profileAction("generating_top_level_build_configs") {
-      let sdkroot = XcodeProjectGenerator.projectSDKROOT(targetRules)
-      generator.generateTopLevelBuildConfigurations(projectSDKROOT: sdkroot)
+      var buildSettings = [String: String]()
+      if let sdkroot = XcodeProjectGenerator.projectSDKROOT(targetRules) {
+        buildSettings = ["SDKROOT": sdkroot]
+      }
+      // Pull in transitive settings from the top level targets.
+      for entry in targetRules {
+        if let swiftVersion = entry.attributes[.swift_language_version] as? String {
+          buildSettings["SWIFT_VERSION"] = swiftVersion
+        }
+        if let swiftToolchain = entry.attributes[.swift_toolchain] as? String {
+          buildSettings["TOOLCHAINS"] = swiftToolchain
+        }
+      }
+      generator.generateTopLevelBuildConfigurations(buildSettings)
     }
 
     var intermediateArtifacts = [String: [String]]()

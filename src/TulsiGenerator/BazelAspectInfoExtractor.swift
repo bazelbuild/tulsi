@@ -320,6 +320,7 @@ final class BazelAspectInfoExtractor {
       }
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
       let swiftLanguageVersion = dict["swift_language_version"] as? String
+      let swiftToolchain = dict["swift_toolchain"] as? String
       let swiftTransitiveModules = MakeBazelFileInfos("swift_transitive_modules")
       let objCModuleMaps = MakeBazelFileInfos("objc_module_maps")
       let extensions: Set<BuildLabel>?
@@ -350,6 +351,7 @@ final class BazelAspectInfoExtractor {
                                 buildFilePath: buildFilePath,
                                 generatedIncludePaths: generatedIncludePaths,
                                 swiftLanguageVersion: swiftLanguageVersion,
+                                swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 objCModuleMaps: objCModuleMaps,
                                 implicitIPATarget: implictIPATarget)

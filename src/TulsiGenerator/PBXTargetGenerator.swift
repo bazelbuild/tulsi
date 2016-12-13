@@ -85,8 +85,8 @@ protocol PBXTargetGeneratorProtocol: class {
   /// variable.
   func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
 
-  /// Generates project-level build configurations, using the given SDKROOT value.
-  func generateTopLevelBuildConfigurations(projectSDKROOT projectSDKROOT: String?)
+  /// Generates project-level build configurations.
+  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String])
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
@@ -214,7 +214,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let includes: [String]
     let generatedIncludes: [String]
     let frameworkSearchPaths: [String]
-    let swiftLanguageVersion: String?
     let swiftIncludePaths: [String]
     let iPhoneOSDeploymentTarget: String?
     let macOSDeploymentTarget: String?
@@ -273,7 +272,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           otherSwiftFlags == other.otherSwiftFlags &&
           frameworkSearchPaths == other.frameworkSearchPaths &&
           includes == other.includes &&
-          swiftLanguageVersion == other.swiftLanguageVersion &&
           swiftIncludePaths == other.swiftIncludePaths &&
           iPhoneOSDeploymentTarget == other.iPhoneOSDeploymentTarget &&
           macOSDeploymentTarget == other.macOSDeploymentTarget &&
@@ -301,7 +299,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          includes: includes,
                          generatedIncludes: newGeneratedIncludes,
                          frameworkSearchPaths: frameworkSearchPaths,
-                         swiftLanguageVersion: swiftLanguageVersion,
                          swiftIncludePaths: swiftIncludePaths,
                          iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                          macOSDeploymentTarget: macOSDeploymentTarget,
@@ -623,7 +620,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       includes: resolvedIncludes,
                                       generatedIncludes: generatedIncludes.array as! [String],
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
-                                      swiftLanguageVersion: ruleEntry.swiftLanguageVersion,
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
                                       iPhoneOSDeploymentTarget: ruleEntry.iPhoneOSDeploymentTarget,
                                       macOSDeploymentTarget: ruleEntry.macOSDeploymentTarget,
@@ -716,11 +712,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  func generateTopLevelBuildConfigurations(projectSDKROOT projectSDKROOT: String?) {
+  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String] = [:]) {
     var buildSettings = options.commonBuildSettings()
 
-    if let projectSDKROOT = projectSDKROOT {
-      buildSettings["SDKROOT"] = projectSDKROOT
+    for (key, value) in buildSettingOverrides {
+      buildSettings[key] = value
     }
 
     buildSettings["ONLY_ACTIVE_ARCH"] = "YES"
@@ -1057,10 +1053,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + data.frameworkSearchPaths.joinWithSeparator(" ")
     }
 
-    if let swiftVersion = data.swiftLanguageVersion {
-      buildSettings["SWIFT_VERSION"] = swiftVersion
-    }
-
     if !data.swiftIncludePaths.isEmpty {
       let paths = data.swiftIncludePaths.joinWithSeparator(" ")
       buildSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) \(paths)"
@@ -1354,7 +1346,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are
     // necessary for debugging Swift targets in Xcode 8; at some point this should be able to be
     // removed, but requires changes to LLDB.
-    let dSYMEnabled = hasSwiftDependencies(entry, ruleEntryMap: ruleEntryMap)
+    let dSYMEnabled = entry.attributes[.has_swift_dependency] as? Bool ?? false
     buildSettings["TULSI_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
     let intermediateArtifacts: [String]
     if !dSYMEnabled {
@@ -1431,38 +1423,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     return (target, intermediateArtifacts)
-  }
-
-  private func hasSwiftDependencies(entry: RuleEntry,
-                                    ruleEntryMap: [BuildLabel: RuleEntry]) -> Bool {
-    var processedEntries = [String: Bool]()
-
-    func _hasSwiftDependencies(entry: RuleEntry) -> Bool {
-      if entry.type == "swift_library" {
-        return true
-      }
-      for dep in entry.dependencies {
-        if let val = processedEntries[dep] {
-          if val {
-            return true
-          }
-          continue
-        }
-
-        guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else {
-          processedEntries[dep] = false
-          continue
-        }
-
-        let depHasSwift = _hasSwiftDependencies(dependentEntry)
-        processedEntries[dep] = depHasSwift
-        if depHasSwift {
-          return true
-        }
-      }
-      return false
-    }
-    return _hasSwiftDependencies(entry)
   }
 
   private func createBuildPhaseForRuleEntry(entry: RuleEntry) -> PBXShellScriptBuildPhase? {
