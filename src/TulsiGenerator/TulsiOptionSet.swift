@@ -257,6 +257,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])

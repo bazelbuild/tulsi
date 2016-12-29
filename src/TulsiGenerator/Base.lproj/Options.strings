@@ -22,8 +22,6 @@
 
 "BazelContinueBuildingAfterError" = "Continue building after error";
 
-"CODE_SIGN_IDENTITY" = "Code signing identity";
-
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 
