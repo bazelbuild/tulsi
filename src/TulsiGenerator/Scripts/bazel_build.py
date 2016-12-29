@@ -888,10 +888,13 @@ class BazelBuildBridge(object):
 
   def _InstallDSYMBundles(self, output_dir):
     """Copies any generated dSYM bundles to the given directory."""
-    # TODO(abaire): Support mapping the dSYM generated for an obc_binary.
+    # TODO(abaire): Support mapping the dSYM generated for an objc_binary.
     # ios_application's will have a dSYM generated with the linked obj_binary's
     # filename, so the target_dsym will never actually match.
     target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME')
+    # TODO(b/33945592): This is a workaround for the bug in Bazel which leads to
+    # incorrectly named dSYM bundles from extension targets.
+    target_dsym = target_dsym.replace('.appex', '.app')
     if not target_dsym:
       return 0, None
     output_full_path = os.path.join(output_dir, target_dsym)
