@@ -120,7 +120,6 @@ class _OptionsParser(object):
     self.install_generated_artifacts = False
     self.bazel_bin_path = 'bazel-bin'
     self.bazel_executable = None
-    self.patch_lldb_cwd = False
 
   @staticmethod
   def _UsageMessage():
@@ -144,10 +143,6 @@ class _OptionsParser(object):
 
         --bazel_bin_path <path>
             Path at which Bazel-generated artifacts may be retrieved.
-
-        --patch_lldb_cwd
-            Makes LLDB change its CWD to Bazel workspace directory. Necessary
-            for Swift debugging.
       """ % sys.argv[0])
 
     usage += '\n' + textwrap.fill(
@@ -273,9 +268,6 @@ class _OptionsParser(object):
         self.bazel_bin_path = args[0]
         args = args[1:]
 
-      elif arg == '--patch_lldb_cwd':
-        self.patch_lldb_cwd = True
-
       elif arg == '--verbose':
         self.verbose += 1
 
@@ -380,7 +372,6 @@ class BazelBuildBridge(object):
     self.bazel_genfiles_path = None
     self.bazel_symlink_prefix = None
     self.signing_identities = {}
-    self.patch_lldb_cwd = False
 
     # Certain potentially expensive patchups need to be made for non-Xcode IDE
     # integrations. There isn't a fool-proof way of determining if the script is
@@ -468,7 +459,6 @@ class BazelBuildBridge(object):
       return exit_code
 
     self.verbose = parser.verbose
-    self.patch_lldb_cwd = parser.patch_lldb_cwd
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
     # bazel_bin_path is assumed to always end in "-bin".
     self.bazel_symlink_prefix = self.bazel_bin_path[:-3]
@@ -1094,13 +1084,6 @@ class BazelBuildBridge(object):
       source_maps.sort(reverse=True)
 
       out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
-
-      if self.patch_lldb_cwd:
-        out.write('\n# Make LLDB step into Bazel root directory.\n')
-        out.write('command alias tulsi_pwd script print os.getcwd()\n')
-        out.write('command regex tulsi_cd '
-                  '"s/^(.*)$/script os.chdir(os.path.expanduser(\'%1\'))/"\n')
-        out.write('tulsi_cd %s\n' % self.workspace_root)
 
     return 0
 

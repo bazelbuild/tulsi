@@ -30,9 +30,6 @@ public enum TulsiOptionKey: String {
       SuppressSwiftUpdateCheck,
       // The path from a config file to its associated workspace root.
       WorkspaceRootPath,
-      // Whether to patch LLDB CWD
-      // TODO(dmishe): Remove this option once it is enabled by default.
-      PatchLLDBWorkingDirectory,
 
       // Commandline Arguments used by the run phase of the generated scheme.
       CommandlineArguments,
@@ -254,7 +251,6 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
-    addBoolOption(.PatchLLDBWorkingDirectory, .Generic, false)
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
