@@ -699,7 +699,7 @@ class BazelBuildBridge(object):
     self.bazel_product_name = os.path.splitext(
         os.path.basename(self.bazel_outputs[0]))[0]
 
-    if primary_artifact.endswith('.ipa'):
+    if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
       exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path)
       if exit_code:
         return exit_code
@@ -756,19 +756,30 @@ class BazelBuildBridge(object):
       self._PrintError('Generated IPA not found at "%s"' % ipa_path)
       return 670
 
+    # We need to handle IPAs (from the native rules) differently from ZIPs
+    # (from the Skylark rules) because they output slightly different directory
+    # structures.
+    is_ipa = ipa_path.endswith('.ipa')
+
     # Tulsi expects the bundle within the IPA to be the product name with the
     # suffix expected by Xcode attached to it.
     expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
 
     # The directory structure within the IPA is then determined based on Bazel's
     # package and/or product type.
-    if (self.package_type == 'com.apple.package-type.app-extension' or
-        self.product_type == 'com.apple.product-type.application.watchapp'):
-      expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
-    elif self.product_type == 'com.apple.product-type.application.watchapp2':
-      expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
+    if is_ipa:
+      if (self.package_type == 'com.apple.package-type.app-extension' or
+          self.product_type == 'com.apple.product-type.application.watchapp'):
+        expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
+      elif self.product_type == 'com.apple.product-type.application.watchapp2':
+        expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
+      else:
+        expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
     else:
-      expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
+      # If the artifact is a ZIP, assume that the bundle is the top-level
+      # directory (this is the way in which Skylark rules package artifacts
+      # that are not standalone IPAs).
+      expected_ipa_subpath = expected_bundle_name
 
     with zipfile.ZipFile(ipa_path, 'r') as zf:
       for item in zf.infolist():
@@ -794,8 +805,12 @@ class BazelBuildBridge(object):
 
         dir_components = self._SplitPathComponents(filename)
 
-        # Get the file's path, ignoring the payload components.
-        subpath = os.path.join(*dir_components[2:])
+        # Get the file's path, ignoring the payload components if the archive
+        # is an IPA.
+        if is_ipa:
+          subpath = os.path.join(*dir_components[2:])
+        else:
+          subpath = os.path.join(*dir_components[1:])
         target_path = os.path.join(output_path, subpath)
 
         # Ensure the target directory exists.
