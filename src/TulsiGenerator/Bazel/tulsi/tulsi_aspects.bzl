@@ -114,7 +114,7 @@ def _convert_outpath_to_symlink_path(path):
   if (len(components) > 2 and
       first_dash >= 0 and
       first_dash < len(components[0])):
-    return path[:first_dash + 1] + '/'.join(components[2:])
+    return 'tulsi-' + '/'.join(components[2:])
   return path
 
 

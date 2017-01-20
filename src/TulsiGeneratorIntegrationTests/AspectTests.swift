@@ -135,7 +135,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:NonPropagatedLibrary")
         .dependsOn("//tulsi_test:ObjCBundle")
         .hasSources(["tulsi_test/Binary/srcs/main.m",
-                     "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
+                     "tulsi-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
         .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
@@ -168,7 +168,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "root": "bazel-genfiles",
+                               "root": "tulsi-genfiles",
                                "src": false],
                               ["is_dir": false,
                                "path": "tulsi_test/Binary/AssetsOne.xcassets",
@@ -206,7 +206,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                         "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
-                                    "root": "bazel-genfiles",
+                                    "root": "tulsi-genfiles",
                                     "src": false])
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false, "path": "tulsi_test/Library/xib.xib", "src": true]])
@@ -329,8 +329,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .exists()
 
     checker.assertThat("//tulsi_test:ObjCProtoLibrary")
-        .containsNonARCSources(["bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
-                                "bazel-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
+        .containsNonARCSources(["tulsi-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.m",
+                                "tulsi-bin/tulsi_test/_generated_protos/ObjCProtoLibrary/tulsi_test/Protolibrary.pb.h"])
 
     checker.assertThat("//tulsi_test:ProtoLibrary")
         .hasSources(["tulsi_test/protolibrary.proto"])

@@ -118,7 +118,7 @@ class _OptionsParser(object):
 
     self.verbose = 0
     self.install_generated_artifacts = False
-    self.bazel_bin_path = 'bazel-bin'
+    self.bazel_bin_path = 'tulsi-bin'
     self.bazel_executable = None
 
   @staticmethod
@@ -560,6 +560,9 @@ class BazelBuildBridge(object):
     bazel_command.extend(options.GetStartupOptions(configuration))
     bazel_command.append('build')
     bazel_command.extend(options.GetBuildOptions(configuration))
+
+    bazel_command.extend(
+        ['--symlink_prefix', os.path.basename(self.bazel_symlink_prefix)])
 
     if self.code_coverage_enabled:
       self._PrintVerbose('Enabling code coverage information.')

@@ -66,7 +66,7 @@ class BazelWorkspacePathInfoFetcher {
 
   /// Returns the bazel-bin path for this workspace, blocking until the fetch is completed.
   func getBazelBinPath() -> String {
-    let bazelBin = "bazel-bin"
+    let bazelBin = "tulsi-bin"
     if let parentPathOverride = getBazelSymlinkParentPathOverride() {
       return (parentPathOverride as NSString).stringByAppendingPathComponent(bazelBin)
     }
