@@ -5,35 +5,35 @@
 
     ],
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuiteXCTest" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/TestSuiteXCTest.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/TestSuiteXCTest.ipa"
     ],
     "_bazel_clean_" : [
 
     ],
     "TestSuiteNonXCTest" : [
-      "bazel-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
+      "tulsi-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
     ]
   },
   "artifacts" : [
     "TestApplication.app\/**",
     "TestSuiteNonXCTest.app\/**",
     "TestSuiteXCTest.xctest\/**",
-    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
-    "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a"
+    "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a",
+    "tulsi-bin\/TestSuite\/TestApplication-MergedInfo.plist"
   ],
   "intermediateArtifacts" : {
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin"
     ],
     "TestSuiteXCTest" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuiteNonXCTest" : [
 

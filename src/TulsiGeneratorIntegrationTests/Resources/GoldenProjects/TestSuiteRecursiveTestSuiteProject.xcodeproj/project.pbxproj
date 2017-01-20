@@ -52,10 +52,10 @@
 			children = (
 				43D68C285A2F8B6E00000000 /* TestApplication.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
-				966FB6DE7399E4B800000000 /* bazel-bin */,
 				43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */,
 				43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */,
 				43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */,
+				966FB6DEB50E950200000000 /* tulsi-bin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,12 +97,12 @@
 			path = Three;
 			sourceTree = "<group>";
 		};
-		966FB6DE7399E4B800000000 /* bazel-bin */ = {
+		966FB6DEB50E950200000000 /* tulsi-bin */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2FAB912400000000 /* TestSuite */,
 			);
-			path = "bazel-bin";
+			path = "tulsi-bin";
 			sourceTree = "<group>";
 		};
 		966FB6DEB6031FE700000000 /* mainGroup */ = {
@@ -136,7 +136,7 @@
 /* Begin PBXLegacyTarget section */
 		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"tulsi-bin\"";
 			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
@@ -155,7 +155,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558395C0260B00000000 /* Build configuration list for PBXNativeTarget "TestSuiteXCTest" */;
 			buildPhases = (
-				84B422712955584100000000 /* ShellScript */,
+				84B42271291E676C00000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -173,7 +173,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583CC86731D00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_2" */;
 			buildPhases = (
-				84B42271AFD3E80900000000 /* ShellScript */,
+				84B422711188156E00000000 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
@@ -191,7 +191,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755838C86721A00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_1" */;
 			buildPhases = (
-				84B42271AFD3E80900000001 /* ShellScript */,
+				84B422711188156E00000001 /* ShellScript */,
 				605793E20000000000000002 /* Sources */,
 			);
 			buildRules = (
@@ -225,7 +225,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558305B5AF7800000000 /* Build configuration list for PBXNativeTarget "TestApplication" */;
 			buildPhases = (
-				84B422712955584100000001 /* ShellScript */,
+				84B42271291E676C00000001 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -277,7 +277,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B422712955584100000000 /* ShellScript */ = {
+		84B422711188156E00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -288,10 +288,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_2 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422712955584100000001 /* ShellScript */ = {
+		84B422711188156E00000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -302,10 +302,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_1 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271AFD3E80900000000 /* ShellScript */ = {
+		84B42271291E676C00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -316,10 +316,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_2 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestSuiteXCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271AFD3E80900000001 /* ShellScript */ = {
+		84B42271291E676C00000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -330,7 +330,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:tagged_xctest_1 --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -389,7 +389,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestSuiteXCTest.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -417,7 +417,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
@@ -439,7 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_2.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -465,7 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_1.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -510,10 +510,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/tulsi-bin $(TULSI_WR)/tulsi-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-WORKSPACENAME";
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -538,7 +538,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestSuiteXCTest.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -566,7 +566,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
@@ -588,7 +588,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_2.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -614,7 +614,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_1.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -659,10 +659,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/tulsi-bin $(TULSI_WR)/tulsi-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-WORKSPACENAME";
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -688,7 +688,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestSuiteXCTest.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -720,7 +720,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
@@ -747,7 +747,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_2.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -777,7 +777,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_1.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -831,7 +831,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-WORKSPACENAME";
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -841,7 +841,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestSuiteXCTest.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestSuiteXCTest.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_IPA = TestSuite/TestSuiteXCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -873,7 +873,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
@@ -900,7 +900,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_2.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_2.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_2";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_2.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -930,7 +930,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "bazel-bin/TestSuite/Three/tagged_xctest_1.ipa\nbazel-bin/TestSuite/TestApplication.ipa";
+				BAZEL_OUTPUTS = "tulsi-bin/TestSuite/Three/tagged_xctest_1.ipa\ntulsi-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:tagged_xctest_1";
 				BAZEL_TARGET_IPA = TestSuite/Three/tagged_xctest_1.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
@@ -984,7 +984,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/bazel-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-WORKSPACENAME";
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";

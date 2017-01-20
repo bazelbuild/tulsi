@@ -24,7 +24,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   var invalidLabels = Set<BuildLabel>()
 
   var bazelURL = NSURL()
-  var bazelBinPath = "bazel-bin"
+  var bazelBinPath = "tulsi-bin"
 
   func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
     return []

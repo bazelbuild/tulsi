@@ -2,19 +2,19 @@
   "manifestVersion" : 3,
   "targets" : {
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuite-Three-XCTest" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/Three\/XCTest.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/Three\/XCTest.ipa"
     ],
     "TestSuite-Two-XCTest" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/Two\/XCTest.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/Two\/XCTest.ipa"
     ],
     "TestSuite-One-XCTest" : [
-      "bazel-bin\/TestSuite\/One\/XCTest.ipa",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/One\/XCTest.ipa",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "_bazel_clean_" : [
 
@@ -28,28 +28,28 @@
     "TestSuite-One-XCTest.xctest\/**",
     "TestSuite-Three-XCTest.xctest\/**",
     "TestSuite-Two-XCTest.xctest\/**",
-    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
-    "lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a"
+    "lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a",
+    "tulsi-bin\/TestSuite\/TestApplication-MergedInfo.plist"
   ],
   "intermediateArtifacts" : {
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin"
     ],
     "TestSuite-Three-XCTest" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuite-Two-XCTest" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuite-One-XCTest" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ]
   },
   "fileReferences" : [

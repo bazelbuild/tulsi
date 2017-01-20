@@ -2,15 +2,15 @@
   "manifestVersion" : 3,
   "targets" : {
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuiteXCTest" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/TestSuiteXCTest.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/TestSuiteXCTest.ipa"
     ],
     "tagged_xctest_2" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/Three\/tagged_xctest_2.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/Three\/tagged_xctest_2.ipa"
     ],
     "_bazel_clean_" : [
 
@@ -19,37 +19,37 @@
 
     ],
     "tagged_xctest_1" : [
-      "bazel-bin\/TestSuite\/TestApplication.ipa",
-      "bazel-bin\/TestSuite\/Three\/tagged_xctest_1.ipa"
+      "tulsi-bin\/TestSuite\/TestApplication.ipa",
+      "tulsi-bin\/TestSuite\/Three\/tagged_xctest_1.ipa"
     ]
   },
   "artifacts" : [
     "TestApplication.app\/**",
     "TestSuiteXCTest.xctest\/**",
-    "bazel-bin\/TestSuite\/TestApplication-MergedInfo.plist",
     "lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a",
     "tagged_xctest_1.xctest\/**",
-    "tagged_xctest_2.xctest\/**"
+    "tagged_xctest_2.xctest\/**",
+    "tulsi-bin\/TestSuite\/TestApplication-MergedInfo.plist"
   ],
   "intermediateArtifacts" : {
     "TestApplication" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin"
     ],
     "TestSuiteXCTest" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "tagged_xctest_2" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ],
     "tagged_xctest_1" : [
-      "bazel-bin\/TestSuite\/Binary.ipa",
-      "bazel-bin\/TestSuite\/Binary_bin",
-      "bazel-bin\/TestSuite\/TestApplication.ipa"
+      "tulsi-bin\/TestSuite\/Binary.ipa",
+      "tulsi-bin\/TestSuite\/Binary_bin",
+      "tulsi-bin\/TestSuite\/TestApplication.ipa"
     ]
   },
   "fileReferences" : [

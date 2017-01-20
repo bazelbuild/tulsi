@@ -22,7 +22,7 @@ class BazelWorkspacePathInfoFetcher {
   /// The Bazel execution_root as defined by the target workspace.
   private var executionRoot: String? = nil
 
-  /// Optional path to the directory in which bazel-* symlinks will be created.
+  /// Optional path to the directory in which tulsi-* symlinks will be created.
   private var bazelSymlinkParentPathOverride: String? = nil
 
   /// The location of the bazel binary.
@@ -64,7 +64,7 @@ class BazelWorkspacePathInfoFetcher {
     return bazelSymlinkParentPathOverride
   }
 
-  /// Returns the bazel-bin path for this workspace, blocking until the fetch is completed.
+  /// Returns the tulsi-bin path for this workspace, blocking until the fetch is completed.
   func getBazelBinPath() -> String {
     let bazelBin = "tulsi-bin"
     if let parentPathOverride = getBazelSymlinkParentPathOverride() {

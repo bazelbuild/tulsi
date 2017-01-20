@@ -8,13 +8,13 @@
 
     ],
     "Application" : [
-      "bazel-bin\/tulsi_e2e_swift\/Application.ipa"
+      "tulsi-bin\/tulsi_e2e_swift\/Application.ipa"
     ]
   },
   "artifacts" : [
     "Application.app\/**",
     "_idx_SwiftLibrary_EA7FC891.framework\/**",
-    "bazel-bin\/tulsi_e2e_swift\/Application-MergedInfo.plist"
+    "tulsi-bin\/tulsi_e2e_swift\/Application-MergedInfo.plist"
   ],
   "intermediateArtifacts" : {
     "Application" : [
