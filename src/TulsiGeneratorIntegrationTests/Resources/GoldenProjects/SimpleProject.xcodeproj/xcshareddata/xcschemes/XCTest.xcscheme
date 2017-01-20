@@ -24,7 +24,9 @@
         <CommandLineArguments>
             <CommandLineArgument isEnabled="YES" argument="--project-flag"></CommandLineArgument>
         </CommandLineArguments>
-        <EnvironmentVariables></EnvironmentVariables>
+        <EnvironmentVariables>
+            <EnvironmentVariable isEnabled="YES" key="projectKey" value="projectValue"></EnvironmentVariable>
+        </EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

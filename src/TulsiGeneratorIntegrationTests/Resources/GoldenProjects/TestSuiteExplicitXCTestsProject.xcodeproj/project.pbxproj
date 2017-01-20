@@ -300,7 +300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B4227195E0967A00000000 /* ShellScript */ = {
@@ -314,7 +314,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271D25C81C100000000 /* ShellScript */ = {
@@ -328,7 +328,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271D25C81C100000001 /* ShellScript */ = {
@@ -342,7 +342,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */

@@ -373,7 +373,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271BD40BA1300000000 /* ShellScript */ = {
@@ -387,7 +387,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:TargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:TargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271FE66E53F00000000 /* ShellScript */ = {
@@ -401,7 +401,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
