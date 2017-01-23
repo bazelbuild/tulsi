@@ -65,6 +65,7 @@ class _OptionsParser(object):
         list,
         {
             _OptionsParser.ALL_CONFIGS: [
+                '--experimental_enable_objc_cc_deps',
                 '--verbose_failures',
                 '--announce_rc',
             ],
@@ -110,11 +111,6 @@ class _OptionsParser(object):
         config_platform = 'ios'
       self.build_options[_OptionsParser.ALL_CONFIGS].append(
           '--config=%s_%s' % (config_platform, arch))
-
-      # experimental_enable_objc_cc_deps only applies to ios_multi_cpus.
-      if config_platform == 'ios':
-        self.build_options[_OptionsParser.ALL_CONFIGS].append(
-            '--experimental_enable_objc_cc_deps')
 
     self.verbose = 0
     self.install_generated_artifacts = False
