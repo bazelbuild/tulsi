@@ -690,7 +690,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558360BC810A00000000 /* Build configuration list for PBXNativeTarget "Watch2Extension" */;
 			buildPhases = (
-				84B422710229AD6B00000000 /* ShellScript */,
+				84B422715826EB1400000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -706,7 +706,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */;
 			buildPhases = (
-				84B4227118F4BD6D00000000 /* ShellScript */,
+				84B42271D9B5BE3A00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -754,7 +754,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				84B422713243231100000000 /* ShellScript */,
+				84B42271CAADB7DA00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -884,7 +884,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755830DB9CDD900000000 /* Build configuration list for PBXNativeTarget "WatchExtension" */;
 			buildPhases = (
-				84B4227118F4BD6D00000001 /* ShellScript */,
+				84B42271D9B5BE3A00000001 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -916,7 +916,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				84B422713FA750BC00000000 /* ShellScript */,
+				84B422714B465E9F00000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -974,7 +974,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B422710229AD6B00000000 /* ShellScript */ = {
+		84B422714B465E9F00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -985,10 +985,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Watch2Extension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B4227118F4BD6D00000000 /* ShellScript */ = {
+		84B422715826EB1400000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -999,10 +999,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Watch2Extension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B4227118F4BD6D00000001 /* ShellScript */ = {
+		84B42271CAADB7DA00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -1013,10 +1013,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:WatchExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422713243231100000000 /* ShellScript */ = {
+		84B42271D9B5BE3A00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -1027,10 +1027,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422713FA750BC00000000 /* ShellScript */ = {
+		84B42271D9B5BE3A00000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -1041,7 +1041,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:WatchExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1186,7 +1186,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -1210,7 +1210,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -1266,7 +1266,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -1290,7 +1290,7 @@
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -1316,7 +1316,7 @@
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -1332,7 +1332,7 @@
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_XCTest_7CFD00CC;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1349,7 +1349,7 @@
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1365,7 +1365,7 @@
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1381,7 +1381,7 @@
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1398,7 +1398,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1413,7 +1413,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1428,7 +1428,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1443,7 +1443,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1494,7 +1494,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -1518,7 +1518,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -1575,7 +1575,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -1599,7 +1599,7 @@
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -1625,7 +1625,7 @@
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -1641,7 +1641,7 @@
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DA=BINARY_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Binary_XCTest_7CFD00CC;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1658,7 +1658,7 @@
 				OTHER_CFLAGS = "-D'LIBRARY SECOND DEFINE'=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=\"Value with spaces\" -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1674,7 +1674,7 @@
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithDefines_SubLibraryWithIdenticalDefines_EC7E0D8E;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1690,7 +1690,7 @@
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1707,7 +1707,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1722,7 +1722,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1737,7 +1737,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_TodayExtensionBinary_999643E7;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1752,7 +1752,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				PRODUCT_NAME = _idx_WatchExtensionBinary_020F3F9D;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -1807,7 +1807,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1836,7 +1836,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1899,7 +1899,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1928,7 +1928,7 @@
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1959,7 +1959,7 @@
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -2021,7 +2021,7 @@
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -2050,7 +2050,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -2114,7 +2114,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -2143,7 +2143,7 @@
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -2174,7 +2174,7 @@
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;

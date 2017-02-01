@@ -167,7 +167,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558391D6432200000000 /* Build configuration list for PBXNativeTarget "TestSuite-One-XCTest" */;
 			buildPhases = (
-				84B422712CA8D7A600000001 /* ShellScript */,
+				84B422711EE7A7DB00000001 /* ShellScript */,
 				605793E20000000000000002 /* Sources */,
 			);
 			buildRules = (
@@ -185,7 +185,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755834E80A3C200000000 /* Build configuration list for PBXNativeTarget "TestSuite-Three-XCTest" */;
 			buildPhases = (
-				84B42271A6B769DB00000000 /* ShellScript */,
+				84B42271A6C57ED800000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -219,7 +219,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755831AEA36FA00000000 /* Build configuration list for PBXNativeTarget "TestSuite-Two-XCTest" */;
 			buildPhases = (
-				84B422712CA8D7A600000000 /* ShellScript */,
+				84B422711EE7A7DB00000000 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
@@ -237,7 +237,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558305B5AF7800000000 /* Build configuration list for PBXNativeTarget "TestApplication" */;
 			buildPhases = (
-				84B42271291E676C00000000 /* ShellScript */,
+				84B422712C1039DD00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -289,7 +289,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271291E676C00000000 /* ShellScript */ = {
+		84B422711EE7A7DB00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -300,10 +300,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422712CA8D7A600000000 /* ShellScript */ = {
+		84B422711EE7A7DB00000001 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -314,10 +314,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Two:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B422712CA8D7A600000001 /* ShellScript */ = {
+		84B422712C1039DD00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -328,10 +328,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/One:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite:TestApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271A6B769DB00000000 /* ShellScript */ = {
+		84B42271A6C57ED800000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -342,7 +342,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //TestSuite/Three:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"tulsi-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -418,7 +418,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -442,7 +442,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -468,7 +468,7 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -494,7 +494,7 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
@@ -540,7 +540,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_XCTest_Binary_XCTest_XCTest_B9D951D7;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -567,7 +567,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -591,7 +591,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -617,7 +617,7 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -643,7 +643,7 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
@@ -690,7 +690,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_XCTest_Binary_XCTest_XCTest_B9D951D7;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -721,7 +721,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -750,7 +750,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -780,7 +780,7 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -810,7 +810,7 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -874,7 +874,7 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -903,7 +903,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -933,7 +933,7 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
@@ -963,7 +963,7 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = __TulsiTestRunner_Release;
