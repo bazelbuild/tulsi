@@ -68,6 +68,7 @@ _IPA_GENERATING_RULES = set([
     'ios_extension',
     'ios_test',
     'objc_binary',
+    'tvos_application',
     '_ios_application',
     '_tvos_application',
 ])
@@ -77,6 +78,7 @@ _MERGEDINFOPLIST_GENERATING_RULES = set([
     'apple_watch1_extension',
     'apple_watch2_extension',
     'ios_application',
+    'tvos_application',
     '_ios_application',
     '_tvos_application',
 ])

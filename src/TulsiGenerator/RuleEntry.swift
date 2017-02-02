@@ -135,6 +135,8 @@ public final class RuleEntry: RuleInfo {
       "objc_binary": PBXTarget.ProductType.Application,
       "objc_library": PBXTarget.ProductType.StaticLibrary,
       "swift_library": PBXTarget.ProductType.StaticLibrary,
+      "tvos_application": PBXTarget.ProductType.Application,
+      "tvos_extension": PBXTarget.ProductType.TVAppExtension,
 
       // Support new rules that have underscore-prefixed names because they are wrapped by macros.
       "_ios_application": PBXTarget.ProductType.Application,

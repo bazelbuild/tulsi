@@ -33,6 +33,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
       "ios_test",
       "swift_library",
       "test_suite",
+      "tvos_application",
       "_ios_application",
       "_tvos_application",
   ]
