@@ -1311,6 +1311,67 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                           inTargets: targets)
   }
 
+  func testIndexerCharacterLimit() {
+    let sourceFiles1 = ["1.swift", "1.cc"]
+    let buildTargetName1 = String(count: 300, repeatedValue: Character("A"))
+    let buildLabel1 = BuildLabel("test/app:" + buildTargetName1)
+    let ruleEntry1 = makeTestRuleEntry(buildLabel1,
+                                       type: "ios_binary",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFiles1)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    let resultingTarget = targets.values.first!
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
+
+    validateIndexerTarget(resultingTarget.name,
+                          sourceFileNames: sourceFiles1,
+                          pchFile: pchFile,
+                          inTargets: targets)
+  }
+
+  func testCompatibleIndexersMergeCharacterLimit() {
+    let sourceFiles1 = ["1.swift", "1.cc"]
+    let buildTargetName1 = String(count: 200, repeatedValue: Character("A"))
+    let buildLabel1 = BuildLabel("test/app:" + buildTargetName1)
+    let ruleEntry1 = makeTestRuleEntry(buildLabel1,
+                                       type: "ios_binary",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFiles1)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+
+    let sourceFiles2 = ["2.swift"]
+    let buildTargetName2 = String(count: 200, repeatedValue: Character("B"))
+    let buildLabel2 = BuildLabel("test/app:" + buildTargetName2)
+    let ruleEntry2 = makeTestRuleEntry(buildLabel2,
+                                       type: "objc_library",
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       sourceFiles: sourceFiles2)
+    targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
+                                                ruleEntryMap: [:],
+                                                pathFilters: pathFilters)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    let resultingTarget = targets.values.first!
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
+
+    validateIndexerTarget(resultingTarget.name,
+                          sourceFileNames: sourceFiles1 + sourceFiles2,
+                          pchFile: pchFile,
+                          inTargets: targets)
+  }
+
   func testDoesNotMergeIndexerWithPCHMismatch() {
     let buildLabel1 = BuildLabel("test/app:TestBinary")
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
