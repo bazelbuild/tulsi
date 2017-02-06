@@ -9,6 +9,16 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6FB1188CA00000000" BuildableIdentifier="primary" BuildableName="lib_idx_XCTest_Binary_31228BEA.a" BlueprintName="_idx_XCTest_Binary_31228BEA" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a build pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a build post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables>
@@ -16,6 +26,16 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </TestableReference>
         </Testables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a test pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a test post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
@@ -27,6 +47,16 @@
         <EnvironmentVariables>
             <EnvironmentVariable isEnabled="YES" key="projectKey" value="projectValue"></EnvironmentVariable>
         </EnvironmentVariables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a lauch pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a launch post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" BuildableIdentifier="primary" BuildableName="XCTest.xctest" BlueprintName="XCTest" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

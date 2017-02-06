@@ -14,6 +14,11 @@
 
 import Foundation
 
+public enum XcodeActionType: String {
+    case BuildAction,
+         LaunchAction,
+         TestAction
+}
 
 /// Models an xcscheme file, providing information to Xcode on how to build targets.
 final class XcodeScheme {
@@ -49,6 +54,8 @@ final class XcodeScheme {
   let primaryTargetBuildableReference: BuildableReference
   let commandlineArguments: [String]
   let environmentVariables: [String: String]
+  let preActionScripts: [XcodeActionType: String]
+  let postActionScripts: [XcodeActionType: String]
 
   init(target: PBXTarget,
        project: PBXProject,
@@ -65,7 +72,9 @@ final class XcodeScheme {
        explicitTests: [PBXTarget]? = nil,
        additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]? = nil,
        commandlineArguments: [String] = [],
-       environmentVariables: [String: String] = [:]) {
+       environmentVariables: [String: String] = [:],
+       preActionScripts: [XcodeActionType: String],
+       postActionScripts: [XcodeActionType: String]) {
     self.version = version
     self.target = target
     self.project = project
@@ -83,6 +92,9 @@ final class XcodeScheme {
 
     self.commandlineArguments = commandlineArguments
     self.environmentVariables = environmentVariables
+
+    self.preActionScripts = preActionScripts
+    self.postActionScripts = postActionScripts
 
     primaryTargetBuildableReference = BuildableReference(target: target,
                                                          projectBundleName: projectBundleName)
@@ -147,7 +159,12 @@ final class XcodeScheme {
     }
 
     element.addChild(buildActionEntries)
-
+    if let preActionScript = preActionScripts[XcodeActionType.BuildAction] {
+        element.addChild(preActionElement(preActionScript))
+    }
+    if let postActionScript = postActionScripts[XcodeActionType.BuildAction] {
+        element.addChild(postActionElement(postActionScript))
+    }
     return element
   }
 
@@ -193,6 +210,12 @@ final class XcodeScheme {
     }
 
     element.addChild(testables)
+    if let preActionScript = preActionScripts[XcodeActionType.TestAction] {
+      element.addChild(preActionElement(preActionScript))
+    }
+    if let postActionScript = postActionScripts[XcodeActionType.TestAction] {
+        element.addChild(postActionElement(postActionScript))
+    }
 
     // Test hosts must be emitted as buildableProductRunnables to ensure that Xcode attempts to run
     // the test host binary.
@@ -229,6 +252,12 @@ final class XcodeScheme {
       element.addChild(commandlineArgumentsElement(self.commandlineArguments))
     }
     element.addChild(environmentVariablesElement(self.environmentVariables))
+    if let preActionScript = preActionScripts[XcodeActionType.LaunchAction] {
+        element.addChild(preActionElement(preActionScript))
+    }
+    if let postActionScript = postActionScripts[XcodeActionType.LaunchAction] {
+        element.addChild(postActionElement(postActionScript))
+    }
     if launchStyle != .AppExtension {
       element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
@@ -330,6 +359,36 @@ final class XcodeScheme {
       ])
       element.addChild(environmentVariable)
     }
+    return element
+  }
+
+  /// Generates a PreAction element based on run script.
+  private func preActionElement(script: String) -> NSXMLElement {
+    let element = NSXMLElement(name:"PreActions")
+    let executionAction = NSXMLElement(name:"ExecutionAction")
+    let actionContent = NSXMLElement(name: "ActionContent")
+    actionContent.setAttributesWithDictionary([
+      "title": "Run Script",
+      "scriptText": script
+    ])
+    executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
+    executionAction.addChild(actionContent)
+    element.addChild(executionAction)
+    return element
+  }
+
+  /// Generates a PostAction element based on run script.
+  private func postActionElement(script: String) -> NSXMLElement {
+    let element = NSXMLElement(name:"PostActions")
+    let executionAction = NSXMLElement(name:"ExecutionAction")
+    let actionContent = NSXMLElement(name: "ActionContent")
+    actionContent.setAttributesWithDictionary([
+      "title": "Run Script",
+      "scriptText": script
+    ])
+    executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
+    executionAction.addChild(actionContent)
+    element.addChild(executionAction)
     return element
   }
 

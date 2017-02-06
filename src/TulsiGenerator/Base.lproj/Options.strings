@@ -25,5 +25,14 @@
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 
+"PreActionScriptOptions" = "PreActionScripts";
+"PostActionScriptOptions" = "PostActionScripts";
+"BuildActionPreActionScript" = "Build";
+"BuildActionPostActionScript" = "Build";
+"LaunchActionPreActionScript" = "Run";
+"LaunchActionPostActionScript" = "Run";
+"TestActionPreActionScript" = "Test";
+"TestActionPostActionScript" = "Test";
+
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";

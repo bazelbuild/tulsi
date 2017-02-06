@@ -47,13 +47,25 @@ public enum TulsiOptionKey: String {
   // Startup options for build invocations.
   case BazelBuildStartupOptionsDebug,
        BazelBuildStartupOptionsRelease
+
+  // Pre action scripts for build, launch, and test actions.
+  case BuildActionPreActionScript,
+       LaunchActionPreActionScript,
+       TestActionPreActionScript
+
+  // Post action scripts for build, launch, and test actions.
+  case BuildActionPostActionScript,
+       LaunchActionPostActionScript,
+       TestActionPostActionScript
 }
 
 
 /// Logical groupings for TulsiOptionKeys.
 public enum TulsiOptionKeyGroup: String {
   case BazelBuildOptions,
-       BazelBuildStartupOptions
+       BazelBuildStartupOptions,
+       PreActionScriptOptions,
+       PostActionScriptOptions
 }
 
 
@@ -71,7 +83,13 @@ public class TulsiOptionSet: Equatable {
       .BazelBuildOptionsDebug: .BazelBuildOptions,
       .BazelBuildOptionsRelease: .BazelBuildOptions,
       .BazelBuildStartupOptionsDebug: .BazelBuildStartupOptions,
-      .BazelBuildStartupOptionsRelease: .BazelBuildStartupOptions
+      .BazelBuildStartupOptionsRelease: .BazelBuildStartupOptions,
+      .BuildActionPreActionScript: .PreActionScriptOptions,
+      .LaunchActionPreActionScript: .PreActionScriptOptions,
+      .TestActionPreActionScript: .PreActionScriptOptions,
+      .BuildActionPostActionScript: .PostActionScriptOptions,
+      .LaunchActionPostActionScript: .PostActionScriptOptions,
+      .TestActionPostActionScript: .PostActionScriptOptions
   ]
 
   public var allVisibleOptions = [TulsiOptionKey: TulsiOption]()
@@ -254,6 +272,13 @@ public class TulsiOptionSet: Equatable {
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
+
+    addStringOption(.BuildActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.LaunchActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.TestActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BuildActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.LaunchActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.TestActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])

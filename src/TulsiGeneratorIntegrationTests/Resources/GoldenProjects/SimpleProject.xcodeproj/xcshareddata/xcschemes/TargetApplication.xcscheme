@@ -9,9 +9,29 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6FB1188CA00000000" BuildableIdentifier="primary" BuildableName="lib_idx_XCTest_Binary_31228BEA.a" BlueprintName="_idx_XCTest_Binary_31228BEA" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific build pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific build post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
     </BuildAction>
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific test pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific test post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E63956EB9A00000000" BuildableIdentifier="primary" BuildableName="TargetApplication.app" BlueprintName="TargetApplication" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>
@@ -25,6 +45,16 @@
             <EnvironmentVariable isEnabled="YES" key="targetKey3" value=""></EnvironmentVariable>
             <EnvironmentVariable isEnabled="YES" key="targetKey2" value="targetValue2="></EnvironmentVariable>
         </EnvironmentVariables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific launch pre action script"></ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent title="Run Script" scriptText="This is a target specific launch post action script"></ActionContent>
+            </ExecutionAction>
+        </PostActions>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E63956EB9A00000000" BuildableIdentifier="primary" BuildableName="TargetApplication.app" BlueprintName="TargetApplication" ReferencedContainer="container:SimpleProject.xcodeproj"></BuildableReference>
         </BuildableProductRunnable>

@@ -55,6 +55,21 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     options.options[.EnvironmentVariables]?.targetValues?[targetLabel.value] =
         "targetKey1=targetValue1\ntargetKey2=targetValue2=\ntargetKey3="
 
+    options.options[.BuildActionPreActionScript]?.projectValue = "This is a build pre action script"
+    options.options[.BuildActionPreActionScript]?.targetValues?[targetLabel.value] = "This is a target specific build pre action script"
+    options.options[.BuildActionPostActionScript]?.projectValue = "This is a build post action script"
+    options.options[.BuildActionPostActionScript]?.targetValues?[targetLabel.value] = "This is a target specific build post action script"
+
+    options.options[.LaunchActionPreActionScript]?.projectValue = "This is a lauch pre action script"
+    options.options[.LaunchActionPreActionScript]?.targetValues?[targetLabel.value] = "This is a target specific launch pre action script"
+    options.options[.LaunchActionPostActionScript]?.projectValue = "This is a launch post action script"
+    options.options[.LaunchActionPostActionScript]?.targetValues?[targetLabel.value] = "This is a target specific launch post action script"
+
+    options.options[.TestActionPreActionScript]?.projectValue = "This is a test pre action script"
+    options.options[.TestActionPreActionScript]?.targetValues?[targetLabel.value] = "This is a target specific test pre action script"
+    options.options[.TestActionPostActionScript]?.projectValue = "This is a test post action script"
+    options.options[.TestActionPostActionScript]?.targetValues?[targetLabel.value] = "This is a target specific test post action script"
+
     guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/..."],
