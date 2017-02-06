@@ -92,8 +92,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/...",
-                                                              "tulsi-bin/...",
-                                                              "tulsi-genfiles/..."],
+                                                              "blaze-bin/...",
+                                                              "blaze-genfiles/..."],
                                                 additionalFilePaths: additionalFilePaths,
                                                 outputDir: "tulsi_e2e_output/") else {
       // The test has already been marked as failed.
@@ -118,8 +118,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     guard let projectURL = generateProjectNamed(projectName,
                                                 buildTargets: buildTargets,
                                                 pathFilters: ["\(testDir)/...",
-                                                              "tulsi-bin/...",
-                                                              "tulsi-genfiles/..."],
+                                                              "blaze-bin/...",
+                                                              "blaze-genfiles/..."],
                                                 additionalFilePaths: additionalFilePaths,
                                                 outputDir: "tulsi_e2e_output/") else {
       // The test has already been marked as failed.

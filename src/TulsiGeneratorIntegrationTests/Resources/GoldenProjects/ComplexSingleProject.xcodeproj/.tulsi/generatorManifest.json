@@ -2,8 +2,8 @@
   "manifestVersion" : 3,
   "targets" : {
     "XCTest" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Application.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/XCTest.ipa"
+      "blaze-bin\/tulsi_e2e_complex\/Application.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/XCTest.ipa"
     ],
     "_idx_Binary_XCTest_7CFD00CC" : [
 
@@ -18,20 +18,20 @@
 
     ],
     "Application" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Application.ipa"
+      "blaze-bin\/tulsi_e2e_complex\/Application.ipa"
     ],
     "Watch2Extension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchOS2App.ipa"
+      "blaze-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/WatchOS2App.ipa"
     ],
     "WatchExtension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtension.ipa"
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtension.ipa"
     ],
     "_bazel_clean_" : [
 
     ],
     "TodayExtension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtension.ipa"
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtension.ipa"
     ],
     "_tulsi_appex_WatchExtension" : [
 
@@ -53,9 +53,9 @@
     ]
   },
   "artifacts" : [
-    "..\/..\/tulsi-genfiles\/tulsi_e2e_complex\/PCHGenerator\/outs\/PCHFile.pch",
-    "..\/..\/tulsi-genfiles\/tulsi_e2e_complex\/SrcGenerator\/outs\/output.m",
-    "..\/..\/tulsi-genfiles\/tulsi_e2e_complex\/StoryboardGenerator\/outs\/Two.storyboard",
+    "..\/..\/blaze-genfiles\/tulsi_e2e_complex\/PCHGenerator\/outs\/PCHFile.pch",
+    "..\/..\/blaze-genfiles\/tulsi_e2e_complex\/SrcGenerator\/outs\/output.m",
+    "..\/..\/blaze-genfiles\/tulsi_e2e_complex\/StoryboardGenerator\/outs\/Two.storyboard",
     "Application.app\/**",
     "TodayExtension.appex\/**",
     "Watch2Extension.app\/**",
@@ -63,6 +63,9 @@
     "XCTest.xctest\/**",
     "_tulsi_appex_Watch2Extension.appex\/**",
     "_tulsi_appex_WatchExtension.appex\/**",
+    "blaze-bin\/tulsi_e2e_complex\/Application-MergedInfo.plist",
+    "blaze-bin\/tulsi_e2e_complex\/Watch2Extension-MergedInfo.plist",
+    "blaze-bin\/tulsi_e2e_complex\/WatchExtension-MergedInfo.plist",
     "lib_idx_Binary_XCTest_7CFD00CC.a",
     "lib_idx_Library_20EC2F4A.a",
     "lib_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598.a",
@@ -70,55 +73,52 @@
     "lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a",
     "lib_idx_SubLibrary_19588DB9.a",
     "lib_idx_TodayExtensionBinary_999643E7.a",
-    "lib_idx_WatchExtensionBinary_020F3F9D.a",
-    "tulsi-bin\/tulsi_e2e_complex\/Application-MergedInfo.plist",
-    "tulsi-bin\/tulsi_e2e_complex\/Watch2Extension-MergedInfo.plist",
-    "tulsi-bin\/tulsi_e2e_complex\/WatchExtension-MergedInfo.plist"
+    "lib_idx_WatchExtensionBinary_020F3F9D.a"
   ],
   "intermediateArtifacts" : {
     "XCTest" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Application.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/Binary.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/Binary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/libLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
+      "blaze-bin\/tulsi_e2e_complex\/Application.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/Binary.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/Binary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
     ],
     "TodayExtension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin"
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin"
     ],
     "Application" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Binary.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/Binary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
-      "tulsi-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
-      "tulsi-bin\/tulsi_e2e_complex\/libLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibrary.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
-      "tulsi-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
+      "blaze-bin\/tulsi_e2e_complex\/Binary.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/Binary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/TodayExtensionBinary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin",
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtension.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin",
+      "blaze-bin\/tulsi_e2e_complex\/WatchOS2App.ipa",
+      "blaze-bin\/tulsi_e2e_complex\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libNonPropagatedLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibrary.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithDefines.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithDifferentDefines.a",
+      "blaze-bin\/tulsi_e2e_complex\/libSubLibraryWithIdenticalDefines.a"
     ],
     "Watch2Extension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin"
+      "blaze-bin\/tulsi_e2e_complex\/Watch2ExtensionBinary_lipobin"
     ],
     "WatchExtension" : [
-      "tulsi-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin"
+      "blaze-bin\/tulsi_e2e_complex\/WatchExtensionBinary_bin"
     ]
   },
   "fileReferences" : [

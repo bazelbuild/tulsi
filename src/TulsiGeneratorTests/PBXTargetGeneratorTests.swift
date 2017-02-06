@@ -32,7 +32,7 @@ class PBXTargetGeneratorTests: XCTestCase {
     super.setUp()
     project = PBXProject(name: "TestProject")
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
-                                         bazelBinPath: "tulsi-bin",
+                                         bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
                                          stubInfoPlistPaths: stubPlistPaths,
@@ -129,7 +129,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let options = TulsiOptionSet()
     messageLogger = MockLocalizedMessageLogger()
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
-                                         bazelBinPath: "tulsi-bin",
+                                         bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
                                          stubInfoPlistPaths: stubPlistPaths,
@@ -154,7 +154,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(target.buildToolPath, scriptPath)
 
     // The script should launch the test scriptPath with bazelURL's path as the only argument.
-    let expectedScriptArguments = "\"\(bazelURL.path!)\" \"tulsi-bin\""
+    let expectedScriptArguments = "\"\(bazelURL.path!)\" \"bazel-bin\""
     XCTAssertEqual(target.buildArgumentsString, expectedScriptArguments)
   }
 
@@ -217,11 +217,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/tulsi-bin $(TULSI_WR)/tulsi-genfiles",
+        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspaceRootURL",
+        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -265,12 +265,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
-        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/tulsi-bin $(TULSI_WR)/tulsi-genfiles",
+        "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles",
         "SDKROOT": projectSDKROOT,
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspaceRootURL",
+        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -1133,7 +1133,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   func testGenerateIndexerWithGeneratedBridgingHeader() {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
-                              "root": "tulsi-genfiles",
+                              "root": "bazel-genfiles",
                               "src": false]
     let ruleAttributes = ["bridging_header": bridgingHeaderInfo]
 
@@ -1153,7 +1153,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WR)/tulsi-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
   }
 
@@ -1408,7 +1408,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   func testDoesNotMergeIndexerWithGeneratedBridgingHeaderMismatch() {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
-                              "root": "tulsi-genfiles",
+                              "root": "bazel-genfiles",
                               "src": false]
     let ruleAttributes1 = ["bridging_header": bridgingHeaderInfo]
 
@@ -1437,7 +1437,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 2)
     validateIndexerTarget(indexer1TargetName,
                           sourceFileNames: sourceFileNames,
-                          bridgingHeader: "$(TULSI_WR)/tulsi-genfiles/\(bridgingHeaderFilePath)",
+                          bridgingHeader: "$(TULSI_WR)/bazel-genfiles/\(bridgingHeaderFilePath)",
                           inTargets: targets)
     validateIndexerTarget(indexer2TargetName,
                           sourceFileNames: sourceFileNames,

@@ -5,35 +5,35 @@
 
     ],
     "TestApplication" : [
-      "tulsi-bin\/TestSuite\/TestApplication.ipa"
+      "blaze-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuiteXCTest" : [
-      "tulsi-bin\/TestSuite\/TestApplication.ipa",
-      "tulsi-bin\/TestSuite\/TestSuiteXCTest.ipa"
+      "blaze-bin\/TestSuite\/TestApplication.ipa",
+      "blaze-bin\/TestSuite\/TestSuiteXCTest.ipa"
     ],
     "_bazel_clean_" : [
 
     ],
     "TestSuiteNonXCTest" : [
-      "tulsi-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
+      "blaze-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
     ]
   },
   "artifacts" : [
     "TestApplication.app\/**",
     "TestSuiteNonXCTest.app\/**",
     "TestSuiteXCTest.xctest\/**",
-    "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a",
-    "tulsi-bin\/TestSuite\/TestApplication-MergedInfo.plist"
+    "blaze-bin\/TestSuite\/TestApplication-MergedInfo.plist",
+    "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a"
   ],
   "intermediateArtifacts" : {
     "TestApplication" : [
-      "tulsi-bin\/TestSuite\/Binary.ipa",
-      "tulsi-bin\/TestSuite\/Binary_bin"
+      "blaze-bin\/TestSuite\/Binary.ipa",
+      "blaze-bin\/TestSuite\/Binary_bin"
     ],
     "TestSuiteXCTest" : [
-      "tulsi-bin\/TestSuite\/Binary.ipa",
-      "tulsi-bin\/TestSuite\/Binary_bin",
-      "tulsi-bin\/TestSuite\/TestApplication.ipa"
+      "blaze-bin\/TestSuite\/Binary.ipa",
+      "blaze-bin\/TestSuite\/Binary_bin",
+      "blaze-bin\/TestSuite\/TestApplication.ipa"
     ],
     "TestSuiteNonXCTest" : [
 

@@ -27,7 +27,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     }
   }
 
-  /// Returns the workspace relative path to the tulsi-bin symlink. Note that this may block.
+  /// Returns the workspace relative path to the bazel bin symlink. Note that this may block.
   var bazelBinPath: String {
     return workspacePathFetcher.getBazelBinPath()
   }

@@ -5,14 +5,14 @@
 
     ],
     "XCTest" : [
-      "tulsi-bin\/tulsi_e2e_simple\/Application.ipa",
-      "tulsi-bin\/tulsi_e2e_simple\/XCTest.ipa"
+      "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/XCTest.ipa"
     ],
     "Application" : [
-      "tulsi-bin\/tulsi_e2e_simple\/Application.ipa"
+      "blaze-bin\/tulsi_e2e_simple\/Application.ipa"
     ],
     "TargetApplication" : [
-      "tulsi-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
+      "blaze-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
     ],
     "_idx_XCTest_Binary_31228BEA" : [
 
@@ -25,27 +25,27 @@
     "Application.app\/**",
     "TargetApplication.app\/**",
     "XCTest.xctest\/**",
+    "blaze-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist",
+    "blaze-bin\/tulsi_e2e_simple\/TargetApplication-MergedInfo.plist",
     "lib_idx_Library_1A8360DD.a",
-    "lib_idx_XCTest_Binary_31228BEA.a",
-    "tulsi-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist",
-    "tulsi-bin\/tulsi_e2e_simple\/TargetApplication-MergedInfo.plist"
+    "lib_idx_XCTest_Binary_31228BEA.a"
   ],
   "intermediateArtifacts" : {
     "XCTest" : [
-      "tulsi-bin\/tulsi_e2e_simple\/Application.ipa",
-      "tulsi-bin\/tulsi_e2e_simple\/Binary.ipa",
-      "tulsi-bin\/tulsi_e2e_simple\/Binary_bin",
-      "tulsi-bin\/tulsi_e2e_simple\/libLibrary.a"
+      "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/Binary.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/Binary_bin",
+      "blaze-bin\/tulsi_e2e_simple\/libLibrary.a"
     ],
     "TargetApplication" : [
-      "tulsi-bin\/tulsi_e2e_simple\/Binary.ipa",
-      "tulsi-bin\/tulsi_e2e_simple\/Binary_bin",
-      "tulsi-bin\/tulsi_e2e_simple\/libLibrary.a"
+      "blaze-bin\/tulsi_e2e_simple\/Binary.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/Binary_bin",
+      "blaze-bin\/tulsi_e2e_simple\/libLibrary.a"
     ],
     "Application" : [
-      "tulsi-bin\/tulsi_e2e_simple\/Binary.ipa",
-      "tulsi-bin\/tulsi_e2e_simple\/Binary_bin",
-      "tulsi-bin\/tulsi_e2e_simple\/libLibrary.a"
+      "blaze-bin\/tulsi_e2e_simple\/Binary.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/Binary_bin",
+      "blaze-bin\/tulsi_e2e_simple\/libLibrary.a"
     ]
   },
   "fileReferences" : [

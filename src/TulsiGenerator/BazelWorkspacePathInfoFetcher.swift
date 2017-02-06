@@ -14,15 +14,16 @@
 
 import Foundation
 
-
 /// Handles fetching of interesting paths for a Bazel workspace.
 class BazelWorkspacePathInfoFetcher {
   /// The Bazel package_path as defined by the target workspace.
   private var packagePath: String? = nil
   /// The Bazel execution_root as defined by the target workspace.
   private var executionRoot: String? = nil
+  /// The bazel bin symlink name as defined by the target workspace.
+  private var bazelBinSymlinkName: String? = nil
 
-  /// Optional path to the directory in which tulsi-* symlinks will be created.
+  /// Optional path to the directory in which Bazel symlinks will be created.
   private var bazelSymlinkParentPathOverride: String? = nil
 
   /// The location of the bazel binary.
@@ -44,33 +45,49 @@ class BazelWorkspacePathInfoFetcher {
 
   /// Returns the package_path for this fetcher's workspace, blocking until it is available.
   func getPackagePath() -> String {
-    if fetchCompleted { return packagePath! }
-    waitForCompletion()
-    return packagePath!
+    if !fetchCompleted { waitForCompletion() }
+
+    guard let packagePath = packagePath else {
+      localizedMessageLogger.error("PackagePathNotFound",
+                                   comment: "Package path should have been extracted from the workspace.")
+      return ""
+    }
+    return packagePath
   }
 
   /// Returns the execution_root for this fetcher's workspace, blocking until it is available.
   func getExecutionRoot() -> String {
-    if fetchCompleted { return executionRoot! }
-    waitForCompletion()
-    return executionRoot!
+    if !fetchCompleted { waitForCompletion() }
+
+    guard let executionRoot = executionRoot else {
+      localizedMessageLogger.error("ExecutionRootNotFound",
+                                   comment: "Execution root should have been extracted from the workspace.")
+      return ""
+    }
+    return executionRoot
   }
 
   /// Returns the tulsi_bazel_symlink_parent_path for this workspace (if it exists), blocking until
   /// the fetch is completed.
   func getBazelSymlinkParentPathOverride() -> String? {
-    if fetchCompleted { return bazelSymlinkParentPathOverride }
-    waitForCompletion()
+    if !fetchCompleted { waitForCompletion() }
     return bazelSymlinkParentPathOverride
   }
 
-  /// Returns the tulsi-bin path for this workspace, blocking until the fetch is completed.
+  /// Returns the bazel bin path for this workspace, blocking until the fetch is completed.
   func getBazelBinPath() -> String {
-    let bazelBin = "tulsi-bin"
-    if let parentPathOverride = getBazelSymlinkParentPathOverride() {
-      return (parentPathOverride as NSString).stringByAppendingPathComponent(bazelBin)
+    if !fetchCompleted { waitForCompletion() }
+
+    guard let bazelBinSymlinkName = bazelBinSymlinkName else {
+      localizedMessageLogger.error("BazelBinSymlinkNameNotFound",
+                                   comment: "Bazel bin symlink should have been extracted from the workspace.")
+      return ""
     }
-    return bazelBin
+
+    if let parentPathOverride = getBazelSymlinkParentPathOverride() {
+      return (parentPathOverride as NSString).stringByAppendingPathComponent(bazelBinSymlinkName)
+    }
+    return bazelBinSymlinkName
   }
 
   // MARK: - Private methods
@@ -106,8 +123,6 @@ class BazelWorkspacePathInfoFetcher {
           }
         }
 
-        self.packagePath = ""
-        self.executionRoot = ""
         let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: NSBundle(forClass: self.dynamicType),
@@ -133,6 +148,16 @@ class BazelWorkspacePathInfoFetcher {
       guard let key = components.first where !key.isEmpty else { continue }
       let valueComponents = components.dropFirst()
       let value = valueComponents.joinWithSeparator(": ")
+
+      if key.hasSuffix("-bin") {
+        if (bazelBinSymlinkName != nil) {
+          self.localizedMessageLogger.warning("MultipleBazelWorkspaceSymlinkNames",
+                                    comment: "Error to show when more than one workspace key has a suffix of '-bin'.",
+                                    details: "More than one key in the workspace ends in '-bin'. Only the first key will be used.")
+          continue
+        }
+        bazelBinSymlinkName = key
+      }
 
       switch key {
         case "execution_root":

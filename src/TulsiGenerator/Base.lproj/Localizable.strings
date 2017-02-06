@@ -11,6 +11,9 @@
 /* Error to show when the bazel binary cannot be found at the previously saved location %1$@. */
 "BazelBinaryNotFound" = "Bazel could not be found at \"%1$@\". Please update the path in the project file.";
 
+/* Message to show when the bazel bin symlink name was not able to be extracted from the workspace. */
+"BazelBinSymlinkNameNotFound" = "Was not able to extract the bazel bin symlink name from the workspace. This is a Tulsi or Bazel bug, please report.";
+
 /* Error message for when a Bazel extractor did not complete successfully. Details are logged separately. */
 "BazelInfoExtractionFailed" = "Failed to retrieve information about the Bazel workspace. This usually means that the contents of a BUILD file are incorrect or flags are missing. Read the message log carefully for details.";
 
@@ -44,6 +47,9 @@
 /* Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported. */
 "DirectoryCreationFailed" = "Failed to create directory '%1$@'. The generated project will probably malfunction, please report. Error: %2$@";
 
+/* Message to show when the execution root was not able to be extracted from the workspace. */
+"ExecutionRootNotFound" = "Was not able to extract the execution root from the workspace. This is a Tulsi or Bazel bug, please report.";
+
 /* Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable. */
 "ExternalRepositoryResolutionFailed" = "Failed to resolve external repository reference '%1$@' to a full file path. The generated project may have broken file references inside of that group.";
 
@@ -55,6 +61,9 @@
 
 /* Warning to show when a user has selected an XCTest but not its host application. */
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
+
+/* Message to show when the package path was not able to be extracted from the workspace. */
+"PackagePathNotFound" = "Was not able to extract the package path from the workspace. This is a Tulsi or Bazel bug, please report.";
 
 /* Message to show when the bundle identifier for watchOS app extension %1$@ could not be found and the resulting project will not be able to launch the watch app. */
 "SettingWatchExtensionBundleIDFailed" = "Failed to extract bundle identifier for the extension of watchOS app '%1$@'. Xcode will not be able to launch the watch app on the simulator or devices.";
