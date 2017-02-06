@@ -786,7 +786,8 @@ class BazelBuildBridge(object):
 
         # Support directories do not seem to be needed by the debugger and are
         # skipped.
-        if filename.split(os.sep)[0].endswith('Support'):
+        basedir = filename.split(os.sep)[0]
+        if basedir.endswith('Support') or basedir.endswith('Support2'):
           continue
 
         if len(filename) < len(expected_ipa_subpath):
