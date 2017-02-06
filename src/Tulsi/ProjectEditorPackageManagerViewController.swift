@@ -103,7 +103,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
           if let isDir = isDir as? NSNumber, isPackage = isPackage as? NSNumber
               where !isPackage.boolValue {
             if isDir.boolValue { return true }
-            if let filename = url.lastPathComponent where filename == "BUILD" {
+            if let filename = url.lastPathComponent where (filename == "BUILD" || filename == "BUILD.bazel") {
               // Prevent anything outside of the selected workspace.
               return url.path!.hasPrefix(workspacePath) && !document.containsBUILDFileURL(url)
             }
