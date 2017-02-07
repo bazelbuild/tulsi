@@ -139,7 +139,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   static let IndexerTargetPrefix = "_idx_"
 
   /// Rough sanity limit on indexer name length. Names may be slightly longer than this limit.
-  static let MaxIndexerNameLength = 230
+  /// Empirically, 255 characters is the observed threshold for problems with file systems.
+  static let MaxIndexerNameLength = 180
 
   // Name prefix for auto-generated nop-app extension targets necessary to get Xcode to debug watch
   // Apps.
