@@ -74,11 +74,15 @@ class BazelIntegrationTestCase: XCTestCase {
       installWorkspaceFile()
     }
 
+    guard let workspaceRootURL = workspaceRootURL else {
+      fatalError("Failed to find workspaceRootURL.")
+    }
+
     localizedMessageLogger = DirectLocalizedMessageLogger()
     localizedMessageLogger.startLogging()
-    packagePathFetcher = MockBazelWorkspacePackagePathFetcher(bazelURL: bazelURL,
-                                                              workspaceRootURL: workspaceRootURL ?? NSURL(),
-                                                              localizedMessageLogger: localizedMessageLogger)
+    packagePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
+                                                       workspaceRootURL: workspaceRootURL,
+                                                       localizedMessageLogger: localizedMessageLogger)
   }
 
   override func tearDown() {
@@ -392,14 +396,6 @@ class BazelIntegrationTestCase: XCTestCase {
         case .Syslog:
           print("> S: \(item.message)")
       }
-    }
-  }
-
-
-  /// Hardcodes the package path to the default for an empty WORKSPACE file.
-  private class MockBazelWorkspacePackagePathFetcher: BazelWorkspacePathInfoFetcher {
-    override func getPackagePath() -> String {
-      return "%workspace%"
     }
   }
 }
