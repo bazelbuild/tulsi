@@ -126,6 +126,8 @@ public final class RuleEntry: RuleInfo {
 
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
+      "apple_ui_test": PBXTarget.ProductType.UnitTest,
+      "apple_unit_test": PBXTarget.ProductType.UIUnitTest,
       "apple_watch1_extension": PBXTarget.ProductType.Watch1App,
       "apple_watch2_extension": PBXTarget.ProductType.Watch2App,
       "ios_application": PBXTarget.ProductType.Application,
@@ -137,6 +139,7 @@ public final class RuleEntry: RuleInfo {
       "swift_library": PBXTarget.ProductType.StaticLibrary,
       "tvos_application": PBXTarget.ProductType.Application,
       "tvos_extension": PBXTarget.ProductType.TVAppExtension,
+
 
       // Support new rules that have underscore-prefixed names because they are wrapped by macros.
       "_ios_application": PBXTarget.ProductType.Application,
@@ -172,7 +175,13 @@ public final class RuleEntry: RuleInfo {
     // handling in the generated Xcode project. For example, asset_catalog, storyboard, and xibs
     // attributes all end up as supporting_files.
     case supporting_files
+    // For the apple_unit_test and apple_ui_test rules, contains a label reference to the
+    // ios_application target to be used as the test host when running the tests.
+    case test_host
+    // For the ios_test rule, specifies whether the test is XCTest based or not (i.e. KIF).
     case xctest
+    // For the ios_test rule, contains a label reference to the ios_application target to be used as
+    // the test host when running the tests.
     case xctest_app
   }
 
@@ -383,8 +392,10 @@ public final class RuleEntry: RuleInfo {
     self.implicitIPATarget = implicitIPATarget
 
     var linkedTargetLabels = Set<BuildLabel>()
-    if let hostLabelString = self.attributes[.xctest_app] as? String {
-      linkedTargetLabels.insert(BuildLabel(hostLabelString))
+    for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
+      if let hostLabelString = self.attributes[attribute] as? String {
+        linkedTargetLabels.insert(BuildLabel(hostLabelString))
+      }
     }
 
     super.init(label: label, type: type, linkedTargetLabels: linkedTargetLabels)

@@ -282,7 +282,14 @@ final class BazelQueryInfoExtractor {
           return labelSet
         }
 
-        let linkedTargetLabels = try extractLabelsFromXpath("./label[@name='xctest_app']/@value")
+        // Retrieve the list of linked targets through the xctest_app (for ios_test) and test_host
+        // (for apple_unit_test and apple_ui_test). This provides a link between the test target and
+        // the test host so they can be linked in Xcode.
+        var linkedTargetLabels = Set<BuildLabel>()
+        for attribute in ["xctest_app", "test_host"] {
+          linkedTargetLabels.unionInPlace(
+              try extractLabelsFromXpath("./label[@name='\(attribute)']/@value"))
+        }
 
         let entry = RuleInfo(label: BuildLabel(ruleLabel),
                              type: ruleType,

@@ -1,0 +1,1025 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
+		E6AF49475401417600000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C285401417600000000 /* src1.m */; };
+		E6AF494756F87EF800000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2856F87EF800000000 /* src4.m */; };
+		E6AF4947577B7A7A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28577B7A7A00000000 /* src3.m */; };
+		E6AF4947578645F400000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28578645F400000000 /* src2.m */; };
+		E6AF49477466E43000000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */ = {isa = PBXBuildFile; fileRef = C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		819366726921D83500000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EA5EAFCB1700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECCC95946921D83400000000;
+		};
+		81936672A0C7226900000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EA5EAFCB1700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E6A0C7226800000000;
+		};
+		81936672C3E8068D00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EA5EAFCB1700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E6C3E8068C00000000;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		43D68C281112407E00000000 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C284342A9EC00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
+		43D68C2851D95C9600000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextualHdrsHeader.h; sourceTree = "<group>"; };
+		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
+		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
+		43D68C28577B7A7A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src3.m; sourceTree = "<group>"; };
+		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
+		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
+		43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SkylarkTargetApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28739856DA00000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
+		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
+		43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_MainLibrary_E33E600C.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
+		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
+		43D68C28B9C699F600000000 /* SkylarkApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SkylarkApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28C7966CBA00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HdrsHeader.h; sourceTree = "<group>"; };
+		43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_22D3B3D5.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28E69B2FB000000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		966FB6DE29C889FA00000000 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE3B86E64800000000 /* hdrs */,
+				966FB6DE2F22F61E00000000 /* pch */,
+				966FB6DEB73A031C00000001 /* srcs */,
+				966FB6DE66EF840400000000 /* textual_hdrs */,
+				966FB6DE40F68AF600000000 /* xibs */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		966FB6DE2BD1037D00000000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28B9C699F600000000 /* SkylarkApplication.app */,
+				43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */,
+				43D68C285E266A6000000000 /* XCTest.xctest */,
+				966FB6DE59D91CB800000000 /* blaze-bin */,
+				43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */,
+				43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		966FB6DE2F22F61E00000000 /* pch */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28807681DC00000000 /* PCHFile.pch */,
+			);
+			path = pch;
+			sourceTree = "<group>";
+		};
+		966FB6DE3B86E64800000000 /* hdrs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28C7966CBA00000000 /* HdrsHeader.h */,
+			);
+			path = hdrs;
+			sourceTree = "<group>";
+		};
+		966FB6DE40F68AF600000000 /* xibs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2862292A3400000000 /* xib.xib */,
+			);
+			path = xibs;
+			sourceTree = "<group>";
+		};
+		966FB6DE59D91CB800000000 /* blaze-bin */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEEB1C8D9800000000 /* tulsi_e2e_simple_skylark */,
+			);
+			path = "blaze-bin";
+			sourceTree = "<group>";
+		};
+		966FB6DE66EF840400000000 /* textual_hdrs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2851D95C9600000000 /* TextualHdrsHeader.h */,
+			);
+			path = textual_hdrs;
+			sourceTree = "<group>";
+		};
+		966FB6DE6B144ABC00000000 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28B7B6EFA200000000 /* Info.plist */,
+				43D68C284611198400000000 /* Launch.storyboard */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		966FB6DEAD8053F600000000 /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C289394A30C00000000 /* One.storyboard */,
+			);
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		966FB6DEB6031FE700000000 /* mainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE2BD1037D00000000 /* Products */,
+				966FB6DEEB1C8D9800000001 /* tulsi_e2e_simple_skylark */,
+			);
+			name = mainGroup;
+			path = ../..;
+			sourceTree = SOURCE_ROOT;
+		};
+		966FB6DEB73A031C00000000 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C283611DBCE00000000 /* main.m */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEB73A031C00000001 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2850E5A94E00000000 /* SrcsHeader.h */,
+				43D68C285401417600000000 /* src1.m */,
+				43D68C28578645F400000000 /* src2.m */,
+				43D68C28577B7A7A00000000 /* src3.m */,
+				43D68C2856F87EF800000000 /* src4.m */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEC5C9C21400000000 /* Binary */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C281112407E00000000 /* Assets.xcassets */,
+				966FB6DEAD8053F600000000 /* Base.lproj */,
+				966FB6DEB73A031C00000000 /* srcs */,
+			);
+			path = Binary;
+			sourceTree = "<group>";
+		};
+		966FB6DEEB1C8D9800000000 /* tulsi_e2e_simple_skylark */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C284342A9EC00000000 /* SkylarkApplication-MergedInfo.plist */,
+				43D68C28739856DA00000000 /* SkylarkTargetApplication-MergedInfo.plist */,
+			);
+			path = tulsi_e2e_simple_skylark;
+			sourceTree = "<group>";
+		};
+		966FB6DEEB1C8D9800000001 /* tulsi_e2e_simple_skylark */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE6B144ABC00000000 /* Application */,
+				43D68C28B7EA446800000000 /* BUILD */,
+				966FB6DEC5C9C21400000000 /* Binary */,
+				966FB6DE29C889FA00000000 /* Library */,
+				C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */,
+			);
+			path = tulsi_e2e_simple_skylark;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"blaze-bin\"";
+			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			buildPhases = (
+			);
+			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
+			buildWorkingDirectory = "${SRCROOT}/../..";
+			dependencies = (
+			);
+			name = _bazel_clean_;
+			passBuildSettingsInEnvironment = 1;
+			productName = _bazel_clean_;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */;
+			buildPhases = (
+				605793E20000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42A0C7226900000000 /* PBXTargetDependency */,
+			);
+			name = _idx_MainLibrary_E33E600C;
+			productName = _idx_MainLibrary_E33E600C;
+			productReference = 43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */;
+			buildPhases = (
+				605793E20000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_Library_22D3B3D5;
+			productName = _idx_Library_22D3B3D5;
+			productReference = 43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6C3E8068C00000000 /* SkylarkApplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583218595F600000000 /* Build configuration list for PBXNativeTarget "SkylarkApplication" */;
+			buildPhases = (
+				84B422719E9EC27100000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = SkylarkApplication;
+			productName = SkylarkApplication;
+			productReference = 43D68C28B9C699F600000000 /* SkylarkApplication.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
+			buildPhases = (
+				84B422710B30DFE000000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42C3E8068D00000000 /* PBXTargetDependency */,
+			);
+			name = XCTest;
+			productName = XCTest;
+			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		3D31C5E6F353FBEA00000000 /* SkylarkTargetApplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755835CC0E52B00000000 /* Build configuration list for PBXNativeTarget "SkylarkTargetApplication" */;
+			buildPhases = (
+				84B42271F9589F1400000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = SkylarkTargetApplication;
+			productName = SkylarkTargetApplication;
+			productReference = 43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E7BD0EA5EAFCB1700000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					3D31C5E6EF2E7F4000000000 = {
+						TestTargetID = 3D31C5E6C3E8068C00000000;
+					};
+				};
+			};
+			buildConfigurationList = DE47558369AD265100000000 /* Build configuration list for PBXProject "SimpleSkylarkProject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
+			targets = (
+				3D31C5E6C3E8068C00000000 /* SkylarkApplication */,
+				3D31C5E6F353FBEA00000000 /* SkylarkTargetApplication */,
+				3D31C5E6EF2E7F4000000000 /* XCTest */,
+				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */,
+				3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		84B422710B30DFE000000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B422719E9EC27100000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B42271F9589F1400000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel  --keep_going -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		605793E20000000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF49475401417600000000 /* src1.m in srcs */,
+				E6AF4947578645F400000000 /* src2.m in srcs */,
+				E6AF4947577B7A7A00000000 /* src3.m in srcs */,
+				E6AF494756F87EF800000000 /* src4.m in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF49477466E43000000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */,
+				E6AF49473611DBCE00000000 /* main.m in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B42A0C7226900000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 81936672A0C7226900000000 /* PBXContainerItemProxy */;
+		};
+		4DAD0B42C3E8068D00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 81936672C3E8068D00000000 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		44936BD67EED3C4D00000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
+				BAZEL_TARGET_TYPE = apple_unit_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = XCTest;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
+				PRODUCT_NAME = SkylarkApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/../..";
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
+				PRODUCT_NAME = SkylarkTargetApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-bin/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		44936BD6A3D45CE900000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
+				BAZEL_TARGET_TYPE = apple_unit_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = XCTest;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
+				PRODUCT_NAME = SkylarkApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_USE_DSYM = YES;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/../..";
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
+				PRODUCT_NAME = SkylarkTargetApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-bin/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
+				BAZEL_TARGET_TYPE = apple_unit_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = XCTest;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000001 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
+				PRODUCT_NAME = SkylarkApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				SDKROOT = iphoneos;
+				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/../..";
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
+				PRODUCT_NAME = SkylarkTargetApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
+				BAZEL_TARGET_TYPE = apple_unit_test;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_NAME = XCTest;
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
+				PRODUCT_NAME = SkylarkApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				SDKROOT = iphoneos;
+				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_USE_DSYM = YES;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/../..";
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
+				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
+				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
+				BAZEL_TARGET_TYPE = ios_application;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
+				PRODUCT_NAME = SkylarkTargetApplication;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD6A3D45CE900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD6A3D45CE900000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583218595F600000000 /* Build configuration list for PBXNativeTarget "SkylarkApplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000001 /* Debug */,
+				44936BD6A3D45CE900000001 /* Release */,
+				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755835CC0E52B00000000 /* Build configuration list for PBXNativeTarget "SkylarkTargetApplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE47558369AD265100000000 /* Build configuration list for PBXProject "SimpleSkylarkProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000002 /* Debug */,
+				44936BD6A3D45CE900000002 /* Release */,
+				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000000 /* Debug */,
+				44936BD6A3D45CE900000000 /* Release */,
+				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				43D68C28E69B2FB000000000 /* SimpleDataModelsTestv1.xcdatamodel */,
+				43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */,
+			);
+			currentVersion = 43D68C28E69B2FB000000000 /* SimpleDataModelsTestv1.xcdatamodel */;
+			path = SimpleTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 7E7BD0EA5EAFCB1700000000 /* Project object */;
+}

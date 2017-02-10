@@ -59,11 +59,10 @@ ios_test(
     srcs = [
         "XCTestWithDefaultHost/srcs/src1.mm",
     ],
-    xctest = 1,
 )
 
 ## Skylark-based tvOS rules.
-# TODO(abaire): Move to ComplexSingle.BUILD when the rules are open sourecd.
+# TODO(abaire): Move to ComplexSingle.BUILD when the rules are open sourced.
 load(
     "//tools/build_defs/apple:tvos.bzl",
     "skylark_tvos_application",
@@ -93,4 +92,91 @@ objc_library(
     name = "tvOSLibrary",
     srcs = ["tvOSLibrary/srcs/src.m"],
     enable_modules = True,
+)
+
+## Skylark-based test rules.
+load("//tools/build_defs/apple:ios.bzl", "skylark_ios_application")
+load(
+    "//tools/build_defs/apple/testing:ios.bzl",
+    "ios_unit_test",
+    "ios_ui_test",
+)
+
+skylark_ios_application(
+    name = "SkylarkApplication",
+    bundle_id = "com.google.Tulsi.Application",
+    families = ["iphone"],
+    infoplists = ["Application/Info.plist"],
+    launch_storyboard = "Application/Launch.storyboard",
+    deps = [":MainLibrary"],
+)
+
+skylark_ios_application(
+    name = "SkylarkTargetApplication",
+    bundle_id = "com.google.Tulsi.TargetApplication",
+    families = ["iphone"],
+    infoplists = ["Application/Info.plist"],
+    launch_storyboard = "Application/Launch.storyboard",
+    deps = [":MainLibrary"],
+)
+
+objc_library(
+    name = "MainLibrary",
+    srcs = [
+        "Binary/srcs/main.m",
+    ],
+    asset_catalogs = ["Binary/Assets.xcassets/asset.png"],
+    datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
+    defines = [
+        "BINARY_ADDITIONAL_DEFINE",
+        "BINARY_ANOTHER_DEFINE=2",
+    ],
+    includes = ["Binary/includes"],
+    storyboards = ["Binary/Base.lproj/One.storyboard"],
+    deps = [
+        ":Library",
+    ],
+)
+
+objc_library(
+    name = "Library",
+    srcs = [
+        "Library/srcs/SrcsHeader.h",
+        "Library/srcs/src1.m",
+        "Library/srcs/src2.m",
+        "Library/srcs/src3.m",
+        "Library/srcs/src4.m",
+    ],
+    hdrs = [
+        "Library/hdrs/HdrsHeader.h",
+    ],
+    copts = [
+        "-DLIBRARY_COPT_DEFINE",
+        "-I/Library/absolute/include/path",
+        "-Irelative/Library/include/path",
+    ],
+    defines = ["LIBRARY_DEFINES_DEFINE=1"],
+    pch = "Library/pch/PCHFile.pch",
+    textual_hdrs = [
+        "Library/textual_hdrs/TextualHdrsHeader.h",
+    ],
+    xibs = ["Library/xibs/xib.xib"],
+)
+
+objc_library(
+    name = "XCTestCode",
+    srcs = [
+        "XCTest/srcs/src1.mm",
+    ],
+    deps = [
+        ":Library",
+    ],
+)
+
+ios_unit_test(
+    name = "XCTest",
+    test_host = ":SkylarkApplication",
+    deps = [
+        ":XCTestCode",
+    ],
 )

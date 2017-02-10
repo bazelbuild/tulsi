@@ -403,18 +403,34 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSources() {
+    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("ios_test",
+                                                          testHostAttributeName: "xctest_app")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUnitTest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_unit_test",
+                                                          testHostAttributeName: "test_host")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUITest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_ui_test",
+                                                          testHostAttributeName: "test_host")
+  }
+
+  func checkGenerateTargetsForLinkedRuleEntriesWithNoSources(testRuleType: String,
+                                                             testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
     let rule2BuildPath = "test/testbundle"
     let rule2TargetName = "TestBundle"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
-    let rule2Attributes = ["xctest_app": rule1BuildTarget]
+    let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
     let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
       makeTestRuleEntry(rule2BuildTarget,
-                        type: "ios_test",
+                        type: testRuleType,
                         attributes: rule2Attributes,
                         implicitIPATarget: ipa),
     ])
@@ -476,7 +492,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BAZEL_TARGET_TYPE": "ios_test",
+          "BAZEL_TARGET_TYPE": testRuleType,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -516,18 +532,34 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSources() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSources("ios_test",
+                                                        testHostAttributeName: "xctest_app")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUnitTest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_unit_test",
+                                                        testHostAttributeName: "test_host")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_ui_test",
+                                                        testHostAttributeName: "test_host")
+  }
+
+  func checkGenerateTargetsForLinkedRuleEntriesWithSources(testRuleType: String,
+                                                           testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
     let testRuleBuildPath = "test/testbundle"
     let testRuleTargetName = "TestBundle"
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
-    let testRuleAttributes = ["xctest_app": rule1BuildTarget]
+    let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
     let appIPA = BuildLabel("test/app:TestApplication.ipa")
     let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
-                                     type: "ios_test",
+                                     type: testRuleType,
                                      attributes: testRuleAttributes,
                                      sourceFiles: testSources,
                                      implicitIPATarget: testIPA)
@@ -589,7 +621,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": testIPA.asFileName!,
-          "BAZEL_TARGET_TYPE": "ios_test",
+          "BAZEL_TARGET_TYPE": testRuleType,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -631,6 +663,22 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
+        "ios_test", testHostAttributeName: "xctest_app")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUnitTest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
+        "apple_unit_test", testHostAttributeName: "test_host")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUITest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
+        "apple_ui_test", testHostAttributeName: "test_host")
+  }
+
+  func checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
+      testRuleType: String, testHostAttributeName: String) {
     let hostTargetName = "TestHost"
     let host1Package = "test/package/1"
     let host2Package = "test/package/2"
@@ -644,12 +692,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let test1Target = "\(host1Package):\(test1TargetName)"
     let test2Target = "\(host2Package):\(test2TargetName)"
     let test1Rule = makeTestRuleEntry(test1Target,
-                                      type: "ios_test",
-                                      attributes: ["xctest_app": host1Target],
+                                      type: testRuleType,
+                                      attributes: [testHostAttributeName: host1Target],
                                       sourceFiles: testSources)
     let test2Rule = makeTestRuleEntry(test2Target,
-                                      type: "ios_test",
-                                      attributes: ["xctest_app": host2Target],
+                                      type: testRuleType,
+                                      attributes: [testHostAttributeName: host2Target],
                                       sourceFiles: testSources)
     let rules = Set([
       makeTestRuleEntry(host1Target, type: "ios_application"),
@@ -666,17 +714,33 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns() {
+    checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
+        "ios_test", testHostAttributeName: "xctest_app")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarnsWithSkylarkUnitTest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
+        "apple_unit_test", testHostAttributeName: "test_host")
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarnsWithSkylarkUITest() {
+    checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
+        "apple_ui_test", testHostAttributeName: "test_host")
+  }
+
+  func checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
+      testRuleType: String, testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
     let testRuleBuildPath = "test/testbundle"
     let testRuleTargetName = "TestBundle"
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
-    let testRuleAttributes = ["xctest_app": rule1BuildTarget]
+    let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
     let ipa = BuildLabel("test/app:TestApplication.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
-                                     type: "ios_test",
+                                     type: testRuleType,
                                      attributes: testRuleAttributes,
                                      sourceFiles: testSources,
                                      implicitIPATarget: ipa)
@@ -695,7 +759,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
           "BAZEL_TARGET_IPA": ipa.asFileName!,
-          "BAZEL_TARGET_TYPE": "ios_test",
+          "BAZEL_TARGET_TYPE": testRuleType,
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": testRuleTargetName,

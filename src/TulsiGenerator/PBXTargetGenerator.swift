@@ -793,9 +793,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                                               ruleEntryMap: ruleEntryMap)
       allIntermediateArtifacts[name] = intermediateArtifacts
 
-      if let hostLabelString = entry.attributes[.xctest_app] as? String {
-        let hostLabel = BuildLabel(hostLabelString)
-        testTargetLinkages.append((target, hostLabel, entry))
+      for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
+        if let hostLabelString = entry.attributes[attribute] as? String {
+          let hostLabel = BuildLabel(hostLabelString)
+          testTargetLinkages.append((target, hostLabel, entry))
+        }
       }
 
       if let type = entry.pbxTargetType where type.isWatchApp {

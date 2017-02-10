@@ -93,6 +93,18 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testTestSuiteSchemeGeneration() {
+    checkTestSuiteSchemeGeneration("ios_test", testHostAttributeName: "xctest_app")
+  }
+
+  func testTestSuiteSchemeGenerationWithSkylarkUnitTest() {
+    checkTestSuiteSchemeGeneration("apple_unit_test", testHostAttributeName: "test_host")
+  }
+
+  func testTestSuiteSchemeGenerationWithSkylarkUITest() {
+    checkTestSuiteSchemeGeneration("apple_ui_test", testHostAttributeName: "test_host")
+  }
+
+  func checkTestSuiteSchemeGeneration(testRuleType: String, testHostAttributeName: String) {
     func addRule(labelName: String,
                  type: String,
                  attributes: [String: AnyObject] = [:],
@@ -106,9 +118,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
     }
 
     let app = addRule("//test:Application", type: "ios_application")
-    let test1 = addRule("//test:TestOne", type: "ios_test", attributes: ["xctest_app": app.value])
-    let test2 = addRule("//test:TestTwo", type: "ios_test", attributes: ["xctest_app": app.value])
-    addRule("//test:UnusedTest", type: "ios_test")
+    let test1 = addRule("//test:TestOne", type: testRuleType, attributes: [testHostAttributeName: app.value])
+    let test2 = addRule("//test:TestTwo", type: testRuleType, attributes: [testHostAttributeName: app.value])
+    addRule("//test:UnusedTest", type: testRuleType)
     addRule("//test:TestSuite", type: "test_suite", weakDependencies: Set([test1, test2]))
     prepareGenerator(mockExtractor.labelToRuleEntry)
 
@@ -355,9 +367,11 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     for (name, entry) in namedRuleEntries {
       let target = project.createNativeTarget(name, targetType: entry.pbxTargetType!)
 
-      if let hostLabelString = entry.attributes[.xctest_app] as? String {
-        let hostLabel = BuildLabel(hostLabelString)
-        testTargetLinkages.append((target, hostLabel))
+      for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
+        if let hostLabelString = entry.attributes[attribute] as? String {
+          let hostLabel = BuildLabel(hostLabelString)
+          testTargetLinkages.append((target, hostLabel))
+        }
       }
     }
 

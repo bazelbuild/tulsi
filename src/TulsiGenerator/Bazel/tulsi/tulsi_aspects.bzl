@@ -29,6 +29,7 @@ _TULSI_COMPILE_DEPS = [
     'deps',
     'extensions',
     'non_propagated_deps',
+    'test_host',
     'xctest_app',
 ]
 
@@ -489,6 +490,7 @@ def _tulsi_sources_aspect(target, ctx):
       supporting_files=supporting_files,
       xctest=_get_opt_attr(rule_attr, 'xctest'),
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
+      test_host=_get_label_attr(rule_attr, 'test_host.label'),
   )
 
   # Inheritable attributes are pulled up through dependencies of type 'binary'
