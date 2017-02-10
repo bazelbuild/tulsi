@@ -74,6 +74,14 @@ class BazelIntegrationTestCase: XCTestCase {
       installWorkspaceFile()
     }
 
+    // Prevent any custom --blazerc startup option to be specified. It should always be /dev/null.
+    for startupOption in bazelStartupOptions {
+      if (startupOption.hasPrefix("--blazerc=") && startupOption != "--blazerc=/dev/null") {
+        fatalError("bazelStartupOptions includes custom blazerc, which is not allowed '\(startupOption)'")
+      }
+    }
+    bazelStartupOptions.append("--blazerc=/dev/null")
+
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")
     }
