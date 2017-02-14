@@ -291,7 +291,7 @@
 			name = XCTest;
 			productName = XCTest;
 			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6F353FBEA00000000 /* SkylarkTargetApplication */ = {
 			isa = PBXNativeTarget;

@@ -126,8 +126,8 @@ public final class RuleEntry: RuleInfo {
 
   /// Mapping of BUILD file type to Xcode Target type.
   static let BuildTypeToTargetType = [
-      "apple_ui_test": PBXTarget.ProductType.UnitTest,
-      "apple_unit_test": PBXTarget.ProductType.UIUnitTest,
+      "apple_ui_test": PBXTarget.ProductType.UIUnitTest,
+      "apple_unit_test": PBXTarget.ProductType.UnitTest,
       "apple_watch1_extension": PBXTarget.ProductType.Watch1App,
       "apple_watch2_extension": PBXTarget.ProductType.Watch2App,
       "ios_application": PBXTarget.ProductType.Application,
