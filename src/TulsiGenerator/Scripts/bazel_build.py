@@ -99,18 +99,17 @@ class _OptionsParser(object):
     self.sdk_version = sdk_version
     self.platform_name = platform_name
 
-    if arch:
-      if self.platform_name.startswith('watch'):
-        config_platform = 'watchos'
-      elif self.platform_name.startswith('iphone'):
-        config_platform = 'ios'
-      elif self.platform_name.startswith('appletv'):
-        config_platform = 'tvos'
-      else:
-        self._WarnUnknownPlatform()
-        config_platform = 'ios'
-      self.build_options[_OptionsParser.ALL_CONFIGS].append(
-          '--config=%s_%s' % (config_platform, arch))
+    if self.platform_name.startswith('watch'):
+      config_platform = 'watchos'
+    elif self.platform_name.startswith('iphone'):
+      config_platform = 'ios'
+    elif self.platform_name.startswith('appletv'):
+      config_platform = 'tvos'
+    else:
+      self._WarnUnknownPlatform()
+      config_platform = 'ios'
+    self.build_options[_OptionsParser.ALL_CONFIGS].append(
+        '--config=%s_%s' % (config_platform, arch))
 
     self.verbose = 0
     self.install_generated_artifacts = False
@@ -384,8 +383,14 @@ class BazelBuildBridge(object):
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
 
-    # Target architecture.
+    # Target architecture.  Must be defined for correct setting of
+    # the --config flag
     self.arch = os.environ.get('CURRENT_ARCH')
+    if not self.arch:
+      self._PrintError('Tulsi requires env variable CURRENT_ARCH to be '
+                       'set.  Please file a bug against Tulsi.')
+      sys.exit(1)
+
     # Declared outputs of the target.
     self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS', [])
     if self.bazel_outputs:
