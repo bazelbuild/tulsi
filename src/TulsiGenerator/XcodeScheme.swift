@@ -371,6 +371,9 @@ final class XcodeScheme {
       "title": "Run Script",
       "scriptText": script
     ])
+    let envBuildable = NSXMLElement(name: "EnvironmentBuildable")
+    envBuildable.addChild(primaryTargetBuildableReference.toXML())
+    actionContent.addChild(envBuildable)
     executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
     executionAction.addChild(actionContent)
     element.addChild(executionAction)
@@ -386,6 +389,9 @@ final class XcodeScheme {
       "title": "Run Script",
       "scriptText": script
     ])
+    let envBuildable = NSXMLElement(name: "EnvironmentBuildable")
+    envBuildable.addChild(primaryTargetBuildableReference.toXML())
+    actionContent.addChild(envBuildable)
     executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
     executionAction.addChild(actionContent)
     element.addChild(executionAction)
