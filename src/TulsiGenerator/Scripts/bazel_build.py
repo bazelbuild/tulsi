@@ -1184,6 +1184,8 @@ class BazelBuildBridge(object):
                 associated with the symlink used by Tulsi generated Xcode
                 projects if applicable. For example, a source path to a
                 /genfiles/ directory will be associated with "bazel-genfiles".
+                Paths will only be returned if they're available on the
+                local filesystem.
     """
     if os.path.isfile(self.codesigning_folder_path):
       binary_path = self.codesigning_folder_path
@@ -1217,26 +1219,42 @@ class BazelBuildBridge(object):
         r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/(.*?)\'\s*$')
     source_path_prefixes = set()
 
+    # TODO(b/35624202): Remove when target.source_map problem is resolved.
+    paths_not_found = set()
+
     bazel_out_symlink = self.bazel_symlink_prefix + 'out'
     for line in output.split('\n'):
       match = source_path_re.match(line)
-      if match:
-        basepath = match.group(1)
-        # Subpaths of interest will be of the form
-        # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
-        subpath = match.group(2)
-        components = subpath.split(os.sep, 5)
-        if len(components) >= 4 and components[1] == bazel_out_symlink:
-          symlink_component = components[3]
-          match_path = os.path.join(basepath, *components[:4])
-          if symlink_component == 'bin':
-            source_path_prefixes.add((match_path, self.bazel_bin_path))
-            continue
-          if symlink_component == 'genfiles':
-            source_path_prefixes.add((match_path, self.bazel_genfiles_path))
-            continue
+      if not match:
+        continue
+      basepath = match.group(1)
+      if not os.path.exists(basepath):
+        # TODO(b/35624202): Remove when target.source_map problem is resolved.
+        if basepath not in paths_not_found:
+          paths_not_found.add(basepath)
+          self._PrintPathNotFoundWarning(basepath)
+        continue
+      # Subpaths of interest will be of the form
+      # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
+      subpath = match.group(2)
+      components = subpath.split(os.sep, 5)
+      if len(components) >= 4 and components[1] == bazel_out_symlink:
+        symlink_component = components[3]
+        match_path = os.path.join(basepath, *components[:4])
+        if not os.path.exists(match_path):
+          # TODO(b/35624202): Remove when target.source_map problem is resolved.
+          if match_path not in paths_not_found:
+            paths_not_found.add(match_path)
+            self._PrintPathNotFoundWarning(match_path)
+          continue
+        if symlink_component == 'bin':
+          source_path_prefixes.add((match_path, self.bazel_bin_path))
+          continue
+        if symlink_component == 'genfiles':
+          source_path_prefixes.add((match_path, self.bazel_genfiles_path))
+          continue
 
-        source_path_prefixes.add((basepath, None))
+      source_path_prefixes.add((basepath, None))
 
     return source_path_prefixes
 
@@ -1262,6 +1280,12 @@ class BazelBuildBridge(object):
     if self.verbose > level:
       sys.stdout.write(msg + '\n')
       sys.stdout.flush()
+
+  # TODO(b/35624202): Remove when target.source_map problem is resolved.
+  def _PrintPathNotFoundWarning(self, path):
+    self._PrintWarning('Found target source path not on local filesystem: %s' %
+                       path)
+    self._PrintWarning('Ignoring path. Debugging might not work as expected.')
 
   @staticmethod
   def _PrintWarning(msg):
