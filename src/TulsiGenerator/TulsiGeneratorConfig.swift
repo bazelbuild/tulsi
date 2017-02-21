@@ -115,7 +115,7 @@ public class TulsiGeneratorConfig {
       self.bazelURL = URL(fileURLWithPath: savedBazelPath)
     } else {
       // TODO(abaire): Flag a fallback to searching for the binary.
-      self.bazelURL = NSURL() as URL
+      self.bazelURL = URL(fileURLWithPath: "")
     }
   }
 

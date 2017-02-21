@@ -23,8 +23,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   /// labelToRuleEntry dictionary.
   var invalidLabels = Set<BuildLabel>()
 
-  // Go through NSURL to create an empty instance.
-  var bazelURL = NSURL() as URL
+  var bazelURL = URL(fileURLWithPath: "")
   var bazelBinPath = "bazel-bin"
 
   func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {

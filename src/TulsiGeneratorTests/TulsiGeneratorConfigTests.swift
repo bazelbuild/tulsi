@@ -33,7 +33,7 @@ class TulsiGeneratorConfigTests: XCTestCase {
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
                                   options: TulsiOptionSet(),
-                                  bazelURL: NSURL() as URL)
+                                  bazelURL: URL(fileURLWithPath: ""))
   }
 
   func testSave() {
