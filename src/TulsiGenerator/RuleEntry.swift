@@ -316,7 +316,8 @@ public final class RuleEntry: RuleInfo {
 
     // tvOS apps and iOS apps both use the same product type, so we have to use
     // the rule name to distinguish them.
-    if targetType == .TVAppExtension || self.type == "_tvos_application" {
+    if targetType == .TVAppExtension || self.type == "tvos_application" ||
+        self.type == "_tvos_application" {
       return "appletvos"
     }
 
