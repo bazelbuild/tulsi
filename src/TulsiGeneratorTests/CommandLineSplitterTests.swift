@@ -50,7 +50,7 @@ class CommandLineSplitterTests: XCTestCase {
 
   // MARK: - Private methods
 
-  private func checkSplit(commandLine: String, _ expected: [String]?, line: UInt = #line) {
+  private func checkSplit(_ commandLine: String, _ expected: [String]?, line: UInt = #line) {
     let split = splitter.splitCommandLine(commandLine)
     if expected == nil {
       XCTAssertNil(split, line: line)

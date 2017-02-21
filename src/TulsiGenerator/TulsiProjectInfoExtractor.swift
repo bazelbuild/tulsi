@@ -21,15 +21,15 @@ public final class TulsiProjectInfoExtractor {
   private let localizedMessageLogger: LocalizedMessageLogger
   var workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
 
-  public var bazelURL: NSURL {
-    get { return workspaceInfoExtractor.bazelURL }
+  public var bazelURL: URL {
+    get { return workspaceInfoExtractor.bazelURL as URL }
     set { workspaceInfoExtractor.bazelURL = newValue }
   }
 
-  public init(bazelURL: NSURL,
+  public init(bazelURL: URL,
               project: TulsiProject) {
     self.project = project
-    let bundle = NSBundle(forClass: self.dynamicType)
+    let bundle = Bundle(for: type(of: self))
     localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
 
     workspaceInfoExtractor = BazelWorkspaceInfoExtractor(bazelURL: bazelURL,
@@ -41,7 +41,7 @@ public final class TulsiProjectInfoExtractor {
     return workspaceInfoExtractor.extractRuleInfoFromProject(project)
   }
 
-  public func ruleEntriesForInfos(infos: [RuleInfo],
+  public func ruleEntriesForInfos(_ infos: [RuleInfo],
                                   startupOptions: TulsiOption,
                                   buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
     return ruleEntriesForLabels(infos.map({ $0.label }),
@@ -49,7 +49,7 @@ public final class TulsiProjectInfoExtractor {
                                 buildOptions: buildOptions)
   }
 
-  public func ruleEntriesForLabels(labels: [BuildLabel],
+  public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
                                    buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
     return workspaceInfoExtractor.ruleEntriesForLabels(labels,
@@ -57,7 +57,7 @@ public final class TulsiProjectInfoExtractor {
                                                        buildOptions: buildOptions)
   }
 
-  public func extractBuildfiles(targets: [BuildLabel]) -> Set<BuildLabel> {
+  public func extractBuildfiles(_ targets: [BuildLabel]) -> Set<BuildLabel> {
     return workspaceInfoExtractor.extractBuildfiles(targets)
   }
 }

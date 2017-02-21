@@ -21,7 +21,7 @@ struct StubInfoPlistPaths {
   let watchOSStub: String
   let watchOSAppExStub: String
 
-  func stubPlist(type: PBXTarget.ProductType) -> String {
+  func stubPlist(_ type: PBXTarget.ProductType) -> String {
     switch type {
       case .Watch1App:
         fallthrough
@@ -46,12 +46,12 @@ struct StubInfoPlistPaths {
 protocol PBXTargetGeneratorProtocol: class {
   static func getRunTestTargetBuildConfigPrefix() -> String
 
-  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String
+  static func workingDirectoryForPBXGroup(_ group: PBXGroup) -> String
 
   /// Returns a new PBXGroup instance appropriate for use as a top level project group.
-  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup
+  static func mainGroupForOutputFolder(_ outputFolderURL: URL, workspaceRootURL: URL) -> PBXGroup
 
-  init(bazelURL: NSURL,
+  init(bazelURL: URL,
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
@@ -59,18 +59,18 @@ protocol PBXTargetGeneratorProtocol: class {
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
-       workspaceRootURL: NSURL,
+       workspaceRootURL: URL,
        suppressCompilerDefines: Bool,
        redactWorkspaceSymlink: Bool)
 
   /// Generates file references for the given file paths in the associated project without adding
   /// them to an indexer target. The paths must be relative to the workspace root. If pathFilters is
   /// non-nil, paths that do not match an entry in the pathFilters set will be omitted.
-  func generateFileReferencesForFilePaths(paths: [String], pathFilters: Set<String>?)
+  func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?)
 
   /// Registers the given Bazel rule and its transitive dependencies for inclusion by the Xcode
   /// indexer, adding source files whose directories are present in pathFilters.
-  func registerRuleEntryForIndexer(ruleEntry: RuleEntry,
+  func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: [BuildLabel: RuleEntry],
                                    pathFilters: Set<String>)
 
@@ -83,21 +83,21 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
   /// variable.
-  func generateBazelCleanTarget(scriptPath: String, workingDirectory: String)
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String)
 
   /// Generates project-level build configurations.
-  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String])
+  func generateTopLevelBuildConfigurations(_ buildSettingOverrides: [String: String])
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   /// Returns a map of target name to associated intermediate build artifacts.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(entries: Set<RuleEntry>,
+  func generateBuildTargetsForRuleEntries(_ entries: Set<RuleEntry>,
                                           ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]]
 }
 
 extension PBXTargetGeneratorProtocol {
-  func generateFileReferencesForFilePaths(paths: [String]) {
+  func generateFileReferencesForFilePaths(_ paths: [String]) {
     generateFileReferencesForFilePaths(paths, pathFilters: nil)
   }
 }
@@ -106,10 +106,10 @@ extension PBXTargetGeneratorProtocol {
 /// Concrete PBXProject target generator.
 final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
-  enum ProjectSerializationError: ErrorType {
-    case BUILDFileIsNotContainedByProjectRoot
-    case GeneralFailure(String)
-    case UnsupportedTargetType(String)
+  enum ProjectSerializationError: Error {
+    case buildFileIsNotContainedByProjectRoot
+    case generalFailure(String)
+    case unsupportedTargetType(String)
   }
 
   /// Names of Xcode build configurations to generate.
@@ -158,12 +158,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   static let BazelWorkspaceSymlinkVarName = "TULSI_BWRS"
 
   /// Location of the bazel binary.
-  let bazelURL: NSURL
+  let bazelURL: URL
 
   /// Location of the bazel bin symlink, relative to the workspace root.
   let bazelBinPath: String
   private(set) lazy var bazelGenfilesPath: String = { [unowned self] in
-    return self.bazelBinPath.stringByReplacingOccurrencesOfString("-bin", withString: "-genfiles")
+    return self.bazelBinPath.replacingOccurrences(of: "-bin", with: "-genfiles")
   }()
   private lazy var bazelWorkspaceSymlinkPath: String = { [unowned self] in
     let workspaceDirName: String
@@ -172,8 +172,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     } else {
       workspaceDirName = self.workspaceRootURL.lastPathComponent  ?? ""
     }
-    return self.bazelBinPath.stringByReplacingOccurrencesOfString("-bin",
-                                                                  withString: "-\(workspaceDirName)")
+    return self.bazelBinPath.replacingOccurrences(of: "-bin",
+                                                                  with: "-\(workspaceDirName)")
   }()
 
   let project: PBXProject
@@ -182,7 +182,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   let tulsiVersion: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
-  let workspaceRootURL: NSURL
+  let workspaceRootURL: URL
   let suppressCompilerDefines: Bool
   let redactWorkspaceSymlink: Bool
 
@@ -262,7 +262,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     /// Indicates whether or not this indexer may be merged with the given indexer.
-    func canMergeWith(other: IndexerData) -> Bool {
+    func canMergeWith(_ other: IndexerData) -> Bool {
       if self.pchFile != other.pchFile || self.bridgingHeader != other.bridgingHeader {
         return false
       }
@@ -285,7 +285,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     /// Returns a new IndexerData instance that is the result of merging this indexer with another.
-    func merging(other: IndexerData) -> IndexerData {
+    func merging(_ other: IndexerData) -> IndexerData {
       let newDependencies = dependencies.union(other.dependencies)
       let newName = indexerNameInfo + other.indexerNameInfo
       let newGeneratedIncludes = generatedIncludes + other.generatedIncludes
@@ -322,10 +322,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// optimization.
   private var indexerTargetByName = [String: PBXTarget]()
 
-  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String {
+  static func workingDirectoryForPBXGroup(_ group: PBXGroup) -> String {
     switch group.sourceTree {
       case .SourceRoot:
-        if let relativePath = group.path where !relativePath.isEmpty {
+        if let relativePath = group.path, !relativePath.isEmpty {
           return "${SRCROOT}/\(relativePath)"
         }
         return ""
@@ -339,9 +339,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup {
-    let outputFolder = outputFolderURL.path!
-    let workspaceRoot = workspaceRootURL.path!
+  static func mainGroupForOutputFolder(_ outputFolderURL: URL, workspaceRootURL: URL) -> PBXGroup {
+    let outputFolder = outputFolderURL.path
+    let workspaceRoot = workspaceRootURL.path
 
     let slashTerminatedOutputFolder = outputFolder + (outputFolder.hasSuffix("/") ? "" : "/")
     let slashTerminatedWorkspaceRoot = workspaceRoot + (workspaceRoot.hasSuffix("/") ? "" : "/")
@@ -354,8 +354,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // If outputFolder contains workspaceRoot, return a relative group with the path from
     // outputFolder to workspaceRoot
     if workspaceRoot.hasPrefix(slashTerminatedOutputFolder) {
-      let index = workspaceRoot.startIndex.advancedBy(slashTerminatedOutputFolder.characters.count)
-      let relativePath = workspaceRoot.substringFromIndex(index)
+      let index = workspaceRoot.characters.index(workspaceRoot.startIndex, offsetBy: slashTerminatedOutputFolder.characters.count)
+      let relativePath = workspaceRoot.substring(from: index)
       return PBXGroup(name: "mainGroup",
                       path: relativePath,
                       sourceTree: .SourceRoot,
@@ -365,10 +365,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // If workspaceRoot contains outputFolder, return a relative group using .. to walk up to
     // workspaceRoot from outputFolder.
     if outputFolder.hasPrefix(slashTerminatedWorkspaceRoot) {
-      let index = outputFolder.startIndex.advancedBy(slashTerminatedWorkspaceRoot.characters.count + 1)
-      let pathToWalkBackUp = outputFolder.substringFromIndex(index) as NSString
+      let index = outputFolder.characters.index(outputFolder.startIndex, offsetBy: slashTerminatedWorkspaceRoot.characters.count + 1)
+      let pathToWalkBackUp = outputFolder.substring(from: index) as NSString
       let numberOfDirectoriesToWalk = pathToWalkBackUp.pathComponents.count
-      let relativePath = [String](count: numberOfDirectoriesToWalk, repeatedValue: "..").joinWithSeparator("/")
+      let relativePath = [String](repeating: "..", count: numberOfDirectoriesToWalk).joined(separator: "/")
       return PBXGroup(name: "mainGroup",
                       path: relativePath,
                       sourceTree: .SourceRoot,
@@ -382,16 +382,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Returns a project-relative path for the given BazelFileInfo.
-  private static func projectRefForBazelFileInfo(info: BazelFileInfo) -> String {
+  private static func projectRefForBazelFileInfo(_ info: BazelFileInfo) -> String {
     switch info.targetType {
-      case .GeneratedFile:
+      case .generatedFile:
         return "$(\(WorkspaceRootVarName))/\(info.fullPath)"
-      case .SourceFile:
+      case .sourceFile:
         return "$(\(BazelWorkspaceSymlinkVarName))/\(info.fullPath)"
     }
   }
 
-  init(bazelURL: NSURL,
+  init(bazelURL: URL,
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
@@ -399,7 +399,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
-       workspaceRootURL: NSURL,
+       workspaceRootURL: URL,
        suppressCompilerDefines: Bool = false,
        redactWorkspaceSymlink: Bool = false) {
     self.bazelURL = bazelURL
@@ -415,7 +415,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.redactWorkspaceSymlink = redactWorkspaceSymlink
   }
 
-  func generateFileReferencesForFilePaths(paths: [String], pathFilters: Set<String>?) {
+  func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?) {
     if let pathFilters = pathFilters {
       let filteredPaths = paths.filter(pathFilterFunc(pathFilters))
       project.getOrCreateGroupsAndFileReferencesForPaths(filteredPaths)
@@ -424,21 +424,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  func registerRuleEntryForIndexer(ruleEntry: RuleEntry,
+  func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: [BuildLabel: RuleEntry],
                                    pathFilters: Set<String>) {
     let includePathInProject = pathFilterFunc(pathFilters)
-    func includeFileInProject(info: BazelFileInfo) -> Bool {
+    func includeFileInProject(_ info: BazelFileInfo) -> Bool {
       return includePathInProject(info.fullPath)
     }
 
-    func addFileReference(info: BazelFileInfo) {
+    func addFileReference(_ info: BazelFileInfo) {
       let (_, fileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths([info.fullPath])
-      fileReferences.first!.isInputFile = info.targetType == .SourceFile
+      fileReferences.first!.isInputFile = info.targetType == .sourceFile
     }
 
-    func addBuildFileForRule(ruleEntry: RuleEntry) {
-      guard let buildFilePath = ruleEntry.buildFilePath where includePathInProject(buildFilePath) else {
+    func addBuildFileForRule(_ ruleEntry: RuleEntry) {
+      guard let buildFilePath = ruleEntry.buildFilePath, includePathInProject(buildFilePath) else {
         return
       }
       project.getOrCreateGroupsAndFileReferencesForPaths([buildFilePath])
@@ -446,7 +446,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Map of build label to cumulative preprocessor defines and include paths.
     var processedEntries = [BuildLabel: (Set<String>, NSOrderedSet, NSOrderedSet, NSOrderedSet)]()
-    func generateIndexerTargetGraphForRuleEntry(ruleEntry: RuleEntry) -> (Set<String>,
+    func generateIndexerTargetGraphForRuleEntry(_ ruleEntry: RuleEntry) -> (Set<String>,
                                                                           NSOrderedSet,
                                                                           NSOrderedSet,
                                                                           NSOrderedSet) {
@@ -472,24 +472,23 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
         let (inheritedDefines, inheritedIncludes, inheritedGeneratedIncludes, inheritedFrameworkSearchPaths) =
             generateIndexerTargetGraphForRuleEntry(depEntry)
-        defines.unionInPlace(inheritedDefines)
-        includes.unionOrderedSet(inheritedIncludes)
-        generatedIncludes.unionOrderedSet(inheritedGeneratedIncludes)
-        frameworkSearchPaths.unionOrderedSet(inheritedFrameworkSearchPaths)
+        defines.formUnion(inheritedDefines)
+        includes.union(inheritedIncludes)
+        generatedIncludes.union(inheritedGeneratedIncludes)
+        frameworkSearchPaths.union(inheritedFrameworkSearchPaths)
       }
 
-      if let ruleDefines = ruleEntry.attributes[.defines] as? [String] where !ruleDefines.isEmpty {
-        defines.unionInPlace(ruleDefines)
+      if let ruleDefines = ruleEntry.attributes[.defines] as? [String], !ruleDefines.isEmpty {
+        defines.formUnion(ruleDefines)
       }
       if !suppressCompilerDefines,
-         let ruleDefines = ruleEntry.attributes[.compiler_defines] as? [String]
-         where !ruleDefines.isEmpty {
-        defines.unionInPlace(ruleDefines)
+         let ruleDefines = ruleEntry.attributes[.compiler_defines] as? [String], !ruleDefines.isEmpty {
+        defines.formUnion(ruleDefines)
       }
 
       if let ruleIncludes = ruleEntry.attributes[.includes] as? [String] {
         let packagePath: String
-        if let packageName = ruleEntry.label.packageName where !packageName.isEmpty {
+        if let packageName = ruleEntry.label.packageName, !packageName.isEmpty {
           packagePath = packageName + "/"
         } else {
           packagePath = ""
@@ -499,11 +498,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           let packageQualifiedPath = packagePath + $0
           // Normal file paths are accessed via the Bazel workspace symlink to accommodate files in
           // external workspaces.
-          includes.addObject("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(packageQualifiedPath)")
+          includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(packageQualifiedPath)")
           // Files generated by Bazel are always expected to be available through the top-level
           // symlinks.
-          includes.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)/\(packageQualifiedPath)")
-          includes.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/\(packageQualifiedPath)")
+          includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)/\(packageQualifiedPath)")
+          includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/\(packageQualifiedPath)")
         }
       }
 
@@ -515,7 +514,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           }
           return rootedPath
         }
-        generatedIncludes.addObjectsFromArray(rootedPaths)
+        generatedIncludes.addObjects(from: rootedPaths)
       }
 
       // Search path entries are added for all framework imports, regardless of whether the
@@ -523,8 +522,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // itself.
       ruleEntry.frameworkImports.forEach() {
         let fullPath = $0.fullPath as NSString
-        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(fullPath.stringByDeletingLastPathComponent)"
-        frameworkSearchPaths.addObject(rootedPath)
+        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(fullPath.deletingLastPathComponent)"
+        frameworkSearchPaths.add(rootedPath)
       }
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
       let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles.filter(includeFileInProject)
@@ -533,10 +532,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       for target in ruleEntry.normalNonSourceArtifacts.filter(includeFileInProject) {
         let path = target.fullPath as NSString
-        let group = project.getOrCreateGroupForPath(path.stringByDeletingLastPathComponent)
+        let group = project.getOrCreateGroupForPath(path.deletingLastPathComponent)
         let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
                                                              path: path.lastPathComponent)
-        ref.isInputFile = target.targetType == .SourceFile
+        ref.isInputFile = target.targetType == .sourceFile
       }
 
       if sourceFileInfos.isEmpty &&
@@ -549,31 +548,31 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       var localPreprocessorDefines = defines
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
       let otherCFlags = NSMutableOrderedSet()
-      if let copts = ruleEntry.attributes[.copts] as? [String] where !copts.isEmpty {
+      if let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty {
         for opt in copts {
           // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
           //     encyclopedia.
           if opt.hasPrefix("-D") {
-            localPreprocessorDefines.insert(opt.substringFromIndex(opt.startIndex.advancedBy(2)))
+            localPreprocessorDefines.insert(opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2)))
           } else  if opt.hasPrefix("-I") {
-            var path = opt.substringFromIndex(opt.startIndex.advancedBy(2))
+            var path = opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2))
             if !path.hasPrefix("/") {
               path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
             }
-            localIncludes.addObject(path)
+            localIncludes.add(path)
           } else {
-            otherCFlags.addObject(opt)
+            otherCFlags.add(opt)
           }
         }
       }
 
       let pchFile = BazelFileInfo(info: ruleEntry.attributes[.pch])
-      if let pchFile = pchFile where includeFileInProject(pchFile) {
+      if let pchFile = pchFile, includeFileInProject(pchFile) {
         addFileReference(pchFile)
       }
 
       let bridgingHeader = BazelFileInfo(info: ruleEntry.attributes[.bridging_header])
-      if let bridgingHeader = bridgingHeader where includeFileInProject(bridgingHeader) {
+      if let bridgingHeader = bridgingHeader, includeFileInProject(bridgingHeader) {
         addFileReference(bridgingHeader)
       }
       let enableModules = (ruleEntry.attributes[.enable_modules] as? Int) == 1
@@ -582,8 +581,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
-      fileReferences.appendContentsOf(generateFileReferencesForFileInfos(frameworkFileInfos))
-      fileReferences.appendContentsOf(nonARCFiles)
+      fileReferences.append(contentsOf: generateFileReferencesForFileInfos(frameworkFileInfos))
+      fileReferences.append(contentsOf: nonARCFiles)
 
       var buildPhaseReferences: [PBXReference]
       if nonSourceVersionedFileInfos.isEmpty {
@@ -592,7 +591,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let versionedFileReferences = createReferencesForVersionedFileTargets(nonSourceVersionedFileInfos)
         buildPhaseReferences = versionedFileReferences as [PBXReference]
       }
-      buildPhaseReferences.appendContentsOf(fileReferences as [PBXReference])
+      buildPhaseReferences.append(contentsOf: fileReferences as [PBXReference])
 
       let buildPhase = createBuildPhaseForReferences(buildPhaseReferences,
                                                      withPerFileSettings: nonARCSettings)
@@ -610,8 +609,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let swiftIncludePaths = NSMutableOrderedSet()
         for module in ruleEntry.swiftTransitiveModules {
           let fullPath = module.fullPath as NSString
-          let includePath = fullPath.stringByDeletingLastPathComponent
-          swiftIncludePaths.addObject("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(includePath)")
+          let includePath = fullPath.deletingLastPathComponent
+          swiftIncludePaths.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(includePath)")
         }
 
         // Load module maps explicitly instead of letting Clang discover them on search paths. This
@@ -656,7 +655,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateIndexerTargets() -> [String: PBXTarget] {
     mergeRegisteredIndexers()
 
-    func generateIndexer(name: String,
+    func generateIndexer(_ name: String,
                          indexerType: PBXTarget.ProductType,
                          data: IndexerData) {
       let indexingTarget = project.createNativeTarget(name, targetType: indexerType)
@@ -676,7 +675,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       generateIndexer(name, indexerType: PBXTarget.ProductType.Framework, data: data)
     }
 
-    func linkDependencies(dataMap: [String: IndexerData]) {
+    func linkDependencies(_ dataMap: [String: IndexerData]) {
       for (name, data) in dataMap {
         guard let indexerTarget = indexerTargetByName[name] else {
           localizedMessageLogger.infoMessage("Unexpectedly failed to resolve indexer \(name)")
@@ -684,13 +683,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
 
         for depName in data.indexerNamesForDependencies {
-          guard let indexerDependency = indexerTargetByName[depName]
-              where indexerDependency !== indexerTarget else {
+          guard let indexerDependency = indexerTargetByName[depName], indexerDependency !== indexerTarget else {
             continue
           }
 
           indexerTarget.createDependencyOn(indexerDependency,
-                                           proxyType: PBXContainerItemProxy.ProxyType.TargetReference,
+                                           proxyType: PBXContainerItemProxy.ProxyType.targetReference,
                                            inProject: project)
         }
       }
@@ -702,10 +700,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return indexerTargetByName
   }
 
-  func generateBazelCleanTarget(scriptPath: String, workingDirectory: String = "") {
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String = "") {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
-    let bazelPath = bazelURL.path!
+    let bazelPath = bazelURL.path
     bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
                                                         buildToolPath: "\(scriptPath)",
                                                         buildArguments: "\"\(bazelPath)\" \"\(bazelBinPath)\"",
@@ -717,13 +715,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       target.createDependencyOn(bazelCleanScriptTarget!,
-                                proxyType: PBXContainerItemProxy.ProxyType.TargetReference,
+                                proxyType: PBXContainerItemProxy.ProxyType.targetReference,
                                 inProject: project,
                                 first: true)
     }
   }
 
-  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String] = [:]) {
+  func generateTopLevelBuildConfigurations(_ buildSettingOverrides: [String: String] = [:]) {
     var buildSettings = options.commonBuildSettings()
 
     for (key, value) in buildSettingOverrides {
@@ -771,7 +769,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     ]
     // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
     // protocol buffers) make use of system-style includes.
-    buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joinWithSeparator(" ")
+    buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joined(separator: " ")
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
@@ -779,7 +777,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Generates build targets for the given rule entries and returns a map of target name to the
   /// list of any intermediate artifacts produced when building that target.
-  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
+  func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
                                           ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
@@ -800,7 +798,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
       }
 
-      if let type = entry.pbxTargetType where type.isWatchApp {
+      if let type = entry.pbxTargetType, type.isWatchApp {
         let appExTarget = generateWatchOSAppExtension(target, entry: entry)
         target.createBuildActionDependencyOn(appExTarget)
       }
@@ -818,7 +816,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // MARK: - Private methods
 
   /// Generates a nop watch
-  private func generateWatchOSAppExtension(target: PBXNativeTarget, entry: RuleEntry) -> PBXNativeTarget {
+  private func generateWatchOSAppExtension(_ target: PBXNativeTarget, entry: RuleEntry) -> PBXNativeTarget {
     let name = PBXTargetGenerator.watchAppExtensionTargetPrefix + target.name
     // Invoking this method on anything without an associated watchAppExtensionType is a programmer
     // error.
@@ -847,13 +845,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Generates a filter function that may be used to verify that a path string is allowed by the
   /// given set of pathFilters.
-  private func pathFilterFunc(pathFilters: Set<String>) -> (String) -> Bool {
+  private func pathFilterFunc(_ pathFilters: Set<String>) -> (String) -> Bool {
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
-      $0.substringToIndex($0.endIndex.advancedBy(-3))
+      $0.substring(to: $0.characters.index($0.endIndex, offsetBy: -3))
     })
 
-    func includePath(path: String) -> Bool {
-      let dir = (path as NSString).stringByDeletingLastPathComponent
+    func includePath(_ path: String) -> Bool {
+      let dir = (path as NSString).deletingLastPathComponent
       if pathFilters.contains(dir) { return true }
       let terminatedDir = dir + "/"
       for filter in recursiveFilters {
@@ -868,9 +866,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Attempts to reduce the number of indexers by merging any that have identical settings.
   private func mergeRegisteredIndexers() {
 
-    func mergeIndexers<T : SequenceType where T.Generator.Element == IndexerData>(indexers: T) -> [String: IndexerData] {
+    func mergeIndexers<T : Sequence>(_ indexers: T) -> [String: IndexerData] where T.Iterator.Element == IndexerData {
       var mergedIndexers = [String: IndexerData]()
-      var indexers = Array(indexers)
+      var indexers = Array(indexers).sorted { $0.indexerName < $1.indexerName }
 
       while !indexers.isEmpty {
         var remaining = [IndexerData]()
@@ -894,15 +892,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     frameworkIndexers = mergeIndexers(frameworkIndexers.values)
   }
 
-  private func generateFileReferencesForFileInfos(infos: [BazelFileInfo]) -> [PBXFileReference] {
+  private func generateFileReferencesForFileInfos(_ infos: [BazelFileInfo]) -> [PBXFileReference] {
     guard !infos.isEmpty else { return [] }
     var generatedFilePaths = [String]()
     var sourceFilePaths = [String]()
     for info in infos {
       switch info.targetType {
-        case .GeneratedFile:
+        case .generatedFile:
           generatedFilePaths.append(info.fullPath)
-        case .SourceFile:
+        case .sourceFile:
           sourceFilePaths.append(info.fullPath)
       }
     }
@@ -912,13 +910,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let (_, generatedFileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(generatedFilePaths)
     generatedFileReferences.forEach() { $0.isInputFile = false }
 
-    fileReferences.appendContentsOf(generatedFileReferences)
+    fileReferences.append(contentsOf: generatedFileReferences)
     return fileReferences
   }
 
   /// Generates file references for the given infos, and returns a settings dictionary to be passed
   /// to createBuildPhaseForReferences:withPerFileSettings:.
-  private func generateFileReferencesAndSettingsForNonARCFileInfos(infos: [BazelFileInfo]) -> ([PBXFileReference], [PBXFileReference: [String: String]]) {
+  private func generateFileReferencesAndSettingsForNonARCFileInfos(_ infos: [BazelFileInfo]) -> ([PBXFileReference], [PBXFileReference: [String: String]]) {
     let nonARCFileReferences = generateFileReferencesForFileInfos(infos)
     var settings = [PBXFileReference: [String: String]]()
     let disableARCSetting = ["COMPILER_FLAGS": "-fno-objc-arc"]
@@ -928,7 +926,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return (nonARCFileReferences, settings)
   }
 
-  private func generateUniqueNamesForRuleEntries(ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
+  private func generateUniqueNamesForRuleEntries(_ ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
     // Build unique names for the target rules.
     var collidingRuleEntries = [String: [RuleEntry]]()
     for entry: RuleEntry in ruleEntries {
@@ -958,12 +956,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Adds the given file targets to a versioned group.
-  private func createReferencesForVersionedFileTargets(fileInfos: [BazelFileInfo]) -> [XCVersionGroup] {
+  private func createReferencesForVersionedFileTargets(_ fileInfos: [BazelFileInfo]) -> [XCVersionGroup] {
     var groups = [String: XCVersionGroup]()
 
     for info in fileInfos {
       let path = info.fullPath as NSString
-      let versionedGroupPath = path.stringByDeletingLastPathComponent
+      let versionedGroupPath = path.deletingLastPathComponent
       let type = info.subPath.pbPathUTI ?? ""
       let versionedGroup = project.getOrCreateVersionGroupForPath(versionedGroupPath,
                                                                   versionGroupType: type)
@@ -972,7 +970,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
       let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group,
                                                                     path: path.lastPathComponent)
-      ref.isInputFile = info.targetType == .SourceFile
+      ref.isInputFile = info.targetType == .sourceFile
     }
 
     for (sourcePath, group) in groups {
@@ -984,21 +982,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Attempt to read the .xccurrentversion plists in the xcdatamodeld's and sync up the
   // currentVersion in the XCVersionGroup instances. Failure to specify the currentVersion will
   // result in Xcode picking an arbitrary version.
-  private func setCurrentVersionForXCVersionGroup(group: XCVersionGroup,
+  private func setCurrentVersionForXCVersionGroup(_ group: XCVersionGroup,
                                                   atPath sourcePath: String) {
-#if swift(>=2.3)
-    let versionedBundleURL = workspaceRootURL.URLByAppendingPathComponent(sourcePath,
-                                                                          isDirectory: true)!
-    let currentVersionPlistURL = versionedBundleURL.URLByAppendingPathComponent(".xccurrentversion",
-                                                                                isDirectory: false)!
-#else
-    let versionedBundleURL = workspaceRootURL.URLByAppendingPathComponent(sourcePath,
-                                                                          isDirectory: true)
-    let currentVersionPlistURL = versionedBundleURL.URLByAppendingPathComponent(".xccurrentversion",
-                                                                                isDirectory: false)
-#endif
-    let path = currentVersionPlistURL.path!
-    guard let data = NSFileManager.defaultManager().contentsAtPath(path) else {
+
+    let versionedBundleURL = workspaceRootURL.appendingPathComponent(sourcePath,
+                                                                     isDirectory: true)
+    let currentVersionPlistURL = versionedBundleURL.appendingPathComponent(".xccurrentversion",
+                                                                           isDirectory: false)
+    let path = currentVersionPlistURL.path
+    guard let data = FileManager.default.contents(atPath: path) else {
       self.localizedMessageLogger.warning("LoadingXCCurrentVersionFailed",
                                           comment: "Message to show when loading a .xccurrentversion file fails.",
                                           values: group.name, "Version file at '\(path)' could not be read")
@@ -1006,8 +998,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     do {
-      let plist = try NSPropertyListSerialization.propertyListWithData(data,
-                                                                       options: .Immutable,
+      let plist = try PropertyListSerialization.propertyList(from: data,
+                                                                       options: PropertyListSerialization.MutabilityOptions(),
                                                                        format: nil) as! [String: AnyObject]
       if let currentVersion = plist["_XCCurrentVersionName"] as? String {
         if !group.setCurrentVersionByName(currentVersion) {
@@ -1030,7 +1022,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Adds XCBuildConfigurations to the given indexer PBXTarget.
   // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
   // spaces it would be the string: key="value with spaces").
-  private func addConfigsForIndexingTarget(target: PBXTarget, data: IndexerData) {
+  private func addConfigsForIndexingTarget(_ target: PBXTarget, data: IndexerData) {
 
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
@@ -1041,11 +1033,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     var allOtherCFlags = data.otherCFlags
     if !data.preprocessorDefines.isEmpty {
-      allOtherCFlags.appendContentsOf(data.preprocessorDefines.sort().map({"-D\($0)"}))
+      allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map({"-D\($0)"}))
     }
 
     if !allOtherCFlags.isEmpty {
-      buildSettings["OTHER_CFLAGS"] = allOtherCFlags.joinWithSeparator(" ")
+      buildSettings["OTHER_CFLAGS"] = allOtherCFlags.joined(separator: " ")
     }
 
     if let bridgingHeader = data.bridgingHeader {
@@ -1057,22 +1049,22 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     if !data.includes.isEmpty || !data.generatedIncludes.isEmpty {
-      let includes = data.includes.joinWithSeparator(" ")
-      let generatedIncludes = data.generatedIncludes.joinWithSeparator(" ")
+      let includes = data.includes.joined(separator: " ")
+      let generatedIncludes = data.generatedIncludes.joined(separator: " ")
       buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) \(generatedIncludes)"
     }
 
     if !data.frameworkSearchPaths.isEmpty {
-      buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + data.frameworkSearchPaths.joinWithSeparator(" ")
+      buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(inherited) " + data.frameworkSearchPaths.joined(separator: " ")
     }
 
     if !data.swiftIncludePaths.isEmpty {
-      let paths = data.swiftIncludePaths.joinWithSeparator(" ")
+      let paths = data.swiftIncludePaths.joined(separator: " ")
       buildSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) \(paths)"
     }
 
     if !data.otherSwiftFlags.isEmpty {
-      buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joinWithSeparator(" ")
+      buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joined(separator: " ")
     }
 
     if let iPhoneOSDeploymentTarget = data.iPhoneOSDeploymentTarget {
@@ -1109,7 +1101,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   // Updates the build settings and optionally adds a "Compile sources" phase for the given test
   // bundle target.
-  private func updateTestTarget(target: PBXTarget,
+  private func updateTestTarget(_ target: PBXTarget,
                                 withLinkageToHostTarget hostTargetLabel: BuildLabel,
                                 ruleEntry: RuleEntry) {
     guard let hostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget else {
@@ -1126,7 +1118,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Attempt to update the build configs for the target to include BUNDLE_LOADER and TEST_HOST
     // values, linking the test target to its host.
     if let hostProduct = hostTarget.productReference?.path,
-           hostProductName = hostTarget.productName {
+           let hostProductName = hostTarget.productName {
       let testSettings = [
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(hostProduct)/\(hostProductName)",
@@ -1149,7 +1141,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty || !frameworkImportFileInfos.isEmpty {
       var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
       let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
-      fileReferences.appendContentsOf(nonARCFiles)
+      fileReferences.append(contentsOf: nonARCFiles)
       let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
       target.buildPhases.append(buildPhase)
@@ -1157,7 +1149,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // Resolves a BuildLabel to an existing PBXTarget, handling target name collisions.
-  private func projectTargetForLabel(label: BuildLabel) -> PBXTarget? {
+  private func projectTargetForLabel(_ label: BuildLabel) -> PBXTarget? {
     guard let targetName = label.targetName else { return nil }
     if let target = project.targetByName[targetName] {
       return target
@@ -1170,9 +1162,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Adds a dummy build configuration to the given list based off of the Debug config that is
   // used to effectively disable compilation when running XCTests by converting each compile call
   // into a "clang -help" invocation.
-  private func addTestRunnerBuildConfigurationToBuildConfigurationList(list: XCConfigurationList) {
+  private func addTestRunnerBuildConfigurationToBuildConfigurationList(_ list: XCConfigurationList) {
 
-    func createTestConfigNamed(testConfigName: String,
+    func createTestConfigNamed(_ testConfigName: String,
                                forBaseConfigNamed configurationName: String) {
       let baseConfig = list.getOrCreateBuildConfiguration(configurationName)
       let config = list.getOrCreateBuildConfiguration(testConfigName)
@@ -1200,10 +1192,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  private func createBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
+  private func createBuildConfigurationsForList(_ buildConfigurationList: XCConfigurationList,
                                                 buildSettings: Dictionary<String, String>,
                                                 indexerSettingsOnly: Bool = false) {
-    func addPreprocessorDefine(define: String, toConfig config: XCBuildConfiguration) {
+    func addPreprocessorDefine(_ define: String, toConfig config: XCBuildConfiguration) {
       if let existingDefinitions = config.buildSettings["GCC_PREPROCESSOR_DEFINITIONS"] {
         // NOTE(abaire): Technically this should probably check first to see if "define" has been
         //               set but in the foreseeable usage it's unlikely that this if condition would
@@ -1234,11 +1226,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  private func updateMissingBuildConfigurationsForList(buildConfigurationList: XCConfigurationList,
+  private func updateMissingBuildConfigurationsForList(_ buildConfigurationList: XCConfigurationList,
                                                        withBuildSettings newSettings: Dictionary<String, String>,
                                                        inheritingFromConfigurationList baseConfigurationList: XCConfigurationList? = nil,
                                                        suppressingBuildSettings suppressedKeys: Set<String> = []) {
-    func mergeDictionary(inout old: [String: String],
+    func mergeDictionary(_ old: inout [String: String],
                          withContentsOfDictionary new: [String: String]) {
       for (key, value) in new {
         if let _ = old[key] { continue }
@@ -1270,11 +1262,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  static func indexerNameForTargetName(targetName: String, hash: Int) -> String {
+  static func indexerNameForTargetName(_ targetName: String, hash: Int) -> String {
     let normalizedTargetName: String
     if targetName.characters.count > MaxIndexerNameLength {
-      let endIndex = targetName.startIndex.advancedBy(MaxIndexerNameLength - 4)
-      normalizedTargetName = targetName.substringToIndex(endIndex) + "_etc"
+      let endIndex = targetName.characters.index(targetName.startIndex, offsetBy: MaxIndexerNameLength - 4)
+      normalizedTargetName = targetName.substring(to: endIndex) + "_etc"
     } else {
       normalizedTargetName = targetName
     }
@@ -1283,15 +1275,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   // Creates a PBXSourcesBuildPhase with the given references, optionally applying the given
   // per-file settings to each.
-  private func createBuildPhaseForReferences(refs: [PBXReference],
+  private func createBuildPhaseForReferences(_ refs: [PBXReference],
                                              withPerFileSettings settings: [PBXFileReference: [String: String]]? = nil) -> PBXSourcesBuildPhase {
     let buildPhase = PBXSourcesBuildPhase()
 
     for ref in refs {
       if let ref = ref as? PBXFileReference {
         // Do not add header files to the build phase.
-        guard let fileUTI = ref.uti
-            where fileUTI.hasPrefix("sourcecode.") && !fileUTI.hasSuffix(".h") else {
+        guard let fileUTI = ref.uti, fileUTI.hasPrefix("sourcecode.") && !fileUTI.hasSuffix(".h") else {
           continue
         }
         buildPhase.files.append(PBXBuildFile(fileRef: ref, settings: settings?[ref]))
@@ -1305,11 +1296,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Creates a PBXNativeTarget for the given rule entry, returning it and any intermediate build
   /// artifacts.
-  private func createBuildTargetForRuleEntry(entry: RuleEntry,
+  private func createBuildTargetForRuleEntry(_ entry: RuleEntry,
                                              named name: String,
                                              ruleEntryMap: [BuildLabel: RuleEntry]) throws -> (PBXNativeTarget, [String]) {
     guard let pbxTargetType = entry.pbxTargetType else {
-      throw ProjectSerializationError.UnsupportedTargetType(entry.type)
+      throw ProjectSerializationError.unsupportedTargetType(entry.type)
     }
     let target = project.createNativeTarget(name, targetType: pbxTargetType)
 
@@ -1367,7 +1358,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // dependencies is provided so that downstream utilities may locate them (e.g., to patch DWARF
       // symbols).
       intermediateArtifacts =
-          entry.discoverIntermediateArtifacts(ruleEntryMap).flatMap({ $0.fullPath }).sort()
+          entry.discoverIntermediateArtifacts(ruleEntryMap).flatMap({ $0.fullPath }).sorted()
     } else {
       intermediateArtifacts = []
     }
@@ -1391,14 +1382,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         var orderedOutputPaths = [String]()
         for path in outputPaths {
           if path.hasSuffix(ipaTargetFilename) {
-            orderedOutputPaths.insert(path, atIndex: 0)
+            orderedOutputPaths.insert(path, at: 0)
           } else {
             orderedOutputPaths.append(path)
           }
         }
-        buildSettings["BAZEL_OUTPUTS"] = orderedOutputPaths.joinWithSeparator("\n")
+        buildSettings["BAZEL_OUTPUTS"] = orderedOutputPaths.joined(separator: "\n")
       } else {
-        buildSettings["BAZEL_OUTPUTS"] = outputPaths.joinWithSeparator("\n")
+        buildSettings["BAZEL_OUTPUTS"] = outputPaths.joined(separator: "\n")
       }
     }
 
@@ -1430,7 +1421,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if let legacyTarget = bazelCleanScriptTarget {
       target.createDependencyOn(legacyTarget,
-                                proxyType: PBXContainerItemProxy.ProxyType.TargetReference,
+                                proxyType: PBXContainerItemProxy.ProxyType.targetReference,
                                 inProject: project,
                                 first: true)
     }
@@ -1438,7 +1429,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return (target, intermediateArtifacts)
   }
 
-  private func createBuildPhaseForRuleEntry(entry: RuleEntry) -> PBXShellScriptBuildPhase? {
+  private func createBuildPhaseForRuleEntry(_ entry: RuleEntry) -> PBXShellScriptBuildPhase? {
     let buildLabel = entry.label.value
     let commandLine = buildScriptCommandlineForBuildLabels(buildLabel,
                                                            withOptionsForTargetLabel: entry.label)
@@ -1461,15 +1452,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Constructs a commandline string that will invoke the bazel build script to generate the given
   /// buildLabels (a space-separated set of Bazel target labels) with user options set for the given
   /// optionsTarget.
-  private func buildScriptCommandlineForBuildLabels(buildLabels: String,
+  private func buildScriptCommandlineForBuildLabels(_ buildLabels: String,
                                                     withOptionsForTargetLabel target: BuildLabel) -> String {
     var commandLine = "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
-        "--bazel \"\(bazelURL.path!)\" " +
+        "--bazel \"\(bazelURL.path)\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
         "--verbose "
 
-    func addPerConfigValuesForOptions(optionKeys: [TulsiOptionKey],
+    func addPerConfigValuesForOptions(_ optionKeys: [TulsiOptionKey],
                                       additionalFlags: String = "",
                                       optionFlag: String) {
       // Get the value for each config and test to see if they are all identical and may be
@@ -1520,7 +1511,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     let additionalFlags: String
-    if let shouldContinueBuildingAfterError = options[.BazelContinueBuildingAfterError].commonValueAsBool where
+    if let shouldContinueBuildingAfterError = options[.BazelContinueBuildingAfterError].commonValueAsBool,
         shouldContinueBuildingAfterError {
       additionalFlags = "--keep_going"
     } else {

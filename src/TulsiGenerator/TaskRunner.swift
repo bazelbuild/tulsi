@@ -21,14 +21,14 @@ public final class TaskRunner {
   /// Information retrieved through execution of a task.
   public struct CompletionInfo {
     /// The task that was executed.
-    public let task: NSTask
+    public let task: Process
 
     /// The commandline that was executed, suitable for pasting in terminal to reproduce.
     public let commandlineString: String
     /// The task's standard output.
-    public let stdout: NSData
+    public let stdout: Data
     /// The task's standard error.
-    public let stderr: NSData
+    public let stderr: Data
 
     /// The exit status for the task.
     public var terminationStatus: Int32 {
@@ -44,15 +44,15 @@ public final class TaskRunner {
   }()
 
     /// The outstanding tasks.
-  private var pendingTasks = Set<NSTask>()
+  private var pendingTasks = Set<Process>()
   private let taskReader: TaskOutputReader
 
   /// Prepares an NSTask using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
-  public static func createTask(launchPath: String,
+  public static func createTask(_ launchPath: String,
                          arguments: [String]? = nil,
                          environment: [String: String]? = nil,
-                         terminationHandler: CompletionHandler) -> NSTask {
+                         terminationHandler: @escaping CompletionHandler) -> Process {
     return defaultInstance.createTask(launchPath,
                                       arguments: arguments,
                                       environment: environment,
@@ -70,76 +70,76 @@ public final class TaskRunner {
     taskReader.stop()
   }
 
-  private func createTask(launchPath: String,
+  private func createTask(_ launchPath: String,
                           arguments: [String]? = nil,
                           environment: [String: String]? = nil,
-                          terminationHandler: CompletionHandler) -> NSTask {
-    let task = NSTask()
+                          terminationHandler: @escaping CompletionHandler) -> Process {
+    let task = Process()
     task.launchPath = launchPath
     task.arguments = arguments
     if let environment = environment {
       task.environment = environment
     }
 
-    let dispatchGroup = dispatch_group_create()
-    let notificationCenter = NSNotificationCenter.defaultCenter()
-    func registerAndStartReader(fileHandle: NSFileHandle, outputData: NSMutableData) -> NSObjectProtocol {
-      let observer = notificationCenter.addObserverForName(NSFileHandleReadToEndOfFileCompletionNotification,
+    let dispatchGroup = DispatchGroup()
+    let notificationCenter = NotificationCenter.default
+    func registerAndStartReader(_ fileHandle: FileHandle, outputData: NSMutableData) -> NSObjectProtocol {
+      let observer = notificationCenter.addObserver(forName: NSNotification.Name.NSFileHandleReadToEndOfFileCompletion,
                                                            object: fileHandle,
-                                                           queue: nil) { (notification: NSNotification) in
-        defer { dispatch_group_leave(dispatchGroup) }
+                                                           queue: nil) { (notification: Notification) in
+        defer { dispatchGroup.leave() }
         if let err = notification.userInfo?["NSFileHandleError"] as? NSNumber {
           assertionFailure("Read from pipe failed with error \(err)")
         }
-        guard let data = notification.userInfo?[NSFileHandleNotificationDataItem] as? NSData else {
+        guard let data = notification.userInfo?[NSFileHandleNotificationDataItem] as? Data else {
           assertionFailure("Unexpectedly received no data in read handler")
           return
         }
-        outputData.appendData(data)
+        outputData.append(data)
       }
 
-      dispatch_group_enter(dispatchGroup)
+      dispatchGroup.enter()
 
       // The docs for readToEndOfFileInBackgroundAndNotify are unclear as to exactly what work is
       // done on the calling thread. By observation, it appears that data will not be read if the
       // main queue is in event tracking mode.
-      fileHandle.performSelector(#selector(NSFileHandle.readToEndOfFileInBackgroundAndNotify),
-                                 onThread: taskReader.thread,
-                                 withObject: nil,
+      fileHandle.perform(Selector("readToEndOfFileInBackgroundAndNotify"),
+                                 on: taskReader.thread,
+                                 with: nil,
                                  waitUntilDone: true)
       return observer
     }
 
     let stdoutData = NSMutableData()
-    task.standardOutput = NSPipe()
-    let stdoutObserver = registerAndStartReader(task.standardOutput!.fileHandleForReading,
+    task.standardOutput = Pipe()
+    let stdoutObserver = registerAndStartReader((task.standardOutput! as AnyObject).fileHandleForReading,
                                                 outputData: stdoutData)
     let stderrData = NSMutableData()
-    task.standardError = NSPipe()
-    let stderrObserver = registerAndStartReader(task.standardError!.fileHandleForReading,
+    task.standardError = Pipe()
+    let stderrObserver = registerAndStartReader((task.standardError! as AnyObject).fileHandleForReading,
                                                 outputData: stderrData)
 
-    task.terminationHandler = { (task: NSTask) -> Void in
+    task.terminationHandler = { (task: Process) -> Void in
       // The termination handler's thread is used to allow the caller's callback to do off-main work
       // as well.
-      assert(!NSThread.isMainThread(),
+      assert(!Thread.isMainThread,
              "Task termination handler unexpectedly called on main thread.")
-      dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER)
+      dispatchGroup.wait(timeout: DispatchTime.distantFuture)
 
       // Construct a string suitable for cutting and pasting into the commandline.
       let commandlineArguments: String
       if let arguments = arguments {
-        commandlineArguments = " " + arguments.map({ "\"\($0)\"" }).joinWithSeparator(" ")
+        commandlineArguments = " " + arguments.map({ "\"\($0)\"" }).joined(separator: " ")
       } else {
         commandlineArguments = ""
       }
       let commandlineRunnableString = "\"\(task.launchPath!)\"\(commandlineArguments)"
       terminationHandler(CompletionInfo(task: task,
                                         commandlineString: commandlineRunnableString,
-                                        stdout: stdoutData,
-                                        stderr: stderrData))
+                                        stdout: stdoutData as Data,
+                                        stderr: stderrData as Data))
 
-      NSThread.doOnMainQueue {
+      Thread.doOnMainQueue {
         notificationCenter.removeObserver(stdoutObserver)
         notificationCenter.removeObserver(stderrObserver)
         assert(self.pendingTasks.contains(task), "terminationHandler called with unexpected task")
@@ -147,7 +147,7 @@ public final class TaskRunner {
       }
     }
 
-    NSThread.doOnMainQueue {
+    Thread.doOnMainQueue {
       self.pendingTasks.insert(task)
     }
     return task
@@ -158,8 +158,8 @@ public final class TaskRunner {
 
   // Provides a thread/runloop that may be used to read NSTask output pipes.
   private class TaskOutputReader: NSObject {
-    lazy var thread: NSThread = { [unowned self] in
-      let value = NSThread(target: self, selector: #selector(threadMain(_:)), object: nil)
+    lazy var thread: Thread = { [unowned self] in
+      let value = Thread(target: self, selector: #selector(threadMain(_:)), object: nil)
       value.name = "com.google.Tulsi.TaskOutputReader"
       return value
     }()
@@ -167,27 +167,27 @@ public final class TaskRunner {
     private var continueRunning = false
 
     func start() {
-      assert(!thread.executing, "Start called twice without a stop")
+      assert(!thread.isExecuting, "Start called twice without a stop")
       thread.start()
     }
 
     func stop() {
-      performSelector(#selector(TaskOutputReader.stopThread),
-                      onThread:thread,
-                      withObject:nil,
+      perform(#selector(TaskOutputReader.stopThread),
+                      on:thread,
+                      with:nil,
                       waitUntilDone: false)
     }
 
     // MARK: - Private methods
 
     @objc
-    private func threadMain(object: AnyObject) {
-      let runLoop = NSRunLoop.currentRunLoop()
+    private func threadMain(_ object: AnyObject) {
+      let runLoop = RunLoop.current
       // Add a dummy port to prevent the runloop from returning immediately.
-      runLoop.addPort(NSMachPort(), forMode: NSDefaultRunLoopMode)
+      runLoop.add(NSMachPort(), forMode: RunLoopMode.defaultRunLoopMode)
 
-      while !thread.cancelled {
-        runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture())
+      while !thread.isCancelled {
+        runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: Date.distantFuture)
       }
     }
 

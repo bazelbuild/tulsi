@@ -28,7 +28,7 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   }
 
   public var debugDescription: String {
-    return "\(self.dynamicType)(\(label) \(type))"
+    return "\(type(of: self))(\(label) \(type))"
   }
 
   init(label: BuildLabel, type: String, linkedTargetLabels: Set<BuildLabel>) {
@@ -42,8 +42,8 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
 /// Encapsulates data about a file that may be a Bazel input or output.
 public class BazelFileInfo: Equatable, Hashable, CustomDebugStringConvertible {
   public enum TargetType: Int {
-    case SourceFile
-    case GeneratedFile
+    case sourceFile
+    case generatedFile
   }
 
   /// The path to this file relative to rootPath.
@@ -59,7 +59,7 @@ public class BazelFileInfo: Equatable, Hashable, CustomDebugStringConvertible {
   public let isDirectory: Bool
 
   public lazy var fullPath: String = { [unowned self] in
-    return NSString.pathWithComponents([self.rootPath, self.subPath])
+    return NSString.path(withComponents: [self.rootPath, self.subPath])
   }()
 
   public lazy var uti: String? = { [unowned self] in
@@ -79,7 +79,7 @@ public class BazelFileInfo: Equatable, Hashable, CustomDebugStringConvertible {
     }
 
     guard let subPath = info["path"] as? String,
-              isSourceFile = info["src"] as? Bool else {
+              let isSourceFile = info["src"] as? Bool else {
       assertionFailure("Aspect provided a file info dictionary but was missing required keys")
       return nil
     }
@@ -91,7 +91,7 @@ public class BazelFileInfo: Equatable, Hashable, CustomDebugStringConvertible {
     } else {
       self.rootPath = ""
     }
-    self.targetType = isSourceFile ? .SourceFile : .GeneratedFile
+    self.targetType = isSourceFile ? .sourceFile : .generatedFile
 
     self.isDirectory = info["is_dir"] as? Bool ?? false
   }
@@ -262,12 +262,12 @@ public final class RuleEntry: RuleInfo {
   public var normalNonSourceArtifacts: [BazelFileInfo] {
     var artifacts = [BazelFileInfo]()
     if let description = attributes[.launch_storyboard] as? [String: AnyObject],
-           fileTarget = BazelFileInfo(info: description) {
+           let fileTarget = BazelFileInfo(info: description as AnyObject?) {
       artifacts.append(fileTarget)
     }
 
     if let fileTargets = parseFileDescriptionListAttribute(.supporting_files) {
-      artifacts.appendContentsOf(fileTargets)
+      artifacts.append(contentsOf: fileTargets)
     }
 
     return artifacts
@@ -285,16 +285,16 @@ public final class RuleEntry: RuleInfo {
   /// The full set of input and output artifacts for this rule.
   public var projectArtifacts: [BazelFileInfo] {
     var artifacts = sourceFiles
-    artifacts.appendContentsOf(nonARCSourceFiles)
-    artifacts.appendContentsOf(frameworkImports)
-    artifacts.appendContentsOf(normalNonSourceArtifacts)
-    artifacts.appendContentsOf(versionedNonSourceArtifacts)
+    artifacts.append(contentsOf: nonARCSourceFiles)
+    artifacts.append(contentsOf: frameworkImports)
+    artifacts.append(contentsOf: normalNonSourceArtifacts)
+    artifacts.append(contentsOf: versionedNonSourceArtifacts)
     return artifacts
   }
 
   private(set) lazy var pbxTargetType: PBXTarget.ProductType? = { [unowned self] in
     if self.type == "ios_test",
-       let xctestOpt = self.attributes[.xctest] as? Bool where !xctestOpt {
+       let xctestOpt = self.attributes[.xctest] as? Bool, !xctestOpt {
       return BuildTypeToTargetType["ios_application"]
     }
 
@@ -451,7 +451,7 @@ public final class RuleEntry: RuleInfo {
               implicitIPATarget: implicitIPATarget)
   }
 
-  public func discoverIntermediateArtifacts(ruleEntryMap: [BuildLabel: RuleEntry]) -> Set<BazelFileInfo> {
+  public func discoverIntermediateArtifacts(_ ruleEntryMap: [BuildLabel: RuleEntry]) -> Set<BazelFileInfo> {
     if intermediateArtifacts != nil { return intermediateArtifacts! }
 
     var collectedArtifacts = Set<BazelFileInfo>()
@@ -463,8 +463,8 @@ public final class RuleEntry: RuleInfo {
         continue
       }
 
-      collectedArtifacts.unionInPlace(dependentEntry.artifacts)
-      collectedArtifacts.unionInPlace(dependentEntry.discoverIntermediateArtifacts(ruleEntryMap))
+      collectedArtifacts.formUnion(dependentEntry.artifacts)
+      collectedArtifacts.formUnion(dependentEntry.discoverIntermediateArtifacts(ruleEntryMap))
     }
 
     intermediateArtifacts = collectedArtifacts
@@ -473,14 +473,14 @@ public final class RuleEntry: RuleInfo {
 
   // MARK: Private methods
 
-  private func parseFileDescriptionListAttribute(attribute: RuleEntry.Attribute) -> [BazelFileInfo]? {
+  private func parseFileDescriptionListAttribute(_ attribute: RuleEntry.Attribute) -> [BazelFileInfo]? {
     guard let descriptions = attributes[attribute] as? [[String: AnyObject]] else {
       return nil
     }
 
     var fileTargets = [BazelFileInfo]()
     for description in descriptions {
-      guard let target = BazelFileInfo(info: description) else {
+      guard let target = BazelFileInfo(info: description as AnyObject?) else {
         assertionFailure("Failed to resolve file description to a file target")
         continue
       }

@@ -27,19 +27,19 @@ class BazelWorkspacePathInfoFetcher {
   private var bazelSymlinkParentPathOverride: String? = nil
 
   /// The location of the bazel binary.
-  private let bazelURL: NSURL
+  private let bazelURL: URL
   /// The location of the Bazel workspace to be examined.
-  private let workspaceRootURL: NSURL
+  private let workspaceRootURL: URL
   private let localizedMessageLogger: LocalizedMessageLogger
-  private let semaphore: dispatch_semaphore_t
+  private let semaphore: DispatchSemaphore
   private var fetchCompleted = false
 
-  init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
+  init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
     self.localizedMessageLogger = localizedMessageLogger
 
-    semaphore = dispatch_semaphore_create(0)
+    semaphore = DispatchSemaphore(value: 0)
     fetchWorkspaceInfo()
   }
 
@@ -85,7 +85,7 @@ class BazelWorkspacePathInfoFetcher {
     }
 
     if let parentPathOverride = getBazelSymlinkParentPathOverride() {
-      return (parentPathOverride as NSString).stringByAppendingPathComponent(bazelBinSymlinkName)
+      return (parentPathOverride as NSString).appendingPathComponent(bazelBinSymlinkName)
     }
     return bazelBinSymlinkName
   }
@@ -94,38 +94,38 @@ class BazelWorkspacePathInfoFetcher {
 
   // Waits for the workspace fetcher to signal the
   private func waitForCompletion() {
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-    dispatch_semaphore_signal(semaphore)
+    semaphore.wait(timeout: DispatchTime.distantFuture)
+    semaphore.signal()
   }
 
   // Fetches Bazel package_path info from the registered workspace URL.
   private func fetchWorkspaceInfo() {
     let profilingStart = localizedMessageLogger.startProfiling("get_package_path",
                                                                message: "Fetching bazel path info")
-    guard let bazelPath = bazelURL.path where NSFileManager.defaultManager().fileExistsAtPath(bazelPath) else {
+    guard FileManager.default.fileExists(atPath: bazelURL.path) else {
       localizedMessageLogger.error("BazelBinaryNotFound",
                                    comment: "Error to show when the bazel binary cannot be found at the previously saved location %1$@.",
-                                   values: bazelURL)
+                                   values: bazelURL as NSURL)
       return
     }
 
-    let task = TulsiTaskRunner.createTask(bazelPath, arguments: ["info"]) {
+    let task = TulsiTaskRunner.createTask(bazelURL.path, arguments: ["info"]) {
       completionInfo in
         defer {
           self.localizedMessageLogger.logProfilingEnd(profilingStart)
           self.fetchCompleted = true
-          dispatch_semaphore_signal(self.semaphore)
+          self.semaphore.signal()
         }
         if completionInfo.task.terminationStatus == 0 {
-          if let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) {
+          if let stdout = NSString(data: completionInfo.stdout, encoding: String.Encoding.utf8.rawValue) {
             self.extractWorkspaceInfo(stdout)
             return
           }
         }
 
-        let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding)
+        let stderr = NSString(data: completionInfo.stderr, encoding: String.Encoding.utf8.rawValue)
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
-                                                      bundle: NSBundle(forClass: self.dynamicType),
+                                                      bundle: Bundle(for: type(of: self)),
                                                       comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
         let debugInfo = String(format: debugInfoFormatString,
                                completionInfo.commandlineString,
@@ -137,17 +137,17 @@ class BazelWorkspacePathInfoFetcher {
                                           details: stderr as String?,
                                           values: completionInfo.task.terminationStatus)
     }
-    task.currentDirectoryPath = workspaceRootURL.path!
+    task.currentDirectoryPath = workspaceRootURL.path
     task.launch()
   }
 
-  private func extractWorkspaceInfo(output: NSString) {
-    let lines = output.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+  private func extractWorkspaceInfo(_ output: NSString) {
+    let lines = output.components(separatedBy: CharacterSet.newlines)
     for line in lines {
-      let components = line.componentsSeparatedByString(": ")
-      guard let key = components.first where !key.isEmpty else { continue }
+      let components = line.components(separatedBy: ": ")
+      guard let key = components.first, !key.isEmpty else { continue }
       let valueComponents = components.dropFirst()
-      let value = valueComponents.joinWithSeparator(": ")
+      let value = valueComponents.joined(separator: ": ")
 
       if key.hasSuffix("-bin") {
         if (bazelBinSymlinkName != nil) {

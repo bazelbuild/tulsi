@@ -18,7 +18,7 @@ import Cocoa
 /// View controller encapsulating the tabbed portion of the project edtior.
 final class ProjectTabViewController: NSTabViewController {
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       for vc in childViewControllers {
         vc.representedObject = representedObject

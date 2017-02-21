@@ -113,17 +113,17 @@ public class TulsiOptionSet: Equatable {
     return options[optionKey]?.valueForTarget(target)
   }
 
-  static func getOptionsFromContainerDictionary(dict: [String: AnyObject]) -> PersistenceType? {
+  static func getOptionsFromContainerDictionary(_ dict: [String: Any]) -> PersistenceType? {
     return dict[TulsiOptionSet.PersistenceKey] as? PersistenceType
   }
 
   public init(withInheritanceEnabled inherit: Bool = false) {
-    let bundle = NSBundle(forClass: self.dynamicType)
+    let bundle = Bundle(for: type(of: self))
     populateOptionsWithBundle(bundle, withInheritAsDefault: inherit)
     populateOptionGroupInfoWithBundle(bundle)
   }
 
-  public convenience init(fromDictionary dict: [String: AnyObject]) {
+  public convenience init(fromDictionary dict: [String: Any]) {
     self.init()
 
     guard let persistedOptions = dict as? PersistenceType else {
@@ -140,7 +140,7 @@ public class TulsiOptionSet: Equatable {
 
   /// Returns a new TulsiOptionSet by using the given parent as a base and applying this option
   /// set's options as overrides.
-  public func optionSetByInheritingFrom(parent: TulsiOptionSet) -> TulsiOptionSet {
+  public func optionSetByInheritingFrom(_ parent: TulsiOptionSet) -> TulsiOptionSet {
     var resolvedOptions = [TulsiOptionKey: TulsiOption]()
     for (key, opt) in options {
       guard let parentOption = parent.options[key] else {
@@ -155,26 +155,26 @@ public class TulsiOptionSet: Equatable {
     return resolvedSet
   }
 
-  func saveShareableOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+  func saveShareableOptionsIntoDictionary(_ dict: inout [String: Any]) {
     let serialized = saveToDictionary() {
       !$1.optionType.contains(.PerUserOnly)
     }
     dict[TulsiOptionSet.PersistenceKey] = serialized
   }
 
-  func savePerUserOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+  func savePerUserOptionsIntoDictionary(_ dict: inout [String: Any]) {
     let serialized = saveToDictionary() {
       return $1.optionType.contains(.PerUserOnly)
     }
     dict[TulsiOptionSet.PersistenceKey] = serialized
   }
 
-  func saveAllOptionsIntoDictionary(inout dict: [String: AnyObject]) {
+  func saveAllOptionsIntoDictionary(_ dict: inout [String: AnyObject]) {
     let serialized = saveToDictionary() { (_, _) in return true }
-    dict[TulsiOptionSet.PersistenceKey] = serialized
+    dict[TulsiOptionSet.PersistenceKey] = serialized as AnyObject?
   }
 
-  public func groupInfoForOptionKey(key: TulsiOptionKey) -> (TulsiOptionKeyGroup, displayName: String, description: String)? {
+  public func groupInfoForOptionKey(_ key: TulsiOptionKey) -> (TulsiOptionKeyGroup, displayName: String, description: String)? {
     guard let keyGroup = TulsiOptionSet.OptionKeyGroups[key] else { return nil }
     guard let (displayName, description) = optionKeyGroupInfo[keyGroup] else {
       assertionFailure("Missing group information for group key \(keyGroup)")
@@ -212,7 +212,7 @@ public class TulsiOptionSet: Equatable {
 
   /// Returns a dictionary of build settings specialized for the given target without inheriting any
   /// defaults.
-  func buildSettingsForTarget(target: String) -> [String: String] {
+  func buildSettingsForTarget(_ target: String) -> [String: String] {
     var buildSettings = [String: String]()
     for (key, opt) in options.filter({ $1.optionType.contains(.TargetSpecializableBuildSetting) }) {
       if let val = opt.valueForTarget(target, inherit: false) {
@@ -224,7 +224,7 @@ public class TulsiOptionSet: Equatable {
 
   // MARK: - Private methods.
 
-  private func saveToDictionary(filter: (TulsiOptionKey, TulsiOption) -> Bool) -> PersistenceType {
+  private func saveToDictionary(_ filter: (TulsiOptionKey, TulsiOption) -> Bool) -> PersistenceType {
     var serialized = PersistenceType()
     for (key, option) in options.filter(filter) {
       if let value = option.serialize() {
@@ -234,12 +234,12 @@ public class TulsiOptionSet: Equatable {
     return serialized
   }
 
-  private func populateOptionsWithBundle(bundle: NSBundle, withInheritAsDefault inherit: Bool) {
-    func addOption(optionKey: TulsiOptionKey, valueType: TulsiOption.ValueType, optionType: TulsiOption.OptionType, defaultValue: String?) {
+  private func populateOptionsWithBundle(_ bundle: Bundle, withInheritAsDefault inherit: Bool) {
+    func addOption(_ optionKey: TulsiOptionKey, valueType: TulsiOption.ValueType, optionType: TulsiOption.OptionType, defaultValue: String?) {
       let key = optionKey.rawValue
-      let displayName = bundle.localizedStringForKey(key, value: nil, table: "Options")
+      let displayName = bundle.localizedString(forKey: key, value: nil, table: "Options")
       let descriptionKey = key + TulsiOptionSet.DescriptionStringKeySuffix
-      var description = bundle.localizedStringForKey(descriptionKey, value: nil, table: "Options")
+      var description = bundle.localizedString(forKey: descriptionKey, value: nil, table: "Options")
       if description == descriptionKey { description = "" }
 
       let opt = TulsiOption(displayName: displayName,
@@ -253,13 +253,13 @@ public class TulsiOptionSet: Equatable {
       options[optionKey] = opt
     }
 
-    func addBoolOption(optionKey: TulsiOptionKey, _ optionType: TulsiOption.OptionType, _ defaultValue: Bool = false) {
+    func addBoolOption(_ optionKey: TulsiOptionKey, _ optionType: TulsiOption.OptionType, _ defaultValue: Bool = false) {
       let val = defaultValue ? TulsiOption.BooleanTrueValue : TulsiOption.BooleanFalseValue
-      addOption(optionKey, valueType: .Bool, optionType: optionType, defaultValue: val)
+      addOption(optionKey, valueType: .bool, optionType: optionType, defaultValue: val)
     }
 
-    func addStringOption(optionKey: TulsiOptionKey, _ optionType: TulsiOption.OptionType, _ defaultValue: String? = nil) {
-      addOption(optionKey, valueType: .String, optionType: optionType, defaultValue: defaultValue)
+    func addStringOption(_ optionKey: TulsiOptionKey, _ optionType: TulsiOption.OptionType, _ defaultValue: String? = nil) {
+      addOption(optionKey, valueType: .string, optionType: optionType, defaultValue: defaultValue)
     }
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
@@ -284,7 +284,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])
   }
 
-  private func populateOptionGroupInfoWithBundle(bundle: NSBundle) {
+  private func populateOptionGroupInfoWithBundle(_ bundle: Bundle) {
     for (_, keyGroup) in TulsiOptionSet.OptionKeyGroups {
       if optionKeyGroupInfo[keyGroup] == nil {
         let key = keyGroup.rawValue

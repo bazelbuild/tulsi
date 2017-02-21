@@ -23,12 +23,12 @@ private func main() {
   consoleLogger.startLogging()
 
   if !commandlineParser.commandlineSentinalFound {
-    NSApplicationMain(Process.argc, Process.unsafeArgv)
+    NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     exit(0)
   }
 
-  let queue = dispatch_queue_create("com.google.Tulsi.xcodeProjectGenerator", DISPATCH_QUEUE_SERIAL)
-  dispatch_async(queue) {
+  let queue = DispatchQueue(label: "com.google.Tulsi.xcodeProjectGenerator", attributes: [])
+  queue.async {
     do {
       switch commandlineParser.mode {
         case .invalid:
@@ -43,42 +43,42 @@ private func main() {
           let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
           try generator.generate()
       }
-    } catch HeadlessModeError.InvalidConfigPath(let reason) {
+    } catch HeadlessModeError.invalidConfigPath(let reason) {
       print("Invalid \(TulsiCommandlineParser.ParamGeneratorConfigLong) param: \(reason)")
       exit(11)
-    } catch HeadlessModeError.InvalidConfigFileContents(let reason) {
+    } catch HeadlessModeError.invalidConfigFileContents(let reason) {
       print("Failed to read the given generator config: \(reason)")
       exit(12)
-    } catch HeadlessModeError.ExplicitOutputOptionRequired {
+    } catch HeadlessModeError.explicitOutputOptionRequired {
       print("The \(TulsiCommandlineParser.ParamOutputFolderLong) option is required for the selected config")
       exit(13)
-    } catch HeadlessModeError.InvalidBazelPath {
+    } catch HeadlessModeError.invalidBazelPath {
       print("The path to the bazel binary is invalid")
       exit(14)
-    } catch HeadlessModeError.GenerationFailed(let reason) {
+    } catch HeadlessModeError.generationFailed(let reason) {
       print("Generation failed: \(reason)")
       exit(15)
-    } catch HeadlessModeError.InvalidWorkspaceRootOverride {
+    } catch HeadlessModeError.invalidWorkspaceRootOverride {
       print("The parameter given as the workspace root path is not a valid directory")
       exit(16)
-    } catch HeadlessModeError.InvalidProjectFileContents(let reason) {
+    } catch HeadlessModeError.invalidProjectFileContents(let reason) {
       print("Failed to read the given project: \(reason)")
       exit(20)
-    } catch HeadlessModeError.MissingBazelPath {
+    } catch HeadlessModeError.missingBazelPath {
       print("The path to the bazel binary must be specified")
       exit(21)
-    } catch HeadlessModeError.MissingWORKSPACEFile(let path) {
+    } catch HeadlessModeError.missingWORKSPACEFile(let path) {
       print("The workspace root at '\(path)' does not contain a Bazel WORKSPACE file.")
       exit(21)
-    } catch HeadlessModeError.MissingBuildTargets {
+    } catch HeadlessModeError.missingBuildTargets {
       print("At least one build target must be specified with the \(TulsiCommandlineParser.ParamBuildTargetLong) parameter.")
       exit(22)
-    } catch HeadlessModeError.InvalidProjectBundleName {
+    } catch HeadlessModeError.invalidProjectBundleName {
       print("The parameter given to \(TulsiCommandlineParser.ParamCreateTulsiProj) is invalid. " +
                 "It must be the name of the .tulsiproj bundle to be created, without any other " +
                 "path elements.")
       exit(23)
-    } catch HeadlessModeError.BazelTargetProcessingFailed {
+    } catch HeadlessModeError.bazelTargetProcessingFailed {
       print("Failed to identify any valid build targets.")
       exit(24)
     } catch let e as NSError {
@@ -95,7 +95,7 @@ private func main() {
     exit(0)
   }
 
-  dispatch_main()
+  dispatchMain()
 }
 
 // MARK: - Application entrypoint

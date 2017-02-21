@@ -100,8 +100,8 @@ final class XcodeScheme {
                                                          projectBundleName: projectBundleName)
   }
 
-  func toXML() -> NSXMLDocument {
-    let rootElement = NSXMLElement(name: "Scheme")
+  func toXML() -> XMLDocument {
+    let rootElement = XMLElement(name: "Scheme")
     var rootAttributes = [
         "version": version,
         "LastUpgradeVersion": project.lastUpgradeCheck
@@ -109,7 +109,7 @@ final class XcodeScheme {
     if appExtension {
       rootAttributes["wasCreatedForAppExtension"] = "YES"
     }
-    rootElement.setAttributesWithDictionary(rootAttributes)
+    rootElement.setAttributesWith(rootAttributes)
 
     rootElement.addChild(buildAction())
     rootElement.addChild(testAction())
@@ -118,14 +118,14 @@ final class XcodeScheme {
     rootElement.addChild(analyzeAction())
     rootElement.addChild(archiveAction())
 
-    return NSXMLDocument(rootElement: rootElement)
+    return XMLDocument(rootElement: rootElement)
   }
 
   // MARK: - Private methods
 
   /// Settings for the Xcode "Build" action.
-  private func buildAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "BuildAction")
+  private func buildAction() -> XMLElement {
+    let element = XMLElement(name: "BuildAction")
     let parallelizeBuildables: String
     if runnableDebuggingMode == .WatchOS {
       parallelizeBuildables = "NO"
@@ -136,14 +136,14 @@ final class XcodeScheme {
         "parallelizeBuildables": parallelizeBuildables,
         "buildImplicitDependencies": "YES",
     ]
-    element.setAttributesWithDictionary(buildActionAttributes)
+    element.setAttributesWith(buildActionAttributes)
 
-    let buildActionEntries = NSXMLElement(name: "BuildActionEntries")
+    let buildActionEntries = XMLElement(name: "BuildActionEntries")
 
-    func addBuildActionEntry(buildableReference: BuildableReference,
+    func addBuildActionEntry(_ buildableReference: BuildableReference,
                              buildActionEntryAttributes: BuildActionEntryAttributes) {
-      let buildActionEntry = NSXMLElement(name: "BuildActionEntry")
-      buildActionEntry.setAttributesWithDictionary(buildActionEntryAttributes)
+      let buildActionEntry = XMLElement(name: "BuildActionEntry")
+      buildActionEntry.setAttributesWith(buildActionEntryAttributes)
       buildActionEntry.addChild(buildableReference.toXML())
       buildActionEntries.addChild(buildActionEntry)
     }
@@ -169,15 +169,15 @@ final class XcodeScheme {
   }
 
   /// Settings for the Xcode "Test" action.
-  private func testAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "TestAction")
+  private func testAction() -> XMLElement {
+    let element = XMLElement(name: "TestAction")
     let testActionAttributes = [
       "buildConfiguration": testActionBuildConfig,
       "selectedDebuggerIdentifier": "Xcode.DebuggerFoundation.Debugger.LLDB",
       "selectedLauncherIdentifier": "Xcode.DebuggerFoundation.Launcher.LLDB",
       "shouldUseLaunchSchemeArgsEnv": "YES",
     ]
-    element.setAttributesWithDictionary(testActionAttributes)
+    element.setAttributesWith(testActionAttributes)
 
     let testTargets: [PBXTarget]
     if let explicitTests = explicitTests {
@@ -198,10 +198,10 @@ final class XcodeScheme {
       }
     }
 
-    let testables = NSXMLElement(name: "Testables")
+    let testables = XMLElement(name: "Testables")
     for testTarget in testTargets {
-      let testableReference = NSXMLElement(name: "TestableReference")
-      testableReference.setAttributesWithDictionary(["skipped": "NO"])
+      let testableReference = XMLElement(name: "TestableReference")
+      testableReference.setAttributesWith(["skipped": "NO"])
 
       let buildableRef = BuildableReference(target: testTarget,
                                             projectBundleName: projectBundleName)
@@ -228,8 +228,8 @@ final class XcodeScheme {
   }
 
   /// Settings for the Xcode "Run" action.
-  private func launchAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "LaunchAction")
+  private func launchAction() -> XMLElement {
+    let element = XMLElement(name: "LaunchAction")
     var attributes = [
         "buildConfiguration": launchActionBuildConfig,
         "selectedDebuggerIdentifier": "Xcode.DebuggerFoundation.Debugger.LLDB",
@@ -247,7 +247,7 @@ final class XcodeScheme {
       attributes["launchAutomaticallySubstyle"] = launchStyle.rawValue
     }
 
-    element.setAttributesWithDictionary(attributes)
+    element.setAttributesWith(attributes)
     if !self.commandlineArguments.isEmpty {
       element.addChild(commandlineArgumentsElement(self.commandlineArguments))
     }
@@ -267,15 +267,15 @@ final class XcodeScheme {
   }
 
   /// Settings for the Xcode "Profile" action.
-  private func profileAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "ProfileAction")
+  private func profileAction() -> XMLElement {
+    let element = XMLElement(name: "ProfileAction")
     let attributes = [
         "buildConfiguration": profileActionBuildConfig,
         "shouldUseLaunchSchemeArgsEnv": "YES",
         "useCustomWorkingDirectory": "NO",
         "debugDocumentVersioning": "YES",
     ]
-    element.setAttributesWithDictionary(attributes)
+    element.setAttributesWith(attributes)
     if launchStyle != .AppExtension {
       element.addChild(buildableProductRunnable(runnableDebuggingMode))
     } else {
@@ -286,29 +286,29 @@ final class XcodeScheme {
   }
 
   /// Settings for the Xcode "Analyze" action.
-  private func analyzeAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "AnalyzeAction")
-    element.setAttributesWithDictionary(["buildConfiguration": analyzeActionBuildConfig,
+  private func analyzeAction() -> XMLElement {
+    let element = XMLElement(name: "AnalyzeAction")
+    element.setAttributesWith(["buildConfiguration": analyzeActionBuildConfig,
                                         ])
     return element
   }
 
   /// Settings for the Xcode "Archive" action.
-  private func archiveAction() -> NSXMLElement {
-    let element = NSXMLElement(name: "ArchiveAction")
-    element.setAttributesWithDictionary(["buildConfiguration": archiveActionBuildConfig,
+  private func archiveAction() -> XMLElement {
+    let element = XMLElement(name: "ArchiveAction")
+    element.setAttributesWith(["buildConfiguration": archiveActionBuildConfig,
                                          "revealArchiveInOrganizer": "YES",
                                         ])
     return element
   }
 
   /// Container for BuildReference instances that may be run by Xcode.
-  private func buildableProductRunnable(runnableDebuggingMode: RunnableDebuggingMode) -> NSXMLElement {
-    let element: NSXMLElement
+  private func buildableProductRunnable(_ runnableDebuggingMode: RunnableDebuggingMode) -> XMLElement {
+    let element: XMLElement
     var attributes = ["runnableDebuggingMode": runnableDebuggingMode.rawValue]
     switch runnableDebuggingMode {
       case .WatchOS:
-        element = NSXMLElement(name: "RemoteRunnable")
+        element = XMLElement(name: "RemoteRunnable")
         // This is presumably watchOS's equivalent of SpringBoard on iOS and comes from the schemes
         // generated by Xcode 7.
         attributes["BundleIdentifier"] = "com.apple.carousel"
@@ -318,27 +318,27 @@ final class XcodeScheme {
         }
 
       default:
-        element = NSXMLElement(name: "BuildableProductRunnable")
+        element = XMLElement(name: "BuildableProductRunnable")
     }
-    element.setAttributesWithDictionary(attributes)
+    element.setAttributesWith(attributes)
     element.addChild(primaryTargetBuildableReference.toXML())
     return element
   }
 
   /// Container for the primary BuildableReference to be used in situations where it is not
   /// runnable.
-  private func macroReference() -> NSXMLElement {
-    let macroExpansion = NSXMLElement(name: "MacroExpansion")
+  private func macroReference() -> XMLElement {
+    let macroExpansion = XMLElement(name: "MacroExpansion")
     macroExpansion.addChild(primaryTargetBuildableReference.toXML())
     return macroExpansion
   }
 
   /// Generates a CommandlineArguments element based on arguments.
-  private func commandlineArgumentsElement(arguments: [String]) -> NSXMLElement {
-    let element = NSXMLElement(name: "CommandLineArguments")
+  private func commandlineArgumentsElement(_ arguments: [String]) -> XMLElement {
+    let element = XMLElement(name: "CommandLineArguments")
     for argument in arguments {
-      let argumentElement = NSXMLElement(name: "CommandLineArgument")
-      argumentElement.setAttributesAsDictionary([
+      let argumentElement = XMLElement(name: "CommandLineArgument")
+      argumentElement.setAttributesAs([
         "argument": argument,
         "isEnabled": "YES"
       ])
@@ -348,11 +348,11 @@ final class XcodeScheme {
   }
 
   /// Generates an EnvironmentVariables element based on vars.
-  private func environmentVariablesElement(variables: [String: String]) -> NSXMLElement {
-    let element = NSXMLElement(name:"EnvironmentVariables")
+  private func environmentVariablesElement(_ variables: [String: String]) -> XMLElement {
+    let element = XMLElement(name:"EnvironmentVariables")
     for (key, value) in variables {
-      let environmentVariable = NSXMLElement(name:"EnvironmentVariable")
-      environmentVariable.setAttributesWithDictionary([
+      let environmentVariable = XMLElement(name:"EnvironmentVariable")
+      environmentVariable.setAttributesWith([
         "key": key,
         "value": value,
         "isEnabled": "YES"
@@ -363,42 +363,45 @@ final class XcodeScheme {
   }
 
   /// Generates a PreAction element based on run script.
-  private func preActionElement(script: String) -> NSXMLElement {
-    let element = NSXMLElement(name:"PreActions")
-    let executionAction = NSXMLElement(name:"ExecutionAction")
-    let actionContent = NSXMLElement(name: "ActionContent")
-    actionContent.setAttributesWithDictionary([
+  private func preActionElement(_ script: String) -> XMLElement {
+    let element = XMLElement(name:"PreActions")
+    let executionAction = XMLElement(name:"ExecutionAction")
+    let actionContent = XMLElement(name: "ActionContent")
+    actionContent.setAttributesWith([
       "title": "Run Script",
       "scriptText": script
     ])
-    let envBuildable = NSXMLElement(name: "EnvironmentBuildable")
+
+    let envBuildable = XMLElement(name: "EnvironmentBuildable")
     envBuildable.addChild(primaryTargetBuildableReference.toXML())
     actionContent.addChild(envBuildable)
-    executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
+    executionAction.setAttributesWith(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
+
     executionAction.addChild(actionContent)
     element.addChild(executionAction)
     return element
   }
 
   /// Generates a PostAction element based on run script.
-  private func postActionElement(script: String) -> NSXMLElement {
-    let element = NSXMLElement(name:"PostActions")
-    let executionAction = NSXMLElement(name:"ExecutionAction")
-    let actionContent = NSXMLElement(name: "ActionContent")
-    actionContent.setAttributesWithDictionary([
+  private func postActionElement(_ script: String) -> XMLElement {
+    let element = XMLElement(name:"PostActions")
+    let executionAction = XMLElement(name:"ExecutionAction")
+    let actionContent = XMLElement(name: "ActionContent")
+    actionContent.setAttributesWith([
       "title": "Run Script",
       "scriptText": script
     ])
-    let envBuildable = NSXMLElement(name: "EnvironmentBuildable")
+
+    let envBuildable = XMLElement(name: "EnvironmentBuildable")
     envBuildable.addChild(primaryTargetBuildableReference.toXML())
     actionContent.addChild(envBuildable)
-    executionAction.setAttributesWithDictionary(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
+    executionAction.setAttributesWith(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
     executionAction.addChild(actionContent)
     element.addChild(executionAction)
     return element
   }
 
-  static func makeBuildActionEntryAttributes(analyze: Bool = true,
+  static func makeBuildActionEntryAttributes(_ analyze: Bool = true,
                                       test: Bool = true,
                                       run: Bool = true,
                                       profile: Bool = true,
@@ -440,8 +443,8 @@ final class XcodeScheme {
       self.projectBundleName = projectBundleName
     }
 
-    func toXML() -> NSXMLElement {
-      let element = NSXMLElement(name: "BuildableReference")
+    func toXML() -> XMLElement {
+      let element = XMLElement(name: "BuildableReference")
       let attributes = [
           "BuildableIdentifier": "primary",
           "BlueprintIdentifier": "\(buildableGID)",
@@ -449,7 +452,7 @@ final class XcodeScheme {
           "BlueprintName": "\(targettName)",
           "ReferencedContainer": "container:\(projectBundleName)"
       ]
-      element.setAttributesWithDictionary(attributes)
+      element.setAttributesWith(attributes)
       return element
     }
   }

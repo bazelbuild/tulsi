@@ -26,30 +26,30 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
     super.init(bundle: nil)
   }
 
-  override func error(key: String, comment: String, details: String?, context: String?, values: CVarArgType...) {
+  override func error(_ key: String, comment: String, details: String?, context: String?, values: CVarArg...) {
     errorMessageKeys.append(key)
   }
 
-  override func warning(key: String, comment: String, details: String?, context: String?, values: CVarArgType...) {
+  override func warning(_ key: String, comment: String, details: String?, context: String?, values: CVarArg...) {
     warningMessageKeys.append(key)
   }
 
-  override func infoMessage(message: String, details: String?, context: String?) {
+  override func infoMessage(_ message: String, details: String?, context: String?) {
     infoMessages.append(message)
   }
 
-  override func syslogMessage(message: String, details: String?, context: String?) {
+  override func syslogMessage(_ message: String, details: String?, context: String?) {
     syslogMessages.append(message)
   }
 
-  func assertNoErrors(file: StaticString = #file, line: UInt = #line) {
+  func assertNoErrors(_ file: StaticString = #file, line: UInt = #line) {
     XCTAssert(errorMessageKeys.isEmpty,
               "Unexpected error messages printed: \(errorMessageKeys)",
               file: file,
               line: line)
   }
 
-  func assertNoWarnings(file: StaticString = #file, line: UInt = #line) {
+  func assertNoWarnings(_ file: StaticString = #file, line: UInt = #line) {
     XCTAssert(warningMessageKeys.isEmpty,
               "Unexpected warning messages printed: \(warningMessageKeys)",
               file: file,

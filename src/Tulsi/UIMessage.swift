@@ -24,12 +24,12 @@ protocol MessageLogProtocol: class {
 final class UIMessage: NSObject, NSPasteboardWriting {
   @objc
   enum MessageType: Int {
-    case Info, Warning, Error
+    case info, warning, error
   }
 
   dynamic let text: String
   dynamic let messageType: MessageType
-  let timestamp = NSDate()
+  let timestamp = Date()
 
   init(text: String, type: MessageType) {
     self.text = text
@@ -38,15 +38,15 @@ final class UIMessage: NSObject, NSPasteboardWriting {
 
   // MARK: - NSPasteboardWriting
 
-  func writableTypesForPasteboard(pasteboard: NSPasteboard) -> [String] {
+  func writableTypes(for pasteboard: NSPasteboard) -> [String] {
     return [NSPasteboardTypeString]
   }
 
-  func pasteboardPropertyListForType(type: String) -> AnyObject? {
+  func pasteboardPropertyList(forType type: String) -> Any? {
     if type == NSPasteboardTypeString {
-      let timeString = NSDateFormatter.localizedStringFromDate(timestamp,
-                                                               dateStyle: .NoStyle,
-                                                               timeStyle: .MediumStyle)
+      let timeString = DateFormatter.localizedString(from: timestamp,
+                                                               dateStyle: .none,
+                                                               timeStyle: .medium)
       return "[\(timeString)](\(messageType.rawValue)): \(text)"
     }
     return nil

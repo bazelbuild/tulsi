@@ -21,8 +21,8 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
 
   /// Indices into the Add/Remove SegmentedControl (as built by Interface Builder).
   private enum SegmentedControlButtonIndex: Int {
-    case Add = 0
-    case Remove = 1
+    case add = 0
+    case remove = 1
   }
 
   @IBOutlet var packageArrayController: NSArrayController!
@@ -35,7 +35,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     didSet {
       let enableRemoveButton = numSelectedPackagePaths > 0
       addRemoveSegmentedControl.setEnabled(enableRemoveButton,
-                                           forSegment: SegmentedControlButtonIndex.Remove.rawValue)
+                                           forSegment: SegmentedControlButtonIndex.remove.rawValue)
     }
   }
 
@@ -44,11 +44,11 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   }
 
   override func loadView() {
-    NSValueTransformer.setValueTransformer(PackagePathValueTransformer(),
-                                           forName: "PackagePathValueTransformer")
+    ValueTransformer.setValueTransformer(PackagePathValueTransformer(),
+                                           forName: NSValueTransformerName(rawValue: "PackagePathValueTransformer"))
     super.loadView()
     bind("numSelectedPackagePaths",
-         toObject: packageArrayController,
+         to: packageArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
   }
@@ -65,12 +65,12 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     // Present the NewProjectViewController as a sheet.
     // This is done via dispatch_async because we want it to happen after the window appearance
     // animation is complete.
-    dispatch_async(dispatch_get_main_queue(), {
+    DispatchQueue.main.async(execute: {
       self.presentViewControllerAsSheet(self.newProjectSheet)
     })
   }
 
-  @IBAction func didClickAddRemoveSegmentedControl(sender: NSSegmentedCell) {
+  @IBAction func didClickAddRemoveSegmentedControl(_ sender: NSSegmentedCell) {
     // Ignore mouse up messages.
     if sender.selectedSegment < 0 { return }
 
@@ -80,32 +80,32 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     }
 
     switch button {
-      case .Add:
+      case .add:
         didClickAddBUILDFile(sender)
-      case .Remove:
+      case .remove:
         didClickRemoveSelectedBUILDFiles(sender)
     }
   }
 
-  func didClickAddBUILDFile(sender: AnyObject?) {
+  func didClickAddBUILDFile(_ sender: AnyObject?) {
     guard let document = self.representedObject as? TulsiProjectDocument,
-              workspacePath = document.workspaceRootURL?.path else {
+              let workspacePath = document.workspaceRootURL?.path else {
       return
     }
 
     let panel = FilteredOpenPanel.filteredOpenPanel() {
-      (_: AnyObject, url: NSURL) -> Bool in
+      (_: AnyObject, url: URL) -> Bool in
         var isDir: AnyObject?
         var isPackage: AnyObject?
         do {
-          try url.getResourceValue(&isDir, forKey: NSURLIsDirectoryKey)
-          try url.getResourceValue(&isPackage, forKey: NSURLIsPackageKey)
-          if let isDir = isDir as? NSNumber, isPackage = isPackage as? NSNumber
-              where !isPackage.boolValue {
+          try (url as NSURL).getResourceValue(&isDir, forKey: URLResourceKey.isDirectoryKey)
+          try (url as NSURL).getResourceValue(&isPackage, forKey: URLResourceKey.isPackageKey)
+          if let isDir = isDir as? NSNumber, let isPackage = isPackage as? NSNumber, !isPackage.boolValue {
             if isDir.boolValue { return true }
-            if let filename = url.lastPathComponent where (filename == "BUILD" || filename == "BUILD.bazel") {
+            let filename = url.lastPathComponent
+            if filename == "BUILD" || filename == "BUILD.bazel" {
               // Prevent anything outside of the selected workspace.
-              return url.path!.hasPrefix(workspacePath) && !document.containsBUILDFileURL(url)
+              return url.path.hasPrefix(workspacePath) && !document.containsBUILDFileURL(url)
             }
           }
         } catch _ {
@@ -117,9 +117,9 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     panel.prompt = NSLocalizedString("ProjectEditor_AddBUILDFilePrompt",
                                      comment: "Label for the button used to confirm adding the selected BUILD file to the Tulsi project.")
     panel.canChooseDirectories = false
-    panel.beginSheetModalForWindow(self.view.window!) { value in
+    panel.beginSheetModal(for: self.view.window!) { value in
       if value == NSFileHandlingPanelOKButton {
-        guard let URL = panel.URL else {
+        guard let URL = panel.url else {
           return
         }
         if !document.addBUILDFileURL(URL) {
@@ -129,17 +129,17 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     }
   }
 
-  func didClickRemoveSelectedBUILDFiles(sender: AnyObject?) {
+  func didClickRemoveSelectedBUILDFiles(_ sender: AnyObject?) {
     let document = representedObject as! TulsiProjectDocument
     if document.hasChildConfigDocuments {
       let alert = NSAlert()
       alert.messageText = NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsMessage",
                                             comment: "Message asking the user if they want to continue with an operation that requires that all opened TulsiGeneratorConfig documents be closed.")
-      alert.addButtonWithTitle(NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonOK",
+      alert.addButton(withTitle: NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonOK",
                                                  comment: "Title for a button that will proceed with an operation that requires that all opened TulsiGeneratorConfig documents be closed."))
-      alert.addButtonWithTitle(NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonCancel",
+      alert.addButton(withTitle: NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonCancel",
                                                  comment: "Title for a button that will cancel an operation that requires that all opened TulsiGeneratorConfig documents be closed."))
-      alert.beginSheetModalForWindow(self.view.window!) { value in
+      alert.beginSheetModal(for: self.view.window!) { value in
         if value == NSAlertFirstButtonReturn {
           document.closeChildConfigDocuments()
           self.didClickRemoveSelectedBUILDFiles(sender)
@@ -148,29 +148,29 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
       return
     }
 
-    packageArrayController.removeObjectsAtArrangedObjectIndexes(packageArrayController.selectionIndexes)
+    packageArrayController.remove(atArrangedObjectIndexes: packageArrayController.selectionIndexes)
     let remainingObjects = packageArrayController.arrangedObjects as! [String]
     document.bazelPackages = remainingObjects
   }
 
-  @IBAction func selectBazelPath(sender: AnyObject?) {
+  @IBAction func selectBazelPath(_ sender: AnyObject?) {
     let document = representedObject as! TulsiProjectDocument
     BazelSelectionPanel.beginSheetModalBazelSelectionPanelForWindow(self.view.window!,
                                                                     document: document)
   }
 
-  @IBAction func didDoubleClickPackage(sender: NSTableView) {
+  @IBAction func didDoubleClickPackage(_ sender: NSTableView) {
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
     let package = (packageArrayController.arrangedObjects as! [String])[clickedRow]
     let document = representedObject as! TulsiProjectDocument
     let buildFile = package + "/BUILD"
-    if let url = document.workspaceRootURL?.URLByAppendingPathComponent(buildFile) {
-      NSWorkspace.sharedWorkspace().openURL(url)
+    if let url = document.workspaceRootURL?.appendingPathComponent(buildFile) {
+      NSWorkspace.shared().open(url)
     }
   }
 
-  func document(document: NSDocument, didSave: Bool, contextInfo: AnyObject) {
+  func document(_ document: NSDocument, didSave: Bool, contextInfo: AnyObject) {
     if !didSave {
       // Nothing useful can be done if the initial save failed so close this window.
       self.view.window!.close()
@@ -180,12 +180,12 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
 
   // MARK: - NewProjectViewControllerDelegate
 
-  func viewController(vc: NewProjectViewController,
+  func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason reason: NewProjectViewController.CompletionReason) {
     defer {newProjectSheet = nil}
     dismissViewController(newProjectSheet)
 
-    guard reason == .Create else {
+    guard reason == .create else {
       // Nothing useful can be done if the user doesn't wish to create a new project, so close this
       // window.
       self.view.window!.close()
@@ -202,7 +202,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
 
 /// Transformer that converts a Bazel package path to an item displayable in the package table view
 /// This is primarily necessary to support BUILD files colocated with the workspace root.
-final class PackagePathValueTransformer : NSValueTransformer {
+final class PackagePathValueTransformer : ValueTransformer {
   override class func transformedValueClass() -> AnyClass {
     return NSString.self
   }
@@ -211,7 +211,7 @@ final class PackagePathValueTransformer : NSValueTransformer {
     return false
   }
 
-  override func transformedValue(value: AnyObject?) -> AnyObject? {
+  override func transformedValue(_ value: Any?) -> Any? {
     guard let value = value as? String else { return nil }
     return "//\(value)"
   }

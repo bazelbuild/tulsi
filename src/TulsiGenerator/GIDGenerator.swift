@@ -17,7 +17,7 @@ protocol GIDGeneratorProtocol {
   /// Generates a unique ID for the given project item. The generator implementation must guarantee
   /// that generate calls will never produce the same GID (e.g., multiple generate calls with the
   /// same or any different item will generate different GIDs each time).
-  func generate(item: PBXObjectProtocol) -> String
+  func generate(_ item: PBXObjectProtocol) -> String
 }
 
 
@@ -26,7 +26,7 @@ final class ConcreteGIDGenerator: GIDGeneratorProtocol {
   /// Map of hash prefix to the last used counter for that prefix.
   private var reservedIDS = [String: Int]()
 
-  func generate(item: PBXObjectProtocol) -> String {
+  func generate(_ item: PBXObjectProtocol) -> String {
     let hash = String(format: "%08X%08X", item.isa.hashValue, item.hashValue)
     let counter = reservedIDS[hash] ?? 0
     let gid = String(format: "\(hash)%08X", counter)

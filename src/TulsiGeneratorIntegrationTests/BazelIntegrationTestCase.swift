@@ -123,11 +123,7 @@ class BazelIntegrationTestCase: XCTestCase {
     guard let directoryURL = getWorkspaceDirectory(subdirectory) else { return nil }
 
     func copyFile(sourceFileURL: NSURL, toFileNamed targetName: String) -> NSURL? {
-#if swift(>=2.3)
       let destinationURL = directoryURL.URLByAppendingPathComponent(targetName, isDirectory: false)!
-#else
-      let destinationURL = directoryURL.URLByAppendingPathComponent(targetName, isDirectory: false)
-#endif
       do {
         let fileManager = NSFileManager.defaultManager()
         if fileManager.fileExistsAtPath(destinationURL.path!) {
@@ -168,11 +164,8 @@ class BazelIntegrationTestCase: XCTestCase {
                                                    line: line) else {
       return nil
     }
-#if swift(>=2.3)
+
     let fileURL = directoryURL.URLByAppendingPathComponent(name, isDirectory: false)!
-#else
-    let fileURL = directoryURL.URLByAppendingPathComponent(name, isDirectory: false)
-#endif
     XCTAssertTrue(data.writeToURL(fileURL, atomically: true),
                   "Failed to write to file at '\(fileURL.path!)'",
                   file: file,
@@ -265,13 +258,9 @@ class BazelIntegrationTestCase: XCTestCase {
         return
       }
 
-#if swift(>=2.3)
+
       let destinationURL = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
                                                                         isDirectory: false)!
-#else
-      let destinationURL = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                        isDirectory: false)
-#endif
       do {
         let fileManager = NSFileManager.defaultManager()
         if fileManager.fileExistsAtPath(destinationURL.path!) {
@@ -299,11 +288,7 @@ class BazelIntegrationTestCase: XCTestCase {
     }
 
     if let subdirectory = subdirectory where !subdirectory.isEmpty {
-#if swift(>=2.3)
       let directoryURL = tempDirectory.URLByAppendingPathComponent(subdirectory, isDirectory: true)!
-#else
-      let directoryURL = tempDirectory.URLByAppendingPathComponent(subdirectory, isDirectory: true)
-#endif
       pathsToCleanOnTeardown.insert(directoryURL)
       do {
         try NSFileManager.defaultManager().createDirectoryAtURL(directoryURL,

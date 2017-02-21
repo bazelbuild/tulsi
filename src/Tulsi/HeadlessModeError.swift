@@ -14,29 +14,29 @@
 
 
 /// Errors that may be emitted by the various headless generators.
-enum HeadlessModeError: ErrorType {
+enum HeadlessModeError: Error {
   /// The bazel path must be specified via the commandline.
-  case MissingBazelPath
+  case missingBazelPath
   /// The config file path was invalid for the given reason.
-  case InvalidConfigPath(String)
+  case invalidConfigPath(String)
   /// The config file contents were invalid for the given reason.
-  case InvalidConfigFileContents(String)
+  case invalidConfigFileContents(String)
   /// The project file contents were invalid for the given reason.
-  case InvalidProjectFileContents(String)
+  case invalidProjectFileContents(String)
   /// The given configuration file requires that an explicit output path be given.
-  case ExplicitOutputOptionRequired
+  case explicitOutputOptionRequired
   /// XCode project generation failed for the given reason.
-  case GenerationFailed(String)
+  case generationFailed(String)
   /// The path to the Bazel binary given on the commandline is invalid.
-  case InvalidBazelPath
+  case invalidBazelPath
   /// A workspace root override was given but references an invalid param.
-  case InvalidWorkspaceRootOverride
+  case invalidWorkspaceRootOverride
   /// The given workspace root path does not contain a WORKSPACE file.
-  case MissingWORKSPACEFile(String)
+  case missingWORKSPACEFile(String)
   /// No build targets were specified.
-  case MissingBuildTargets
+  case missingBuildTargets
   /// The project bundle argument given to the tulsiproj create param is invalid.
-  case InvalidProjectBundleName
+  case invalidProjectBundleName
   /// Tulsi failed to identify any valid build targets out of the set of specified targets.
-  case BazelTargetProcessingFailed
+  case bazelTargetProcessingFailed
 }

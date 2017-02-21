@@ -36,10 +36,10 @@ protocol OptionsEditorModelProtocol: class {
 
   /// Returns the parent option for the given key or nil if the option does not inherit its default
   /// value from some user-editable value.
-  func parentOptionForOptionKey(key: TulsiOptionKey) -> TulsiOption?
+  func parentOptionForOptionKey(_ key: TulsiOptionKey) -> TulsiOption?
 
   /// Notifies the receiver that a change has been made to an option.
-  func updateChangeCount(change: NSDocumentChangeType)
+  func updateChangeCount(_ change: NSDocumentChangeType)
 }
 
 extension OptionsEditorModelProtocol {

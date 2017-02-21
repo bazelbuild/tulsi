@@ -20,36 +20,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
   var splashScreenWindowController: SplashScreenWindowController! = nil
 
-  @IBAction func fileBugReport(sender: NSMenuItem) {
+  @IBAction func fileBugReport(_ sender: NSMenuItem) {
     BugReporter.fileBugReport()
   }
 
   // MARK: - NSApplicationDelegate
 
-  func applicationWillFinishLaunching(notification: NSNotification) {
+  func applicationWillFinishLaunching(_ notification: Notification) {
     // Create the shared document controller.
     let _ = TulsiDocumentController()
 
-    let version: String
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
-      version = cfBundleVersion
-    } else {
-      version = ""
-    }
+    let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
     LogMessage.postSyslog("Tulsi UI: version \(version)")
   }
 
-  func applicationDidFinishLaunching(notification: NSNotification) {
+  func applicationDidFinishLaunching(_ notification: Notification) {
     splashScreenWindowController = SplashScreenWindowController()
-    splashScreenWindowController.window?.contentView?.layer?.backgroundColor = NSColor.whiteColor().CGColor
+    splashScreenWindowController.window?.contentView?.layer?.backgroundColor = NSColor.white.cgColor
     splashScreenWindowController.showWindow(self)
   }
 
-  func applicationShouldOpenUntitledFile(sender: NSApplication) -> Bool {
+  func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
     return false
   }
 
-  func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+  func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
     return true
   }
 }

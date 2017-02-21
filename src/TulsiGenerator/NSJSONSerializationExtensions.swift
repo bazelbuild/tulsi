@@ -15,10 +15,10 @@
 import Foundation
 
 
-extension NSJSONSerialization {
-  class func tulsi_newlineTerminatedDataWithJSONObject(obj: AnyObject,
-                                                       options: NSJSONWritingOptions) throws -> NSData {
-    let content = try NSJSONSerialization.dataWithJSONObject(obj, options: options)
+extension JSONSerialization {
+  class func tulsi_newlineTerminatedDataWithJSONObject(_ obj: Any,
+                                                       options: JSONSerialization.WritingOptions) throws -> NSMutableData {
+    let content = try JSONSerialization.data(withJSONObject: obj, options: options)
     let mutableContent = NSMutableData(data: content)
     try mutableContent.tulsi_appendString("\n")
     return mutableContent

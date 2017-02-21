@@ -17,7 +17,7 @@ import Cocoa
 
 /// Protocol used to inform receiver of a NewGeneratorConfigViewController's exit status.
 protocol NewGeneratorConfigViewControllerDelegate: class {
-  func viewController(vc: NewGeneratorConfigViewController,
+  func viewController(_ vc: NewGeneratorConfigViewController,
                       didCompleteWithReason: NewGeneratorConfigViewController.CompletionReason)
 }
 
@@ -27,18 +27,18 @@ final class NewGeneratorConfigViewController: NSViewController {
 
   /// The reason that a NewProjectViewController exited.
   enum CompletionReason {
-    case Cancel, Create
+    case cancel, create
   }
 
   weak var delegate: NewGeneratorConfigViewControllerDelegate?
 
   dynamic var configName: String? = nil
 
-  @IBAction func didClickCancelButton(sender: NSButton) {
-    delegate?.viewController(self, didCompleteWithReason: .Cancel)
+  @IBAction func didClickCancelButton(_ sender: NSButton) {
+    delegate?.viewController(self, didCompleteWithReason: .cancel)
   }
 
-  @IBAction func didClickSaveButton(sender: NSButton) {
-    self.delegate?.viewController(self, didCompleteWithReason: .Create)
+  @IBAction func didClickSaveButton(_ sender: NSButton) {
+    self.delegate?.viewController(self, didCompleteWithReason: .create)
   }
 }

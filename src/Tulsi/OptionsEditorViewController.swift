@@ -25,7 +25,7 @@ final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, 
   dynamic var targetSelectorController: OptionsTargetSelectorController? = nil
   dynamic var editorController: OptionsEditorController? = nil
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       syncViewsFromModel()
     }
@@ -43,21 +43,21 @@ final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, 
     syncViewsFromModel()
   }
 
-  @IBAction func textFieldDidCompleteEditing(sender: OptionsEditorTextField) {
+  @IBAction func textFieldDidCompleteEditing(_ sender: OptionsEditorTextField) {
     editorController?.stringBasedControlDidCompleteEditing(sender)
   }
 
-  @IBAction func popUpFieldDidCompleteEditing(sender: NSPopUpButton) {
+  @IBAction func popUpFieldDidCompleteEditing(_ sender: NSPopUpButton) {
     editorController?.popUpFieldDidCompleteEditing(sender)
   }
 
-  @IBAction func didDoubleClickInEditorView(sender: NSOutlineView) {
+  @IBAction func didDoubleClickInEditorView(_ sender: NSOutlineView) {
     editorController?.didDoubleClickInEditorView(sender)
   }
 
   // MARK: - NSSplitViewDelegate
 
-  func splitView(splitView: NSSplitView,
+  func splitView(_ splitView: NSSplitView,
                  constrainMinCoordinate proposedMinimumPosition: CGFloat,
                  ofSubviewAt dividerIndex: Int) -> CGFloat {
     // Restrict the splitter so it's never less than the target selector's min width.
@@ -67,7 +67,7 @@ final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, 
 
   // MARK: - OptionsTargetSelectorControllerDelegate
 
-  func didSelectOptionsTargetNode(selectedTarget: OptionsTargetNode) {
+  func didSelectOptionsTargetNode(_ selectedTarget: OptionsTargetNode) {
     editorController?.prepareEditorForTarget(selectedTarget.entry as? UIRuleInfo)
   }
 

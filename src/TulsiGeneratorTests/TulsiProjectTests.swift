@@ -18,8 +18,8 @@ import XCTest
 
 class TulsiProjectTests: XCTestCase {
   let projectName = "TestProject"
-  let projectBundleURL = NSURL(fileURLWithPath: "/test/project/tulsiproject/")
-  let workspaceRootURL = NSURL(fileURLWithPath: "/test/project/root/")
+  let projectBundleURL = URL(fileURLWithPath: "/test/project/tulsiproject/")
+  let workspaceRootURL = URL(fileURLWithPath: "/test/project/root/")
   // Relative path from projectBundleURL to workspaceRootURL.
   let relativeRootPath = "../root"
   let bazelPackages = [
@@ -42,10 +42,10 @@ class TulsiProjectTests: XCTestCase {
   func testSave() {
     do {
       let data = try project.save()
-      let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
-      XCTAssertEqual(dict["packages"], bazelPackages)
-      XCTAssertEqual(dict["projectName"], projectName)
-      XCTAssertEqual(dict["workspaceRoot"], relativeRootPath)
+      let dict = try JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions()) as! [String: Any]
+      XCTAssertEqual(dict["packages"] as! [String], bazelPackages)
+      XCTAssertEqual(dict["projectName"] as! String, projectName)
+      XCTAssertEqual(dict["workspaceRoot"] as! String, relativeRootPath)
     } catch {
       XCTFail("Unexpected assertion")
     }
@@ -57,8 +57,8 @@ class TulsiProjectTests: XCTestCase {
         "packages": bazelPackages,
         "projectName": projectName,
         "workspaceRoot": relativeRootPath,
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       project = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
 
       XCTAssertEqual(project.bazelPackages, bazelPackages)
@@ -75,8 +75,8 @@ class TulsiProjectTests: XCTestCase {
         "packages": bazelPackages,
         "projectName": projectName,
         "workspaceRoot": relativeRootPath + "/",
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       project = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
 
       XCTAssertEqual(project.bazelPackages, bazelPackages)
@@ -92,11 +92,11 @@ class TulsiProjectTests: XCTestCase {
       let dict = [
         "packages": bazelPackages,
         "projectName": projectName,
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       let _ = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
       XCTFail("Unexpectedly succeeded without a workspace root")
-    } catch TulsiProject.Error.DeserializationFailed {
+    } catch TulsiProject.ProjectError.deserializationFailed {
       // Expected.
     } catch {
       XCTFail("Unexpected assertion type")
@@ -109,11 +109,11 @@ class TulsiProjectTests: XCTestCase {
         "packages": bazelPackages,
         "projectName": projectName,
         "workspaceRoot": "/invalid/absolute/path",
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       let _ = try TulsiProject(data: data, projectBundleURL: projectBundleURL)
       XCTFail("Unexpectedly succeeded with an invalid workspace root")
-    } catch TulsiProject.Error.DeserializationFailed {
+    } catch TulsiProject.ProjectError.deserializationFailed {
       // Expected.
     } catch {
       XCTFail("Unexpected assertion type")

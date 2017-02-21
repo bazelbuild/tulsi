@@ -21,8 +21,8 @@ public final class TulsiTaskRunner {
   public typealias CompletionHandler = (TaskRunner.CompletionInfo) -> Void
 
   private static var defaultEnvironment: [String: String] = {
-    var environment = NSProcessInfo.processInfo().environment
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+    var environment = ProcessInfo.processInfo.environment
+    if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       environment["TULSI_VERSION"] = cfBundleVersion
     }
     return environment
@@ -30,10 +30,10 @@ public final class TulsiTaskRunner {
 
   /// Prepares an NSTask using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
-  public static func createTask(launchPath: String,
+  public static func createTask(_ launchPath: String,
                                 arguments: [String]? = nil,
                                 environment: [String: String]? = nil,
-                                terminationHandler: CompletionHandler) -> NSTask {
+                                terminationHandler: @escaping CompletionHandler) -> Process {
 
     var env = defaultEnvironment
     if let environment = environment {

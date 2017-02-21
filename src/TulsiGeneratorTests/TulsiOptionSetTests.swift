@@ -54,7 +54,7 @@ class TulsiOptionSetTests: XCTestCase {
       option.projectValue = String(i)
       i += 10
     }
-    var dict = [String: AnyObject]()
+    var dict = [String: Any]()
     optionSet.saveShareableOptionsIntoDictionary(&dict)
 
     let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
@@ -71,7 +71,7 @@ class TulsiOptionSetTests: XCTestCase {
       option.projectValue = String(i)
       i += 10
     }
-    var dict = [String: AnyObject]()
+    var dict = [String: Any]()
     optionSet.savePerUserOptionsIntoDictionary(&dict)
 
     let perUserOptions = optionSet.options.filter({ $1.optionType.contains(.PerUserOnly) })

@@ -22,9 +22,9 @@ class BazelSelectionPanel: FilteredOpenPanel {
   // Checkbox in the Bazel path open panel's accessory view.
   @IBOutlet weak var bazelSelectorUseAsDefaultCheckbox: NSButton!
 
-  static func beginSheetModalBazelSelectionPanelForWindow(window: NSWindow,
+  static func beginSheetModalBazelSelectionPanelForWindow(_ window: NSWindow,
                                                           document: TulsiProjectDocument,
-                                                          completionHandler: (NSURL? -> Void)? = nil) -> BazelSelectionPanel {
+                                                          completionHandler: ((URL?) -> Void)? = nil) -> BazelSelectionPanel {
     let panel = BazelSelectionPanel()
     panel.filterFunc = filterNonPackageDirectoriesOrFilesMatchingNames(["bazel", "blaze"])
     panel.delegate = panel
@@ -33,30 +33,29 @@ class BazelSelectionPanel: FilteredOpenPanel {
     panel.prompt = NSLocalizedString("ProjectEditor_SelectBazelPathPrompt",
                                      comment: "Label for the button used to confirm the selected Bazel file in the Bazel selector sheet.")
 
-    var views: NSArray?
-    NSBundle.mainBundle().loadNibNamed("BazelOpenSheetAccessoryView",
-                                       owner: panel,
-                                       topLevelObjects: &views)
+    var views: NSArray = []
+    Bundle.main.loadNibNamed("BazelOpenSheetAccessoryView",
+                             owner: panel,
+                             topLevelObjects: &views)
     // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
     // non-deterministic order.
-    views = views?.filter() { $0 is NSView }
-    if let accessoryView = views?.firstObject as? NSView {
+    views = views.filter() { $0 is NSView } as NSArray
+    if let accessoryView = views.firstObject as? NSView {
       panel.accessoryView = accessoryView
       if #available(OSX 10.11, *) {
-        panel.accessoryViewDisclosed = true
+        panel.isAccessoryViewDisclosed = true
       }
     } else {
       assertionFailure("Failed to load accessory view for Bazel open sheet.")
     }
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
-    panel.directoryURL = document.bazelURL?.URLByDeletingLastPathComponent
-    panel.beginSheetModalForWindow(window) { value in
+    panel.directoryURL = document.bazelURL?.deletingLastPathComponent()
+    panel.beginSheetModal(for: window) { value in
       if value == NSFileHandlingPanelOKButton {
-        document.bazelURL = panel.URL
+        document.bazelURL = panel.url
         if panel.bazelSelectorUseAsDefaultCheckbox.state == NSOnState {
-          NSUserDefaults.standardUserDefaults().setURL(document.bazelURL!,
-                                                       forKey: BazelLocator.DefaultBazelURLKey)
+          UserDefaults.standard.set(document.bazelURL!, forKey: BazelLocator.DefaultBazelURLKey)
         }
       }
 
@@ -64,7 +63,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
       // spawns new sheet modals.
       panel.orderOut(panel)
       if let completionHandler = completionHandler {
-        completionHandler(value == NSFileHandlingPanelOKButton ? panel.URL : nil)
+        completionHandler(value == NSFileHandlingPanelOKButton ? panel.url : nil)
       }
     }
     return panel

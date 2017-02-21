@@ -21,7 +21,7 @@ final class MessageTableView: NSTableView {
     super.viewDidEndLiveResize()
 
     // Give the delegate a chance to handle the resize now that the live operation is completed.
-    NSNotificationCenter.defaultCenter().postNotificationName(NSTableViewColumnDidResizeNotification,
+    NotificationCenter.default.post(name: NSNotification.Name.NSTableViewColumnDidResize,
                                                               object: self)
   }
 }
@@ -41,42 +41,37 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     didSet {
       // Assume that a reduction in the message count means all cached heights are invalid.
       if messageCount < oldValue {
-        rowHeights.removeAll(keepCapacity: true)
+        rowHeights.removeAll(keepingCapacity: true)
       }
       scrollToNewRowIfAtBottom()
     }
   }
 
   override func loadView() {
-    NSValueTransformer.setValueTransformer(MessageTypeToImageValueTransformer(),
-                                           forName: "MessageTypeToImageValueTransformer")
+    ValueTransformer.setValueTransformer(MessageTypeToImageValueTransformer(),
+                                           forName: NSValueTransformerName(rawValue: "MessageTypeToImageValueTransformer"))
     super.loadView()
-    bind("messageCount", toObject: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
+    bind("messageCount", to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
   }
 
-  @IBAction func copy(sender: AnyObject?) {
-    guard let selectedItems = messageArrayController.selectedObjects as? [NSPasteboardWriting] where !selectedItems.isEmpty else {
+  @IBAction func copy(_ sender: AnyObject?) {
+    guard let selectedItems = messageArrayController.selectedObjects as? [NSPasteboardWriting], !selectedItems.isEmpty else {
       return
     }
 
-    let pasteboard = NSPasteboard.generalPasteboard()
+    let pasteboard = NSPasteboard.general()
     pasteboard.clearContents()
     pasteboard.writeObjects(selectedItems)
   }
 
-  @IBAction func clearMessages(sender: AnyObject?) {
+  @IBAction func clearMessages(_ sender: AnyObject?) {
     (self.representedObject as! TulsiProjectDocument).clearMessages()
   }
 
   // MARK: - NSUserInterfaceValidations
 
-  func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-#if swift(>=2.3)
-    let itemAction = item.action
-#else
-    let itemAction = item.action()
-#endif
-    if itemAction == #selector(copy(_:)) {
+  func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+    if item.action == #selector(copy(_:)) {
       return !messageArrayController.selectedObjects.isEmpty
     }
     return false
@@ -84,7 +79,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
 
   // MARK: - NSTableViewDelegate
 
-  func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+  func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
     if let height = rowHeights[row] {
       return height
     }
@@ -92,14 +87,14 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     let column = tableView.tableColumns.first!
     let cell = column.dataCell as! NSTextFieldCell
     cell.stringValue = message.text
-    let bounds = CGRect(x: 0, y: 0, width: column.width, height: CGFloat.max)
-    let requiredSize = cell.cellSizeForBounds(bounds)
+    let bounds = CGRect(x: 0, y: 0, width: column.width, height: CGFloat.greatestFiniteMagnitude)
+    let requiredSize = cell.cellSize(forBounds: bounds)
     let height = max(requiredSize.height, minRowHeight)
     rowHeights[row] = height
     return height
   }
 
-  func tableViewColumnDidResize(notification: NSNotification) {
+  func tableViewColumnDidResize(_ notification: Notification) {
     guard let tableView = notification.object as? NSTableView else { return }
     // Wait until resizing completes before doing a lot of work.
     if tableView.inLiveResize {
@@ -107,11 +102,12 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     }
     // Disable animation.
     NSAnimationContext.beginGrouping()
-    NSAnimationContext.currentContext().duration = 0
-    rowHeights.removeAll(keepCapacity: true)
-    let numRows = messageArrayController.arrangedObjects.count
-    let allRowsIndex = NSIndexSet(indexesInRange: NSRange(location: 0, length: numRows))
-    tableView.noteHeightOfRowsWithIndexesChanged(allRowsIndex)
+    NSAnimationContext.current().duration = 0
+    rowHeights.removeAll(keepingCapacity: true)
+    let numRows = (messageArrayController.arrangedObjects as AnyObject).count!
+    let allRowsIndex = IndexSet(integersIn: 0..<numRows)
+
+    tableView.noteHeightOfRows(withIndexesChanged: allRowsIndex)
     NSAnimationContext.endGrouping()
   }
 
@@ -139,7 +135,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
 
 
 /// Transformer that converts a UIMessage type into an image to be displayed in the message view.
-final class MessageTypeToImageValueTransformer : NSValueTransformer {
+final class MessageTypeToImageValueTransformer : ValueTransformer {
   override class func transformedValueClass() -> AnyClass {
     return NSString.self
   }
@@ -148,18 +144,18 @@ final class MessageTypeToImageValueTransformer : NSValueTransformer {
     return false
   }
 
-  override func transformedValue(value: AnyObject?) -> AnyObject? {
+  override func transformedValue(_ value: Any?) -> Any? {
     guard let intValue = value as? Int,
-          messageType = UIMessage.MessageType(rawValue: intValue) else {
+          let messageType = UIMessage.MessageType(rawValue: intValue) else {
       return nil
     }
 
     switch messageType {
-      case .Info:
+      case .info:
         return NSImage(named: "message_info")
-      case .Warning:
+      case .warning:
         return NSImage(named: "message_warning")
-      case .Error:
+      case .error:
         return NSImage(named: "message_error")
     }
   }

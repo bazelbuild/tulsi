@@ -33,17 +33,17 @@ class TulsiGeneratorConfigTests: XCTestCase {
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
                                   options: TulsiOptionSet(),
-                                  bazelURL: NSURL())
+                                  bazelURL: NSURL() as URL)
   }
 
   func testSave() {
     do {
       let data = try config.save()
-      let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
-      XCTAssertEqual(dict["additionalFilePaths"], additionalFilePaths)
-      XCTAssertEqual(dict["buildTargets"], buildTargetLabels)
-      XCTAssertEqual(dict["projectName"], projectName)
-      XCTAssertEqual(dict["sourceFilters"], [String](pathFilters).sort())
+      let dict = try JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions()) as! [String: Any]
+      XCTAssertEqual(dict["additionalFilePaths"] as! [String], additionalFilePaths)
+      XCTAssertEqual(dict["buildTargets"] as! [String], buildTargetLabels)
+      XCTAssertEqual(dict["projectName"] as! String, projectName)
+      XCTAssertEqual(dict["sourceFilters"] as! [String], [String](pathFilters).sorted())
     } catch {
       XCTFail("Unexpected assertion")
     }
@@ -56,8 +56,8 @@ class TulsiGeneratorConfigTests: XCTestCase {
           "buildTargets": buildTargetLabels,
           "projectName": projectName,
           "sourceFilters": [String](pathFilters),
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       config = try TulsiGeneratorConfig(data: data)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
@@ -77,8 +77,8 @@ class TulsiGeneratorConfigTests: XCTestCase {
           "buildTargets": buildTargetLabels,
           "projectName": projectName,
           "sourceFilters": sourceFilters,
-      ]
-      let data = try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       config = try TulsiGeneratorConfig(data: data)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)

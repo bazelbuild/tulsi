@@ -22,9 +22,9 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   /// Indices into the Add/Remove/Action SegmentedControl (as built by Interface Builder).
   private enum SegmentedControlButtonIndex: Int {
-    case Add = 0
-    case Remove = 1
-    case Action = 2
+    case add = 0
+    case remove = 1
+    case action = 2
   }
 
   // Context indicating that a new config should be added after a document save completes.
@@ -37,24 +37,24 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     didSet {
       let enableAddButton = numBazelPackages > 0
       addRemoveSegmentedControl.setEnabled(enableAddButton,
-                                           forSegment: SegmentedControlButtonIndex.Add.rawValue)
+                                           forSegment: SegmentedControlButtonIndex.add.rawValue)
     }
   }
 
   dynamic var numSelectedConfigs: Int = 0 {
     didSet {
       addRemoveSegmentedControl.setEnabled(numSelectedConfigs > 0,
-                                           forSegment: SegmentedControlButtonIndex.Remove.rawValue)
+                                           forSegment: SegmentedControlButtonIndex.remove.rawValue)
       addRemoveSegmentedControl.setEnabled(numSelectedConfigs == 1,
-                                           forSegment: SegmentedControlButtonIndex.Action.rawValue)
+                                           forSegment: SegmentedControlButtonIndex.action.rawValue)
     }
   }
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       if let concreteRepresentedObject = representedObject {
         bind("numBazelPackages",
-             toObject: concreteRepresentedObject,
+             to: concreteRepresentedObject,
              withKeyPath: "bazelPackages.@count",
              options: nil)
       }
@@ -67,16 +67,16 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   override func loadView() {
-    NSValueTransformer.setValueTransformer(IsOneValueTransformer(),
-                                           forName: "IsOneValueTransformer")
+    ValueTransformer.setValueTransformer(IsOneValueTransformer(),
+                                           forName: NSValueTransformerName(rawValue: "IsOneValueTransformer"))
     super.loadView()
     bind("numSelectedConfigs",
-         toObject: configArrayController,
+         to: configArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
   }
 
-  @IBAction func didClickAddRemoveSegmentedControl(sender: NSSegmentedCell) {
+  @IBAction func didClickAddRemoveSegmentedControl(_ sender: NSSegmentedCell) {
     // Ignore mouse up messages.
     if sender.selectedSegment < 0 { return }
 
@@ -86,16 +86,16 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     }
 
     switch button {
-      case .Add:
+      case .add:
         didClickAddConfig(sender)
-      case .Remove:
+      case .remove:
         didClickRemoveSelectedConfigs(sender)
-      case .Action:
+      case .action:
         didClickAction(sender)
     }
   }
 
-  @IBAction func doGenerate(sender: AnyObject?) {
+  @IBAction func doGenerate(_ sender: AnyObject?) {
     // TODO(abaire): Make it clear to the user that only the first selection is generated.
     guard let configName = configArrayController.selectedObjects.first as? String else { return }
     guard requireValidBazel({ self.doGenerate(sender) }) else { return }
@@ -105,17 +105,17 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     presentViewControllerAsSheet(generatorController)
 
     let projectDocument = representedObject as! TulsiProjectDocument
-    generatorController.generateProjectForConfigName(configName) { (projectURL: NSURL?) in
+    generatorController.generateProjectForConfigName(configName) { (projectURL: URL?) in
       self.dismissViewController(generatorController)
       if let projectURL = projectURL {
         LogMessage.postInfo("Opening generated project in Xcode",
                             context: projectDocument.projectName)
-        NSWorkspace.sharedWorkspace().openURL(projectURL)
+        NSWorkspace.shared().open(projectURL)
       }
     }
   }
 
-  @IBAction func didDoubleClickConfigRow(sender: NSTableView) {
+  @IBAction func didDoubleClickConfigRow(_ sender: NSTableView) {
     guard requireValidBazel({ self.didDoubleClickConfigRow(sender) }) else { return }
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
@@ -123,7 +123,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     editConfigNamed(configName)
   }
 
-  func document(doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutablePointer<Void>) {
+  func document(_ doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutableRawPointer) {
     if contextInfo == &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig {
       if didSave {
         didClickAddConfig(nil)
@@ -133,13 +133,13 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   // MARK: - Private methods
 
-  private func didClickAddConfig(sender: AnyObject?) {
+  private func didClickAddConfig(_ sender: AnyObject?) {
     guard requireValidBazel({ self.didClickAddConfig(sender) }) else { return }
 
     let projectDocument = representedObject as! TulsiProjectDocument
 
     // Adding a config to a project with no bazel packages is disallowed.
-    guard let bazelPackages = projectDocument.bazelPackages where !bazelPackages.isEmpty else {
+    guard let bazelPackages = projectDocument.bazelPackages, !bazelPackages.isEmpty else {
       // This should be prevented by the UI, so spawn a bug message and beep.
       LogMessage.postInfo("Bug: Add config invoked on a project with no packages.")
       NSBeep()
@@ -150,10 +150,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     do {
       let additionalFilePaths = bazelPackages.map() { "\($0)/BUILD" }
       guard let projectName = projectDocument.projectName,
-                generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
-        projectDocument.saveDocumentWithDelegate(self,
-                                                 didSaveSelector: #selector(ProjectEditorConfigManagerViewController.document(_:didSave:contextInfo:)),
-                                                 contextInfo: &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig)
+                let generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
+        projectDocument.save(withDelegate: self,
+                             didSave: #selector(ProjectEditorConfigManagerViewController.document(_:didSave:contextInfo:)),
+                             contextInfo: &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig)
         return
       }
       let optionSet = projectDocument.optionSet ?? TulsiOptionSet()
@@ -185,14 +185,13 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   /// Verifies that the project's Bazel URL seems valid, forcing the user to select a valid path if
   /// necessary and invoking the given retryHandler once they've finished selection.
   /// Returns true if Bazel is already valid, false if the Bazel picker is being shown.
-  private func requireValidBazel(retryHandler: () -> Void) -> Bool {
+  private func requireValidBazel(_ retryHandler: @escaping () -> Void) -> Bool {
     let projectDocument = representedObject as! TulsiProjectDocument
     guard let bazelURL = projectDocument.bazelURL,
-              bazelPath = bazelURL.path
-        where NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) else {
+              FileManager.default.isExecutableFile(atPath: bazelURL.path) else {
       BazelSelectionPanel.beginSheetModalBazelSelectionPanelForWindow(self.view.window!,
                                                                       document: projectDocument) {
-        (bazelURL: NSURL?) in
+        (bazelURL: URL?) in
           if bazelURL != nil {
             retryHandler()
           }
@@ -202,20 +201,20 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     return true
   }
 
-  private func didClickRemoveSelectedConfigs(sender: AnyObject?) {
+  private func didClickRemoveSelectedConfigs(_ sender: AnyObject?) {
     let document = representedObject as! TulsiProjectDocument
     let selectedConfigNames = configArrayController.selectedObjects as! [String]
     document.deleteConfigsNamed(selectedConfigNames)
   }
 
-  private func didClickAction(sender: AnyObject?) {
+  private func didClickAction(_ sender: AnyObject?) {
     let selectedConfigNames = configArrayController.selectedObjects as! [String]
     if let configName = selectedConfigNames.first {
       editConfigNamed(configName)
     }
   }
 
-  private func editConfigNamed(name: String) {
+  private func editConfigNamed(_ name: String) {
     let projectDocument = representedObject as! TulsiProjectDocument
     let errorInfo: String
     do {
@@ -226,11 +225,11 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       configDocument.makeWindowControllers()
       configDocument.showWindows()
       return
-    } catch TulsiProjectDocument.Error.NoSuchConfig {
+    } catch TulsiProjectDocument.DocumentError.noSuchConfig {
       errorInfo = "No URL for config named '\(name)'"
-    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
+    } catch TulsiProjectDocument.DocumentError.configLoadFailed(let info) {
       errorInfo = info
-    } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
+    } catch TulsiProjectDocument.DocumentError.invalidWorkspace(let info) {
       errorInfo = "Invalid workspace: \(info)"
     } catch {
       errorInfo = "An unexpected exception occurred while loading config named '\(name)'"
@@ -243,7 +242,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
 
 /// Transformer that returns true if the value is equal to 1.
-final class IsOneValueTransformer : NSValueTransformer {
+final class IsOneValueTransformer : ValueTransformer {
   override class func transformedValueClass() -> AnyClass {
     return NSString.self
   }
@@ -252,8 +251,8 @@ final class IsOneValueTransformer : NSValueTransformer {
     return false
   }
 
-  override func transformedValue(value: AnyObject?) -> AnyObject? {
-    if let intValue = value as? Int where intValue == 1 {
+  override func transformedValue(_ value: Any?) -> Any? {
+    if let intValue = value as? Int, intValue == 1 {
       return true
     }
     return false

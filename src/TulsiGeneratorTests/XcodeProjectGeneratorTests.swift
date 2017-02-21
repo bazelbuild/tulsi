@@ -20,10 +20,10 @@ class XcodeProjectGeneratorTests: XCTestCase {
   static let outputFolderPath = "/dev/null/project"
   static let projectName = "ProjectName"
 
-  let outputFolderURL = NSURL(fileURLWithPath: XcodeProjectGeneratorTests.outputFolderPath)
+  let outputFolderURL = URL(fileURLWithPath: XcodeProjectGeneratorTests.outputFolderPath)
   let xcodeProjectPath = "\(XcodeProjectGeneratorTests.outputFolderPath)/\(XcodeProjectGeneratorTests.projectName).xcodeproj"
 
-  let workspaceRoot = NSURL(fileURLWithPath: "/workspace")
+  let workspaceRoot = URL(fileURLWithPath: "/workspace")
   let testTulsiVersion = "9.99.999.9999"
 
   let buildTargetLabels = ["//test:MainTarget", "//test/path/to/target:target"].map({ BuildLabel($0) })
@@ -31,16 +31,16 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let additionalFilePaths = ["additional/File1", "additional/File2"]
 
-  let bazelURL = NSURL(fileURLWithPath: "/test/dir/testBazel")
+  let bazelURL = URL(fileURLWithPath: "/test/dir/testBazel")
 
   let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
-      buildScript: NSURL(fileURLWithPath: "/scripts/Build"),
-      cleanScript: NSURL(fileURLWithPath: "/scripts/Clean"),
-      postProcessor: NSURL(fileURLWithPath: "/utils/covmap_patcher"),
-      stubInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
-      stubIOSAppExInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
-      stubWatchOS2InfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
-      stubWatchOS2AppExInfoPlist: NSURL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"))
+      buildScript: URL(fileURLWithPath: "/scripts/Build"),
+      cleanScript: URL(fileURLWithPath: "/scripts/Clean"),
+      postProcessor: URL(fileURLWithPath: "/utils/covmap_patcher"),
+      stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
+      stubIOSAppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
+      stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
+      stubWatchOS2AppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"))
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil
@@ -83,7 +83,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     do {
       try generator.generateXcodeProjectInFolder(outputFolderURL)
       XCTFail("Generation succeeded unexpectedly")
-    } catch XcodeProjectGenerator.Error.LabelResolutionFailed(let missingLabels) {
+    } catch XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let missingLabels) {
       for label in buildTargetLabels {
         XCTAssert(missingLabels.contains(label), "Expected missing label \(label) not found")
       }
@@ -104,13 +104,13 @@ class XcodeProjectGeneratorTests: XCTestCase {
     checkTestSuiteSchemeGeneration("apple_ui_test", testHostAttributeName: "test_host")
   }
 
-  func checkTestSuiteSchemeGeneration(testRuleType: String, testHostAttributeName: String) {
-    func addRule(labelName: String,
+  func checkTestSuiteSchemeGeneration(_ testRuleType: String, testHostAttributeName: String) {
+    func addRule(_ labelName: String,
                  type: String,
                  attributes: [String: AnyObject] = [:],
                  weakDependencies: Set<BuildLabel>? = nil) -> BuildLabel {
       let label = BuildLabel(labelName)
-      mockExtractor.labelToRuleEntry[label] = self.dynamicType.makeRuleEntry(label,
+      mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
                                                                              type: type,
                                                                              attributes: attributes,
                                                                              weakDependencies: weakDependencies)
@@ -118,8 +118,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
     }
 
     let app = addRule("//test:Application", type: "ios_application")
-    let test1 = addRule("//test:TestOne", type: testRuleType, attributes: [testHostAttributeName: app.value])
-    let test2 = addRule("//test:TestTwo", type: testRuleType, attributes: [testHostAttributeName: app.value])
+    let test1 = addRule("//test:TestOne", type: testRuleType, attributes: [testHostAttributeName: app.value as AnyObject])
+    let test2 = addRule("//test:TestTwo", type: testRuleType, attributes: [testHostAttributeName: app.value as AnyObject])
     addRule("//test:UnusedTest", type: testRuleType)
     addRule("//test:TestSuite", type: "test_suite", weakDependencies: Set([test1, test2]))
     prepareGenerator(mockExtractor.labelToRuleEntry)
@@ -143,7 +143,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testProjectSDKROOT() {
-    func validate(types: [String], _ expectedSDKROOT: String?, line: UInt = #line) {
+    func validate(_ types: [String], _ expectedSDKROOT: String?, line: UInt = #line) {
       let rules = types.map() {
         XcodeProjectGeneratorTests.makeRuleEntry(BuildLabel($0), type: $0)
       }
@@ -164,7 +164,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   // MARK: - Private methods
 
-  private static func labelToRuleEntryMapForLabels(labels: [BuildLabel]) -> [BuildLabel: RuleEntry] {
+  private static func labelToRuleEntryMapForLabels(_ labels: [BuildLabel]) -> [BuildLabel: RuleEntry] {
     var ret = [BuildLabel: RuleEntry]()
     for label in labels {
       ret[label] = makeRuleEntry(label, type: "ios_application")
@@ -172,7 +172,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     return ret
   }
 
-  private static func makeRuleEntry(label: BuildLabel,
+  private static func makeRuleEntry(_ label: BuildLabel,
                                     type: String,
                                     attributes: [String: AnyObject] = [:],
                                     artifacts: [BazelFileInfo] = [],
@@ -198,51 +198,33 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      implicitIPATarget: implicitIPATarget)
   }
 
-  private func prepareGenerator(ruleEntries: [BuildLabel: RuleEntry]) {
+  private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry]) {
     config = TulsiGeneratorConfig(projectName: XcodeProjectGeneratorTests.projectName,
                                   buildTargetLabels: Array(ruleEntries.keys),
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
                                   options: TulsiOptionSet(),
                                   bazelURL: bazelURL)
-    let projectURL = NSURL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
-    mockFileManager.allowedDirectoryCreates.insert(projectURL.path!)
-#if swift(>=2.3)
-    let xcshareddata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")!
-#else
-    let xcshareddata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcshareddata")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path!)
-#if swift(>=2.3)
-    let xcuserdata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")!
-#else
-    let xcuserdata = projectURL.URLByAppendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(xcuserdata.path!)
-#if swift(>=2.3)
-    let xcschemes = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")!
-#else
-    let xcschemes = projectURL.URLByAppendingPathComponent("xcshareddata/xcschemes")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(xcschemes.path!)
-#if swift(>=2.3)
-    let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")!
-#else
-    let scripts = projectURL.URLByAppendingPathComponent(".tulsi/Scripts")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(scripts.path!)
-#if swift(>=2.3)
-    let utils = projectURL.URLByAppendingPathComponent(".tulsi/Utils")!
-#else
-    let utils = projectURL.URLByAppendingPathComponent(".tulsi/Utils")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(utils.path!)
-#if swift(>=2.3)
-    let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")!
-#else
-    let resources = projectURL.URLByAppendingPathComponent(".tulsi/Resources")
-#endif
-    mockFileManager.allowedDirectoryCreates.insert(resources.path!)
+    let projectURL = URL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
+    mockFileManager.allowedDirectoryCreates.insert(projectURL.path)
+
+    let xcshareddata = projectURL.appendingPathComponent("project.xcworkspace/xcshareddata")
+    mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path)
+
+    let xcuserdata = projectURL.appendingPathComponent("project.xcworkspace/xcuserdata/USER.xcuserdatad")
+    mockFileManager.allowedDirectoryCreates.insert(xcuserdata.path)
+
+    let xcschemes = projectURL.appendingPathComponent("xcshareddata/xcschemes")
+    mockFileManager.allowedDirectoryCreates.insert(xcschemes.path)
+
+    let scripts = projectURL.appendingPathComponent(".tulsi/Scripts")
+    mockFileManager.allowedDirectoryCreates.insert(scripts.path)
+
+    let utils = projectURL.appendingPathComponent(".tulsi/Utils")
+    mockFileManager.allowedDirectoryCreates.insert(utils.path)
+
+    let resources = projectURL.appendingPathComponent(".tulsi/Resources")
+    mockFileManager.allowedDirectoryCreates.insert(resources.path)
 
     mockExtractor.labelToRuleEntry = ruleEntries
 
@@ -255,53 +237,53 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       fileManager: mockFileManager,
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
     generator.writeDataHandler = { (url, _) in
-      self.writtenFiles.insert(url.path!)
+      self.writtenFiles.insert(url.path)
     }
     generator.usernameFetcher = { "USER" }
   }
 }
 
 
-class MockFileManager: NSFileManager {
+class MockFileManager: FileManager {
   var filesThatExist = Set<String>()
   var allowedDirectoryCreates = Set<String>()
   var copyOperations = [String: String]()
 
-  override func fileExistsAtPath(path: String) -> Bool {
+  override func fileExists(atPath path: String) -> Bool {
     return filesThatExist.contains(path)
   }
 
-  override func createDirectoryAtURL(url: NSURL,
+  override func createDirectory(at url: URL,
                                      withIntermediateDirectories createIntermediates: Bool,
-                                     attributes: [String:AnyObject]?) throws {
-    if allowedDirectoryCreates.contains(url.path!) { return }
+                                     attributes: [String:Any]?) throws {
+    if allowedDirectoryCreates.contains(url.path) { return }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
                   userInfo: nil)
   }
 
-  override func createDirectoryAtPath(path: String,
+  override func createDirectory(atPath path: String,
                                       withIntermediateDirectories createIntermediates: Bool,
-                                      attributes: [String:AnyObject]?) throws {
+                                      attributes: [String:Any]?) throws {
     if allowedDirectoryCreates.contains(path) { return }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
                   userInfo: nil)
   }
 
-  override func removeItemAtURL(URL: NSURL) throws {
+  override func removeItem(at URL: URL) throws {
     throw NSError(domain: "MockFileManager: removeItem disallowed", code: 0, userInfo: nil)
   }
 
-  override func removeItemAtPath(path: String) throws {
+  override func removeItem(atPath path: String) throws {
     throw NSError(domain: "MockFileManager: removeItem disallowed", code: 0, userInfo: nil)
   }
 
-  override func copyItemAtURL(srcURL: NSURL, toURL dstURL: NSURL) throws {
-    copyOperations[dstURL.path!] = srcURL.path!
+  override func copyItem(at srcURL: URL, to dstURL: URL) throws {
+    copyOperations[dstURL.path] = srcURL.path
   }
 
-  override func copyItemAtPath(srcPath: String, toPath dstPath: String) throws {
+  override func copyItem(atPath srcPath: String, toPath dstPath: String) throws {
     copyOperations[dstPath] = srcPath
   }
 }
@@ -314,18 +296,18 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     return "TestRunner__"
   }
 
-  static func workingDirectoryForPBXGroup(group: PBXGroup) -> String {
+  static func workingDirectoryForPBXGroup(_ group: PBXGroup) -> String {
     return ""
   }
 
-  static func mainGroupForOutputFolder(outputFolderURL: NSURL, workspaceRootURL: NSURL) -> PBXGroup {
+  static func mainGroupForOutputFolder(_ outputFolderURL: URL, workspaceRootURL: URL) -> PBXGroup {
     return PBXGroup(name: "mainGroup",
                     path: "/A/Test/Path",
                     sourceTree: .Absolute,
                     parent: nil)
   }
 
-  required init(bazelURL: NSURL,
+  required init(bazelURL: URL,
                 bazelBinPath: String,
                 project: PBXProject,
                 buildScriptPath: String,
@@ -333,16 +315,16 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 tulsiVersion: String,
                 options: TulsiOptionSet,
                 localizedMessageLogger: LocalizedMessageLogger,
-                workspaceRootURL: NSURL,
+                workspaceRootURL: URL,
                 suppressCompilerDefines: Bool,
                 redactWorkspaceSymlink: Bool) {
     self.project = project
   }
 
-  func generateFileReferencesForFilePaths(paths: [String], pathFilters: Set<String>?) {
+  func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?) {
   }
 
-  func registerRuleEntryForIndexer(ruleEntry: RuleEntry,
+  func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: [BuildLabel:RuleEntry],
                                    pathFilters: Set<String>) {
   }
@@ -351,13 +333,13 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     return [:]
   }
 
-  func generateBazelCleanTarget(scriptPath: String, workingDirectory: String) {
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String) {
   }
 
-  func generateTopLevelBuildConfigurations(buildSettingOverrides: [String: String]) {
+  func generateTopLevelBuildConfigurations(_ buildSettingOverrides: [String: String]) {
   }
 
-  func generateBuildTargetsForRuleEntries(ruleEntries: Set<RuleEntry>,
+  func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
                                           ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = ruleEntries.map() { (e: RuleEntry) -> (String, RuleEntry) in
       return (e.label.asFullPBXTargetName!, e)

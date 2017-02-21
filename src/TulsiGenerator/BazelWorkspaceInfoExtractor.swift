@@ -19,8 +19,8 @@ import Foundation
 // extract information from a workspace.
 // TODO(abaire): Add link to aspect documentation when it becomes available.
 final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
-  var bazelURL: NSURL {
-    get { return queryExtractor.bazelURL }
+  var bazelURL: URL {
+    get { return queryExtractor.bazelURL as URL }
     set {
       queryExtractor.bazelURL = newValue
       aspectExtractor.bazelURL = newValue
@@ -43,7 +43,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   // The set of labels for which a test_suite query has been run (to prevent duplicate queries).
   private var attemptedTestSuiteLabels = Set<BuildLabel>()
 
-  init(bazelURL: NSURL, workspaceRootURL: NSURL, localizedMessageLogger: LocalizedMessageLogger) {
+  init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
 
     workspacePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
                                                          workspaceRootURL: workspaceRootURL,
@@ -59,19 +59,19 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   // MARK: - BazelWorkspaceInfoExtractorProtocol
 
-  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
+  func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {
     return queryExtractor.extractTargetRulesFromPackages(project.bazelPackages)
   }
 
-  func ruleEntriesForLabels(labels: [BuildLabel],
+  func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
-    func isLabelMissing(label: BuildLabel) -> Bool { return ruleEntryCache[label] == nil }
+    func isLabelMissing(_ label: BuildLabel) -> Bool { return ruleEntryCache[label] == nil }
     let missingLabels = labels.filter(isLabelMissing)
     if missingLabels.isEmpty { return ruleEntryCache }
 
     let commandLineSplitter = CommandLineSplitter()
-    func splitOptionString(options: String?) -> [String] {
+    func splitOptionString(_ options: String?) -> [String] {
       guard let options = options else { return [] }
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
@@ -100,19 +100,19 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ruleEntryCache
   }
 
-  func resolveExternalReferencePath(path: String) -> String? {
+  func resolveExternalReferencePath(_ path: String) -> String? {
     let execRoot = workspacePathFetcher.getExecutionRoot()
-    let fullURL = NSURL.fileURLWithPathComponents([execRoot, path])?.URLByResolvingSymlinksInPath
+    let fullURL = NSURL.fileURL(withPathComponents: [execRoot, path])?.resolvingSymlinksInPath()
     return fullURL?.path
   }
 
-  func extractBuildfiles<T: CollectionType where T.Generator.Element == BuildLabel>(forTargets: T) -> Set<BuildLabel> {
+  func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     return queryExtractor.extractBuildfiles(forTargets)
   }
 
   // MARK: - Private methods
 
-  private func extractTestSuiteRules(labels: [BuildLabel]) {
+  private func extractTestSuiteRules(_ labels: [BuildLabel]) {
     let testSuiteDependencies = queryExtractor.extractTestSuiteRules(labels)
     for (ruleInfo, possibleExpansions) in testSuiteDependencies {
       ruleEntryCache[ruleInfo.label] = RuleEntry(label: ruleInfo.label,

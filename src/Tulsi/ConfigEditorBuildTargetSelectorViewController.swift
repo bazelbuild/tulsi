@@ -50,12 +50,12 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
     }
   }
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       unbind("selectedRuleInfoCount")
       guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
       bind("selectedRuleInfoCount",
-           toObject: document,
+           to: document,
            withKeyPath: "selectedRuleInfoCount",
            options: nil)
     }
@@ -68,8 +68,8 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   override func loadView() {
     super.loadView()
 
-    let typeColumn = buildTargetTable.tableColumnWithIdentifier("Type")!
-    let labelColumn = buildTargetTable.tableColumnWithIdentifier("Label")!
+    let typeColumn = buildTargetTable.tableColumn(withIdentifier: "Type")!
+    let labelColumn = buildTargetTable.tableColumn(withIdentifier: "Label")!
     buildTargetTable.sortDescriptors = [typeColumn.sortDescriptorPrototype!,
                                         labelColumn.sortDescriptorPrototype!]
   }

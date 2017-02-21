@@ -29,11 +29,11 @@ public class TulsiOption: Equatable, CustomStringConvertible {
 
   /// The valid value types for this option.
   public enum ValueType {
-    case Bool, String
+    case bool, string
   }
 
   /// How this option is intended to be used.
-  public struct OptionType: OptionSetType {
+  public struct OptionType: OptionSet {
     public let rawValue: Int
 
     public init(rawValue: Int) {
@@ -130,10 +130,10 @@ public class TulsiOption: Equatable, CustomStringConvertible {
     targetValues = opt.targetValues
 
     let inheritValue = defaultValue ?? ""
-    func resolveInheritKeyword(value: String?) -> String? {
+    func resolveInheritKeyword(_ value: String?) -> String? {
       guard let value = value else { return nil }
-      return value.stringByReplacingOccurrencesOfString(TulsiOption.InheritKeyword,
-                                                        withString: inheritValue)
+      return value.replacingOccurrences(of: TulsiOption.InheritKeyword,
+                                                        with: inheritValue)
     }
     if optionType.contains(.SupportsInheritKeyword) {
       projectValue = resolveInheritKeyword(projectValue)
@@ -146,7 +146,7 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   }
 
   /// Provides the resolved value of this option, potentially specialized for the given target.
-  public func valueForTarget(target: String, inherit: Bool = true) -> String? {
+  public func valueForTarget(_ target: String, inherit: Bool = true) -> String? {
     if let val = targetValues?[target] {
       return val
     }
@@ -157,14 +157,14 @@ public class TulsiOption: Equatable, CustomStringConvertible {
     return nil
   }
 
-  public func sanitizeValue(value: String?) -> String? {
-    if valueType == .Bool {
+  public func sanitizeValue(_ value: String?) -> String? {
+    if valueType == .bool {
       if value != TulsiOption.BooleanTrueValue {
         return TulsiOption.BooleanFalseValue
       }
       return value
     }
-    return value?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    return value?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
   }
 
   // Generates a serialized form of this option's user-defined values or nil if the value is
@@ -172,17 +172,17 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   func serialize() -> PersistenceType? {
     var serialized = PersistenceType()
     if let value = projectValue {
-      serialized[TulsiOption.ProjectValueKey] = value
+      serialized[TulsiOption.ProjectValueKey] = value as AnyObject?
     }
 
-    if let values = targetValues where !values.isEmpty {
-      serialized[TulsiOption.TargetValuesKey] = values
+    if let values = targetValues, !values.isEmpty {
+      serialized[TulsiOption.TargetValuesKey] = values as AnyObject?
     }
     if serialized.isEmpty { return nil }
     return serialized
   }
 
-  func deserialize(serialized: PersistenceType) {
+  func deserialize(_ serialized: PersistenceType) {
     if let value = serialized[TulsiOption.ProjectValueKey] as? String {
       projectValue = value
     } else {
@@ -213,12 +213,12 @@ public func ==(lhs: TulsiOption, rhs: TulsiOption) -> Bool {
     return false
   }
 
-  func optionalsAreEqual<T where T: Equatable>(a: T?, _ b: T?) -> Bool {
+  func optionalsAreEqual<T>(_ a: T?, _ b: T?) -> Bool where T: Equatable {
     if a == nil { return b == nil }
     if b == nil { return false }
     return a! == b!
   }
-  func optionalDictsAreEqual<K, V where K: Equatable, V: Equatable>(a: [K: V]?, _ b: [K: V]?) -> Bool {
+  func optionalDictsAreEqual<K, V>(_ a: [K: V]?, _ b: [K: V]?) -> Bool where K: Equatable, V: Equatable {
     if a == nil { return b == nil }
     if b == nil { return false }
     return a! == b!

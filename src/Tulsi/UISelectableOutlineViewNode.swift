@@ -72,7 +72,7 @@ class UISelectableOutlineViewNode: NSObject {
         return
       }
 
-      willChangeValueForKey("state")
+      willChangeValue(forKey: "state")
       if let entry = entry {
         entry.selected = newSelectionState
       }
@@ -80,13 +80,13 @@ class UISelectableOutlineViewNode: NSObject {
       for node in children {
         node.state = newValue
       }
-      didChangeValueForKey("state")
+      didChangeValue(forKey: "state")
 
       // Notify KVO that this node's ancestors have also changed state.
       var ancestor = parent
       while ancestor != nil {
-        ancestor!.willChangeValueForKey("state")
-        ancestor!.didChangeValueForKey("state")
+        ancestor!.willChangeValue(forKey: "state")
+        ancestor!.didChangeValue(forKey: "state")
         ancestor = ancestor!.parent
       }
     }
@@ -97,16 +97,16 @@ class UISelectableOutlineViewNode: NSObject {
     super.init()
   }
 
-  func addChild(child: UISelectableOutlineViewNode) {
+  func addChild(_ child: UISelectableOutlineViewNode) {
     _children.append(child)
     child.parent = self
   }
 
   // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
-  func validateState(ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
-    if let value = ioValue.memory as? NSNumber {
-      if value.integerValue == NSMixedState {
-        ioValue.memory = NSNumber(integer: NSOnState)
+  func validateState(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
+    if let value = ioValue.pointee as? NSNumber {
+      if value.intValue == NSMixedState {
+        ioValue.pointee = NSNumber(value: NSOnState as Int)
       }
     }
   }

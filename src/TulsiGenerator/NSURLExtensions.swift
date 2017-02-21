@@ -15,12 +15,14 @@
 import Foundation
 
 
-extension NSURL {
-  public func relativePathTo(target: NSURL) -> String? {
-    guard self.fileURL && target.fileURL,
-        let rootComponents = pathComponents, targetComponents = target.pathComponents else {
+extension URL {
+  public func relativePathTo(_ target: URL) -> String? {
+    guard self.isFileURL && target.isFileURL else {
       return nil
     }
+
+    let rootComponents = pathComponents
+    let targetComponents = target.pathComponents
 
     if target == self {
       return ""
@@ -34,12 +36,12 @@ extension NSURL {
     }
 
     // Construct a path to the last common component.
-    var relativePath = [String](count: rootComponents.count - numCommonComponents,
-                                repeatedValue: "..")
+    var relativePath = [String](repeating: "..",
+                                count: rootComponents.count - numCommonComponents)
 
     // Append the path from the common component to the target.
     relativePath += targetComponents.suffix(targetComponents.count - numCommonComponents)
 
-    return relativePath.joinWithSeparator("/")
+    return relativePath.joined(separator: "/")
   }
 }

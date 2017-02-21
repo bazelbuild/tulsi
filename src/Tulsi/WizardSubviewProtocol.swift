@@ -21,19 +21,19 @@ protocol WizardSubviewProtocol {
   weak var presentingWizardViewController: ConfigEditorWizardViewController? { get set }
 
   /// Invoked when the wizard subview is about to become active due to a "next" navigation.
-  optional func wizardSubviewWillActivateMovingForward()
+  @objc optional func wizardSubviewWillActivateMovingForward()
 
   /// Invoked when the wizard subview is about to become active due to a "previous" navigation.
-  optional func wizardSubviewWillActivateMovingBackward()
+  @objc optional func wizardSubviewWillActivateMovingBackward()
 
   /// Invoked when the wizard subview is about to become inactive due to a "next" navigation. If the
   /// receiver returns false, the navigation action will be cancelled.
-  optional func shouldWizardSubviewDeactivateMovingForward() -> Bool
+  @objc optional func shouldWizardSubviewDeactivateMovingForward() -> Bool
 
   /// Invoked when the wizard subview is about to become inactive due to a "previous" navigation. If
   /// the receiver returns false, the navigation action will be cancelled.
-  optional func shouldWizardSubviewDeactivateMovingBackward() -> Bool
+  @objc optional func shouldWizardSubviewDeactivateMovingBackward() -> Bool
 
   /// Invoked when the wizard subview is no longer active.
-  optional func wizardSubviewDidDeactivate()
+  @objc optional func wizardSubviewDidDeactivate()
 }

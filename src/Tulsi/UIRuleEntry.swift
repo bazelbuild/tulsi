@@ -43,16 +43,16 @@ class UIRuleInfo: NSObject, Selectable {
   let ruleInfo: RuleInfo
 
   /// RuleInfo instances for targets that must be selected if this target is selected.
-  private var linkedRuleInfos = NSHashTable.weakObjectsHashTable()
+  private var linkedRuleInfos = NSHashTable<AnyObject>.weakObjects()
 
   init(ruleInfo: RuleInfo) {
     self.ruleInfo = ruleInfo
   }
 
-  func resolveLinkages(ruleInfoMap: [BuildLabel: UIRuleInfo]) {
+  func resolveLinkages(_ ruleInfoMap: [BuildLabel: UIRuleInfo]) {
     for label in ruleInfo.linkedTargetLabels {
       guard let linkedUIRuleInfo = ruleInfoMap[label] else { continue }
-      linkedRuleInfos.addObject(linkedUIRuleInfo)
+      linkedRuleInfos.add(linkedUIRuleInfo)
     }
   }
 }

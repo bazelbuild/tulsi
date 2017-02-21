@@ -18,26 +18,26 @@ import Foundation
 /// Defines an object that can extract information from a Bazel workspace.
 protocol BazelWorkspaceInfoExtractorProtocol {
   /// Extracts information about the set of top level target rules from the given project.
-  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo]
+  func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo]
 
   /// Retrieves RuleEntry information for the given list of labels, returning a dictionary mapping
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).
-  func ruleEntriesForLabels(labels: [BuildLabel],
+  func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption) -> [BuildLabel: RuleEntry]
 
   /// Resolves the given Bazel path (which is expected to begin with external/) to a filesystem
   /// path. This is intended to be used to resolve "@external_repo" style labels to paths usable by
   /// Xcode. Returns nil if the path could not be resolved for any reason.
-  func resolveExternalReferencePath(path: String) -> String?
+  func resolveExternalReferencePath(_ path: String) -> String?
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.
-  func extractBuildfiles<T: CollectionType where T.Generator.Element == BuildLabel>(forTargets: T) -> Set<BuildLabel>
+  func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel
 
   /// URL to the Bazel binary used by this extractor.
-  var bazelURL: NSURL {get set}
+  var bazelURL: URL {get set}
 
   /// Workspace-relative path to the directory in which Bazel will install generated artifacts.
   var bazelBinPath: String {get}

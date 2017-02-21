@@ -23,17 +23,18 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   /// labelToRuleEntry dictionary.
   var invalidLabels = Set<BuildLabel>()
 
-  var bazelURL = NSURL()
+  // Go through NSURL to create an empty instance.
+  var bazelURL = NSURL() as URL
   var bazelBinPath = "bazel-bin"
 
-  func extractRuleInfoFromProject(project: TulsiProject) -> [RuleInfo] {
+  func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {
     return []
   }
 
-  func ruleEntriesForLabels(labels: [BuildLabel],
+  func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
-    invalidLabels.removeAll(keepCapacity: true)
+    invalidLabels.removeAll(keepingCapacity: true)
     var ret = [BuildLabel: RuleEntry]()
     for label in labels {
       guard let entry = labelToRuleEntry[label] else {
@@ -45,11 +46,11 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ret
   }
 
-  func resolveExternalReferencePath(path: String) -> String? {
+  func resolveExternalReferencePath(_ path: String) -> String? {
     return nil
   }
 
-  func extractBuildfiles<T:CollectionType where T.Generator.Element == BuildLabel>(forTargets: T) -> Set<BuildLabel> {
+  func extractBuildfiles<T:Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     return Set()
   }
 }

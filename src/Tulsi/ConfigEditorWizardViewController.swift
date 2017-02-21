@@ -13,6 +13,30 @@
 // limitations under the License.
 
 import Cocoa
+// TODO(b/31675078): comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+private func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// TODO(b/31675078): comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+private func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 /// View controller encapsulating the Tulsi generator config wizard.
@@ -29,34 +53,34 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
   @IBOutlet weak var previousButton: NSButton!
   @IBOutlet weak var nextButton: NSButton!
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       // Update the current wizard page, if any.
       pageViewController?.selectedViewController?.representedObject = representedObject
     }
   }
 
-  override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
     if segue.identifier == "Embed Wizard PageController" {
       pageViewController = (segue.destinationController as! NSPageController)
       pageViewController.arrangedObjects = ConfigEditorWizardViewController.wizardPageIdentifiers
       pageViewController.delegate = self
     }
-    super.prepareForSegue(segue, sender: sender)
+    super.prepare(for: segue, sender: sender)
   }
 
-  func setNextButtonEnabled(enabled: Bool) {
-    nextButton.enabled = enabled
+  func setNextButtonEnabled(_ enabled: Bool) {
+    nextButton.isEnabled = enabled
   }
 
   func updateNextButton() {
     if pageViewController.selectedIndex == 0 {
       let document = representedObject as! TulsiGeneratorConfigDocument
-      nextButton.enabled = document.selectedRuleInfoCount > 0
+      nextButton.isEnabled = document.selectedRuleInfoCount > 0
     }
   }
 
-  @IBAction func cancel(sender: AnyObject?) {
+  @IBAction func cancel(_ sender: AnyObject?) {
     let document = representedObject as! TulsiGeneratorConfigDocument
     do {
       try document.revert()
@@ -66,9 +90,8 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     document.close()
   }
 
-  @IBAction func next(sender: NSButton? = nil) {
-    if let deactivatingSubview = pageViewController.selectedViewController as? WizardSubviewProtocol
-        where deactivatingSubview.shouldWizardSubviewDeactivateMovingForward?() == false {
+  @IBAction func next(_ sender: NSButton? = nil) {
+    if let deactivatingSubview = pageViewController.selectedViewController as? WizardSubviewProtocol, deactivatingSubview.shouldWizardSubviewDeactivateMovingForward?() == false {
       return
     }
 
@@ -85,7 +108,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
 
     pageViewController!.navigateForward(sender)
     selectedIndex += 1
-    previousButton.hidden = false
+    previousButton.isHidden = false
 
     if selectedIndex == ConfigEditorWizardViewController.LastPageIndex {
       nextButton.title = NSLocalizedString("Wizard_SaveConfig",
@@ -93,18 +116,17 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     }
   }
 
-  @IBAction func previous(sender: NSButton? = nil) {
-    if let deactivatingSubview = pageViewController.selectedViewController as? WizardSubviewProtocol
-        where deactivatingSubview.shouldWizardSubviewDeactivateMovingBackward?() == false {
+  @IBAction func previous(_ sender: NSButton? = nil) {
+    if let deactivatingSubview = pageViewController.selectedViewController as? WizardSubviewProtocol, deactivatingSubview.shouldWizardSubviewDeactivateMovingBackward?() == false {
       return
     }
 
     var selectedIndex = pageViewController!.selectedIndex
     if selectedIndex > 0 {
-      previousButton.hidden = selectedIndex <= 1
+      previousButton.isHidden = selectedIndex <= 1
       pageViewController!.navigateBack(sender)
       selectedIndex -= 1
-      nextButton.enabled = true
+      nextButton.isEnabled = true
 
       if selectedIndex < ConfigEditorWizardViewController.LastPageIndex {
         nextButton.title = NSLocalizedString("Wizard_Next",
@@ -115,35 +137,27 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
 
   // MARK: - NSPageControllerDelegate
 
-  func pageController(pageController: NSPageController, identifierForObject object: AnyObject) -> String {
+  func pageController(_ pageController: NSPageController, identifierFor object: Any) -> String {
     return object as! String
   }
 
-  func pageController(pageController: NSPageController, viewControllerForIdentifier identifier: String) -> NSViewController {
-    let vc = storyboard!.instantiateControllerWithIdentifier(identifier) as! NSViewController
+  func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: String) -> NSViewController {
+    let vc = storyboard!.instantiateController(withIdentifier: identifier) as! NSViewController
 
     // NSPageController doesn't appear to support Autolayout properly, so fall back to
     // autoresizingMask.
-    vc.view.autoresizingMask = [.ViewWidthSizable, .ViewHeightSizable]
+    vc.view.autoresizingMask = [.viewWidthSizable, .viewHeightSizable]
     return vc
   }
 
-#if swift(>=2.3)
-  func pageController(pageController: NSPageController,
-                      prepareViewController viewController: NSViewController,
-                      withObject object: AnyObject?) {
-    _pageController(pageController, prepareViewController: viewController, withObject: object!)
+  func pageController(_ pageController: NSPageController,
+                      prepare viewController: NSViewController,
+                      with object: Any?) {
+    _pageController(pageController, prepareViewController: viewController, withObject: object! as AnyObject)
   }
-#else
-  func pageController(pageController: NSPageController,
-                      prepareViewController viewController: NSViewController,
-                      withObject object: AnyObject) {
-    _pageController(pageController, prepareViewController: viewController, withObject: object)
-  }
-#endif
 
   // TODO(abaire): Roll into the function body above when Swift 2.2 is dropped.
-  private func _pageController(pageController: NSPageController,
+  private func _pageController(_ pageController: NSPageController,
                                prepareViewController viewController: NSViewController,
                                withObject object: AnyObject) {
     // By default, the viewController will have its representedObject set to the currently selected
@@ -151,7 +165,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     // TulsiDocument, so it's set here.
     viewController.representedObject = representedObject
 
-    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.indexOf(object as! String)
+    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.index(of: object as! String)
     let subview = viewController as? WizardSubviewProtocol
     subview?.presentingWizardViewController = self
     if pageController.selectedIndex < newPageIndex {
@@ -161,7 +175,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     }
   }
 
-  func pageControllerDidEndLiveTransition(pageController: NSPageController) {
+  func pageControllerDidEndLiveTransition(_ pageController: NSPageController) {
     if let subview = pageController.selectedViewController as? WizardSubviewProtocol {
       subview.wizardSubviewDidDeactivate?()
     }

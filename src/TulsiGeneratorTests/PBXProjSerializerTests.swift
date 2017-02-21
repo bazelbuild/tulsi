@@ -43,10 +43,10 @@ class PBXProjSerializerTests: XCTestCase {
     }
     let root: StringToObjectDict
     do {
-      root = try NSPropertyListSerialization.propertyListWithData(openStepData,
-          options: .Immutable, format: nil) as! StringToObjectDict
+      root = try PropertyListSerialization.propertyList(from: openStepData,
+          options: [], format: nil) as! StringToObjectDict
     } catch let error as NSError {
-      let serializedData = String(data: openStepData, encoding: NSUTF8StringEncoding)!
+      let serializedData = String(data: openStepData, encoding: String.Encoding.utf8)!
       XCTFail("Failed to parse OpenStep serialized data " + error.localizedDescription + "\n" + serializedData)
       return
     }
@@ -77,8 +77,8 @@ class PBXProjSerializerTests: XCTestCase {
       return
     }
 
-    let serializedData1 = String(data: openStepData1, encoding: NSUTF8StringEncoding)!
-    let serializedData2 = String(data: openStepData2, encoding: NSUTF8StringEncoding)!
+    let serializedData1 = String(data: openStepData1, encoding: String.Encoding.utf8)!
+    let serializedData2 = String(data: openStepData2, encoding: String.Encoding.utf8)!
     XCTAssertEqual(serializedData1, serializedData2)
   }
 
@@ -136,7 +136,7 @@ class PBXProjSerializerTests: XCTestCase {
       self.expectedPBXClass = expectedPBXClass
     }
 
-    func groupByAddingGroup(group: GroupDefinition) -> GroupDefinition {
+    func groupByAddingGroup(_ group: GroupDefinition) -> GroupDefinition {
       var newGroups = groups
       newGroups.append(group)
       return GroupDefinition(name: name,
@@ -205,7 +205,7 @@ class PBXProjSerializerTests: XCTestCase {
     return populateProject(project, withGIDGenerator: gidGenerator)
   }
 
-  private func populateProject(targetProject: PBXProject, withGIDGenerator generator: MockGIDGenerator) -> SimpleProjectDefinition {
+  private func populateProject(_ targetProject: PBXProject, withGIDGenerator generator: MockGIDGenerator) -> SimpleProjectDefinition {
     let projectLevelBuildConfigName = "ProjectConfig"
     let projectLevelBuildConfigSettings = ["TEST_SETTING": "test_setting",
                                            "QuotedSetting": "Quoted string value"]
@@ -311,7 +311,7 @@ class PBXProjSerializerTests: XCTestCase {
     targetProject.linkTestTarget(legacyPBXTarget, toHostTarget: nativePBXTarget)
 
     do {
-      func populateGroup(group: PBXGroup, groupDefinition: GroupDefinition) {
+      func populateGroup(_ group: PBXGroup, groupDefinition: GroupDefinition) {
         group.globalID = groupDefinition.gid
         for file in groupDefinition.files {
           let fileRef = group.getOrCreateFileReferenceBySourceTree(file.sourceTree, path: file.path)
@@ -345,7 +345,7 @@ class PBXProjSerializerTests: XCTestCase {
     return definition
   }
 
-  private func assertDict(dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = #line) {
+  private func assertDict(_ dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = #line) {
     guard let isa = dict["isa"] as? String else {
       XCTFail("dictionary is not a PBXObject (missing 'isa' member)", line: line)
       return
@@ -353,7 +353,7 @@ class PBXProjSerializerTests: XCTestCase {
     XCTAssertEqual(isa, pbxClass, "Serialized dict is not of the expected PBXObject type", line: line)
   }
 
-  private func getObjectByID(gid: String,
+  private func getObjectByID(_ gid: String,
                              withPBXClass pbxClass: String,
                              fromObjects objects: StringToObjectDict,
                              line: UInt = #line) -> StringToObjectDict? {
@@ -371,7 +371,7 @@ class PBXProjSerializerTests: XCTestCase {
   class MockGIDGenerator: GIDGeneratorProtocol {
     var nextID = 0
 
-    func generate(item: PBXObjectProtocol) -> String {
+    func generate(_ item: PBXObjectProtocol) -> String {
       // This test implementation doesn't utilize the object in generating an ID.
       let gid = gidForCounter(nextID)
       nextID += 1
@@ -385,7 +385,7 @@ class PBXProjSerializerTests: XCTestCase {
       return reservedID
     }
 
-    private func gidForCounter(counter : Int, prefix: Int = 0) -> String {
+    private func gidForCounter(_ counter : Int, prefix: Int = 0) -> String {
       return String(format: "%08X%08X%08X", prefix, 0, counter & 0xFFFFFFFF)
     }
   }

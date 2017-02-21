@@ -18,10 +18,10 @@ import TulsiGenerator
 
 protocol TulsiGeneratorConfigDocumentDelegate: class {
   /// Called when the TulsiGeneratorConfigDocument is saved successfully with a new name.
-  func didNameTulsiGeneratorConfigDocument(document: TulsiGeneratorConfigDocument)
+  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument)
 
   /// Used to retrieve project-level option values.
-  func parentOptionSetForConfigDocument(document: TulsiGeneratorConfigDocument) -> TulsiOptionSet?
+  func parentOptionSetForConfigDocument(_ document: TulsiGeneratorConfigDocument) -> TulsiOptionSet?
 }
 
 
@@ -35,9 +35,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Status of an Xcode project generation action.
   enum GenerationResult {
     /// Generation succeeded. The associated URL points at the generated Xcode project.
-    case Success(NSURL)
+    case success(URL)
     /// Generation failed. The associated String provides error info.
-    case Failure(String)
+    case failure(String)
   }
 
   /// The type for Tulsi generator config documents.
@@ -62,7 +62,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // The folder into which the generated Xcode project will be written.
-  dynamic var outputFolderURL: NSURL? = nil
+  dynamic var outputFolderURL: URL? = nil
 
   /// The set of all RuleInfo instances from which the user can select build targets.
   // Maps the given RuleInfo instances to UIRuleInfo's, preserving this config's selections if
@@ -96,7 +96,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       for entry in newValue {
         entry.addObserver(self,
                           forKeyPath: "selected",
-                          options: .New,
+                          options: .new,
                           context: &TulsiGeneratorConfigDocument.KVOContext)
       }
     }
@@ -114,7 +114,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// The number of selected items in ruleEntries.
   dynamic var selectedRuleInfoCount: Int = 0 {
     didSet {
-      updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
 
@@ -128,12 +128,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // The display name for this config.
   var configName: String? = nil {
     didSet {
-#if swift(>=2.3)
-      // setDisplayName has been removed from the SDK.
-#else
-      setDisplayName(configName)
-#endif
-      updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
 
@@ -145,13 +140,13 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // Information inherited from the project.
-  var bazelURL: NSURL? = nil
+  var bazelURL: URL? = nil
   var additionalFilePaths: [String]? = nil
-  var saveFolderURL: NSURL! = nil
+  var saveFolderURL: URL! = nil
   var infoExtractor: TulsiProjectInfoExtractor! = nil
   var messageLog: MessageLogProtocol? = nil
 
-  override var entireFileLoaded: Bool {
+  override var isEntireFileLoaded: Bool {
     return _entireFileLoaded
   }
   /// Whether or not this document contains buildTargetLabels that have not been resolved to
@@ -162,27 +157,27 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   private var buildTargetLabels: [BuildLabel]? = nil
 
   // Closure to be invoked when a save operation completes.
-  private var saveCompletionHandler: ((canceled: Bool, error: NSError?) -> Void)? = nil
+  private var saveCompletionHandler: ((_ canceled: Bool, _ error: Error?) -> Void)? = nil
 
   private static var KVOContext: Int = 0
 
-  static func isGeneratorConfigFilename(filename: String) -> Bool {
+  static func isGeneratorConfigFilename(_ filename: String) -> Bool {
     return (filename as NSString).pathExtension == TulsiGeneratorConfig.FileExtension
   }
 
   /// Builds a new TulsiGeneratorConfigDocument from the given data and adds it to the document
   /// controller.
-  static func makeDocumentWithProjectRuleEntries(ruleInfos: [RuleInfo],
+  static func makeDocumentWithProjectRuleEntries(_ ruleInfos: [RuleInfo],
                                                  optionSet: TulsiOptionSet,
                                                  projectName: String,
-                                                 saveFolderURL: NSURL,
+                                                 saveFolderURL: URL,
                                                  infoExtractor: TulsiProjectInfoExtractor,
                                                  messageLog: MessageLogProtocol?,
                                                  additionalFilePaths: [String]? = nil,
-                                                 bazelURL: NSURL? = nil,
+                                                 bazelURL: URL? = nil,
                                                  name: String? = nil) throws -> TulsiGeneratorConfigDocument {
-    let documentController = NSDocumentController.sharedDocumentController()
-    guard let doc = try documentController.makeUntitledDocumentOfType(TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
+    let documentController = NSDocumentController.shared()
+    guard let doc = try documentController.makeUntitledDocument(ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
       throw TulsiError(errorMessage: "Document for type \(TulsiGeneratorConfigDocument.FileType) was not the expected type.")
     }
 
@@ -204,11 +199,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Builds a TulsiGeneratorConfigDocument by loading data from the given persisted config and adds
   /// it to the document controller. The returned document may be incomplete; completionHandler is
   /// invoked on the main thread when the document is fully loaded.
-  static func makeDocumentWithContentsOfURL(url: NSURL,
+  static func makeDocumentWithContentsOfURL(_ url: URL,
                                             infoExtractor: TulsiProjectInfoExtractor,
                                             messageLog: MessageLogProtocol?,
-                                            bazelURL: NSURL? = nil,
-                                            completionHandler: (TulsiGeneratorConfigDocument -> Void)) throws -> TulsiGeneratorConfigDocument {
+                                            bazelURL: URL? = nil,
+                                            completionHandler: @escaping ((TulsiGeneratorConfigDocument) -> Void)) throws -> TulsiGeneratorConfigDocument {
     let doc = try makeSparseDocumentWithContentsOfURL(url,
                                                       infoExtractor: infoExtractor,
                                                       messageLog: messageLog,
@@ -220,12 +215,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Builds a skeletal TulsiGeneratorConfigDocument by loading data from the given persisted config
   /// and adds it to the document controller. The returned document will not contain fully resolved
   /// label references and is not suitable for UI display in an editor.
-  static func makeSparseDocumentWithContentsOfURL(url: NSURL,
+  static func makeSparseDocumentWithContentsOfURL(_ url: URL,
                                                   infoExtractor: TulsiProjectInfoExtractor,
                                                   messageLog: MessageLogProtocol?,
-                                                  bazelURL: NSURL? = nil) throws -> TulsiGeneratorConfigDocument {
-    let documentController = NSDocumentController.sharedDocumentController()
-    guard let doc = try documentController.makeDocumentWithContentsOfURL(url,
+                                                  bazelURL: URL? = nil) throws -> TulsiGeneratorConfigDocument {
+    let documentController = NSDocumentController.shared()
+    guard let doc = try documentController.makeDocument(withContentsOf: url,
                                                                          ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
       throw TulsiError(errorMessage: "Document for type \(TulsiGeneratorConfigDocument.FileType) was not the expected type.")
     }
@@ -237,19 +232,19 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return doc
   }
 
-  static func urlForConfigNamed(name: String, inFolderURL folderURL: NSURL?) -> NSURL? {
+  static func urlForConfigNamed(_ name: String, inFolderURL folderURL: URL?) -> URL? {
     let filename = TulsiGeneratorConfig.sanitizeFilename("\(name).\(TulsiGeneratorConfig.FileExtension)")
-    return folderURL?.URLByAppendingPathComponent(filename)
+    return folderURL?.appendingPathComponent(filename)
   }
 
   /// Generates an Xcode project.
-  static func generateXcodeProjectInFolder(outputFolderURL: NSURL,
+  static func generateXcodeProjectInFolder(_ outputFolderURL: URL,
                                            withGeneratorConfig config: TulsiGeneratorConfig,
-                                           workspaceRootURL: NSURL,
+                                           workspaceRootURL: URL,
                                            messageLog: MessageLogProtocol?,
                                            projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
     let tulsiVersion: String
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+    if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       tulsiVersion = cfBundleVersion
     } else {
       tulsiVersion = ""
@@ -258,25 +253,25 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                       config: config,
                                                       tulsiVersion: tulsiVersion)
     let errorInfo: String
-    let startTime = NSDate()
+    let startTime = Date()
 
     do {
       let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-      let timeTaken = String(format: "%.4fs", NSDate().timeIntervalSinceDate(startTime))
+      let timeTaken = String(format: "%.4fs", Date().timeIntervalSince(startTime))
       LogMessage.postSyslog("Generate[OK]: \(timeTaken)", context: config.projectName)
-      return .Success(url)
-    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
+      return .success(url)
+    } catch TulsiXcodeProjectGenerator.GeneratorError.unsupportedTargetType(let targetType) {
       errorInfo = "Unsupported target type: \(targetType)"
-    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
+    } catch TulsiXcodeProjectGenerator.GeneratorError.serializationFailed(let details) {
       errorInfo = "General failure: \(details)"
     } catch _ {
       errorInfo = "Unexpected failure"
     }
-    let timeTaken = String(format: "%.4fs", NSDate().timeIntervalSinceDate(startTime))
+    let timeTaken = String(format: "%.4fs", Date().timeIntervalSince(startTime))
     LogMessage.postSyslog("Generate[FAIL]: \(timeTaken)",
                           details: errorInfo,
                           context: config.projectName)
-    return .Failure(errorInfo)
+    return .failure(errorInfo)
   }
 
   deinit {
@@ -286,36 +281,36 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// Saves the document, invoking the given completion handler on completion/cancelation.
-  func save(completionHandler: ((Bool, NSError?) -> Void)) {
+  func save(completionHandler: @escaping ((Bool, Error?) -> Void)) {
     assert(saveCompletionHandler == nil)
     saveCompletionHandler = completionHandler
-    saveDocument(nil)
+    self.save(nil)
   }
 
   func revert() throws {
     guard let url = fileURL else { return }
-    try revertToContentsOfURL(url, ofType: TulsiGeneratorConfigDocument.FileType)
+    try self.revert(toContentsOf: url, ofType: TulsiGeneratorConfigDocument.FileType)
   }
 
   override func makeWindowControllers() {
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
-    let windowController = storyboard.instantiateControllerWithIdentifier("TulsiGeneratorConfigDocumentWindow") as! NSWindowController
+    let windowController = storyboard.instantiateController(withIdentifier: "TulsiGeneratorConfigDocumentWindow") as! NSWindowController
     windowController.contentViewController?.representedObject = self
     // TODO(abaire): Consider supporting restoration of config subwindows.
-    windowController.window?.restorable = false
+    windowController.window?.isRestorable = false
     addWindowController(windowController)
   }
 
   /// Performs the save process for this config, bypassing any steps that would spawn UI elements.
-  func headlessSave(configName: String) {
+  func headlessSave(_ configName: String) {
     // Ensure that the output folder exists to prevent saveToURL from freezing.
     do {
-      try NSFileManager.defaultManager().createDirectoryAtURL(saveFolderURL,
+      try FileManager.default.createDirectory(at: saveFolderURL,
                                                               withIntermediateDirectories: true,
                                                               attributes: nil)
     } catch let e as NSError {
       if let completionHandler = saveCompletionHandler {
-        completionHandler(canceled: false, error: e)
+        completionHandler(false, e)
         saveCompletionHandler = nil
       }
       return
@@ -324,26 +319,24 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     guard let targetURL = TulsiGeneratorConfigDocument.urlForConfigNamed(configName,
                                                                          inFolderURL: saveFolderURL) else {
       if let completionHandler = saveCompletionHandler {
-        completionHandler(canceled: false, error: TulsiError(code: .ConfigNotSaveable))
+        completionHandler(false, TulsiError(code: .configNotSaveable))
         saveCompletionHandler = nil
       }
       return
     }
 
-    saveToURL(targetURL,
+    self.save(to: targetURL,
               ofType: TulsiGeneratorConfigDocument.FileType,
-              forSaveOperation: .SaveOperation) { (error: NSError?) in
+              for: .saveOperation) { (error: Error?) in
       // Note that saveToURL handles invocation/clearning of saveCompletionHandler.
     }
   }
 
-  override func saveToURL(url: NSURL,
+  override func save(to url: URL,
                           ofType typeName: String,
-                          forSaveOperation saveOperation: NSSaveOperationType,
-                          completionHandler: (NSError?) -> Void) {
-    super.saveToURL(url,
-                    ofType: typeName,
-                    forSaveOperation: saveOperation) { (error: NSError?) in
+                          for saveOperation: NSSaveOperationType,
+                          completionHandler: @escaping (Error?) -> Void) {
+    super.save(to: url, ofType: typeName, for: saveOperation) { (error: Error?) in
       if let error = error {
         let fmt = NSLocalizedString("Error_ConfigSaveFailed",
                                     comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
@@ -356,7 +349,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       completionHandler(error)
 
       if let concreteCompletionHandler = self.saveCompletionHandler {
-        concreteCompletionHandler(canceled: false, error: error)
+        concreteCompletionHandler(false, error)
         self.saveCompletionHandler = nil
       }
 
@@ -366,26 +359,24 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  override func dataOfType(typeName: String) throws -> NSData {
+  override func data(ofType typeName: String) throws -> Data {
     guard let config = makeConfig() else {
-      throw TulsiError(code: .ConfigNotSaveable)
+      throw TulsiError(code: .configNotSaveable)
     }
     if typeName == TulsiGeneratorConfigDocument.FileType {
-      return try config.save()
+      return try config.save() as Data
     } else if typeName == TulsiGeneratorConfigDocument.PerUserFileType {
       if let userSettings = try config.savePerUserSettings() {
-        return userSettings
+        return userSettings as Data
       }
-      return NSData()
+      return Data()
     }
     throw NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: nil)
   }
 
-  override func readFromURL(url: NSURL, ofType typeName: String) throws {
-    guard let filename = url.lastPathComponent else {
-      throw TulsiError(code: .ConfigNotLoadable)
-    }
-    configName = (filename as NSString).stringByDeletingPathExtension
+  override func read(from url: URL, ofType typeName: String) throws {
+    let filename = url.lastPathComponent
+    configName = (filename as NSString).deletingPathExtension
     let config = try TulsiGeneratorConfig.load(url)
 
     projectName = config.projectName
@@ -398,7 +389,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     for sourceFilter in config.pathFilters {
       let sourcePath: UISourcePath
       if sourceFilter.hasSuffix("/...") {
-        let path = sourceFilter.substringToIndex(sourceFilter.endIndex.advancedBy(-4))
+        let targetIndex = sourceFilter.index(sourceFilter.endIndex, offsetBy: -4)
+        let path = sourceFilter.substring(to: targetIndex)
         sourcePath = UISourcePath(path: path, selected: false, recursive: true)
       } else {
         sourcePath = UISourcePath(path: sourceFilter, selected: true, recursive: false)
@@ -412,21 +404,21 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return false
   }
 
-  override func prepareSavePanel(panel: NSSavePanel) -> Bool {
+  override func prepareSavePanel(_ panel: NSSavePanel) -> Bool {
     // As configs are always relative to some other object, the NSSavePanel is never appropriate.
     assertionFailure("Save panel should never be invoked.")
     return false
   }
 
-  override func observeValueForKeyPath(keyPath: String?,
-                              ofObject object: AnyObject?,
-                              change: [String : AnyObject]?,
-                              context: UnsafeMutablePointer<Void>) {
+  override func observeValue(forKeyPath keyPath: String?,
+                              of object: Any?,
+                              change: [NSKeyValueChangeKey : Any]?,
+                              context: UnsafeMutableRawPointer?) {
     if context != &TulsiGeneratorConfigDocument.KVOContext {
-      super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
       return
     }
-    if keyPath == "selected", let newValue = change?[NSKeyValueChangeNewKey] as? Bool {
+    if keyPath == "selected", let newValue = change?[NSKeyValueChangeKey.newKey] as? Bool {
       if (newValue) {
         selectedRuleInfoCount += 1
       } else {
@@ -436,14 +428,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // Regenerates the sourcePaths array based on the currently selected ruleEntries.
-  func updateSourcePaths(callback: ([UISourcePath]) -> Void) {
+  func updateSourcePaths(_ callback: @escaping ([UISourcePath]) -> Void) {
     var sourcePathMap = [String: UISourcePath]()
     selectedSourcePaths.forEach() { sourcePathMap[$0.path] = $0 }
     processingTaskStarted()
 
     let selectedLabels = self.selectedRuleInfos.map() { $0.label }
     let optionSet = self.optionSet!
-    NSThread.doOnQOSUserInitiatedThread() {
+    Thread.doOnQOSUserInitiatedThread() {
       let resolvedLabels = self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: optionSet[.BazelBuildStartupOptionsDebug],
                                                                    buildOptions: optionSet[.BazelBuildOptionsDebug])
@@ -474,16 +466,16 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
       var processedEntries = Set<BuildLabel>()
 
-      let componentDelimiters = NSCharacterSet(charactersInString: "/:")
-      func addPath(path: String) {
-        let path = (path as NSString).stringByDeletingLastPathComponent
+      let componentDelimiters = CharacterSet(charactersIn: "/:")
+      func addPath(_ path: String) {
+        let path = (path as NSString).deletingLastPathComponent
         if path.isEmpty { return }
 
-        let pathComponents = path.componentsSeparatedByCharactersInSet(componentDelimiters)
+        let pathComponents = path.components(separatedBy: componentDelimiters)
         var cumulativePathComponents = [String]()
         for component in pathComponents {
           cumulativePathComponents.append(component)
-          let componentPath = cumulativePathComponents.joinWithSeparator("/")
+          let componentPath = cumulativePathComponents.joined(separator: "/")
           cumulativePathComponents = [componentPath]
           if sourcePathMap[componentPath] == nil {
             sourcePathMap[componentPath] = UISourcePath(path: componentPath)
@@ -491,7 +483,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         }
       }
 
-      func extractSourcePaths(ruleEntry: RuleEntry) {
+      func extractSourcePaths(_ ruleEntry: RuleEntry) {
         if processedEntries.contains(ruleEntry.label) {
           // Rules that have already been processed will already have all of their transitive
           // sources captured.
@@ -524,7 +516,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         addPath(path)
       }
 
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         defer { self.processingTaskFinished() }
         self.sourcePaths = [UISourcePath](sourcePathMap.values)
         callback(self.sourcePaths)
@@ -532,15 +524,15 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  @IBAction override func saveDocument(sender: AnyObject?) {
+  @IBAction override func save(_ sender: Any?) {
     if fileURL != nil {
-      super.saveDocument(sender)
+      super.save(sender)
       return
     }
-    saveDocumentAs(sender)
+    saveAs(sender)
   }
 
-  @IBAction override func saveDocumentAs(sender: AnyObject?) {
+  @IBAction override func saveAs(_ sender: Any?) {
     let newConfigSheet = NewGeneratorConfigViewController()
     newConfigSheet.configName = configName
     newConfigSheet.delegate = self
@@ -548,9 +540,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// Generates an Xcode project, returning an NSURL to the project on success.
-  func generateXcodeProjectInFolder(outputFolderURL: NSURL,
-                                    withWorkspaceRootURL workspaceRootURL: NSURL) -> NSURL? {
-    assert(!NSThread.isMainThread(), "Must not be called from the main thread")
+  func generateXcodeProjectInFolder(_ outputFolderURL: URL,
+                                    withWorkspaceRootURL workspaceRootURL: URL) -> URL? {
+    assert(!Thread.isMainThread, "Must not be called from the main thread")
 
     guard let config = makeConfig(withFullyResolvedOptions: true) else {
       let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
@@ -565,9 +557,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                                            messageLog: self,
                                                                            projectInfoExtractor: infoExtractor)
     switch result {
-      case .Success(let url):
+      case .success(let url):
         return url
-      case .Failure(let errorInfo):
+      case .failure(let errorInfo):
         let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                     comment: "A general, critical failure during project generation.")
         LogMessage.postError(msg, details: errorInfo)
@@ -578,9 +570,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// Resolves any outstanding uncached label references, converting a sparsely loaded document into
   /// a fully loaded one. completionHandler is invoked on the main thread when the document is fully
   /// loaded.
-  func finishLoadingDocument(completionHandler: (TulsiGeneratorConfigDocument -> Void)) {
+  func finishLoadingDocument(_ completionHandler: @escaping ((TulsiGeneratorConfigDocument) -> Void)) {
     processingTaskStarted()
-    NSThread.doOnQOSUserInitiatedThread() {
+    Thread.doOnQOSUserInitiatedThread() {
       // Resolve labels to UIRuleEntries, warning on any failures.
       self.resolveLabelReferences() {
         if let concreteBuildTargetLabels = self.buildTargetLabels {
@@ -596,21 +588,21 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  func addProcessingTaskCount(taskCount: Int) {
-    NSThread.doOnMainQueue() { self.processingTaskCount += taskCount }
+  func addProcessingTaskCount(_ taskCount: Int) {
+    Thread.doOnMainQueue() { self.processingTaskCount += taskCount }
   }
 
   func processingTaskStarted() {
-    NSThread.doOnMainQueue() { self.processingTaskCount += 1 }
+    Thread.doOnMainQueue() { self.processingTaskCount += 1 }
   }
 
   func processingTaskFinished() {
-    NSThread.doOnMainQueue() { self.processingTaskCount -= 1 }
+    Thread.doOnMainQueue() { self.processingTaskCount -= 1 }
   }
 
   // MARK: - NSWindowDelegate
 
-  func windowWillClose(notification: NSNotification) {
+  func windowWillClose(_ notification: Notification) {
     stopObservingRuleEntries()
   }
 
@@ -634,7 +626,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return selectedUIRuleInfos
   }
 
-  func parentOptionForOptionKey(key: TulsiOptionKey) -> TulsiOption? {
+  func parentOptionForOptionKey(_ key: TulsiOptionKey) -> TulsiOption? {
     // Return the project-level option for the given key to indicate inheritance.
     guard let parentOptionSet = delegate?.parentOptionSetForConfigDocument(self) else { return nil }
     return parentOptionSet[key]
@@ -642,41 +634,37 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   // MARK: - NSUserInterfaceValidations
 
-  override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-#if swift(>=2.3)
+  override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     let itemAction = item.action
-#else
-    let itemAction = item.action()
-#endif
     switch itemAction {
-      case #selector(TulsiGeneratorConfigDocument.saveDocument(_:)):
+      case .some(#selector(TulsiGeneratorConfigDocument.self.save(_:))):
         return true
 
-      case #selector(TulsiGeneratorConfigDocument.saveDocumentAs(_:)):
+      case .some(#selector(TulsiGeneratorConfigDocument.saveAs(_:))):
         return windowForSheet?.contentViewController != nil
 
       // Unsupported actions.
-      case #selector(TulsiGeneratorConfigDocument.duplicateDocument(_:)):
+      case .some(#selector(TulsiGeneratorConfigDocument.duplicate(_:))):
         return false
-      case #selector(TulsiGeneratorConfigDocument.renameDocument(_:)):
+      case .some(#selector(TulsiGeneratorConfigDocument.rename(_:))):
         return false
-      case #selector(TulsiGeneratorConfigDocument.moveDocument(_:)):
+      case .some(#selector(TulsiGeneratorConfigDocument.move(_:))):
         return false
 
       default:
-        print("Unhandled menu action: \(itemAction)")
+        Swift.print("Unhandled menu action: \(itemAction)")
     }
     return false
   }
 
   // MARK: - NewGeneratorConfigViewControllerDelegate
 
-  func viewController(vc: NewGeneratorConfigViewController,
+  func viewController(_ vc: NewGeneratorConfigViewController,
                       didCompleteWithReason reason: NewGeneratorConfigViewController.CompletionReason) {
     windowForSheet?.contentViewController?.dismissViewController(vc)
-    guard reason == .Create else {
+    guard reason == .create else {
       if let completionHandler = saveCompletionHandler {
-        completionHandler(canceled: true, error: nil)
+        completionHandler(true, nil)
         saveCompletionHandler = nil
       }
       return
@@ -695,7 +683,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   private func makeConfig(withFullyResolvedOptions resolve: Bool = false) -> TulsiGeneratorConfig? {
     guard let concreteProjectName = projectName,
-              concreteOptionSet = optionSet else {
+              let concreteOptionSet = optionSet else {
       return nil
     }
 
@@ -718,7 +706,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     })
 
     // Check to see if the document is sparsely loaded or not.
-    if entireFileLoaded {
+    if isEntireFileLoaded {
       return TulsiGeneratorConfig(projectName: concreteProjectName,
                                   buildTargets: selectedRuleInfos,
                                   pathFilters: pathFilters,
@@ -745,11 +733,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   /// Resolves buildTargetLabels, leaving it populated with any labels that failed to be resolved.
   /// The given completion handler is invoked on the main thread once the labels are fully resolved.
-  private func resolveLabelReferences(completionHandler: (Void -> Void)) {
-    guard let concreteBuildTargetLabels = buildTargetLabels
-        where !concreteBuildTargetLabels.isEmpty else {
+  private func resolveLabelReferences(_ completionHandler: @escaping ((Void) -> Void)) {
+    guard let concreteBuildTargetLabels = buildTargetLabels, !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         completionHandler()
       }
       return
@@ -775,7 +762,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       !concreteBuildTargetLabels.contains($0.ruleInfo.label)
     }
 
-    NSThread.doOnMainQueue() {
+    Thread.doOnMainQueue() {
       for existingInfo in existingInfos {
         existingInfo.selected = false
         ruleInfos.append(existingInfo)

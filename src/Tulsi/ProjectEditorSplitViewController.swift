@@ -18,7 +18,7 @@ import Cocoa
 /// View controller encapsulating the project editor and message window.
 final class ProjectEditorSplitViewController: NSSplitViewController {
 
-  override var representedObject: AnyObject? {
+  override var representedObject: Any? {
     didSet {
       for vc in childViewControllers {
         vc.representedObject = representedObject

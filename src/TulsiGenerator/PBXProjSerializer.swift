@@ -18,43 +18,43 @@ let XcodeProjectArchiveVersion = "1"
 
 
 protocol PBXProjSerializable: class {
-  func serializeInto(serializer: PBXProjFieldSerializer) throws
+  func serializeInto(_ serializer: PBXProjFieldSerializer) throws
 }
 
 
 /// Methods for serializing components of a PBXObject.
 protocol PBXProjFieldSerializer {
-  func addField(name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws
-  func addField(name: String, _ val: Int) throws
-  func addField(name: String, _ val: Bool) throws
-  func addField(name: String, _ val: String?) throws
-  func addField(name: String, _ val: [String: AnyObject]?) throws
-  func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws
-  func addField(name: String, _ values: [String]) throws
+  func addField(_ name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws
+  func addField(_ name: String, _ val: Int) throws
+  func addField(_ name: String, _ val: Bool) throws
+  func addField(_ name: String, _ val: String?) throws
+  func addField(_ name: String, _ val: [String: Any]?) throws
+  func addField<T: PBXObjectProtocol>(_ name: String, _ values: [T]) throws
+  func addField(_ name: String, _ values: [String]) throws
 
   // Serializes an object if it has not already been serialized and returns its globalID, optionally
   // with a comment string attached unless returnRawID is true.
-  func serializeObject(object: PBXObjectProtocol, returnRawID: Bool) throws -> String
+  func serializeObject(_ object: PBXObjectProtocol, returnRawID: Bool) throws -> String
 }
 
 extension PBXProjFieldSerializer {
-  func addField(name: String, _ obj: PBXObjectProtocol?) throws {
+  func addField(_ name: String, _ obj: PBXObjectProtocol?) throws {
     try addField(name, obj, rawID: false)
   }
 }
 
 
 extension NSMutableData {
-  enum EncodingError: ErrorType {
+  enum EncodingError: Error {
     // A string failed to be encoded into NSData as UTF8.
-    case StringUTF8EncodingError
+    case stringUTF8EncodingError
   }
 
-  func tulsi_appendString(str: String) throws {
-    guard let encoded = str.dataUsingEncoding(NSUTF8StringEncoding) else {
-      throw EncodingError.StringUTF8EncodingError
+  func tulsi_appendString(_ str: String) throws {
+    guard let encoded = str.data(using: String.Encoding.utf8) else {
+      throw EncodingError.stringUTF8EncodingError
     }
-    self.appendData(encoded)
+    self.append(encoded)
   }
 }
 
@@ -62,9 +62,9 @@ extension NSMutableData {
 /// Encapsulates the ability to serialize a PBXProject into an OpenStep formatted plist.
 final class OpenStepSerializer: PBXProjFieldSerializer {
 
-  private enum SerializationError: ErrorType {
+  private enum SerializationError: Error {
     // A PBX object was referenced but never defined.
-    case ReferencedObjectNotFoundError
+    case referencedObjectNotFoundError
   }
 
   // List of objects that are always serialized on a single line by Xcode.
@@ -91,7 +91,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     self.gidGenerator = gidGenerator
   }
 
-  func serialize() -> NSData? {
+  func serialize() -> Data? {
     do {
       let rootObjectID = try serializeObject(rootObject)
       return serializeObjectDictionaryWithRoot(rootObjectID)
@@ -101,7 +101,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
   }
 
   // MARK: - XcodeProjFieldSerializer
-  func serializeObject(obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
+  func serializeObject(_ obj: PBXObjectProtocol, returnRawID: Bool = false) throws -> String {
     if let typedObject = objects[obj.globalID] {
       if !returnRawID {
         return "\(obj.globalID)\(typedObject.comment)"
@@ -142,33 +142,33 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     return "\(globalID)\(serializationDict.comment)"
   }
 
-  func addField(name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws {
+  func addField(_ name: String, _ obj: PBXObjectProtocol?, rawID: Bool) throws {
     guard let local = obj else {
       return
     }
 
     let gid = try serializeObject(local, returnRawID: rawID)
-    currentDict.dict[name] = gid
+    currentDict.dict[name] = gid as AnyObject?
   }
 
-  func addField(name: String, _ val: Int) throws {
-    currentDict.dict[name] = val
+  func addField(_ name: String, _ val: Int) throws {
+    currentDict.dict[name] = val as AnyObject?
   }
 
-  func addField(name: String, _ val: Bool) throws {
+  func addField(_ name: String, _ val: Bool) throws {
     let intVal = val ? 1 : 0
-    currentDict.dict[name] = intVal
+    currentDict.dict[name] = intVal as AnyObject?
   }
 
-  func addField(name: String, _ val: String?) throws {
+  func addField(_ name: String, _ val: String?) throws {
     guard let stringValue = val else {
       return
     }
 
-    currentDict.dict[name] = escapeString(stringValue)
+    currentDict.dict[name] = escapeString(stringValue) as AnyObject?
   }
 
-  func addField(name: String, _ val: [String: AnyObject]?) throws {
+  func addField(_ name: String, _ val: [String: Any]?) throws {
     // Note: Xcode will crash if empty buildSettings member dictionaries of XCBuildConfiguration's
     // are omitted so this does not check to see if the dictionary is empty or not.
     guard let dict = val else {
@@ -176,10 +176,10 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     let stack = currentDict
-    currentDict = RawDict(compact: stack.compact)
+    currentDict = RawDict(compact: (stack?.compact)!)
     for (key, value) in dict {
       if let stringValue = value as? String {
-        currentDict.dict[key] = escapeString(stringValue)
+        currentDict.dict[key] = escapeString(stringValue) as AnyObject?
       } else if let dictValue = value as? [String: AnyObject] {
         try addField(key, dictValue)
       } else if let arrayValue = value as? [String] {
@@ -188,32 +188,32 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
         assertionFailure("Unsupported complex object \(value) in nested dictionary type")
       }
     }
-    stack.dict[name] = currentDict
+    stack?.dict[name] = currentDict
     currentDict = stack
 
   }
 
-  func addField<T: PBXObjectProtocol>(name: String, _ values: [T]) throws {
+  func addField<T: PBXObjectProtocol>(_ name: String, _ values: [T]) throws {
     currentDict.dict[name] = try values.map() { try serializeObject($0) }
   }
 
-  func addField(name: String, _ values: [String]) throws {
+  func addField(_ name: String, _ values: [String]) throws {
     currentDict.dict[name] = values.map() { escapeString($0) }
   }
 
-  func getGlobalIDForObject(object: PBXObjectProtocol) throws -> String {
+  func getGlobalIDForObject(_ object: PBXObjectProtocol) throws -> String {
     return try serializeObject(object)
   }
 
   // MARK: - Private methods
 
-  private func serializeObjectDictionaryWithRoot(rootObjectID: String) -> NSData? {
+  private func serializeObjectDictionaryWithRoot(_ rootObjectID: String) -> Data? {
     let data = NSMutableData()
     do {
       try data.tulsi_appendString("// !$*UTF8*$!\n{\n")
       var indent = "\t"
 
-      func appendIndentedString(value: String) throws {
+      func appendIndentedString(_ value: String) throws {
         try data.tulsi_appendString(indent + value)
       }
 
@@ -249,10 +249,10 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       return nil
     }
 
-    return data
+    return data as Data
   }
 
-  private func encodeSerializedPBXObjectArray(key: String,
+  private func encodeSerializedPBXObjectArray(_ key: String,
                                               into data: NSMutableData,
                                               indented indent: String) throws {
     guard let entries = typedObjectIndex[key]?.gids else {
@@ -260,13 +260,13 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
     }
 
     // For debugging purposes, throw away the index now that it's being encoded.
-    typedObjectIndex.removeValueForKey(key)
+    typedObjectIndex.removeValue(forKey: key)
 
     try data.tulsi_appendString("\n/* Begin \(key) section */\n")
 
-    for gid in entries.sort() {
+    for gid in entries.sorted() {
       guard let obj = objects[gid] else {
-        throw SerializationError.ReferencedObjectNotFoundError
+        throw SerializationError.referencedObjectNotFoundError
       }
 
       try obj.appendToData(data, indent: indent)
@@ -277,14 +277,14 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
 
   /// Intermediate representation of a raw dictionary.
   private class RawDict {
-    var dict = [String: AnyObject]()
+    var dict = [String: Any]()
     let compact: Bool
 
     init(compact: Bool = false) {
       self.compact = compact
     }
 
-    func appendToData(data: NSMutableData, indent: String) throws {
+    func appendToData(_ data: NSMutableData, indent: String) throws {
       try data.tulsi_appendString("{")
 
       let (closingSpacer, spacer) = spacersForIndent(indent)
@@ -298,10 +298,10 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
 
     // MARK: - Internal methods
 
-    func appendContentsToData(data: NSMutableData, indent: String, spacer: String) throws {
+    func appendContentsToData(_ data: NSMutableData, indent: String, spacer: String) throws {
       let newIndent = indent + "\t"
       var leadingSpacer = ""
-      for (key, value) in dict.sort({ $0.0 < $1.0 }) {
+      for (key, value) in dict.sorted(by: { $0.0 < $1.0 }) {
         let key = escapeString(key)
         if let rawDictValue = value as? RawDict {
           try data.tulsi_appendString("\(leadingSpacer)\(key) = ")
@@ -318,7 +318,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       }
     }
 
-    func spacersForIndent(indent: String) -> (String, String) {
+    func spacersForIndent(_ indent: String) -> (String, String) {
       let closingSpacer: String
       let spacer: String
       if compact {
@@ -350,7 +350,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       super.init(compact: OpenStepSerializer.CompactPBXTypes.contains(isa))
     }
 
-    override func appendToData(data: NSMutableData, indent: String) throws {
+    override func appendToData(_ data: NSMutableData, indent: String) throws {
       try data.tulsi_appendString("\(indent)\(gid)\(comment) = {")
 
       let (closingSpacer, spacer) = spacersForIndent(indent)
@@ -368,9 +368,9 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
 
 // Regex used to determine whether a string value can be printed without quotes or not.
 private let unquotedSerializableStringRegex = try! NSRegularExpression(pattern: "^[A-Z0-9._/]+$",
-                                                                       options: [.CaseInsensitive])
+                                                                       options: [.caseInsensitive])
 
-private func escapeString(val: String) -> String {
+private func escapeString(_ val: String) -> String {
   var val = val
   // The quotation marks can be omitted if the string is composed strictly of alphanumeric
   // characters and contains no white space (numbers are handled as strings in property lists).
@@ -379,12 +379,12 @@ private func escapeString(val: String) -> String {
   // You may see strings containing unreadable sequences of ASCII characters; these are used to
   // represent Unicode characters.
   let valueRange = NSMakeRange(0, val.characters.count)
-  if unquotedSerializableStringRegex.firstMatchInString(val, options: NSMatchingOptions.Anchored, range: valueRange) != nil {
+  if unquotedSerializableStringRegex.firstMatch(in: val, options: NSRegularExpression.MatchingOptions.anchored, range: valueRange) != nil {
     return val
   } else {
-    val = val.stringByReplacingOccurrencesOfString("\\", withString: "\\\\")
-    val = val.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
-    val = val.stringByReplacingOccurrencesOfString("\n", withString: "\\n")
+    val = val.replacingOccurrences(of: "\\", with: "\\\\")
+    val = val.replacingOccurrences(of: "\"", with: "\\\"")
+    val = val.replacingOccurrences(of: "\n", with: "\\n")
     return "\"\(val)\""
   }
 }

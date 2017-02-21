@@ -18,8 +18,8 @@ import XCTest
 // Note: Rather than test the serializer's output, we make use of the knowledge that
 // buildSerializerWithRuleEntries modifies a project directly.
 class PBXTargetGeneratorTests: XCTestCase {
-  let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
-  let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
+  let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
+  let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
                                           iOSAppExStub: "TestIOSAppExStub.plist",
                                           watchOSStub: "TestWatchOS2Info.plist",
@@ -68,13 +68,13 @@ class PBXTargetGeneratorTests: XCTestCase {
   }
 
   func testMainGroupForOutputFolder() {
-    func assertOutputFolder(output: String,
+    func assertOutputFolder(_ output: String,
                             workspace: String,
                             generatesSourceTree sourceTree: SourceTree,
                             path: String?,
                             line: UInt = #line) {
-      let outputURL = NSURL(fileURLWithPath: output, isDirectory: true)
-      let workspaceURL = NSURL(fileURLWithPath: workspace, isDirectory: true)
+      let outputURL = URL(fileURLWithPath: output, isDirectory: true)
+      let workspaceURL = URL(fileURLWithPath: workspace, isDirectory: true)
       let group = PBXTargetGenerator.mainGroupForOutputFolder(outputURL,
                                                               workspaceRootURL: workspaceURL)
       XCTAssertEqual(group.sourceTree, sourceTree, line: line)
@@ -100,8 +100,8 @@ class PBXTargetGeneratorTests: XCTestCase {
 
 
 class PBXTargetGeneratorTestsWithFiles: XCTestCase {
-  let bazelURL = NSURL(fileURLWithPath: "__BAZEL_BINARY_")
-  let workspaceRootURL = NSURL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
+  let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
+  let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
                                           iOSAppExStub: "TestIOSAppExStub.plist",
@@ -154,7 +154,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(target.buildToolPath, scriptPath)
 
     // The script should launch the test scriptPath with bazelURL's path as the only argument.
-    let expectedScriptArguments = "\"\(bazelURL.path!)\" \"bazel-bin\""
+    let expectedScriptArguments = "\"\(bazelURL.path)\" \"bazel-bin\""
     XCTAssertEqual(target.buildArgumentsString, expectedScriptArguments)
   }
 
@@ -186,7 +186,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       XCTAssert(targetProxy.containerPortal === project, "Mismatch in container for dependency in target added \(target.name)")
       XCTAssert(targetProxy.target === integrationTarget, "Mismatch in target dependency for target added \(target.name)")
       XCTAssertEqual(targetProxy.proxyType,
-          PBXContainerItemProxy.ProxyType.TargetReference,
+          PBXContainerItemProxy.ProxyType.targetReference,
           "Mismatch in target dependency type for target added \(target.name)")
     }
   }
@@ -417,7 +417,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                           testHostAttributeName: "test_host")
   }
 
-  func checkGenerateTargetsForLinkedRuleEntriesWithNoSources(testRuleType: String,
+  func checkGenerateTargetsForLinkedRuleEntriesWithNoSources(_ testRuleType: String,
                                                              testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -431,7 +431,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
-                        attributes: rule2Attributes,
+                        attributes: rule2Attributes as [String: AnyObject],
                         implicitIPATarget: ipa),
     ])
 
@@ -546,7 +546,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                         testHostAttributeName: "test_host")
   }
 
-  func checkGenerateTargetsForLinkedRuleEntriesWithSources(testRuleType: String,
+  func checkGenerateTargetsForLinkedRuleEntriesWithSources(_ testRuleType: String,
                                                            testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -560,7 +560,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
-                                     attributes: testRuleAttributes,
+                                     attributes: testRuleAttributes as [String: AnyObject],
                                      sourceFiles: testSources,
                                      implicitIPATarget: testIPA)
     let rules = Set([
@@ -678,7 +678,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-      testRuleType: String, testHostAttributeName: String) {
+      _ testRuleType: String, testHostAttributeName: String) {
     let hostTargetName = "TestHost"
     let host1Package = "test/package/1"
     let host2Package = "test/package/2"
@@ -693,11 +693,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let test2Target = "\(host2Package):\(test2TargetName)"
     let test1Rule = makeTestRuleEntry(test1Target,
                                       type: testRuleType,
-                                      attributes: [testHostAttributeName: host1Target],
+                                      attributes: [testHostAttributeName: host1Target as AnyObject],
                                       sourceFiles: testSources)
     let test2Rule = makeTestRuleEntry(test2Target,
                                       type: testRuleType,
-                                      attributes: [testHostAttributeName: host2Target],
+                                      attributes: [testHostAttributeName: host2Target as AnyObject],
                                       sourceFiles: testSources)
     let rules = Set([
       makeTestRuleEntry(host1Target, type: "ios_application"),
@@ -729,7 +729,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
-      testRuleType: String, testHostAttributeName: String) {
+      _ testRuleType: String, testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
@@ -741,7 +741,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ipa = BuildLabel("test/app:TestApplication.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
-                                     attributes: testRuleAttributes,
+                                     attributes: testRuleAttributes as [String: AnyObject],
                                      sourceFiles: testSources,
                                      implicitIPATarget: ipa)
     do {
@@ -1156,7 +1156,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel = BuildLabel("test/app:TestApp")
     let ruleEntry = makeTestRuleEntry("test/app:TestApp",
                                       type: "ios_application",
-                                      attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                      attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
@@ -1177,7 +1177,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel = BuildLabel("test/app:TestApp")
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_binary",
-                                      attributes: ruleAttributes,
+                                      attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
@@ -1198,13 +1198,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
                               "root": "bazel-genfiles",
-                              "src": false]
+                              "src": false] as [String : Any]
     let ruleAttributes = ["bridging_header": bridgingHeaderInfo]
 
     let buildLabel = BuildLabel("test/app:TestApp")
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_binary",
-                                      attributes: ruleAttributes,
+                                      attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
@@ -1229,7 +1229,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel = BuildLabel("test/app:TestApp")
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_binary",
-                                      attributes: ruleAttributes,
+                                      attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
     let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
 
@@ -1345,9 +1345,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   func testMergesCompatibleIndexers() {
     let sourceFiles1 = ["1.swift", "1.cc"]
     let buildLabel1 = BuildLabel("test/app:TestBinary")
+
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
                                        type: "ios_binary",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: [:],
@@ -1357,7 +1358,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
     let ruleEntry2 = makeTestRuleEntry(buildLabel2,
                                        type: "objc_library",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: [:],
@@ -1377,11 +1378,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testIndexerCharacterLimit() {
     let sourceFiles1 = ["1.swift", "1.cc"]
-    let buildTargetName1 = String(count: 300, repeatedValue: Character("A"))
+    let buildTargetName1 = String(repeating: "A", count: 300)
     let buildLabel1 = BuildLabel("test/app:" + buildTargetName1)
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
                                        type: "ios_binary",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: [:],
@@ -1402,22 +1403,22 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testCompatibleIndexersMergeCharacterLimit() {
     let sourceFiles1 = ["1.swift", "1.cc"]
-    let buildTargetName1 = String(count: 200, repeatedValue: Character("A"))
+    let buildTargetName1 = String(repeating: "A", count: 200)
     let buildLabel1 = BuildLabel("test/app:" + buildTargetName1)
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
                                        type: "ios_binary",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: [:],
                                                 pathFilters: pathFilters)
 
     let sourceFiles2 = ["2.swift"]
-    let buildTargetName2 = String(count: 200, repeatedValue: Character("B"))
+    let buildTargetName2 = String(repeating: "B", count: 200)
     let buildLabel2 = BuildLabel("test/app:" + buildTargetName2)
     let ruleEntry2 = makeTestRuleEntry(buildLabel2,
                                        type: "objc_library",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: [:],
@@ -1440,7 +1441,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let buildLabel1 = BuildLabel("test/app:TestBinary")
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
                                        type: "ios_binary",
-                                       attributes: ["pch": ["path": pchFile.path!, "src": true]],
+                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFileNames)
     let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
@@ -1473,13 +1474,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let bridgingHeaderFilePath = "some/place/bridging-header.h"
     let bridgingHeaderInfo = ["path": bridgingHeaderFilePath,
                               "root": "bazel-genfiles",
-                              "src": false]
+                              "src": false] as [String : Any]
     let ruleAttributes1 = ["bridging_header": bridgingHeaderInfo]
 
     let buildLabel1 = BuildLabel("test/app:TestBinary")
     let ruleEntry1 = makeTestRuleEntry(buildLabel1,
                                        type: "ios_binary",
-                                       attributes: ruleAttributes1,
+                                       attributes: ruleAttributes1 as [String : AnyObject],
                                        sourceFiles: sourceFileNames)
     let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
@@ -1581,7 +1582,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let testRule = makeTestRuleEntry(target,
                                      type: targetType,
-                                     attributes: ["has_swift_dependency": true],
+                                     attributes: ["has_swift_dependency": true as AnyObject],
                                      dependencies: Set([swiftTarget]))
     let swiftLibraryRule = makeTestRuleEntry(swiftTarget, type: "swift_library")
 
@@ -1636,13 +1637,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   // MARK: - Helper methods
 
-  private func debugBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+  private func debugBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
     var newSettings = settings
     newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "DEBUG=1"
     return newSettings
   }
 
-  private func releaseBuildSettingsFromSettings(settings: [String: String],
+  private func releaseBuildSettingsFromSettings(_ settings: [String: String],
                                                 indexerSettingsOnly: Bool = false) -> [String: String] {
     var newSettings = settings
     newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "NDEBUG=1"
@@ -1652,17 +1653,17 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     return newSettings
   }
 
-  private func debugTestRunnerBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+  private func debugTestRunnerBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
     let testRunnerSettings = addTestRunnerSettings(settings)
     return debugBuildSettingsFromSettings(testRunnerSettings)
   }
 
-  private func releaseTestRunnerBuildSettingsFromSettings(settings: [String: String]) -> [String: String] {
+  private func releaseTestRunnerBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
     let testRunnerSettings = addTestRunnerSettings(settings)
     return releaseBuildSettingsFromSettings(testRunnerSettings)
   }
 
-  private func addTestRunnerSettings(settings: [String: String]) -> [String: String] {
+  private func addTestRunnerSettings(_ settings: [String: String]) -> [String: String] {
     var testRunnerSettings = settings
     if let _ = testRunnerSettings["DEBUG_INFORMATION_FORMAT"] {
       testRunnerSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
@@ -1682,7 +1683,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
-  private func makeTestRuleEntry(label: String,
+  private func makeTestRuleEntry(_ label: String,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  artifacts: [String] = [],
@@ -1710,11 +1711,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   private class TestBazelFileInfo : BazelFileInfo {
     init(fullPath: String) {
-      super.init(rootPath: "", subPath: fullPath, isDirectory: false, targetType: .SourceFile)
+      super.init(rootPath: "", subPath: fullPath, isDirectory: false, targetType: .sourceFile)
     }
   }
 
-  private func makeTestRuleEntry(label: BuildLabel,
+  private func makeTestRuleEntry(_ label: BuildLabel,
                                  type: String,
                                  attributes: [String: AnyObject] = [:],
                                  artifacts: [String] = [],
@@ -1766,7 +1767,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       self.mainGroup = mainGroup
     }
 
-    func validate(phase: PBXBuildPhase, line: UInt = #line) {
+    func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
       // Validate the file set.
       XCTAssertEqual(phase.files.count,
                      fileSet.count,
@@ -1789,7 +1790,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       super.init(isa: "PBXSourcesBuildPhase", files: files, mainGroup: mainGroup)
     }
 
-    override func validate(phase: PBXBuildPhase, line: UInt = #line) {
+    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
       super.validate(phase, line: line)
 
       for buildFile in phase.files {
@@ -1808,16 +1809,16 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   private class ShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
-    let bazelURL: NSURL
+    let bazelURL: URL
     let buildTarget: String
 
-    init(bazelURL: NSURL, buildTarget: String) {
+    init(bazelURL: URL, buildTarget: String) {
       self.bazelURL = bazelURL
       self.buildTarget = buildTarget
       super.init(isa: "PBXShellScriptBuildPhase", files: [])
     }
 
-    override func validate(phase: PBXBuildPhase, line: UInt = #line) {
+    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
       super.validate(phase, line: line)
 
       // Guaranteed by the test infrastructure below, failing this indicates a programming error in
@@ -1827,16 +1828,16 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let script = scriptBuildPhase.shellScript
 
       // TODO(abaire): Consider doing deeper validation of the script.
-      XCTAssert(script.containsString(bazelURL.path!),
-                "Build script does not contain \(bazelURL.path!)",
+      XCTAssert(script.contains(bazelURL.path),
+                "Build script does not contain \(bazelURL.path)",
                 line: line)
-      XCTAssert(script.containsString(buildTarget),
+      XCTAssert(script.contains(buildTarget),
                 "Build script does not contain build target \(buildTarget)",
                 line: line)    }
   }
 
-  private func fileRefForPath(path: String) -> PBXReference? {
-    let components = path.componentsSeparatedByString("/")
+  private func fileRefForPath(_ path: String) -> PBXReference? {
+    let components = path.components(separatedBy: "/")
     var node = project.mainGroup
     componentLoop: for component in components {
       for child in node.children {
@@ -1855,7 +1856,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     return nil
   }
 
-  private func validateIndexerTarget(indexerTargetName: String,
+  private func validateIndexerTarget(_ indexerTargetName: String,
                                      sourceFileNames: [String]?,
                                      pchFile: PBXFileReference? = nil,
                                      bridgingHeader: String? = nil,
@@ -1903,7 +1904,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     assertTarget(expectedTarget, inTargets: targets, line: line)
   }
 
-  private func assertTarget(targetDef: TargetDefinition,
+  private func assertTarget(_ targetDef: TargetDefinition,
                             inTargets targets: Dictionary<String, PBXTarget>,
                             line: UInt = #line) {
     guard let target = targets[targetDef.name] else {
@@ -1939,7 +1940,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                 line: line)
   }
 
-  private func validateExpectedBuildPhases(phaseDefs: [BuildPhaseDefinition],
+  private func validateExpectedBuildPhases(_ phaseDefs: [BuildPhaseDefinition],
                                            inTarget target: PBXTarget,
                                            line: UInt = #line) {
     let buildPhases = target.buildPhases

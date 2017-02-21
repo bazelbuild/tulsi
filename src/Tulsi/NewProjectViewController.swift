@@ -17,7 +17,7 @@ import Cocoa
 
 /// Protocol used to inform receiver of a NewProjectViewController's exit status.
 protocol NewProjectViewControllerDelegate: class {
-  func viewController(vc: NewProjectViewController,
+  func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason: NewProjectViewController.CompletionReason)
 }
 
@@ -26,36 +26,36 @@ protocol NewProjectViewControllerDelegate: class {
 final class NewProjectViewController: NSViewController {
   /// The reason that a NewProjectViewController exited.
   enum CompletionReason {
-    case Cancel, Create
+    case cancel, create
   }
 
   dynamic var projectName: String? = nil
-  dynamic var workspacePath: NSURL? = nil
+  dynamic var workspacePath: URL? = nil
 
   weak var delegate: NewProjectViewControllerDelegate?
 
-  @IBAction func didClickCancelButton(sender: NSButton) {
-    delegate?.viewController(self, didCompleteWithReason: .Cancel)
+  @IBAction func didClickCancelButton(_ sender: NSButton) {
+    delegate?.viewController(self, didCompleteWithReason: .cancel)
   }
 
-  @IBAction func didClickNextButton(sender: NSButton) {
-    self.delegate?.viewController(self, didCompleteWithReason: .Create)
+  @IBAction func didClickNextButton(_ sender: NSButton) {
+    self.delegate?.viewController(self, didCompleteWithReason: .create)
   }
 
-  @IBAction func didClickWorkspacePathControl(sender: NSPathControl) {
+  @IBAction func didClickWorkspacePathControl(_ sender: NSPathControl) {
     if let clickedCell = sender.clickedPathComponentCell() {
       // Set the value to the clicked folder.
-      sender.URL = clickedCell.URL
+      sender.url = clickedCell.url
     } else {
       // The user clicked on the "Choose..." placeholder; treat this as a double click.
       didDoubleClickWorkspacePathControl(sender)
     }
   }
 
-  @IBAction func didDoubleClickWorkspacePathControl(sender: NSPathControl) {
+  @IBAction func didDoubleClickWorkspacePathControl(_ sender: NSPathControl) {
     let panel = FilteredOpenPanel.filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(["WORKSPACE"])
     if let clickedCell = sender.clickedPathComponentCell() {
-      panel.directoryURL = clickedCell.URL
+      panel.directoryURL = clickedCell.url
     }
 
     panel.message = NSLocalizedString("NewProject_SetProjectWorkspaceMessage",
@@ -65,9 +65,9 @@ final class NewProjectViewController: NSViewController {
 
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
-    panel.beginSheetModalForWindow(self.view.window!) { value in
+    panel.beginSheetModal(for: self.view.window!) { value in
       if value == NSFileHandlingPanelOKButton {
-        self.workspacePath = panel.URL
+        self.workspacePath = panel.url
       }
     }
   }

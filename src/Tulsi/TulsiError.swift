@@ -19,29 +19,29 @@ import Foundation
 class TulsiError: NSError {
   enum ErrorCode: NSInteger {
     /// All purpose generic error.
-    case General
+    case general
 
     /// An attempt has been made to generate an Xcode project from a generator config that is
     /// missing critical information.
-    case ConfigNotGenerateable
+    case configNotGenerateable
     /// An attempt has been made to load a config from an URL which is not valid.
-    case ConfigNotLoadable
+    case configNotLoadable
     /// An attempt has been made to save a generator config which is missing critical information.
-    case ConfigNotSaveable
+    case configNotSaveable
   }
 
   convenience init(errorMessage: String) {
     let fmt = NSLocalizedString("TulsiError_General",
                                 comment: "A generic exception was thrown, additional debug data is in %1$@.")
-    self.init(code: .General, userInfo: [NSLocalizedDescriptionKey: String(format: fmt, errorMessage)])
+    self.init(code: .general, userInfo: [NSLocalizedDescriptionKey: String(format: fmt, errorMessage) as AnyObject])
   }
 
   init(code: ErrorCode, userInfo: [String: AnyObject]? = nil) {
     var userInfo = userInfo
     if userInfo == nil {
-      userInfo = [NSLocalizedDescriptionKey: TulsiError.localizedErrorMessageForCode(code)]
+      userInfo = [NSLocalizedDescriptionKey: TulsiError.localizedErrorMessageForCode(code) as AnyObject]
     } else if userInfo?[NSLocalizedDescriptionKey] == nil {
-      userInfo![NSLocalizedDescriptionKey] = TulsiError.localizedErrorMessageForCode(code)
+      userInfo![NSLocalizedDescriptionKey] = TulsiError.localizedErrorMessageForCode(code) as AnyObject?
     }
     super.init(domain: "Tulsi", code: code.rawValue, userInfo: userInfo)
   }
@@ -52,19 +52,19 @@ class TulsiError: NSError {
 
   // MARK: - Private methods
 
-  private static func localizedErrorMessageForCode(errorCode: ErrorCode) -> String {
+  private static func localizedErrorMessageForCode(_ errorCode: ErrorCode) -> String {
     switch errorCode {
-      case .ConfigNotGenerateable:
+      case .configNotGenerateable:
         return NSLocalizedString("TulsiError_ConfigNotGenerateable",
                                  comment: "Error message for when the user tried to generate an Xcode project from an incomplete config.")
-      case .ConfigNotLoadable:
+      case .configNotLoadable:
         return NSLocalizedString("TulsiError_ConfigNotLoadable",
                                  comment: "Error message for when a generator config fails to load for an unspecified reason.")
-      case .ConfigNotSaveable:
+      case .configNotSaveable:
         return NSLocalizedString("TulsiError_ConfigNotSaveable",
                                  comment: "Generator config is not fully populated and cannot be saved.")
 
-      case .General:
+      case .general:
         let fmt = NSLocalizedString("TulsiError_General",
                                     comment: "A generic exception was thrown, additional debug data is in %1$@.")
         return String(format: fmt, "Code: \(errorCode)")

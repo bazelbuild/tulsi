@@ -19,33 +19,33 @@ import Foundation
 struct BazelErrorExtractor {
   static let DefaultErrors = 3
 
-  static func firstErrorLinesFromData(data: NSData, maxErrors: Int = DefaultErrors) -> String? {
-    guard let stderr = NSString(data: data, encoding: NSUTF8StringEncoding) else { return nil }
+  static func firstErrorLinesFromData(_ data: Data, maxErrors: Int = DefaultErrors) -> String? {
+    guard let stderr = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else { return nil }
     return firstErrorLinesFromString(stderr as String, maxErrors: maxErrors)
   }
 
-  static func firstErrorLinesFromString(output: String, maxErrors: Int = DefaultErrors) -> String? {
-    let errorLines = output.componentsSeparatedByString("\n").filter({ $0.hasPrefix("ERROR:") })
+  static func firstErrorLinesFromString(_ output: String, maxErrors: Int = DefaultErrors) -> String? {
+    let errorLines = output.components(separatedBy: "\n").filter({ $0.hasPrefix("ERROR:") })
     if errorLines.isEmpty {
       return nil
     }
 
     let numErrorLinesToShow = min(errorLines.count, maxErrors)
-    var errorSnippet = errorLines.prefix(numErrorLinesToShow).joinWithSeparator("\n")
+    var errorSnippet = errorLines.prefix(numErrorLinesToShow).joined(separator: "\n")
     if numErrorLinesToShow < errorLines.count {
       errorSnippet += "\n..."
     }
     return errorSnippet
   }
 
-  static func firstErrorLinesOrLastLinesFromString(output: String,
+  static func firstErrorLinesOrLastLinesFromString(_ output: String,
                                                    maxErrors: Int = DefaultErrors) -> String? {
     if let errorLines = firstErrorLinesFromString(output, maxErrors: maxErrors) {
       return errorLines
     }
-    let errorLines = output.componentsSeparatedByString("\n").filter({ !$0.isEmpty })
+    let errorLines = output.components(separatedBy: "\n").filter({ !$0.isEmpty })
     let numErrorLinesToShow = min(errorLines.count, maxErrors)
-    var errorSnippet = errorLines.suffix(numErrorLinesToShow).joinWithSeparator("\n")
+    var errorSnippet = errorLines.suffix(numErrorLinesToShow).joined(separator: "\n")
     if numErrorLinesToShow < errorLines.count {
       errorSnippet = "...\n" + errorSnippet
     }

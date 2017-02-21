@@ -44,9 +44,9 @@ final class SourcePathNode: UISelectableOutlineViewNode {
 
       guard let entry = entry as? UISourcePath else { return }
       let enabled = newValue == NSOnState
-      willChangeValueForKey("explicitlyRecursive")
+      willChangeValue(forKey: "explicitlyRecursive")
       entry.recursive = enabled
-      didChangeValueForKey("explicitlyRecursive")
+      didChangeValue(forKey: "explicitlyRecursive")
 
       // If this node is newly recursive, force hasRecursiveEnabledParent, otherwise have children
       // inherit this node's status.
@@ -55,8 +55,8 @@ final class SourcePathNode: UISelectableOutlineViewNode {
       // Notify KVO that this node's ancestors have also changed state.
       var ancestor = parent
       while ancestor != nil {
-        ancestor!.willChangeValueForKey("recursive")
-        ancestor!.didChangeValueForKey("recursive")
+        ancestor!.willChangeValue(forKey: "recursive")
+        ancestor!.didChangeValue(forKey: "recursive")
         ancestor = ancestor!.parent
       }
     }
@@ -72,17 +72,17 @@ final class SourcePathNode: UISelectableOutlineViewNode {
   }
 
   // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
-  func validateRecursive(ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
-    if let value = ioValue.memory as? NSNumber {
-      if value.integerValue == NSMixedState {
-        ioValue.memory = NSNumber(integer: NSOnState)
+  func validateRecursive(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
+    if let value = ioValue.pointee as? NSNumber {
+      if value.intValue == NSMixedState {
+        ioValue.pointee = NSNumber(value: NSOnState as Int)
       }
     }
   }
 
   // MARK: - Private methods
 
-  private func setChildrenHaveRecursiveParent(newValue: Bool) {
+  fileprivate func setChildrenHaveRecursiveParent(_ newValue: Bool) {
     for child in children as! [SourcePathNode] {
       child.hasRecursiveEnabledParent = newValue
       // Children of a recursive-enabled node may not be recursive themselves (it's redundant and
@@ -103,7 +103,7 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let sourceTargetColumn = sourceFilterOutlineView.tableColumnWithIdentifier("sourceTargets")!
+    let sourceTargetColumn = sourceFilterOutlineView.tableColumn(withIdentifier: "sourceTargets")!
     sourceFilterOutlineView.sortDescriptors = [sourceTargetColumn.sortDescriptorPrototype!]
   }
 
@@ -117,16 +117,16 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
     document.updateSourcePaths(populateOutlineView)
 
     // TODO(abaire): Set when toggling selection instead.
-    document.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+    document.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
   }
 
   // MARK: - Private methods
 
-  private func populateOutlineView(sourcePaths: [UISourcePath]) {
+  private func populateOutlineView(_ sourcePaths: [UISourcePath]) {
     // Decompose each rule and merge into a tree of subelements.
-    let componentDelimiters = NSCharacterSet(charactersInString: "/:")
+    let componentDelimiters = CharacterSet(charactersIn: "/:")
     let splitSourcePaths = sourcePaths.map() {
-      $0.path.componentsSeparatedByCharactersInSet(componentDelimiters)
+      $0.path.components(separatedBy: componentDelimiters)
     }
 
     var recursiveNodes = [SourcePathNode]()

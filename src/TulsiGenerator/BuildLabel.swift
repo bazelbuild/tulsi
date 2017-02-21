@@ -19,12 +19,12 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
   public let value: String
 
   public lazy var targetName: String? = { [unowned self] in
-    let components = self.value.componentsSeparatedByString(":")
+    let components = self.value.components(separatedBy: ":")
     if components.count > 1 {
       return components.last
     }
 
-    let lastPackageComponent = self.value.componentsSeparatedByString("/").last!
+    let lastPackageComponent = self.value.components(separatedBy: "/").last!
     if lastPackageComponent.isEmpty {
       return nil
     }
@@ -32,12 +32,12 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
   }()
 
   public lazy var packageName: String? = { [unowned self] in
-    guard var package = self.value.componentsSeparatedByString(":").first else {
+    guard var package = self.value.components(separatedBy: ":").first else {
       return nil
     }
 
     if package.hasPrefix("//") {
-      package.removeRange(Range(package.startIndex ..< package.startIndex.advancedBy(2)))
+      package.removeSubrange(Range(package.startIndex ..< package.characters.index(package.startIndex, offsetBy: 2)))
     }
     if package.isEmpty || package.hasSuffix("/") {
       return ""
@@ -46,19 +46,19 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
   }()
 
   public lazy var asFileName: String? = { [unowned self] in
-    guard let package = self.packageName, target = self.targetName else {
+    guard let package = self.packageName, let target = self.targetName else {
       return nil
     }
     return "\(package)/\(target)"
   }()
 
   public lazy var asFullPBXTargetName: String? = { [unowned self] in
-    guard let package = self.packageName, target = self.targetName else {
+    guard let package = self.packageName, let target = self.targetName else {
       return nil
     }
     // Note: The replacement must be done with a value that is not supported in Bazel packages in
     // order to prevent collisions, but is still supported by Xcode (for scheme filenames, etc...).
-    return "\(package)/\(target)".stringByReplacingOccurrencesOfString("/", withString: "-")
+    return "\(package)/\(target)".replacingOccurrences(of: "/", with: "-")
   }()
 
   public lazy var hashValue: Int = { [unowned self] in

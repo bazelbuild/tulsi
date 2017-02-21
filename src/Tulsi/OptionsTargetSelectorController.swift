@@ -30,7 +30,7 @@ class OptionsTargetNode: UISelectableOutlineViewNode {
 
 protocol OptionsTargetSelectorControllerDelegate: class {
   /// Invoked when the target selection has been changed.
-  func didSelectOptionsTargetNode(node: OptionsTargetNode)
+  func didSelectOptionsTargetNode(_ node: OptionsTargetNode)
 }
 
 
@@ -69,7 +69,7 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
 
       // Expand all children in the target selector and select the project.
       view.expandItem(nil, expandChildren: true)
-      view.selectRowIndexes(NSIndexSet(index: 1), byExtendingSelection: false)
+      view.selectRowIndexes(IndexSet(integer: 1), byExtendingSelection: false)
     }
   }
 
@@ -77,29 +77,25 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
     self.view = view
     self.delegate = delegate
     super.init()
-#if swift(>=2.3)
     self.view.delegate = self
-#else
-    self.view.setDelegate(self)
-#endif
   }
 
-  func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
+  func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
     // The top level items are not selectable.
-    return outlineView.levelForItem(item) > 0
+    return outlineView.level(forItem: item) > 0
   }
 
-  func outlineView(outlineView: NSOutlineView, shouldCollapseItem item: AnyObject) -> Bool {
+  func outlineView(_ outlineView: NSOutlineView, shouldCollapseItem item: Any) -> Bool {
     return false
   }
 
-  func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool {
+  func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
     return false
   }
 
-  func outlineViewSelectionDidChange(notification: NSNotification) {
+  func outlineViewSelectionDidChange(_ notification: Notification) {
     if delegate == nil { return }
-    let selectedTreeNode = view.itemAtRow(view.selectedRow) as! NSTreeNode
+    let selectedTreeNode = view.item(atRow: view.selectedRow) as! NSTreeNode
     let selectedTarget = selectedTreeNode.representedObject as! OptionsTargetNode
     delegate!.didSelectOptionsTargetNode(selectedTarget)
   }

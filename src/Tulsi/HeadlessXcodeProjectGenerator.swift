@@ -25,12 +25,12 @@ struct HeadlessXcodeProjectGenerator {
     TulsiProjectDocument.showAlertsOnErrors = false
     TulsiProjectDocument.suppressWORKSPACECheck = arguments.suppressWORKSPACECheck
 
-    let explicitBazelURL: NSURL?
+    let explicitBazelURL: URL?
     if let bazelPath = arguments.bazel {
-      if !NSFileManager.defaultManager().isExecutableFileAtPath(bazelPath) {
-        throw HeadlessModeError.InvalidBazelPath
+      if !FileManager.default.isExecutableFile(atPath: bazelPath) {
+        throw HeadlessModeError.invalidBazelPath
       }
-      explicitBazelURL = NSURL(fileURLWithPath: bazelPath)
+      explicitBazelURL = URL(fileURLWithPath: bazelPath)
       TulsiProjectDocument.suppressRuleEntryUpdateOnLoad = true
     } else {
       explicitBazelURL = nil
@@ -48,29 +48,29 @@ struct HeadlessXcodeProjectGenerator {
 
     let (projectURL, configURL, defaultOutputFolderURL) = try resolveConfigPath(configPath)
 
-    let documentController = NSDocumentController.sharedDocumentController()
+    let documentController = NSDocumentController.shared()
     let doc: NSDocument
     do {
-      doc = try documentController.makeDocumentWithContentsOfURL(projectURL,
+      doc = try documentController.makeDocument(withContentsOf: projectURL,
                                                                  ofType: "com.google.tulsi.project")
-    } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
-      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to invalid workspace: \(info)")
+    } catch TulsiProjectDocument.DocumentError.invalidWorkspace(let info) {
+      throw HeadlessModeError.invalidProjectFileContents("Failed to load project due to invalid workspace: \(info)")
     } catch let e as NSError {
-      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to unexpected exception: \(e)")
+      throw HeadlessModeError.invalidProjectFileContents("Failed to load project due to unexpected exception: \(e)")
     } catch {
-      throw HeadlessModeError.InvalidProjectFileContents("Failed to load project due to unexpected exception.")
+      throw HeadlessModeError.invalidProjectFileContents("Failed to load project due to unexpected exception.")
     }
     guard let projectDocument = doc as? TulsiProjectDocument else {
-      throw HeadlessModeError.InvalidProjectFileContents("\(doc) is not of the expected type.")
+      throw HeadlessModeError.invalidProjectFileContents("\(doc) is not of the expected type.")
     }
 
-    let outputFolderURL: NSURL
+    let outputFolderURL: URL
     if let option = arguments.outputFolder {
-      outputFolderURL = NSURL(fileURLWithPath: option, isDirectory: true)
+      outputFolderURL = URL(fileURLWithPath: option, isDirectory: true)
     } else if let defaultOutputFolderURL = defaultOutputFolderURL {
       outputFolderURL = defaultOutputFolderURL
     } else {
-      throw HeadlessModeError.ExplicitOutputOptionRequired
+      throw HeadlessModeError.explicitOutputOptionRequired
     }
 
     var config = try loadConfig(configURL, bazelURL: explicitBazelURL)
@@ -80,28 +80,28 @@ struct HeadlessXcodeProjectGenerator {
       config = config.configByResolvingInheritedOptions(projectOptionSet)
     }
 
-    let workspaceRootURL: NSURL
+    let workspaceRootURL: URL
     let projectWorkspaceRootURL = projectDocument.workspaceRootURL
     if let workspaceRootOverride = arguments.workspaceRootOverride {
-      workspaceRootURL = NSURL(fileURLWithPath: workspaceRootOverride, isDirectory: true)
+      workspaceRootURL = URL(fileURLWithPath: workspaceRootOverride, isDirectory: true)
       if !isExistingDirectory(workspaceRootURL) {
-        throw HeadlessModeError.InvalidWorkspaceRootOverride
+        throw HeadlessModeError.invalidWorkspaceRootOverride
       }
       if projectWorkspaceRootURL != nil {
-        print("Overriding project workspace root (\(projectWorkspaceRootURL!.path!)) with " +
+        print("Overriding project workspace root (\(projectWorkspaceRootURL!.path)) with " +
             "command-line parameter (\(workspaceRootOverride))")
       }
     } else {
       guard let projectWorkspaceRootURL = projectWorkspaceRootURL else {
-        throw HeadlessModeError.InvalidProjectFileContents("Invalid workspaceRoot")
+        throw HeadlessModeError.invalidProjectFileContents("Invalid workspaceRoot")
       }
-      workspaceRootURL = projectWorkspaceRootURL
+      workspaceRootURL = projectWorkspaceRootURL as URL
     }
 
-    print("Generating project into '\(outputFolderURL.path!)' using:\n" +
-              "\tconfig at '\(configURL.path!)'\n" +
-              "\tBazel workspace at '\(workspaceRootURL.path!)'\n" +
-              "\tBazel at '\(config.bazelURL.path!)'.\n" +
+    print("Generating project into '\(outputFolderURL.path)' using:\n" +
+              "\tconfig at '\(configURL.path)'\n" +
+              "\tBazel workspace at '\(workspaceRootURL.path)'\n" +
+              "\tBazel at '\(config.bazelURL.path)'.\n" +
               "This may take a while.")
 
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
@@ -109,31 +109,31 @@ struct HeadlessXcodeProjectGenerator {
                                                                            workspaceRootURL: workspaceRootURL,
                                                                            messageLog: nil)
     switch result {
-      case .Success(let url):
-        print("Generated project at \(url.path!)")
+      case .success(let url):
+        print("Generated project at \(url.path)")
         if arguments.openXcodeOnSuccess {
           print("Opening generated project in Xcode")
-          NSWorkspace.sharedWorkspace().openURL(url)
+          NSWorkspace.shared().open(url)
         }
-      case .Failure(let errorInfo):
-        throw HeadlessModeError.GenerationFailed(errorInfo)
+      case .failure(let errorInfo):
+        throw HeadlessModeError.generationFailed(errorInfo)
     }
   }
 
   // MARK: - Private methods
 
-  private func resolveConfigPath(path: String) throws -> (projectURL: NSURL,
-                                                          configURL: NSURL,
-                                                          defaultOutputFolderURL: NSURL?) {
+  private func resolveConfigPath(_ path: String) throws -> (projectURL: URL,
+                                                          configURL: URL,
+                                                          defaultOutputFolderURL: URL?) {
     let tulsiProjExtension = TulsiProjectDocument.getTulsiBundleExtension()
-    let components = path.componentsSeparatedByString(":")
+    let components = path.components(separatedBy: ":")
     if components.count == 2 {
       var pathString = components[0] as NSString
       let projectExtension = pathString.pathExtension
       if projectExtension != tulsiProjExtension {
-        pathString = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
+        pathString = pathString.appendingPathExtension(tulsiProjExtension)! as NSString
       }
-      let projectURL = NSURL(fileURLWithPath: pathString as String)
+      let projectURL = URL(fileURLWithPath: pathString as String)
       let (configURL, defaultOutputFolderURL) = try locateConfigNamed(components[1],
                                                                       inTulsiProject: pathString as String)
       return (projectURL, configURL, defaultOutputFolderURL)
@@ -145,14 +145,14 @@ struct HeadlessXcodeProjectGenerator {
     if !isProject && pathExtension.isEmpty {
       // See if the user provided a Tulsiproj bundle without the extension or if there is a
       // tulsiproj bundle with the same name as the given directory.
-      let projectPath = pathString.stringByAppendingPathExtension(tulsiProjExtension)!
-      if isExistingDirectory(NSURL(fileURLWithPath: projectPath, isDirectory: true)) {
+      let projectPath = pathString.appendingPathExtension(tulsiProjExtension)!
+      if isExistingDirectory(URL(fileURLWithPath: projectPath, isDirectory: true)) {
         isProject = true
         pathString = projectPath as NSString
       } else {
-        let projectName = (pathString.lastPathComponent as NSString).stringByAppendingPathExtension(tulsiProjExtension)!
-        let projectWithinPath = pathString.stringByAppendingPathComponent(projectName)
-        if isExistingDirectory(NSURL(fileURLWithPath: projectWithinPath, isDirectory: true)) {
+        let projectName = (pathString.lastPathComponent as NSString).appendingPathExtension(tulsiProjExtension)!
+        let projectWithinPath = pathString.appendingPathComponent(projectName)
+        if isExistingDirectory(URL(fileURLWithPath: projectWithinPath, isDirectory: true)) {
           isProject = true
           pathString = projectWithinPath as NSString
         }
@@ -160,30 +160,26 @@ struct HeadlessXcodeProjectGenerator {
     }
     if isProject {
       let project = pathString.lastPathComponent as NSString
-      let projectName = project.stringByDeletingPathExtension
+      let projectName = project.deletingPathExtension
       let (configURL, defaultOutputFolderURL) = try locateConfigNamed(projectName,
                                                                       inTulsiProject: pathString as String)
-      let projectURL = NSURL(fileURLWithPath: pathString as String)
+      let projectURL = URL(fileURLWithPath: pathString as String)
       return (projectURL, configURL, defaultOutputFolderURL)
     }
 
-    throw HeadlessModeError.InvalidConfigPath("The given config is invalid")
+    throw HeadlessModeError.invalidConfigPath("The given config is invalid")
   }
 
-  private func locateConfigNamed(configName: String,
-                                 inTulsiProject tulsiProj: String) throws -> (configURL: NSURL, defaultOutputFolderURL: NSURL?) {
-    let tulsiProjectURL = NSURL(fileURLWithPath: tulsiProj, isDirectory: true)
+  private func locateConfigNamed(_ configName: String,
+                                 inTulsiProject tulsiProj: String) throws -> (configURL: URL, defaultOutputFolderURL: URL?) {
+    let tulsiProjectURL = URL(fileURLWithPath: tulsiProj, isDirectory: true)
     if !isExistingDirectory(tulsiProjectURL) {
-      throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not exist")
+      throw HeadlessModeError.invalidConfigPath("The given Tulsi project does not exist")
     }
 
-#if swift(>=2.3)
-    let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)!
-#else
-    let configDirectoryURL = tulsiProjectURL.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
-#endif
+    let configDirectoryURL = tulsiProjectURL.appendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
     if !isExistingDirectory(configDirectoryURL) {
-      throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not contain any configs")
+      throw HeadlessModeError.invalidConfigPath("The given Tulsi project does not contain any configs")
     }
 
     let configFilename: String
@@ -192,41 +188,38 @@ struct HeadlessXcodeProjectGenerator {
     } else {
       configFilename = "\(configName).\(TulsiGeneratorConfig.FileExtension)"
     }
-#if swift(>=2.3)
-    let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)!
-#else
-    let configFileURL = configDirectoryURL.URLByAppendingPathComponent(configFilename)
-#endif
-    if NSFileManager.defaultManager().isReadableFileAtPath(configFileURL.path!) {
-      return (configFileURL, tulsiProjectURL.URLByDeletingLastPathComponent!)
+
+    let configFileURL = configDirectoryURL.appendingPathComponent(configFilename)
+    if FileManager.default.isReadableFile(atPath: configFileURL.path) {
+      return (configFileURL, tulsiProjectURL.deletingLastPathComponent())
     }
-    throw HeadlessModeError.InvalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
+    throw HeadlessModeError.invalidConfigPath("The given Tulsi project does not contain a Tulsi config named \(configName).")
   }
 
-  private func isExistingDirectory(url: NSURL) -> Bool {
+  private func isExistingDirectory(_ url: URL) -> Bool {
     var isDirectory = ObjCBool(false)
-    if !NSFileManager.defaultManager().fileExistsAtPath(url.path!, isDirectory: &isDirectory) {
+    if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
       return false
     }
     return isDirectory.boolValue
   }
 
-  private func loadConfig(url: NSURL, bazelURL: NSURL?) throws -> TulsiGeneratorConfig {
+  private func loadConfig(_ url: URL, bazelURL: URL?) throws -> TulsiGeneratorConfig {
     let config: TulsiGeneratorConfig
     do {
       config = try TulsiGeneratorConfig.load(url, bazelURL: bazelURL)
-    } catch TulsiGeneratorConfig.Error.BadInputFilePath {
-      throw HeadlessModeError.InvalidConfigFileContents("Failed to read config file at \(url.path!)")
-    } catch TulsiGeneratorConfig.Error.FailedToReadAdditionalOptionsData(let info) {
-      throw HeadlessModeError.InvalidConfigFileContents("Failed to read per-user config file: \(info)")
-    } catch TulsiGeneratorConfig.Error.DeserializationFailed(let info) {
-      throw HeadlessModeError.InvalidConfigFileContents("Config file at \(url.path!) is invalid: \(info)")
+    } catch TulsiGeneratorConfig.ConfigError.badInputFilePath {
+      throw HeadlessModeError.invalidConfigFileContents("Failed to read config file at \(url.path)")
+    } catch TulsiGeneratorConfig.ConfigError.failedToReadAdditionalOptionsData(let info) {
+      throw HeadlessModeError.invalidConfigFileContents("Failed to read per-user config file: \(info)")
+    } catch TulsiGeneratorConfig.ConfigError.deserializationFailed(let info) {
+      throw HeadlessModeError.invalidConfigFileContents("Config file at \(url.path) is invalid: \(info)")
     } catch {
-      throw HeadlessModeError.InvalidConfigFileContents("Unexpected exception reading config file at \(url.path!)")
+      throw HeadlessModeError.invalidConfigFileContents("Unexpected exception reading config file at \(url.path)")
     }
 
-    if !config.bazelURL.fileURL {
-      throw HeadlessModeError.InvalidBazelPath
+    if !config.bazelURL.isFileURL {
+      throw HeadlessModeError.invalidBazelPath
     }
     return config
   }

@@ -21,30 +21,30 @@ class CommandLineSplitter {
   let scriptPath: String
 
   init() {
-    scriptPath = NSBundle(forClass: self.dynamicType).pathForResource("command_line_splitter",
+    scriptPath = Bundle(for: type(of: self)).path(forResource: "command_line_splitter",
                                                                       ofType: "sh")!
   }
 
   /// WARNING: This method utilizes a shell instance to evaluate the commandline and may have side
   /// effects.
-  func splitCommandLine(commandLine: String) -> [String]? {
+  func splitCommandLine(_ commandLine: String) -> [String]? {
     if commandLine.isEmpty { return [] }
 
     var splitCommands: [String]? = nil
-    let semaphore = dispatch_semaphore_create(0)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = TaskRunner.createTask(scriptPath, arguments: [commandLine]) {
       completionInfo in
-        defer { dispatch_semaphore_signal(semaphore) }
+        defer { semaphore.signal() }
 
         guard completionInfo.terminationStatus == 0,
-            let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) else {
+            let stdout = NSString(data: completionInfo.stdout, encoding: String.Encoding.utf8.rawValue) else {
           return
         }
-        let split = stdout.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+        let split = stdout.components(separatedBy: CharacterSet.newlines)
         splitCommands = [String](split.dropLast())
     }
     task.launch()
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    semaphore.wait(timeout: DispatchTime.distantFuture)
 
     return splitCommands
   }

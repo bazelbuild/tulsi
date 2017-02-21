@@ -18,49 +18,49 @@ import XCTest
 
 class NSURLExtensionsTests: XCTestCase {
   func testRelativePathOfEqualPaths() {
-    let rootURL = NSURL(fileURLWithPath: "/test")
+    let rootURL = URL(fileURLWithPath: "/test")
     XCTAssertEqual(rootURL.relativePathTo(rootURL), "")
   }
 
   func testRelativePathOfSiblingsAtRoot() {
-    let rootURL = NSURL(fileURLWithPath: "/root")
-    let targetURL = NSURL(fileURLWithPath: "/target")
+    let rootURL = URL(fileURLWithPath: "/root")
+    let targetURL = URL(fileURLWithPath: "/target")
     XCTAssertEqual(rootURL.relativePathTo(targetURL), "../target")
   }
 
   func testRelativePathOfSiblingPaths() {
-    let rootURL = NSURL(fileURLWithPath: "/test/root")
-    let targetURL = NSURL(fileURLWithPath: "/test/target")
+    let rootURL = URL(fileURLWithPath: "/test/root")
+    let targetURL = URL(fileURLWithPath: "/test/target")
     XCTAssertEqual(rootURL.relativePathTo(targetURL), "../target")
   }
 
   func testRelativePathOfChildPath() {
-    let rootURL = NSURL(fileURLWithPath: "/test/root")
+    let rootURL = URL(fileURLWithPath: "/test/root")
     do {
-      let targetURL = NSURL(fileURLWithPath: "/test/root/target")
+      let targetURL = URL(fileURLWithPath: "/test/root/target")
       XCTAssertEqual(rootURL.relativePathTo(targetURL), "target")
     }
     do {
-      let targetURL = NSURL(fileURLWithPath: "/test/root/deeply/nested/target")
+      let targetURL = URL(fileURLWithPath: "/test/root/deeply/nested/target")
       XCTAssertEqual(rootURL.relativePathTo(targetURL), "deeply/nested/target")
     }
   }
 
   func testRelativePathOfParentPath() {
-    let rootURL = NSURL(fileURLWithPath: "/test/deep/path/to/root")
+    let rootURL = URL(fileURLWithPath: "/test/deep/path/to/root")
     do {
-      let targetURL = NSURL(fileURLWithPath: "/test/deep/path/to")
+      let targetURL = URL(fileURLWithPath: "/test/deep/path/to")
       XCTAssertEqual(rootURL.relativePathTo(targetURL), "..")
     }
     do {
-      let targetURL = NSURL(fileURLWithPath: "/test")
+      let targetURL = URL(fileURLWithPath: "/test")
       XCTAssertEqual(rootURL.relativePathTo(targetURL), "../../../..")
     }
   }
 
   func testRelativePathOfNonFileURL() {
-    let rootURL = NSURL(string: "http://this/is/not/a/path")!
-    let targetURL = NSURL(fileURLWithPath: "/path")
+    let rootURL = URL(string: "http://this/is/not/a/path")!
+    let targetURL = URL(fileURLWithPath: "/path")
     XCTAssertNil(rootURL.relativePathTo(targetURL))
   }
 }

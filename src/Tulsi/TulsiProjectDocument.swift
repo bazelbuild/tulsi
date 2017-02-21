@@ -22,13 +22,13 @@ final class TulsiProjectDocument: NSDocument,
                                   OptionsEditorModelProtocol,
                                   TulsiGeneratorConfigDocumentDelegate {
 
-  enum Error: ErrorType {
+  enum DocumentError: Error {
     /// No config exists with the given name.
-    case NoSuchConfig
+    case noSuchConfig
     /// The config failed to load with the given debug info.
-    case ConfigLoadFailed(String)
+    case configLoadFailed(String)
     /// The workspace used by the project is invalid due to the given debug info.
-    case InvalidWorkspace(String)
+    case invalidWorkspace(String)
   }
 
   /// Prefix used to access the persisted output folder for a given BUILD file path.
@@ -78,7 +78,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// Documents controlling the generator configs associated with this project.
-  private var childConfigDocuments = NSHashTable.weakObjectsHashTable()
+  private var childConfigDocuments = NSHashTable<AnyObject>.weakObjects()
 
   /// One rule per target in the BUILD files associated with this project.
   var ruleInfos: [RuleInfo] {
@@ -99,7 +99,7 @@ final class TulsiProjectDocument: NSDocument,
   dynamic var bazelPackages: [String]? {
     set {
       project!.bazelPackages = newValue ?? [String]()
-      updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
       updateRuleEntries()
     }
     get {
@@ -108,13 +108,13 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// Location of the bazel binary.
-  dynamic var bazelURL: NSURL? {
+  dynamic var bazelURL: URL? {
     set {
       project.bazelURL = newValue
       if newValue != nil && infoExtractor != nil {
         infoExtractor.bazelURL = newValue!
       }
-      updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
       updateRuleEntries()
     }
     get {
@@ -123,13 +123,13 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// Binding point for the directory containing the project's WORKSPACE file.
-  dynamic var workspaceRootURL: NSURL? {
+  dynamic var workspaceRootURL: URL? {
     return project?.workspaceRootURL
   }
 
   /// URL to the folder into which generator configs are saved.
-  var generatorConfigFolderURL: NSURL? {
-    return fileURL?.URLByAppendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
+  var generatorConfigFolderURL: URL? {
+    return fileURL?.appendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
   }
 
   var infoExtractor: TulsiProjectInfoExtractor! = nil
@@ -143,7 +143,7 @@ final class TulsiProjectDocument: NSDocument,
   }()
 
   static func getTulsiBundleExtension() -> String {
-    let bundle = NSBundle(forClass: self)
+    let bundle = Bundle(for: self)
     let documentTypes = bundle.infoDictionary!["CFBundleDocumentTypes"] as! [[String: AnyObject]]
     let extensions = documentTypes.first!["CFBundleTypeExtensions"] as! [String]
     return extensions.first!
@@ -151,10 +151,10 @@ final class TulsiProjectDocument: NSDocument,
 
   override init() {
     super.init()
-    logEventObserver = NSNotificationCenter.defaultCenter().addObserverForName(TulsiMessageNotification,
+    logEventObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TulsiMessageNotification),
                                                                                object: nil,
-                                                                               queue: NSOperationQueue.mainQueue()) {
-      [weak self] (notification: NSNotification) in
+                                                                               queue: OperationQueue.main) {
+      [weak self] (notification: Notification) in
         guard let item = LogMessage(notification: notification) else {
           return
         }
@@ -163,14 +163,14 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   deinit {
-    NSNotificationCenter.defaultCenter().removeObserver(logEventObserver)
+    NotificationCenter.default.removeObserver(logEventObserver)
   }
 
   func clearMessages() {
-    messages.removeAll(keepCapacity: true)
+    messages.removeAll(keepingCapacity: true)
   }
 
-  func addBUILDFileURL(buildFile: NSURL) -> Bool {
+  func addBUILDFileURL(_ buildFile: URL) -> Bool {
     guard let package = packageForBUILDFile(buildFile) else {
       return false
     }
@@ -179,97 +179,92 @@ final class TulsiProjectDocument: NSDocument,
     return true
   }
 
-  func containsBUILDFileURL(buildFile: NSURL) -> Bool {
+  func containsBUILDFileURL(_ buildFile: URL) -> Bool {
     guard let package = packageForBUILDFile(buildFile),
-              concreteBazelPackages = bazelPackages else {
+              let concreteBazelPackages = bazelPackages else {
       return false
     }
     return concreteBazelPackages.contains(package)
   }
 
-  func createNewProject(projectName: String, workspaceFileURL: NSURL) {
-    willChangeValueForKey("bazelURL")
-    willChangeValueForKey("bazelPackages")
-    willChangeValueForKey("workspaceRootURL")
+  func createNewProject(_ projectName: String, workspaceFileURL: URL) {
+    willChangeValue(forKey: "bazelURL")
+    willChangeValue(forKey: "bazelPackages")
+    willChangeValue(forKey: "workspaceRootURL")
 
     // Default the bundleURL to a sibling of the selected workspace file.
     let bundleName = "\(projectName).\(bundleExtension)"
-    let workspaceRootURL = workspaceFileURL.URLByDeletingLastPathComponent!
-#if swift(>=2.3)
-    let tempProjectBundleURL = workspaceRootURL.URLByAppendingPathComponent(bundleName)!
-#else
-    let tempProjectBundleURL = workspaceRootURL.URLByAppendingPathComponent(bundleName)
-#endif
+    let workspaceRootURL = workspaceFileURL.deletingLastPathComponent()
+    let tempProjectBundleURL = workspaceRootURL.appendingPathComponent(bundleName)
 
     project = TulsiProject(projectName: projectName,
                            projectBundleURL: tempProjectBundleURL,
                            workspaceRootURL: workspaceRootURL)
-    updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+    updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
 
     LogMessage.postSyslog("Create project: \(projectName)")
 
-    didChangeValueForKey("bazelURL")
-    didChangeValueForKey("bazelPackages")
-    didChangeValueForKey("workspaceRootURL")
+    didChangeValue(forKey: "bazelURL")
+    didChangeValue(forKey: "bazelPackages")
+    didChangeValue(forKey: "workspaceRootURL")
   }
 
-  override func writeSafelyToURL(url: NSURL,
+  override func writeSafely(to url: URL,
                                  ofType typeName: String,
-                                 forSaveOperation saveOperation: NSSaveOperationType) throws {
+                                 for saveOperation: NSSaveOperationType) throws {
     // Ensure that the project's URL is set to the location in which this document is being saved so
     // that relative paths can be set properly.
     project.projectBundleURL = url
-    try super.writeSafelyToURL(url, ofType: typeName, forSaveOperation: saveOperation)
+    try super.writeSafely(to: url, ofType: typeName, for: saveOperation)
   }
 
   override class func autosavesInPlace() -> Bool {
     return true
   }
 
-  override func prepareSavePanel(panel: NSSavePanel) -> Bool {
+  override func prepareSavePanel(_ panel: NSSavePanel) -> Bool {
     panel.message = NSLocalizedString("Document_SelectTulsiProjectOutputFolderMessage",
                                       comment: "Message to show at the top of the Tulsi project save as panel, explaining what to do.")
     panel.canCreateDirectories = true
     panel.allowedFileTypes = ["com.google.tulsi.project"]
-    panel.nameFieldStringValue = project.projectBundleURL.lastPathComponent!
+    panel.nameFieldStringValue = project.projectBundleURL.lastPathComponent
     return true
   }
 
-  override func fileWrapperOfType(typeName: String) throws -> NSFileWrapper {
-    let contents = [String: NSFileWrapper]()
-    let bundleFileWrapper = NSFileWrapper(directoryWithFileWrappers: contents)
-    bundleFileWrapper.addRegularFileWithContents(try project.save(),
-                                                 preferredFilename: TulsiProject.ProjectFilename)
+  override func fileWrapper(ofType typeName: String) throws -> FileWrapper {
+    let contents = [String: FileWrapper]()
+    let bundleFileWrapper = FileWrapper(directoryWithFileWrappers: contents)
+    bundleFileWrapper.addRegularFile(withContents: try project.save() as Data,
+                                     preferredFilename: TulsiProject.ProjectFilename)
 
     if let perUserData = try project.savePerUserSettings() {
-      bundleFileWrapper.addRegularFileWithContents(perUserData,
-                                                   preferredFilename: TulsiProject.perUserFilename)
+      bundleFileWrapper.addRegularFile(withContents: perUserData as Data,
+                                       preferredFilename: TulsiProject.perUserFilename)
     }
 
-    let configsFolder: NSFileWrapper
+    let configsFolder: FileWrapper
     let reachableError: NSErrorPointer = nil
-    if let existingConfigFolderURL = generatorConfigFolderURL
-        where existingConfigFolderURL.checkResourceIsReachableAndReturnError(reachableError) {
+    if let existingConfigFolderURL = generatorConfigFolderURL, (existingConfigFolderURL as NSURL).checkResourceIsReachableAndReturnError(reachableError) {
       // Preserve any existing config documents.
-      configsFolder = try NSFileWrapper(URL: existingConfigFolderURL,
-                                        options:  NSFileWrapperReadingOptions())
+      configsFolder = try FileWrapper(url: existingConfigFolderURL,
+                                        options:  FileWrapper.ReadingOptions())
     } else {
       // Add a placeholder Configs directory.
-      configsFolder = NSFileWrapper(directoryWithFileWrappers: [:])
+      configsFolder = FileWrapper(directoryWithFileWrappers: [:])
     }
     configsFolder.preferredFilename = TulsiProjectDocument.ProjectConfigsSubpath
     bundleFileWrapper.addFileWrapper(configsFolder)
     return bundleFileWrapper
   }
 
-  override func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
+  override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
     guard let concreteFileURL = fileURL,
-              projectFileWrapper = fileWrapper.fileWrappers?[TulsiProject.ProjectFilename],
-              fileContents = projectFileWrapper.regularFileContents else {
+              let projectFileWrapper = fileWrapper.fileWrappers?[TulsiProject.ProjectFilename],
+              let fileContents = projectFileWrapper.regularFileContents else {
       return
     }
 
-    let additionalOptionData: NSData?
+    let additionalOptionData: Data?
     if let perUserDataFileWrapper = fileWrapper.fileWrappers?[TulsiProject.perUserFilename] {
       additionalOptionData = perUserDataFileWrapper.regularFileContents
     } else {
@@ -280,37 +275,30 @@ final class TulsiProjectDocument: NSDocument,
                                additionalOptionData: additionalOptionData)
 
     if let configsDir = fileWrapper.fileWrappers?[TulsiProjectDocument.ProjectConfigsSubpath],
-           configFileWrappers = configsDir.fileWrappers
-        where configsDir.directory {
+           let configFileWrappers = configsDir.fileWrappers, configsDir.isDirectory {
       var configNames = [String]()
       for (_, fileWrapper) in configFileWrappers {
-        if let filename = fileWrapper.filename
-            where fileWrapper.regularFile &&
+        if let filename = fileWrapper.filename, fileWrapper.isRegularFile &&
                 TulsiGeneratorConfigDocument.isGeneratorConfigFilename(filename) {
-          let name = (filename as NSString).stringByDeletingPathExtension
+          let name = (filename as NSString).deletingPathExtension
           configNames.append(name)
         }
       }
 
-      generatorConfigNames = configNames.sort()
+      generatorConfigNames = configNames.sorted()
     }
 
     // Verify that the workspace is a valid one.
     if !TulsiProjectDocument.suppressWORKSPACECheck {
-#if swift(>=2.3)
-      let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                               isDirectory: false)!
-#else
-      let workspaceFile = project.workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                               isDirectory: false)
-#endif
+      let workspaceFile = project.workspaceRootURL.appendingPathComponent("WORKSPACE",
+                                                                          isDirectory: false)
       var isDirectory = ObjCBool(false)
-      if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
-                                                          isDirectory: &isDirectory) || isDirectory {
+      if !FileManager.default.fileExists(atPath: workspaceFile.path,
+                                         isDirectory: &isDirectory) || isDirectory.boolValue {
         let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
                                     comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
-        LogMessage.postError(String(format: fmt, workspaceFile.path!))
-        throw Error.InvalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path!)")
+        LogMessage.postError(String(format: fmt, workspaceFile.path))
+        throw DocumentError.invalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path)")
       }
     }
 
@@ -321,20 +309,20 @@ final class TulsiProjectDocument: NSDocument,
 
   override func makeWindowControllers() {
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
-    let windowController = storyboard.instantiateControllerWithIdentifier("TulsiProjectDocumentWindow") as! NSWindowController
+    let windowController = storyboard.instantiateController(withIdentifier: "TulsiProjectDocumentWindow") as! NSWindowController
     windowController.contentViewController?.representedObject = self
     addWindowController(windowController)
   }
 
-  override func willPresentError(error: NSError) -> NSError {
+  override func willPresentError(_ error: Error) -> Error {
     // Track errors shown to the user for bug reporting purposes.
     LogMessage.postInfo("Presented error: \(error)", context: projectName)
     return super.willPresentError(error)
   }
 
   /// Tracks the given document as a child of this project.
-  func trackChildConfigDocument(document: TulsiGeneratorConfigDocument) {
-    childConfigDocuments.addObject(document)
+  func trackChildConfigDocument(_ document: TulsiGeneratorConfigDocument) {
+    childConfigDocuments.add(document)
     // Ensure that the child document is aware of the project-level processing tasks.
     document.addProcessingTaskCount(processingTaskCount)
   }
@@ -348,8 +336,8 @@ final class TulsiProjectDocument: NSDocument,
     childConfigDocuments.removeAllObjects()
   }
 
-  func deleteConfigsNamed(configNamesToRemove: [String]) {
-    let fileManager = NSFileManager.defaultManager()
+  func deleteConfigsNamed(_ configNamesToRemove: [String]) {
+    let fileManager = FileManager.default
 
     var nameToDoc = [String: TulsiGeneratorConfigDocument]()
     for doc in childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument] {
@@ -361,13 +349,13 @@ final class TulsiProjectDocument: NSDocument,
     for name in configNamesToRemove {
       configNames.remove(name)
       if let doc = nameToDoc[name] {
-        childConfigDocuments.removeObject(doc)
+        childConfigDocuments.remove(doc)
         doc.close()
       }
       if let url = urlForConfigNamed(name) {
         let errorInfo: String?
         do {
-          try fileManager.removeItemAtURL(url)
+          try fileManager.removeItem(at: url)
           errorInfo = nil
         } catch let e as NSError {
           errorInfo = "Unexpected exception \(e.localizedDescription)"
@@ -382,18 +370,18 @@ final class TulsiProjectDocument: NSDocument,
       }
     }
 
-    generatorConfigNames = configNames.sort()
+    generatorConfigNames = configNames.sorted()
   }
 
-  func urlForConfigNamed(name: String) -> NSURL? {
+  func urlForConfigNamed(_ name: String) -> URL? {
      return TulsiGeneratorConfigDocument.urlForConfigNamed(name,
                                                            inFolderURL: generatorConfigFolderURL)
   }
 
   /// Asynchronously loads a previously created config with the given name, invoking the given
   /// completionHandler on the main thread when the document is fully loaded.
-  func loadConfigDocumentNamed(name: String,
-                               completionHandler: (TulsiGeneratorConfigDocument? -> Void)) throws -> TulsiGeneratorConfigDocument {
+  func loadConfigDocumentNamed(_ name: String,
+                               completionHandler: @escaping ((TulsiGeneratorConfigDocument?) -> Void)) throws -> TulsiGeneratorConfigDocument {
     let doc = try loadSparseConfigDocumentNamed(name)
     doc.finishLoadingDocument(completionHandler)
     return doc
@@ -401,13 +389,13 @@ final class TulsiProjectDocument: NSDocument,
 
   /// Sparsely loads a previously created config with the given name. The returned document may have
   /// unresolved label references.
-  func loadSparseConfigDocumentNamed(name: String) throws -> TulsiGeneratorConfigDocument {
+  func loadSparseConfigDocumentNamed(_ name: String) throws -> TulsiGeneratorConfigDocument {
     guard let configURL = urlForConfigNamed(name) else {
-      throw Error.NoSuchConfig
+      throw DocumentError.noSuchConfig
     }
 
-    let documentController = NSDocumentController.sharedDocumentController()
-    if let configDocument = documentController.documentForURL(configURL) as? TulsiGeneratorConfigDocument {
+    let documentController = NSDocumentController.shared()
+    if let configDocument = documentController.document(for: configURL) as? TulsiGeneratorConfigDocument {
       return configDocument
     }
 
@@ -421,15 +409,15 @@ final class TulsiProjectDocument: NSDocument,
       trackChildConfigDocument(configDocument)
       return configDocument
     } catch let e as NSError {
-      throw Error.ConfigLoadFailed("Failed to load config from '\(configURL.path)' with error \(e.localizedDescription)")
+      throw DocumentError.configLoadFailed("Failed to load config from '\(configURL.path)' with error \(e.localizedDescription)")
     } catch {
-      throw Error.ConfigLoadFailed("Unexpected exception loading config from '\(configURL.path)'")
+      throw DocumentError.configLoadFailed("Unexpected exception loading config from '\(configURL.path)'")
     }
   }
 
   /// Displays a generic critical error message to the user with the given debug message.
   /// This should be used sparingly and only for messages that would indicate bugs in Tulsi.
-  func generalError(debugMessage: String) {
+  func generalError(_ debugMessage: String) {
     let msg = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message.")
     LogMessage.postError(msg, details: debugMessage)
@@ -437,39 +425,35 @@ final class TulsiProjectDocument: NSDocument,
 
   // MARK: - NSUserInterfaceValidations
 
-  override func validateUserInterfaceItem(item: NSValidatedUserInterfaceItem) -> Bool {
-#if swift(>=2.3)
+  override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     let itemAction = item.action
-#else
-    let itemAction = item.action()
-#endif
     switch itemAction {
-      case #selector(TulsiProjectDocument.saveDocument(_:)):
+      case .some(#selector(TulsiProjectDocument.save(_:))):
         return true
-      case #selector(TulsiProjectDocument.saveDocumentAs(_:)):
+      case .some(#selector(TulsiProjectDocument.saveAs(_:))):
         return true
-      case #selector(TulsiProjectDocument.renameDocument(_:)):
+      case .some(#selector(TulsiProjectDocument.rename(_:))):
         return true
-      case #selector(TulsiProjectDocument.moveDocument(_:)):
+      case .some(#selector(TulsiProjectDocument.move(_:))):
         return true
 
       // Unsupported actions.
-      case #selector(TulsiProjectDocument.duplicateDocument(_:)):
+      case .some(#selector(TulsiProjectDocument.duplicate(_:))):
         // TODO(abaire): Consider implementing and allowing project duplication.
         return false
 
       default:
-        print("Unhandled menu action: \(itemAction)")
+        Swift.print("Unhandled menu action: \(itemAction)")
     }
     return false
   }
 
   // MARK: - TulsiGeneratorConfigDocumentDelegate
 
-  func didNameTulsiGeneratorConfigDocument(document: TulsiGeneratorConfigDocument) {
+  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument) {
     guard let configName = document.configName else { return }
     if !generatorConfigNames.contains(configName) {
-      let configNames = (generatorConfigNames + [configName]).sort()
+      let configNames = (generatorConfigNames + [configName]).sorted()
       generatorConfigNames = configNames
     }
   }
@@ -506,7 +490,7 @@ final class TulsiProjectDocument: NSDocument,
 
   // MARK: - Private methods
 
-  private func handleLogMessage(item: LogMessage) {
+  private func handleLogMessage(_ item: LogMessage) {
     let fullMessage: String
     if let details = item.details {
       fullMessage = "\(item.message) [Details]: \(details)"
@@ -516,17 +500,17 @@ final class TulsiProjectDocument: NSDocument,
 
     switch item.level {
       case .Error:
-        messages.append(UIMessage(text: fullMessage, type: .Error))
+        messages.append(UIMessage(text: fullMessage, type: .error))
         if TulsiProjectDocument.showAlertsOnErrors {
           // TODO(abaire): Implement better error handling, allowing recovery of a good state.
           ErrorAlertView.displayModalError(item.message, details: item.details)
         }
 
       case .Warning:
-        messages.append(UIMessage(text: fullMessage, type: .Warning))
+        messages.append(UIMessage(text: fullMessage, type: .warning))
 
       case .Info:
-        messages.append(UIMessage(text: fullMessage, type: .Info))
+        messages.append(UIMessage(text: fullMessage, type: .info))
 
       case .Syslog:
         break
@@ -534,7 +518,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   private func processingTaskStarted() {
-    NSThread.doOnMainQueue() {
+    Thread.doOnMainQueue() {
       self.processingTaskCount += 1
       let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
@@ -544,7 +528,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   private func processingTaskFinished() {
-    NSThread.doOnMainQueue() {
+    Thread.doOnMainQueue() {
       self.processingTaskCount -= 1
       let childDocuments = self.childConfigDocuments.allObjects as! [TulsiGeneratorConfigDocument]
       for configDoc in childDocuments {
@@ -553,14 +537,11 @@ final class TulsiProjectDocument: NSDocument,
     }
   }
 
-  private func packageForBUILDFile(buildFile: NSURL) -> String? {
-    guard let packageURL = buildFile.URLByDeletingLastPathComponent else {
-      return nil
-    }
+  private func packageForBUILDFile(_ buildFile: URL) -> String? {
+    let packageURL = buildFile.deletingLastPathComponent()
 
     // If the relative path is a child of the workspace root return it.
-    if let relativePath = project.workspaceRelativePathForURL(packageURL)
-        where !relativePath.hasPrefix("/") && !relativePath.hasPrefix("..") {
+    if let relativePath = project.workspaceRelativePathForURL(packageURL), !relativePath.hasPrefix("/") && !relativePath.hasPrefix("..") {
       return relativePath
     }
     return nil
@@ -576,9 +557,9 @@ final class TulsiProjectDocument: NSDocument,
     processingTaskStarted()
     infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL, project: project)
 
-    NSThread.doOnQOSUserInitiatedThread() {
+    Thread.doOnQOSUserInitiatedThread() {
       let updatedRuleEntries = self.infoExtractor.extractTargetRules()
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         self._ruleInfos = updatedRuleEntries
         self.processingTaskFinished()
       }
@@ -591,27 +572,23 @@ final class TulsiProjectDocument: NSDocument,
 class ErrorAlertView: NSAlert {
   dynamic var text = ""
 
-  static func displayModalError(message: String, details: String? = nil) {
+  static func displayModalError(_ message: String, details: String? = nil) {
     let alert = ErrorAlertView()
     alert.messageText = "\(message)\n\nA fatal error occurred. Please check the message window " +
         "and file a bug if appropriate."
-#if swift(>=2.3)
-    alert.alertStyle = .Critical
-#else
-    alert.alertStyle = .CriticalAlertStyle
-#endif
+    alert.alertStyle = .critical
 
     if let details = details {
       alert.text = details
 
-      var views: NSArray?
-      NSBundle.mainBundle().loadNibNamed("ErrorAlertDetailView",
+      var views: NSArray = []
+      Bundle.main.loadNibNamed("ErrorAlertDetailView",
                                          owner: alert,
                                          topLevelObjects: &views)
       // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
       // non-deterministic order.
-      views = views?.filter() { $0 is NSView }
-      if let accessoryView = views?.firstObject as? NSScrollView {
+      views = views.filter() { $0 is NSView } as NSArray
+      if let accessoryView = views.firstObject as? NSScrollView {
         alert.accessoryView = accessoryView
       } else {
         assertionFailure("Failed to load accessory view for error alert.")

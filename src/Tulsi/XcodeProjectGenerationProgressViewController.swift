@@ -23,7 +23,7 @@ class ProgressItem: NSObject {
   dynamic var value: Int
   dynamic var indeterminate: Bool
 
-  init(notifier: AnyObject?, values: [NSObject: AnyObject]) {
+  init(notifier: AnyObject?, values: [AnyHashable: Any]) {
     let taskName = values[ProgressUpdatingTaskName] as! String
     label = NSLocalizedString(taskName,
                               value: taskName,
@@ -34,18 +34,18 @@ class ProgressItem: NSObject {
 
     super.init()
 
-    let notificationCenter = NSNotificationCenter.defaultCenter()
+    let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(self,
                                    selector: #selector(ProgressItem.progressUpdate(_:)),
-                                   name: ProgressUpdatingTaskProgress,
+                                   name: NSNotification.Name(rawValue: ProgressUpdatingTaskProgress),
                                    object: notifier)
   }
 
   deinit {
-    NSNotificationCenter.defaultCenter().removeObserver(self)
+    NotificationCenter.default.removeObserver(self)
   }
 
-  func progressUpdate(notification: NSNotification) {
+  func progressUpdate(_ notification: Notification) {
     indeterminate = false
     if let newValue = notification.userInfo?[ProgressUpdatingTaskProgressValue] as? Int {
       value = newValue
@@ -60,26 +60,26 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
 
   weak var outputFolderOpenPanel: NSOpenPanel? = nil
 
-  var outputFolderURL: NSURL? = nil
+  var outputFolderURL: URL? = nil
 
   deinit {
-    NSNotificationCenter.defaultCenter().removeObserver(self)
+    NotificationCenter.default.removeObserver(self)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let notificationCenter = NSNotificationCenter.defaultCenter()
+    let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(self,
                                    selector: #selector(XcodeProjectGenerationProgressViewController.progressUpdatingTaskDidStart(_:)),
-                                   name: ProgressUpdatingTaskDidStart,
+                                   name: NSNotification.Name(rawValue: ProgressUpdatingTaskDidStart),
                                    object: nil)
   }
 
   // Extracts source paths for selected source rules, generates a PBXProject and opens it.
-  func generateProjectForConfigName(name: String, completionHandler: (NSURL?) -> Void) {
+  func generateProjectForConfigName(_ name: String, completionHandler: @escaping (URL?) -> Void) {
     assert(view.window != nil, "Must not be called until after the view controller is presented.")
     if outputFolderURL == nil {
-      showOutputFolderPicker() { (url: NSURL?) in
+      showOutputFolderPicker() { (url: URL?) in
         guard let url = url else {
           completionHandler(nil)
           return
@@ -90,22 +90,22 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       return
     }
 
-    generateXcodeProjectForConfigName(name) { (projectURL: NSURL?) in
+    generateXcodeProjectForConfigName(name) { (projectURL: URL?) in
       completionHandler(projectURL)
     }
   }
 
-  func progressUpdatingTaskDidStart(notification: NSNotification) {
+  func progressUpdatingTaskDidStart(_ notification: Notification) {
     guard let values = notification.userInfo else {
       assertionFailure("Progress task notification received without parameters.")
       return
     }
-    progressItems.append(ProgressItem(notifier: notification.object, values: values))
+    progressItems.append(ProgressItem(notifier: notification.object as AnyObject?, values: values))
   }
 
   // MARK: - Private methods
 
-  private func showOutputFolderPicker(completionHandler: (NSURL?) -> Void) {
+  private func showOutputFolderPicker(_ completionHandler: @escaping (URL?) -> Void) {
     let panel = NSOpenPanel()
     panel.title = NSLocalizedString("ProjectGeneration_SelectProjectOutputFolderTitle",
                                     comment: "Title for open panel through which the user should select where to generate the Xcode project.")
@@ -116,10 +116,10 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
                                      comment: "Label for the button used to confirm the selected output folder for the generated Xcode project which will also start generating immediately.")
     panel.canChooseDirectories = true
     panel.canChooseFiles = false
-    panel.beginSheetModalForWindow(view.window!) {
-      let url: NSURL?
+    panel.beginSheetModal(for: view.window!) {
+      let url: URL?
       if $0 == NSFileHandlingPanelOKButton {
-        url = panel.URL
+        url = panel.url
       } else {
         url = nil
       }
@@ -129,12 +129,12 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
 
   /// Asynchronously generates an Xcode project, invoking the given completionHandler on the main
   /// thread with an URL to the generated project (or nil to indicate failure).
-  private func generateXcodeProjectForConfigName(name: String, completionHandler: (NSURL? -> Void)) {
+  private func generateXcodeProjectForConfigName(_ name: String, completionHandler: @escaping ((URL?) -> Void)) {
     let document = self.representedObject as! TulsiProjectDocument
     guard let workspaceRootURL = document.workspaceRootURL else {
       LogMessage.postError(NSLocalizedString("Error_BadWorkspace",
                                              comment: "General error when project does not have a valid Bazel workspace."))
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         completionHandler(nil)
       }
       return
@@ -143,7 +143,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       // This should never actually happen and indicates an unexpected path through the UI.
       LogMessage.postError(NSLocalizedString("Error_NoOutputFolder",
                                              comment: "Error for a generation attempt without a valid target output folder"))
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         completionHandler(nil)
       }
       return
@@ -155,27 +155,27 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       return
     }
 
-    NSThread.doOnQOSUserInitiatedThread() {
+    Thread.doOnQOSUserInitiatedThread() {
       let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
                                                             withWorkspaceRootURL: workspaceRootURL)
-      NSThread.doOnMainQueue() {
+      Thread.doOnMainQueue() {
         completionHandler(url)
       }
     }
   }
 
   /// Loads a previously created config with the given name as a sparse document.
-  private func getConfigDocumentNamed(name: String) -> TulsiGeneratorConfigDocument? {
+  private func getConfigDocumentNamed(_ name: String) -> TulsiGeneratorConfigDocument? {
     let document = self.representedObject as! TulsiProjectDocument
 
     let errorInfo: String
     do {
       return try document.loadSparseConfigDocumentNamed(name)
-    } catch TulsiProjectDocument.Error.NoSuchConfig {
+    } catch TulsiProjectDocument.DocumentError.noSuchConfig {
       errorInfo = "No URL for config named '\(name)'"
-    } catch TulsiProjectDocument.Error.ConfigLoadFailed(let info) {
+    } catch TulsiProjectDocument.DocumentError.configLoadFailed(let info) {
       errorInfo = info
-    } catch TulsiProjectDocument.Error.InvalidWorkspace(let info) {
+    } catch TulsiProjectDocument.DocumentError.invalidWorkspace(let info) {
       errorInfo = "Invalid workspace: \(info)"
     } catch {
       errorInfo = "An unexpected exception occurred while loading config named '\(name)'"

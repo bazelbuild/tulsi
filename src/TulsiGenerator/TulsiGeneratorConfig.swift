@@ -18,15 +18,15 @@ import Foundation
 /// Models a configuration which can be used to generate an Xcode project directly.
 public class TulsiGeneratorConfig {
 
-  public enum Error: ErrorType {
+  public enum ConfigError: Error {
     /// The give input file does not exist or cannot be read.
-    case BadInputFilePath
+    case badInputFilePath
     /// A per-user config was found but could not be read.
-    case FailedToReadAdditionalOptionsData(String)
+    case failedToReadAdditionalOptionsData(String)
     /// Deserialization failed with the given debug info.
-    case DeserializationFailed(String)
+    case deserializationFailed(String)
     /// Serialization failed with the given debug info.
-    case SerializationFailed(String)
+    case serializationFailed(String)
   }
 
   /// The file extension used when saving generator configs.
@@ -61,7 +61,7 @@ public class TulsiGeneratorConfig {
   public let options: TulsiOptionSet
 
   /// Path to the Bazel binary.
-  public var bazelURL: NSURL
+  public var bazelURL: URL
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
@@ -69,27 +69,24 @@ public class TulsiGeneratorConfig {
   static let AdditionalFilePathsKey = "additionalFilePaths"
 
   /// Returns a copy of the given filename sanitized by replacing path separators.
-  public static func sanitizeFilename(filename: String) -> String {
-    return filename.stringByReplacingOccurrencesOfString("/", withString: "_")
+  public static func sanitizeFilename(_ filename: String) -> String {
+    return filename.replacingOccurrences(of: "/", with: "_")
   }
 
-  public static func load(inputFile: NSURL, bazelURL: NSURL? = nil) throws -> TulsiGeneratorConfig {
-    let fileManager = NSFileManager.defaultManager()
-    guard let path = inputFile.path, data = fileManager.contentsAtPath(path) else {
-      throw Error.BadInputFilePath
+  public static func load(_ inputFile: URL, bazelURL: URL? = nil) throws -> TulsiGeneratorConfig {
+    let fileManager = FileManager.default
+    guard let data = fileManager.contents(atPath: inputFile.path) else {
+      throw ConfigError.badInputFilePath
     }
 
-    let additionalOptionData: NSData?
-    let optionsFolderURL = inputFile.URLByDeletingLastPathComponent!
-#if swift(>=2.3)
-    let additionalOptionsFileURL = optionsFolderURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)!
-#else
-    let additionalOptionsFileURL = optionsFolderURL.URLByAppendingPathComponent(TulsiGeneratorConfig.perUserFilename)
-#endif
-    if let perUserPath = additionalOptionsFileURL.path where fileManager.isReadableFileAtPath(perUserPath) {
-      additionalOptionData = fileManager.contentsAtPath(perUserPath)
+    let additionalOptionData: Data?
+    let optionsFolderURL = inputFile.deletingLastPathComponent()
+    let additionalOptionsFileURL = optionsFolderURL.appendingPathComponent(TulsiGeneratorConfig.perUserFilename)
+    let perUserPath = additionalOptionsFileURL.path
+    if fileManager.isReadableFile(atPath: perUserPath) {
+      additionalOptionData = fileManager.contents(atPath: perUserPath)
       if additionalOptionData == nil {
-        throw Error.FailedToReadAdditionalOptionsData("Could not read file at path \(perUserPath)")
+        throw ConfigError.failedToReadAdditionalOptionsData("Could not read file at path \(perUserPath)")
       }
     } else {
       additionalOptionData = nil
@@ -105,7 +102,7 @@ public class TulsiGeneratorConfig {
               pathFilters: Set<String>,
               additionalFilePaths: [String]?,
               options: TulsiOptionSet,
-              bazelURL: NSURL?) {
+              bazelURL: URL?) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
     self.pathFilters = pathFilters
@@ -115,10 +112,10 @@ public class TulsiGeneratorConfig {
     if let bazelURL = bazelURL {
       self.bazelURL = bazelURL
     } else if let savedBazelPath = options[.BazelPath].commonValue {
-      self.bazelURL = NSURL(fileURLWithPath: savedBazelPath)
+      self.bazelURL = URL(fileURLWithPath: savedBazelPath)
     } else {
       // TODO(abaire): Flag a fallback to searching for the binary.
-      self.bazelURL = NSURL()
+      self.bazelURL = NSURL() as URL
     }
   }
 
@@ -127,7 +124,7 @@ public class TulsiGeneratorConfig {
                           pathFilters: Set<String>,
                           additionalFilePaths: [String]?,
                           options: TulsiOptionSet,
-                          bazelURL: NSURL?) {
+                          bazelURL: URL?) {
     self.init(projectName: projectName,
               buildTargetLabels: buildTargets.map({ $0.label }),
               pathFilters: pathFilters,
@@ -136,17 +133,17 @@ public class TulsiGeneratorConfig {
               bazelURL: bazelURL)
   }
 
-  public convenience init(data: NSData,
-                          additionalOptionData: NSData? = nil,
-                          bazelURL: NSURL? = nil) throws {
-    func extractJSONDict(data: NSData, errorBuilder: (String) -> Error) throws -> [String: AnyObject] {
+  public convenience init(data: Data,
+                          additionalOptionData: Data? = nil,
+                          bazelURL: URL? = nil) throws {
+    func extractJSONDict(_ data: Data, errorBuilder: (String) -> ConfigError) throws -> [String: AnyObject] {
       do {
-        guard let jsonDict = try NSJSONSerialization.JSONObjectWithData(data,
-                                                                        options: NSJSONReadingOptions()) as? [String: AnyObject] else {
+        guard let jsonDict = try JSONSerialization.jsonObject(with: data,
+                                                                        options: JSONSerialization.ReadingOptions()) as? [String: AnyObject] else {
           throw errorBuilder("Config file contents are invalid")
         }
         return jsonDict
-      } catch let e as Error {
+      } catch let e as ConfigError {
         throw e
       } catch let e as NSError {
         throw errorBuilder(e.localizedDescription)
@@ -156,7 +153,7 @@ public class TulsiGeneratorConfig {
       }
     }
 
-    let dict = try extractJSONDict(data) { Error.DeserializationFailed($0)}
+    let dict = try extractJSONDict(data) { ConfigError.deserializationFailed($0)}
 
     let projectName = dict[TulsiGeneratorConfig.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
     let buildTargetLabels = dict[TulsiGeneratorConfig.BuildTargetsKey] as? [String] ?? []
@@ -174,10 +171,10 @@ public class TulsiGeneratorConfig {
     var optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
     if let additionalOptionData = additionalOptionData {
       let additionalOptions = try extractJSONDict(additionalOptionData) {
-        Error.FailedToReadAdditionalOptionsData($0)
+        ConfigError.failedToReadAdditionalOptionsData($0)
       }
       guard let newOptions = TulsiOptionSet.getOptionsFromContainerDictionary(additionalOptions) else {
-        throw Error.FailedToReadAdditionalOptionsData("Invalid per-user options file")
+        throw ConfigError.failedToReadAdditionalOptionsData("Invalid per-user options file")
       }
       for (key, value) in newOptions {
         optionsDict[key] = value
@@ -194,43 +191,43 @@ public class TulsiGeneratorConfig {
   }
 
   public func save() throws -> NSData {
-    let sortedBuildTargetLabels = buildTargetLabels.map({ $0.value }).sort()
-    let sortedPathFilters = [String](pathFilters).sort()
-    var dict: [String: AnyObject] = [
-        TulsiGeneratorConfig.ProjectNameKey: projectName,
-        TulsiGeneratorConfig.BuildTargetsKey: sortedBuildTargetLabels,
-        TulsiGeneratorConfig.PathFiltersKey: sortedPathFilters,
+    let sortedBuildTargetLabels = buildTargetLabels.map({ $0.value }).sorted()
+    let sortedPathFilters = [String](pathFilters).sorted()
+    var dict: [String: Any] = [
+        TulsiGeneratorConfig.ProjectNameKey: projectName as AnyObject,
+        TulsiGeneratorConfig.BuildTargetsKey: sortedBuildTargetLabels as AnyObject,
+        TulsiGeneratorConfig.PathFiltersKey: sortedPathFilters as AnyObject,
     ]
     if let additionalFilePaths = additionalFilePaths {
-      dict[TulsiGeneratorConfig.AdditionalFilePathsKey] = additionalFilePaths
+      dict[TulsiGeneratorConfig.AdditionalFilePathsKey] = additionalFilePaths as AnyObject?
     }
     options.saveShareableOptionsIntoDictionary(&dict)
 
     do {
-      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                               options: .PrettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                             options: .prettyPrinted)
     } catch let e as NSError {
-      throw Error.SerializationFailed(e.localizedDescription)
+      throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
-      throw Error.SerializationFailed("Unexpected exception")
+      throw ConfigError.serializationFailed("Unexpected exception")
     }
   }
 
   public func savePerUserSettings() throws -> NSData? {
-    var dict = [String: AnyObject]()
+    var dict = [String: Any]()
     options.savePerUserOptionsIntoDictionary(&dict)
     if dict.isEmpty { return nil }
     do {
-      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                               options: .PrettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                             options: .prettyPrinted)
     } catch let e as NSError {
-      throw Error.SerializationFailed(e.localizedDescription)
+      throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
-      throw Error.SerializationFailed("Unexpected exception")
+      throw ConfigError.serializationFailed("Unexpected exception")
     }
   }
 
-  public func configByResolvingInheritedOptions(parentOptions: TulsiOptionSet) -> TulsiGeneratorConfig {
+  public func configByResolvingInheritedOptions(_ parentOptions: TulsiOptionSet) -> TulsiGeneratorConfig {
     let resolvedOptions = options.optionSetByInheritingFrom(parentOptions)
     return TulsiGeneratorConfig(projectName: projectName,
                                 buildTargetLabels: buildTargetLabels,
@@ -240,7 +237,7 @@ public class TulsiGeneratorConfig {
                                 bazelURL: bazelURL)
   }
 
-  public func configByAppendingPathFilters(additionalPathFilters: Set<String>) -> TulsiGeneratorConfig {
+  public func configByAppendingPathFilters(_ additionalPathFilters: Set<String>) -> TulsiGeneratorConfig {
     let newPathFilters = pathFilters.union(additionalPathFilters)
     return TulsiGeneratorConfig(projectName: projectName,
                                 buildTargetLabels: buildTargetLabels,

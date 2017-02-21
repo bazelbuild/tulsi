@@ -58,11 +58,11 @@ class TulsiCommandlineParser {
       buildTargets = nil
     }
 
-    init(dict: [String: AnyObject]) {
+    init(dict: [String: Any]) {
 
-      func standardizedPath(key: String) -> String? {
+      func standardizedPath(_ key: String) -> String? {
         if let path = dict[key] as? NSString {
-          return path.stringByStandardizingPath
+          return path.standardizingPath
         }
         return nil
       }
@@ -123,7 +123,7 @@ class TulsiCommandlineParser {
   }
 
   init() {
-    var args = [String](Process.arguments.dropFirst())
+    var args = [String](CommandLine.arguments.dropFirst())
     // See if the arguments are intended to be interpreted as commandline args.
     if args.first != TulsiCommandlineParser.ParamCommandlineArgumentSentinal {
       commandlineSentinalFound = false
@@ -132,7 +132,7 @@ class TulsiCommandlineParser {
     }
     commandlineSentinalFound = true
     let version: String
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+    if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       version = cfBundleVersion
     } else {
       version = ""
@@ -141,20 +141,20 @@ class TulsiCommandlineParser {
 
     args = [String](args.dropFirst())
 
-    var parsedArguments = [String: AnyObject]()
-    func storeValueAt(index: Int,
+    var parsedArguments = [String: Any]()
+    func storeValueAt(_ index: Int,
                       forArgument argumentName: String,
                       append: Bool = false,
-                      transform: (AnyObject -> AnyObject) = { return $0 }) {
+                      transform: ((AnyObject) -> AnyObject) = { return $0 }) {
       guard index < args.count else {
         print("Missing required parameter for \(argumentName) option.")
         exit(1)
       }
-      let value = transform(args[index])
+      let value = transform(args[index] as AnyObject)
       if append {
         if var existingArgs: [AnyObject] = parsedArguments[argumentName] as? [AnyObject] {
           existingArgs.append(value)
-          parsedArguments[argumentName] = existingArgs
+          parsedArguments[argumentName] = existingArgs as AnyObject?
         } else {
           parsedArguments[argumentName] = [value]
         }
@@ -180,14 +180,14 @@ class TulsiCommandlineParser {
         case TulsiCommandlineParser.ParamQuietShort:
           fallthrough
         case TulsiCommandlineParser.ParamQuietLong:
-          parsedArguments[TulsiCommandlineParser.ParamQuietLong] = true
+          parsedArguments[TulsiCommandlineParser.ParamQuietLong] = true as AnyObject?
 
         case TulsiCommandlineParser.ParamBazel:
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBazel)
           i += 1
 
         case TulsiCommandlineParser.ParamNoWorkspaceCheck:
-          parsedArguments[TulsiCommandlineParser.ParamNoWorkspaceCheck] = true
+          parsedArguments[TulsiCommandlineParser.ParamNoWorkspaceCheck] = true as AnyObject?
 
         case TulsiCommandlineParser.ParamOutputFolderShort:
           fallthrough
@@ -203,15 +203,15 @@ class TulsiCommandlineParser {
 
         case TulsiCommandlineParser.ParamAdditionalPathFilters:
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamAdditionalPathFilters) { value -> AnyObject in
-            guard let valueString = value as? String else { return Set<String>() }
+            guard let valueString = value as? String else { return Set<String>() as AnyObject }
 
-            let pathFilters = valueString.componentsSeparatedByString(" ").map() { path -> String in
+            let pathFilters = valueString.components(separatedBy: " ").map() { path -> String in
               if path.hasPrefix("//") {
-                return path.substringFromIndex(path.startIndex.advancedBy(2))
+                return path.substring(from: path.characters.index(path.startIndex, offsetBy: 2))
               }
               return path
             }
-            return Set(pathFilters)
+            return Set(pathFilters) as AnyObject
           }
           i += 1
 
@@ -224,7 +224,7 @@ class TulsiCommandlineParser {
           i += 1
 
         case TulsiCommandlineParser.ParamNoOpenXcode:
-          parsedArguments[TulsiCommandlineParser.ParamNoOpenXcode] = true
+          parsedArguments[TulsiCommandlineParser.ParamNoOpenXcode] = true as AnyObject?
 
         // Tulsiproj creation:
 
@@ -258,7 +258,7 @@ class TulsiCommandlineParser {
 
   private static func printUsage() {
     let usage = [
-        "Usage: \(Process.arguments[0]) -- <mode_option> [options]",
+        "Usage: \(CommandLine.arguments[0]) -- <mode_option> [options]",
         "",
         "Tulsi will operate in one of two modes based on the mode_option:",
         "  - \(ParamGeneratorConfigLong): generates an Xcode project.",
@@ -293,6 +293,6 @@ class TulsiCommandlineParser {
         "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project.",
         ""
     ]
-    print(usage.joinWithSeparator("\n") + "\n")
+    print(usage.joined(separator: "\n") + "\n")
   }
 }

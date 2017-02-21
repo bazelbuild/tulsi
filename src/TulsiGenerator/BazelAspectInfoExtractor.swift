@@ -17,9 +17,9 @@ import Foundation
 
 // Provides methods utilizing Bazel aspects to extract information from a workspace.
 final class BazelAspectInfoExtractor {
-  enum Error: ErrorType {
+  enum ExtractorError: Error {
     /// Parsing an aspect's output failed with the given debug info.
-    case ParsingFailed(String)
+    case parsingFailed(String)
   }
 
   /// Prefix to be used by Bazel for the output of the Tulsi aspect.
@@ -29,26 +29,24 @@ final class BazelAspectInfoExtractor {
       "bin", "genfiles", "out", "testlogs"].map({ SymlinkPrefix + $0 })
 
   /// The location of the bazel binary.
-  var bazelURL: NSURL
+  var bazelURL: URL
   /// The location of the Bazel workspace to be examined.
-  let workspaceRootURL: NSURL
+  let workspaceRootURL: URL
 
   /// Fetcher object from which a workspace's package_path may be obtained.
   private let packagePathFetcher: BazelWorkspacePathInfoFetcher
 
-  private let bundle: NSBundle
+  private let bundle: Bundle
   // Absolute path to the workspace containing the Tulsi aspect bzl file.
   private let aspectWorkspacePath: String
   // Relative path from aspectWorkspacePath to the actual Tulsi aspect bzl file.
   private let aspectFileWorkspaceRelativePath: String
   private let localizedMessageLogger: LocalizedMessageLogger
 
-  private typealias CompletionHandler = (bazelTask: NSTask,
-                                         generatedArtifacts: [String]?,
-                                         debugInfo: String) -> Void
+  private typealias CompletionHandler = (Process, [String]?, String) -> Void
 
-  init(bazelURL: NSURL,
-       workspaceRootURL: NSURL,
+  init(bazelURL: URL,
+       workspaceRootURL: URL,
        packagePathFetcher: BazelWorkspacePathInfoFetcher,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
@@ -56,23 +54,23 @@ final class BazelAspectInfoExtractor {
     self.packagePathFetcher = packagePathFetcher
     self.localizedMessageLogger = localizedMessageLogger
 
-    bundle = NSBundle(forClass: self.dynamicType)
+    bundle = Bundle(for: type(of: self))
 
-    let workspaceFilePath = bundle.pathForResource("WORKSPACE", ofType: "")! as NSString
-    aspectWorkspacePath = workspaceFilePath.stringByDeletingLastPathComponent
-    let aspectFilePath = bundle.pathForResource("tulsi_aspects",
+    let workspaceFilePath = bundle.path(forResource: "WORKSPACE", ofType: "")! as NSString
+    aspectWorkspacePath = workspaceFilePath.deletingLastPathComponent
+    let aspectFilePath = bundle.path(forResource: "tulsi_aspects",
                                                 ofType: "bzl",
                                                 inDirectory: "tulsi")!
-    let startIndex = aspectFilePath.startIndex.advancedBy(aspectWorkspacePath.characters.count + 1)
-    aspectFileWorkspaceRelativePath = aspectFilePath.substringFromIndex(startIndex)
+    let startIndex = aspectFilePath.characters.index(aspectFilePath.startIndex, offsetBy: aspectWorkspacePath.characters.count + 1)
+    aspectFileWorkspaceRelativePath = aspectFilePath.substring(from: startIndex)
   }
 
   /// Builds a map of RuleEntry instances keyed by their labels with information extracted from the
   /// Bazel workspace for the given set of Bazel targets.
-  func extractRuleEntriesForLabels(targets: [BuildLabel],
+  func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = []) -> [BuildLabel: RuleEntry] {
-    guard !targets.isEmpty, let path = workspaceRootURL.path else {
+    guard !targets.isEmpty else {
       return [:]
     }
 
@@ -84,17 +82,17 @@ final class BazelAspectInfoExtractor {
     let profilingStart = localizedMessageLogger.startProfiling("extract_source_info",
                                                                message: "Extracting info for \(targets.count) rules")
 
-    let semaphore = dispatch_semaphore_create(0)
+    let semaphore = DispatchSemaphore(value: 0)
     var extractedEntries = [BuildLabel: RuleEntry]()
     let task = bazelAspectTaskForTargets(targets.map({ $0.value }),
                                          aspect: "tulsi_sources_aspect",
                                          startupOptions: startupOptions,
                                          buildOptions: buildOptions,
                                          progressNotifier: progressNotifier) {
-      (task: NSTask, generatedArtifacts: [String]?, debugInfo: String) -> Void in
-        defer { dispatch_semaphore_signal(semaphore) }
+      (task: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
+        defer { semaphore.signal() }
         if task.terminationStatus == 0,
-           let artifacts = generatedArtifacts where !artifacts.isEmpty {
+           let artifacts = generatedArtifacts, !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
         } else {
@@ -106,9 +104,9 @@ final class BazelAspectInfoExtractor {
     }
 
     if let task = task {
-      task.currentDirectoryPath = path
+      task.currentDirectoryPath = workspaceRootURL.path
       task.launch()
-      dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+      semaphore.wait(timeout: DispatchTime.distantFuture)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
 
@@ -119,12 +117,12 @@ final class BazelAspectInfoExtractor {
 
   // Generates an NSTask that will run the given aspect against the given Bazel targets, capturing
   // the output data and passing it to the terminationHandler.
-  private func bazelAspectTaskForTargets(targets: [String],
+  private func bazelAspectTaskForTargets(_ targets: [String],
                                          aspect: String,
                                          startupOptions: [String] = [],
                                          buildOptions: [String] = [],
                                          progressNotifier: ProgressNotifier? = nil,
-                                         terminationHandler: CompletionHandler) -> NSTask? {
+                                         terminationHandler: @escaping CompletionHandler) -> Process? {
 
     let infoExtractionNotifier = ProgressNotifier(name: WorkspaceInfoExtraction,
                                                   maxValue: 1,
@@ -140,7 +138,7 @@ final class BazelAspectInfoExtractor {
     let augmentedPackagePath = "\(workspacePackagePath):\(aspectWorkspacePath)"
 
     var arguments = startupOptions
-    arguments.appendContentsOf([
+    arguments.append(contentsOf: [
         "build",
         "-c",
         "dbg",  // The aspect is run in debug mode to match the default Xcode build configuration.
@@ -157,16 +155,16 @@ final class BazelAspectInfoExtractor {
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
         "--experimental_show_artifacts"  // Print the artifacts generated by the aspect.
     ])
-    arguments.appendContentsOf(buildOptions)
-    arguments.appendContentsOf(targets)
-    localizedMessageLogger.infoMessage("Running \(bazelURL.path!) with arguments: \(arguments)")
+    arguments.append(contentsOf: buildOptions)
+    arguments.append(contentsOf: targets)
+    localizedMessageLogger.infoMessage("Running \(bazelURL.path) with arguments: \(arguments)")
 
-    let task = TulsiTaskRunner.createTask(bazelURL.path!, arguments: arguments) {
+    let task = TulsiTaskRunner.createTask(bazelURL.path, arguments: arguments) {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
-                                                      bundle: NSBundle(forClass: self.dynamicType),
+                                                      bundle: Bundle(for: type(of: self)),
                                                       comment: "Provides general information about a Bazel failure; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@.")
-        let stderr = NSString(data: completionInfo.stderr, encoding: NSUTF8StringEncoding) ?? "<No STDERR>"
+        let stderr = NSString(data: completionInfo.stderr, encoding: String.Encoding.utf8.rawValue) ?? "<No STDERR>"
         let debugInfo = String(format: debugInfoFormatString,
                                completionInfo.commandlineString,
                                completionInfo.terminationStatus,
@@ -174,9 +172,7 @@ final class BazelAspectInfoExtractor {
 
         let artifacts = BazelAspectInfoExtractor.extractBuildArtifactsFromOutput(stderr)
         self.removeGeneratedSymlinks()
-        terminationHandler(bazelTask: completionInfo.task,
-                           generatedArtifacts: artifacts,
-                           debugInfo: debugInfo)
+        terminationHandler(completionInfo.task, artifacts, debugInfo)
     }
 
     return task
@@ -184,10 +180,10 @@ final class BazelAspectInfoExtractor {
 
   // Parses Bazel stderr for "Build artifacts:" followed by >>>(artifact_path). This is a hacky and
   // hopefully a temporary solution (based on --experimental_show_artifacts).
-  private static func extractBuildArtifactsFromOutput(output: NSString) -> [String]? {
-    let lines = output.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+  private static func extractBuildArtifactsFromOutput(_ output: NSString) -> [String]? {
+    let lines = output.components(separatedBy: CharacterSet.newlines)
 
-    let splitLines = lines.split("Build artifacts:")
+    let splitLines = lines.split(separator: "Build artifacts:")
     if splitLines.count < 2 {
       return nil
     }
@@ -196,7 +192,7 @@ final class BazelAspectInfoExtractor {
     var artifacts = [String]()
     for l: String in splitLines[1] {
       if l.hasPrefix(">>>") {
-        artifacts.append(l.substringFromIndex(l.startIndex.advancedBy(3)))
+        artifacts.append(l.substring(from: l.characters.index(l.startIndex, offsetBy: 3)))
       }
     }
 
@@ -204,18 +200,13 @@ final class BazelAspectInfoExtractor {
   }
 
   private func removeGeneratedSymlinks() {
-    let fileManager = NSFileManager.defaultManager()
+    let fileManager = FileManager.default
     for outputSymlink in BazelAspectInfoExtractor.BazelOutputSymlinks {
-#if swift(>=2.3)
-      let symlinkURL = workspaceRootURL.URLByAppendingPathComponent(outputSymlink,
-                                                                    isDirectory: true)!
-#else
-      let symlinkURL = workspaceRootURL.URLByAppendingPathComponent(outputSymlink,
-                                                                    isDirectory: true)
-#endif
+
+      let symlinkURL = workspaceRootURL.appendingPathComponent(outputSymlink, isDirectory: true)
       do {
-        let attributes = try fileManager.attributesOfItemAtPath(symlinkURL.path!)
-        guard let type = attributes[NSFileType] as? String where type == NSFileTypeSymbolicLink else {
+        let attributes = try fileManager.attributesOfItem(atPath: symlinkURL.path)
+        guard let type = attributes[FileAttributeKey.type] as? String, type == FileAttributeType.typeSymbolicLink.rawValue else {
           continue
         }
       } catch {
@@ -224,7 +215,7 @@ final class BazelAspectInfoExtractor {
       }
 
       do {
-        try fileManager.removeItemAtURL(symlinkURL)
+        try fileManager.removeItem(at: symlinkURL)
       } catch let e as NSError {
         localizedMessageLogger.infoMessage("Failed to remove symlink at \(symlinkURL). \(e)")
       }
@@ -232,21 +223,21 @@ final class BazelAspectInfoExtractor {
   }
 
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
-  private func extractRuleEntriesFromArtifacts(files: [String],
+  private func extractRuleEntriesFromArtifacts(_ files: [String],
                                                progressNotifier: ProgressNotifier? = nil) -> [BuildLabel: RuleEntry] {
-    let fileManager = NSFileManager.defaultManager()
+    let fileManager = FileManager.default
 
-    func parseTulsiTargetFile(filename: String) throws -> RuleEntry {
-      guard let data = fileManager.contentsAtPath(filename) else {
-        throw Error.ParsingFailed("The file could not be read")
+    func parseTulsiTargetFile(_ filename: String) throws -> RuleEntry {
+      guard let data = fileManager.contents(atPath: filename) else {
+        throw ExtractorError.parsingFailed("The file could not be read")
       }
-      guard let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? [String: AnyObject] else {
-        throw Error.ParsingFailed("Contents are not a dictionary")
+      guard let dict = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? [String: AnyObject] else {
+        throw ExtractorError.parsingFailed("Contents are not a dictionary")
       }
 
-      func getRequiredField(field: String) throws -> String {
+      func getRequiredField(_ field: String) throws -> String {
         guard let value = dict[field] as? String else {
-          throw Error.ParsingFailed("Missing required '\(field)' field")
+          throw ExtractorError.parsingFailed("Missing required '\(field)' field")
         }
         return value
       }
@@ -255,11 +246,11 @@ final class BazelAspectInfoExtractor {
       let ruleType = try getRequiredField("type")
       let attributes = dict["attr"] as? [String: AnyObject] ?? [:]
 
-      func MakeBazelFileInfos(attributeName: String) -> [BazelFileInfo] {
+      func MakeBazelFileInfos(_ attributeName: String) -> [BazelFileInfo] {
         let infos = dict[attributeName] as? [[String: AnyObject]] ?? []
         var bazelFileInfos = [BazelFileInfo]()
         for info in infos {
-          if let pathInfo = BazelFileInfo(info: info) {
+          if let pathInfo = BazelFileInfo(info: info as AnyObject?) {
             bazelFileInfos.append(pathInfo)
           }
         }
@@ -273,16 +264,16 @@ final class BazelAspectInfoExtractor {
       // source code or (potential) source code containers. The directoryArtifacts set is also
       // populated as a side effect.
       var directoryArtifacts = Set<String>()
-      func appendGeneratedSourceArtifacts(infos: [[String: AnyObject]],
-                                          inout to artifacts: [BazelFileInfo]) {
+      func appendGeneratedSourceArtifacts(_ infos: [[String: AnyObject]],
+                                          to artifacts: inout [BazelFileInfo]) {
         for info in infos {
-          guard let pathInfo = BazelFileInfo(info: info) else {
+          guard let pathInfo = BazelFileInfo(info: info as AnyObject?) else {
             continue
           }
           if pathInfo.isDirectory {
             directoryArtifacts.insert(pathInfo.fullPath)
           } else {
-            guard let fileUTI = pathInfo.uti where fileUTI.hasPrefix("sourcecode.") else {
+            guard let fileUTI = pathInfo.uti, fileUTI.hasPrefix("sourcecode.") else {
               continue
             }
           }
@@ -360,21 +351,21 @@ final class BazelAspectInfoExtractor {
     }
 
     var ruleMap = [BuildLabel: RuleEntry]()
-    let semaphore = dispatch_semaphore_create(1)
-    let queue = dispatch_queue_create("com.google.Tulsi.ruleEntryArtifactExtractor",
-                                      DISPATCH_QUEUE_CONCURRENT)
+    let semaphore = DispatchSemaphore(value: 1)
+    let queue = DispatchQueue(label: "com.google.Tulsi.ruleEntryArtifactExtractor",
+                                      attributes: DispatchQueue.Attributes.concurrent)
     var hasErrors = false
 
     for filename in files {
-      dispatch_async(queue) {
+      queue.async {
         let errorInfo: String
         do {
           let ruleEntry = try parseTulsiTargetFile(filename)
-          dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+          semaphore.wait(timeout: DispatchTime.distantFuture)
           ruleMap[ruleEntry.label] = ruleEntry
-          dispatch_semaphore_signal(semaphore)
+          semaphore.signal()
           return
-        } catch Error.ParsingFailed(let info) {
+        } catch ExtractorError.parsingFailed(let info) {
           errorInfo = info
         } catch let e as NSError {
           errorInfo = e.localizedDescription
@@ -389,7 +380,7 @@ final class BazelAspectInfoExtractor {
     }
 
     // Wait for everything to be processed.
-    dispatch_barrier_sync(queue) {}
+    queue.sync(flags: .barrier, execute: {})
 
     if hasErrors {
       localizedMessageLogger.error("BazelAspectParsingFailedNotification",

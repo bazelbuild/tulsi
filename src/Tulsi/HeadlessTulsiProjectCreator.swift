@@ -22,24 +22,24 @@ struct HeadlessTulsiProjectCreator {
   /// Provides functionality to signal a semaphore when the "processing" key on some object is set
   /// to false.
   private class ProcessingCompletedObserver: NSObject {
-    let semaphore: dispatch_semaphore_t
+    let semaphore: DispatchSemaphore
 
-    init(semaphore: dispatch_semaphore_t) {
+    init(semaphore: DispatchSemaphore) {
       self.semaphore = semaphore
     }
 
-    override func observeValueForKeyPath(keyPath: String?,
-                                ofObject object: AnyObject?,
-                                change: [String : AnyObject]?,
-                                context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?,
+                                of object: Any?,
+                                change: [NSKeyValueChangeKey : Any]?,
+                                context: UnsafeMutableRawPointer?) {
       if context != &HeadlessTulsiProjectCreator.KVOContext {
-        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         return
       }
 
-      if keyPath == "processing", let newValue = change?[NSKeyValueChangeNewKey] as? Bool {
+      if keyPath == "processing", let newValue = change?[NSKeyValueChangeKey.newKey] as? Bool {
         if (!newValue) {
-          dispatch_semaphore_signal(semaphore)
+          semaphore.signal()
         }
       }
     }
@@ -56,11 +56,11 @@ struct HeadlessTulsiProjectCreator {
   /// Performs project generation.
   func generate() throws {
     guard let bazelPath = arguments.bazel else {
-      throw HeadlessModeError.MissingBazelPath
+      throw HeadlessModeError.missingBazelPath
     }
-    let defaultFileManager = NSFileManager.defaultManager()
-    if !defaultFileManager.isExecutableFileAtPath(bazelPath) {
-      throw HeadlessModeError.InvalidBazelPath
+    let defaultFileManager = FileManager.default
+    if !defaultFileManager.isExecutableFile(atPath: bazelPath) {
+      throw HeadlessModeError.invalidBazelPath
     }
 
     guard let tulsiprojName = arguments.tulsiprojName else {
@@ -68,21 +68,21 @@ struct HeadlessTulsiProjectCreator {
     }
 
     guard let targets = arguments.buildTargets else {
-      throw HeadlessModeError.MissingBuildTargets
+      throw HeadlessModeError.missingBuildTargets
     }
 
     guard let outputFolderPath = arguments.outputFolder else {
-      throw HeadlessModeError.ExplicitOutputOptionRequired
+      throw HeadlessModeError.explicitOutputOptionRequired
     }
 
     let (projectURL, projectName) = try buildOutputPath(outputFolderPath,
                                                         projectBundleName: tulsiprojName)
 
-    let workspaceRootURL: NSURL
+    let workspaceRootURL: URL
     if let explicitWorkspaceRoot = arguments.workspaceRootOverride {
-      workspaceRootURL = NSURL(fileURLWithPath: explicitWorkspaceRoot, isDirectory: true)
+      workspaceRootURL = URL(fileURLWithPath: explicitWorkspaceRoot, isDirectory: true)
     } else {
-      workspaceRootURL = NSURL(fileURLWithPath: defaultFileManager.currentDirectoryPath,
+      workspaceRootURL = URL(fileURLWithPath: defaultFileManager.currentDirectoryPath,
                                isDirectory: true)
     }
     let workspaceFileURL = try buildWORKSPACEFileURL(workspaceRootURL,
@@ -103,17 +103,17 @@ struct HeadlessTulsiProjectCreator {
 
   // MARK: - Private methods
 
-  private func createTulsiProject(projectName: String,
-                                  workspaceFileURL: NSURL,
+  private func createTulsiProject(_ projectName: String,
+                                  workspaceFileURL: URL,
                                   targets: [String],
-                                  atURL projectURL: NSURL) throws {
+                                  atURL projectURL: URL) throws {
     let document = TulsiProjectDocument()
     document.createNewProject(projectName, workspaceFileURL: workspaceFileURL)
 
     let bazelPackages = processBazelPackages(document, targets: targets)
 
     if document.ruleInfos.isEmpty {
-      throw HeadlessModeError.BazelTargetProcessingFailed
+      throw HeadlessModeError.bazelTargetProcessingFailed
     }
 
     if let buildStartupOptions = arguments.buildStartupOptions {
@@ -134,9 +134,9 @@ struct HeadlessTulsiProjectCreator {
     document.fileURL = projectURL
 
 
-    try document.writeSafelyToURL(projectURL,
-                                  ofType: "com.google.tulsi.project",
-                                  forSaveOperation: .SaveOperation)
+    try document.writeSafely(to: projectURL,
+                             ofType: "com.google.tulsi.project",
+                             for: .saveOperation)
 
     try addDefaultConfig(document,
                          named: projectName,
@@ -144,29 +144,29 @@ struct HeadlessTulsiProjectCreator {
                          targets: targets)
   }
 
-  private func processBazelPackages(document: TulsiProjectDocument,
+  private func processBazelPackages(_ document: TulsiProjectDocument,
                                     targets: [String]) -> Set<String> {
     let bazelPackages = extractBazelPackages(targets)
 
     // Updating the project's bazelPackages will cause it to go into processing, observe the
     // processing key and block further execution until it is completed.
-    let semaphore = dispatch_semaphore_create(0)
+    let semaphore = DispatchSemaphore(value: 0)
     let observer = ProcessingCompletedObserver(semaphore: semaphore)
     document.addObserver(observer,
                          forKeyPath: "processing",
-                         options: .New,
+                         options: .new,
                          context: &HeadlessTulsiProjectCreator.KVOContext)
 
     document.bazelPackages = Array(bazelPackages)
 
     // Wait until processing completes.
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    semaphore.wait(timeout: DispatchTime.distantFuture)
 
     document.removeObserver(observer, forKeyPath: "processing")
     return bazelPackages
   }
 
-  private func addDefaultConfig(projectDocument: TulsiProjectDocument,
+  private func addDefaultConfig(_ projectDocument: TulsiProjectDocument,
                                 named projectName: String,
                                 bazelPackages: Set<String>,
                                 targets: [String]) throws {
@@ -196,11 +196,11 @@ struct HeadlessTulsiProjectCreator {
     configDocument.headlessSave(projectName)
   }
 
-  private func extractBazelPackages(targets: [String]) -> Set<String> {
+  private func extractBazelPackages(_ targets: [String]) -> Set<String> {
     var buildFiles = Set<String>()
     for target in targets {
-      guard let range = target.rangeOfString(":") where !range.isEmpty else { continue }
-      let package = target.substringToIndex(range.startIndex)
+      guard let range = target.range(of: ":"), !range.isEmpty else { continue }
+      let package = target.substring(to: range.lowerBound)
       buildFiles.insert(package)
     }
     return buildFiles
@@ -208,43 +208,34 @@ struct HeadlessTulsiProjectCreator {
 
   /// Processes the "outputFolder" argument, returning the Tulsi project bundle URL and project
   /// name.
-  private func buildOutputPath(outputFolderPath: String,
-                               projectBundleName: String) throws -> (NSURL, String) {
-    let outputFolderURL = NSURL(fileURLWithPath: outputFolderPath, isDirectory: true)
+  private func buildOutputPath(_ outputFolderPath: String,
+                               projectBundleName: String) throws -> (URL, String) {
+    let outputFolderURL = URL(fileURLWithPath: outputFolderPath, isDirectory: true)
 
     guard projectBundleName == (projectBundleName as NSString).lastPathComponent else {
-      throw HeadlessModeError.InvalidProjectBundleName
+      throw HeadlessModeError.invalidProjectBundleName
     }
 
-    let projectName = (projectBundleName as NSString).stringByDeletingPathExtension
+    let projectName = (projectBundleName as NSString).deletingPathExtension
     let normalizedProjectBundleName = "\(projectName).\(TulsiProjectDocument.getTulsiBundleExtension())"
 
-#if swift(>=2.3)
-    let projectBundleURL = outputFolderURL.URLByAppendingPathComponent(normalizedProjectBundleName,
-                                                                       isDirectory: false)!
-#else
-    let projectBundleURL = outputFolderURL.URLByAppendingPathComponent(normalizedProjectBundleName,
+
+    let projectBundleURL = outputFolderURL.appendingPathComponent(normalizedProjectBundleName,
                                                                        isDirectory: false)
-#endif
 
     return (projectBundleURL, projectName)
   }
 
-  private func buildWORKSPACEFileURL(workspaceRootURL: NSURL,
-                                     suppressExistenceCheck: Bool = false) throws -> NSURL {
-#if swift(>=2.3)
-    let workspaceFile = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                             isDirectory: false)!
-#else
-    let workspaceFile = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                             isDirectory: false)
-#endif
+  private func buildWORKSPACEFileURL(_ workspaceRootURL: URL,
+                                     suppressExistenceCheck: Bool = false) throws -> URL {
+
+    let workspaceFile = workspaceRootURL.appendingPathComponent("WORKSPACE", isDirectory: false)
 
     if !suppressExistenceCheck {
       var isDirectory = ObjCBool(false)
-      if !NSFileManager.defaultManager().fileExistsAtPath(workspaceFile.path!,
-                                                          isDirectory: &isDirectory) || isDirectory {
-        throw HeadlessModeError.MissingWORKSPACEFile(workspaceRootURL.path!)
+      if !FileManager.default.fileExists(atPath: workspaceFile.path,
+                                         isDirectory: &isDirectory) || isDirectory.boolValue {
+        throw HeadlessModeError.missingWORKSPACEFile(workspaceRootURL.path)
       }
     }
     return workspaceFile

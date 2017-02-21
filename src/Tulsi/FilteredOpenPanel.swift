@@ -18,11 +18,11 @@ import Cocoa
 /// Convenience subclass of NSOpenPanel that acts as its own delegate and applies a filtering
 /// function for -panel:shouldEnableURL:.
 class FilteredOpenPanel: NSOpenPanel, NSOpenSavePanelDelegate {
-  typealias FilterFunc = (sender: FilteredOpenPanel, shouldEnableURL: NSURL) -> Bool
+  typealias FilterFunc = (_ sender: FilteredOpenPanel, _ shouldEnableURL: URL) -> Bool
 
   var filterFunc: FilterFunc? = nil
 
-  static func filteredOpenPanel(filter: FilterFunc?) -> FilteredOpenPanel {
+  static func filteredOpenPanel(_ filter: FilterFunc?) -> FilteredOpenPanel {
     let panel = FilteredOpenPanel()
     panel.filterFunc = filter
     panel.delegate = panel
@@ -31,31 +31,28 @@ class FilteredOpenPanel: NSOpenPanel, NSOpenSavePanelDelegate {
 
   /// Creates a filtered NSOpenPanel that accepts any non-package directories and any files whose
   /// last path component is in the given array of names.
-  static func filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(names: [String]) -> FilteredOpenPanel {
+  static func filteredOpenPanelAcceptingNonPackageDirectoriesAndFilesNamed(_ names: [String]) -> FilteredOpenPanel {
     return filteredOpenPanel(filterNonPackageDirectoriesOrFilesMatchingNames(names))
   }
 
   // MARK: - NSOpenSavePanelDelegate
 
-  func panel(sender: AnyObject, shouldEnableURL url: NSURL) -> Bool {
-    return filterFunc?(sender: self, shouldEnableURL: url) ?? true
+  func panel(_ sender: Any, shouldEnable url: URL) -> Bool {
+    return filterFunc?(self, url) ?? true
   }
 
   // MARK: - Internal methods
 
-  static func filterNonPackageDirectoriesOrFilesMatchingNames(validFiles: [String]) -> FilterFunc {
-    return { (sender: AnyObject, url: NSURL) -> Bool in
+  static func filterNonPackageDirectoriesOrFilesMatchingNames(_ validFiles: [String]) -> FilterFunc {
+    return { (sender: AnyObject, url: URL) -> Bool in
       var isDir: AnyObject?
       var isPackage: AnyObject?
       do {
-        try url.getResourceValue(&isDir, forKey: NSURLIsDirectoryKey)
-        try url.getResourceValue(&isPackage, forKey: NSURLIsPackageKey)
-        if let isDir = isDir as? NSNumber, isPackage = isPackage as? NSNumber
-            where !isPackage.boolValue {
+        try (url as NSURL).getResourceValue(&isDir, forKey: URLResourceKey.isDirectoryKey)
+        try (url as NSURL).getResourceValue(&isPackage, forKey: URLResourceKey.isPackageKey)
+        if let isDir = isDir as? NSNumber, let isPackage = isPackage as? NSNumber, !isPackage.boolValue {
           if isDir.boolValue { return true }
-          if let filename = url.lastPathComponent {
-            return validFiles.contains(filename)
-          }
+          return validFiles.contains(url.lastPathComponent)
         }
       } catch _ {
         // Treat any exception as an invalid URL.

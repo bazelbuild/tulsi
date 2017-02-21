@@ -18,17 +18,17 @@ final class SplashScreenRecentDocumentViewController : NSViewController {
   @IBOutlet weak var icon : NSImageView!
   @IBOutlet weak var filename : NSTextField!
   @IBOutlet weak var path: NSTextField!
-  var url : NSURL = NSURL()
+  var url: URL?
 
   override var nibName: String? {
     return "SplashScreenRecentDocumentView"
   }
 
   override func viewDidLoad() {
-    guard let urlPath = url.path else { return }
-    icon.image =  NSWorkspace.sharedWorkspace().iconForFile(urlPath)
-    filename.stringValue = (url.lastPathComponent! as NSString).stringByDeletingPathExtension
-    path.stringValue = ((urlPath as NSString).stringByDeletingLastPathComponent as NSString).stringByAbbreviatingWithTildeInPath
+    guard let url = url else { return }
+    icon.image =  NSWorkspace.shared().icon(forFile: url.path)
+    filename.stringValue = (url.lastPathComponent as NSString).deletingPathExtension
+    path.stringValue = ((url.path as NSString).deletingLastPathComponent as NSString).abbreviatingWithTildeInPath
   }
 }
 
@@ -47,17 +47,17 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   override func windowDidLoad() {
     super.windowDidLoad()
 
-    splashScreenImageView.image = NSApplication.sharedApplication().applicationIconImage
+    splashScreenImageView.image = NSApplication.shared().applicationIconImage
 
-    if let cfBundleVersion = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+    if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       applicationVersion = cfBundleVersion
     }
 
     recentDocumentViewControllers = getRecentDocumentViewControllers()
   }
 
-  @IBAction func createNewDocument(sender: NSButton) {
-    let documentController = NSDocumentController.sharedDocumentController()
+  @IBAction func createNewDocument(_ sender: NSButton) {
+    let documentController = NSDocumentController.shared()
     do {
       try documentController.openUntitledDocumentAndDisplay(true)
     } catch let e as NSError {
@@ -68,21 +68,23 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
     }
   }
 
-  @IBAction func didDoubleClickRecentDocument(sender: NSTableView) {
+  @IBAction func didDoubleClickRecentDocument(_ sender: NSTableView) {
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
-    let documentController = NSDocumentController.sharedDocumentController()
+    let documentController = NSDocumentController.shared()
     let viewController = recentDocumentViewControllers[clickedRow]
-    documentController.openDocumentWithContentsOfURL(viewController.url, display: true) {
-      (_: NSDocument?, _: Bool, _: NSError?) in
+
+    guard let url = viewController.url  else { return }
+    documentController.openDocument(withContentsOf: url, display: true) {
+      (_: NSDocument?, _: Bool, _: Error?) in
     }
   }
 
-  func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+  func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     return recentDocumentViewControllers[row].view
   }
 
-  func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+  func numberOfRows(in tableView: NSTableView) -> Int {
     return recentDocumentViewControllers.count
   }
 
@@ -90,18 +92,19 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
 
   private func getRecentDocumentViewControllers() -> [SplashScreenRecentDocumentViewController] {
     let projectExtension = TulsiProjectDocument.getTulsiBundleExtension()
-    let documentController = NSDocumentController.sharedDocumentController()
+    let documentController = NSDocumentController.shared()
 
     var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
-    var recentDocumentURLs = Set<NSURL>()
-    let fileManager = NSFileManager.defaultManager()
+    var recentDocumentURLs = Set<URL>()
+    let fileManager = FileManager.default
     for url in documentController.recentDocumentURLs {
-      guard let path = url.path where path.containsString(projectExtension) else { continue }
-      if !fileManager.isReadableFileAtPath(path) {
+      let path = url.path
+      guard path.contains(projectExtension) else { continue }
+      if !fileManager.isReadableFile(atPath: path) {
         continue
       }
 
-      var components: [String] = url.pathComponents!
+      var components: [String] = url.pathComponents
       var i = components.count - 1
       repeat {
         if (components[i] as NSString).pathExtension == projectExtension {
@@ -110,12 +113,12 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
         i -= 1
       } while i > 0
 
-      let projectURL: NSURL
+      let projectURL: URL
       if i == components.count - 1 {
         projectURL = url
       } else {
         let projectComponents = [String](components.prefix(i + 1))
-        projectURL = NSURL.fileURLWithPathComponents(projectComponents)!
+        projectURL = NSURL.fileURL(withPathComponents: projectComponents)! as URL
       }
       if (recentDocumentURLs.contains(projectURL)) {
         continue;

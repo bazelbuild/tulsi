@@ -33,24 +33,24 @@ public struct LogMessage {
   public let details: String?
   public let context: String?
 
-  public static func postError(message: String, details: String? = nil, context: String? = nil) {
+  public static func postError(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Error, message: message, details: details, context: context)
   }
 
-  public static func postWarning(message: String, details: String? = nil, context: String? = nil) {
+  public static func postWarning(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Warning, message: message, details: details, context: context)
   }
 
-  public static func postInfo(message: String, details: String? = nil, context: String? = nil) {
+  public static func postInfo(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Info, message: message, details: details, context: context)
   }
 
-  public static func postSyslog(message: String, details: String? = nil, context: String? = nil) {
+  public static func postSyslog(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Syslog, message: message, details: details, context: context)
   }
 
   /// Convenience method to post a notification that may be converted into a TulsiMessageItem.
-  private static func postMessage(level: TulsiMessageLevel,
+  private static func postMessage(_ level: TulsiMessageLevel,
                                   message: String,
                                   details: String? = nil,
                                   context: String? = nil) {
@@ -65,13 +65,13 @@ public struct LogMessage {
       userInfo["context"] = context
     }
 
-    NSNotificationCenter.defaultCenter().postNotificationName(TulsiMessageNotification,
-                                                              object: nil,
-                                                              userInfo: userInfo)
+    NotificationCenter.default.post(name: Notification.Name(rawValue: TulsiMessageNotification),
+                                                            object: nil,
+                                                            userInfo: userInfo)
   }
 
-  public init?(notification: NSNotification) {
-    guard notification.name == TulsiMessageNotification,
+  public init?(notification: Notification) {
+    guard notification.name.rawValue == TulsiMessageNotification,
           let userInfo = notification.userInfo,
           let levelString = userInfo["level"] as? String,
           let message = userInfo["message"] as? String,

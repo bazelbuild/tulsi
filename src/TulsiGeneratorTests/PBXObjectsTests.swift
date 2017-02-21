@@ -18,8 +18,8 @@ import XCTest
 
 class PBXObjectsTests: XCTestCase {
   enum ExpectedStructure {
-    case FileReference(String)
-    case Group(String, contents: [ExpectedStructure])
+    case fileReference(String)
+    case group(String, contents: [ExpectedStructure])
   }
 
   var project: PBXProject! = nil
@@ -41,21 +41,21 @@ class PBXObjectsTests: XCTestCase {
         "/empty/component",
     ]
     let expectedStructure: [ExpectedStructure] = [
-        .FileReference("root"),
-        .Group("test", contents: [
-            .FileReference("file"),
+        .fileReference("root"),
+        .group("test", contents: [
+            .fileReference("file"),
         ]),
-        .Group("deeply", contents: [
-            .Group("nested", contents: [
-                .Group("files", contents: [
-                    .FileReference("1"),
-                    .FileReference("2"),
+        .group("deeply", contents: [
+            .group("nested", contents: [
+                .group("files", contents: [
+                    .fileReference("1"),
+                    .fileReference("2"),
                 ]),
             ]),
         ]),
-        .Group("/", contents: [
-            .Group("empty", contents: [
-                .FileReference("component"),
+        .group("/", contents: [
+            .group("empty", contents: [
+                .fileReference("component"),
             ]),
         ]),
     ]
@@ -84,15 +84,15 @@ class PBXObjectsTests: XCTestCase {
         "overlapping/2"
     ]
     let expectedStructure: [ExpectedStructure] = [
-        .FileReference("1"),
-        .FileReference("2"),
-        .Group("unique", contents: [
-            .FileReference("1"),
-            .FileReference("2"),
+        .fileReference("1"),
+        .fileReference("2"),
+        .group("unique", contents: [
+            .fileReference("1"),
+            .fileReference("2"),
         ]),
-        .Group("overlapping", contents: [
-            .FileReference("file"),
-            .FileReference("2"),
+        .group("overlapping", contents: [
+            .fileReference("file"),
+            .fileReference("2"),
         ]),
     ]
 
@@ -109,11 +109,11 @@ class PBXObjectsTests: XCTestCase {
         "subdir/test2.app/dir_inside/file_inside",
     ]
     let expectedStructure: [ExpectedStructure] = [
-        .FileReference("test"),
-        .FileReference("bundle.xcassets"),
-        .Group("subdir", contents: [
-            .FileReference("test.app"),
-            .FileReference("test2.app"),
+        .fileReference("test"),
+        .fileReference("bundle.xcassets"),
+        .group("subdir", contents: [
+            .fileReference("test.app"),
+            .fileReference("test2.app"),
         ]),
     ]
 
@@ -193,7 +193,7 @@ class PBXObjectsTests: XCTestCase {
 
   // MARK: - Helper methods
 
-  func assertProjectStructure(expectedStructure: [ExpectedStructure],
+  func assertProjectStructure(_ expectedStructure: [ExpectedStructure],
                               forGroup group: PBXGroup,
                               line: UInt = #line) {
     XCTAssertEqual(group.children.count,
@@ -203,17 +203,17 @@ class PBXObjectsTests: XCTestCase {
 
     for element in expectedStructure {
       switch element {
-        case .FileReference(let name):
+        case .fileReference(let name):
           assertGroup(group, containsSourceTree: .Group, path: name, line: line)
 
-        case .Group(let name, let grandChildren):
+        case .group(let name, let grandChildren):
           let childGroup = assertGroup(group, containsGroupWithName: name, line: line)
           assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
       }
     }
   }
 
-  func assertGroup(group: PBXGroup,
+  func assertGroup(_ group: PBXGroup,
                    containsSourceTree sourceTree: SourceTree,
                    path: String,
                    line: UInt = #line) -> PBXFileReference {
@@ -225,7 +225,7 @@ class PBXObjectsTests: XCTestCase {
     return fileRef!
   }
 
-  func assertGroup(group: PBXGroup,
+  func assertGroup(_ group: PBXGroup,
                    containsGroupWithName name: String,
                    line: UInt = #line) -> PBXGroup {
     let child = group.childGroupsByName[name]

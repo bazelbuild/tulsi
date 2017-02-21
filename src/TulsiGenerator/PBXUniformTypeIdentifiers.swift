@@ -246,7 +246,7 @@ extension String {
     guard let ext = pbPathExtension else {
       return nil
     }
-    let lcaseExt = ext.lowercaseString
+    let lcaseExt = ext.lowercased()
     if let uti = FileExtensionToUTI[lcaseExt] {
       return uti
     }
@@ -255,7 +255,7 @@ extension String {
     }
 
     // Fall back to the system UTI if there's no Xcode-specific override.
-    guard let unmanaged = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, nil) else {
+    guard let unmanaged = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext as CFString, nil) else {
       return nil
     }
     let managed = unmanaged.takeRetainedValue()

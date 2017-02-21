@@ -20,15 +20,15 @@ import TulsiGenerator
 protocol OptionsEditorOutlineViewDelegate: NSOutlineViewDelegate {
   /// Invoked when the delete key is pressed on the given view. Should return true if the event was
   /// fully handled, false if it should be passed up the responder chain.
-  optional func deleteKeyPressedForOptionsEditorOutlineView(view: OptionsEditorOutlineView) -> Bool
+  @objc optional func deleteKeyPressedForOptionsEditorOutlineView(_ view: OptionsEditorOutlineView) -> Bool
 }
 
 
 /// Outline view containing the options editor.
 final class OptionsEditorOutlineView: NSOutlineView {
-  override func keyDown(theEvent: NSEvent) {
+  override func keyDown(with theEvent: NSEvent) {
     guard let eventCharacters = theEvent.charactersIgnoringModifiers else {
-      super.keyDown(theEvent)
+      super.keyDown(with: theEvent)
       return
     }
 
@@ -37,12 +37,7 @@ final class OptionsEditorOutlineView: NSOutlineView {
       return
     }
 
-#if swift(>=2.3)
-    let selfDelegate = self.delegate
-#else
-    let selfDelegate = self.delegate()
-#endif
-    if let delegate = selfDelegate as? OptionsEditorOutlineViewDelegate {
+    if let delegate = self.delegate as? OptionsEditorOutlineViewDelegate {
       let scalars = eventCharacters.unicodeScalars
       if scalars.count == 1 {
         let character = scalars[scalars.startIndex]
@@ -50,14 +45,14 @@ final class OptionsEditorOutlineView: NSOutlineView {
             character == UnicodeScalar(NSBackspaceCharacter) ||
             character == UnicodeScalar(NSDeleteFunctionKey) ||
             character == UnicodeScalar(NSDeleteCharFunctionKey) {
-          if let handled = delegate.deleteKeyPressedForOptionsEditorOutlineView?(self) where handled {
+          if let handled = delegate.deleteKeyPressedForOptionsEditorOutlineView?(self), handled {
             return
           }
         }
       }
     }
 
-    super.keyDown(theEvent)
+    super.keyDown(with: theEvent)
   }
 }
 
@@ -70,7 +65,7 @@ class TextTableCellView: NSTableCellView {
     }
   }
 
-  @IBInspectable var backgroundColor: NSColor = NSColor.controlBackgroundColor() {
+  @IBInspectable var backgroundColor: NSColor = NSColor.controlBackgroundColor {
     didSet {
       if drawsBackground {
         needsDisplay = true
@@ -87,17 +82,17 @@ class TextTableCellView: NSTableCellView {
     }
   }
 
-  override func drawRect(dirtyRect: NSRect) {
+  override func draw(_ dirtyRect: NSRect) {
     if drawsBackground {
       if selected {
-        NSColor.clearColor().setFill()
+        NSColor.clear.setFill()
       } else {
         backgroundColor.setFill()
       }
 
       NSRectFill(dirtyRect)
     }
-    super.drawRect(dirtyRect)
+    super.draw(dirtyRect)
   }
 }
 
@@ -110,14 +105,14 @@ final class PopUpButtonTableCellView: TextTableCellView {
 
 /// A text field within the editor outline view.
 final class OptionsEditorTextField: NSTextField {
-  override func textDidEndEditing(notification: NSNotification) {
+  override func textDidEndEditing(_ notification: Notification) {
     var notification = notification
     // If the text field completed due to a return keypress convert its movement into "other" so
     // that the keypress is not passed up the responder chain causing some other control (e.g., the
     // default button in the wizard) to handle it as well.
-    if let movement = notification.userInfo?["NSTextMovement"] as? Int where movement == NSReturnTextMovement {
+    if let movement = notification.userInfo?["NSTextMovement"] as? Int, movement == NSReturnTextMovement {
       let userInfo = ["NSTextMovement": NSOtherTextMovement]
-      notification = NSNotification(name: notification.name, object: notification.object, userInfo: userInfo)
+      notification = Notification(name: notification.name, object: notification.object, userInfo: userInfo)
     }
     super.textDidEndEditing(notification)
   }
@@ -129,17 +124,17 @@ final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDel
   dynamic var value: String? = nil
 
   enum CloseReason {
-    case Cancel, Accept
+    case cancel, accept
   }
-  var closeReason: CloseReason = .Accept
+  var closeReason: CloseReason = .accept
   var optionItem: AnyObject? = nil
 
-  private weak var popover: NSPopover? = nil
+  fileprivate weak var popover: NSPopover? = nil
 
   private var optionNode: OptionsEditorNode! = nil
   private var optionLevel: OptionsEditorNode.OptionLevel = .Default
 
-  func setRepresentedOptionNode(optionNode: OptionsEditorNode, level: OptionsEditorNode.OptionLevel) {
+  func setRepresentedOptionNode(_ optionNode: OptionsEditorNode, level: OptionsEditorNode.OptionLevel) {
     self.optionNode = optionNode
     self.optionLevel = level
     let (currentValue, inherited) = optionNode.displayItemForOptionLevel(optionLevel)
@@ -152,22 +147,22 @@ final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDel
 
   // MARK: - NSTextFieldDelegate
 
-  func control(control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
-    if closeReason == .Accept {
+  func control(_ control: NSControl, textShouldEndEditing fieldEditor: NSText) -> Bool {
+    if closeReason == .accept {
       optionNode.setDisplayItem(fieldEditor.string, forOptionLevel: optionLevel)
     }
     return true
   }
 
-  func control(control: NSControl, textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
+  func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
     switch commandSelector {
       // Operations that cancel.
       case #selector(NSControl.cancelOperation(_:)):
-        closeReason = .Cancel
+        closeReason = .cancel
 
       // Operations that commit the current value.
       case #selector(NSControl.insertNewline(_:)):
-        closeReason = .Accept
+        closeReason = .accept
         popover?.performClose(control)
         return true
 
@@ -226,25 +221,21 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   init(view: NSOutlineView, storyboard: NSStoryboard) {
     self.view = view
     self.storyboard = storyboard
-    defaultValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.defaultColumnIdentifier)!
-    projectValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.projectColumnIdentifier)!
-    targetValueColumn = view.tableColumnWithIdentifier(OptionsEditorController.targetColumnIdentifier)!
+    defaultValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.defaultColumnIdentifier)!
+    projectValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.projectColumnIdentifier)!
+    targetValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.targetColumnIdentifier)!
     super.init()
-#if swift(>=2.3)
     self.view.delegate = self
-#else
-    self.view.setDelegate(self)
-#endif
   }
 
   /// Prepares the editor view to edit options with the most specialized column set to the given
   /// target rule.
-  func prepareEditorForTarget(target: UIRuleInfo?) {
+  func prepareEditorForTarget(_ target: UIRuleInfo?) {
     if target == nil {
-      targetValueColumn.hidden = true
+      targetValueColumn.isHidden = true
     } else {
       targetValueColumn.title = target!.targetName!
-      targetValueColumn.hidden = false
+      targetValueColumn.isHidden = false
     }
 
     var newOptionNodes = [OptionsEditorNode]()
@@ -255,9 +246,9 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     for (key, option) in visibleOptions {
       let newNode: OptionsEditorNode
       switch option.valueType {
-        case .Bool:
+        case .bool:
           newNode = OptionsEditorBooleanNode(key: key, option: option, model: model, target: target)
-        case .String:
+        case .string:
           newNode = OptionsEditorStringNode(key: key, option: option, model: model, target: target)
       }
 
@@ -275,22 +266,22 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         newOptionNodes.append(newNode)
       }
     }
-    nodes = newOptionNodes.sort { $0.name < $1.name }
+    nodes = newOptionNodes.sorted { $0.name < $1.name }
   }
 
-  func stringBasedControlDidCompleteEditing(control: NSControl) {
+  func stringBasedControlDidCompleteEditing(_ control: NSControl) {
     let (node, modifiedLevel) = optionNodeAndLevelForControl(control)
     node.setDisplayItem(control.stringValue, forOptionLevel: modifiedLevel)
     reloadDataForEditedControl(control)
   }
 
-  func popUpFieldDidCompleteEditing(button: NSPopUpButton) {
+  func popUpFieldDidCompleteEditing(_ button: NSPopUpButton) {
     let (node, level) = optionNodeAndLevelForControl(button)
     node.setDisplayItem(button.titleOfSelectedItem, forOptionLevel: level)
     reloadDataForEditedControl(button)
   }
 
-  func didDoubleClickInEditorView(editor: NSOutlineView) {
+  func didDoubleClickInEditorView(_ editor: NSOutlineView) {
     if editor.clickedRow < 0 || editor.clickedColumn < 0 {
       return
     }
@@ -302,8 +293,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
              "Mismatch in storyboard column identifier and OptionLevel enum")
       return
     }
-    let optionItem = editor.itemAtRow(editor.clickedRow)!
-    let optionNode = optionNodeForItem(optionItem, outlineView: editor)
+    let optionItem = editor.item(atRow: editor.clickedRow)!
+    let optionNode = optionNodeForItem(optionItem as AnyObject, outlineView: editor)
 
     // Verify that the column is editable.
     if OptionsEditorController.bindingsControlledColumns.contains(columnIdentifier) ||
@@ -312,30 +303,30 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     }
 
     if optionNode.supportsMultilineEditor,
-       let view = editor.viewAtColumn(editor.clickedColumn,
+       let view = editor.view(atColumn: editor.clickedColumn,
                                       row: editor.clickedRow,
                                       makeIfNecessary: false) {
 
       popoverEditor = NSPopover()
       if popoverViewController == nil {
-        popoverViewController = storyboard.instantiateControllerWithIdentifier("OptionsEditorPopover") as? OptionsEditorPopoverViewController
+        popoverViewController = storyboard.instantiateController(withIdentifier: "OptionsEditorPopover") as? OptionsEditorPopoverViewController
       }
       popoverEditor.contentViewController = popoverViewController
-      popoverViewController.optionItem = optionItem
+      popoverViewController.optionItem = optionItem as AnyObject?
       popoverViewController.setRepresentedOptionNode(optionNode, level: optionLevel)
       popoverViewController.popover = popoverEditor
       popoverEditor.delegate = self
-      popoverEditor.behavior = .Semitransient
-      popoverEditor.showRelativeToRect(NSRect(), ofView: view, preferredEdge: .MinY)
+      popoverEditor.behavior = .semitransient
+      popoverEditor.show(relativeTo: NSRect(), of: view, preferredEdge: .minY)
     }
   }
 
   // MARK: - OptionsEditorOutlineViewDelegate
 
-  func deleteKeyPressedForOptionsEditorOutlineView(view: OptionsEditorOutlineView) -> Bool {
+  func deleteKeyPressedForOptionsEditorOutlineView(_ view: OptionsEditorOutlineView) -> Bool {
     let selectedRow = view.selectedRow
     if selectedRow < 0 || selectedRow >= nodes.count { return false }
-    let selectedNode = optionNodeForItem(view.itemAtRow(selectedRow)!, outlineView: view)
+    let selectedNode = optionNodeForItem(view.item(atRow: selectedRow)! as AnyObject, outlineView: view)
     if selectedNode.deleteMostSpecializedValue() {
       reloadDataForRow(selectedRow)
       return true
@@ -344,15 +335,15 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     return false
   }
 
-  func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+  func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     if tableColumn == nil { return nil }
 
     let identifier = tableColumn!.identifier
     if OptionsEditorController.bindingsControlledColumns.contains(identifier) {
-      return outlineView.makeViewWithIdentifier(identifier, owner: self)
+      return outlineView.make(withIdentifier: identifier, owner: self)
     }
 
-    let optionNode = optionNodeForItem(item, outlineView: outlineView)
+    let optionNode = optionNodeForItem(item as AnyObject, outlineView: outlineView)
     let optionLevel = OptionsEditorNode.OptionLevel(rawValue: identifier)!
     let (displayItem, inherited) = optionNode.displayItemForOptionLevel(optionLevel)
     let explicit = !inherited
@@ -361,8 +352,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
     let view: NSView?
     switch optionNode.valueType {
-      case .String:
-        view = outlineView.makeViewWithIdentifier(OptionsEditorController.tableCellViewIdentifier,
+      case .string:
+        view = outlineView.make(withIdentifier: OptionsEditorController.tableCellViewIdentifier,
                                                   owner: self)
         if let tableCellView = view as? TextTableCellView {
           prepareTableCellView(tableCellView,
@@ -372,7 +363,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
                                editable: editable)
         }
 
-      case .Bool:
+      case .bool:
         // TODO(abaire): Track down why NSPopUpButton ignores mutation to attributedTitle and remove
         //               the boldPopUpButtonCell here and from the storyboard.
         let identifier: String
@@ -382,7 +373,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         else {
           identifier = OptionsEditorController.popUpButtonCellViewIdentifier
         }
-        view = outlineView.makeViewWithIdentifier(identifier, owner: self)
+        view = outlineView.make(withIdentifier: identifier, owner: self)
         if let tableCellView = view as? PopUpButtonTableCellView {
           preparePopUpButtonTableCellView(tableCellView,
                                           withMenuItems: optionNode.multiSelectItems,
@@ -394,32 +385,32 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     return view
   }
 
-  func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
-    func setColumnsSelectedForRow(rowIndex: Int, selected: Bool) {
+  func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
+    func setColumnsSelectedForRow(_ rowIndex: Int, selected: Bool) {
       guard rowIndex >= 0 && rowIndex < view.numberOfRows,
-            let rowView = view.rowViewAtRow(rowIndex, makeIfNecessary: false) else {
+            let rowView = view.rowView(atRow: rowIndex, makeIfNecessary: false) else {
         return
       }
       for i in 0 ..< rowView.numberOfColumns {
-        if let columnView = rowView.viewAtColumn(i) as? TextTableCellView {
+        if let columnView = rowView.view(atColumn: i) as? TextTableCellView {
           columnView.selected = selected
         }
       }
     }
 
     setColumnsSelectedForRow(outlineView.selectedRow, selected: false)
-    setColumnsSelectedForRow(view.rowForItem(item), selected: true)
+    setColumnsSelectedForRow(view.row(forItem: item), selected: true)
     return true
   }
 
   // MARK: - NSPopoverDelegate
 
-  func popoverDidClose(notification: NSNotification) {
+  func popoverDidClose(_ notification: Notification) {
     if notification.userInfo?[NSPopoverCloseReasonKey] as? String != NSPopoverCloseReasonStandard {
       return
     }
 
-    if popoverViewController.closeReason == .Accept {
+    if popoverViewController.closeReason == .accept {
       reloadDataForItem(popoverViewController.optionItem)
     }
     popoverEditor = nil
@@ -427,7 +418,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
   // MARK: - Private methods
 
-  private func optionNodeForItem(item: AnyObject, outlineView: NSOutlineView) -> OptionsEditorNode {
+  private func optionNodeForItem(_ item: AnyObject, outlineView: NSOutlineView) -> OptionsEditorNode {
     guard let treeNode = item as? NSTreeNode else {
       assertionFailure("Item must be an NSTreeNode")
       return nodes[0]
@@ -435,29 +426,29 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     return treeNode.representedObject as! OptionsEditorNode
   }
 
-  private func optionNodeAndLevelForControl(control: NSControl) -> (OptionsEditorNode, OptionsEditorNode.OptionLevel) {
-    let item = view.itemAtRow(view.rowForView(control))
-    let node = optionNodeForItem(item!, outlineView: view)
-    let columnIndex = view.columnForView(control)
+  private func optionNodeAndLevelForControl(_ control: NSControl) -> (OptionsEditorNode, OptionsEditorNode.OptionLevel) {
+    let item = view.item(atRow: view.row(for: control))
+    let node = optionNodeForItem(item! as AnyObject, outlineView: view)
+    let columnIndex = view.column(for: control)
     let columnIdentifier = view.tableColumns[columnIndex].identifier
     let level = OptionsEditorNode.OptionLevel(rawValue: columnIdentifier)!
     return (node, level)
   }
 
   /// Populates the given table cell view with this option's content
-  private func prepareTableCellView(view: TextTableCellView,
+  private func prepareTableCellView(_ view: TextTableCellView,
                                     withValue value: String,
                                     explicit: Bool,
                                     highlighted: Bool,
                                     editable: Bool) {
     guard let textField = view.textField else { return }
-    textField.enabled = editable
+    textField.isEnabled = editable
 
     view.drawsBackground = highlighted
     if highlighted {
-      textField.textColor = NSColor.controlTextColor()
+      textField.textColor = NSColor.controlTextColor
     } else {
-      textField.textColor = NSColor.disabledControlTextColor()
+      textField.textColor = NSColor.disabledControlTextColor
     }
 
     let attributedValue = NSMutableAttributedString(string: value)
@@ -466,47 +457,47 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     textField.attributedStringValue = attributedValue
   }
 
-  private func preparePopUpButtonTableCellView(view: PopUpButtonTableCellView,
+  private func preparePopUpButtonTableCellView(_ view: PopUpButtonTableCellView,
                                                withMenuItems menuItems: [String],
                                                selectedValue: String,
                                                highlighted: Bool,
                                                editable: Bool) {
     let button = view.popUpButton
-    button.removeAllItems()
-    button.addItemsWithTitles(menuItems)
-    button.selectItemWithTitle(selectedValue)
-    button.enabled = editable
+    button?.removeAllItems()
+    button?.addItems(withTitles: menuItems)
+    button?.selectItem(withTitle: selectedValue)
+    button?.isEnabled = editable
     view.drawsBackground = highlighted
   }
 
-  private func fontForOption(explicit: Bool) -> NSFont {
+  private func fontForOption(_ explicit: Bool) -> NSFont {
     if explicit {
-      return NSFont.boldSystemFontOfSize(11)
+      return NSFont.boldSystemFont(ofSize: 11)
     }
-    return NSFont.systemFontOfSize(11)
+    return NSFont.systemFont(ofSize: 11)
   }
 
-  private func reloadDataForEditedControl(control: NSControl) {
-    reloadDataForRow(view.rowForView(control))
+  private func reloadDataForEditedControl(_ control: NSControl) {
+    reloadDataForRow(view.row(for: control))
   }
 
-  private func reloadDataForRow(row: Int) {
+  private func reloadDataForRow(_ row: Int) {
     guard row >= 0 else { return }
-    let item = view.itemAtRow(row)!
-    reloadDataForItem(item)
+    let item = view.item(atRow: row)!
+    reloadDataForItem(item as AnyObject?)
   }
 
-  private func reloadDataForItem(item: AnyObject?) {
-    let indexes = NSMutableIndexSet(index: view.rowForItem(item))
-    if let parent = view.parentForItem(item) {
-      indexes.addIndex(view.rowForItem(parent))
+  private func reloadDataForItem(_ item: AnyObject?) {
+    let indexes = NSMutableIndexSet(index: view.row(forItem: item))
+    if let parent = view.parent(forItem: item) {
+      indexes.add(view.row(forItem: parent))
     } else {
-      let numChildren = view.numberOfChildrenOfItem(item)
+      let numChildren = view.numberOfChildren(ofItem: item)
       for i in 0 ..< numChildren {
         let child = view.child(i, ofItem: item)
-        let childIndex = view.rowForItem(child)
+        let childIndex = view.row(forItem: child)
         if childIndex >= 0 {
-          indexes.addIndex(childIndex)
+          indexes.add(childIndex)
         }
       }
     }
@@ -514,6 +505,6 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     // Reload everything in the mutable middle columns. The values in the "setting" and "default"
     // columns never change.
     let columnRange = NSRange(location: 1, length: view.numberOfColumns - 2)
-    view.reloadDataForRowIndexes(indexes, columnIndexes: NSIndexSet(indexesInRange: columnRange))
+    view.reloadData(forRowIndexes: indexes as IndexSet, columnIndexes: IndexSet(integersIn: columnRange.toRange()!))
   }
 }

@@ -53,7 +53,7 @@ class OptionsEditorNode: NSObject {
 
   var valueType: TulsiOption.ValueType {
     assertionFailure("Must be overridden by subclasses")
-    return .String
+    return .string
   }
 
   /// The value to display in the "default" column.
@@ -64,19 +64,19 @@ class OptionsEditorNode: NSObject {
   /// This node's children.
   var children = [OptionsEditorNode]()
 
-  func editableForOptionLevel(level: OptionLevel) -> Bool {
+  func editableForOptionLevel(_ level: OptionLevel) -> Bool {
     assertionFailure("Must be overridden by subclasses")
     return false
   }
 
   /// Returns the display item for this option at the given option level and whether or not it was
   /// explicitly set or inherited from a lower option level.
-  func displayItemForOptionLevel(level: OptionLevel) -> (displayItem: String, inherited: Bool) {
+  func displayItemForOptionLevel(_ level: OptionLevel) -> (displayItem: String, inherited: Bool) {
     assertionFailure("Must be overridden by subclasses")
     return ("", false)
   }
 
-  func setDisplayItem(displayItem: String?, forOptionLevel level: OptionLevel) {
+  func setDisplayItem(_ displayItem: String?, forOptionLevel level: OptionLevel) {
     assertionFailure("Must be overridden by subclasses")
   }
 
@@ -88,7 +88,7 @@ class OptionsEditorNode: NSObject {
     return true
   }
 
-  func removeValueForOptionLevel(level: OptionLevel) {
+  func removeValueForOptionLevel(_ level: OptionLevel) {
     assertionFailure("Must be overridden by subclasses")
   }
 
@@ -145,13 +145,13 @@ class OptionsEditorGroupNode: OptionsEditorNode {
     super.init()
   }
 
-  func addChildNode(node: OptionsEditorNode) {
+  func addChildNode(_ node: OptionsEditorNode) {
     if children.isEmpty {
       mergedDefaultValueDisplayItem = node.defaultValueDisplayItem
     }
 
     children.append(node)
-    children.sortInPlace() { $0.name < $1.name }
+    children.sort() { $0.name < $1.name }
 
     if node.defaultValueDisplayItem != mergedDefaultValueDisplayItem {
       mergedDefaultValueDisplayItem = NSLocalizedString("OptionsEditor_MultipleValues",
@@ -159,19 +159,20 @@ class OptionsEditorGroupNode: OptionsEditorNode {
     }
   }
 
-  override func editableForOptionLevel(level: OptionLevel) -> Bool {
+  override func editableForOptionLevel(_ level: OptionLevel) -> Bool {
     // Children are expected to be symmetric with respect to what is editable.
     return children[0].editableForOptionLevel(level)
   }
 
-  override func displayItemForOptionLevel(level: OptionLevel) -> (displayItem: String, inherited: Bool) {
+  override func displayItemForOptionLevel(_ level: OptionLevel) -> (displayItem: String, inherited: Bool) {
     var valueMap = [String: Bool]()
     for child in children {
       let (displayItem, inherited) = child.displayItemForOptionLevel(level)
       valueMap[displayItem] = inherited
     }
     if valueMap.count == 1 {
-      return valueMap.first!
+      let pair = valueMap.first!
+      return (displayItem: pair.key, inherited: pair.value)
     }
 
     let displayItem = NSLocalizedString("OptionsEditor_MultipleValues",
@@ -181,13 +182,13 @@ class OptionsEditorGroupNode: OptionsEditorNode {
     return (displayItem, true)
   }
 
-  override func setDisplayItem(displayItem: String?, forOptionLevel level: OptionLevel) {
+  override func setDisplayItem(_ displayItem: String?, forOptionLevel level: OptionLevel) {
     for child in children {
       child.setDisplayItem(displayItem, forOptionLevel: level)
     }
   }
 
-  override func removeValueForOptionLevel(level: OptionLevel) {
+  override func removeValueForOptionLevel(_ level: OptionLevel) {
     for child in children {
       child.removeValueForOptionLevel(level)
     }
@@ -229,7 +230,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
   }
 
   override var mostSpecializedOptionLevel: OptionLevel {
-    if let targetLabel = target?.fullLabel where option.targetValues?[targetLabel] != nil {
+    if let targetLabel = target?.fullLabel, option.targetValues?[targetLabel] != nil {
       return .Target
     }
 
@@ -248,17 +249,17 @@ class OptionsEditorStringNode: OptionsEditorNode {
     super.init()
   }
 
-  func displayItemForValue(value: String?) -> String {
+  func displayItemForValue(_ value: String?) -> String {
     if value == nil { return "" }
     return value!
   }
 
-  func valueForDisplayItem(item: String?) -> String {
+  func valueForDisplayItem(_ item: String?) -> String {
     if item == nil { return "" }
     return item!
   }
 
-  override func setDisplayItem(displayItem: String?, forOptionLevel level: OptionLevel) {
+  override func setDisplayItem(_ displayItem: String?, forOptionLevel level: OptionLevel) {
     let sanitizedValue = option.sanitizeValue(valueForDisplayItem(displayItem))
     let value: String?
     // If the value is the same as the currently inherited value, clear out this option level.
@@ -279,11 +280,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
           return
         }
         option.targetValues![targetLabel] = value
-        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
 
       case .Project:
         option.projectValue = value
-        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
 
       default:
         assertionFailure("Editor node accessed via unknown subscript \(level)")
@@ -291,27 +292,27 @@ class OptionsEditorStringNode: OptionsEditorNode {
     }
   }
 
-  override func displayItemForOptionLevel(level: OptionLevel) -> (displayItem: String, inherited: Bool) {
+  override func displayItemForOptionLevel(_ level: OptionLevel) -> (displayItem: String, inherited: Bool) {
     let (value, inherited) = valueForOptionLevel(level)
     return (displayItemForValue(value), inherited)
   }
 
-  override func removeValueForOptionLevel(level: OptionLevel) {
+  override func removeValueForOptionLevel(_ level: OptionLevel) {
     switch level {
       case .Default:
         return
 
       case .Target:
-        option.targetValues?.removeValueForKey(target!.fullLabel)
-        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+        option.targetValues?.removeValue(forKey: target!.fullLabel)
+        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
 
       case .Project:
         option.projectValue = nil
-        model?.updateChangeCount(.ChangeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
     }
   }
 
-  override func editableForOptionLevel(level: OptionLevel) -> Bool {
+  override func editableForOptionLevel(_ level: OptionLevel) -> Bool {
     if level == .Target {
       return option.targetValues != nil
     }
@@ -320,10 +321,10 @@ class OptionsEditorStringNode: OptionsEditorNode {
 
   // MARK: - Private methods
 
-  private func valueForOptionLevel(level: OptionLevel) -> (value: String?, inherited: Bool) {
+  private func valueForOptionLevel(_ level: OptionLevel) -> (value: String?, inherited: Bool) {
     if level == .Target,
        let targetLabel = target?.fullLabel,
-           value = option.valueForTarget(targetLabel, inherit: false) {
+           let value = option.valueForTarget(targetLabel, inherit: false) {
       return (value, false)
     }
 
@@ -335,7 +336,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
     return (option.defaultValue, true)
   }
 
-  private func mostSpecializedValueBeneathLevel(level: OptionLevel) -> String? {
+  private func mostSpecializedValueBeneathLevel(_ level: OptionLevel) -> String? {
     if level == .Target, let value = option.projectValue {
       return value
     }
@@ -369,14 +370,14 @@ class OptionsEditorBooleanNode: OptionsEditorStringNode {
     return OptionsEditorBooleanNode.booleanOptionValues
   }
 
-  override func displayItemForValue(value: String?) -> String {
+  override func displayItemForValue(_ value: String?) -> String {
     if value == TulsiOption.BooleanTrueValue {
       return OptionsEditorBooleanNode.booleanOptionValues[0]
     }
     return OptionsEditorBooleanNode.booleanOptionValues[1]
   }
 
-  override func valueForDisplayItem(item: String?) -> String {
+  override func valueForDisplayItem(_ item: String?) -> String {
     assert(item != nil, "Display item for boolean option node unexpectedly nil")
     if item == nil { return TulsiOption.BooleanFalseValue }
 

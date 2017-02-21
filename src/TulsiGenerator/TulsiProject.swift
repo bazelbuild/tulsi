@@ -18,15 +18,15 @@ import Foundation
 /// Models a Tulsi project, containing general data about the build targets available in order to
 /// build Tulsi generator configs.
 public final class TulsiProject {
-  public enum Error: ErrorType {
+  public enum ProjectError: Error {
     /// Serialization failed with the given debug info.
-    case SerializationFailed(String)
+    case serializationFailed(String)
     /// The give input file does not exist or cannot be read.
-    case BadInputFilePath
+    case badInputFilePath
     /// Deserialization failed with the given debug info.
-    case DeserializationFailed(String)
+    case deserializationFailed(String)
     /// A per-user config was found but could not be read.
-    case FailedToReadAdditionalOptionsData(String)
+    case failedToReadAdditionalOptionsData(String)
   }
 
   /// The filename into which a TulsiProject instance is saved.
@@ -51,10 +51,10 @@ public final class TulsiProject {
   public let projectName: String
 
   /// The path to this project's bundle directory on the filesystem.
-  public var projectBundleURL: NSURL
+  public var projectBundleURL: URL
 
   /// The directory containing this project's workspace file.
-  public let workspaceRootURL: NSURL
+  public let workspaceRootURL: URL
 
   /// The Bazel packages contained in this project.
   public var bazelPackages: [String]
@@ -65,7 +65,7 @@ public final class TulsiProject {
   // MARK: - Per-user project values.
 
   /// The Bazel binary to be used for this project.
-  public var bazelURL: NSURL? {
+  public var bazelURL: URL? {
     didSet {
       options[.BazelPath].projectValue = bazelURL?.path
     }
@@ -76,22 +76,18 @@ public final class TulsiProject {
     return "\(NSUserName()).tulsiconf-user"
   }
 
-  public static func load(projectBundleURL: NSURL) throws -> TulsiProject {
-    let fileManager = NSFileManager.defaultManager()
-#if swift(>=2.3)
-    let projectFileURL = projectBundleURL.URLByAppendingPathComponent(TulsiProject.ProjectFilename)!
-#else
-    let projectFileURL = projectBundleURL.URLByAppendingPathComponent(TulsiProject.ProjectFilename)
-#endif
-    guard let path = projectFileURL.path, data = fileManager.contentsAtPath(path) else {
-      throw Error.BadInputFilePath
+  public static func load(_ projectBundleURL: URL) throws -> TulsiProject {
+    let fileManager = FileManager.default
+    let projectFileURL = projectBundleURL.appendingPathComponent(TulsiProject.ProjectFilename)
+    guard let data = fileManager.contents(atPath: projectFileURL.path) else {
+      throw ProjectError.badInputFilePath
     }
     return try TulsiProject(data: data, projectBundleURL: projectBundleURL)
   }
 
   public init(projectName: String,
-              projectBundleURL: NSURL,
-              workspaceRootURL: NSURL,
+              projectBundleURL: URL,
+              workspaceRootURL: URL,
               bazelPackages: [String] = [],
               options: TulsiOptionSet? = nil) {
     self.projectName = projectName
@@ -107,7 +103,7 @@ public final class TulsiProject {
       hasExplicitOptions = false
     }
     if let bazelPath = self.options[.BazelPath].projectValue {
-      self.bazelURL = NSURL(fileURLWithPath: bazelPath)
+      self.bazelURL = URL(fileURLWithPath: bazelPath)
     } else {
       self.bazelURL = BazelLocator.findBazelForWorkspaceRoot(workspaceRootURL)
       self.options[.BazelPath].projectValue = self.bazelURL?.path
@@ -115,33 +111,27 @@ public final class TulsiProject {
     self.options[.WorkspaceRootPath].projectValue = workspaceRootURL.path
   }
 
-  public convenience init(data: NSData,
-                          projectBundleURL: NSURL,
-                          additionalOptionData: NSData? = nil) throws {
+  public convenience init(data: Data,
+                          projectBundleURL: URL,
+                          additionalOptionData: Data? = nil) throws {
     do {
-      guard let dict = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? [String: AnyObject] else {
-        throw Error.DeserializationFailed("File is not of dictionary type")
+      guard let dict = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? [String: AnyObject] else {
+        throw ProjectError.deserializationFailed("File is not of dictionary type")
       }
 
       let projectName = dict[TulsiProject.ProjectNameKey] as? String ?? "Unnamed Tulsi Project"
       guard let relativeWorkspacePath = dict[TulsiProject.WorkspaceRootKey] as? String else {
-        throw Error.DeserializationFailed("Missing required value for \(TulsiProject.WorkspaceRootKey)")
+        throw ProjectError.deserializationFailed("Missing required value for \(TulsiProject.WorkspaceRootKey)")
       }
-      if (relativeWorkspacePath as NSString).absolutePath {
-        throw Error.DeserializationFailed("\(TulsiProject.WorkspaceRootKey) may not be an absolute path")
+      if (relativeWorkspacePath as NSString).isAbsolutePath {
+        throw ProjectError.deserializationFailed("\(TulsiProject.WorkspaceRootKey) may not be an absolute path")
       }
 
-#if swift(>=2.3)
-      var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspacePath,
-                                                                          isDirectory: true)!
-#else
-      var workspaceRootURL = projectBundleURL.URLByAppendingPathComponent(relativeWorkspacePath,
-                                                                          isDirectory: true)
-#endif
+      var workspaceRootURL = projectBundleURL.appendingPathComponent(relativeWorkspacePath,
+                                                                     isDirectory: true)
       // Get rid of any ..'s and //'s if possible.
-      if let standardizedWorkspaceRootURL = workspaceRootURL.URLByStandardizingPath {
-        workspaceRootURL = standardizedWorkspaceRootURL
-      }
+      workspaceRootURL = workspaceRootURL.standardizedFileURL
+
       let bazelPackages = dict[TulsiProject.PackagesKey] as? [String] ?? []
 
       let options: TulsiOptionSet?
@@ -161,26 +151,26 @@ public final class TulsiProject {
                 workspaceRootURL: workspaceRootURL,
                 bazelPackages: bazelPackages,
                 options: options)
-    } catch let e as Error {
+    } catch let e as ProjectError {
       throw e
     } catch let e as NSError {
-      throw Error.DeserializationFailed(e.localizedDescription)
+      throw ProjectError.deserializationFailed(e.localizedDescription)
     } catch {
       assertionFailure("Unexpected exception")
-      throw Error.SerializationFailed("Unexpected exception")
+      throw ProjectError.serializationFailed("Unexpected exception")
     }
   }
 
-  public func workspaceRelativePathForURL(absoluteURL: NSURL) -> String? {
+  public func workspaceRelativePathForURL(_ absoluteURL: URL) -> String? {
     return workspaceRootURL.relativePathTo(absoluteURL)
   }
 
   public func save() throws -> NSData {
-    var configDefaults = [String: AnyObject]()
+    var configDefaults = [String: Any]()
     // Save the default project options.
     options.saveShareableOptionsIntoDictionary(&configDefaults)
 
-    let dict: [String: AnyObject] = [
+    let dict: [String: Any] = [
         TulsiProject.ProjectNameKey: projectName,
         TulsiProject.WorkspaceRootKey: projectBundleURL.relativePathTo(workspaceRootURL)!,
         TulsiProject.PackagesKey: bazelPackages,
@@ -188,38 +178,38 @@ public final class TulsiProject {
     ]
 
     do {
-      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                               options: .PrettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                               options: .prettyPrinted)
     } catch let e as NSError {
-      throw Error.SerializationFailed(e.localizedDescription)
+      throw ProjectError.serializationFailed(e.localizedDescription)
     } catch {
       assertionFailure("Unexpected exception")
-      throw Error.SerializationFailed("Unexpected exception")
+      throw ProjectError.serializationFailed("Unexpected exception")
     }
   }
 
   public func savePerUserSettings() throws -> NSData? {
-    var dict = [String: AnyObject]()
+    var dict = [String: Any]()
     options.savePerUserOptionsIntoDictionary(&dict)
     if dict.isEmpty { return nil }
     do {
-      return try NSJSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                               options: .PrettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                               options: .prettyPrinted)
     } catch let e as NSError {
-      throw Error.SerializationFailed(e.localizedDescription)
+      throw ProjectError.serializationFailed(e.localizedDescription)
     } catch {
-      throw Error.SerializationFailed("Unexpected exception")
+      throw ProjectError.serializationFailed("Unexpected exception")
     }
   }
 
   // MARK: - Private methods
 
-  private static func updateOptionsDict(inout optionsDict: TulsiOptionSet.PersistenceType,
-                                        withAdditionalOptionData data: NSData) throws {
+  private static func updateOptionsDict(_ optionsDict: inout TulsiOptionSet.PersistenceType,
+                                        withAdditionalOptionData data: Data) throws {
     do {
-      guard let jsonDict = try NSJSONSerialization.JSONObjectWithData(data,
-                                                                      options: NSJSONReadingOptions()) as? [String: AnyObject] else {
-        throw Error.FailedToReadAdditionalOptionsData("File contents are invalid")
+      guard let jsonDict = try JSONSerialization.jsonObject(with: data,
+                                                                      options: JSONSerialization.ReadingOptions()) as? [String: AnyObject] else {
+        throw ProjectError.failedToReadAdditionalOptionsData("File contents are invalid")
       }
       guard let newOptions = TulsiOptionSet.getOptionsFromContainerDictionary(jsonDict) else {
         return
@@ -227,13 +217,13 @@ public final class TulsiProject {
       for (key, value) in newOptions {
         optionsDict[key] = value
       }
-    } catch let e as Error {
+    } catch let e as ProjectError {
       throw e
     } catch let e as NSError {
-      throw Error.FailedToReadAdditionalOptionsData(e.localizedDescription)
+      throw ProjectError.failedToReadAdditionalOptionsData(e.localizedDescription)
     } catch {
       assertionFailure("Unexpected exception")
-      throw Error.FailedToReadAdditionalOptionsData("Unexpected exception")
+      throw ProjectError.failedToReadAdditionalOptionsData("Unexpected exception")
     }
   }
 }
