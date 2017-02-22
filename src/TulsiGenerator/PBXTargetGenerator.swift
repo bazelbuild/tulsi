@@ -1494,7 +1494,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       for (optionKey, value) in configValues {
         guard let concreteValue = value else { continue }
         let rawName = optionKey.rawValue
-        var configKey: String! = nil
+        var configKey: String?
         for key in PBXTargetGenerator.buildConfigNames {
           if rawName.hasSuffix(key) {
             configKey = key
@@ -1505,7 +1505,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           assertionFailure("Failed to map option key \(optionKey) to a build config.")
           configKey = "Debug"
         }
-        commandLine += "\(optionFlag)[\(configKey)] \(concreteValue) "
+        commandLine += "\(optionFlag)[\(configKey!)] \(concreteValue) "
         commandLine += additionalFlags.isEmpty ? "-- " : "\(additionalFlags) -- "
       }
     }
