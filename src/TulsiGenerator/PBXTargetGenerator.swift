@@ -653,6 +653,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     generateIndexerTargetGraphForRuleEntry(ruleEntry)
   }
 
+  @discardableResult
   func generateIndexerTargets() -> [String: PBXTarget] {
     mergeRegisteredIndexers()
 
@@ -778,6 +779,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Generates build targets for the given rule entries and returns a map of target name to the
   /// list of any intermediate artifacts produced when building that target.
+  @discardableResult
   func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
                                           ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)

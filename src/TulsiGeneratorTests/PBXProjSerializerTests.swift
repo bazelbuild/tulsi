@@ -205,6 +205,7 @@ class PBXProjSerializerTests: XCTestCase {
     return populateProject(project, withGIDGenerator: gidGenerator)
   }
 
+  @discardableResult
   private func populateProject(_ targetProject: PBXProject, withGIDGenerator generator: MockGIDGenerator) -> SimpleProjectDefinition {
     let projectLevelBuildConfigName = "ProjectConfig"
     let projectLevelBuildConfigSettings = ["TEST_SETTING": "test_setting",

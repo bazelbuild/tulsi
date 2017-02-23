@@ -213,6 +213,7 @@ class PBXObjectsTests: XCTestCase {
     }
   }
 
+  @discardableResult
   func assertGroup(_ group: PBXGroup,
                    containsSourceTree sourceTree: SourceTree,
                    path: String,

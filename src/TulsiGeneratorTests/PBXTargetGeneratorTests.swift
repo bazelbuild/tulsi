@@ -62,8 +62,8 @@ class PBXTargetGeneratorTests: XCTestCase {
     XCTAssertEqual(project.mainGroup.children.count, buildFilePaths.count)
 
     for fileRef in project.mainGroup.allSources {
-      XCTAssert(buildFilePaths.contains(fileRef.sourceRootRelativePath), "Path mismatch for generated BUILD file \(fileRef.path)")
-      XCTAssertEqual(fileRef.sourceTree, SourceTree.Group, "SourceTree mismatch for generated BUILD file \(fileRef.path)")
+      XCTAssert(buildFilePaths.contains(fileRef.sourceRootRelativePath), "Path mismatch for generated BUILD file \(String(describing: fileRef.path))")
+      XCTAssertEqual(fileRef.sourceTree, SourceTree.Group, "SourceTree mismatch for generated BUILD file \(String(describing: fileRef.path))")
     }
   }
 
@@ -1795,7 +1795,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
       for buildFile in phase.files {
         if settings != nil {
-          XCTAssertNotNil(buildFile.settings, "Settings for file \(buildFile) must == \(settings)",
+          XCTAssertNotNil(buildFile.settings, "Settings for file \(buildFile) must == \(String(describing: settings))",
                           line: line)
           if buildFile.settings != nil {
             XCTAssertEqual(buildFile.settings!, settings!, line: line)
