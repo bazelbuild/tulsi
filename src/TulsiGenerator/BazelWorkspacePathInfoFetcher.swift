@@ -94,7 +94,7 @@ class BazelWorkspacePathInfoFetcher {
 
   // Waits for the workspace fetcher to signal the
   private func waitForCompletion() {
-    semaphore.wait(timeout: DispatchTime.distantFuture)
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     semaphore.signal()
   }
 

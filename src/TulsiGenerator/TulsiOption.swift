@@ -201,7 +201,7 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   // MARK: - CustomStringConvertible
 
   public var description: String {
-    return "\(displayName) - \(commonValue):\(targetValues)"
+    return "\(displayName) - \(String(describing: commonValue)):\(String(describing: targetValues))"
   }
 }
 

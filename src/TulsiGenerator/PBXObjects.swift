@@ -75,7 +75,7 @@ protocol PBXObjectProtocol: PBXProjSerializable, CustomDebugStringConvertible {
 
 extension PBXObjectProtocol {
   var debugDescription: String {
-    return "\(type(of: self)) \(self.comment)"
+    return "\(type(of: self)) \(String(describing: self.comment))"
   }
 }
 
@@ -1090,6 +1090,7 @@ final class PBXProject: PBXObjectProtocol {
   /// rather than as a normal component of the build process. This should very rarely be used, but
   /// is useful if it is necessary to add references to byproducts of the build process that are
   /// not the direct output of any PBXTarget.
+  @discardableResult
   func createProductReference(_ path: String) -> (Set<PBXGroup>, PBXFileReference) {
     let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
                                                               path: nil)
@@ -1142,6 +1143,7 @@ final class PBXProject: PBXObjectProtocol {
   /// PBXFileReference.
   /// Returns a tuple containing the PBXGroup and PBXFileReference instances that were touched while
   /// processing the set of paths.
+  @discardableResult
   func getOrCreateGroupsAndFileReferencesForPaths(_ paths: [String]) -> (Set<PBXGroup>, [PBXFileReference]) {
     var accessedGroups = Set<PBXGroup>()
     var accessedFileReferences = [PBXFileReference]()

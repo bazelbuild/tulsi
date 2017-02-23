@@ -303,7 +303,7 @@ class OptionsEditorStringNode: OptionsEditorNode {
         return
 
       case .Target:
-        option.targetValues?.removeValue(forKey: target!.fullLabel)
+        _ = option.targetValues?.removeValue(forKey: target!.fullLabel)
         model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
 
       case .Project:

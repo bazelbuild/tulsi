@@ -22,6 +22,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
   // Checkbox in the Bazel path open panel's accessory view.
   @IBOutlet weak var bazelSelectorUseAsDefaultCheckbox: NSButton!
 
+  @discardableResult
   static func beginSheetModalBazelSelectionPanelForWindow(_ window: NSWindow,
                                                           document: TulsiProjectDocument,
                                                           completionHandler: ((URL?) -> Void)? = nil) -> BazelSelectionPanel {

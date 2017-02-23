@@ -44,7 +44,7 @@ class CommandLineSplitter {
         splitCommands = [String](split.dropLast())
     }
     task.launch()
-    semaphore.wait(timeout: DispatchTime.distantFuture)
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
 
     return splitCommands
   }

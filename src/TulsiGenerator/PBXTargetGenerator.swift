@@ -170,7 +170,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if self.redactWorkspaceSymlink {
       workspaceDirName = "WORKSPACENAME"
     } else {
-      workspaceDirName = self.workspaceRootURL.lastPathComponent  ?? ""
+      workspaceDirName = self.workspaceRootURL.lastPathComponent
     }
     return self.bazelBinPath.replacingOccurrences(of: "-bin",
                                                                   with: "-\(workspaceDirName)")
@@ -446,6 +446,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Map of build label to cumulative preprocessor defines and include paths.
     var processedEntries = [BuildLabel: (Set<String>, NSOrderedSet, NSOrderedSet, NSOrderedSet)]()
+    @discardableResult
     func generateIndexerTargetGraphForRuleEntry(_ ruleEntry: RuleEntry) -> (Set<String>,
                                                                           NSOrderedSet,
                                                                           NSOrderedSet,

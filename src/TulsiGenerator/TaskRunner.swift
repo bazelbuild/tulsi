@@ -103,10 +103,8 @@ public final class TaskRunner {
       // The docs for readToEndOfFileInBackgroundAndNotify are unclear as to exactly what work is
       // done on the calling thread. By observation, it appears that data will not be read if the
       // main queue is in event tracking mode.
-      fileHandle.perform(Selector("readToEndOfFileInBackgroundAndNotify"),
-                                 on: taskReader.thread,
-                                 with: nil,
-                                 waitUntilDone: true)
+      let selector = #selector(FileHandle.readToEndOfFileInBackgroundAndNotify as (FileHandle) -> () -> Void)
+      fileHandle.perform(selector, on: taskReader.thread, with: nil, waitUntilDone: true)
       return observer
     }
 
@@ -124,7 +122,7 @@ public final class TaskRunner {
       // as well.
       assert(!Thread.isMainThread,
              "Task termination handler unexpectedly called on main thread.")
-      dispatchGroup.wait(timeout: DispatchTime.distantFuture)
+      _ = dispatchGroup.wait(timeout: DispatchTime.distantFuture)
 
       // Construct a string suitable for cutting and pasting into the commandline.
       let commandlineArguments: String

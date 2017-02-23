@@ -23,7 +23,7 @@ private func main() {
   consoleLogger.startLogging()
 
   if !commandlineParser.commandlineSentinalFound {
-    NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
+    _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     exit(0)
   }
 

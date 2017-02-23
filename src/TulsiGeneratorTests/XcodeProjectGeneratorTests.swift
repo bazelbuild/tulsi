@@ -62,7 +62,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     let ruleEntries = XcodeProjectGeneratorTests.labelToRuleEntryMapForLabels(buildTargetLabels)
     prepareGenerator(ruleEntries)
     do {
-      try generator.generateXcodeProjectInFolder(outputFolderURL)
+      _ = try generator.generateXcodeProjectInFolder(outputFolderURL)
       mockLocalizedMessageLogger.assertNoErrors()
       mockLocalizedMessageLogger.assertNoWarnings()
 
@@ -81,7 +81,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     prepareGenerator(ruleEntries)
     mockExtractor.labelToRuleEntry = [:]
     do {
-      try generator.generateXcodeProjectInFolder(outputFolderURL)
+      _ = try generator.generateXcodeProjectInFolder(outputFolderURL)
       XCTFail("Generation succeeded unexpectedly")
     } catch XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let missingLabels) {
       for label in buildTargetLabels {
@@ -105,6 +105,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func checkTestSuiteSchemeGeneration(_ testRuleType: String, testHostAttributeName: String) {
+    @discardableResult
     func addRule(_ labelName: String,
                  type: String,
                  attributes: [String: AnyObject] = [:],
@@ -125,7 +126,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
     prepareGenerator(mockExtractor.labelToRuleEntry)
 
     do {
-      try generator.generateXcodeProjectInFolder(outputFolderURL)
+      _ = try generator.generateXcodeProjectInFolder(outputFolderURL)
       mockLocalizedMessageLogger.assertNoErrors()
       mockLocalizedMessageLogger.assertNoWarnings()
 

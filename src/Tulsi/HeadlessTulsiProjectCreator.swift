@@ -160,7 +160,7 @@ struct HeadlessTulsiProjectCreator {
     document.bazelPackages = Array(bazelPackages)
 
     // Wait until processing completes.
-    semaphore.wait(timeout: DispatchTime.distantFuture)
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
 
     document.removeObserver(observer, forKeyPath: "processing")
     return bazelPackages

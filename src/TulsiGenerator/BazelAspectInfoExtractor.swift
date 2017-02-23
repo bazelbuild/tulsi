@@ -106,7 +106,7 @@ final class BazelAspectInfoExtractor {
     if let task = task {
       task.currentDirectoryPath = workspaceRootURL.path
       task.launch()
-      semaphore.wait(timeout: DispatchTime.distantFuture)
+      _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
 
@@ -361,7 +361,7 @@ final class BazelAspectInfoExtractor {
         let errorInfo: String
         do {
           let ruleEntry = try parseTulsiTargetFile(filename)
-          semaphore.wait(timeout: DispatchTime.distantFuture)
+          _ = semaphore.wait(timeout: DispatchTime.distantFuture)
           ruleMap[ruleEntry.label] = ruleEntry
           semaphore.signal()
           return

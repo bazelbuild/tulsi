@@ -235,7 +235,7 @@ final class BazelQueryInfoExtractor {
     task.currentDirectoryPath = workspaceRootURL.path
     task.launch()
 
-    semaphore.wait(timeout: DispatchTime.distantFuture)
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     return (task, data, stderr, info)
   }
 

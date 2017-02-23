@@ -652,7 +652,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         return false
 
       default:
-        Swift.print("Unhandled menu action: \(itemAction)")
+        Swift.print("Unhandled menu action: \(String(describing: itemAction))")
     }
     return false
   }

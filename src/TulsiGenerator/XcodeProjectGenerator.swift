@@ -980,6 +980,7 @@ final class XcodeProjectGenerator {
       self.intermediateArtifacts = intermediateArtifacts
     }
 
+    @discardableResult
     func writeToURL(_ outputURL: URL) -> Bool {
       if fileReferences == nil {
         parsePBXProject()
