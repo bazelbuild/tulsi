@@ -2,37 +2,37 @@
 <Scheme LastUpgradeVersion="0610" version="1.3">
     <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6C9760C9E00000000" BuildableIdentifier="primary" BuildableName="_tulsi_appex_Watch2Extension.appex" BlueprintName="_tulsi_appex_Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E6C9760C9E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="_tulsi_appex_Watch2Extension.appex" BlueprintName="_tulsi_appex_Watch2Extension" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" BuildableIdentifier="primary" BuildableName="Application.app" BlueprintName="Application" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Application.app" BlueprintName="Application" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="NO" buildForAnalyzing="YES" buildForTesting="NO" buildForRunning="NO" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E656E3F8DE00000000" BuildableIdentifier="primary" BuildableName="lib_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598.a" BlueprintName="_idx_NonPropagatedLibrary_CoreDataResources_Watch2ExtensionBinary_B80CA598" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+            <BuildActionEntry buildForArchiving="NO" buildForTesting="NO" buildForRunning="NO" buildForAnalyzing="YES" buildForProfiling="NO">
+                <BuildableReference BlueprintIdentifier="3D31C5E69AB58ADE00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598.a" BlueprintName="_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
-        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
-            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension">
+            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </TestAction>
-    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" launchStyle="0" allowLocationSimulation="YES" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
+    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
         <EnvironmentVariables></EnvironmentVariables>
-        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
-            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension">
+            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </LaunchAction>
-    <ProfileAction shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
-        <RemoteRunnable BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension" runnableDebuggingMode="2">
-            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" BuildableIdentifier="primary" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" ReferencedContainer="container:ComplexSingleProject.xcodeproj"></BuildableReference>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
+        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/Watch2Extension">
+            <BuildableReference BlueprintIdentifier="3D31C5E618CF8FA800000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Watch2Extension.app" BlueprintName="Watch2Extension" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
-    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
+    <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
 </Scheme>

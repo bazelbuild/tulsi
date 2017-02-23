@@ -39,7 +39,7 @@
 		43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2890A3170600000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_1.m; sourceTree = "<group>"; };
 		43D68C2898A50B0400000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_2.m; sourceTree = "<group>"; };
-		43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
@@ -53,7 +53,7 @@
 				43D68C285A2F8B6E00000000 /* TestApplication.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
 				966FB6DE59D91CB800000000 /* blaze-bin */,
-				43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */,
+				43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */,
 				43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */,
 				43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */,
 			);
@@ -169,6 +169,22 @@
 			productReference = 43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3D31C5E67586233E00000000 /* _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583BFF6575C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
+			productName = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
+			productReference = 43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E67E0C424E00000000 /* tagged_xctest_2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583CC86731D00000000 /* Build configuration list for PBXNativeTarget "tagged_xctest_2" */;
@@ -204,22 +220,6 @@
 			productName = tagged_xctest_1;
 			productReference = 43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		3D31C5E6CA8B153E00000000 /* _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558399AEB25C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E" */;
-			buildPhases = (
-				605793E20000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
-			productName = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
-			productReference = 43D68C2898C96D1000000000 /* lib_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EC64700400000000 /* TestApplication */ = {
 			isa = PBXNativeTarget;
@@ -269,7 +269,7 @@
 				3D31C5E6EC64700400000000 /* TestApplication */,
 				3D31C5E6420BCBAA00000000 /* TestSuiteXCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6CA8B153E00000000 /* _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E */,
+				3D31C5E67586233E00000000 /* _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E */,
 				3D31C5E67E0D424800000000 /* tagged_xctest_1 */,
 				3D31C5E67E0C424E00000000 /* tagged_xctest_2 */,
 			);
@@ -364,10 +364,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */,
+				E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */,
 				E6AF49473611DBCE00000000 /* main.m in srcs */,
 				E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */,
-				E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */,
+				E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +526,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				PRODUCT_NAME = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
 				SDKROOT = iphonesimulator;
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
@@ -676,7 +676,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E;
+				PRODUCT_NAME = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
 				SDKROOT = iphonesimulator;
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
@@ -1034,7 +1034,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558399AEB25C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_1_Binary_TestSuiteXCTest_tagged_xctest_2_97DFB03E" */ = {
+		DE475583BFF6575C00000000 /* Build configuration list for PBXNativeTarget "_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,

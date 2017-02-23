@@ -994,7 +994,7 @@ final class XcodeProjectGenerator {
       ]
       do {
         let data = try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                                     options: .prettyPrinted)
+                                                                                   options: .prettyPrinted)
         return ((try? data.write(to: outputURL, options: [.atomic])) != nil)
       } catch let e as NSError {
         localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path): \(e.localizedDescription)")

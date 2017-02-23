@@ -19,7 +19,7 @@ import XCTest
 // Base class for end-to-end tests that generate xcodeproj bundles and validate them against golden
 // versions.
 class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
-  let fakeBazelURL = NSURL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
+  let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
   // For the sake of simplicity in maintaining the golden data, copied Tulsi artifacts are
@@ -27,24 +27,24 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
   private let copiedTulsiArtifactRegex = try! NSRegularExpression(pattern: "^Only in .*?\\.xcodeproj/.tulsi: .+$",
                                                                   options: [])
 
-  final func validateDiff(diffLines: [String], file: StaticString = #file, line: UInt = #line) {
+  final func validateDiff(_ diffLines: [String], file: StaticString = #file, line: UInt = #line) {
     for diff in diffLines {
       let range = NSMakeRange(0, (diff as NSString).length)
-      if copiedTulsiArtifactRegex.firstMatchInString(diff,
-                                                     options: NSMatchingOptions.Anchored,
-                                                     range: range) != nil {
+      if copiedTulsiArtifactRegex.firstMatch(in: diff,
+                                             options: NSRegularExpression.MatchingOptions.anchored,
+                                             range: range) != nil {
         continue
       }
       XCTFail(diff, file: file, line: line)
     }
   }
 
-  final func diffProjectAt(projectURL: NSURL,
+  final func diffProjectAt(_ projectURL: URL,
                            againstGoldenProject resourceName: String,
                            file: StaticString = #file,
                            line: UInt = #line) -> [String] {
-    let bundle = NSBundle(forClass: self.dynamicType)
-    guard let goldenProjectURL = bundle.URLForResource(resourceName,
+    let bundle = Bundle(for: type(of: self))
+    guard let goldenProjectURL = bundle.url(forResource: resourceName,
                                                        withExtension: "xcodeproj",
                                                        subdirectory: "GoldenProjects") else {
       assertionFailure("Missing required test resource file \(resourceName).xcodeproj")
@@ -55,38 +55,38 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     }
 
     var diffOutput = [String]()
-    let semaphore = dispatch_semaphore_create(0)
+    let semaphore = DispatchSemaphore(value: 0)
     let task = TaskRunner.createTask("/usr/bin/diff",
                                      arguments: ["-rq",
-                                                 projectURL.path!,
-                                                 goldenProjectURL.path!]) {
+                                                 projectURL.path,
+                                                 goldenProjectURL.path]) {
       completionInfo in
         defer {
-          dispatch_semaphore_signal(semaphore)
+          semaphore.signal()
         }
-        if let stdout = NSString(data: completionInfo.stdout, encoding: NSUTF8StringEncoding) {
-          diffOutput = stdout.componentsSeparatedByString("\n").filter({ !$0.isEmpty })
+        if let stdout = NSString(data: completionInfo.stdout, encoding: String.Encoding.utf8.rawValue) {
+          diffOutput = stdout.components(separatedBy: "\n").filter({ !$0.isEmpty })
         } else {
           XCTFail("No output received for diff command", file: file, line: line)
         }
     }
-    task.currentDirectoryPath = workspaceRootURL.path!
+    task.currentDirectoryPath = workspaceRootURL.path
     task.launch()
 
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     return diffOutput
   }
 
-  final func generateProjectNamed(projectName: String,
+  final func generateProjectNamed(_ projectName: String,
                                   buildTargets: [RuleInfo],
                                   pathFilters: [String],
                                   additionalFilePaths: [String] = [],
                                   outputDir: String,
-                                  options: TulsiOptionSet = TulsiOptionSet()) -> NSURL? {
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-    let buildOptions =  userDefaults.stringForKey("testBazelBuildOptions") ?? ""
+                                  options: TulsiOptionSet = TulsiOptionSet()) -> URL? {
+    let userDefaults = UserDefaults.standard
+    let buildOptions =  userDefaults.string(forKey: "testBazelBuildOptions") ?? ""
 
-    if let startupOptions = userDefaults.stringForKey("testBazelStartupOptions") {
+    if let startupOptions = userDefaults.string(forKey: "testBazelStartupOptions") {
       options[.BazelBuildStartupOptionsDebug].projectValue = startupOptions
     }
 
@@ -122,9 +122,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-    } catch TulsiXcodeProjectGenerator.Error.UnsupportedTargetType(let targetType) {
+    } catch TulsiXcodeProjectGenerator.GeneratorError.unsupportedTargetType(let targetType) {
       errorInfo = "Unsupported target type: \(targetType)"
-    } catch TulsiXcodeProjectGenerator.Error.SerializationFailed(let details) {
+    } catch TulsiXcodeProjectGenerator.GeneratorError.serializationFailed(let details) {
       errorInfo = "General failure: \(details)"
     } catch _ {
       errorInfo = "Unexpected failure"

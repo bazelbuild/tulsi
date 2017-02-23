@@ -1,26 +1,5 @@
 {
   "manifestVersion" : 3,
-  "targets" : {
-    "XCTest" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest.ipa"
-    ],
-    "_idx_Library_22D3B3D5" : [
-
-    ],
-    "_idx_MainLibrary_E33E600C" : [
-
-    ],
-    "SkylarkTargetApplication" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.ipa"
-    ],
-    "SkylarkApplication" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa"
-    ],
-    "_bazel_clean_" : [
-
-    ]
-  },
   "artifacts" : [
     "SkylarkApplication.app\/**",
     "SkylarkTargetApplication.app\/**",
@@ -30,15 +9,28 @@
     "lib_idx_Library_22D3B3D5.a",
     "lib_idx_MainLibrary_E33E600C.a"
   ],
-  "intermediateArtifacts" : {
-    "XCTest" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a"
+  "targets" : {
+    "SkylarkTargetApplication" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.ipa"
     ],
+    "SkylarkApplication" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa"
+    ],
+    "_idx_MainLibrary_E33E600C" : [
+
+    ],
+    "_idx_Library_22D3B3D5" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "XCTest" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest.ipa"
+    ]
+  },
+  "intermediateArtifacts" : {
     "SkylarkTargetApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.apple_binary_lipobin",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication_entitlements.entitlements",
@@ -48,6 +40,14 @@
     ],
     "SkylarkApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a"
+    ],
+    "XCTest" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
       "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",

@@ -301,7 +301,7 @@ private class InfoChecker {
     self.init(infos: infoDict)
   }
 
-  func assertThat(targetLabel: String, line: UInt = #line) -> Context {
+  func assertThat(_ targetLabel: String, line: UInt = #line) -> Context {
     guard let (ruleInfo, dependencies) = infoMap[BuildLabel(targetLabel)] else {
       XCTFail("No rule with the label \(targetLabel) was found", line: line)
       return Context(ruleInfo: nil, dependencies: nil, infoMap: infoMap)
@@ -330,26 +330,26 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleInfo has the given type.
-    func hasType(type: String, line: UInt = #line) -> Context {
+    func hasType(_ type: String, line: UInt = #line) -> Context {
       guard let ruleInfo = ruleInfo else { return self }
       XCTAssertEqual(ruleInfo.type, type, line: line)
       return self
     }
 
     /// Asserts that the contextual RuleInfo has the given set of linked target labels.
-    func hasLinkedTargetLabels(labels: Set<BuildLabel>, line: UInt = #line) -> Context {
+    func hasLinkedTargetLabels(_ labels: Set<BuildLabel>, line: UInt = #line) -> Context {
       guard let ruleInfo = ruleInfo else { return self }
       XCTAssertEqual(ruleInfo.linkedTargetLabels, labels, line: line)
       return self
     }
 
     /// Asserts that the contextual RuleInfo has the given linked target label and no others.
-    func hasExactlyOneLinkedTargetLabel(label: BuildLabel, line: UInt = #line) -> Context {
+    func hasExactlyOneLinkedTargetLabel(_ label: BuildLabel, line: UInt = #line) -> Context {
       return hasLinkedTargetLabels(Set<BuildLabel>([label]), line: line)
     }
 
     /// Asserts that the contextual RuleInfo has no linked target labels.
-    func hasNoLinkedTargetLabels(line: UInt = #line) -> Context {
+    func hasNoLinkedTargetLabels(_ line: UInt = #line) -> Context {
       guard let ruleInfo = ruleInfo else { return self }
       if !ruleInfo.linkedTargetLabels.isEmpty {
         XCTFail("Expected no linked targets but found \(ruleInfo.linkedTargetLabels)", line: line)
@@ -358,21 +358,23 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleInfo has the given set of dependent labels.
-    func hasDependencies(dependencies: Set<BuildLabel>, line: UInt = #line) -> Context {
+    func hasDependencies(_ dependencies: Set<BuildLabel>, line: UInt = #line) -> Context {
       guard let ruleDeps = self.dependencies else { return self }
       XCTAssertEqual(ruleDeps, dependencies, line: line)
       return self
     }
 
     /// Asserts that the contextual RuleInfo has the given set of dependent labels.
-    func hasDependencies(dependencies: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func hasDependencies(_ dependencies: [String], line: UInt = #line) -> Context {
       let labels = dependencies.map() { BuildLabel($0) }
       return hasDependencies(Set<BuildLabel>(labels), line: line)
     }
 
     /// Asserts that the contextual RuleInfo has no dependent labels.
-    func hasNoDependencies(line: UInt = #line) -> Context {
-      if let ruleDeps = self.dependencies where !ruleDeps.isEmpty {
+    @discardableResult
+    func hasNoDependencies(_ line: UInt = #line) -> Context {
+      if let ruleDeps = self.dependencies, !ruleDeps.isEmpty {
         XCTFail("Expected no dependencies but found \(ruleDeps)", line: line)
       }
       return self

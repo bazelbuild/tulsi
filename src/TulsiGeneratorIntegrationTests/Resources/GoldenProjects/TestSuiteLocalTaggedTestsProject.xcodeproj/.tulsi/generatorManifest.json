@@ -1,23 +1,5 @@
 {
   "manifestVersion" : 3,
-  "targets" : {
-    "_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C" : [
-
-    ],
-    "TestApplication" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa"
-    ],
-    "TestSuiteXCTest" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/TestSuiteXCTest.ipa"
-    ],
-    "_bazel_clean_" : [
-
-    ],
-    "TestSuiteNonXCTest" : [
-      "blaze-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
-    ]
-  },
   "artifacts" : [
     "TestApplication.app\/**",
     "TestSuiteNonXCTest.app\/**",
@@ -25,15 +7,33 @@
     "blaze-bin\/TestSuite\/TestApplication-MergedInfo.plist",
     "lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a"
   ],
-  "intermediateArtifacts" : {
-    "TestApplication" : [
-      "blaze-bin\/TestSuite\/Binary.ipa",
-      "blaze-bin\/TestSuite\/Binary_bin"
+  "targets" : {
+    "TestSuiteXCTest" : [
+      "blaze-bin\/TestSuite\/TestApplication.ipa",
+      "blaze-bin\/TestSuite\/TestSuiteXCTest.ipa"
     ],
+    "TestApplication" : [
+      "blaze-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "TestSuiteNonXCTest" : [
+      "blaze-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
+    ],
+    "_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ]
+  },
+  "intermediateArtifacts" : {
     "TestSuiteXCTest" : [
       "blaze-bin\/TestSuite\/Binary.ipa",
       "blaze-bin\/TestSuite\/Binary_bin",
       "blaze-bin\/TestSuite\/TestApplication.ipa"
+    ],
+    "TestApplication" : [
+      "blaze-bin\/TestSuite\/Binary.ipa",
+      "blaze-bin\/TestSuite\/Binary_bin"
     ],
     "TestSuiteNonXCTest" : [
 

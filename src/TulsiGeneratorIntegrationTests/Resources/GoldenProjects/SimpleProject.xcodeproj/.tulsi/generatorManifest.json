@@ -1,26 +1,5 @@
 {
   "manifestVersion" : 3,
-  "targets" : {
-    "_idx_Library_1A8360DD" : [
-
-    ],
-    "XCTest" : [
-      "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
-      "blaze-bin\/tulsi_e2e_simple\/XCTest.ipa"
-    ],
-    "Application" : [
-      "blaze-bin\/tulsi_e2e_simple\/Application.ipa"
-    ],
-    "TargetApplication" : [
-      "blaze-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
-    ],
-    "_idx_XCTest_Binary_31228BEA" : [
-
-    ],
-    "_bazel_clean_" : [
-
-    ]
-  },
   "artifacts" : [
     "Application.app\/**",
     "TargetApplication.app\/**",
@@ -30,14 +9,35 @@
     "lib_idx_Library_1A8360DD.a",
     "lib_idx_XCTest_Binary_31228BEA.a"
   ],
-  "intermediateArtifacts" : {
+  "targets" : {
+    "_bazel_clean_" : [
+
+    ],
+    "_idx_XCTest_Binary_31228BEA" : [
+
+    ],
+    "_idx_Library_1A8360DD" : [
+
+    ],
+    "Application" : [
+      "blaze-bin\/tulsi_e2e_simple\/Application.ipa"
+    ],
     "XCTest" : [
       "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
+      "blaze-bin\/tulsi_e2e_simple\/XCTest.ipa"
+    ],
+    "TargetApplication" : [
+      "blaze-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
+    ]
+  },
+  "intermediateArtifacts" : {
+    "TargetApplication" : [
       "blaze-bin\/tulsi_e2e_simple\/Binary.ipa",
       "blaze-bin\/tulsi_e2e_simple\/Binary_bin",
       "blaze-bin\/tulsi_e2e_simple\/libLibrary.a"
     ],
-    "TargetApplication" : [
+    "XCTest" : [
+      "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
       "blaze-bin\/tulsi_e2e_simple\/Binary.ipa",
       "blaze-bin\/tulsi_e2e_simple\/Binary_bin",
       "blaze-bin\/tulsi_e2e_simple\/libLibrary.a"

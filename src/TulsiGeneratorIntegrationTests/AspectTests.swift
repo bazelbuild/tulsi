@@ -46,15 +46,15 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
-        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
+        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"] as NSArray)
         .hasListAttribute(.compiler_defines,
                           containing: ["A_COMMANDLINE_DEFINE",
                                        "A_COMMANDLINE_DEFINE_WITH_VALUE=1",
                                        "A_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'"])
-        .hasAttribute(.includes, value: ["Binary/includes"])
+        .hasAttribute(.includes, value: ["Binary/includes"] as NSArray)
         .hasAttribute(.launch_storyboard, value: ["is_dir": false,
                                                   "path": "tulsi_test/Application/Launch.storyboard",
-                                                  "src": true])
+                                                  "src": true] as NSDictionary)
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -64,16 +64,16 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                             "src": true],
                                            ["is_dir": false,
                                             "path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
-                                            "src": true], ])
-        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"])
-        .hasAttribute(.includes, value: ["Binary/includes"])
+                                            "src": true], ] as NSArray)
+        .hasAttribute(.defines, value: ["BINARY_ADDITIONAL_DEFINE", "BINARY_ANOTHER_DEFINE=2"] as NSArray)
+        .hasAttribute(.includes, value: ["Binary/includes"] as NSArray)
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/Binary/Base.lproj/One.storyboard",
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/Binary/Assets.xcassets",
-                               "src": true],])
+                               "src": true],] as NSArray)
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/Library/srcs/src1.m",
@@ -85,15 +85,15 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Library/textual_hdrs/TextualHdrsHeader.h"])
         .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE",
                                       "-I/Library/absolute/include/path",
-                                      "-Irelative/Library/include/path"])
-        .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"])
+                                      "-Irelative/Library/include/path"] as NSArray)
+        .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1"] as NSArray)
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/Library/pch/PCHFile.pch",
-                                    "src": true])
+                                    "src": true] as NSDictionary)
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/Library/xibs/xib.xib",
-                               "src": true]])
+                               "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
@@ -116,9 +116,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Binary")
-        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
+        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"] as NSArray)
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
-                                         "Binary/includes/second/include"])
+                                         "Binary/includes/second/include"] as NSArray)
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/Application/entitlements.entitlements",
@@ -128,7 +128,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/Application/structured_resources.file2",
-                               "src": true]])
+                               "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:Binary")
         .dependsOn("//tulsi_test:Library")
@@ -138,9 +138,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "blaze-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Binary/non_arc_srcs/NonARCFile.mm"])
-        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"])
+        .hasAttribute(.defines, value: ["A=BINARY_DEFINE"] as NSArray)
         .hasAttribute(.includes, value: ["Binary/includes/first/include",
-                                         "Binary/includes/second/include"])
+                                         "Binary/includes/second/include"] as NSArray)
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/Binary/Info.plist",
@@ -175,13 +175,13 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/Binary/AssetsTwo.xcassets",
-                               "src": true]])
+                               "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:ObjCBundle")
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/ObjCBundle.bundle",
-                               "src": true]])
+                               "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:CoreDataResources")
         .hasAttribute(.datamodels,
@@ -190,7 +190,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel",
-                               "src": true], ])
+                               "src": true], ] as NSArray)
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",
@@ -200,32 +200,32 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Library/srcs/src5.mm",
                      "tulsi_test/Library/srcs/SrcsHeader.h",
                      "tulsi_test/Library/hdrs/HdrsHeader.h"])
-        .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE"])
+        .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE"] as NSArray)
         .hasAttribute(.defines, value: ["LIBRARY_DEFINES_DEFINE=1",
                                         "'LIBRARY SECOND DEFINE'=2",
-                                        "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""])
+                                        "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\""] as NSArray)
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
                                     "root": "blaze-genfiles",
-                                    "src": false])
+                                    "src": false] as NSDictionary)
         .hasAttribute(.supporting_files,
-                      value: [["is_dir": false, "path": "tulsi_test/Library/xib.xib", "src": true]])
+                      value: [["is_dir": false, "path": "tulsi_test/Library/xib.xib", "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:SubLibrary")
         .hasSources(["tulsi_test/SubLibrary/srcs/src.mm"])
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/SubLibrary/pch/AnotherPCHFile.pch",
-                                    "src": true])
-        .hasAttribute(.enable_modules, value: 1)
+                                    "src": true] as NSDictionary)
+        .hasAttribute(.enable_modules, value: true)
 
     checker.assertThat("//tulsi_test:SubLibraryWithDefines")
         .hasSources(["tulsi_test/SubLibraryWithDefines/srcs/src.mm"])
         .hasAttribute(.copts, value: ["-menable-no-nans",
                                       "-menable-no-infs",
                                       "-I/SubLibraryWithDefines/local/includes",
-                                      "-Irelative/SubLibraryWithDefines/local/includes"])
+                                      "-Irelative/SubLibraryWithDefines/local/includes"] as NSArray)
         .hasAttribute(.defines, value: ["SubLibraryWithDefines=1",
-                                        "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines"])
+                                        "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines"] as NSArray)
 
     checker.assertThat("//tulsi_test:SubLibraryWithDifferentDefines")
         .hasSources(["tulsi_test/SubLibraryWithDifferentDefines/srcs/src.mm"])
@@ -234,9 +234,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-DSubLibraryWithDifferentDefines_STRING_DEFINE=Test",
                                       "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'",
                                       "-D'SubLibraryWithDifferentDefines Define with spaces'",
-                                      "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1"])
-        .hasAttribute(.defines, value: ["SubLibraryWithDifferentDefines=1"])
-        .hasAttribute(.includes, value: ["SubLibraryWithDifferentDefines/includes"])
+                                      "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1"] as NSArray)
+        .hasAttribute(.defines, value: ["SubLibraryWithDifferentDefines=1"] as NSArray)
+        .hasAttribute(.includes, value: ["SubLibraryWithDifferentDefines/includes"] as NSArray)
 
     checker.assertThat("//tulsi_test:NonPropagatedLibrary")
         .hasSources(["tulsi_test/NonPropagatedLibrary/srcs/non_propagated.m"])
@@ -282,7 +282,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
-                               "src": true]])
+                               "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
@@ -443,7 +443,7 @@ private class InfoChecker {
     self.ruleEntries = ruleEntries
   }
 
-  func assertThat(targetLabel: String, line: UInt = #line) -> Context {
+  func assertThat(_ targetLabel: String, line: UInt = #line) -> Context {
     let ruleEntry = ruleEntries[BuildLabel(targetLabel)]
     XCTAssertNotNil(ruleEntry,
                     "No rule entry with the label \(targetLabel) was found",
@@ -476,13 +476,15 @@ private class InfoChecker {
     }
 
     // Does nothing as "assertThat" already asserted the existence of the associated ruleEntry.
+    @discardableResult
     func exists() -> Context {
       return self
     }
 
     /// Asserts that the contextual RuleEntry is linked to a rule identified by the given
     /// targetLabel as a dependency.
-    func dependsOn(targetLabel: String, line: UInt = #line) -> Context {
+    @discardableResult
+    func dependsOn(_ targetLabel: String, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
                       "\(ruleEntry) must depend on \(targetLabel)",
@@ -492,7 +494,8 @@ private class InfoChecker {
 
     /// Asserts that the contextual RuleEntry contains the given list of sources (but may have
     /// others as well).
-    func containsSources(sources: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func containsSources(_ sources: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       for s in sources {
         XCTAssert(resolvedSourceFiles.contains(s),
@@ -503,7 +506,8 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleEntry has exactly the given list of sources.
-    func hasSources(sources: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func hasSources(_ sources: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       containsSources(sources, line: line)
       XCTAssertEqual(ruleEntry.sourceFiles.count,
@@ -515,7 +519,8 @@ private class InfoChecker {
 
     /// Asserts that the contextual RuleEntry contains the given list of non-ARC sources (but may
     /// have others as well).
-    func containsNonARCSources(sources: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func containsNonARCSources(_ sources: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       for s in sources {
         XCTAssert(resolvedNonARCSourceFiles.contains(s),
@@ -526,7 +531,7 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleEntry has exactly the given list of non-ARC sources.
-    func hasNonARCSources(sources: [String], line: UInt = #line) -> Context {
+    func hasNonARCSources(_ sources: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       containsNonARCSources(sources, line: line)
       XCTAssertEqual(ruleEntry.nonARCSourceFiles.count,
@@ -538,7 +543,8 @@ private class InfoChecker {
 
     /// Asserts that the contextual RuleEntry contains the given list of framework imports (but may
     /// have others as well).
-    func containsFrameworks(frameworks: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func containsFrameworks(_ frameworks: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       for s in frameworks {
         XCTAssert(resolvedFrameworkFiles.contains(s),
@@ -549,7 +555,8 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleEntry has exactly the given list of framework imports.
-    func hasFrameworks(frameworks: [String], line: UInt = #line) -> Context {
+    @discardableResult
+    func hasFrameworks(_ frameworks: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       containsFrameworks(frameworks, line: line)
       XCTAssertEqual(ruleEntry.frameworkImports.count,
@@ -561,7 +568,7 @@ private class InfoChecker {
 
     /// Asserts that the contextual RuleEntry is an ios_test with an xctest_app identified by the
     /// given label.
-    func hasTestHost(targetLabel: String, line: UInt = #line) -> Context {
+    func hasTestHost(_ targetLabel: String, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       let hostLabelString = ruleEntry.attributes[.xctest_app] as? String
       XCTAssertEqual(hostLabelString,
@@ -572,13 +579,14 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
-    func hasAttribute<T where T: Equatable>(attribute: RuleEntry.Attribute, value: T, line: UInt = #line) -> Context {
+    @discardableResult
+    func hasAttribute<T>(_ attribute: RuleEntry.Attribute, value: T, line: UInt = #line) -> Context where T: Equatable {
       guard let ruleEntry = ruleEntry else { return self }
       if let attributeValue = ruleEntry.attributes[attribute] as? T {
         XCTAssertEqual(attributeValue, value, line: line)
       } else if let attributeValue = ruleEntry.attributes[attribute] {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type \(T.self) " +
-                    "but it is of type \(attributeValue.dynamicType)",
+                    "but it is of type \(type(of: attributeValue))",
                 line: line)
       } else {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)
@@ -587,7 +595,7 @@ private class InfoChecker {
     }
 
     /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
-    func hasListAttribute(attribute: RuleEntry.Attribute,
+    func hasListAttribute(_ attribute: RuleEntry.Attribute,
                           containing: [String],
                           line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
@@ -597,7 +605,7 @@ private class InfoChecker {
         }
       } else if let attributeValue = ruleEntry.attributes[attribute] {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)' of type " +
-                    "[String] but it is of type \(attributeValue.dynamicType)",
+                    "[String] but it is of type \(type(of: attributeValue))",
                 line: line)
       } else {
         XCTFail("\(ruleEntry) expected to have an attribute named '\(attribute)'", line: line)

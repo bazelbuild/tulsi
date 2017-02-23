@@ -27,35 +27,35 @@ import XCTest
 ///       executed. A WORKSPACE file must be present in the given directory.
 class BazelIntegrationTestCase: XCTestCase {
 
-  var bazelURL: NSURL! = nil
+  var bazelURL: URL! = nil
   var bazelStartupOptions = [String]()
   var bazelBuildOptions = [String]()
-  var workspaceRootURL: NSURL! = nil
+  var workspaceRootURL: URL! = nil
   var packagePathFetcher: BazelWorkspacePathInfoFetcher! = nil
   var localizedMessageLogger: DirectLocalizedMessageLogger! = nil
 
-  private var pathsToCleanOnTeardown = Set<NSURL>()
+  private var pathsToCleanOnTeardown = Set<URL>()
 
   override func setUp() {
     super.setUp()
 
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-    guard let bazelPath = userDefaults.stringForKey("test_bazel") else {
+    let userDefaults = UserDefaults.standard
+    guard let bazelPath = userDefaults.string(forKey: "test_bazel") else {
       XCTFail("This test must be launched with test_bazel set to a path to Bazel " +
                   "(e.g., via -test_bazel as a command-line argument)")
       return
     }
-    bazelURL = NSURL(fileURLWithPath: bazelPath)
+    bazelURL = URL(fileURLWithPath: bazelPath)
 
     let commandLineSplitter = CommandLineSplitter()
-    if let startupOptions = userDefaults.stringForKey("testBazelStartupOptions") {
+    if let startupOptions = userDefaults.string(forKey: "testBazelStartupOptions") {
       guard let splitOptions = commandLineSplitter.splitCommandLine(startupOptions) else {
         XCTFail("Failed to split bazelStartupOptions '\(startupOptions)'")
         return
       }
       bazelStartupOptions = splitOptions
     }
-    if let buildOptions = userDefaults.stringForKey("testBazelBuildOptions") {
+    if let buildOptions = userDefaults.string(forKey: "testBazelBuildOptions") {
       guard let splitOptions = commandLineSplitter.splitCommandLine(buildOptions) else {
         XCTFail("Failed to split bazelBuildOptions '\(buildOptions)'")
         return
@@ -63,13 +63,13 @@ class BazelIntegrationTestCase: XCTestCase {
       bazelBuildOptions = splitOptions
     }
 
-    if let hostedWorkspaceDirectory = userDefaults.stringForKey("use_hosted_workspace") {
-      workspaceRootURL = NSURL(fileURLWithPath: hostedWorkspaceDirectory,
+    if let hostedWorkspaceDirectory = userDefaults.string(forKey: "use_hosted_workspace") {
+      workspaceRootURL = URL(fileURLWithPath: hostedWorkspaceDirectory,
                                          isDirectory: true)
     } else {
-      let globalTempDir = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-      let dirName = "tulsi_\(NSUUID().UUIDString)"
-      workspaceRootURL = globalTempDir.URLByAppendingPathComponent(dirName, isDirectory: true)
+      let globalTempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+      let dirName = "tulsi_\(UUID().uuidString)"
+      workspaceRootURL = globalTempDir.appendingPathComponent(dirName, isDirectory: true)
 
       installWorkspaceFile()
     }
@@ -105,13 +105,14 @@ class BazelIntegrationTestCase: XCTestCase {
 
   /// Copies the .BUILD file bundled under the given name into the test workspace, as well as any
   /// .bzl file with the same root name.
-  func installBUILDFile(fileResourceName: String,
+  @discardableResult
+  func installBUILDFile(_ fileResourceName: String,
                         intoSubdirectory subdirectory: String? = nil,
                         fromResourceDirectory resourceDirectory: String? = nil,
                         file: StaticString = #file,
-                        line: UInt = #line) -> NSURL? {
-    let bundle = NSBundle(forClass: self.dynamicType)
-    guard let buildFileURL = bundle.URLForResource(fileResourceName,
+                        line: UInt = #line) -> URL? {
+    let bundle = Bundle(for: type(of: self))
+    guard let buildFileURL = bundle.url(forResource: fileResourceName,
                                                    withExtension: "BUILD",
                                                    subdirectory: resourceDirectory) else {
       XCTFail("Missing required test resource file \(fileResourceName).BUILD",
@@ -122,14 +123,15 @@ class BazelIntegrationTestCase: XCTestCase {
 
     guard let directoryURL = getWorkspaceDirectory(subdirectory) else { return nil }
 
-    func copyFile(sourceFileURL: NSURL, toFileNamed targetName: String) -> NSURL? {
-      let destinationURL = directoryURL.URLByAppendingPathComponent(targetName, isDirectory: false)!
+    @discardableResult
+    func copyFile(_ sourceFileURL: URL, toFileNamed targetName: String) -> URL? {
+      let destinationURL = directoryURL.appendingPathComponent(targetName, isDirectory: false)
       do {
-        let fileManager = NSFileManager.defaultManager()
-        if fileManager.fileExistsAtPath(destinationURL.path!) {
-          try fileManager.removeItemAtURL(destinationURL)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destinationURL.path) {
+          try fileManager.removeItem(at: destinationURL)
         }
-        try fileManager.copyItemAtURL(sourceFileURL, toURL: destinationURL)
+        try fileManager.copyItem(at: sourceFileURL, to: destinationURL)
         pathsToCleanOnTeardown.insert(destinationURL)
       } catch let e as NSError {
         XCTFail("Failed to install '\(sourceFileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)",
@@ -144,30 +146,30 @@ class BazelIntegrationTestCase: XCTestCase {
       return nil
     }
 
-    if let skylarkFileURL = bundle.URLForResource(fileResourceName,
+    if let skylarkFileURL = bundle.url(forResource: fileResourceName,
                                                      withExtension: "bzl",
                                                      subdirectory: resourceDirectory) {
-      copyFile(skylarkFileURL, toFileNamed: skylarkFileURL.lastPathComponent!)
+      copyFile(skylarkFileURL, toFileNamed: skylarkFileURL.lastPathComponent)
     }
 
     return destinationURL
   }
 
   /// Creates a file in the test workspace with the given contents.
-  func makeFileNamed(name: String,
-                     withData data: NSData,
+  func makeFileNamed(_ name: String,
+                     withData data: Data,
                      inSubdirectory subdirectory: String? = nil,
                      file: StaticString = #file,
-                     line: UInt = #line) -> NSURL? {
+                     line: UInt = #line) -> URL? {
     guard let directoryURL = getWorkspaceDirectory(subdirectory,
                                                    file: file,
                                                    line: line) else {
       return nil
     }
 
-    let fileURL = directoryURL.URLByAppendingPathComponent(name, isDirectory: false)!
-    XCTAssertTrue(data.writeToURL(fileURL, atomically: true),
-                  "Failed to write to file at '\(fileURL.path!)'",
+    let fileURL = directoryURL.appendingPathComponent(name, isDirectory: false)
+    XCTAssertTrue((try? data.write(to: fileURL, options: [.atomic])) != nil,
+                  "Failed to write to file at '\(fileURL.path)'",
                   file: file,
                   line: line)
     pathsToCleanOnTeardown.insert(fileURL)
@@ -175,12 +177,12 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   /// Creates a file in the test workspace with the given contents.
-  func makeFileNamed(name: String,
+  func makeFileNamed(_ name: String,
                      withContent content: String = "",
                      inSubdirectory subdirectory: String? = nil,
                      file: StaticString = #file,
-                     line: UInt = #line) -> NSURL? {
-    guard let data = (content as NSString).dataUsingEncoding(NSUTF8StringEncoding) else {
+                     line: UInt = #line) -> URL? {
+    guard let data = (content as NSString).data(using: String.Encoding.utf8.rawValue) else {
       XCTFail("Failed to convert file contents '\(content)' to UTF8-encoded NSData",
               file: file,
               line: line)
@@ -190,14 +192,15 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   /// Creates a plist file in the test workspace with the given contents.
-  func makePlistFileNamed(name: String,
-                          withContent content: [String: AnyObject],
+  @discardableResult
+  func makePlistFileNamed(_ name: String,
+                          withContent content: [String: Any],
                           inSubdirectory subdirectory: String? = nil,
                           file: StaticString = #file,
-                          line: UInt = #line) -> NSURL? {
+                          line: UInt = #line) -> URL? {
     do {
-      let data = try NSPropertyListSerialization.dataWithPropertyList(content,
-                                                                      format: .XMLFormat_v1_0,
+      let data = try PropertyListSerialization.data(fromPropertyList: content,
+                                                                      format: .xml,
                                                                       options: 0)
       return makeFileNamed(name, withData: data, inSubdirectory: subdirectory, file: file, line: line)
     } catch let e {
@@ -207,10 +210,11 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   /// Creates a mock xcdatamodel bundle in the given subdirectory.
-  func makeTestXCDataModel(name: String,
+  @discardableResult
+  func makeTestXCDataModel(_ name: String,
                            inSubdirectory subdirectory: String,
                            file: StaticString = #file,
-                           line: UInt = #line) -> NSURL? {
+                           line: UInt = #line) -> URL? {
     guard let _ = getWorkspaceDirectory(subdirectory, file: file, line: line) else {
       return nil
     }
@@ -224,7 +228,7 @@ class BazelIntegrationTestCase: XCTestCase {
                                 inSubdirectory: dataModelPath,
                                 file: file,
                                 line: line),
-              _ = makeFileNamed("layout",
+          let _ = makeFileNamed("layout",
                                 withContent: "",
                                 inSubdirectory: dataModelPath,
                                 file: file,
@@ -236,50 +240,50 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   /// Creates a workspace-relative directory that will be cleaned up by the test on exit.
-  func makeTestSubdirectory(subdirectory: String,
+  func makeTestSubdirectory(_ subdirectory: String,
                             file: StaticString = #file,
-                            line: UInt = #line) -> NSURL? {
+                            line: UInt = #line) -> URL? {
     return getWorkspaceDirectory(subdirectory, file: file, line: line)
   }
 
   // MARK: - Private methods
 
-  private func installWorkspaceFile() {
+  fileprivate func installWorkspaceFile() {
     do {
-      try NSFileManager.defaultManager().createDirectoryAtURL(workspaceRootURL,
+      try FileManager.default.createDirectory(at: workspaceRootURL,
                                                               withIntermediateDirectories: true,
                                                               attributes: nil)
       pathsToCleanOnTeardown.insert(workspaceRootURL)
 
-      let bundle = NSBundle(forClass: self.dynamicType)
-      guard let fileURL = bundle.URLForResource("test",
+      let bundle = Bundle(for: type(of: self))
+      guard let fileURL = bundle.url(forResource: "test",
                                                 withExtension: "WORKSPACE") else {
         XCTFail("Missing required test.WORKSPACE file")
         return
       }
 
 
-      let destinationURL = workspaceRootURL.URLByAppendingPathComponent("WORKSPACE",
-                                                                        isDirectory: false)!
+      let destinationURL = workspaceRootURL.appendingPathComponent("WORKSPACE",
+                                                                        isDirectory: false)
       do {
-        let fileManager = NSFileManager.defaultManager()
-        if fileManager.fileExistsAtPath(destinationURL.path!) {
-          try fileManager.removeItemAtURL(destinationURL)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destinationURL.path) {
+          try fileManager.removeItem(at: destinationURL)
         }
-        try fileManager.copyItemAtURL(fileURL, toURL: destinationURL)
+        try fileManager.copyItem(at: fileURL, to: destinationURL)
         pathsToCleanOnTeardown.insert(destinationURL)
       } catch let e as NSError {
         XCTFail("Failed to install WORKSPACE file '\(fileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)")
         return
       }
     } catch let e as NSError {
-      XCTFail("Failed to create temp directory '\(workspaceRootURL!.path!)' for test. Error: \(e.localizedDescription)")
+      XCTFail("Failed to create temp directory '\(workspaceRootURL!.path)' for test. Error: \(e.localizedDescription)")
     }
   }
 
-  private func getWorkspaceDirectory(subdirectory: String? = nil,
+  fileprivate func getWorkspaceDirectory(_ subdirectory: String? = nil,
                                      file: StaticString = #file,
-                                     line: UInt = #line) -> NSURL? {
+                                     line: UInt = #line) -> URL? {
     guard let tempDirectory = workspaceRootURL else {
       XCTFail("Cannot create test workspace directory, workspaceRootURL is nil",
               file: file,
@@ -287,16 +291,16 @@ class BazelIntegrationTestCase: XCTestCase {
       return nil
     }
 
-    if let subdirectory = subdirectory where !subdirectory.isEmpty {
-      let directoryURL = tempDirectory.URLByAppendingPathComponent(subdirectory, isDirectory: true)!
+    if let subdirectory = subdirectory, !subdirectory.isEmpty {
+      let directoryURL = tempDirectory.appendingPathComponent(subdirectory, isDirectory: true)
       pathsToCleanOnTeardown.insert(directoryURL)
       do {
-        try NSFileManager.defaultManager().createDirectoryAtURL(directoryURL,
+        try FileManager.default.createDirectory(at: directoryURL,
                                                                 withIntermediateDirectories: true,
                                                                 attributes: nil)
         return directoryURL
       } catch let e as NSError {
-        XCTFail("Failed to create directory '\(directoryURL.path!)'. Error: \(e.localizedDescription)",
+        XCTFail("Failed to create directory '\(directoryURL.path)'. Error: \(e.localizedDescription)",
                 file: file,
                 line: line)
       }
@@ -306,24 +310,24 @@ class BazelIntegrationTestCase: XCTestCase {
     return tempDirectory
   }
 
-  private func cleanCreatedFiles() {
-    if NSUserDefaults.standardUserDefaults().boolForKey("keep_test_output") {
-      print("Retaining working files for test \(name)")
-      for url in pathsToCleanOnTeardown.sort({ $0.path! < $1.path! }) {
+  fileprivate func cleanCreatedFiles() {
+    if UserDefaults.standard.bool(forKey: "keep_test_output") {
+      print("Retaining working files for test \(String(describing: name))")
+      for url in pathsToCleanOnTeardown.sorted(by: { $0.path < $1.path }) {
         print("\t\(url)")
       }
       return
     }
 
-    let fileManager = NSFileManager.defaultManager()
+    let fileManager = FileManager.default
     // Sort such that deeper paths are removed before their parents.
-    let sortedPaths = pathsToCleanOnTeardown.sort({ $1.path! < $0.path! })
+    let sortedPaths = pathsToCleanOnTeardown.sorted(by: { $1.path < $0.path })
     for url in sortedPaths {
       do {
-        try fileManager.removeItemAtURL(url)
+        try fileManager.removeItem(at: url)
       } catch let e as NSError {
         XCTFail(String(format: "Failed to remove test's temp directory at '%@'. Error: %@",
-                       url.path!,
+                       url.path,
                        e))
       }
     }
@@ -344,10 +348,10 @@ class BazelIntegrationTestCase: XCTestCase {
     }
 
     func startLogging() {
-      observer = NSNotificationCenter.defaultCenter().addObserverForName(TulsiMessageNotification,
-                                                                         object: nil,
-                                                                         queue: nil) {
-        [weak self] (notification: NSNotification) in
+      observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TulsiMessageNotification),
+                                                        object: nil,
+                                                        queue: nil) {
+        [weak self] (notification: Notification) in
           guard let item = LogMessage(notification: notification) else {
             XCTFail("Invalid message notification received (failed to conver to LogMessage)")
             return
@@ -358,30 +362,30 @@ class BazelIntegrationTestCase: XCTestCase {
 
     func stopLogging() {
       if let observer = self.observer {
-        NSNotificationCenter.defaultCenter().removeObserver(observer)
+        NotificationCenter.default.removeObserver(observer)
       }
     }
 
-    override func warning(key: String,
+    override func warning(_ key: String,
                           comment: String,
                           details: String?,
                           context: String?,
-                          values: CVarArgType...) {
+                          values: CVarArg...) {
       LogMessage.postWarning("\(key) - \(values)")
     }
 
-    override func error(key: String,
+    override func error(_ key: String,
                         comment: String,
                         details: String?,
                         context: String?,
-                        values: CVarArgType...) {
+                        values: CVarArg...) {
       XCTFail("> Critical error logged: \(key) - \(values)")
     }
 
-    private func handleMessage(item: LogMessage) {
+    fileprivate func handleMessage(_ item: LogMessage) {
       switch item.level {
         case .Error:
-          XCTFail("> Critical error logged: \(item.message)\nDetails:\n\(item.details)")
+          XCTFail("> Critical error logged: \(item.message)\nDetails:\n\(String(describing: item.details))")
         case .Warning:
           print("> W: \(item.message)")
         case .Info:
