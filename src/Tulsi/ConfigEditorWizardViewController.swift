@@ -13,30 +13,6 @@
 // limitations under the License.
 
 import Cocoa
-// TODO(b/31675078): comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-private func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// TODO(b/31675078): comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-private func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 
 /// View controller encapsulating the Tulsi generator config wizard.
@@ -165,7 +141,8 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     // TulsiDocument, so it's set here.
     viewController.representedObject = representedObject
 
-    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.index(of: object as! String)
+    // This index is guaranteed to exist due to fixed number of pages we have.
+    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.index(of: object as! String)!
     let subview = viewController as? WizardSubviewProtocol
     subview?.presentingWizardViewController = self
     if pageController.selectedIndex < newPageIndex {
