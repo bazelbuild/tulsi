@@ -29,6 +29,7 @@ _TULSI_COMPILE_DEPS = [
     'deps',
     'extensions',
     'non_propagated_deps',
+    'test_bundle',
     'test_host',
     'xctest_app',
 ]
