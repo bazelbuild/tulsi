@@ -3,7 +3,7 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6C3E8068C00000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="SkylarkApplication.app" BlueprintName="SkylarkApplication" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
@@ -12,12 +12,9 @@
             <TestableReference skipped="NO">
                 <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
             </TestableReference>
-            <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCTest.xctest" BlueprintName="XCTest" BuildableIdentifier="primary"></BuildableReference>
-            </TestableReference>
         </Testables>
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E6C3E8068C00000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="SkylarkApplication.app" BlueprintName="SkylarkApplication" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
     <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
@@ -28,12 +25,12 @@
             <EnvironmentVariable key="projectKey" value="projectValue" isEnabled="YES"></EnvironmentVariable>
         </EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E6C3E8068C00000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="SkylarkApplication.app" BlueprintName="SkylarkApplication" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </LaunchAction>
     <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E6C3E8068C00000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="SkylarkApplication.app" BlueprintName="SkylarkApplication" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>

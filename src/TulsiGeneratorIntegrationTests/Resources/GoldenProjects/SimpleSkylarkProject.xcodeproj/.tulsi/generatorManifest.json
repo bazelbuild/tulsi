@@ -4,6 +4,7 @@
     "SkylarkApplication.app\/**",
     "SkylarkTargetApplication.app\/**",
     "XCTest.xctest\/**",
+    "XCUITest.xctest\/**",
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication-MergedInfo.plist",
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication-MergedInfo.plist",
     "lib_idx_Library_22D3B3D5.a",
@@ -13,13 +14,7 @@
     "SkylarkTargetApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.ipa"
     ],
-    "SkylarkApplication" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa"
-    ],
     "_idx_MainLibrary_E33E600C" : [
-
-    ],
-    "_idx_Library_22D3B3D5" : [
 
     ],
     "_bazel_clean_" : [
@@ -28,6 +23,16 @@
     "XCTest" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest",
       "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest.ipa"
+    ],
+    "SkylarkApplication" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa"
+    ],
+    "_idx_Library_22D3B3D5" : [
+
+    ],
+    "XCUITest" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest.ipa"
     ]
   },
   "intermediateArtifacts" : {
@@ -40,6 +45,14 @@
     ],
     "SkylarkApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a"
+    ],
+    "XCUITest" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
       "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",

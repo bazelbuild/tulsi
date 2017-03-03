@@ -27,6 +27,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   // reason, apple_watch1_extension and ios_extension are both omitted as well.
   static let filteredFileTypes = [
       "apple_unit_test",
+      "apple_ui_test",
       "objc_binary",  // TODO(abaire): Remove when app-related attributes are removed from Bazel.
       "objc_library",
       "ios_application",

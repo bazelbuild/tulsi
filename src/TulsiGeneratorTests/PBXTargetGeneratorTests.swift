@@ -412,11 +412,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                           testHostAttributeName: "test_host")
   }
 
-  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUITest() {
-    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_ui_test",
-                                                          testHostAttributeName: "test_host")
-  }
-
   func checkGenerateTargetsForLinkedRuleEntriesWithNoSources(_ testRuleType: String,
                                                              testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
@@ -531,6 +526,120 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUITest() {
+    let testRuleType = "apple_ui_test"
+    let testHostAttributeName = "test_host"
+    let rule1BuildPath = "test/app"
+    let rule1TargetName = "TestApplication"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let rule2BuildPath = "test/testbundle"
+    let rule2TargetName = "TestBundle"
+    let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
+    let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
+    let ipa = BuildLabel("test/app:TestApplication.ipa")
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
+      makeTestRuleEntry(rule2BuildTarget,
+                        type: testRuleType,
+                        attributes: rule2Attributes as [String: AnyObject],
+                        implicitIPATarget: ipa),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/app:TestApplication",
+        "BAZEL_TARGET_IPA": ipa.asFileName!,
+        "BAZEL_TARGET_TYPE": "ios_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_IPA": ipa.asFileName!,
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": rule2TargetName,
+        "SDKROOT": "iphoneos",
+        "TEST_TARGET_NAME": rule1TargetName,
+        "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule2TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
   func testGenerateTargetsForLinkedRuleEntriesWithSources() {
     checkGenerateTargetsForLinkedRuleEntriesWithSources("ios_test",
                                                         testHostAttributeName: "xctest_app")
@@ -538,11 +647,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_unit_test",
-                                                        testHostAttributeName: "test_host")
-  }
-
-  func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
-    checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_ui_test",
                                                         testHostAttributeName: "test_host")
   }
 
@@ -657,6 +761,122 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: testRuleBuildTarget)
           ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
+    let testRuleType = "apple_ui_test"
+    let testHostAttributeName = "test_host"
+    let rule1BuildPath = "test/app"
+    let rule1TargetName = "TestApplication"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let testRuleBuildPath = "test/testbundle"
+    let testRuleTargetName = "TestBundle"
+    let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
+    let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
+    let testSources = ["sourceFile1.m", "sourceFile2.mm"]
+    let appIPA = BuildLabel("test/app:TestApplication.ipa")
+    let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
+    let testRule = makeTestRuleEntry(testRuleBuildTarget,
+                                     type: testRuleType,
+                                     attributes: testRuleAttributes as [String: AnyObject],
+                                     sourceFiles: testSources,
+                                     implicitIPATarget: testIPA)
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: appIPA),
+      testRule,
+      ])
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/app:TestApplication",
+        "BAZEL_TARGET_IPA": appIPA.asFileName!,
+        "BAZEL_TARGET_TYPE": "ios_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+                                          buildTarget: rule1BuildTarget),
+          ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_IPA": testIPA.asFileName!,
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": testRuleTargetName,
+        "SDKROOT": "iphoneos",
+        "TEST_TARGET_NAME": rule1TargetName,
+        "TULSI_BUILD_PATH": testRuleBuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: testRuleTargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+                                          buildTarget: testRuleBuildTarget)
+        ]
       )
       assertTarget(expectedTarget, inTargets: targets)
     }

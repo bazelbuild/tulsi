@@ -32,6 +32,16 @@ import time
 import zipfile
 
 
+def _PrintXcodeWarning(msg):
+  sys.stdout.write(':: warning: %s\n' % msg)
+  sys.stdout.flush()
+
+
+def _PrintXcodeError(msg):
+  sys.stderr.write(':: error: %s\n' % msg)
+  sys.stderr.flush()
+
+
 class Timer(object):
   """Simple profiler."""
 
@@ -47,6 +57,42 @@ class Timer(object):
     end = time.time()
     seconds = end - self._start
     print '<*> %s completed in %0.3f ms' % (self.action_name, seconds * 1000)
+
+
+class CodesignBundleAttributes(object):
+  """Wrapper class for codesigning attributes of a signed bundle."""
+
+  # List of codesigning attributes that this script requires.
+  _ATTRIBUTES = ['Authority', 'Identifier', 'TeamIdentifier']
+
+  def __init__(self, codesign_output):
+    self.attributes = {}
+
+    pending_attributes = list(self._ATTRIBUTES)
+    for line in codesign_output.split('\n'):
+      if not pending_attributes:
+        break
+
+      for attribute in pending_attributes:
+        if line.startswith(attribute):
+          value = line[len(attribute) + 1:]
+          self.attributes[attribute] = value
+          pending_attributes.remove(attribute)
+          break
+
+    for attribute in self._ATTRIBUTES:
+      if attribute not in self.attributes:
+        _PrintXcodeError(
+            'Failed to extract %s from %s.\n' % (attribute, codesign_output))
+
+  def Get(self, attribute):
+    """Returns the value for the given attribute, or None if it wasn't found."""
+    value = self.attributes.get(attribute)
+    if attribute not in self._ATTRIBUTES:
+      _PrintXcodeError(
+          'Attribute %s not declared to be parsed. ' % attribute +
+          'Available attributes are %s.\n' % self._ATTRIBUTES)
+    return value
 
 
 class _OptionsParser(object):
@@ -366,7 +412,7 @@ class BazelBuildBridge(object):
     self.bazel_build_workspace_root = None
     self.bazel_genfiles_path = None
     self.bazel_symlink_prefix = None
-    self.signing_identities = {}
+    self.codesign_attributes = {}
 
     # Certain potentially expensive patchups need to be made for non-Xcode IDE
     # integrations. There isn't a fool-proof way of determining if the script is
@@ -387,7 +433,7 @@ class BazelBuildBridge(object):
     # the --config flag
     self.arch = os.environ.get('CURRENT_ARCH')
     if not self.arch:
-      self._PrintError('Tulsi requires env variable CURRENT_ARCH to be '
+      _PrintXcodeError('Tulsi requires env variable CURRENT_ARCH to be '
                        'set.  Please file a bug against Tulsi.')
       sys.exit(1)
 
@@ -402,12 +448,16 @@ class BazelBuildBridge(object):
     # Whether or not code coverage information should be generated.
     self.code_coverage_enabled = (
         os.environ.get('CLANG_COVERAGE_MAPPING') == 'YES')
+    # Path where Xcode expects generated sources to be placed.
+    self.derived_sources_folder_path = os.environ.get('DERIVED_SOURCES_DIR')
     # Full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
     self.full_product_name = os.environ['FULL_PRODUCT_NAME']
     # Target SDK version.
     self.sdk_version = os.environ.get('SDK_VERSION')
     # TEST_HOST for unit tests.
     self.test_host_binary = os.environ.get('TEST_HOST')
+    # Whether this target is a test or not.
+    self.is_test = os.environ.get('WRAPPER_EXTENSION') == 'xctest'
     # UTI type of the target.
     self.package_type = os.environ.get('PACKAGE_TYPE')
     # Target platform.
@@ -429,8 +479,30 @@ class BazelBuildBridge(object):
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
 
+    # Path where Xcode expects the artifacts to be written to. This is not the
+    # codesigning_path as device vs simulator builds have different signing
+    # requirements, so Xcode expects different things to be signed. This is
+    # mostly apparent on XCUITests where simulator builds set the codesigning
+    # path to be the .xctest bundle, but for device builds it is actually the
+    # UI runner app (since it needs to be codesigned to run on the device.) The
+    # contents folder path is a stable path on where to put the expected
+    # artifacts. For static libraries (objc_library, swift_library),
+    # CONTENTS_FOLDER_PATH does not exist, but the location where Xcode expects
+    # the archive coincides with the TARGET_BUILD_DIR, so using an empty
+    # default for CONTENTS_FOLDER_PATH supports both bundle and single artifact
+    # outputs.
+    # TODO(b/35811023): Check these paths are still valid.
+    self.content_folder_path = os.path.join(
+        os.environ['TARGET_BUILD_DIR'],
+        os.environ.get('CONTENTS_FOLDER_PATH', ''))
+
+    # Path to where Xcode expects the binary to be placed.
+    self.binary_path = os.path.join(
+        os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
+
+    self.is_simulator = self.platform_name.endswith('simulator')
     # Check to see if code signing actions should be skipped or not.
-    if self.platform_name.endswith('simulator'):
+    if self.is_simulator:
       self.codesigning_allowed = False
     else:
       self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
@@ -439,6 +511,11 @@ class BazelBuildBridge(object):
                                               '.tulsi',
                                               'Utils',
                                               'post_processor')
+    if self.codesigning_allowed:
+      self.runner_entitlements_template = os.path.join(self.project_file_path,
+                                                       '.tulsi',
+                                                       'Resources',
+                                                       'XCTRunner.entitlements')
 
     self.main_group_path = os.getcwd()
 
@@ -456,7 +533,7 @@ class BazelBuildBridge(object):
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
     if exit_code:
-      self._PrintError('Option parsing failed: %s' % message)
+      _PrintXcodeError('Option parsing failed: %s' % message)
       return exit_code
 
     self.verbose = parser.verbose
@@ -475,12 +552,12 @@ class BazelBuildBridge(object):
     exit_code = self._RunBazelAndPatchOutput(command)
     timer.End()
     if exit_code:
-      self._PrintError('Bazel build failed.')
+      _PrintXcodeError('Bazel build failed.')
       return exit_code
 
     exit_code = self._EnsureBazelBinIsValid()
     if exit_code:
-      self._PrintError('Failed to ensure existence of bazel-bin directory.')
+      _PrintXcodeError('Failed to ensure existence of bazel-bin directory.')
       return exit_code
 
     if parser.install_generated_artifacts:
@@ -506,12 +583,9 @@ class BazelBuildBridge(object):
       # Starting with Xcode 7.3, XCTests inject several supporting frameworks
       # into the test host that need to be signed with the same identity as
       # the host itself.
-      if (self.test_host_binary and self.xcode_version_minor >= 730 and
+      if (self.is_test and self.xcode_version_minor >= 730 and
           self.codesigning_allowed):
-        test_host_bundle = os.path.dirname(self.test_host_binary)
-        timer = Timer('Re-signing injected test host artifacts').Start()
-        exit_code = self._ResignTestHost(test_host_bundle)
-        timer.End()
+        exit_code = self._ResignTestArtifacts()
         if exit_code:
           return exit_code
 
@@ -526,7 +600,7 @@ class BazelBuildBridge(object):
       exit_code = self._UpdateLLDBInit(self.generate_dsym)
       timer.End()
       if exit_code:
-        self._PrintWarning('Updating .lldbinit action failed with code %d' %
+        _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
                            exit_code)
 
     if self.code_coverage_enabled:
@@ -534,9 +608,8 @@ class BazelBuildBridge(object):
       exit_code = self._PatchLLVMCovmapPaths()
       timer.End()
       if exit_code:
-        self._PrintWarning('Patch LLVM covmap action failed with code %d' %
+        _PrintXcodeWarning('Patch LLVM covmap action failed with code %d' %
                            exit_code)
-
     return 0
 
   def _BuildBazelCommand(self, options):
@@ -549,13 +622,13 @@ class BazelBuildBridge(object):
     if configuration.startswith(test_runner_config_prefix):
       configuration = configuration[len(test_runner_config_prefix):]
     elif os.environ.get('TULSI_TEST_RUNNER_ONLY') == 'YES':
-      self._PrintError('Building test targets with configuration "%s" is not '
+      _PrintXcodeError('Building test targets with configuration "%s" is not '
                        'allowed. Please use the "Test" action or "Build for" > '
                        '"Testing" instead.' % configuration)
       return (None, 1)
 
     if configuration not in _OptionsParser.KNOWN_CONFIGS:
-      self._PrintError('Unknown build configuration "%s"' % configuration)
+      _PrintXcodeError('Unknown build configuration "%s"' % configuration)
       return (None, 1)
 
     bazel_command.extend(options.GetStartupOptions(configuration))
@@ -637,7 +710,7 @@ class BazelBuildBridge(object):
     """Ensures that the Bazel output path points at a real directory."""
 
     if not os.path.isdir(self.bazel_bin_path):
-      self._PrintWarning('Bazel "-bin" path at "%s" non-existent' %
+      _PrintXcodeWarning('Bazel "-bin" path at "%s" non-existent' %
                          (self.bazel_bin_path))
       return 0
 
@@ -647,7 +720,7 @@ class BazelBuildBridge(object):
       try:
         os.makedirs(self.real_bazel_bin_path)
       except OSError as e:
-        self._PrintError('Failed to create Bazel binary dir at "%s". %s' %
+        _PrintXcodeError('Failed to create Bazel binary dir at "%s". %s' %
                          (self.real_bazel_bin_path, e))
         return 20
 
@@ -658,7 +731,7 @@ class BazelBuildBridge(object):
     # three components.
     path_components = self.real_bazel_bin_path.split(os.sep)
     if len(path_components) < 5:
-      self._PrintWarning('Failed to derive Bazel build root path from %r' %
+      _PrintXcodeWarning('Failed to derive Bazel build root path from %r' %
                          self.real_bazel_bin_path)
     else:
       self.bazel_build_workspace_root = (
@@ -667,24 +740,25 @@ class BazelBuildBridge(object):
 
   def _InstallArtifact(self):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
-    xcode_artifact_path = self.codesigning_folder_path
+    xcode_artifact_path = self.content_folder_path
+
     if os.path.isdir(xcode_artifact_path):
       try:
         shutil.rmtree(xcode_artifact_path)
       except OSError as e:
-        self._PrintError('Failed to remove stale output directory ""%s". '
+        _PrintXcodeError('Failed to remove stale output directory ""%s". '
                          '%s' % (xcode_artifact_path, e))
         return 600
     elif os.path.isfile(xcode_artifact_path):
       try:
         os.remove(xcode_artifact_path)
       except OSError as e:
-        self._PrintError('Failed to remove stale output file ""%s". '
+        _PrintXcodeError('Failed to remove stale output file ""%s". '
                          '%s' % (xcode_artifact_path, e))
         return 600
 
     if not self.bazel_outputs:
-      self._PrintError(
+      _PrintXcodeError(
           'Failed to find an output artifact for target %s in candidates %r' %
           (xcode_artifact_path, self.bazel_outputs))
       return 601
@@ -727,7 +801,7 @@ class BazelBuildBridge(object):
     try:
       shutil.copytree(full_source_path, output_path)
     except OSError as e:
-      self._PrintError('Copy failed. %s' % e)
+      _PrintXcodeError('Copy failed. %s' % e)
       return 650
     return 0
 
@@ -739,13 +813,13 @@ class BazelBuildBridge(object):
       try:
         os.makedirs(output_path_dir)
       except OSError as e:
-        self._PrintError('Failed to create output directory ""%s". '
+        _PrintXcodeError('Failed to create output directory ""%s". '
                          '%s' % (output_path_dir, e))
         return 650
     try:
       shutil.copy(full_source_path, output_path)
     except OSError as e:
-      self._PrintError('Copy failed. %s' % e)
+      _PrintXcodeError('Copy failed. %s' % e)
       return 650
     return 0
 
@@ -754,7 +828,7 @@ class BazelBuildBridge(object):
     self._PrintVerbose('Unpacking %s to %s' % (ipa_path, output_path))
 
     if not os.path.isfile(ipa_path):
-      self._PrintError('Generated IPA not found at "%s"' % ipa_path)
+      _PrintXcodeError('Generated IPA not found at "%s"' % ipa_path)
       return 670
 
     # We need to handle IPAs (from the native rules) differently from ZIPs
@@ -801,7 +875,7 @@ class BazelBuildBridge(object):
 
         if not filename.startswith(expected_ipa_subpath):
           # TODO(abaire): Make an error if Bazel modifies this behavior.
-          self._PrintWarning('Mismatched extraction path. IPA content at '
+          _PrintXcodeWarning('Mismatched extraction path. IPA content at '
                              '"%s" expected to have subpath of "%s"' %
                              (filename, expected_ipa_subpath))
 
@@ -821,7 +895,7 @@ class BazelBuildBridge(object):
           if not os.path.isdir(target_dir):
             os.makedirs(target_dir)
         except OSError as e:
-          self._PrintError(
+          _PrintXcodeError(
               'Failed to create target path "%s" during extraction. %s' % (
                   target_path, e))
           return 671
@@ -856,7 +930,7 @@ class BazelBuildBridge(object):
 
     bundle_parent, bundle_name = os.path.split(output_path)
     if not infoplist_path.startswith(bundle_name):
-      self._PrintWarning('Mismatch in bundle output name ("%s") and '
+      _PrintXcodeWarning('Mismatch in bundle output name ("%s") and '
                          'Info.plist subpath ("%s"). Info.plist file will not '
                          'be modified and may lead to a failure.' % (
                              output_path, infoplist_path))
@@ -884,7 +958,7 @@ class BazelBuildBridge(object):
     stdout, _ = process.communicate()
     timer.End()
     if process.returncode:
-      self._PrintWarning('Plist conversion command %r failed. %s' % (
+      _PrintXcodeWarning('Plist conversion command %r failed. %s' % (
           command, stdout))
       return 100 + process.returncode
 
@@ -909,7 +983,7 @@ class BazelBuildBridge(object):
       try:
         shutil.rmtree(output_full_path)
       except OSError as e:
-        self._PrintError('Failed to remove stale output dSYM bundle ""%s". '
+        _PrintXcodeError('Failed to remove stale output dSYM bundle ""%s". '
                          '%s' % (output_full_path, e))
         return 700, None
 
@@ -937,33 +1011,8 @@ class BazelBuildBridge(object):
 
     return 0, None
 
-  def _ResignTestHost(self, test_host):
-    """Re-signs the support frameworks in the given test host bundle."""
-    if not self.codesigning_allowed:
-      return 0
-
-    signing_identity = self._ExtractSigningIdentity(test_host)
-    if not signing_identity:
-      return 800
-    exit_code = self._ResignBundle(os.path.join(test_host,
-                                                'Frameworks',
-                                                'IDEBundleInjection.framework'),
-                                   signing_identity)
-    if exit_code != 0:
-      return exit_code
-
-    exit_code = self._ResignBundle(os.path.join(test_host,
-                                                'Frameworks',
-                                                'XCTest.framework'),
-                                   signing_identity)
-    if exit_code != 0:
-      return exit_code
-    # Note that Xcode 7.3 also re-signs the test_host itself, but this does
-    # not appear to be necessary in the Bazel-backed case.
-    return 0
-
-  def _ResignBundle(self, bundle_path, signing_identity):
-    """Re-signs the given path with a given signing identity."""
+  def _ResignBundle(self, bundle_path, signing_identity, entitlements=None):
+    """Re-signs the bundle with the given signing identity and entitlements."""
     if not self.codesigning_allowed:
       return 0
 
@@ -972,27 +1021,133 @@ class BazelBuildBridge(object):
         'xcrun',
         'codesign',
         '-f',
-        '--preserve-metadata=identifier,entitlements',
         '--timestamp=none',
         '-s',
         signing_identity,
-        bundle_path,
     ]
+
+    if entitlements:
+      command.extend(['--entitlements', entitlements])
+    else:
+      command.append('--preserve-metadata=entitlements')
+
+    command.append(bundle_path)
+
     returncode, output = self._RunSubprocess(command)
     timer.End()
     if returncode:
-      self._PrintError('Re-sign command %r failed. %s' % (command, output))
+      _PrintXcodeError('Re-sign command %r failed. %s' % (command, output))
       return 800 + returncode
     return 0
 
+  def _ResignTestArtifacts(self):
+    """Resign test related artifacts that Xcode injected into the outputs."""
+    if not self.is_test:
+      return 0
+    # Extract the signing identity from the bundle at the expected output path
+    # since that's where the signed bundle from bazel was placed.
+    signing_identity = self._ExtractSigningIdentity(self.content_folder_path)
+    if not signing_identity:
+      return 800
+
+    exit_code = 0
+    timer = Timer('Re-signing injected test host artifacts').Start()
+
+    if self.test_host_binary:
+      # For Unit tests, we need to resign the frameworks that Xcode injected
+      # into the test host bundle.
+      test_host_bundle = os.path.dirname(self.test_host_binary)
+      exit_code = self._ResignXcodeTestFrameworks(
+          test_host_bundle, signing_identity)
+    else:
+      # For UI tests, we need to resign the UI test runner app and the
+      # frameworks that Xcode injected into the runner app. The UI Runner app
+      # also needs to be signed with entitlements.
+      exit_code = self._ResignXcodeTestFrameworks(
+          self.codesigning_folder_path, signing_identity)
+      if exit_code == 0:
+        entitlements_path = self._InstantiateUIRunnerEntitlements()
+        if entitlements_path:
+          exit_code = self._ResignBundle(
+              self.codesigning_folder_path,
+              signing_identity,
+              entitlements_path)
+        else:
+          _PrintXcodeError('Could not instantiate UI runner entitlements.')
+          exit_code = 800
+
+    timer.End()
+    return exit_code
+
+  def _ResignXcodeTestFrameworks(self, bundle, signing_identity):
+    """Re-signs the support frameworks injected by Xcode in the given bundle."""
+    if not self.codesigning_allowed:
+      return 0
+
+    xcode_injected_frameworks = ['XCTest', 'IDEBundleInjection']
+
+    for framework in xcode_injected_frameworks:
+      framework_path = os.path.join(
+          bundle, 'Frameworks', '%s.framework' % framework)
+      if os.path.isdir(framework_path):
+        exit_code = self._ResignBundle(framework_path, signing_identity)
+        if exit_code != 0:
+          return exit_code
+    return 0
+
+  def _InstantiateUIRunnerEntitlements(self):
+    """Substitute team and bundle identifiers into UI runner entitlements.
+
+    This method throws an IOError exception if the template wasn't found in
+    its expected location, or an OSError if the expected output folder could
+    not be created.
+
+    Returns:
+      The path to where the entitlements file was generated.
+    """
+    if not self.codesigning_allowed:
+      return None
+    if not os.path.exists(self.derived_sources_folder_path):
+      os.makedirs(self.derived_sources_folder_path)
+
+    output_file = os.path.join(
+        self.derived_sources_folder_path,
+        self.bazel_product_name + '_UIRunner.entitlements')
+    if os.path.exists(output_file):
+      os.remove(output_file)
+
+    with open(self.runner_entitlements_template, 'r') as template:
+      contents = template.read()
+      contents = contents.replace(
+          '$(TeamIdentifier)',
+          self._ExtractSigningTeamIdentifier(self.content_folder_path))
+      contents = contents.replace(
+          '$(BundleIdentifier)',
+          self._ExtractSigningBundleIdentifier(self.content_folder_path))
+      with open(output_file, 'w') as output:
+        output.write(contents)
+    return output_file
+
   def _ExtractSigningIdentity(self, signed_bundle):
     """Returns the identity used to sign the given bundle path."""
+    return self._ExtractSigningAttribute(signed_bundle, 'Authority')
+
+  def _ExtractSigningTeamIdentifier(self, signed_bundle):
+    """Returns the team identifier used to sign the given bundle path."""
+    return self._ExtractSigningAttribute(signed_bundle, 'TeamIdentifier')
+
+  def _ExtractSigningBundleIdentifier(self, signed_bundle):
+    """Returns the bundle identifier used to sign the given bundle path."""
+    return self._ExtractSigningAttribute(signed_bundle, 'Identifier')
+
+  def _ExtractSigningAttribute(self, signed_bundle, attribute):
+    """Returns the attribute used to sign the given bundle path."""
     if not self.codesigning_allowed:
       return '<CODE_SIGNING_ALLOWED=NO>'
 
-    cached = self.signing_identities.get(signed_bundle)
+    cached = self.codesign_attributes.get(signed_bundle)
     if cached:
-      return cached
+      return cached.Get(attribute)
 
     timer = Timer('\tExtracting signature for ' + signed_bundle).Start()
     output = subprocess.check_output(['xcrun',
@@ -1001,13 +1156,10 @@ class BazelBuildBridge(object):
                                       signed_bundle],
                                      stderr=subprocess.STDOUT)
     timer.End()
-    for line in output.split('\n'):
-      if line.startswith('Authority='):
-        identity = line[10:]
-        self.signing_identities[signed_bundle] = identity
-        return identity
-    self._PrintError('Failed to extract signing identity from %s' % output)
-    return None
+
+    bundle_attributes = CodesignBundleAttributes(output)
+    self.codesign_attributes[signed_bundle] = bundle_attributes
+    return bundle_attributes.Get(attribute)
 
   _TULSI_LLDBINIT_BLOCK_START = '# <TULSI> LLDB bridge [:\n'
   _TULSI_LLDBINIT_BLOCK_END = '# ]: <TULSI> LLDB bridge\n'
@@ -1077,12 +1229,12 @@ class BazelBuildBridge(object):
       timer.End()
 
       if source_paths is None:
-        self._PrintWarning('Failed to extract source paths for LLDB. '
+        _PrintXcodeWarning('Failed to extract source paths for LLDB. '
                            'File-based breakpoints will likely not work.')
         return 900
 
       if not source_paths:
-        self._PrintWarning('Extracted 0 source paths from %r. File-based '
+        _PrintXcodeWarning('Extracted 0 source paths from %r. File-based '
                            'breakpoints may not work. Please report as a bug.' %
                            self.full_product_name)
         return 0
@@ -1107,14 +1259,12 @@ class BazelBuildBridge(object):
   def _PatchLLVMCovmapPaths(self):
     """Invokes post_processor to fix source paths in LLVM coverage maps."""
     if not self.bazel_build_workspace_root:
-      self._PrintWarning('No Bazel sandbox root was detected, unable to '
+      _PrintXcodeWarning('No Bazel sandbox root was detected, unable to '
                          'determine coverage paths to patch. Code coverage '
                          'will probably fail.')
       return 0
 
-    executable_name = os.environ['EXECUTABLE_NAME']
-    target_binary = os.path.join(self.codesigning_folder_path, executable_name)
-    if not os.path.isfile(target_binary):
+    if not os.path.isfile(self.binary_path):
       return 0
 
     self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
@@ -1126,16 +1276,16 @@ class BazelBuildBridge(object):
     if self.verbose > 1:
       args.append('-v')
     args.extend([
-        target_binary,
+        self.binary_path,
         self.bazel_build_workspace_root,
         self.workspace_root
     ])
     returncode, output = self._RunSubprocess(args)
     if returncode:
-      self._PrintWarning('Coverage map patching failed on binary %r (%d). Code '
+      _PrintXcodeWarning('Coverage map patching failed on binary %r (%d). Code '
                          'coverage will probably fail.' %
-                         (target_binary, returncode))
-      self._PrintWarning('Output: %s' % output or '<no output>')
+                         (self.binary_path, returncode))
+      _PrintXcodeWarning('Output: %s' % output or '<no output>')
       return 0
 
     return 0
@@ -1143,7 +1293,7 @@ class BazelBuildBridge(object):
   def _PatchdSYMPaths(self, dsym_bundle_path):
     """Invokes post_processor to fix source paths in dSYM DWARF data."""
     if not self.bazel_build_workspace_root:
-      self._PrintWarning('No Bazel sandbox root was detected, unable to '
+      _PrintXcodeWarning('No Bazel sandbox root was detected, unable to '
                          'determine DWARF paths to patch. Debugging will '
                          'probably fail.')
       return 0
@@ -1167,10 +1317,10 @@ class BazelBuildBridge(object):
                                               self.workspace_root), 1)
     returncode, output = self._RunSubprocess(args)
     if returncode:
-      self._PrintWarning('DWARF path patching failed on dSYM %r (%d). '
+      _PrintXcodeWarning('DWARF path patching failed on dSYM %r (%d). '
                          'Breakpoints and other debugging actions will '
                          'probably fail.' % (dsym_bundle_path, returncode))
-      self._PrintWarning('Output: %s' % output or '<no output>')
+      _PrintXcodeWarning('Output: %s' % output or '<no output>')
       return 0
 
     return 0
@@ -1187,25 +1337,19 @@ class BazelBuildBridge(object):
                 Paths will only be returned if they're available on the
                 local filesystem.
     """
-    if os.path.isfile(self.codesigning_folder_path):
-      binary_path = self.codesigning_folder_path
-    else:
-      binary_path = os.path.join(self.codesigning_folder_path,
-                                 self.bazel_product_name)
-
-    if not os.path.isfile(binary_path):
-      self._PrintWarning('No binary at expected path %r' % binary_path)
+    if not os.path.isfile(self.binary_path):
+      _PrintXcodeWarning('No binary at expected path %r' % self.binary_path)
       return None
 
     returncode, output = self._RunSubprocess([
         'xcrun',
         'dsymutil',
         '-s',
-        binary_path
+        self.binary_path
     ])
     if returncode:
-      self._PrintWarning('dsymutil returned %d while examining symtable for %r'
-                         % (returncode, binary_path))
+      _PrintXcodeWarning('dsymutil returned %d while examining symtable for %r'
+                         % (returncode, self.binary_path))
       return None
 
     # Symbol table lines of interest are of the form:
@@ -1283,19 +1427,9 @@ class BazelBuildBridge(object):
 
   # TODO(b/35624202): Remove when target.source_map problem is resolved.
   def _PrintPathNotFoundWarning(self, path):
-    self._PrintWarning('Found target source path not on local filesystem: %s' %
+    _PrintXcodeWarning('Found target source path not on local filesystem: %s' %
                        path)
-    self._PrintWarning('Ignoring path. Debugging might not work as expected.')
-
-  @staticmethod
-  def _PrintWarning(msg):
-    sys.stdout.write(':: warning: %s\n' % msg)
-    sys.stdout.flush()
-
-  @staticmethod
-  def _PrintError(msg):
-    sys.stderr.write(':: Error: %s\n' % msg)
-    sys.stderr.flush()
+    _PrintXcodeWarning('Ignoring path. Debugging might not work as expected.')
 
 
 if __name__ == '__main__':

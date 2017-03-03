@@ -37,6 +37,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
       buildScript: URL(fileURLWithPath: "/scripts/Build"),
       cleanScript: URL(fileURLWithPath: "/scripts/Clean"),
       postProcessor: URL(fileURLWithPath: "/utils/covmap_patcher"),
+      uiRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/XCTRunner.entitlements"),
       stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
       stubIOSAppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
       stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),

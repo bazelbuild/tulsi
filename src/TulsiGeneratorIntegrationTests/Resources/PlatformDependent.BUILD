@@ -173,10 +173,29 @@ objc_library(
     ],
 )
 
+objc_library(
+    name = "XCUITestCode",
+    srcs = [
+        "XCUITest/srcs/src1.mm",
+    ],
+    deps = [
+        ":Library",
+    ],
+)
+
 ios_unit_test(
     name = "XCTest",
     test_host = ":SkylarkApplication",
     deps = [
         ":XCTestCode",
+    ],
+)
+
+ios_ui_test(
+    name = "XCUITest",
+    runner = "//tools/objc/sim_devices:default_runner",
+    test_host = ":SkylarkApplication",
+    deps = [
+        ":XCUITestCode",
     ],
 )

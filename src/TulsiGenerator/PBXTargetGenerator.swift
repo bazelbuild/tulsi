@@ -1122,11 +1122,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // values, linking the test target to its host.
     if let hostProduct = hostTarget.productReference?.path,
            let hostProductName = hostTarget.productName {
-      let testSettings = [
+      let testSettings: [String: String]
+      if ruleEntry.pbxTargetType == .UIUnitTest {
+        testSettings = [
+          "TEST_TARGET_NAME": hostProductName,
+          "TULSI_TEST_RUNNER_ONLY": "YES",
+        ]
+      } else {
+        testSettings = [
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(hostProduct)/\(hostProductName)",
           "TULSI_TEST_RUNNER_ONLY": "YES",
-      ]
+        ]
+      }
 
       // Inherit the resolved values from the indexer.
       let indexerName = PBXTargetGenerator.indexerNameForTargetName(ruleEntry.label.targetName!,
