@@ -973,11 +973,17 @@ class BazelBuildBridge(object):
     # ios_application's will have a dSYM generated with the linked obj_binary's
     # filename, so the target_dsym will never actually match.
     target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME')
-    # TODO(b/33945592): This is a workaround for the bug in Bazel which leads to
-    # incorrectly named dSYM bundles from extension targets.
-    target_dsym = target_dsym.replace('.appex', '.app')
     if not target_dsym:
       return 0, None
+
+    input_dsym_full_path = os.path.join(self.build_path, target_dsym)
+    # ios_extension incorrectly names dSYM bundles as .app while
+    # skylark_ios_extension correctly names them with .appex. To support both
+    # rules, try and locate either name.
+    if not os.path.isdir(input_dsym_full_path):
+      target_dsym = target_dsym.replace('.appex', '.app')
+      input_dsym_full_path = os.path.join(self.build_path, target_dsym)
+
     output_full_path = os.path.join(output_dir, target_dsym)
     if os.path.isdir(output_full_path):
       try:
@@ -987,7 +993,6 @@ class BazelBuildBridge(object):
                          '%s' % (output_full_path, e))
         return 700, None
 
-    input_dsym_full_path = os.path.join(self.build_path, target_dsym)
     if os.path.isdir(input_dsym_full_path):
       exit_code = self._CopyBundle(target_dsym,
                                    input_dsym_full_path,
