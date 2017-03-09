@@ -699,7 +699,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String = "") {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
-    let bazelPath = bazelURL.path
+    let bazelPath = commandLineScriptBazelPath()
     bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
                                                         buildToolPath: "\(scriptPath)",
                                                         buildArguments: "\"\(bazelPath)\" \"\(bazelBinPath)\"",
@@ -1512,7 +1512,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                     withOptionsForTargetLabel target: BuildLabel) -> String {
     var commandLine = "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
-        "--bazel \"\(bazelURL.path)\" " +
+        "--bazel \"\(commandLineScriptBazelPath())\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
         "--verbose "
 
@@ -1586,5 +1586,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                  optionFlag: "--bazel_startup_options")
 
     return commandLine
+  }
+
+  private func commandLineScriptBazelPath() -> String {
+   if bazelURL.relativePath.isEmpty == false {
+      return bazelURL.relativePath
+   }
+   return bazelURL.path
   }
 }
