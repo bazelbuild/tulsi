@@ -22,9 +22,9 @@ public struct BazelLocator {
   /// workspace.
   public static let DefaultBazelURLKey = "defaultBazelURL"
 
-  static func findBazelForWorkspaceRoot(workspaceRoot: NSURL?) -> NSURL? {
+  static func findBazelForWorkspaceRoot(workspaceRoot: URL?) -> URL? {
     // TODO(abaire): Fall back to searching the user's path if no default exists.
-    return NSUserDefaults.standardUserDefaults().URLForKey(BazelLocator.DefaultBazelURLKey)
+    return UserDefaults.standard.url(forKey: BazelLocator.DefaultBazelURLKey)
   }
 
   // MARK: - Private methods

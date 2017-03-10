@@ -27,18 +27,17 @@ final class EventLogger {
 
   deinit {
     if let observer = self.observer {
-      NSNotificationCenter.defaultCenter().removeObserver(observer)
+      NotificationCenter.default.removeObserver(observer)
     }
   }
 
   func startLogging() {
-    observer = NSNotificationCenter.defaultCenter().addObserverForName(TulsiMessageNotification,
-                                                                       object: nil,
-                                                                       queue: nil) {
-      [weak self] (notification: NSNotification) in
+    observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TulsiMessageNotification),
+                                                      object: nil,
+                                                      queue: nil) {
+      [weak self] (notification: Notification) in
         guard let item = LogMessage(notification: notification),
-              let verbose = self?.verbose
-              where verbose || item.level != .Info else {
+              let verbose = self?.verbose, verbose || item.level != .Info else {
           return
         }
 
