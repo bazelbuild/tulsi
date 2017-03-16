@@ -31,6 +31,9 @@ import textwrap
 import time
 import zipfile
 
+# TOOD(b/35322727): Remove when this is the default behavior.
+USE_DYNAMIC_OUTPUTS = False
+
 
 def _PrintXcodeWarning(msg):
   sys.stdout.write(':: warning: %s\n' % msg)
@@ -634,6 +637,19 @@ class BazelBuildBridge(object):
     bazel_command.extend(options.GetStartupOptions(configuration))
     bazel_command.append('build')
     bazel_command.extend(options.GetBuildOptions(configuration))
+
+    if USE_DYNAMIC_OUTPUTS:
+      # Do not follow symlinks on __file__ in case this script is linked during
+      # development.
+      tulsi_package_dir = os.path.abspath(
+          os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
+      package_path = '%%workspace%%:%s' % tulsi_package_dir
+
+      bazel_command.extend([
+          '--experimental_show_artifacts',
+          '--output_groups=tulsi-outputs,default',
+          '--aspects', '/tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect',
+          '--package_path=%s' % package_path])
 
     if self.code_coverage_enabled:
       self._PrintVerbose('Enabling code coverage information.')

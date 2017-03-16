@@ -589,9 +589,37 @@ def _tulsi_sources_aspect(target, ctx):
       transitive_attributes=transitive_attributes,
   )
 
+def _tulsi_outputs_aspect(target, ctx):
+  """Collects outputs of each build invocation."""
+
+  # TODO(b/35322727): Move apple_watch2_extension into _IPA_GENERATING_RULES
+  # when dynamic outputs is the default strategy and it does need to be
+  # special-cased above.
+  if ctx.rule.kind not in _IPA_GENERATING_RULES + ['apple_watch2_extension']:
+    return
+
+  # An IPA output is guaranteed to exist for rules in _IPA_GENERATING_RULES
+  ipa_output = [x.path for x in target.files if x.path.endswith('.ipa')][0]
+  info = _struct_omitting_none(ipa=ipa_output)
+
+  output = ctx.new_file(target.label.name + '.tulsiouts')
+  ctx.file_action(output, info.to_json())
+
+  return struct(
+      output_groups={
+          'tulsi-outputs': [output],
+      },
+  )
+
 
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
-    attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
+)
+
+
+# This aspect does not propagate past the top-level target because we only need
+# the IPA, which is at top level.
+tulsi_outputs_aspect = aspect(
+    implementation=_tulsi_outputs_aspect,
 )

@@ -36,18 +36,33 @@ final class XcodeProjectGenerator {
     let stubIOSAppExInfoPlist: URL  // Stub Info.plist (needed for app extension targets).
     let stubWatchOS2InfoPlist: URL  // Stub Info.plist (needed for watchOS2 app targets).
     let stubWatchOS2AppExInfoPlist: URL  // Stub Info.plist (needed for watchOS2 appex targets).
+
+    // In order to load tulsi_aspects, Tulsi constructs a Bazel repository inside of the generated
+    // Xcode project. Its structure looks like this:
+    // ├── Bazel
+    // │   ├── WORKSPACE
+    // │   └── tulsi
+    // │       ├── file1
+    // │       └── ...
+    // These two items define the content of this repository, including the WORKSPACE file and the
+    // "tulsi" package.
+    let bazelWorkspaceFile: URL // Stub WORKSPACE file.
+    let tulsiPackageFiles: [URL] // Files to copy into the "tulsi" package.
   }
 
   /// Path relative to PROJECT_FILE_PATH in which Tulsi generated files (scripts, artifacts, etc...)
   /// should be placed.
   private static let TulsiArtifactDirectory = ".tulsi"
   static let ScriptDirectorySubpath = "\(TulsiArtifactDirectory)/Scripts"
+  static let BazelDirectorySubpath = "\(TulsiArtifactDirectory)/Bazel"
+  static let TulsiPackageName = "tulsi"
   static let UtilDirectorySubpath = "\(TulsiArtifactDirectory)/Utils"
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
+  private static let WorkspaceFile = "WORKSPACE"
   private static let PostProcessorUtil = "post_processor"
   private static let UIRunnerEntitlements = "XCTRunner.entitlements"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
@@ -179,6 +194,7 @@ final class XcodeProjectGenerator {
                                           projectURL: projectURL,
                                           projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
+    installTulsiBazelPackage(projectURL)
     installUtilities(projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
@@ -723,6 +739,30 @@ final class XcodeProjectGenerator {
                     (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
                    ],
                    toDirectory: scriptDirectoryURL)
+
+      localizedMessageLogger.logProfilingEnd(profilingToken)
+    }
+  }
+
+  private func installTulsiBazelPackage(_ projectURL: URL) {
+
+    let bazelWorkspaceURL = projectURL.appendingPathComponent(XcodeProjectGenerator.BazelDirectorySubpath,
+                                                              isDirectory: true)
+    let bazelPackageURL = bazelWorkspaceURL.appendingPathComponent(XcodeProjectGenerator.TulsiPackageName,
+                                                                   isDirectory: true)
+
+    if createDirectory(bazelPackageURL) {
+      let profilingToken = localizedMessageLogger.startProfiling("installing_package",
+                                                                 context: config.projectName)
+      let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
+      defer { progressNotifier.incrementValue() }
+      localizedMessageLogger.infoMessage("Installing Bazel integration package")
+
+      installFiles([(resourceURLs.bazelWorkspaceFile, XcodeProjectGenerator.WorkspaceFile)],
+                   toDirectory: bazelWorkspaceURL)
+      installFiles(resourceURLs.tulsiPackageFiles.map { ($0, $0.lastPathComponent) },
+                   toDirectory: bazelPackageURL)
+
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
   }

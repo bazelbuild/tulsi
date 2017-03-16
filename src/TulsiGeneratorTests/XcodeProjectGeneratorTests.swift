@@ -41,7 +41,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
       stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
       stubIOSAppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
       stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
-      stubWatchOS2AppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"))
+      stubWatchOS2AppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"),
+      workspaceFile: URL(fileURLWithPath: "/WORKSPACE"),
+      packageFiles: [URL(fileURLWithPath: "/tulsi/tulsi_aspects.bzl")])
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil
@@ -227,6 +229,12 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
     let resources = projectURL.appendingPathComponent(".tulsi/Resources")
     mockFileManager.allowedDirectoryCreates.insert(resources.path)
+
+    let tulsiBazelRoot = projectURL.appendingPathComponent(".tulsi/Bazel")
+    mockFileManager.allowedDirectoryCreates.insert(tulsiBazelRoot.path)
+
+    let tulsiBazelPackage = projectURL.appendingPathComponent(".tulsi/Bazel/tulsi")
+    mockFileManager.allowedDirectoryCreates.insert(tulsiBazelPackage.path)
 
     mockExtractor.labelToRuleEntry = ruleEntries
 
