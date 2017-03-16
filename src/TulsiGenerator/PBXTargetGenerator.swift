@@ -172,8 +172,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     } else {
       workspaceDirName = self.workspaceRootURL.lastPathComponent
     }
-    return self.bazelBinPath.replacingOccurrences(of: "-bin",
-                                                                  with: "-\(workspaceDirName)")
+    return self.bazelBinPath.replacingOccurrences(of: "-bin", with: "-\(workspaceDirName)")
   }()
 
   let project: PBXProject
