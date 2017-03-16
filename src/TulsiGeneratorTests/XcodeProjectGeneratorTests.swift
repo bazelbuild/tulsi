@@ -42,8 +42,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
       stubIOSAppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
       stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
       stubWatchOS2AppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"),
-      workspaceFile: URL(fileURLWithPath: "/WORKSPACE"),
-      packageFiles: [URL(fileURLWithPath: "/tulsi/tulsi_aspects.bzl")])
+      bazelWorkspaceFile: URL(fileURLWithPath: "/WORKSPACE"),
+      tulsiPackageFiles: [URL(fileURLWithPath: "/tulsi/tulsi_aspects.bzl")])
 
   var config: TulsiGeneratorConfig! = nil
   var mockLocalizedMessageLogger: MockLocalizedMessageLogger! = nil

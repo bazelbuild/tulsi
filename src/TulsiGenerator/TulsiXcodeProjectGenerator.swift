@@ -57,8 +57,8 @@ public final class TulsiXcodeProjectGenerator {
         stubIOSAppExInfoPlist: bundle.url(forResource: "StubIOSAppExtensionInfoPlist", withExtension: "plist")!,
         stubWatchOS2InfoPlist: bundle.url(forResource: "StubWatchOS2InfoPlist", withExtension: "plist")!,
         stubWatchOS2AppExInfoPlist: bundle.url(forResource: "StubWatchOS2AppExtensionInfoPlist", withExtension: "plist")!,
-        workspaceFile: bundle.url(forResource: "WORKSPACE", withExtension: nil)!,
-        packageFiles: bundle.urls(forResourcesWithExtension: nil, subdirectory: "tulsi")!)
+        bazelWorkspaceFile: bundle.url(forResource: "WORKSPACE", withExtension: nil)!,
+        tulsiPackageFiles: bundle.urls(forResourcesWithExtension: nil, subdirectory: "tulsi")!)
 
     // Note: A new extractor is created on each generate in order to allow users to modify their
     // BUILD files (or add new files to glob's) and regenerate without restarting Tulsi.
