@@ -614,6 +614,7 @@ def _tulsi_outputs_aspect(target, ctx):
 
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
+    attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
 )
 
