@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
+		E6AF4947517E0F5200000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28517E0F5200000001 /* src1.mm */; };
+		E6AF4947517E0F5200000001 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28517E0F5200000000 /* src1.mm */; };
 		E6AF49475401417600000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C285401417600000000 /* src1.m */; };
 		E6AF494756F87EF800000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2856F87EF800000000 /* src4.m */; };
 		E6AF4947577B7A7A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28577B7A7A00000000 /* src3.m */; };
@@ -42,6 +44,8 @@
 		43D68C284342A9EC00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
+		43D68C28517E0F5200000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
+		43D68C28517E0F5200000001 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
 		43D68C2851D95C9600000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextualHdrsHeader.h; sourceTree = "<group>"; };
 		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
 		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
@@ -54,6 +58,7 @@
 		43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_MainLibrary_E33E600C.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCUITestCode_XCTestCode_1D881332.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -87,6 +92,7 @@
 				966FB6DE59D91CB800000000 /* blaze-bin */,
 				43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */,
 				43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */,
+				43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,6 +184,30 @@
 			path = srcs;
 			sourceTree = "<group>";
 		};
+		966FB6DEB73A031C00000002 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28517E0F5200000000 /* src1.mm */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEB73A031C00000003 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28517E0F5200000001 /* src1.mm */,
+			);
+			path = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DEBECFDF8000000000 /* XCUITest */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEB73A031C00000003 /* srcs */,
+			);
+			path = XCUITest;
+			sourceTree = "<group>";
+		};
 		966FB6DEC5C9C21400000000 /* Binary */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,8 +235,18 @@
 				966FB6DEC5C9C21400000000 /* Binary */,
 				966FB6DE29C889FA00000000 /* Library */,
 				C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */,
+				966FB6DEEF2E7F4000000000 /* XCTest */,
+				966FB6DEBECFDF8000000000 /* XCUITest */,
 			);
 			path = tulsi_e2e_simple_skylark;
+			sourceTree = "<group>";
+		};
+		966FB6DEEF2E7F4000000000 /* XCTest */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DEB73A031C00000002 /* srcs */,
+			);
+			path = XCTest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +335,23 @@
 			productReference = 43D68C28B9C699F600000000 /* SkylarkApplication.app */;
 			productType = "com.apple.product-type.application";
 		};
+		3D31C5E6E6705AFE00000000 /* _idx_XCUITestCode_XCTestCode_1D881332 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */;
+			buildPhases = (
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B42A0C7226900000000 /* PBXTargetDependency */,
+			);
+			name = _idx_XCUITestCode_XCTestCode_1D881332;
+			productName = _idx_XCUITestCode_XCTestCode_1D881332;
+			productReference = 43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
@@ -361,6 +418,7 @@
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
 				3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */,
 				3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */,
+				3D31C5E6E6705AFE00000000 /* _idx_XCUITestCode_XCTestCode_1D881332 */,
 			);
 		};
 /* End PBXProject section */
@@ -442,6 +500,15 @@
 			files = (
 				E6AF49477466E43000000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */,
 				E6AF49473611DBCE00000000 /* main.m in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF4947517E0F5200000000 /* src1.mm in srcs */,
+				E6AF4947517E0F5200000001 /* src1.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +688,22 @@
 			};
 			name = Debug;
 		};
+		44936BD67EED3C4D00000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
 		44936BD6A3D45CE900000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -773,6 +856,22 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
+				SDKROOT = iphonesimulator;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				VALID_ARCHS = x86_64;
@@ -1131,6 +1230,14 @@
 				44936BD6A3D45CE900000000 /* Release */,
 				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

@@ -8,11 +8,15 @@
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication-MergedInfo.plist",
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication-MergedInfo.plist",
     "lib_idx_Library_22D3B3D5.a",
-    "lib_idx_MainLibrary_E33E600C.a"
+    "lib_idx_MainLibrary_E33E600C.a",
+    "lib_idx_XCUITestCode_XCTestCode_1D881332.a"
   ],
   "targets" : {
     "SkylarkTargetApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.ipa"
+    ],
+    "_idx_XCUITestCode_XCTestCode_1D881332" : [
+
     ],
     "_idx_MainLibrary_E33E600C" : [
 
@@ -55,16 +59,22 @@
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_bundle.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a"
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libXCUITestCode.a"
     ],
     "XCTest" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest_test_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest_test_bundle.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a"
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libXCTestCode.a"
     ]
   },
   "fileReferences" : [
@@ -83,6 +93,8 @@
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src4.m",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/textual_hdrs\/TextualHdrsHeader.h",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/xibs\/xib.xib",
-    "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**"
+    "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/src1.mm",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/src1.mm"
   ]
 }

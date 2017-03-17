@@ -24,7 +24,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
 
   // For the sake of simplicity in maintaining the golden data, copied Tulsi artifacts are
   // assumed to have been installed correctly.
-  private let copiedTulsiArtifactRegex = try! NSRegularExpression(pattern: "^Only in .*?\\.xcodeproj/.tulsi: .+$",
+  private let copiedTulsiArtifactRegex = try! NSRegularExpression(pattern: "^Only in .*?\\.xcodeproj/\\.tulsi.+$",
                                                                   options: [])
 
   final func validateDiff(_ diffLines: [String], file: StaticString = #file, line: UInt = #line) {
