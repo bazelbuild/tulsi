@@ -163,6 +163,7 @@ class _OptionsParser(object):
     self.verbose = 0
     self.install_generated_artifacts = False
     self.bazel_bin_path = 'bazel-bin'
+    self.bazel_package_path = None
     self.bazel_executable = None
 
   @staticmethod
@@ -187,6 +188,9 @@ class _OptionsParser(object):
 
         --bazel_bin_path <path>
             Path at which Bazel-generated artifacts may be retrieved.
+
+        --bazel_package_path <path>
+            The value of the package_path variable in Bazel workspace.
       """ % sys.argv[0])
 
     usage += '\n' + textwrap.fill(
@@ -312,6 +316,12 @@ class _OptionsParser(object):
         self.bazel_bin_path = args[0]
         args = args[1:]
 
+      elif arg == '--bazel_package_path':
+        if not args:
+          return ('Missing required parameter for %s' % arg, 2)
+        self.bazel_package_path = args[0]
+        args = args[1:]
+
       elif arg == '--verbose':
         self.verbose += 1
 
@@ -411,6 +421,7 @@ class BazelBuildBridge(object):
     self.bazel_bin_path = None
     # The actual path to the Bazel output directory (not a symlink)
     self.real_bazel_bin_path = None
+    self.bazel_package_path = None
     # The path to the Bazel's sandbox source root.
     self.bazel_build_workspace_root = None
     self.bazel_genfiles_path = None
@@ -547,6 +558,7 @@ class BazelBuildBridge(object):
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
+    self.bazel_package_path = parser.bazel_package_path
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
       return retval
@@ -643,7 +655,7 @@ class BazelBuildBridge(object):
       # development.
       tulsi_package_dir = os.path.abspath(
           os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
-      package_path = '%%workspace%%:%s' % tulsi_package_dir
+      package_path = '%s:%s' % (self.bazel_package_path, tulsi_package_dir)
 
       bazel_command.extend([
           '--experimental_show_artifacts',

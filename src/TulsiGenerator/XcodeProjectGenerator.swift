@@ -267,6 +267,7 @@ final class XcodeProjectGenerator {
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
+                                                bazelPackagePath: workspaceInfoExtractor.bazelPackagePath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
                                                 stubInfoPlistPaths: plistPaths,

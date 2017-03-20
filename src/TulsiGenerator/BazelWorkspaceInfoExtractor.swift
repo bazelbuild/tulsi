@@ -32,6 +32,11 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return workspacePathFetcher.getBazelBinPath()
   }
 
+  /// Returns the package path. Note that this may block.
+  var bazelPackagePath: String {
+    return workspacePathFetcher.getPackagePath()
+  }
+
   /// Fetcher object from which a workspace's package_path may be obtained.
   private let workspacePathFetcher: BazelWorkspacePathInfoFetcher
 

@@ -319,6 +319,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   required init(bazelURL: URL,
                 bazelBinPath: String,
+                bazelPackagePath: String,
                 project: PBXProject,
                 buildScriptPath: String,
                 stubInfoPlistPaths: StubInfoPlistPaths,

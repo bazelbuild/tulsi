@@ -53,6 +53,7 @@ protocol PBXTargetGeneratorProtocol: class {
 
   init(bazelURL: URL,
        bazelBinPath: String,
+       bazelPackagePath: String,
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
@@ -174,6 +175,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
     return self.bazelBinPath.replacingOccurrences(of: "-bin", with: "-\(workspaceDirName)")
   }()
+
+  /// Bazel's package_path value.
+  let bazelPackagePath: String
 
   let project: PBXProject
   let buildScriptPath: String
@@ -392,6 +396,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   init(bazelURL: URL,
        bazelBinPath: String,
+       bazelPackagePath: String,
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
@@ -403,6 +408,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        redactWorkspaceSymlink: Bool = false) {
     self.bazelURL = bazelURL
     self.bazelBinPath = bazelBinPath
+    self.bazelPackagePath = bazelPackagePath
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.stubInfoPlistPaths = stubInfoPlistPaths
@@ -1468,6 +1474,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "\(buildLabels) " +
         "--bazel \"\(bazelURL.path)\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
+        "--bazel_package_path \"\(bazelPackagePath)\" " +
         "--verbose "
 
     func addPerConfigValuesForOptions(_ optionKeys: [TulsiOptionKey],
