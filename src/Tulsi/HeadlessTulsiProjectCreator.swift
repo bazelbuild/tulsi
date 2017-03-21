@@ -141,7 +141,8 @@ struct HeadlessTulsiProjectCreator {
     try addDefaultConfig(document,
                          named: projectName,
                          bazelPackages: bazelPackages,
-                         targets: targets)
+                         targets: targets,
+                         additionalSourcePaths: arguments.additionalPathFilters)
   }
 
   private func processBazelPackages(_ document: TulsiProjectDocument,
@@ -169,7 +170,8 @@ struct HeadlessTulsiProjectCreator {
   private func addDefaultConfig(_ projectDocument: TulsiProjectDocument,
                                 named projectName: String,
                                 bazelPackages: Set<String>,
-                                targets: [String]) throws {
+                                targets: [String],
+                                additionalSourcePaths: Set<String>? = nil) throws {
     let additionalFilePaths = bazelPackages.map() { "\($0)/BUILD" }
     guard let generatorConfigFolderURL = projectDocument.generatorConfigFolderURL else {
       fatalError("Config folder unexpectedly nil")
@@ -193,6 +195,11 @@ struct HeadlessTulsiProjectCreator {
 
     // Add a single source path including every possible source.
     configDocument.sourcePaths = [UISourcePath(path: ".", selected: true, recursive: true)]
+    if let sourcePaths = additionalSourcePaths {
+        // TODO(tmarsh): this this currently assumes that the paths are recursive. A more robust solution would
+        // be preferred to handle both recursive and non-recursive cases.
+        configDocument.sourcePaths += sourcePaths.map { UISourcePath(path: $0, selected: false, recursive: true) }
+    }
     configDocument.headlessSave(projectName)
   }
 
