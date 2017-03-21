@@ -195,8 +195,10 @@ struct HeadlessTulsiProjectCreator {
 
     // Add a single source path including every possible source.
     configDocument.sourcePaths = [UISourcePath(path: ".", selected: true, recursive: true)]
-    if additionalSourcePaths != nil {
-        configDocument.sourcePaths += additionalSourcePaths!.map { UISourcePath(path: $0, selected: true, recursive: true) }
+    if let sourcePaths = additionalSourcePaths {
+        // TODO(tmarsh): this this currently assumes that the paths are recursive. A more robust solution would
+        // be preferred to handle both recursive and non-recursive cases.
+        configDocument.sourcePaths += sourcePaths.map { UISourcePath(path: $0, selected: false, recursive: true) }
     }
     configDocument.headlessSave(projectName)
   }
