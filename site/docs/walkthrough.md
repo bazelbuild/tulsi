@@ -111,10 +111,13 @@ her project.
 
 ```
 # Tulsi user-specific data.
-.tulsiconf-user
+*.tulsiconf-user
 
 # Xcode user data.
 xcuserdata
+
+# Tulsi-related Bazel symlinks (which are generally self-cleaned).
+tulsigen-*
 ```
 
 She then adds the `Albahaca.tulsiproj` bundle and her `generate_project.sh`
