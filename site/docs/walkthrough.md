@@ -115,6 +115,10 @@ her project.
 
 # Xcode user data.
 xcuserdata
+# Alternatively, if all Xcode projects in this repository are going to be Tulsi-
+# generated, the entire xcodeproj bundle may be ignored by uncommenting the
+# following line.
+# *.xcodeproj
 
 # Tulsi-related Bazel symlinks (which are generally self-cleaned).
 tulsigen-*
