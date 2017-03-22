@@ -83,15 +83,16 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                   additionalFilePaths: [String] = [],
                                   outputDir: String,
                                   options: TulsiOptionSet = TulsiOptionSet()) -> URL? {
-    let userDefaults = UserDefaults.standard
-    let buildOptions =  userDefaults.string(forKey: "testBazelBuildOptions") ?? ""
-
-    if let startupOptions = userDefaults.string(forKey: "testBazelStartupOptions") {
-      options[.BazelBuildStartupOptionsDebug].projectValue = startupOptions
+    if !bazelStartupOptions.isEmpty {
+      options[.BazelBuildStartupOptionsDebug].projectValue =
+          bazelStartupOptions.joined(separator: " ")
     }
 
-    options[.BazelBuildOptionsDebug].projectValue = "--define=TULSI_TEST=dbg " + buildOptions
-    options[.BazelBuildOptionsRelease].projectValue = "--define=TULSI_TEST=rel " + buildOptions
+    let debugBuildOptions = ["--define=TULSI_TEST=dbg"] + bazelBuildOptions
+    let releaseBuildOptions = ["--define=TULSI_TEST=rel"] + bazelBuildOptions
+
+    options[.BazelBuildOptionsDebug].projectValue = debugBuildOptions.joined(separator: " ")
+    options[.BazelBuildOptionsRelease].projectValue = releaseBuildOptions.joined(separator: " ")
 
     let config = TulsiGeneratorConfig(projectName: projectName,
                                       buildTargets: buildTargets,
@@ -119,6 +120,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     // The workspace symlink is forced to a known value.
     projectGenerator.xcodeProjectGenerator.redactWorkspaceSymlink = true
+    // The bazel package path is forced to a known value.
+    projectGenerator.xcodeProjectGenerator.redactBazelPackagePath = true
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

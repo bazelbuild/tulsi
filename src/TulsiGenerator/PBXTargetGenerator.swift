@@ -62,7 +62,8 @@ protocol PBXTargetGeneratorProtocol: class {
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceRootURL: URL,
        suppressCompilerDefines: Bool,
-       redactWorkspaceSymlink: Bool)
+       redactWorkspaceSymlink: Bool,
+       redactBazelPackagePath: Bool)
 
   /// Generates file references for the given file paths in the associated project without adding
   /// them to an indexer target. The paths must be relative to the workspace root. If pathFilters is
@@ -405,10 +406,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceRootURL: URL,
        suppressCompilerDefines: Bool = false,
-       redactWorkspaceSymlink: Bool = false) {
+       redactWorkspaceSymlink: Bool = false,
+       redactBazelPackagePath: Bool = false) {
     self.bazelURL = bazelURL
     self.bazelBinPath = bazelBinPath
-    self.bazelPackagePath = bazelPackagePath
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.stubInfoPlistPaths = stubInfoPlistPaths
@@ -418,6 +419,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.workspaceRootURL = workspaceRootURL
     self.suppressCompilerDefines = suppressCompilerDefines
     self.redactWorkspaceSymlink = redactWorkspaceSymlink
+
+    if redactBazelPackagePath {
+      // Use a stub value that can be recognized as such in generated projects for tests.
+      self.bazelPackagePath = "PLACEHOLDER_PACKAGE_PATH"
+    } else {
+      self.bazelPackagePath = bazelPackagePath
+    }
   }
 
   func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?) {

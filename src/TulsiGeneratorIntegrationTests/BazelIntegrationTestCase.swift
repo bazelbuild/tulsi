@@ -76,11 +76,30 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Prevent any custom --blazerc startup option to be specified. It should always be /dev/null.
     for startupOption in bazelStartupOptions {
-      if (startupOption.hasPrefix("--blazerc=") && startupOption != "--blazerc=/dev/null") {
-        fatalError("bazelStartupOptions includes custom blazerc, which is not allowed '\(startupOption)'")
+      if (startupOption.hasPrefix("--blazerc") && startupOption != "--blazerc=/dev/null") {
+        fatalError("testBazelStartupOptions includes custom blazerc, which is not allowed '\(startupOption)'")
       }
     }
     bazelStartupOptions.append("--blazerc=/dev/null")
+
+    // Prevent any custom --*_minimum_os build option to be specified for tests, as this will
+    // effectively remove the reproduceability of the generated projects.
+    for bazelBuildOption in bazelBuildOptions {
+      if (bazelBuildOption.hasPrefix("--ios_minimum_os") ||
+        bazelBuildOption.hasPrefix("--macos_minimum_os") ||
+        bazelBuildOption.hasPrefix("--tvos_minimum_os")  ||
+        bazelBuildOption.hasPrefix("--watchos_minimum_os")) {
+        fatalError("testBazelBuildOptions includes minimum deployment " +
+            "version '\(bazelBuildOption)'. Setting this value is not allowed.")
+      }
+    }
+
+    // Set the default deployment versions for all platforms to prevent different Xcode from
+    // producing different generated projects that only differ on *_DEPLOYMENT_VERSION values.
+    bazelBuildOptions.append("--ios_minimum_os=7.0")
+    bazelBuildOptions.append("--macos_minimum_os=10.10")
+    bazelBuildOptions.append("--tvos_minimum_os=10.0")
+    bazelBuildOptions.append("--watchos_minimum_os=3.0")
 
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")

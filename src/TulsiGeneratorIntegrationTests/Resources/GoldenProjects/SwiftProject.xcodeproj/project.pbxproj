@@ -116,7 +116,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				84B4227179F903CA00000000 /* ShellScript */,
+				84B42271458F98E700000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -170,7 +170,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B4227179F903CA00000000 /* ShellScript */ = {
+		84B42271458F98E700000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -181,7 +181,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_swift:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg  -- --bazel_options[Release] --define=TULSI_TEST=rel  -- --bazel_startup_options[Debug] '--blazerc=/dev/null' --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_swift:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --bazel_package_path \"PLACEHOLDER_PACKAGE_PATH\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -259,8 +259,8 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -274,9 +274,9 @@
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -334,8 +334,8 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -349,9 +349,9 @@
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -415,8 +415,8 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -481,8 +481,8 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
