@@ -328,7 +328,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 localizedMessageLogger: LocalizedMessageLogger,
                 workspaceRootURL: URL,
                 suppressCompilerDefines: Bool,
-                redactWorkspaceSymlink: Bool) {
+                redactWorkspaceSymlink: Bool,
+                redactBazelPackagePath: Bool) {
     self.project = project
   }
 
