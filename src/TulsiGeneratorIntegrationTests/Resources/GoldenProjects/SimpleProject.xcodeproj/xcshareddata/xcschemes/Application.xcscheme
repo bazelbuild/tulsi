@@ -5,9 +5,6 @@
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="Application.app" BlueprintName="Application" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="NO" buildForTesting="NO" buildForRunning="NO" buildForAnalyzing="YES" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6FB1188CA00000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="lib_idx_XCTest_Binary_31228BEA.a" BlueprintName="_idx_XCTest_Binary_31228BEA" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
         </BuildActionEntries>
         <PreActions>
             <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">

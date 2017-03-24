@@ -5,9 +5,6 @@
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E6420BCBAA00000000" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj" BuildableName="TestSuiteXCTest.xctest" BlueprintName="TestSuiteXCTest" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="NO" buildForTesting="NO" buildForRunning="NO" buildForAnalyzing="YES" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E6320A289C00000000" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj" BuildableName="lib_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C.a" BlueprintName="_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Debug">

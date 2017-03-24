@@ -589,27 +589,6 @@ final class XcodeProjectGenerator {
         additionalBuildTargets.append(hostTargetTuple)
       }
 
-      // Certain rules, like `ios_application`, only refer to their sources through a binary target.
-      let buildLabel: BuildLabel
-      if let binaryName = entry.attributes[.binary] as? String {
-        buildLabel = BuildLabel(binaryName)
-      } else {
-        buildLabel = entry.label
-      }
-
-      let indexerName = PBXTargetGenerator.indexerNameForTargetName(buildLabel.targetName!,
-                                                                    hash: buildLabel.hashValue)
-      if let indexerTarget = info.indexerTargets[indexerName] {
-        let indexerBuildActionEntryAttributes =
-            XcodeScheme.makeBuildActionEntryAttributes(test: false,
-                                                       run: false,
-                                                       profile: false,
-                                                       archive: false)
-        let indexerTargetTuple =
-            (indexerTarget, projectBundleName, indexerBuildActionEntryAttributes)
-        additionalBuildTargets.append(indexerTargetTuple)
-      }
-
       let scheme = XcodeScheme(target: target,
                                project: info.project,
                                projectBundleName: projectBundleName,

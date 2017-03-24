@@ -11,9 +11,6 @@
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
                 <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="Application.app" BlueprintName="Application" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="NO" buildForTesting="NO" buildForRunning="NO" buildForAnalyzing="YES" buildForProfiling="NO">
-                <BuildableReference BlueprintIdentifier="3D31C5E69AB58ADE00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598.a" BlueprintName="_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
     <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Debug">
