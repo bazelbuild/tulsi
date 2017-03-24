@@ -91,8 +91,10 @@ final class BazelAspectInfoExtractor {
                                          progressNotifier: progressNotifier) {
       (task: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer { semaphore.signal() }
+        let artifacts = generatedArtifacts?.filter { $0.hasSuffix(".tulsiinfo") }
+
         if task.terminationStatus == 0,
-           let artifacts = generatedArtifacts, !artifacts.isEmpty {
+          let artifacts = artifacts, !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
         } else {
@@ -323,6 +325,25 @@ final class BazelAspectInfoExtractor {
       let bundleID = dict["bundle_id"] as? String
       let extensionBundleID = dict["ext_bundle_id"] as? String
 
+      var extensionType: String?
+      if ruleType == "ios_extension", let infoplistPath = dict["infoplist"] as? String {
+        // TODO(dmishe): This relies on the fact the Plist will be located next to the .tulsiinfo
+        // file for the same target. It would be better to get an absolute path to the plist from
+        // bazel.
+        let plistPath = URL(fileURLWithPath: filename)
+            .deletingLastPathComponent()
+            .appendingPathComponent(infoplistPath).path
+        guard let info = NSDictionary(contentsOfFile: plistPath) else {
+          throw ExtractorError.parsingFailed("Unable to load ios_extension plist file: \(plistPath)")
+        }
+
+        guard let _extensionType = info.value(forKeyPath: "NSExtension.NSExtensionPointIdentifier") as? String else {
+          throw ExtractorError.parsingFailed("Missing NSExtensionPointIdentifier in extension plist: \(plistPath)")
+        }
+
+        extensionType = _extensionType
+      }
+
       let ruleEntry = RuleEntry(label: ruleLabel,
                                 type: ruleType,
                                 attributes: attributes,
@@ -345,7 +366,8 @@ final class BazelAspectInfoExtractor {
                                 swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 objCModuleMaps: objCModuleMaps,
-                                implicitIPATarget: implictIPATarget)
+                                implicitIPATarget: implictIPATarget,
+                                extensionType: extensionType)
       progressNotifier?.incrementValue()
       return ruleEntry
     }

@@ -20,8 +20,8 @@ import XCTest
 class PBXTargetGeneratorTests: XCTestCase {
   let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
-  let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
-                                          iOSAppExStub: "TestIOSAppExStub.plist",
+  let stubPlistPaths = StubInfoPlistPaths(resourcesDirectory: "${PROJECT_FILE_PATH}/.tulsi/Resources",
+                                          defaultStub: "TestInfo.plist",
                                           watchOSStub: "TestWatchOS2Info.plist",
                                           watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"
@@ -104,8 +104,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
   let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
-  let stubPlistPaths = StubInfoPlistPaths(defaultStub: "TestInfo.plist",
-                                          iOSAppExStub: "TestIOSAppExStub.plist",
+  let stubPlistPaths = StubInfoPlistPaths(resourcesDirectory:"${PROJECT_ROOT}/asd",
+                                          defaultStub: "TestInfo.plist",
                                           watchOSStub: "TestWatchOS2Info.plist",
                                           watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
   let testTulsiVersion = "9.99.999.9999"

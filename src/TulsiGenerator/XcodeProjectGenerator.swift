@@ -33,7 +33,7 @@ final class XcodeProjectGenerator {
     let postProcessor: URL  // Binary post processor utility.
     let uiRunnerEntitlements: URL  // Entitlements file template for UI Test runner apps.
     let stubInfoPlist: URL  // Stub Info.plist (needed for Xcode 8).
-    let stubIOSAppExInfoPlist: URL  // Stub Info.plist (needed for app extension targets).
+    let stubIOSAppExInfoPlistTemplate: URL  // Stub Info.plist (needed for app extension targets).
     let stubWatchOS2InfoPlist: URL  // Stub Info.plist (needed for watchOS2 app targets).
     let stubWatchOS2AppExInfoPlist: URL  // Stub Info.plist (needed for watchOS2 appex targets).
 
@@ -66,7 +66,6 @@ final class XcodeProjectGenerator {
   private static let PostProcessorUtil = "post_processor"
   private static let UIRunnerEntitlements = "XCTRunner.entitlements"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
-  private static let StubInfoIOSAppExPlistFilename = "StubIOSAppExInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
 
@@ -81,6 +80,7 @@ final class XcodeProjectGenerator {
   private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
 
   /// Exposed for testing. Simply writes the given NSData to the given NSURL.
+  /// TODO(dmishe): Use fileManager instance to perform writes, and remove this block.
   var writeDataHandler: (URL, Data) throws -> Void = { (outputFileURL: URL, data: Data) in
     try data.write(to: outputFileURL, options: NSData.WritingOptions.atomic)
   }
@@ -168,7 +168,15 @@ final class XcodeProjectGenerator {
 
     let mainGroup = pbxTargetGeneratorType.mainGroupForOutputFolder(outputFolderURL,
                                                                     workspaceRootURL: workspaceRootURL)
-    let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup)
+
+    let projectResourcesDirectory = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)"
+    let plistPaths = StubInfoPlistPaths(
+      resourcesDirectory: projectResourcesDirectory,
+      defaultStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoPlistFilename)",
+      watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
+      watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
+
+    let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup, stubInfoPlistPaths: plistPaths)
 
     let serializingProgressNotifier = ProgressNotifier(name: SerializingXcodeProject,
                                                        maxValue: 1,
@@ -202,6 +210,9 @@ final class XcodeProjectGenerator {
     installUtilities(projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
+    installStubExtensionPlistFiles(projectURL,
+                                   rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType == .AppExtension },
+                                   plistPaths: plistPaths)
 
     let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders",
                                                                            context: config.projectName)
@@ -253,7 +264,7 @@ final class XcodeProjectGenerator {
   }
 
   // Generates a PBXProject and a returns it along with a set of
-  private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup) throws -> GeneratedProjectInfo {
+  private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup, stubInfoPlistPaths: StubInfoPlistPaths) throws -> GeneratedProjectInfo {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
 
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool, enabled {
@@ -262,19 +273,14 @@ final class XcodeProjectGenerator {
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
-    let projectResourcesDirectory = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ProjectResourcesDirectorySubpath)"
-    let plistPaths = StubInfoPlistPaths(
-        defaultStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoPlistFilename)",
-        iOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubInfoIOSAppExPlistFilename)",
-        watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
-        watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
+
 
     let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 bazelPackagePath: workspaceInfoExtractor.bazelPackagePath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
-                                                stubInfoPlistPaths: plistPaths,
+                                                stubInfoPlistPaths: stubInfoPlistPaths,
                                                 tulsiVersion: tulsiVersion,
                                                 options: config.options,
                                                 localizedMessageLogger: localizedMessageLogger,
@@ -823,11 +829,72 @@ final class XcodeProjectGenerator {
 
     installFiles([(resourceURLs.uiRunnerEntitlements, XcodeProjectGenerator.UIRunnerEntitlements),
                   (resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename),
-                  (resourceURLs.stubIOSAppExInfoPlist, XcodeProjectGenerator.StubInfoIOSAppExPlistFilename),
                   (resourceURLs.stubWatchOS2InfoPlist, XcodeProjectGenerator.StubWatchOS2InfoPlistFilename),
                   (resourceURLs.stubWatchOS2AppExInfoPlist, XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename),
                  ],
                  toDirectory: targetDirectoryURL)
+
+
+    localizedMessageLogger.logProfilingEnd(profilingToken)
+  }
+
+  private func installStubExtensionPlistFiles(_ projectURL: URL, rules: [RuleEntry], plistPaths: StubInfoPlistPaths) {
+    let targetDirectoryURL = projectURL.appendingPathComponent(XcodeProjectGenerator.ProjectResourcesDirectorySubpath,
+                                                               isDirectory: true)
+    guard createDirectory(targetDirectoryURL) else { return }
+    let profilingToken = localizedMessageLogger.startProfiling("installing_plist_files",
+                                                               context: config.projectName)
+    localizedMessageLogger.infoMessage("Installing plist files")
+
+    let templatePath = resourceURLs.stubIOSAppExInfoPlistTemplate.path
+    guard let plistTemplateData = fileManager.contents(atPath: templatePath) else {
+      localizedMessageLogger.error("PlistTemplateNotFound",
+                                   comment: LocalizedMessageLogger.bugWorthyComment("Failed to load a plist template"),
+                                   context: config.projectName,
+                                   values: templatePath)
+      return
+    }
+
+    let plistTemplate: NSDictionary
+    do {
+      plistTemplate = try PropertyListSerialization.propertyList(from: plistTemplateData,
+                                                                 options: PropertyListSerialization.ReadOptions.mutableContainers,
+                                                                 format: nil) as! NSDictionary
+    } catch let e {
+      localizedMessageLogger.error("PlistDeserializationFailed",
+                                   comment: LocalizedMessageLogger.bugWorthyComment("Failed to deserialize a plist template"),
+                                   context: config.projectName,
+                                   values: resourceURLs.stubIOSAppExInfoPlistTemplate.path, e.localizedDescription)
+      return
+    }
+
+    for entry in rules {
+      plistTemplate.setValue(entry.extensionType, forKeyPath: "NSExtension.NSExtensionPointIdentifier")
+
+      let plistName = plistPaths.plistFilename(forRuleEntry: entry)
+      let targetURL = URL(string: plistName, relativeTo: targetDirectoryURL)!
+
+      let data: Data
+      do {
+        data = try PropertyListSerialization.data(fromPropertyList: plistTemplate, format: .xml, options: 0)
+      } catch let e {
+        localizedMessageLogger.error("SerializingPlistFailed",
+                                     comment: LocalizedMessageLogger.bugWorthyComment("Failed to serialize a plist template"),
+                                     context: config.projectName,
+                                     values: e.localizedDescription)
+        return
+      }
+
+      guard fileManager.createFile(atPath: targetURL.path, contents: data, attributes: nil) else {
+        localizedMessageLogger.error("WritingPlistFailed",
+                                     comment: LocalizedMessageLogger.bugWorthyComment("Failed to write a plist template"),
+                                     context: config.projectName,
+                                     values: targetURL.path)
+        return
+      }
+    }
+
+
     localizedMessageLogger.logProfilingEnd(profilingToken)
   }
 

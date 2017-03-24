@@ -536,6 +536,13 @@ def _tulsi_sources_aspect(target, ctx):
     transitive_attributes['swift_toolchain'] = swift_toolchain
     transitive_attributes['has_swift_dependency'] = True
 
+  # Collect Info.plist files from an extension to figure out its type.
+  infoplist = None
+
+  # Only Skylark versions of ios_extension have the 'apple_bundle' provider.
+  if target_kind == 'ios_extension' and hasattr(target, 'apple_bundle'):
+    infoplist = target.apple_bundle.infoplist
+
   all_attributes = attributes + inheritable_attributes + transitive_attributes
   info = _struct_omitting_none(
       artifacts=artifacts,
@@ -566,12 +573,16 @@ def _tulsi_sources_aspect(target, ctx):
       swift_transitive_modules=swift_transitive_modules,
       objc_module_maps=list(objc_module_maps),
       type=target_kind,
+      infoplist=infoplist.basename if infoplist else None,
   )
 
   # Create an action to write out this target's info.
   output = ctx.new_file(target.label.name + '.tulsiinfo')
   ctx.file_action(output, info.to_json())
   tulsi_info_files += set([output])
+
+  if infoplist:
+    tulsi_info_files += [infoplist]
 
   return struct(
       # Matches the --output_groups on the bazel commandline.

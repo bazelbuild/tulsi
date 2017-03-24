@@ -271,7 +271,7 @@
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
-		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; };
+		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = post_processor.xcodeproj; path = tools/post_processor/post_processor.xcodeproj; sourceTree = "<group>"; };
 		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };

@@ -258,6 +258,9 @@ public final class RuleEntry: RuleInfo {
   /// The CFBundleIdentifier of the watchOS extension target associated with this rule, if any.
   public let extensionBundleID: String?
 
+  /// The NSExtensionPointIdentifier of the extension associated with this rule, if any.
+  public let extensionType: String?
+
   /// Returns the set of non-versioned artifacts that are not source files.
   public var normalNonSourceArtifacts: [BazelFileInfo] {
     var artifacts = [BazelFileInfo]()
@@ -351,7 +354,8 @@ public final class RuleEntry: RuleInfo {
        swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
-       implicitIPATarget: BuildLabel? = nil) {
+       implicitIPATarget: BuildLabel? = nil,
+       extensionType: String? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
     for (key, value) in attributes {
@@ -391,6 +395,7 @@ public final class RuleEntry: RuleInfo {
     self.swiftTransitiveModules = swiftTransitiveModules
     self.objCModuleMaps = objCModuleMaps
     self.implicitIPATarget = implicitIPATarget
+    self.extensionType = extensionType
 
     var linkedTargetLabels = Set<BuildLabel>()
     for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
@@ -425,7 +430,8 @@ public final class RuleEntry: RuleInfo {
                    swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],
-                   implicitIPATarget: BuildLabel? = nil) {
+                   implicitIPATarget: BuildLabel? = nil,
+                   extensionType: String? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
@@ -449,7 +455,8 @@ public final class RuleEntry: RuleInfo {
               swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
-              implicitIPATarget: implicitIPATarget)
+              implicitIPATarget: implicitIPATarget,
+              extensionType: extensionType)
   }
 
   public func discoverIntermediateArtifacts(_ ruleEntryMap: [BuildLabel: RuleEntry]) -> Set<BazelFileInfo> {

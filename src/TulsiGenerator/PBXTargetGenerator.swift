@@ -16,29 +16,35 @@ import Foundation
 
 /// Provides a set of project paths to stub Info.plist files to be used by generated targets.
 struct StubInfoPlistPaths {
+  let resourcesDirectory: String
   let defaultStub: String
-  let iOSAppExStub: String
   let watchOSStub: String
   let watchOSAppExStub: String
 
-  func stubPlist(_ type: PBXTarget.ProductType) -> String {
-    switch type {
-      case .Watch1App:
-        fallthrough
-      case .Watch2App:
-        return watchOSStub
+  func stubPlist(_ entry: RuleEntry) -> String {
 
-      case .Watch1Extension:
-        fallthrough
-      case .Watch2Extension:
-        return watchOSAppExStub
+    switch entry.pbxTargetType! {
+    case .Watch1App, .Watch2App:
+      return watchOSStub
 
-      case .AppExtension:
-        return iOSAppExStub
+    case .Watch1Extension, .Watch2Extension:
+      return watchOSAppExStub
 
-      default:
-        return defaultStub
+    case .AppExtension:
+      return stubProjectPath(forRuleEntry: entry)
+
+    default:
+      return defaultStub
     }
+  }
+
+  func plistFilename(forRuleEntry ruleEntry: RuleEntry) -> String {
+    return "Stub_\(ruleEntry.label.asFullPBXTargetName!).plist"
+  }
+
+  func stubProjectPath(forRuleEntry ruleEntry: RuleEntry) -> String {
+    let fileName = plistFilename(forRuleEntry: ruleEntry)
+    return "\(resourcesDirectory)/\(fileName)"
   }
 }
 
@@ -843,7 +849,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if let sdkRoot = entry.XcodeSDKRoot {
       buildSettings["SDKROOT"] = sdkRoot
     }
-    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(extensionTargetType)
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.watchOSAppExStub
     if let extensionBundleID = entry.extensionBundleID {
       buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = extensionBundleID
     } else {
@@ -1346,7 +1352,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // An invalid launch image is set in order to suppress Xcode's warning about missing default
     // launch images.
     buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
-    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(pbxTargetType)
+    buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(entry)
 
     if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
       buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget

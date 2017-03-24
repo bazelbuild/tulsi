@@ -68,4 +68,8 @@ class LocalizedMessageLogger {
   func syslogMessage(_ message: String, details: String? = nil, context: String? = nil) {
     LogMessage.postSyslog(message, details: details, context: context)
   }
+
+  static func bugWorthyComment(_ comment: String) -> String {
+    return "\(comment). The resulting project will most likely be broken. A bug should be reported."
+  }
 }

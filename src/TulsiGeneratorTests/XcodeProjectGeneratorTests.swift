@@ -39,7 +39,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
       postProcessor: URL(fileURLWithPath: "/utils/covmap_patcher"),
       uiRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/XCTRunner.entitlements"),
       stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
-      stubIOSAppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
+      stubIOSAppExInfoPlistTemplate: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
       stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
       stubWatchOS2AppExInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"),
       bazelWorkspaceFile: URL(fileURLWithPath: "/WORKSPACE"),
@@ -74,6 +74,51 @@ class XcodeProjectGeneratorTests: XCTestCase {
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcuserdata/USER.xcuserdatad/WorkspaceSettings.xcsettings"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-path-to-target-target.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-MainTarget.xcscheme"))
+    } catch let e {
+      XCTFail("Unexpected exception \(e)")
+    }
+  }
+
+  func testExtensionPlistGeneration() {
+    @discardableResult
+    func addRule(_ labelName: String,
+                 type: String,
+                 attributes: [String: AnyObject] = [:],
+                 weakDependencies: Set<BuildLabel>? = nil,
+                 extensions: Set<BuildLabel>? = nil,
+                 extensionType: String? = nil) -> BuildLabel {
+      let label = BuildLabel(labelName)
+      mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
+                                                                           type: type,
+                                                                           attributes: attributes,
+                                                                           weakDependencies: weakDependencies,
+                                                                           extensions: extensions,
+                                                                           extensionType: extensionType)
+      return label
+    }
+
+    let test1 = addRule("//test:ExtFoo", type: "ios_extension", extensionType: "com.apple.extension-foo")
+    let test2 = addRule("//test:ExtBar", type: "ios_extension", extensionType: "com.apple.extension-bar")
+    addRule("//test:Application", type: "ios_application", extensions: [test1, test2])
+    prepareGenerator(mockExtractor.labelToRuleEntry)
+
+    func assertPlist(withData data: Data, equalTo value: NSDictionary) {
+      let content = try! PropertyListSerialization.propertyList(from: data, options: PropertyListSerialization.ReadOptions.mutableContainers, format: nil) as! NSDictionary
+      XCTAssertEqual(content, value)
+    }
+
+    do {
+      _ = try generator.generateXcodeProjectInFolder(outputFolderURL)
+      mockLocalizedMessageLogger.assertNoErrors()
+      mockLocalizedMessageLogger.assertNoWarnings()
+
+      XCTAssert(mockFileManager.writeOperations.keys.contains("\(xcodeProjectPath)/.tulsi/Resources/Stub_test-ExtFoo.plist"))
+      assertPlist(withData: mockFileManager.writeOperations["\(xcodeProjectPath)/.tulsi/Resources/Stub_test-ExtFoo.plist"]!,
+                  equalTo: ["NSExtension": ["NSExtensionPointIdentifier": "com.apple.extension-foo"]])
+
+      XCTAssert(mockFileManager.writeOperations.keys.contains("\(xcodeProjectPath)/.tulsi/Resources/Stub_test-ExtBar.plist"))
+      assertPlist(withData: mockFileManager.writeOperations["\(xcodeProjectPath)/.tulsi/Resources/Stub_test-ExtBar.plist"]!,
+                  equalTo: ["NSExtension": ["NSExtensionPointIdentifier": "com.apple.extension-bar"]])
     } catch let e {
       XCTFail("Unexpected exception \(e)")
     }
@@ -187,7 +232,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
                                     generatedIncludePaths: [RuleEntry.IncludePath]? = nil,
-                                    implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
+                                    implicitIPATarget: BuildLabel? = nil,
+                                    extensions: Set<BuildLabel>? = nil,
+                                    extensionType: String? = nil) -> RuleEntry {
     return RuleEntry(label: label,
                      type: type,
                      attributes: attributes,
@@ -197,9 +244,11 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      dependencies: dependencies,
                      secondaryArtifacts: secondaryArtifacts,
                      weakDependencies: weakDependencies,
+                     extensions: extensions,
                      buildFilePath: buildFilePath,
                      generatedIncludePaths: generatedIncludePaths,
-                     implicitIPATarget: implicitIPATarget)
+                     implicitIPATarget: implicitIPATarget,
+                     extensionType: extensionType)
   }
 
   private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry]) {
@@ -236,6 +285,10 @@ class XcodeProjectGeneratorTests: XCTestCase {
     let tulsiBazelPackage = projectURL.appendingPathComponent(".tulsi/Bazel/tulsi")
     mockFileManager.allowedDirectoryCreates.insert(tulsiBazelPackage.path)
 
+    let mockTemplate = ["NSExtension": ["NSExtensionPointIdentifier": "com.apple.intents-service"]]
+    let templateData = try! PropertyListSerialization.data(fromPropertyList: mockTemplate, format: .xml, options: 0)
+    mockFileManager.mockContent[resourceURLs.stubIOSAppExInfoPlistTemplate.path] = templateData
+
     mockExtractor.labelToRuleEntry = ruleEntries
 
     generator = XcodeProjectGenerator(workspaceRootURL: workspaceRoot,
@@ -258,6 +311,8 @@ class MockFileManager: FileManager {
   var filesThatExist = Set<String>()
   var allowedDirectoryCreates = Set<String>()
   var copyOperations = [String: String]()
+  var writeOperations = [String: Data]()
+  var mockContent = [String: Data]()
 
   override func fileExists(atPath path: String) -> Bool {
     return filesThatExist.contains(path)
@@ -295,6 +350,18 @@ class MockFileManager: FileManager {
 
   override func copyItem(atPath srcPath: String, toPath dstPath: String) throws {
     copyOperations[dstPath] = srcPath
+  }
+
+  override func contents(atPath path: String) -> Data? {
+    return mockContent[path]
+  }
+
+  override func createFile(atPath path: String, contents data: Data?, attributes attr: [String : Any]? = nil) -> Bool {
+    if writeOperations.keys.contains(path) {
+      fatalError("Attempting to overwrite an existing file at \(path)")
+    }
+    writeOperations[path] = data
+    return true
   }
 }
 
