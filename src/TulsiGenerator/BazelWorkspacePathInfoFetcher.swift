@@ -106,6 +106,7 @@ class BazelWorkspacePathInfoFetcher {
       localizedMessageLogger.error("BazelBinaryNotFound",
                                    comment: "Error to show when the bazel binary cannot be found at the previously saved location %1$@.",
                                    values: bazelURL as NSURL)
+      fetchCompleted = true
       return
     }
 
