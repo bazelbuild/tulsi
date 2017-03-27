@@ -85,3 +85,6 @@
 
 /* Warning shown when generation of an Xcode scheme failed for build target %1$@ */
 "XCSchemeGenerationFailed" = "Failed to resolve target '%1$@', skipping scheme generation.";
+
+/* Warning shown when generating an Xcode schema for target %1$@ which uses unsupported legacy ios_extension rule */
+"LegacyIOSExtensionNotSupported" = "iOS extension %1$@ is using legacy packaging rules which is not supported. Please migrate to the new rules.";

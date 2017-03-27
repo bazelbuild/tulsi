@@ -556,6 +556,7 @@ final class XcodeProjectGenerator {
 
       let url = xcschemesURL.appendingPathComponent(filename)
       let appExtension: Bool
+      let extensionType: String?
       let launchStyle: XcodeScheme.LaunchStyle
       let runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode
       let targetType = entry.pbxTargetType ?? .Application
@@ -564,18 +565,19 @@ final class XcodeProjectGenerator {
           appExtension = true
           launchStyle = .AppExtension
           runnableDebuggingMode = .Default
+          extensionType = entry.extensionType
 
-        case .Watch1App:
-          fallthrough
-        case .Watch2App:
+        case .Watch1App, .Watch2App:
           appExtension = false
+          extensionType = nil
           launchStyle = .Normal
-          runnableDebuggingMode = .WatchOS
+          runnableDebuggingMode = .Remote
 
         default:
           appExtension = false
           launchStyle = .Normal
           runnableDebuggingMode = .Default
+          extensionType = nil
       }
 
       var additionalBuildTargets = target.buildActionDependencies.map() {
@@ -601,13 +603,15 @@ final class XcodeProjectGenerator {
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                appExtension: appExtension,
+                               extensionType: extensionType,
                                launchStyle: launchStyle,
                                runnableDebuggingMode: runnableDebuggingMode,
                                additionalBuildTargets: additionalBuildTargets,
                                commandlineArguments: commandlineArguments(for: entry),
                                environmentVariables: environmentVariables(for: entry),
                                preActionScripts:preActionScripts(for: entry),
-                               postActionScripts:postActionScripts(for: entry))
+                               postActionScripts:postActionScripts(for: entry),
+                               localizedMessageLogger: localizedMessageLogger)
       let xmlDocument = scheme.toXML()
 
 
@@ -686,7 +690,8 @@ final class XcodeProjectGenerator {
                                commandlineArguments: commandlineArguments(for: suite),
                                environmentVariables: environmentVariables(for: suite),
                                preActionScripts: preActionScripts(for: suite),
-                               postActionScripts:postActionScripts(for: suite))
+                               postActionScripts:postActionScripts(for: suite),
+                               localizedMessageLogger: localizedMessageLogger)
       let xmlDocument = scheme.toXML()
 
 
