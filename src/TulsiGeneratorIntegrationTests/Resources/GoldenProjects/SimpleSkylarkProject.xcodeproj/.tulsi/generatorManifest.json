@@ -93,6 +93,7 @@
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src4.m",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/textual_hdrs\/TextualHdrsHeader.h",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/xibs\/xib.xib",
+    "..\/..\/tulsi_e2e_simple_skylark\/Settings.bundle\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/src1.mm",
     "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/src1.mm"

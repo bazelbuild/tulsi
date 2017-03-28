@@ -60,6 +60,7 @@
 		43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_MainLibrary_E33E600C.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCUITestCode_XCTestCode_1D881332.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
+		43D68C2894BEDE5200000000 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
@@ -234,6 +235,7 @@
 				43D68C28B7EA446800000000 /* BUILD */,
 				966FB6DEC5C9C21400000000 /* Binary */,
 				966FB6DE29C889FA00000000 /* Library */,
+				43D68C2894BEDE5200000000 /* Settings.bundle */,
 				C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */,
 				966FB6DEEF2E7F4000000000 /* XCTest */,
 				966FB6DEBECFDF8000000000 /* XCUITest */,

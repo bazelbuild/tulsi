@@ -108,6 +108,7 @@ skylark_ios_application(
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
+    settings_bundle = ":SettingsBundle",
     deps = [":MainLibrary"],
 )
 
@@ -118,6 +119,13 @@ skylark_ios_application(
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
     deps = [":MainLibrary"],
+)
+
+objc_bundle(
+    name = "SettingsBundle",
+    bundle_imports = [
+        "Settings.bundle/Root.plist",
+    ],
 )
 
 objc_library(

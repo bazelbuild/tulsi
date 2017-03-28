@@ -28,6 +28,7 @@ _TULSI_COMPILE_DEPS = [
     'bundles',
     'deps',
     'extensions',
+    'settings_bundle',
     'non_propagated_deps',
     'test_bundle',
     'test_host',
@@ -229,7 +230,7 @@ def _collect_asset_catalogs(rule_attr):
 def _collect_bundle_imports(rule_attr):
   """Extracts bundle directories from the given rule attributes."""
   return _collect_bundle_paths(rule_attr,
-                               ['bundle_imports'],
+                               ['bundle_imports', 'settings_bundle'],
                                '.bundle')
 
 
