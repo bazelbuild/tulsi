@@ -305,11 +305,11 @@ final class BazelAspectInfoExtractor {
       let macOSDeploymentTarget = dict["macos_deployment_target"] as? String
       let tvOSDeploymentTarget = dict["tvos_deployment_target"] as? String
       let watchOSDeploymentTarget = dict["watchos_deployment_target"] as? String
-      let implictIPATarget: BuildLabel?
+      let implicitIPATarget: BuildLabel?
       if let ipaLabel = dict["ipa_output_label"] as? String {
-        implictIPATarget = BuildLabel(ipaLabel)
+        implicitIPATarget = BuildLabel(ipaLabel)
       } else {
-        implictIPATarget = nil
+        implicitIPATarget = nil
       }
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
       let swiftLanguageVersion = dict["swift_language_version"] as? String
@@ -366,7 +366,7 @@ final class BazelAspectInfoExtractor {
                                 swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 objCModuleMaps: objCModuleMaps,
-                                implicitIPATarget: implictIPATarget,
+                                implicitIPATarget: implicitIPATarget,
                                 extensionType: extensionType)
       progressNotifier?.incrementValue()
       return ruleEntry
