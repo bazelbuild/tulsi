@@ -1393,6 +1393,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       intermediateArtifacts = []
     }
 
+    // TODO(b/35322727): Remove when this is on by default.
+    buildSettings["TULSI_USE_DYNAMIC_OUTPUTS"] = "YES"
+
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually
     // compile anything).

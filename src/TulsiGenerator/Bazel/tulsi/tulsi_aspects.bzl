@@ -514,6 +514,8 @@ def _tulsi_sources_aspect(target, ctx):
   if binary_attributes:
     inheritable_attributes = binary_attributes + inheritable_attributes
 
+  # TODO(b/35322727): Remove this logic when outputs are discovered using
+  # tulsi_outputs_aspect
   ipa_output_label = None
   if target_kind == 'apple_watch2_extension':
     # watch2 extensions need to use the IPA produced for the app_name attribute.
@@ -601,18 +603,32 @@ def _tulsi_sources_aspect(target, ctx):
       transitive_attributes=transitive_attributes,
   )
 
+
 def _tulsi_outputs_aspect(target, ctx):
   """Collects outputs of each build invocation."""
 
   # TODO(b/35322727): Move apple_watch2_extension into _IPA_GENERATING_RULES
   # when dynamic outputs is the default strategy and it does need to be
   # special-cased above.
-  if ctx.rule.kind not in _IPA_GENERATING_RULES + ['apple_watch2_extension']:
-    return
+  ipa_output_name = None
+  target_kind = ctx.rule.kind
+  if target_kind == 'apple_watch2_extension':
+    # watch2 extensions need to use the IPA produced for the app_name attribute.
+    ipa_output_name = _get_opt_attr(target, 'attr.app_name')
+  elif target_kind in _IPA_GENERATING_RULES:
+    ipa_output_name = target.label.name
 
-  # An IPA output is guaranteed to exist for rules in _IPA_GENERATING_RULES
-  ipa_output = [x.path for x in target.files if x.path.endswith('.ipa')][0]
-  info = _struct_omitting_none(ipa=ipa_output)
+  artifacts = [x.path for x in target.files]
+  if ipa_output_name:
+    # Some targets produce more than one IPA or ZIP (e.g. ios_test will generate
+    # two IPAs for the test and host bundles), we want to filter only exact
+    # matches to label name.
+    # TODO(b/37244852): Use a defined provider to get outputs instead.
+
+    # x[:-4] strips the extension part.
+    artifacts = [x for x in artifacts if x[:-4].endswith(ipa_output_name)]
+
+  info = _struct_omitting_none(artifacts=artifacts)
 
   output = ctx.new_file(target.label.name + '.tulsiouts')
   ctx.file_action(output, info.to_json())
@@ -632,7 +648,7 @@ tulsi_sources_aspect = aspect(
 
 
 # This aspect does not propagate past the top-level target because we only need
-# the IPA, which is at top level.
+# the top target outputs.
 tulsi_outputs_aspect = aspect(
     implementation=_tulsi_outputs_aspect,
 )

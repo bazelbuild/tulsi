@@ -20,6 +20,7 @@ main group in order to generate correct debug symbols.
 """
 
 import collections
+import json
 import os
 import re
 import shutil
@@ -30,9 +31,6 @@ import tempfile
 import textwrap
 import time
 import zipfile
-
-# TOOD(b/35322727): Remove when this is the default behavior.
-USE_DYNAMIC_OUTPUTS = False
 
 
 def _PrintXcodeWarning(msg):
@@ -442,6 +440,8 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
+    self.use_dynamic_outputs = (
+        os.environ.get('TULSI_USE_DYNAMIC_OUTPUTS', 'NO') == 'YES')
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -564,7 +564,7 @@ class BazelBuildBridge(object):
       return retval
 
     timer = Timer('Running Bazel').Start()
-    exit_code = self._RunBazelAndPatchOutput(command)
+    exit_code, outputs = self._RunBazelAndPatchOutput(command)
     timer.End()
     if exit_code:
       _PrintXcodeError('Bazel build failed.')
@@ -577,7 +577,7 @@ class BazelBuildBridge(object):
 
     if parser.install_generated_artifacts:
       timer = Timer('Installing artifacts').Start()
-      exit_code = self._InstallArtifact()
+      exit_code = self._InstallArtifact(outputs)
       timer.End()
       if exit_code:
         return exit_code
@@ -650,7 +650,8 @@ class BazelBuildBridge(object):
     bazel_command.append('build')
     bazel_command.extend(options.GetBuildOptions(configuration))
 
-    if USE_DYNAMIC_OUTPUTS:
+    if self.use_dynamic_outputs:
+      self._PrintVerbose('Using dynamic outputs')
       # Do not follow symlinks on __file__ in case this script is linked during
       # development.
       tulsi_package_dir = os.path.abspath(
@@ -711,6 +712,7 @@ class BazelBuildBridge(object):
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
                                bufsize=1)
+    output_locations = []
     linebuf = ''
     while process.returncode is None:
       for line in process.stdout.readline():
@@ -720,7 +722,16 @@ class BazelBuildBridge(object):
         if not line.endswith('\n'):
           linebuf += line
           continue
-        line = patch_xcode_parsable_line(linebuf + line)
+
+        complete_line = linebuf + line
+        # >>> marks the start of an aspect output location.
+        # .tulsiouts files contin build output locations
+        # TODO(b/35322727): Use BEP instead of stderr output.
+        if (complete_line.startswith('>>>')
+            and complete_line.endswith('.tulsiouts\n')):
+          output_locations.append(complete_line[3:-1])
+        else:
+          line = patch_xcode_parsable_line(complete_line)
         linebuf = ''
         sys.stdout.write(line)
         sys.stdout.flush()
@@ -728,11 +739,12 @@ class BazelBuildBridge(object):
 
     output, _ = process.communicate()
     output = linebuf + output
+
     for line in output.split('\n'):
       line = patch_xcode_parsable_line(line)
       print line
 
-    return process.returncode
+    return process.returncode, output_locations
 
   def _EnsureBazelBinIsValid(self):
     """Ensures that the Bazel output path points at a real directory."""
@@ -766,7 +778,7 @@ class BazelBuildBridge(object):
           os.sep + os.path.join(*path_components[:-3]))
     return 0
 
-  def _InstallArtifact(self):
+  def _InstallArtifact(self, outputs):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
     xcode_artifact_path = self.content_folder_path
 
@@ -785,13 +797,29 @@ class BazelBuildBridge(object):
                          '%s' % (xcode_artifact_path, e))
         return 600
 
-    if not self.bazel_outputs:
-      _PrintXcodeError(
-          'Failed to find an output artifact for target %s in candidates %r' %
-          (xcode_artifact_path, self.bazel_outputs))
-      return 601
+    if self.use_dynamic_outputs:
+      try:
+        output_data = json.load(open(outputs[0]))
+      except (ValueError, IOError) as e:
+        _PrintXcodeError('Failed to load output map ""%s". '
+                         '%s' % (outputs[0], e))
+        return 600
 
-    primary_artifact = self.bazel_outputs[0]
+      if 'artifacts' not in output_data:
+        _PrintXcodeError(
+            'Failed to find an output artifact for target %s in output map %r' %
+            (xcode_artifact_path, output_data))
+        return 601
+
+      primary_artifact = output_data['artifacts'][0]
+    else:
+      if not self.bazel_outputs:
+        _PrintXcodeError(
+            'Failed to find an output artifact for target %s in candidates %r' %
+            (xcode_artifact_path, self.bazel_outputs))
+        return 601
+
+      primary_artifact = self.bazel_outputs[0]
 
     # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
     # modified by the user and, more importantly, may have been modified by
@@ -800,7 +828,7 @@ class BazelBuildBridge(object):
     # extension from the primary artifact.
     # TODO(abaire): Consider passing this value to the script explicitly.
     self.bazel_product_name = os.path.splitext(
-        os.path.basename(self.bazel_outputs[0]))[0]
+        os.path.basename(primary_artifact))[0]
 
     if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
       exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path)
