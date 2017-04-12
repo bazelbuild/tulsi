@@ -625,8 +625,9 @@ def _tulsi_outputs_aspect(target, ctx):
     # matches to label name.
     # TODO(b/37244852): Use a defined provider to get outputs instead.
 
-    # x[:-4] strips the extension part.
-    artifacts = [x for x in artifacts if x[:-4].endswith(ipa_output_name)]
+    artifacts = [x for x in artifacts
+                 if x.endswith(ipa_output_name + '.zip')
+                 or x.endswith(ipa_output_name + '.ipa')]
 
   info = _struct_omitting_none(artifacts=artifacts)
 
