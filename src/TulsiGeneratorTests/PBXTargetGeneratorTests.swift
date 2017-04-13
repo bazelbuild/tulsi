@@ -329,7 +329,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -451,7 +450,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -491,7 +489,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": testRuleType,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
@@ -568,7 +565,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/app:TestApplication",
-        "BAZEL_TARGET_IPA": ipa.asFileName!,
         "BAZEL_TARGET_TYPE": "ios_application",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -608,7 +604,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
-        "BAZEL_TARGET_IPA": ipa.asFileName!,
         "BAZEL_TARGET_TYPE": testRuleType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -692,7 +687,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/app:TestApplication",
-          "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -733,7 +727,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": testIPA.asFileName!,
           "BAZEL_TARGET_TYPE": testRuleType,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
@@ -811,7 +804,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/app:TestApplication",
-        "BAZEL_TARGET_IPA": appIPA.asFileName!,
         "BAZEL_TARGET_TYPE": "ios_application",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -852,7 +844,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
-        "BAZEL_TARGET_IPA": testIPA.asFileName!,
         "BAZEL_TARGET_TYPE": testRuleType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -990,7 +981,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/testbundle:TestBundle",
-          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": testRuleType,
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -1063,7 +1053,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/test1:\(targetName)",
-          "BAZEL_TARGET_IPA": rule1IPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -1104,7 +1093,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": "test/test2:\(targetName)",
           "BAZEL_TARGET_TYPE": "ios_application",
-          "BAZEL_TARGET_IPA": rule2IPA.asFileName!,
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
           "PRODUCT_NAME": "test-test2-SameName",
@@ -1170,7 +1158,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": buildTarget,
-          "BAZEL_TARGET_IPA": ipa.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -1252,7 +1239,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": appBuildTarget,
-          "BAZEL_TARGET_IPA": appIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -1293,7 +1279,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
           "BAZEL_TARGET": watchAppBuildTarget,
-          "BAZEL_TARGET_IPA": watchAppIPA.asFileName!,
           "BAZEL_TARGET_TYPE": "apple_watch2_extension",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.watchOSStub,
@@ -1772,7 +1757,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_OUTPUTS": "test/app/TestApplication.ipa\nsome/path/to/an/ipa.ipa",
-        "BAZEL_TARGET_IPA": ipa.asFileName!,
         "BAZEL_TARGET": target,
         "BAZEL_TARGET_TYPE": targetType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",

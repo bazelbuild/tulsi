@@ -248,7 +248,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_swift/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_swift/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -324,7 +323,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_swift/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_swift/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -401,7 +399,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_swift/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_swift/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -468,7 +465,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_swift/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_swift/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";

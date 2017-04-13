@@ -460,7 +460,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -490,7 +489,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -547,7 +545,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/TargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -603,7 +600,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -633,7 +629,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -691,7 +686,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/TargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -747,7 +741,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -780,7 +773,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -844,7 +836,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/TargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -872,7 +863,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -905,7 +895,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/Application.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -970,7 +959,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple/TargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";

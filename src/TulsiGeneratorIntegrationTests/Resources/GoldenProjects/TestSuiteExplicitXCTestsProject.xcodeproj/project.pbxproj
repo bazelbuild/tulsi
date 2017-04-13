@@ -403,7 +403,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Two/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -432,7 +431,6 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
-				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -455,7 +453,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/One/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -482,7 +479,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Three/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -556,7 +552,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Two/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -585,7 +580,6 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
-				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -608,7 +602,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/One/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -635,7 +628,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Three/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -710,7 +702,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Two/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -743,7 +734,6 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
-				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -771,7 +761,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/One/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -802,7 +791,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Three/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -867,7 +855,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Two/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Two:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Two/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -900,7 +887,6 @@
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
-				BAZEL_TARGET_IPA = TestSuite/TestApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -928,7 +914,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/One/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/One:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/One/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -959,7 +944,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_OUTPUTS = "blaze-bin/TestSuite/Three/XCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite/Three:XCTest";
-				BAZEL_TARGET_IPA = TestSuite/Three/XCTest.ipa;
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;

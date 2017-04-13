@@ -1426,11 +1426,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
     }
 
-    // TODO(abaire): Deprecate and remove this, it's duplicative with BAZEL_OUTPUTS.
-    if let ipaTarget = entry.implicitIPATarget {
-      buildSettings["BAZEL_TARGET_IPA"] = ipaTarget.asFileName
-    }
-
     // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
     // The build script uses the binary label to find and move the dSYM associated with an
     // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application

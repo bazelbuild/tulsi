@@ -563,7 +563,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -644,7 +643,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -741,7 +739,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -823,7 +820,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -925,7 +921,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1018,7 +1013,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1076,7 +1070,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1170,7 +1163,6 @@
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
 				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
-				BAZEL_TARGET_IPA = tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa;
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
