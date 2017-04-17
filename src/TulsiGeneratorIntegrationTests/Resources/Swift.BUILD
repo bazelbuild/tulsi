@@ -14,7 +14,7 @@
 
 # mock BUILD file using Swift targets for aspect testing.
 
-load("//tools/build_defs/apple:apple.bzl", "swift_library")
+load("//tools/build_defs/apple:swift.bzl", "swift_library")
 
 ios_application(
     name = "Application",
