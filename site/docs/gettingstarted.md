@@ -22,6 +22,10 @@ automatically when building your generated project. The only time you need to
 re-run Tulsi is if you want to add additional build targets or have new source
 files show up in Xcode for editing.
 
+# How do I build and install Tulsi?
+
+Instructions can be found in the project's [README](https://github.com/bazelbuild/tulsi#building-and-installing)
+
 # What Bazel flags are used when building?
 
 __Note__: this list is limited to "interesting" flags and is not necessarily
