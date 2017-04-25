@@ -459,10 +459,14 @@ def _tulsi_sources_aspect(target, ctx):
     generated_non_arc_files, generated_includes = (
         _extract_generated_sources_and_includes(target))
 
-  raw_swift_transitive_modules = _getattr_as_list(target,
-                                                  'swift.transitive_modules')
-  swift_transitive_modules = [_file_metadata(f)
-                              for f in raw_swift_transitive_modules]
+  swift_transitive_modules = depset()
+  for modules in _getattr_as_list(target, 'swift.transitive_modules'):
+    if type(modules) == 'depset':
+      swift_transitive_modules += [_file_metadata(f) for f in modules]
+    else:
+      # TODO(b/37660812): Older version of swift_library used lists for transitive modules.
+      # This branch is here for backwards compatibility.
+      swift_transitive_modules += [_file_metadata(modules)]
 
   # Collect ObjC module maps dependencies for Swift targets.
   objc_module_maps = set()
@@ -573,7 +577,7 @@ def _tulsi_sources_aspect(target, ctx):
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
-      swift_transitive_modules=swift_transitive_modules,
+      swift_transitive_modules=swift_transitive_modules.to_list(),
       objc_module_maps=list(objc_module_maps),
       type=target_kind,
       infoplist=infoplist.basename if infoplist else None,
