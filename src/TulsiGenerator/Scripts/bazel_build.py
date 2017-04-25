@@ -1225,6 +1225,8 @@ class BazelBuildBridge(object):
   _TULSI_LLDBINIT_BLOCK_START = '# <TULSI> LLDB bridge [:\n'
   _TULSI_LLDBINIT_BLOCK_END = '# ]: <TULSI> LLDB bridge\n'
   _TULSI_LLDBINIT_FILE = os.path.expanduser('~/.lldbinit-tulsiproj')
+  _TULSI_LLDBINIT_EPILOGUE_FILE = (
+      os.path.expanduser('~/.lldbinit-tulsiproj-epilogue'))
 
   def _ExtractLLDBInitContent(self, lldbinit_path):
     """Extracts the non-Tulsi content of the given lldbinit file."""
@@ -1270,6 +1272,24 @@ class BazelBuildBridge(object):
 
     shutil.move(out.name, lldbinit_path)
 
+  def _LinkTulsiLLDBInitEpilogue(self, outfile):
+    """Adds a reference to ~/.lldbinit-tulsi-epilogue if it exists.
+
+    This file can be used to append more LLDB commands right after
+    .lldbinit-tulsi is sourced.
+
+    Useful for extending or resetting LLDB settings that Tulsi may have set
+    automatically
+
+    Args:
+      outfile: a file-type object.
+
+    Returns:
+      None
+    """
+    if os.path.isfile(self._TULSI_LLDBINIT_EPILOGUE_FILE):
+      outfile.write('command source %s\n' % self._TULSI_LLDBINIT_EPILOGUE_FILE)
+
   def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates ~/.lldbinit-tulsi to enable debugging of Bazel binaries."""
 
@@ -1281,6 +1301,7 @@ class BazelBuildBridge(object):
 
       if clear_source_map:
         out.write('settings clear target.source-map\n')
+        self._LinkTulsiLLDBInitEpilogue(out)
         return 0
 
       timer = Timer(
@@ -1314,6 +1335,7 @@ class BazelBuildBridge(object):
       source_maps.sort(reverse=True)
 
       out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
+      self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0
 
