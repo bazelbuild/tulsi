@@ -95,9 +95,9 @@ objc_library(
 )
 
 ## Skylark-based test rules.
-load("//tools/build_defs/apple:ios.bzl", "skylark_ios_application")
 load(
-    "//tools/build_defs/apple/testing:ios.bzl",
+    "//tools/build_defs/apple:ios.bzl",
+    "skylark_ios_application",
     "ios_unit_test",
     "ios_ui_test",
 )
