@@ -76,7 +76,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>${TULSI_VERSIONINFO_SHORT}</string>
+	<string>${TULSI_VERSIONINFO_LONG}</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
