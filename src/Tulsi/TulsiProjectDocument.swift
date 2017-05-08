@@ -210,8 +210,8 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   override func writeSafely(to url: URL,
-                                 ofType typeName: String,
-                                 for saveOperation: NSSaveOperationType) throws {
+                            ofType typeName: String,
+                            for saveOperation: NSSaveOperationType) throws {
     // Ensure that the project's URL is set to the location in which this document is being saved so
     // that relative paths can be set properly.
     project.projectBundleURL = url
