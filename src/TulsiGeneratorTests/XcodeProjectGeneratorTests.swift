@@ -36,6 +36,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
       buildScript: URL(fileURLWithPath: "/scripts/Build"),
       cleanScript: URL(fileURLWithPath: "/scripts/Clean"),
+      extraBuildScripts: [URL(fileURLWithPath: "/scripts/Logging")],
       postProcessor: URL(fileURLWithPath: "/utils/covmap_patcher"),
       uiRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/XCTRunner.entitlements"),
       stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),

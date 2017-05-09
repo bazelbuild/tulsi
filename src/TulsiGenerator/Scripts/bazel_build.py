@@ -31,6 +31,7 @@ import tempfile
 import textwrap
 import time
 import zipfile
+import tulsi_logging
 
 
 def _PrintXcodeWarning(msg):
@@ -46,8 +47,18 @@ def _PrintXcodeError(msg):
 class Timer(object):
   """Simple profiler."""
 
-  def __init__(self, action_name):
+  def __init__(self, action_name, action_id):
+    """Creates a new Timer object.
+
+    Args:
+      action_name: A human-readable action name, shown in the build log.
+      action_id: A machine-readable action identifier, can be used for metrics.
+
+    Returns:
+      A Timer instance.
+    """
     self.action_name = action_name
+    self.action_id = action_id
     self._start = None
 
   def Start(self):
@@ -57,7 +68,7 @@ class Timer(object):
   def End(self):
     end = time.time()
     seconds = end - self._start
-    print '<*> %s completed in %0.3f ms' % (self.action_name, seconds * 1000)
+    tulsi_logging.Logger().log_action(self.action_name, self.action_id, seconds)
 
 
 class CodesignBundleAttributes(object):
@@ -543,7 +554,7 @@ class BazelBuildBridge(object):
                             self.platform_name,
                             self.arch,
                             self.main_group_path)
-    timer = Timer('Parsing options').Start()
+    timer = Timer('Parsing options', 'parsing_options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
     if exit_code:
@@ -563,7 +574,7 @@ class BazelBuildBridge(object):
     if retval:
       return retval
 
-    timer = Timer('Running Bazel').Start()
+    timer = Timer('Running Bazel', 'running_bazel').Start()
     exit_code, outputs = self._RunBazelAndPatchOutput(command)
     timer.End()
     if exit_code:
@@ -576,20 +587,21 @@ class BazelBuildBridge(object):
       return exit_code
 
     if parser.install_generated_artifacts:
-      timer = Timer('Installing artifacts').Start()
+      timer = Timer('Installing artifacts', 'installing_artifacts').Start()
       exit_code = self._InstallArtifact(outputs)
       timer.End()
       if exit_code:
         return exit_code
 
       if self.generate_dsym:
-        timer = Timer('Installing DSYM bundles').Start()
+        timer = Timer('Installing DSYM bundles', 'installing_dsym').Start()
         exit_code, dsym_path = self._InstallDSYMBundles(self.built_products_dir)
         timer.End()
         if exit_code:
           return exit_code
         if dsym_path:
-          timer = Timer('Patching DSYM source file paths').Start()
+          timer = Timer('Patching DSYM source file paths',
+                        'patching_dsym').Start()
           exit_code = self._PatchdSYMPaths(dsym_path)
           timer.End()
           if exit_code:
@@ -611,7 +623,7 @@ class BazelBuildBridge(object):
     # already corrected the paths and use of target.source-map is redundant (and
     # appears to trigger actual problems in Xcode 8.1 betas).
     if self.xcode_version_major >= 800:
-      timer = Timer('Updating .lldbinit').Start()
+      timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
       exit_code = self._UpdateLLDBInit(self.generate_dsym)
       timer.End()
       if exit_code:
@@ -619,7 +631,7 @@ class BazelBuildBridge(object):
                            exit_code)
 
     if self.code_coverage_enabled:
-      timer = Timer('Patching LLVM covmap').Start()
+      timer = Timer('Patching LLVM covmap', 'patching_llvm_covmap').Start()
       exit_code = self._PatchLLVMCovmapPaths()
       timer.End()
       if exit_code:
@@ -1002,7 +1014,7 @@ class BazelBuildBridge(object):
     # Note that the tool expects "<type>1", e.g., "binary1" but the env var is
     # of the form "<type>".
     fmt = os.environ.get('INFOPLIST_OUTPUT_FORMAT', 'binary') + '1'
-    timer = Timer('\tUpdating plist').Start()
+    timer = Timer('\tUpdating plist', 'updating_plist').Start()
     command = ['xcrun',
                'plutil',
                '-convert',
@@ -1077,7 +1089,7 @@ class BazelBuildBridge(object):
     if not self.codesigning_allowed:
       return 0
 
-    timer = Timer('\tSigning ' + bundle_path).Start()
+    timer = Timer('\tSigning ' + bundle_path, 'signing_bundle').Start()
     command = [
         'xcrun',
         'codesign',
@@ -1112,7 +1124,8 @@ class BazelBuildBridge(object):
       return 800
 
     exit_code = 0
-    timer = Timer('Re-signing injected test host artifacts').Start()
+    timer = Timer('Re-signing injected test host artifacts',
+                  'resigning_test_host').Start()
 
     if self.test_host_binary:
       # For Unit tests, we need to resign the frameworks that Xcode injected
@@ -1210,7 +1223,8 @@ class BazelBuildBridge(object):
     if cached:
       return cached.Get(attribute)
 
-    timer = Timer('\tExtracting signature for ' + signed_bundle).Start()
+    timer = Timer('\tExtracting signature for ' + signed_bundle,
+                  'extracting_signature').Start()
     output = subprocess.check_output(['xcrun',
                                       'codesign',
                                       '-dvv',
@@ -1305,7 +1319,8 @@ class BazelBuildBridge(object):
         return 0
 
       timer = Timer(
-          '\tExtracting source paths for ' + self.full_product_name).Start()
+          '\tExtracting source paths for ' + self.full_product_name,
+          'extracting_source_paths').Start()
 
       source_paths = self._ExtractTargetSourcePaths()
       timer.End()
@@ -1516,7 +1531,7 @@ class BazelBuildBridge(object):
 
 
 if __name__ == '__main__':
-  _timer = Timer('Everything').Start()
+  _timer = Timer('Everything', 'complete_build').Start()
   _exit_code = BazelBuildBridge().Run(sys.argv)
   _timer.End()
   sys.exit(_exit_code)

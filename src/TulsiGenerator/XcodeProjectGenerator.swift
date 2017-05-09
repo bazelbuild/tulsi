@@ -30,6 +30,7 @@ final class XcodeProjectGenerator {
   struct ResourceSourcePathURLs {
     let buildScript: URL  // The script to run on "build" actions.
     let cleanScript: URL  // The script to run on "clean" actions.
+    let extraBuildScripts: [URL] // Any additional scripts to install into the project bundle.
     let postProcessor: URL  // Binary post processor utility.
     let uiRunnerEntitlements: URL  // Entitlements file template for UI Test runner apps.
     let stubInfoPlist: URL  // Stub Info.plist (needed for Xcode 8).
@@ -398,6 +399,8 @@ final class XcodeProjectGenerator {
           buildSettings["TOOLCHAINS"] = swiftToolchain
         }
       }
+
+      buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
 
@@ -734,6 +737,8 @@ final class XcodeProjectGenerator {
       installFiles([(resourceURLs.buildScript, XcodeProjectGenerator.BuildScript),
                     (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
                    ],
+                   toDirectory: scriptDirectoryURL)
+      installFiles(resourceURLs.extraBuildScripts.map { ($0, $0.lastPathComponent) },
                    toDirectory: scriptDirectoryURL)
 
       localizedMessageLogger.logProfilingEnd(profilingToken)
