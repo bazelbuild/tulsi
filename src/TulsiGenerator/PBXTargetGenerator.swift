@@ -829,7 +829,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     for (testTarget, testHostLabel, entry) in testTargetLinkages {
       updateTestTarget(testTarget,
                        withLinkageToHostTarget: testHostLabel,
-                       ruleEntry: entry)
+                       ruleEntry: entry,
+                       ruleEntryMap: ruleEntryMap)
     }
 
     return allIntermediateArtifacts
@@ -1125,7 +1126,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // bundle target.
   private func updateTestTarget(_ target: PBXTarget,
                                 withLinkageToHostTarget hostTargetLabel: BuildLabel,
-                                ruleEntry: RuleEntry) {
+                                ruleEntry: RuleEntry,
+                                ruleEntryMap: [BuildLabel: RuleEntry]) {
     guard let hostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget else {
       // If the user did not choose to include the host target it won't be available so the linkage
       // can be skipped, but the test won't be runnable in Xcode.
@@ -1165,17 +1167,59 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                               suppressingBuildSettings: ["ARCHS", "VALID_ARCHS"])
     }
 
-    let sourceFileInfos = ruleEntry.sourceFiles
-    let nonARCSourceFileInfos = ruleEntry.nonARCSourceFiles
-    let frameworkImportFileInfos = ruleEntry.frameworkImports
-    if !sourceFileInfos.isEmpty || !nonARCSourceFileInfos.isEmpty || !frameworkImportFileInfos.isEmpty {
-      var fileReferences = generateFileReferencesForFileInfos(sourceFileInfos)
-      let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(nonARCSourceFileInfos)
+    let (testSourceFileInfos, testNonArcSourceFileInfos, containsSwift) =
+        testSourceFiles(forRuleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
+
+    if !testSourceFileInfos.isEmpty || !testNonArcSourceFileInfos.isEmpty {
+      var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos)
+      let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos)
       fileReferences.append(contentsOf: nonARCFiles)
       let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
       target.buildPhases.append(buildPhase)
     }
+    if containsSwift {
+      let testBuildPhase = createGenerateSwiftDummyFilesTestBuildPhase()
+      target.buildPhases.append(testBuildPhase)
+    }
+  }
+
+  // Returns a tuple containing the sources and non-ARC sources for a ruleEntry of a test rule (e.g.
+  // apple_unit_test) and a boolean indicating whether the test sources include Swift files.
+  private func testSourceFiles(forRuleEntry ruleEntry: RuleEntry,
+                               ruleEntryMap: [BuildLabel: RuleEntry]) -> ([BazelFileInfo], [BazelFileInfo], Bool) {
+    // If this target doesn't have a test_bundle attribute, it must be an ios_test target, since
+    // the test_bundle attribute is required only for apple_unit_test and apple_ui_test. For
+    // ios_test, we return its sources directly.
+    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String else {
+      return (ruleEntry.sourceFiles, ruleEntry.nonARCSourceFiles, false)
+    }
+
+    // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
+    // binary's direct dependencies. If at any point the expected graph is broken, just return empty
+    // sources.
+    guard let testBundle = ruleEntryMap[BuildLabel(testBundleLabelString)],
+        let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
+        let testBundleBinary = ruleEntryMap[BuildLabel(testBundleBinaryLabelString)] else {
+      return ([], [], false)
+    }
+
+    var sourceFiles = [BazelFileInfo]()
+    var nonARCSourceFiles = [BazelFileInfo]()
+    var containsSwift = false
+
+    // Once we have the binary's direct dependencies, gather all the possible sources of those
+    // targets and return them.
+    for dependency in testBundleBinary.dependencies {
+      guard let dependencyTarget = ruleEntryMap[BuildLabel(dependency)] else {
+        continue
+      }
+      sourceFiles.append(contentsOf: dependencyTarget.sourceFiles)
+      nonARCSourceFiles.append(contentsOf: dependencyTarget.nonARCSourceFiles)
+      containsSwift = containsSwift || dependencyTarget.type == "swift_library"
+    }
+
+    return (sourceFiles, nonARCSourceFiles, containsSwift)
   }
 
   // Resolves a BuildLabel to an existing PBXTarget, handling target name collisions.
@@ -1200,11 +1244,20 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let config = list.getOrCreateBuildConfiguration(testConfigName)
 
       var runTestTargetBuildSettings = baseConfig.buildSettings
-      // Prevent compilation invocations from actually compiling files.
+      // Prevent compilation invocations from actually compiling ObjC, C and Swift files.
       runTestTargetBuildSettings["OTHER_CFLAGS"] = "-help"
+      runTestTargetBuildSettings["OTHER_SWIFT_FLAGS"] = "-help"
       // Prevents linker invocations from attempting to use the .o files which were never generated
       // due to compilation being turned into nop's.
       runTestTargetBuildSettings["OTHER_LDFLAGS"] = "-help"
+
+      // Force the output of the -emit-objc-header flag to a known value. This should be kept in
+      // sync with the RunScript build phase created in createGenerateSwiftDummyFilesTestBuildPhase.
+      runTestTargetBuildSettings["SWIFT_OBJC_INTERFACE_HEADER_NAME"] = "$(PRODUCT_NAME).h"
+
+      // Disable the generation of ObjC header files from Swift for test targets.
+      runTestTargetBuildSettings["SWIFT_INSTALL_OBJC_HEADER"] = "NO"
+
       // Prevent Xcode from attempting to create a fat binary with lipo from artifacts that were
       // never generated by the linker nop's.
       runTestTargetBuildSettings["ONLY_ACTIVE_ARCH"] = "YES"
@@ -1457,6 +1510,26 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return (target, intermediateArtifacts)
   }
 
+  private func createGenerateSwiftDummyFilesTestBuildPhase() -> PBXShellScriptBuildPhase {
+    let shellScript =
+        "# Script to generate specific Swift files Xcode expects when running tests.\n" +
+        "set -eu\n" +
+        "ARCH_ARRAY=($ARCHS)\n" +
+        "SUFFIXES=(swiftdoc swiftmodule h)\n" +
+        "for ARCH in \"${ARCH_ARRAY[@]}\"\n" +
+        "do\n" +
+        "  for SUFFIX in \"${SUFFIXES[@]}\"\n" +
+        "  do\n" +
+        "    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_NAME.$SUFFIX\"\n" +
+        "  done\n" +
+        "done\n"
+
+    let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
+    buildPhase.showEnvVarsInLog = true
+    buildPhase.mnemonic = "SwiftDummy"
+    return buildPhase
+  }
+
   private func createBuildPhaseForRuleEntry(_ entry: RuleEntry) -> PBXShellScriptBuildPhase? {
     let buildLabel = entry.label.value
     let commandLine = buildScriptCommandlineForBuildLabels(buildLabel,
@@ -1474,6 +1547,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
     buildPhase.showEnvVarsInLog = true
+    buildPhase.mnemonic = "BazelBuild"
     return buildPhase
   }
 

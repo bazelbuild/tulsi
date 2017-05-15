@@ -5,6 +5,7 @@
     "SkylarkTargetApplication.app\/**",
     "XCTest.xctest\/**",
     "XCUITest.xctest\/**",
+    "_idx_XCTestCodeSwift_2FB5517B.framework\/**",
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication-MergedInfo.plist",
     "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication-MergedInfo.plist",
     "lib_idx_Library_22D3B3D5.a",
@@ -32,6 +33,9 @@
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa"
     ],
     "_idx_Library_22D3B3D5" : [
+
+    ],
+    "_idx_XCTestCodeSwift_2FB5517B" : [
 
     ],
     "XCUITest" : [
@@ -66,15 +70,7 @@
       "blaze-bin\/tulsi_e2e_simple_skylark\/libXCUITestCode.a"
     ],
     "XCTest" : [
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest_test_binary_lipobin",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/XCTest_test_bundle.ipa",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
-      "blaze-bin\/tulsi_e2e_simple_skylark\/libXCTestCode.a"
+
     ]
   },
   "fileReferences" : [
@@ -95,7 +91,8 @@
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/xibs\/xib.xib",
     "..\/..\/tulsi_e2e_simple_skylark\/Settings.bundle\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**",
-    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/src1.mm",
-    "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/src1.mm"
+    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/Tests.swift",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/XCTests.mm",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/XCUITests.mm"
   ]
 }

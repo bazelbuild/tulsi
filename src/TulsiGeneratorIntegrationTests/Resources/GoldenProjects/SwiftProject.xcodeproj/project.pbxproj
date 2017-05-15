@@ -384,7 +384,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 3.0;
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
@@ -412,9 +415,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
@@ -450,7 +456,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 3.0;
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
@@ -479,9 +488,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
