@@ -497,7 +497,6 @@ def _tulsi_sources_aspect(target, ctx):
       xctest=_get_opt_attr(rule_attr, 'xctest'),
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
       test_host=_get_label_attr(rule_attr, 'test_host.label'),
-      test_bundle=_get_label_attr(rule_attr, 'test_bundle.label'),
   )
 
   # Inheritable attributes are pulled up through dependencies of type 'binary'

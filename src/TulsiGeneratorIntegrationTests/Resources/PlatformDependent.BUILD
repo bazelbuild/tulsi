@@ -101,7 +101,6 @@ load(
     "ios_unit_test",
     "ios_ui_test",
 )
-load("//tools/build_defs/apple:swift.bzl", "swift_library")
 
 skylark_ios_application(
     name = "SkylarkApplication",
@@ -175,7 +174,7 @@ objc_library(
 objc_library(
     name = "XCTestCode",
     srcs = [
-        "XCTest/srcs/XCTests.mm",
+        "XCTest/srcs/src1.mm",
     ],
     deps = [
         ":Library",
@@ -185,16 +184,11 @@ objc_library(
 objc_library(
     name = "XCUITestCode",
     srcs = [
-        "XCUITest/srcs/XCUITests.mm",
+        "XCUITest/srcs/src1.mm",
     ],
     deps = [
         ":Library",
     ],
-)
-
-swift_library(
-    name = "XCTestCodeSwift",
-    srcs = ["XCTest/srcs/Tests.swift"],
 )
 
 ios_unit_test(
@@ -202,7 +196,6 @@ ios_unit_test(
     test_host = ":SkylarkApplication",
     deps = [
         ":XCTestCode",
-        ":XCTestCodeSwift",
     ],
 )
 

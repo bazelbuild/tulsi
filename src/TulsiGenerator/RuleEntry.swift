@@ -175,9 +175,6 @@ public final class RuleEntry: RuleInfo {
     // handling in the generated Xcode project. For example, asset_catalog, storyboard, and xibs
     // attributes all end up as supporting_files.
     case supporting_files
-    // For the apple_unit_test and apple_ui_test rules, contains a label reference to the .xctest
-    // bundle packaging target.
-    case test_bundle
     // For the apple_unit_test and apple_ui_test rules, contains a label reference to the
     // ios_application target to be used as the test host when running the tests.
     case test_host

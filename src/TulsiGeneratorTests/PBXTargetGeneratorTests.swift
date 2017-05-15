@@ -359,7 +359,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -398,7 +398,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -480,7 +480,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -522,7 +522,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -595,7 +595,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -636,7 +636,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -717,7 +717,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: rule1BuildTarget),
           ]
       )
@@ -761,189 +761,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ],
           expectedBuildPhases: [
               SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: testRuleBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
     }
-  }
-
-  func testGenerateTestTargetWithObjectiveCSources() {
-    let testRuleTargetName = "Tests"
-    let testRuleType = "apple_unit_test"
-    let testHostTargetName = "App"
-    let testRulePackage = "test/app"
-    let testSources = ["test/app/Tests.m"]
-    let objcLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):ObjcLib",
-      type: "objc_library",
-      sourceFiles: testSources)
-    let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
-      type: "apple_binary",
-      dependencies: Set([objcLibraryRuleEntry.label.value]))
-    let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
-      type: "ios_test_bundle",
-      attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
-    let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-      type: "ios_application",
-      implicitIPATarget: BuildLabel("test/app:App.ipa"))
-    let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
-      type: "\(testRuleType)",
-      attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
-                   "test_host": testHostRuleEntry.label.value as AnyObject])
-
-    let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [objcLibraryRuleEntry,
-                                                          appleBinaryRuleEntry,
-                                                          testBundleRuleEntry,
-                                                          testHostRuleEntry,
-                                                          testRuleEntry])
-
-    do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([testRuleEntry, testHostRuleEntry],
-                                                             ruleEntryMap: ruleEntryMap)
-    } catch let e as NSError {
-      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
-    }
-    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
-
-    let targets = project.targetByName
-    XCTAssertEqual(targets.count, 2)
-
-    let expectedBuildSettings = [
-      "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-      "BAZEL_TARGET": "test/app:Tests",
-      "BAZEL_TARGET_TYPE": testRuleType,
-      "BUNDLE_LOADER": "$(TEST_HOST)",
-      "DEBUG_INFORMATION_FORMAT": "dwarf",
-      "INFOPLIST_FILE": stubPlistPaths.defaultStub,
-      "PRODUCT_NAME": testRuleTargetName,
-      "SDKROOT": "iphoneos",
-      "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
-      "TULSI_BUILD_PATH": testRulePackage,
-      "TULSI_TEST_RUNNER_ONLY": "YES",
-      "TULSI_USE_DSYM": "NO",
-      "TULSI_USE_DYNAMIC_OUTPUTS": "YES",
-      ]
-    let expectedTarget = TargetDefinition(
-      name: testRuleTargetName,
-      buildConfigurations: [
-        BuildConfigurationDefinition(
-          name: "Debug",
-          expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "Release",
-          expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "__TulsiTestRunner_Debug",
-          expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "__TulsiTestRunner_Release",
-          expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        ],
-      expectedBuildPhases: [
-        SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-        BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
-                                             buildTarget: "\(testRulePackage):\(testRuleTargetName)")
-      ]
-    )
-    assertTarget(expectedTarget, inTargets: targets)
-  }
-
-  func testGenerateTestTargetWithSwiftSources() {
-    let testRuleTargetName = "Tests"
-    let testRuleType = "apple_unit_test"
-    let testHostTargetName = "App"
-    let testRulePackage = "test/app"
-    let testSources = ["test/app/Tests.swift"]
-    let swiftLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):SwiftLib",
-                                                  type: "swift_library",
-                                                  sourceFiles: testSources)
-    let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
-                                                 type: "apple_binary",
-                                                 dependencies: Set([swiftLibraryRuleEntry.label.value]))
-    let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
-                                                type: "ios_test_bundle",
-                                                attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
-    let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-                                              type: "ios_application",
-                                              implicitIPATarget: BuildLabel("test/app:App.ipa"))
-    let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
-                                          type: "\(testRuleType)",
-                                          attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
-                                                       "test_host": testHostRuleEntry.label.value as AnyObject])
-
-    let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRuleEntry,
-                                                          appleBinaryRuleEntry,
-                                                          testBundleRuleEntry,
-                                                          testHostRuleEntry,
-                                                          testRuleEntry])
-
-    do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([testRuleEntry, testHostRuleEntry],
-                                                             ruleEntryMap: ruleEntryMap)
-    } catch let e as NSError {
-      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
-    }
-    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
-
-    let targets = project.targetByName
-    XCTAssertEqual(targets.count, 2)
-
-    let expectedBuildSettings = [
-      "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-      "BAZEL_TARGET": "test/app:Tests",
-      "BAZEL_TARGET_TYPE": testRuleType,
-      "BUNDLE_LOADER": "$(TEST_HOST)",
-      "DEBUG_INFORMATION_FORMAT": "dwarf",
-      "INFOPLIST_FILE": stubPlistPaths.defaultStub,
-      "PRODUCT_NAME": testRuleTargetName,
-      "SDKROOT": "iphoneos",
-      "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
-      "TULSI_BUILD_PATH": testRulePackage,
-      "TULSI_TEST_RUNNER_ONLY": "YES",
-      "TULSI_USE_DSYM": "NO",
-      "TULSI_USE_DYNAMIC_OUTPUTS": "YES",
-      ]
-    let expectedTarget = TargetDefinition(
-      name: testRuleTargetName,
-      buildConfigurations: [
-        BuildConfigurationDefinition(
-          name: "Debug",
-          expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "Release",
-          expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "__TulsiTestRunner_Debug",
-          expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        BuildConfigurationDefinition(
-          name: "__TulsiTestRunner_Release",
-          expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-        ),
-        ],
-      expectedBuildPhases: [
-        SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-        BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
-                                             buildTarget: "\(testRulePackage):\(testRuleTargetName)"),
-        SwiftDummyShellScriptBuildPhaseDefinition()
-      ]
-    )
-    assertTarget(expectedTarget, inTargets: targets)
-  }
-
-  private func makeRuleEntryMap(withRuleEntries ruleEntries: [RuleEntry]) -> [BuildLabel: RuleEntry] {
-    var ruleEntryMap = [BuildLabel: RuleEntry]()
-    for ruleEntry in ruleEntries {
-      ruleEntryMap[BuildLabel(ruleEntry.label.value)] = ruleEntry
-    }
-    return ruleEntryMap
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
@@ -1011,7 +834,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                           buildTarget: rule1BuildTarget),
           ]
       )
@@ -1054,7 +877,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ],
         expectedBuildPhases: [
           SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+          ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                           buildTarget: testRuleBuildTarget)
         ]
       )
@@ -1193,7 +1016,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
                                               buildTarget: testRuleBuildTarget)
           ]
       )
@@ -1260,7 +1083,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1299,7 +1122,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1366,7 +1189,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1447,7 +1270,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1487,7 +1310,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: watchAppBuildTarget)
+              ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: watchAppBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1965,7 +1788,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             ),
         ],
         expectedBuildPhases: [
-            BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
+            ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
         ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -2030,7 +1853,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             ),
         ],
         expectedBuildPhases: [
-            BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
+            ShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
         ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -2072,10 +1895,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     testRunnerSettings["ONLY_ACTIVE_ARCH"] = "YES"
     testRunnerSettings["OTHER_CFLAGS"] = "-help"
     testRunnerSettings["OTHER_LDFLAGS"] = "-help"
-    testRunnerSettings["OTHER_SWIFT_FLAGS"] = "-help"
-    testRunnerSettings["SWIFT_OBJC_INTERFACE_HEADER_NAME"] = "$(PRODUCT_NAME).h"
-    testRunnerSettings["SWIFT_INSTALL_OBJC_HEADER"] = "NO"
-
     testRunnerSettings["FRAMEWORK_SEARCH_PATHS"] = ""
     testRunnerSettings["HEADER_SEARCH_PATHS"] = ""
     return testRunnerSettings
@@ -2164,14 +1983,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let files: [String]
     let fileSet: Set<String>
     let mainGroup: PBXReference?
-    let mnemonic: String
 
-    init (isa: String, files: [String], mainGroup: PBXReference? = nil, mnemonic: String = "") {
+    init (isa: String, files: [String], mainGroup: PBXReference? = nil) {
       self.isa = isa
       self.files = files
       self.fileSet = Set(files)
       self.mainGroup = mainGroup
-      self.mnemonic = mnemonic
     }
 
     func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
@@ -2186,7 +2003,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                   "Found unexpected file '\(path)' in build phase",
                   line: line)
       }
-      XCTAssertEqual(phase.mnemonic, mnemonic, "Mismatch in mnemonics")
     }
   }
 
@@ -2195,10 +2011,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     init(files: [String], mainGroup: PBXReference, settings: [String: String]? = nil) {
       self.settings = settings
-      super.init(isa: "PBXSourcesBuildPhase",
-                 files: files,
-                 mainGroup: mainGroup,
-                 mnemonic: "CompileSources")
+      super.init(isa: "PBXSourcesBuildPhase", files: files, mainGroup: mainGroup)
     }
 
     override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
@@ -2219,14 +2032,14 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
-  private class BazelShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
+  private class ShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
     let bazelURL: URL
     let buildTarget: String
 
     init(bazelURL: URL, buildTarget: String) {
       self.bazelURL = bazelURL
       self.buildTarget = buildTarget
-      super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "BazelBuild")
+      super.init(isa: "PBXShellScriptBuildPhase", files: [])
     }
 
     override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
@@ -2244,26 +2057,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                 line: line)
       XCTAssert(script.contains(buildTarget),
                 "Build script does not contain build target \(buildTarget)",
-                line: line)
-    }
-  }
-
-  private class SwiftDummyShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
-    init() {
-      super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "SwiftDummy")
-    }
-
-    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
-      super.validate(phase, line: line)
-
-      // Guaranteed by the test infrastructure below, failing this indicates a programming error in
-      // the test fixture, not in the code being tested.
-      let scriptBuildPhase = phase as! PBXShellScriptBuildPhase
-
-      let script = scriptBuildPhase.shellScript
-      XCTAssert(script.contains("touch"), "Build script does not contain 'touch'.",
-                line: line)
-    }
+                line: line)    }
   }
 
   private func fileRefForPath(_ path: String) -> PBXReference? {
@@ -2379,19 +2173,14 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                    "Build phase count mismatch in target '\(target.name)'",
                    line: line)
 
-    var validationCount = 0
     for phaseDef in phaseDefs {
       for phase in buildPhases {
-        if phase.isa != phaseDef.isa || phase.mnemonic != phaseDef.mnemonic {
+        if phase.isa != phaseDef.isa {
           continue
         }
         phaseDef.validate(phase, line: line)
-        validationCount += 1
       }
     }
-    XCTAssertEqual(validationCount,
-                   buildPhases.count,
-                   "Validation count mismatch in target '\(target.name)'")
   }
 }
 
