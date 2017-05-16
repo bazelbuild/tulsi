@@ -8,13 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
-		E6AF4947517E0F5200000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28517E0F5200000001 /* src1.mm */; };
-		E6AF4947517E0F5200000001 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28517E0F5200000000 /* src1.mm */; };
 		E6AF49475401417600000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C285401417600000000 /* src1.m */; };
 		E6AF494756F87EF800000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2856F87EF800000000 /* src4.m */; };
 		E6AF4947577B7A7A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28577B7A7A00000000 /* src3.m */; };
 		E6AF4947578645F400000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28578645F400000000 /* src2.m */; };
 		E6AF49477466E43000000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */ = {isa = PBXBuildFile; fileRef = C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */; };
+		E6AF49478A017DC200000000 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288A017DC200000000 /* XCTests.mm */; };
+		E6AF49478A017DC200000001 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288A017DC200000000 /* XCTests.mm */; };
+		E6AF49478B3426B000000000 /* Tests.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288B3426B000000000 /* Tests.swift */; };
+		E6AF49478B3426B000000001 /* Tests.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288B3426B000000000 /* Tests.swift */; };
+		E6AF4947A5BBAC8200000000 /* XCUITests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28A5BBAC8200000000 /* XCUITests.mm */; };
+		E6AF4947A5BBAC8200000001 /* XCUITests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28A5BBAC8200000000 /* XCUITests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,9 +47,8 @@
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		43D68C284342A9EC00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = _idx_XCTestCodeSwift_2FB5517B.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2850E5A94E00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SrcsHeader.h; sourceTree = "<group>"; };
-		43D68C28517E0F5200000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
-		43D68C28517E0F5200000001 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src1.mm; sourceTree = "<group>"; };
 		43D68C2851D95C9600000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextualHdrsHeader.h; sourceTree = "<group>"; };
 		43D68C285401417600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src1.m; sourceTree = "<group>"; };
 		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
@@ -58,9 +61,12 @@
 		43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28807681DC00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PCHFile.pch; sourceTree = "<group>"; };
 		43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_MainLibrary_E33E600C.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C288A017DC200000000 /* XCTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XCTests.mm; sourceTree = "<group>"; };
+		43D68C288B3426B000000000 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_XCUITestCode_XCTestCode_1D881332.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C2894BEDE5200000000 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		43D68C28A5BBAC8200000000 /* XCUITests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XCUITests.mm; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
@@ -90,6 +96,7 @@
 				43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				43D68C28AB52552000000000 /* XCUITest.xctest */,
+				43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */,
 				966FB6DE59D91CB800000000 /* blaze-bin */,
 				43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */,
 				43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */,
@@ -188,7 +195,8 @@
 		966FB6DEB73A031C00000002 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28517E0F5200000000 /* src1.mm */,
+				43D68C288B3426B000000000 /* Tests.swift */,
+				43D68C288A017DC200000000 /* XCTests.mm */,
 			);
 			path = srcs;
 			sourceTree = "<group>";
@@ -196,7 +204,7 @@
 		966FB6DEB73A031C00000003 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28517E0F5200000001 /* src1.mm */,
+				43D68C28A5BBAC8200000000 /* XCUITests.mm */,
 			);
 			path = srcs;
 			sourceTree = "<group>";
@@ -275,7 +283,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */;
 			buildPhases = (
-				605793E20000000000000001 /* Sources */,
+				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -288,11 +296,27 @@
 			productReference = 43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		3D31C5E67C1BC86200000000 /* _idx_XCTestCodeSwift_2FB5517B */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583D3B1CC6700000000 /* Build configuration list for PBXNativeTarget "_idx_XCTestCodeSwift_2FB5517B" */;
+			buildPhases = (
+				605793E20000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_XCTestCodeSwift_2FB5517B;
+			productName = _idx_XCTestCodeSwift_2FB5517B;
+			productReference = 43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */;
 			buildPhases = (
-				605793E20000000000000000 /* Sources */,
+				605793E20000000000000002 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -309,6 +333,7 @@
 			buildConfigurationList = DE4755837696EE3600000000 /* Build configuration list for PBXNativeTarget "XCUITest" */;
 			buildPhases = (
 				84B422718BD7041400000000 /* ShellScript */,
+				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -341,7 +366,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */;
 			buildPhases = (
-				605793E20000000000000002 /* Sources */,
+				605793E20000000000000005 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -359,6 +384,8 @@
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
 				84B4227153BD640400000000 /* ShellScript */,
+				84B42271339F729600000000 /* ShellScript */,
+				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -420,12 +447,27 @@
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
 				3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */,
 				3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */,
+				3D31C5E67C1BC86200000000 /* _idx_XCTestCodeSwift_2FB5517B */,
 				3D31C5E6E6705AFE00000000 /* _idx_XCUITestCode_XCTestCode_1D881332 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		84B42271339F729600000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# Script to generate specific Swift files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nSUFFIXES=(swiftdoc swiftmodule h)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  for SUFFIX in \"${SUFFIXES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_NAME.$SUFFIX\"\n  done\ndone\n";
+			showEnvVarsInLog = 1;
+		};
 		84B4227153BD640400000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
@@ -489,6 +531,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				E6AF4947A5BBAC8200000000 /* XCUITests.mm in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF49478B3426B000000000 /* Tests.swift in srcs */,
+				E6AF49478A017DC200000000 /* XCTests.mm in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
 				E6AF49475401417600000000 /* src1.m in srcs */,
 				E6AF4947578645F400000000 /* src2.m in srcs */,
 				E6AF4947577B7A7A00000000 /* src3.m in srcs */,
@@ -496,7 +555,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000001 /* Sources */ = {
+		605793E20000000000000003 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -505,12 +564,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		605793E20000000000000002 /* Sources */ = {
+		605793E20000000000000004 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947517E0F5200000000 /* src1.mm in srcs */,
-				E6AF4947517E0F5200000001 /* src1.mm in srcs */,
+				E6AF49478B3426B000000001 /* Tests.swift in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF4947A5BBAC8200000001 /* XCUITests.mm in srcs */,
+				E6AF49478A017DC200000001 /* XCTests.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,7 +663,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_USE_DSYM = NO;
+				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
@@ -629,6 +696,8 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_VERSION = 9.99.999.9999;
@@ -694,6 +763,22 @@
 			name = Debug;
 		};
 		44936BD67EED3C4D00000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
+				SDKROOT = iphonesimulator;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -806,6 +891,8 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_USE_DSYM = YES;
@@ -878,6 +965,22 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
+				SDKROOT = iphonesimulator;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				VALID_ARCHS = x86_64;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
@@ -903,8 +1006,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCUITest;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -933,9 +1039,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
 				PRODUCT_NAME = SkylarkApplication;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
@@ -961,12 +1070,15 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_USE_DSYM = NO;
+				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
@@ -1000,7 +1112,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_VERSION = 9.99.999.9999;
@@ -1026,9 +1143,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
@@ -1053,8 +1173,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCUITest;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -1083,9 +1206,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
 				PRODUCT_NAME = SkylarkApplication;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
@@ -1111,8 +1237,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -1150,7 +1279,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				SWIFT_VERSION = 3.0;
+				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_USE_DSYM = YES;
@@ -1177,9 +1311,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
@@ -1250,8 +1387,8 @@
 		DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1268,6 +1405,14 @@
 		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583D3B1CC6700000000 /* Build configuration list for PBXNativeTarget "_idx_XCTestCodeSwift_2FB5517B" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

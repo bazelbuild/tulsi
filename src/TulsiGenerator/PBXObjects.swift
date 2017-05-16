@@ -498,6 +498,8 @@ final class XCConfigurationList: PBXObjectProtocol {
 /// Internal base class for concrete build phases (each of which capture a set of files that will be
 /// used as inputs to that phase).
 class PBXBuildPhase: PBXObjectProtocol  {
+  // Used to identify different phases of the same type (i.e. isa).
+  var mnemonic: String = ""
   var globalID: String = ""
   var files = [PBXBuildFile]()
   let buildActionMask: Int
@@ -544,6 +546,12 @@ final class PBXSourcesBuildPhase: PBXBuildPhase  {
   override var comment: String? {
     return "Sources"
   }
+
+  override init(buildActionMask: Int = 0, runOnlyForDeploymentPostprocessing: Bool = false) {
+    super.init(buildActionMask: buildActionMask,
+               runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing)
+    self.mnemonic = "CompileSources"
+  }
 }
 
 
@@ -578,7 +586,8 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
     self.outputPaths = outputPaths
     self._hashValue = shellPath.hashValue &+ shellScript.hashValue
 
-    super.init(buildActionMask: buildActionMask, runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing)
+    super.init(buildActionMask: buildActionMask,
+               runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing)
   }
 
   override func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
