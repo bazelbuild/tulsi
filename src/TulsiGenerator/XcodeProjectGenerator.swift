@@ -424,7 +424,7 @@ final class XcodeProjectGenerator {
   // "external" container to absolute filesystem references.
   private func patchExternalRepositoryReferences(_ xcodeProject: PBXProject) {
     let mainGroup = xcodeProject.mainGroup
-    guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
+    guard let externalGroup = mainGroup.childGroupsByName[".."] else { return }
     let externalChildren = externalGroup.children as! [PBXGroup]
     for child in externalChildren {
       guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.path!)") else {
