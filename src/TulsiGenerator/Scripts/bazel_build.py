@@ -593,6 +593,13 @@ class BazelBuildBridge(object):
       if exit_code:
         return exit_code
 
+      timer = Timer('Installing generated headers',
+                    'installing_generated_headers').Start()
+      exit_code = self._InstallGeneratedHeaders(outputs)
+      timer.End()
+      if exit_code:
+        return exit_code
+
       if self.generate_dsym:
         timer = Timer('Installing DSYM bundles', 'installing_dsym').Start()
         exit_code, dsym_path = self._InstallDSYMBundles(self.built_products_dir)
@@ -870,6 +877,32 @@ class BazelBuildBridge(object):
                        xcode_artifact_path)
 
     return 0
+
+  def _InstallGeneratedHeaders(self, output_files):
+    for f in output_files:
+      data = json.load(open(f))
+      if 'generated_sources' not in data:
+        continue
+
+      for gs in data['generated_sources']:
+        real_path, link_path = gs
+        src = os.path.join(self.bazel_build_workspace_root, real_path)
+
+        # The /x/x/ part is here to match the number of directory components
+        # between tulsi root and bazel root. See tulsi_aspects.bzl for futher
+        # explanation.
+        dst = os.path.join(self.workspace_root, 'tulsi-includes/x/x/',
+                           link_path)
+        self._PrintVerbose('Symlinking %s to %s' % (src, dst), 2)
+
+        dst_dir = os.path.split(dst)[0]
+        if not os.path.exists(dst_dir):
+          os.makedirs(dst_dir)
+
+        if os.path.exists(dst):
+          os.unlink(dst)
+
+        os.symlink(src, dst)
 
   def _CopyBundle(self, source_path, full_source_path, output_path):
     """Copies the given bundle to the given expected output path."""

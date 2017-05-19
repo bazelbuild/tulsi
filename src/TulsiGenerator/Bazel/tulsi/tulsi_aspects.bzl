@@ -110,27 +110,70 @@ def _struct_omitting_none(**kwargs):
   return struct(**_dict_omitting_none(**kwargs))
 
 
-def _convert_outpath_to_symlink_path(path):
-  """Converts full output paths to their bazel-symlink equivalents."""
-  # The path will be of the form
-  # bazel-[whatever]/[platform-config]/symlink[/.*]
+def _convert_outpath_to_symlink_path(path, use_tulsi_symlink=False):
+  """Converts full output paths to their tulsi-symlink equivalents.
+
+  Bazel output paths are unstable, prone to change with architecture,
+  platform or flag changes. Therefore we can't rely on them to supply to Xcode.
+  Instead, we will root all outputs under a stable tulsi dir,
+  and the bazel_build.py script will link the artifacts into the correct
+  location under it.
+
+  Tulsi root is located at WORKSPACE/tulsi-includes/x/x/.
+  The two "x" directories are stubs to match the number of path components, so
+  that relative paths work with the new location. Some Bazel outputs, like
+  module maps, use relative paths to reference other files in the build.
+
+  In short, when `use_tulsi_symlink` is `True`, this method will transform
+    bazel-out/ios-x86_64-min7.0/genfiles/foo
+  to
+    tulsi-includes/x/x/foo
+
+  When `use_tulsi_symlink` is `False`, this method will transform
+    bazel-outbin/ios-x86_64-min7.0/genfiles/foo
+  to
+    bazel-genfiles/foo
+
+  This flag is currently enabled for generated headers, sources, Swift modules,
+  and module maps. Disabled for everything else to keep backwards compatibility.
+  TODO(tulsi-team): Phase out the older bazel symlink completely and remove
+  the flag.
+
+  Args:
+    path: path to transform
+    use_tulsi_symlink: whether to use the new tulsi symlink, or the older bazel
+      format.
+
+  Returns:
+    A string that is the original path modified according to the rules.
+  """
+  # The path will be of the form:
+  # if use_tulsi_symlink:
+  #   tulsi-includes/x/x/symlink[/.*]
+  # otherwise:
+  #   bazel-[whatever]/[platform-config]/symlink[/.*]
   first_dash = path.find('-')
   components = path.split('/')
   if (len(components) > 2 and
       first_dash >= 0 and
       first_dash < len(components[0])):
-    return path[:first_dash + 1] + '/'.join(components[2:])
+    if use_tulsi_symlink:
+      return 'tulsi-includes/x/x/' + '/'.join(components[3:])
+    else:
+      return path[:first_dash + 1] + '/'.join(components[2:])
   return path
 
 
-def _file_metadata(f):
+def _file_metadata(f, use_tulsi_symlink=False):
   """Returns metadata about a given File."""
   if not f:
     return None
 
   if not f.is_source:
     root_path = f.root.path
-    symlink_path = _convert_outpath_to_symlink_path(root_path)
+    symlink_path = _convert_outpath_to_symlink_path(
+        root_path,
+        use_tulsi_symlink=use_tulsi_symlink)
     if symlink_path == root_path:
       # The root path should always be bazel-out/... and thus is expected to be
       # updated.
@@ -385,7 +428,7 @@ def _extract_generated_sources_and_includes(target):
     file_metadatas = [_file_metadata(f) for f in all_files]
 
   if hasattr(objc_provider, 'include'):
-    includes = [_convert_outpath_to_symlink_path(x)
+    includes = [_convert_outpath_to_symlink_path(x, use_tulsi_symlink=True)
                 for x in objc_provider.include]
   return file_metadatas, includes
 
@@ -418,6 +461,28 @@ def _extract_swift_language_version(ctx):
 
   return (None, None)
 
+
+def _collect_swift_modules(target):
+  """Returns a depset of Swift modules found on the given target."""
+  swift_modules = depset()
+  for modules in _getattr_as_list(target, 'swift.transitive_modules'):
+    if type(modules) == 'depset':
+      swift_modules += modules
+    else:
+      # TODO(b/37660812): Older version of swift_library used lists for
+      # transitive modules. This branch is here for backwards compatibility.
+      swift_modules += [modules]
+
+  return swift_modules
+
+
+def _collect_module_maps(target):
+  """Returns a depset of Clang module maps found on the given target."""
+  maps = depset()
+  if hasattr(target, 'swift'):
+    for module_maps in _getattr_as_list(target, 'objc.module_map'):
+      maps += module_maps
+  return maps
 
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
@@ -459,20 +524,14 @@ def _tulsi_sources_aspect(target, ctx):
     generated_non_arc_files, generated_includes = (
         _extract_generated_sources_and_includes(target))
 
-  swift_transitive_modules = depset()
-  for modules in _getattr_as_list(target, 'swift.transitive_modules'):
-    if type(modules) == 'depset':
-      swift_transitive_modules += [_file_metadata(f) for f in modules]
-    else:
-      # TODO(b/37660812): Older version of swift_library used lists for transitive modules.
-      # This branch is here for backwards compatibility.
-      swift_transitive_modules += [_file_metadata(modules)]
+  swift_transitive_modules = depset(
+      [_file_metadata(f, use_tulsi_symlink=True)
+       for f in _collect_swift_modules(target)])
 
   # Collect ObjC module maps dependencies for Swift targets.
-  objc_module_maps = set()
-  if hasattr(target, 'swift'):
-    for module_maps in _getattr_as_list(target, 'objc.module_map'):
-      objc_module_maps += set([_file_metadata(f) for f in module_maps])
+  objc_module_maps = depset(
+      [_file_metadata(f, use_tulsi_symlink=True)
+       for f in _collect_module_maps(target)])
 
   # Collect the dependencies of this rule, dropping any .jar files (which may be
   # created as artifacts of java/j2objc rules).
@@ -612,11 +671,20 @@ def _tulsi_sources_aspect(target, ctx):
 def _tulsi_outputs_aspect(target, ctx):
   """Collects outputs of each build invocation."""
 
+  rule = ctx.rule
+  target_kind = rule.kind
+  rule_attr = _get_opt_attr(rule, 'attr')
+  tulsi_generated_files = depset()
+  for attr_name in _TULSI_COMPILE_DEPS:
+    deps = _getattr_as_list(rule_attr, attr_name)
+    for dep in deps:
+      if hasattr(dep, 'tulsi_generated_files'):
+        tulsi_generated_files += dep.tulsi_generated_files
+
   # TODO(b/35322727): Move apple_watch2_extension into _IPA_GENERATING_RULES
   # when dynamic outputs is the default strategy and it does need to be
   # special-cased above.
   ipa_output_name = None
-  target_kind = ctx.rule.kind
   if target_kind == 'apple_watch2_extension':
     # watch2 extensions need to use the IPA produced for the app_name attribute.
     ipa_output_name = _get_opt_attr(target, 'attr.app_name')
@@ -635,7 +703,23 @@ def _tulsi_outputs_aspect(target, ctx):
 
     artifacts = [x for x in artifacts if x.endswith(output_ipa) or x.endswith(output_zip)]
 
-  info = _struct_omitting_none(artifacts=artifacts)
+  # Collect generated files for bazel_build.py to copy under Tulsi root.
+  all_files = depset()
+  if target_kind in _SOURCE_GENERATING_RULES + _NON_ARC_SOURCE_GENERATING_RULES:
+    objc_provider = _get_opt_attr(target, 'objc')
+    if hasattr(objc_provider, 'source') and hasattr(objc_provider, 'header'):
+      all_files += objc_provider.source
+      all_files += objc_provider.header
+
+  all_files += _collect_swift_modules(target)
+  all_files += _collect_module_maps(target)
+
+  tulsi_generated_files += depset(
+      [x for x in all_files.to_list() if not x.is_source])
+
+  info = _struct_omitting_none(
+      artifacts=artifacts,
+      generated_sources=[(x.path, x.short_path) for x in tulsi_generated_files])
 
   output = ctx.new_file(target.label.name + '.tulsiouts')
   ctx.file_action(output, info.to_json())
@@ -644,6 +728,7 @@ def _tulsi_outputs_aspect(target, ctx):
       output_groups={
           'tulsi-outputs': [output],
       },
+      tulsi_generated_files=tulsi_generated_files,
   )
 
 
@@ -658,4 +743,6 @@ tulsi_sources_aspect = aspect(
 # the top target outputs.
 tulsi_outputs_aspect = aspect(
     implementation=_tulsi_outputs_aspect,
+    attr_aspects=_TULSI_COMPILE_DEPS,
+    fragments=['apple', 'cpp', 'objc'],
 )

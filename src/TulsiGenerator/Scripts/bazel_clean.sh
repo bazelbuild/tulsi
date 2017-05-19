@@ -23,16 +23,27 @@ set -eu
 
 readonly bazel_executable="$1"
 readonly bazel_bin_dir="$2"
+readonly tulsi_includes_dir="tulsi-includes"
 
 if [[ "${ACTION}" != "clean" ]]; then
   exit 0
 fi
 
+# Removes a directory if it exists and is not a symlink.
+function remove_dir() {
+  directory="$1"
+
+  if [[ -d "${directory}" && ! -L "${directory}" ]]; then
+    rm -r "${directory}"
+  fi
+}
+
 # Xcode may have generated a bazel-bin directory after a previous clean.
 # Remove it to prevent a useless warning.
-if [[ -d "${bazel_bin_dir}" && ! -L "${bazel_bin_dir}" ]]; then
-  rm -r "${bazel_bin_dir}"
-fi
+remove_dir "${bazel_bin_dir}"
+
+# Remove the Tulsi symlink tree.
+remove_dir "${tulsi_includes_dir}"
 
 (
   set -x

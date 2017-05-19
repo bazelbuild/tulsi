@@ -535,6 +535,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           return rootedPath
         }
         generatedIncludes.addObjects(from: rootedPaths)
+
+        /// Some targets that generate sources also provide header search paths into non-generated
+        /// sources. Using workspace root is needed for the former, but the latter has to be
+        /// included via the Bazel workspace root.
+        /// TODO(tulsi-team): See if we can merge the two locations to just Bazel workspace.
+        let bazelWorkspaceRootedPaths: [String] = generatedIncludePaths.map() { (path, recursive) in
+          let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
+          if recursive {
+            return "\(rootedPath)/**"
+          }
+          return rootedPath
+        }
+        generatedIncludes.addObjects(from: bazelWorkspaceRootedPaths)
       }
 
       // Search path entries are added for all framework imports, regardless of whether the

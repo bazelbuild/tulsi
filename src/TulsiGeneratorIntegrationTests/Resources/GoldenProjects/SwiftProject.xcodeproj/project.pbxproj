@@ -274,7 +274,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/stub/stub/tulsi_e2e_swift/SwiftLibrary/_objs";
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
@@ -350,7 +350,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/blaze-genfiles/tulsi_e2e_swift/SwiftLibrary/_objs";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/stub/stub/tulsi_e2e_swift/SwiftLibrary/_objs";
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
