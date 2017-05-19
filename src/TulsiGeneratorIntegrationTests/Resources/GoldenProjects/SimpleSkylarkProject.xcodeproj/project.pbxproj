@@ -771,7 +771,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/stub/stub/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
@@ -967,7 +967,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/stub/stub/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
