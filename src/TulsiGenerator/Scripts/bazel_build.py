@@ -708,6 +708,10 @@ class BazelBuildBridge(object):
         output_line = '%s warning: %s' % (match.group(1), match.group(2))
       return output_line
 
+    def ExtractOutputs(output_line):
+      if output_line.startswith('>>>') and output_line.endswith('.tulsiouts'):
+        return output_line[3:]
+
     patch_xcode_parsable_line = PatchBazelWarningStatements
     if self.main_group_path != self.project_dir:
       # Match (likely) filename:line_number: lines.
@@ -739,9 +743,9 @@ class BazelBuildBridge(object):
         # >>> marks the start of an aspect output location.
         # .tulsiouts files contin build output locations
         # TODO(b/35322727): Use BEP instead of stderr output.
-        if (complete_line.startswith('>>>')
-            and complete_line.endswith('.tulsiouts\n')):
-          output_locations.append(complete_line[3:-1])
+        output_path = ExtractOutputs(complete_line.strip())
+        if output_path:
+          output_locations.append(output_path)
         else:
           line = patch_xcode_parsable_line(complete_line)
         linebuf = ''
@@ -753,7 +757,11 @@ class BazelBuildBridge(object):
     output = linebuf + output
 
     for line in output.split('\n'):
-      line = patch_xcode_parsable_line(line)
+      output_path = ExtractOutputs(line)
+      if output_path:
+        output_locations.append(output_path)
+      else:
+        line = patch_xcode_parsable_line(line)
       print line
 
     return process.returncode, output_locations
