@@ -213,11 +213,15 @@ def _file_metadata_by_replacing_path(f, new_path, new_is_dir=None):
   )
 
 
+def _collect_artifacts(obj, attr_path):
+  """Returns a list of Artifact objects for the attr_path in obj."""
+  return [f for src in _getattr_as_list(obj, attr_path)
+          for f in _get_opt_attr(src, 'files')]
+
+
 def _collect_files(obj, attr_path):
   """Returns a list of artifact_location's for the attr_path in obj."""
-  return [_file_metadata(f)
-          for src in _getattr_as_list(obj, attr_path)
-          for f in _get_opt_attr(src, 'files')]
+  return [_file_metadata(f) for f in _collect_artifacts(obj, attr_path)]
 
 
 def _collect_first_file(obj, attr_path):
@@ -667,7 +671,6 @@ def _tulsi_sources_aspect(target, ctx):
       transitive_attributes=transitive_attributes,
   )
 
-
 def _tulsi_outputs_aspect(target, ctx):
   """Collects outputs of each build invocation."""
 
@@ -713,6 +716,9 @@ def _tulsi_outputs_aspect(target, ctx):
 
   all_files += _collect_swift_modules(target)
   all_files += _collect_module_maps(target)
+  all_files += (_collect_artifacts(rule, 'attr.srcs')
+                + _collect_artifacts(rule, 'attr.hdrs')
+                + _collect_artifacts(rule, 'attr.textual_hdrs'))
 
   tulsi_generated_files += depset(
       [x for x in all_files.to_list() if not x.is_source])

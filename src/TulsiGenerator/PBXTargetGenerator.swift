@@ -183,6 +183,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return self.bazelBinPath.replacingOccurrences(of: "-bin", with: "-\(workspaceDirName)")
   }()
 
+  /// The path to the Tulsi generated outputs root. For more information see tulsi_aspects.bzl
+  let tulsiIncludesPath = "tulsi-includes/x/x"
+
   /// Bazel's package_path value.
   let bazelPackagePath: String
 
@@ -523,6 +526,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           // symlinks.
           includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)/\(packageQualifiedPath)")
           includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/\(packageQualifiedPath)")
+          includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(tulsiIncludesPath)/\(packageQualifiedPath)")
         }
       }
 
@@ -800,6 +804,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let searchPaths = ["$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
+                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(tulsiIncludesPath)"
     ]
     // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
     // protocol buffers) make use of system-style includes.
