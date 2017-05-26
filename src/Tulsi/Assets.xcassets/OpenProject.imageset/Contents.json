@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "Open48X48.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "Open96X96.png",
+      "filename" : "folder_icon.png",
       "scale" : "2x"
     }
   ],
