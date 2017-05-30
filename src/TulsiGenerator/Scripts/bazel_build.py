@@ -888,6 +888,12 @@ class BazelBuildBridge(object):
         real_path, link_path = gs
         src = os.path.join(self.bazel_build_workspace_root, real_path)
 
+        # Bazel outputs are not guaranteed to be created if nothing references
+        # them. This check skips the processing if an output was declared
+        # but not created.
+        if not os.path.exists(src):
+          continue
+
         # The /x/x/ part is here to match the number of directory components
         # between tulsi root and bazel root. See tulsi_aspects.bzl for futher
         # explanation.
@@ -899,7 +905,11 @@ class BazelBuildBridge(object):
         if not os.path.exists(dst_dir):
           os.makedirs(dst_dir)
 
-        if os.path.exists(dst):
+        # It's important to use lexists() here in case dst is a broken symlink
+        # (in which case exists() would return False). For example, older
+        # versions of this script did not check if src existed and could create
+        # a symlink to an invalid path.
+        if os.path.lexists(dst):
           os.unlink(dst)
 
         os.symlink(src, dst)
