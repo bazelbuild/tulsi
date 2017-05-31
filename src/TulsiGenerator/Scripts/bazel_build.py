@@ -879,6 +879,18 @@ class BazelBuildBridge(object):
     return 0
 
   def _InstallGeneratedHeaders(self, output_files):
+    """Installs Bazel-generated headers into tulsi-includes directory."""
+    tulsi_root = os.path.join(self.workspace_root, 'tulsi-includes')
+
+    # Older versions of this script created tulsi-includes as a concrete
+    # directory instead of symlink, in which case we need to cleanup.
+    if os.path.exists(tulsi_root) and not os.path.islink(tulsi_root):
+      shutil.rmtree(tulsi_root)
+
+    if not os.path.exists(tulsi_root):
+      tmp_dir = tempfile.mkdtemp(prefix='tulsi')
+      os.symlink(tmp_dir, tulsi_root)
+
     for f in output_files:
       data = json.load(open(f))
       if 'generated_sources' not in data:
@@ -897,8 +909,7 @@ class BazelBuildBridge(object):
         # The /x/x/ part is here to match the number of directory components
         # between tulsi root and bazel root. See tulsi_aspects.bzl for futher
         # explanation.
-        dst = os.path.join(self.workspace_root, 'tulsi-includes/x/x/',
-                           link_path)
+        dst = os.path.join(tulsi_root, 'x/x/', link_path)
         self._PrintVerbose('Symlinking %s to %s' % (src, dst), 2)
 
         dst_dir = os.path.split(dst)[0]
