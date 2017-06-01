@@ -16,6 +16,7 @@
 #define POST_PROCESSOR_COVMAPPATCHER_H_
 
 #include <string>
+#include <unordered_map>
 
 #include "patcher_base.h"
 
@@ -27,10 +28,9 @@ class CovmapSection;
 /// Provides utilities to patch LLVM coverage map data.
 class CovmapPatcher : public PatcherBase {
  public:
-  CovmapPatcher(const std::string &old_prefix,
-                const std::string &new_prefix,
+  CovmapPatcher(const std::unordered_map<std::string, std::string> &prefix_map,
                 bool verbose = false) :
-      PatcherBase(old_prefix, new_prefix, verbose) {
+      PatcherBase(prefix_map, verbose) {
   }
 
   virtual ReturnCode Patch(MachOFile *f);

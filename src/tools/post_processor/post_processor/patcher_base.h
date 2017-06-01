@@ -16,6 +16,7 @@
 #define POST_PROCESSOR_PATCHERBASE_H_
 
 #include <string>
+#include <unordered_map>
 
 #include "return_code.h"
 
@@ -27,11 +28,9 @@ class MachOFile;
 /// Virtual base class for patchers.
 class PatcherBase {
  public:
-  PatcherBase(const std::string &old_prefix,
-              const std::string &new_prefix,
+  PatcherBase(const std::unordered_map<std::string, std::string> &prefix_map,
               bool verbose = false) :
-      old_prefix_(old_prefix),
-      new_prefix_(new_prefix),
+      prefix_map_(prefix_map),
       verbose_(verbose) {
   }
 
@@ -52,8 +51,7 @@ class PatcherBase {
   }
 
  protected:
-  const std::string old_prefix_;
-  const std::string new_prefix_;
+  const std::unordered_map<std::string,std::string> prefix_map_;
   bool verbose_;
 };
 

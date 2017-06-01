@@ -32,6 +32,7 @@ final class XcodeProjectGenerator {
     let cleanScript: URL  // The script to run on "clean" actions.
     let extraBuildScripts: [URL] // Any additional scripts to install into the project bundle.
     let postProcessor: URL  // Binary post processor utility.
+    let patchDsym: URL // The script to properly patch a dysm.
     let uiRunnerEntitlements: URL  // Entitlements file template for UI Test runner apps.
     let stubInfoPlist: URL  // Stub Info.plist (needed for Xcode 8).
     let stubIOSAppExInfoPlistTemplate: URL  // Stub Info.plist (needed for app extension targets).
@@ -65,6 +66,7 @@ final class XcodeProjectGenerator {
   private static let CleanScript = "bazel_clean.sh"
   private static let WorkspaceFile = "WORKSPACE"
   private static let PostProcessorUtil = "post_processor"
+  private static let PatchDsym = "patchDsym.sh"
   private static let UIRunnerEntitlements = "XCTRunner.entitlements"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
@@ -730,6 +732,7 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Installing scripts")
       installFiles([(resourceURLs.buildScript, XcodeProjectGenerator.BuildScript),
                     (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
+                    (resourceURLs.patchDsym, XcodeProjectGenerator.PatchDsym)
                    ],
                    toDirectory: scriptDirectoryURL)
       installFiles(resourceURLs.extraBuildScripts.map { ($0, $0.lastPathComponent) },

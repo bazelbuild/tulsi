@@ -19,6 +19,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "dwarf_buffer_reader.h"
 #include "return_code.h"
@@ -47,8 +48,7 @@ class CovmapSection {
   ///          CovmapSection's data member. It is unsafe to invoke any method on
   ///          this instance after this method returns.
   std::unique_ptr<uint8_t[]> PatchFilenamesAndInvalidate(
-      const std::string &old_prefix,
-      const std::string &new_prefix,
+      const std::unordered_map<std::string,std::string> &prefix_map,
       size_t *section_length,
       bool *data_was_modified);
 
