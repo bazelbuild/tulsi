@@ -536,6 +536,12 @@ class BazelBuildBridge(object):
                                               '.tulsi',
                                               'Utils',
                                               'post_processor')
+
+    self.patch_dsym_script = os.path.join(self.project_file_path,
+                                              '.tulsi',
+                                              'Scripts',
+                                              'patchDsym.sh')
+
     if self.codesigning_allowed:
       self.runner_entitlements_template = os.path.join(self.project_file_path,
                                                        '.tulsi',
@@ -1446,21 +1452,18 @@ class BazelBuildBridge(object):
     for binary_path in binaries:
       os.chmod(binary_path, 0755)
 
-    args = [self.post_processor_binary, '-d']
-    if self.verbose > 1:
-      args.append('-v')
-    args.extend(binaries)
-    args.extend([self.bazel_build_workspace_root, self.workspace_root])
+    for binary_path in binaries:
+        args = [self.patch_dsym_script, self.post_processor_binary, binary_path, self.workspace_root, self.bazel_build_workspace_root]
 
-    self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
-                                              self.workspace_root), 1)
-    returncode, output = self._RunSubprocess(args)
-    if returncode:
-      _PrintXcodeWarning('DWARF path patching failed on dSYM %r (%d). '
-                         'Breakpoints and other debugging actions will '
-                         'probably fail.' % (dsym_bundle_path, returncode))
-      _PrintXcodeWarning('Output: %s' % output or '<no output>')
-      return 0
+        self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
+                                                  self.workspace_root), 1)
+        returncode, output = self._RunSubprocess(args)
+        if returncode:
+          _PrintXcodeWarning('DWARF path patching failed on dSYM %r (%d). '
+                             'Breakpoints and other debugging actions will '
+                             'probably fail.' % (dsym_bundle_path, returncode))
+          _PrintXcodeWarning('Output: %s' % output or '<no output>')
+          return 0
 
     return 0
 

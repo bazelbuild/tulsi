@@ -15,7 +15,7 @@
 #ifndef POST_PROCESSOR_DWARFBUFFERREADER_H_
 #define POST_PROCESSOR_DWARFBUFFERREADER_H_
 
-#include <cassert>
+#include <assert.h>
 #include <string>
 
 namespace post_processor {

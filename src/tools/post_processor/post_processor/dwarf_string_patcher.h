@@ -21,6 +21,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "patcher_base.h"
 
@@ -33,10 +34,9 @@ class MachOFile;
 /// Provides utilities to patch DWARF string table entries.
 class DWARFStringPatcher : public PatcherBase {
  public:
-  DWARFStringPatcher(const std::string &old_prefix,
-                     const std::string &new_prefix,
+  DWARFStringPatcher(const std::unordered_map<std::string, std::string> &prefix_map,
                      bool verbose = false) :
-      PatcherBase(old_prefix, new_prefix, verbose) {
+      PatcherBase(prefix_map, verbose) {
   }
 
   virtual ReturnCode Patch(MachOFile *f);

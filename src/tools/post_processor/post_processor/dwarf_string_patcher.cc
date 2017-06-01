@@ -85,6 +85,15 @@ void UpdateLineInfoSizeInfo(uint8_t *existing_data_ptr,
                             uint64_t new_header_length);
 }  // namespace
 
+bool AllValuesSmallerThanKeys(const std::unordered_map<std::string, std::string> &prefix_map) {
+  for (auto const &entry : prefix_map) {
+    if (entry.second.length() > entry.first.length()) {
+      return false;
+    }
+  }
+  return true;
+}
+
 ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   assert(f);
 
@@ -114,7 +123,7 @@ ReturnCode DWARFStringPatcher::Patch(post_processor::MachOFile *f) {
   bool data_was_modified = false;
 
   // Handle the simple in-place update case.
-  if (new_prefix_.length() <= old_prefix_.length()) {
+  if (post_processor::AllValuesSmallerThanKeys(prefix_map_)) {
     UpdateStringSectionInPlace(reinterpret_cast<char *>(string_data.get()),
                                data_length,
                                &data_was_modified);
@@ -174,10 +183,7 @@ void DWARFStringPatcher::UpdateStringSectionInPlace(
   assert(data && data_was_modified);
 
   *data_was_modified = false;
-  size_t old_prefix_length = old_prefix_.length();
-  const char *old_prefix_cstr = old_prefix_.c_str();
-  size_t new_prefix_length = new_prefix_.length();
-  const char *new_prefix_cstr = new_prefix_.c_str();
+
 
   // The data table is an offset-indexed contiguous array of null terminated
   // ASCII or UTF-8 strings, so strings whose lengths are being reduced or
@@ -188,8 +194,15 @@ void DWARFStringPatcher::UpdateStringSectionInPlace(
   char *end = start + data_length;
   while (start < end) {
     size_t entry_length = strlen(start);
-    if (entry_length >= old_prefix_length &&
-        !memcmp(start, old_prefix_cstr, old_prefix_length)) {
+
+    std::string entry = start;
+    auto iter = prefix_map_.find(entry);
+    if (iter != prefix_map_.end()) {
+
+      size_t old_prefix_length = iter->first.length();
+      size_t new_prefix_length = iter->second.length();
+      const char *new_prefix_cstr = iter->second.c_str();
+
       *data_was_modified = true;
       size_t suffix_length = entry_length - old_prefix_length;
       memcpy(start, new_prefix_cstr, new_prefix_length);
@@ -209,6 +222,11 @@ std::unique_ptr<uint8_t[]> DWARFStringPatcher::RewriteStringSection(
     size_t *new_data_length,
     bool *data_was_modified) {
   assert(data && relocation_table && new_data_length && data_was_modified);
+
+  // TODO(bkase): Actually use the full prefix map
+  auto iter = prefix_map_.begin();
+  std::string old_prefix_ = iter->first;
+  std::string new_prefix_ = iter->second;
 
   relocation_table->clear();
   *data_was_modified = false;
@@ -548,6 +566,11 @@ ReturnCode DWARFStringPatcher::ProcessLineInfoData(
   DWARFBufferReader reader(data,
                            data_length,
                            swap_byte_ordering);
+
+  // TODO(bkase): Actually use the full prefix map
+  auto iter = prefix_map_.begin();
+  std::string old_prefix_ = iter->first;
+  std::string new_prefix_ = iter->second;
 
   auto old_prefix_begin = old_prefix_.begin();
   auto old_prefix_end = old_prefix_.end();
