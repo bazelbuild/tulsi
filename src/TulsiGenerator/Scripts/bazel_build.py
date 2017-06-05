@@ -883,11 +883,16 @@ class BazelBuildBridge(object):
     """Installs Bazel-generated headers into tulsi-includes directory."""
     tulsi_root = os.path.join(self.workspace_root, 'tulsi-includes')
 
-    # Older versions of this script created tulsi-includes as a concrete
-    # directory instead of symlink, in which case we need to cleanup.
-    if os.path.exists(tulsi_root) and not os.path.islink(tulsi_root):
+    if os.path.islink(tulsi_root):
+      # If the symlink is broken, remove it.
+      if not os.path.exists(tulsi_root):
+        os.unlink(tulsi_root)
+    elif os.path.exists(tulsi_root):
+      # Older versions of this script created tulsi-includes as a concrete
+      # directory instead of symlink, in which case we need to cleanup.
       shutil.rmtree(tulsi_root)
 
+    # If there's no symlink, create a temp directory and link.
     if not os.path.exists(tulsi_root):
       tmp_dir = tempfile.mkdtemp(prefix='tulsi')
       os.symlink(tmp_dir, tulsi_root)
