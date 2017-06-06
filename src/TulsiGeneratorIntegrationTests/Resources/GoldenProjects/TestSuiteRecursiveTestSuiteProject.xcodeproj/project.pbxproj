@@ -406,8 +406,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -430,8 +428,6 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -456,8 +452,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -482,8 +476,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -529,9 +521,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -556,8 +546,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -580,8 +568,6 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -606,8 +592,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -632,8 +616,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -680,9 +662,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = _idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -714,8 +694,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -746,8 +724,6 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -779,8 +755,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -812,8 +786,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -883,8 +855,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -915,8 +885,6 @@
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -948,8 +916,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -981,8 +947,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};

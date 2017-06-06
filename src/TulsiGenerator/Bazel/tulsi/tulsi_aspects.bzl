@@ -440,6 +440,16 @@ def _extract_generated_sources_and_includes(target):
 def _extract_minimum_os_for_platform(ctx, platform):
   """Extracts the minimum OS version for the given apple_common.platform."""
   apple_frag = _get_opt_attr(ctx.fragments, 'apple')
+
+  current_platform_str = _get_opt_attr(ctx, 'rule.attr.platform_type')
+  if not current_platform_str:
+    current_platform_str = str(apple_frag.single_arch_platform.platform_type)
+  # Bazel is changing its API to only provide minimum OS for the current
+  # configuration platform type, so return none if the requested platform
+  # does not match the current platform.
+  if current_platform_str != str(platform):
+    return None
+
   min_os = apple_frag.minimum_os_for_platform_type(platform)
 
   if not min_os:
@@ -615,6 +625,7 @@ def _tulsi_sources_aspect(target, ctx):
     infoplist = target.apple_bundle.infoplist
 
   all_attributes = attributes + inheritable_attributes + transitive_attributes
+
   info = _struct_omitting_none(
       artifacts=artifacts,
       attr=_struct_omitting_none(**all_attributes),
@@ -752,3 +763,4 @@ tulsi_outputs_aspect = aspect(
     attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
 )
+

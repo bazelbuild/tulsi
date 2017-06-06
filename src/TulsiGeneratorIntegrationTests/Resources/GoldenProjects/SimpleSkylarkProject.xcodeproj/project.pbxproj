@@ -617,8 +617,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -641,8 +639,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -665,8 +661,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -724,8 +718,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -740,9 +732,7 @@
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -756,9 +746,7 @@
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -772,9 +760,7 @@
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -788,9 +774,7 @@
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -812,8 +796,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -836,8 +818,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -860,8 +840,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -920,8 +898,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -936,9 +912,7 @@
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -952,9 +926,7 @@
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -968,9 +940,7 @@
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -984,9 +954,7 @@
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALID_ARCHS = x86_64;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};
@@ -1016,8 +984,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1048,8 +1014,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1080,8 +1044,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1152,8 +1114,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1183,8 +1143,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1215,8 +1173,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1247,8 +1203,6 @@
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1320,8 +1274,6 @@
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
 				TULSI_USE_DYNAMIC_OUTPUTS = YES;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
