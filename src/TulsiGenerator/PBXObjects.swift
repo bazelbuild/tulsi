@@ -1028,7 +1028,7 @@ final class PBXProject: PBXObjectProtocol {
   }
 
   let compatibilityVersion = XcodeVersionInfo.compatibilityVersion
-  let lastUpgradeCheck = "0610"  // TODO(abaire): Is this actually needed?
+  let lastUpgradeCheck = "0830"
   /// May be set to an Xcode version string indicating the last time a Swift upgrade check was
   /// performed (e.g., 0710).
   var lastSwiftUpdateCheck: String? = nil

@@ -207,7 +207,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0830;
 				TargetAttributes = {
 					3D31C5E6420BCBAA00000000 = {
 						TestTargetID = 3D31C5E6EC64700400000000;
