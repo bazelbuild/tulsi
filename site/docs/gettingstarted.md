@@ -35,7 +35,6 @@ and their operation can be retrieved from Bazel's help.
 
 Flags used for all build modes:
 
-* `--experimental_enable_objc_cc_deps` - allows cc_library dependencies.
 * `--config=ios_$(arch)` - sets up predefined Bazel options for the architecture
   exposed by Xcode.
 * `--ios_minimum_os` - passed through from the Tulsi

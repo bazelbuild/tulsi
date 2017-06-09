@@ -124,7 +124,6 @@ class _OptionsParser(object):
         list,
         {
             _OptionsParser.ALL_CONFIGS: [
-                '--experimental_enable_objc_cc_deps',
                 '--verbose_failures',
                 '--announce_rc',
             ],
