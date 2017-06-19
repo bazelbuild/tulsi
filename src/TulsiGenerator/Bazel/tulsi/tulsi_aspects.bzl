@@ -480,13 +480,7 @@ def _collect_swift_modules(target):
   """Returns a depset of Swift modules found on the given target."""
   swift_modules = depset()
   for modules in _getattr_as_list(target, 'swift.transitive_modules'):
-    if type(modules) == 'depset':
-      swift_modules += modules
-    else:
-      # TODO(b/37660812): Older version of swift_library used lists for
-      # transitive modules. This branch is here for backwards compatibility.
-      swift_modules += [modules]
-
+    swift_modules += modules
   return swift_modules
 
 
