@@ -33,7 +33,6 @@ class PBXTargetGeneratorTests: XCTestCase {
     project = PBXProject(name: "TestProject")
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
                                          bazelBinPath: "bazel-bin",
-                                         bazelPackagePath: "%workspace%",
                                          project: project,
                                          buildScriptPath: "",
                                          stubInfoPlistPaths: stubPlistPaths,
@@ -131,7 +130,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     messageLogger = MockLocalizedMessageLogger()
     targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
                                          bazelBinPath: "bazel-bin",
-                                         bazelPackagePath: "%workspace%",
                                          project: project,
                                          buildScriptPath: "",
                                          stubInfoPlistPaths: stubPlistPaths,

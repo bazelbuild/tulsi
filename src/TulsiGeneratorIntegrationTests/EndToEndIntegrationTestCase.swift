@@ -120,8 +120,6 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     // The workspace symlink is forced to a known value.
     projectGenerator.xcodeProjectGenerator.redactWorkspaceSymlink = true
-    // The bazel package path is forced to a known value.
-    projectGenerator.xcodeProjectGenerator.redactBazelPackagePath = true
     let errorInfo: String
     do {
       return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

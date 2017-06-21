@@ -387,7 +387,6 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   required init(bazelURL: URL,
                 bazelBinPath: String,
-                bazelPackagePath: String,
                 project: PBXProject,
                 buildScriptPath: String,
                 stubInfoPlistPaths: StubInfoPlistPaths,
@@ -396,8 +395,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                 localizedMessageLogger: LocalizedMessageLogger,
                 workspaceRootURL: URL,
                 suppressCompilerDefines: Bool,
-                redactWorkspaceSymlink: Bool,
-                redactBazelPackagePath: Bool) {
+                redactWorkspaceSymlink: Bool) {
     self.project = project
   }
 

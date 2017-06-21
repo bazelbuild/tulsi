@@ -24,7 +24,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     super.setUp()
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
-                                                   packagePathFetcher: packagePathFetcher,
                                                    localizedMessageLogger: localizedMessageLogger)
   }
 
@@ -361,7 +360,6 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
     super.setUp()
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
-                                                   packagePathFetcher: packagePathFetcher,
                                                    localizedMessageLogger: localizedMessageLogger)
     installBUILDFile("TestSuiteRoot",
                      intoSubdirectory: testDir,

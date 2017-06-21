@@ -62,9 +62,6 @@
 /* Warning to show when a user has selected an XCTest but not its host application. */
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
 
-/* Message to show when the package path was not able to be extracted from the workspace. */
-"PackagePathNotFound" = "Was not able to extract the package path from the workspace. This is a Tulsi or Bazel bug, please report.";
-
 /* Message to show when the bundle identifier for watchOS app extension %1$@ could not be found and the resulting project will not be able to launch the watch app. */
 "SettingWatchExtensionBundleIDFailed" = "Failed to extract bundle identifier for the extension of watchOS app '%1$@'. Xcode will not be able to launch the watch app on the simulator or devices.";
 

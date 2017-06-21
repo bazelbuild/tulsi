@@ -25,7 +25,6 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   var bazelURL = URL(fileURLWithPath: "")
   var bazelBinPath = "bazel-bin"
-  var bazelPackagePath = "%workspace%"
 
   func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {
     return []

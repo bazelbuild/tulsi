@@ -59,7 +59,6 @@ protocol PBXTargetGeneratorProtocol: class {
 
   init(bazelURL: URL,
        bazelBinPath: String,
-       bazelPackagePath: String,
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
@@ -68,8 +67,7 @@ protocol PBXTargetGeneratorProtocol: class {
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceRootURL: URL,
        suppressCompilerDefines: Bool,
-       redactWorkspaceSymlink: Bool,
-       redactBazelPackagePath: Bool)
+       redactWorkspaceSymlink: Bool)
 
   /// Generates file references for the given file paths in the associated project without adding
   /// them to an indexer target. The paths must be relative to the workspace root. If pathFilters is
@@ -185,9 +183,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// The path to the Tulsi generated outputs root. For more information see tulsi_aspects.bzl
   let tulsiIncludesPath = "tulsi-includes/x/x"
-
-  /// Bazel's package_path value.
-  let bazelPackagePath: String
 
   let project: PBXProject
   let buildScriptPath: String
@@ -406,7 +401,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   init(bazelURL: URL,
        bazelBinPath: String,
-       bazelPackagePath: String,
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
@@ -415,8 +409,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        localizedMessageLogger: LocalizedMessageLogger,
        workspaceRootURL: URL,
        suppressCompilerDefines: Bool = false,
-       redactWorkspaceSymlink: Bool = false,
-       redactBazelPackagePath: Bool = false) {
+       redactWorkspaceSymlink: Bool = false) {
     self.bazelURL = bazelURL
     self.bazelBinPath = bazelBinPath
     self.project = project
@@ -428,13 +421,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.workspaceRootURL = workspaceRootURL
     self.suppressCompilerDefines = suppressCompilerDefines
     self.redactWorkspaceSymlink = redactWorkspaceSymlink
-
-    if redactBazelPackagePath {
-      // Use a stub value that can be recognized as such in generated projects for tests.
-      self.bazelPackagePath = "PLACEHOLDER_PACKAGE_PATH"
-    } else {
-      self.bazelPackagePath = bazelPackagePath
-    }
   }
 
   func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?) {
@@ -1580,7 +1566,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "\(buildLabels) " +
         "--bazel \"\(bazelURL.path)\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
-        "--bazel_package_path \"\(bazelPackagePath)\" " +
         "--verbose "
 
     func addPerConfigValuesForOptions(_ optionKeys: [TulsiOptionKey],

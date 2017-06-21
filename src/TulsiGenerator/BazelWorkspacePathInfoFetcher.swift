@@ -16,15 +16,10 @@ import Foundation
 
 /// Handles fetching of interesting paths for a Bazel workspace.
 class BazelWorkspacePathInfoFetcher {
-  /// The Bazel package_path as defined by the target workspace.
-  private var packagePath: String? = nil
   /// The Bazel execution_root as defined by the target workspace.
   private var executionRoot: String? = nil
   /// The bazel bin symlink name as defined by the target workspace.
   private var bazelBinSymlinkName: String? = nil
-
-  /// Optional path to the directory in which Bazel symlinks will be created.
-  private var bazelSymlinkParentPathOverride: String? = nil
 
   /// The location of the bazel binary.
   private let bazelURL: URL
@@ -43,18 +38,6 @@ class BazelWorkspacePathInfoFetcher {
     fetchWorkspaceInfo()
   }
 
-  /// Returns the package_path for this fetcher's workspace, blocking until it is available.
-  func getPackagePath() -> String {
-    if !fetchCompleted { waitForCompletion() }
-
-    guard let packagePath = packagePath else {
-      localizedMessageLogger.error("PackagePathNotFound",
-                                   comment: "Package path should have been extracted from the workspace.")
-      return ""
-    }
-    return packagePath
-  }
-
   /// Returns the execution_root for this fetcher's workspace, blocking until it is available.
   func getExecutionRoot() -> String {
     if !fetchCompleted { waitForCompletion() }
@@ -67,13 +50,6 @@ class BazelWorkspacePathInfoFetcher {
     return executionRoot
   }
 
-  /// Returns the tulsi_bazel_symlink_parent_path for this workspace (if it exists), blocking until
-  /// the fetch is completed.
-  func getBazelSymlinkParentPathOverride() -> String? {
-    if !fetchCompleted { waitForCompletion() }
-    return bazelSymlinkParentPathOverride
-  }
-
   /// Returns the bazel bin path for this workspace, blocking until the fetch is completed.
   func getBazelBinPath() -> String {
     if !fetchCompleted { waitForCompletion() }
@@ -84,9 +60,6 @@ class BazelWorkspacePathInfoFetcher {
       return ""
     }
 
-    if let parentPathOverride = getBazelSymlinkParentPathOverride() {
-      return (parentPathOverride as NSString).appendingPathComponent(bazelBinSymlinkName)
-    }
     return bazelBinSymlinkName
   }
 
@@ -98,7 +71,7 @@ class BazelWorkspacePathInfoFetcher {
     semaphore.signal()
   }
 
-  // Fetches Bazel package_path info from the registered workspace URL.
+  // Fetches Bazel path info from the registered workspace URL.
   private func fetchWorkspaceInfo() {
     let profilingStart = localizedMessageLogger.startProfiling("get_package_path",
                                                                message: "Fetching bazel path info")
@@ -160,18 +133,8 @@ class BazelWorkspacePathInfoFetcher {
         bazelBinSymlinkName = key
       }
 
-      switch key {
-        case "execution_root":
-          executionRoot = value
-
-        case "package_path":
-          packagePath = value
-
-        case "tulsi_bazel_symlink_parent_path":
-          bazelSymlinkParentPathOverride = value
-
-        default:
-          break
+      if key == "execution_root" {
+        executionRoot = value
       }
     }
   }

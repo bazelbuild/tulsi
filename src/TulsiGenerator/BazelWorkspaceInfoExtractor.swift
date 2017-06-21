@@ -29,16 +29,11 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   /// Returns the workspace relative path to the bazel bin symlink. Note that this may block.
   var bazelBinPath: String {
-    return workspacePathFetcher.getBazelBinPath()
+    return workspacePathInfoFetcher.getBazelBinPath()
   }
 
-  /// Returns the package path. Note that this may block.
-  var bazelPackagePath: String {
-    return workspacePathFetcher.getPackagePath()
-  }
-
-  /// Fetcher object from which a workspace's package_path may be obtained.
-  private let workspacePathFetcher: BazelWorkspacePathInfoFetcher
+  /// Fetcher object from which a workspace's path info may be obtained.
+  private let workspacePathInfoFetcher: BazelWorkspacePathInfoFetcher
 
   private let aspectExtractor: BazelAspectInfoExtractor
   private let queryExtractor: BazelQueryInfoExtractor
@@ -50,12 +45,11 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
 
-    workspacePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
-                                                         workspaceRootURL: workspaceRootURL,
-                                                         localizedMessageLogger: localizedMessageLogger)
+    workspacePathInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
+                                                             workspaceRootURL: workspaceRootURL,
+                                                             localizedMessageLogger: localizedMessageLogger)
     aspectExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                workspaceRootURL: workspaceRootURL,
-                                               packagePathFetcher: workspacePathFetcher,
                                                localizedMessageLogger: localizedMessageLogger)
     queryExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
                                              workspaceRootURL: workspaceRootURL,
@@ -106,7 +100,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   }
 
   func resolveExternalReferencePath(_ path: String) -> String? {
-    let execRoot = workspacePathFetcher.getExecutionRoot()
+    let execRoot = workspacePathInfoFetcher.getExecutionRoot()
     let fullURL = NSURL.fileURL(withPathComponents: [execRoot, path])?.resolvingSymlinksInPath()
     return fullURL?.path
   }

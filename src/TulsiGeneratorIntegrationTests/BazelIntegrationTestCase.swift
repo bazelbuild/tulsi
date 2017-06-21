@@ -31,7 +31,7 @@ class BazelIntegrationTestCase: XCTestCase {
   var bazelStartupOptions = [String]()
   var bazelBuildOptions = [String]()
   var workspaceRootURL: URL! = nil
-  var packagePathFetcher: BazelWorkspacePathInfoFetcher! = nil
+  var workspaceInfoFetcher: BazelWorkspacePathInfoFetcher! = nil
   var localizedMessageLogger: DirectLocalizedMessageLogger! = nil
 
   private var pathsToCleanOnTeardown = Set<URL>()
@@ -107,15 +107,15 @@ class BazelIntegrationTestCase: XCTestCase {
 
     localizedMessageLogger = DirectLocalizedMessageLogger()
     localizedMessageLogger.startLogging()
-    packagePathFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
-                                                       workspaceRootURL: workspaceRootURL,
-                                                       localizedMessageLogger: localizedMessageLogger)
+    workspaceInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
+                                                         workspaceRootURL: workspaceRootURL,
+                                                         localizedMessageLogger: localizedMessageLogger)
   }
 
   override func tearDown() {
     super.tearDown()
     cleanCreatedFiles()
-    packagePathFetcher = nil
+    workspaceInfoFetcher = nil
     if localizedMessageLogger != nil {
       localizedMessageLogger.stopLogging()
     }
