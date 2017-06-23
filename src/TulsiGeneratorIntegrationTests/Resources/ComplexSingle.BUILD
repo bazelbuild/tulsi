@@ -308,6 +308,7 @@ apple_binary(
     srcs = [
         "Watch2ExtensionBinary/srcs/watch2_extension_binary.m",
     ],
+    platform_type = "watchos",
     sdk_frameworks = [
         "WatchKit",
     ],
