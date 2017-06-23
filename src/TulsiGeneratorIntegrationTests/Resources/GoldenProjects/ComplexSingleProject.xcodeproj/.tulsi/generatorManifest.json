@@ -15,11 +15,12 @@
     "blaze-bin\/tulsi_e2e_complex\/Watch2Extension-MergedInfo.plist",
     "blaze-bin\/tulsi_e2e_complex\/WatchExtension-MergedInfo.plist",
     "lib_idx_Library_20EC2F4A.a",
+    "lib_idx_NonPropagatedLibrary_CoreDataResources_C5359ACA.a",
     "lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a",
     "lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a",
     "lib_idx_SubLibrary_19588DB9.a",
     "lib_idx_TodayExtensionBinary_999643E7.a",
-    "lib_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598.a",
+    "lib_idx_Watch2ExtensionBinary_F2D70ACE.a",
     "lib_idx_WatchExtensionBinary_020F3F9D.a",
     "lib_idx_XCTest_Binary_7CFD00CC.a"
   ],
@@ -49,6 +50,9 @@
     "WatchExtension" : [
       "blaze-bin\/tulsi_e2e_complex\/WatchExtension.ipa"
     ],
+    "_idx_NonPropagatedLibrary_CoreDataResources_C5359ACA" : [
+
+    ],
     "_bazel_clean_" : [
 
     ],
@@ -62,6 +66,9 @@
     "Application" : [
       "blaze-bin\/tulsi_e2e_complex\/Application.ipa"
     ],
+    "_idx_Watch2ExtensionBinary_F2D70ACE" : [
+
+    ],
     "_idx_WatchExtensionBinary_020F3F9D" : [
 
     ],
@@ -69,9 +76,6 @@
 
     ],
     "_idx_Library_20EC2F4A" : [
-
-    ],
-    "_idx_Watch2ExtensionBinary_CoreDataResources_NonPropagatedLibrary_B80CA598" : [
 
     ]
   },
