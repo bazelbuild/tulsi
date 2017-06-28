@@ -70,8 +70,7 @@ std::unique_ptr<uint8_t[]> CovmapPatcher::PatchCovmapSection(
     size_t *new_data_length,
     bool *data_was_modified) const {
   assert(section && new_data_length && data_was_modified);
-  return section->PatchFilenamesAndInvalidate(old_prefix_,
-                                              new_prefix_,
+  return section->PatchFilenamesAndInvalidate(prefix_map_,
                                               new_data_length,
                                               data_was_modified);
 }

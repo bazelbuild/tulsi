@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090B85D51EDF8D5400034C76 /* patchDsym.sh in Resources */ = {isa = PBXBuildFile; fileRef = 090B85D41EDF8D5400034C76 /* patchDsym.sh */; };
 		2D9DB34A1E5DECA40021EAF4 /* XCTRunner.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 2D9DB3491E5DEC680021EAF4 /* XCTRunner.entitlements */; };
 		3D029B581C6421B400779E8E /* TaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029B571C6421B400779E8E /* TaskRunner.swift */; };
 		3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */; };
@@ -194,6 +195,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		090B85D41EDF8D5400034C76 /* patchDsym.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = patchDsym.sh; sourceTree = "<group>"; };
 		2D9DB3491E5DEC680021EAF4 /* XCTRunner.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = XCTRunner.entitlements; sourceTree = "<group>"; };
 		3D029B571C6421B400779E8E /* TaskRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskRunner.swift; sourceTree = "<group>"; };
 		3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorPackageManagerViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 		3DAC27671C3AD2510040F42C /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				090B85D41EDF8D5400034C76 /* patchDsym.sh */,
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
 				D33C204E1EC108CC00867450 /* tulsi_logging.py */,
 				3D156AE11C1C8D9C00183439 /* bazel_clean.sh */,
@@ -794,6 +797,7 @@
 				D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
 				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
+				090B85D51EDF8D5400034C76 /* patchDsym.sh in Resources */,
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,

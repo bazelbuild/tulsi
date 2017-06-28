@@ -87,11 +87,15 @@ ReturnCode CovmapSection::Parse() {
 }
 
 std::unique_ptr<uint8_t[]> CovmapSection::PatchFilenamesAndInvalidate(
-    const std::string &old_prefix,
-    const std::string &new_prefix,
+    const std::unordered_map<std::string,std::string> &prefix_map,
     size_t *section_length,
     bool *data_was_modified) {
   assert(section_length && data_was_modified);
+
+  // TODO(bkase): Actually use the full prefix map
+  auto iter = prefix_map.begin();
+  std::string old_prefix = iter->first;
+  std::string new_prefix = iter->second;
 
   size_t prefix_size = old_prefix.size();
   auto old_prefix_begin = old_prefix.cbegin();

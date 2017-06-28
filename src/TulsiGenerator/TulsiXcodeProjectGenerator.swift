@@ -53,6 +53,7 @@ public final class TulsiXcodeProjectGenerator {
         postProcessor: bundle.url(forResource: "post_processor",
                                              withExtension: "",
                                              subdirectory: "Utilities")!,
+        patchDsym: bundle.url(forResource: "patchDsym", withExtension: "sh")!,
         uiRunnerEntitlements: bundle.url(forResource: "XCTRunner", withExtension: "entitlements")!,
         stubInfoPlist: bundle.url(forResource: "StubInfoPlist", withExtension: "plist")!,
         stubIOSAppExInfoPlistTemplate: bundle.url(forResource: "StubIOSAppExtensionInfoPlist", withExtension: "plist")!,

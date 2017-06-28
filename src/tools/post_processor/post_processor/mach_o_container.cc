@@ -30,9 +30,9 @@ MachOContainer::MachOContainer(const std::string &filename, bool verbose) :
     filename_(filename),
     file_(nullptr),
     verbose_(verbose),
+    host_byte_order_(NXHostByteOrder()),
     content_32_(nullptr),
-    content_64_(nullptr),
-    host_byte_order_(NXHostByteOrder()) {
+    content_64_(nullptr) {
 }
 
 MachOContainer::~MachOContainer() {

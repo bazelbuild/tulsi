@@ -14,9 +14,13 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 #include <list>
 #include <vector>
+#include <unordered_map>
 
 #include "covmap_patcher.h"
 #include "dwarf_string_patcher.h"
@@ -34,11 +38,11 @@ namespace {
 
 struct PatchSettings {
   std::string filename;  // The path of the file to act on.
-  std::string old_prefix;  // The path prefix to be replaced.
-  std::string new_prefix;  // The new path prefix to replace old_prefix.
+  std::unordered_map<std::string, std::string> prefix_map; // prefix,replace pairs
 
   bool patch_dwarf_symbols;  // Whether or not to patch DWARF paths.
   bool patch_coverage_maps;  // Whether or not to patch LLVM coverage maps.
+  std::string patch_with_prefix_map;  // Whether or not to use the prefix_map ("" or a file)
 
   bool verbose;  // Enables verbose output.
 };
@@ -48,6 +52,13 @@ ReturnCode Patch(MachOFile *, const PatchSettings &);
 
 }  // namespace
 
+bool nextToken(std::istringstream &str, std::string &tok, char delim) {
+  if (!std::getline(str, tok, delim)) {
+    fprintf(stderr, "Invalid format: use sed-style ,needle,new_needle,");
+    return false;
+  }
+  return true;
+}
 
 int main(int argc, const char* argv[]) {
   if (argc < 4) {
@@ -58,9 +69,10 @@ int main(int argc, const char* argv[]) {
   PatchSettings patch_settings;
   patch_settings.patch_coverage_maps = false;
   patch_settings.patch_dwarf_symbols = false;
+  patch_settings.patch_with_prefix_map = "";
   patch_settings.verbose = false;
   std::vector<std::string> filenames;
-  for (int i = 1; i < argc - 2; ++i) {
+  for (int i = 1; i < argc; ++i) {
     const char *arg = argv[i];
 
     if (!strcmp(arg, "-v") || !strcmp(arg, "--verbose")) {
@@ -75,6 +87,11 @@ int main(int argc, const char* argv[]) {
 
     if (!strcmp(arg, "-d") || !strcmp(arg, "--dwarf")) {
       patch_settings.patch_dwarf_symbols = true;
+      continue;
+    }
+
+    if (!strcmp(arg, "-m") || !strcmp(arg, "--prefix-map")) {
+      patch_settings.patch_with_prefix_map = argv[++i];
       continue;
     }
 
@@ -93,8 +110,40 @@ int main(int argc, const char* argv[]) {
     return 127;
   }
 
-  patch_settings.old_prefix = argv[argc - 2];
-  patch_settings.new_prefix = argv[argc - 1];
+  if (patch_settings.patch_with_prefix_map != "") {
+    std::ifstream infile(patch_settings.patch_with_prefix_map);
+    std::string line;
+    while (std::getline(infile, line)) {
+      if (line.length() <= 3) {
+        continue;
+      }
+      std::istringstream line_stream(line);
+      std::string old_prefix;
+      std::string new_prefix;
+
+      std::string tok;
+      char delim = line[0];
+      // skip the first
+
+      if (!nextToken(line_stream, tok, delim)) {
+        return 1;
+      }
+
+      if (!nextToken(line_stream, old_prefix, delim)) {
+        return 1;
+      }
+
+      if (!nextToken(line_stream, new_prefix, delim)) {
+        return 1;
+      }
+
+      patch_settings.prefix_map[old_prefix] = new_prefix;
+    }
+  } else {
+    std::string old_prefix = argv[argc - 2];
+    std::string new_prefix = argv[argc - 1];
+    patch_settings.prefix_map[old_prefix] = new_prefix;
+  }
 
   for (auto &filename : filenames) {
     patch_settings.filename = filename;
@@ -146,14 +195,15 @@ void PrintUsage(const char *executable_name) {
          "\t  Print out verbose information during Mach parsing.\n"
          "\t-c, --covmap:\n"
          "\t  Patch paths in LLVM coverage maps.\n"
+         "\t-m, --prefix-map:\n"
+         "\t  Use a sed-style new-line separated ,needle,new_needle, file.\n"
          "\t-d, --dwarf:\n"
          "\t  Patch paths in DWARF symbols.\n");
 }
 
 ReturnCode Patch(MachOFile *f, const PatchSettings &settings) {
   if (settings.patch_coverage_maps) {
-    CovmapPatcher patcher(settings.old_prefix,
-                          settings.new_prefix,
+    CovmapPatcher patcher(settings.prefix_map,
                           settings.verbose);
 
     ReturnCode retval = patcher.Patch(f);
@@ -164,8 +214,7 @@ ReturnCode Patch(MachOFile *f, const PatchSettings &settings) {
   }
 
   if (settings.patch_dwarf_symbols) {
-    DWARFStringPatcher patcher(settings.old_prefix,
-                               settings.new_prefix,
+    DWARFStringPatcher patcher(settings.prefix_map,
                                settings.verbose);
     ReturnCode retval = patcher.Patch(f);
     if (retval != post_processor::ERR_OK &&
