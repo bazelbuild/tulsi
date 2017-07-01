@@ -500,7 +500,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         if let packageName = ruleEntry.label.packageName, !packageName.isEmpty {
           packagePath = packageName + "/"
         } else {
-          packagePath = ""
+            // Rule includes for external packages
+            if let targetName = ruleEntry.label.targetName, ruleEntry.label.value.hasPrefix("@") {
+                packagePath = "external/" + targetName + "/"
+            } else {
+                packagePath = ""
+            }
         }
 
         ruleIncludes.forEach() {
