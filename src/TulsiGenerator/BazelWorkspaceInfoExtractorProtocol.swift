@@ -27,11 +27,6 @@ protocol BazelWorkspaceInfoExtractorProtocol {
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption) -> [BuildLabel: RuleEntry]
 
-  /// Resolves the given Bazel path (which is expected to begin with external/) to a filesystem
-  /// path. This is intended to be used to resolve "@external_repo" style labels to paths usable by
-  /// Xcode. Returns nil if the path could not be resolved for any reason.
-  func resolveExternalReferencePath(_ path: String) -> String?
-
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.
   func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel
