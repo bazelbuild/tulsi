@@ -567,6 +567,12 @@ class BazelBuildBridge(object):
       _PrintXcodeError('Failed to ensure existence of bazel-bin directory.')
       return exit_code
 
+    # This needs to run after `bazel build`, since it depends on the Bazel
+    # workspace directory
+    exit_code = self._LinkTulsiWorkspace()
+    if exit_code:
+      return exit_code
+
     if parser.install_generated_artifacts:
       timer = Timer('Installing artifacts', 'installing_artifacts').Start()
       exit_code = self._InstallArtifact(outputs)
@@ -1528,6 +1534,17 @@ class BazelBuildBridge(object):
       source_path_prefixes.add((basepath, None))
 
     return source_path_prefixes
+
+  def _LinkTulsiWorkspace(self):
+    """Links the Bazel Workspace to the Tulsi Workspace ( `tulsi-workspace` )"""
+    tulsi_workspace = self.workspace_root + "/tulsi-workspace"
+    if os.path.islink(tulsi_workspace):
+      os.unlink(tulsi_workspace)
+    os.symlink(self.bazel_build_workspace_root, tulsi_workspace)
+    if not os.path.exists(tulsi_workspace):
+      _PrintXcodeError('Linking Tulsi Workspace to %s failed.' % tulsi_workspace)
+      return -1
+    return None
 
   @staticmethod
   def _SplitPathComponents(path):

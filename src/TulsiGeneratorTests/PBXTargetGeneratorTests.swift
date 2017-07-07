@@ -222,7 +222,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
+        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -272,7 +272,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ONLY_ACTIVE_ARCH": "YES",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/bazel-workspaceRootURL",
+        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])

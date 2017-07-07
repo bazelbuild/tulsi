@@ -414,24 +414,28 @@ final class XcodeProjectGenerator {
                                 intermediateArtifacts: intermediateArtifacts)
   }
 
+  // Resolves the given Bazel path (which is expected to begin with external/) to a filesystem
+  // path. This is intended to be used to resolve "@external_repo" style labels to paths usable by
+  // Xcode. Returns nil if the path could not be resolved for any reason.
+  func resolveExternalReferencePath(_ path: String, xcodeProject: PBXProject) -> String {
+    // Assume that the main group is a relative path to the WORKSPACE directory
+    // When the project is generated at the WORKSPACE root, the external paths should be
+    // `tulsi-workspace/external`. In this case `mainGroup.path` returns nil
+    let relativeWorkspacePath = xcodeProject.mainGroup.path != nil ? "\(xcodeProject.mainGroup.path!)/" : ""
+    return "\(relativeWorkspacePath)\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
+  }
+
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
   // "external" container to absolute filesystem references.
   private func patchExternalRepositoryReferences(_ xcodeProject: PBXProject) {
     let mainGroup = xcodeProject.mainGroup
-    guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
+    guard let externalGroup = mainGroup.childGroupsByName[".."] else { return }
     let externalChildren = externalGroup.children as! [PBXGroup]
     for child in externalChildren {
-      guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.path!)") else {
-        localizedMessageLogger.warning("ExternalRepositoryResolutionFailed",
-                                       comment: "Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable.",
-                                       context: config.projectName,
-                                       values: child.path!)
-        continue
-      }
-
+      let resolvedPath = resolveExternalReferencePath("external/\(child.path!)", xcodeProject: xcodeProject)
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
-                                                           sourceTree: .Absolute)
+                                                           sourceTree: .SourceRoot)
       newChild.serializesName = true
       newChild.migrateChildrenOfGroup(child)
     }

@@ -45,10 +45,6 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ret
   }
 
-  func resolveExternalReferencePath(_ path: String) -> String? {
-    return nil
-  }
-
   func extractBuildfiles<T:Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     return Set()
   }
