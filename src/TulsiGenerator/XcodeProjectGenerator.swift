@@ -453,6 +453,34 @@ final class XcodeProjectGenerator {
                                 intermediateArtifacts: intermediateArtifacts)
   }
 
+  // Resolves the given Bazel path (which is expected to begin with external/) to a filesystem
+  // path. This is intended to be used to resolve "@external_repo" style labels to paths usable by
+  // Xcode. Returns nil if the path could not be resolved for any reason.
+  func resolveExternalReferencePath(_ path: String, xcodeProject: PBXProject) -> String {
+    // Assume that the main group is a relative path to the WORKSPACE directory
+    // When the project is generated at the WORKSPACE root, the external paths should be
+    // `tulsi-workspace/external`. In this case `mainGroup.path` returns nil
+    let relativeWorkspacePath = xcodeProject.mainGroup.path != nil ? "\(xcodeProject.mainGroup.path!)/" : ""
+    return "\(relativeWorkspacePath)\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
+  }
+
+  // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
+  // "external" container to absolute filesystem references.
+  private func patchExternalRepositoryReferences(_ xcodeProject: PBXProject) {
+    let mainGroup = xcodeProject.mainGroup
+    guard let externalGroup = mainGroup.childGroupsByName[".."] else { return }
+    let externalChildren = externalGroup.children as! [PBXGroup]
+    for child in externalChildren {
+      let resolvedPath = resolveExternalReferencePath("external/\(child.path!)", xcodeProject: xcodeProject)
+      let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
+                                                           path: resolvedPath,
+                                                           sourceTree: .SourceRoot)
+      newChild.serializesName = true
+      newChild.migrateChildrenOfGroup(child)
+    }
+    mainGroup.removeChild(externalGroup)
+  }
+
   private func installWorkspaceSettings(_ projectURL: URL) throws {
     func writeWorkspaceSettings(_ workspaceSettings: [String: Any],
                                 toDirectoryAtURL directoryURL: URL,
