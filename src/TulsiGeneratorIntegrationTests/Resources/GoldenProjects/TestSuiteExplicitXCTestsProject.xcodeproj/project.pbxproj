@@ -417,7 +417,6 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Debug;
 		};
@@ -439,7 +438,6 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Debug;
 		};
@@ -463,7 +461,6 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Debug;
 		};
@@ -487,7 +484,6 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Debug;
 		};
@@ -557,7 +553,6 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Release;
 		};
@@ -579,7 +574,6 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Release;
 		};
@@ -603,7 +597,6 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Release;
 		};
@@ -627,7 +620,6 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = Release;
 		};
@@ -705,7 +697,6 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -735,7 +726,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -766,7 +756,6 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -797,7 +786,6 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = NO;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -866,7 +854,6 @@
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -896,7 +883,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -927,7 +913,6 @@
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -958,7 +943,6 @@
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
 				TULSI_USE_DSYM = YES;
-				TULSI_USE_DYNAMIC_OUTPUTS = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};

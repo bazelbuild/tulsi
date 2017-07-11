@@ -440,8 +440,6 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
-    self.use_dynamic_outputs = (
-        os.environ.get('TULSI_USE_DYNAMIC_OUTPUTS', 'NO') == 'YES')
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -657,18 +655,16 @@ class BazelBuildBridge(object):
     bazel_command.append('build')
     bazel_command.extend(options.GetBuildOptions(configuration))
 
-    if self.use_dynamic_outputs:
-      self._PrintVerbose('Using dynamic outputs')
-      # Do not follow symlinks on __file__ in case this script is linked during
-      # development.
-      tulsi_package_dir = os.path.abspath(
-          os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
+    # Do not follow symlinks on __file__ in case this script is linked during
+    # development.
+    tulsi_package_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
 
-      bazel_command.extend([
-          '--experimental_show_artifacts',
-          '--output_groups=tulsi-outputs,default',
-          '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
-          '--override_repository=tulsi=%s' % tulsi_package_dir])
+    bazel_command.extend([
+        '--experimental_show_artifacts',
+        '--output_groups=tulsi-outputs,default',
+        '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
+        '--override_repository=tulsi=%s' % tulsi_package_dir])
 
     if self.code_coverage_enabled:
       self._PrintVerbose('Enabling code coverage information.')
@@ -811,29 +807,20 @@ class BazelBuildBridge(object):
                          '%s' % (xcode_artifact_path, e))
         return 600
 
-    if self.use_dynamic_outputs:
-      try:
-        output_data = json.load(open(outputs[0]))
-      except (ValueError, IOError) as e:
-        _PrintXcodeError('Failed to load output map ""%s". '
-                         '%s' % (outputs[0], e))
-        return 600
+    try:
+      output_data = json.load(open(outputs[0]))
+    except (ValueError, IOError) as e:
+      _PrintXcodeError('Failed to load output map ""%s". '
+                       '%s' % (outputs[0], e))
+      return 600
 
-      if 'artifacts' not in output_data:
-        _PrintXcodeError(
-            'Failed to find an output artifact for target %s in output map %r' %
-            (xcode_artifact_path, output_data))
-        return 601
+    if 'artifacts' not in output_data:
+      _PrintXcodeError(
+          'Failed to find an output artifact for target %s in output map %r' %
+          (xcode_artifact_path, output_data))
+      return 601
 
-      primary_artifact = output_data['artifacts'][0]
-    else:
-      if not self.bazel_outputs:
-        _PrintXcodeError(
-            'Failed to find an output artifact for target %s in candidates %r' %
-            (xcode_artifact_path, self.bazel_outputs))
-        return 601
-
-      primary_artifact = self.bazel_outputs[0]
+    primary_artifact = output_data['artifacts'][0]
 
     # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
     # modified by the user and, more importantly, may have been modified by
