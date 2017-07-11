@@ -42,9 +42,6 @@ function remove_dir() {
 # Remove it to prevent a useless warning.
 remove_dir "${bazel_bin_dir}"
 
-# Remove the Tulsi symlink tree.
-remove_dir "${tulsi_includes_dir}"
-
 (
   set -x
   "${bazel_executable}" clean

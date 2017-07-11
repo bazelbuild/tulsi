@@ -119,7 +119,7 @@ def _convert_outpath_to_symlink_path(path, use_tulsi_symlink=False):
   and the bazel_build.py script will link the artifacts into the correct
   location under it.
 
-  Tulsi root is located at WORKSPACE/tulsi-includes/x/x/.
+  Tulsi root is located at WORKSPACE/bazel-exec-root-link/tulsi-includes/x/x/.
   The two "x" directories are stubs to match the number of path components, so
   that relative paths work with the new location. Some Bazel outputs, like
   module maps, use relative paths to reference other files in the build.

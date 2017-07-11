@@ -512,7 +512,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           // symlinks.
           includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)/\(packageQualifiedPath)")
           includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/\(packageQualifiedPath)")
-          includes.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(tulsiIncludesPath)/\(packageQualifiedPath)")
+          includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(tulsiIncludesPath)/\(packageQualifiedPath)")
         }
       }
 
@@ -633,7 +633,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         for module in ruleEntry.swiftTransitiveModules {
           let fullPath = module.fullPath as NSString
           let includePath = fullPath.deletingLastPathComponent
-          swiftIncludePaths.add("$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(includePath)")
+          swiftIncludePaths.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(includePath)")
         }
 
         // Load module maps explicitly instead of letting Clang discover them on search paths. This
@@ -641,7 +641,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         // non-modular contexts, leading to duplicate definitions in the same file.
         // See llvm.org/bugs/show_bug.cgi?id=19501
         let otherSwiftFlags = ruleEntry.objCModuleMaps.map() {
-           "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.WorkspaceRootVarName))/\($0.fullPath)"
+           "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
         }
 
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
@@ -790,7 +790,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let searchPaths = ["$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
-                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(tulsiIncludesPath)"
+                       "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(tulsiIncludesPath)"
     ]
     // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
     // protocol buffers) make use of system-style includes.

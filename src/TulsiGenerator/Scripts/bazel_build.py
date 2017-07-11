@@ -28,7 +28,6 @@ import stat
 import StringIO
 import subprocess
 import sys
-import tempfile
 import textwrap
 import time
 import zipfile
@@ -854,21 +853,12 @@ class BazelBuildBridge(object):
 
   def _InstallGeneratedHeaders(self, output_files):
     """Installs Bazel-generated headers into tulsi-includes directory."""
-    tulsi_root = os.path.join(self.workspace_root, 'tulsi-includes')
+    tulsi_root = os.path.join(self.bazel_build_workspace_root, 'tulsi-includes')
 
-    if os.path.islink(tulsi_root):
-      # If the symlink is broken, remove it.
-      if not os.path.exists(tulsi_root):
-        os.unlink(tulsi_root)
-    elif os.path.exists(tulsi_root):
-      # Older versions of this script created tulsi-includes as a concrete
-      # directory instead of symlink, in which case we need to cleanup.
+    if os.path.exists(tulsi_root):
       shutil.rmtree(tulsi_root)
-
-    # If there's no symlink, create a temp directory and link.
-    if not os.path.exists(tulsi_root):
-      tmp_dir = tempfile.mkdtemp(prefix='tulsi')
-      os.symlink(tmp_dir, tulsi_root)
+    else:
+      os.mkdir(tulsi_root)
 
     for f in output_files:
       data = json.load(open(f))
