@@ -439,7 +439,7 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
-    self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'YES') == 'YES'
+    self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_dynamic_outputs = (
         os.environ.get('TULSI_USE_DYNAMIC_OUTPUTS', 'NO') == 'YES')
 

@@ -1558,7 +1558,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
     let shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
-        "exec \(commandLine) --install_generated_artifacts"
+        "TULSI_USE_DSYM=YES exec \(commandLine) --install_generated_artifacts"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
     buildPhase.showEnvVarsInLog = true
