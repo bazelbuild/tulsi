@@ -1461,27 +1461,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["BAZEL_TARGET"] = entry.label.value
     buildSettings["BAZEL_TARGET_TYPE"] = entry.type
 
-    let outputPaths = entry.artifacts.map() { $0.fullPath }
-    if !outputPaths.isEmpty {
-      if let ipaTargetFilename = entry.implicitIPATarget?.asFileName {
-        // Bazel targets may generate multiple IPA artifacts as side effects of their generation.
-        // This is most evident in the case of XCTests, which will list both the test bundle and the
-        // test host. To ensure proper handling of the IPA artifact, the artifact list is ordered
-        // such that the IPA matching the RuleEntry being processed comes before any other IPAs.
-        var orderedOutputPaths = [String]()
-        for path in outputPaths {
-          if path.hasSuffix(ipaTargetFilename) {
-            orderedOutputPaths.insert(path, at: 0)
-          } else {
-            orderedOutputPaths.append(path)
-          }
-        }
-        buildSettings["BAZEL_OUTPUTS"] = orderedOutputPaths.joined(separator: "\n")
-      } else {
-        buildSettings["BAZEL_OUTPUTS"] = outputPaths.joined(separator: "\n")
-      }
-    }
-
     // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
     // The build script uses the binary label to find and move the dSYM associated with an
     // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application

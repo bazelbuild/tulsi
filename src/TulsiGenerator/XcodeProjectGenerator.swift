@@ -1132,13 +1132,7 @@ final class XcodeProjectGenerator {
       }
 
       for target in pbxProject.allTargets {
-        let buildConfigList = target.buildConfigurationList
-        if let debugConfig = buildConfigList.buildConfigurations["Debug"],
-           let bazelOutputs = debugConfig.buildSettings["BAZEL_OUTPUTS"] {
-          targets[target.name] = bazelOutputs.components(separatedBy: "\n").sorted()
-        } else {
-          targets[target.name] = []
-        }
+        targets[target.name] = []
       }
     }
   }

@@ -10,25 +10,22 @@
   ],
   "targets" : {
     "TestApplication" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa"
+
     ],
     "_idx_XCTest_Binary_XCTest_XCTest_B9D951D7" : [
 
     ],
     "TestSuite-Two-XCTest" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/Two\/XCTest.ipa"
+
     ],
     "TestSuite-One-XCTest" : [
-      "blaze-bin\/TestSuite\/One\/XCTest.ipa",
-      "blaze-bin\/TestSuite\/TestApplication.ipa"
+
     ],
     "_bazel_clean_" : [
 
     ],
     "TestSuite-Three-XCTest" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/Three\/XCTest.ipa"
+
     ]
   },
   "intermediateArtifacts" : {

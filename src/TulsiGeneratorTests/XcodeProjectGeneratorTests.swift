@@ -233,7 +233,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
                                     generatedIncludePaths: [RuleEntry.IncludePath]? = nil,
-                                    implicitIPATarget: BuildLabel? = nil,
                                     extensions: Set<BuildLabel>? = nil,
                                     extensionType: String? = nil) -> RuleEntry {
     return RuleEntry(label: label,
@@ -248,7 +247,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      extensions: extensions,
                      buildFilePath: buildFilePath,
                      generatedIncludePaths: generatedIncludePaths,
-                     implicitIPATarget: implicitIPATarget,
                      extensionType: extensionType)
   }
 

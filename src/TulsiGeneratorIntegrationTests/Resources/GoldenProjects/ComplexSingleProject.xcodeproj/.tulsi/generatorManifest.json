@@ -35,11 +35,10 @@
 
     ],
     "XCTest" : [
-      "blaze-bin\/tulsi_e2e_complex\/Application.ipa",
-      "blaze-bin\/tulsi_e2e_complex\/XCTest.ipa"
+
     ],
     "TodayExtension" : [
-      "blaze-bin\/tulsi_e2e_complex\/TodayExtension.ipa"
+
     ],
     "_idx_SubLibrary_19588DB9" : [
 
@@ -48,7 +47,7 @@
 
     ],
     "WatchExtension" : [
-      "blaze-bin\/tulsi_e2e_complex\/WatchExtension.ipa"
+
     ],
     "_idx_NonPropagatedLibrary_CoreDataResources_C5359ACA" : [
 
@@ -57,14 +56,13 @@
 
     ],
     "Watch2Extension" : [
-      "blaze-bin\/tulsi_e2e_complex\/Watch2Extension.ipa",
-      "blaze-bin\/tulsi_e2e_complex\/WatchOS2App.ipa"
+
     ],
     "_tulsi_appex_Watch2Extension" : [
 
     ],
     "Application" : [
-      "blaze-bin\/tulsi_e2e_complex\/Application.ipa"
+
     ],
     "_idx_Watch2ExtensionBinary_F2D70ACE" : [
 

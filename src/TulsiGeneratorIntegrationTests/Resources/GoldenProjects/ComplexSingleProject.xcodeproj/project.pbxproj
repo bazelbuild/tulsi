@@ -1193,7 +1193,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/XCTest.ipa\nblaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1220,7 +1219,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1274,7 +1272,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1295,7 +1292,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchOS2App.ipa\nblaze-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1316,7 +1312,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1483,7 +1478,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/XCTest.ipa\nblaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1510,7 +1504,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1565,7 +1558,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1586,7 +1578,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchOS2App.ipa\nblaze-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1607,7 +1598,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1776,7 +1766,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/XCTest.ipa\nblaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1808,7 +1797,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1875,7 +1863,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1904,7 +1891,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchOS2App.ipa\nblaze-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1933,7 +1919,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2000,7 +1985,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/XCTest.ipa\nblaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2032,7 +2016,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2100,7 +2083,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/TodayExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
 				BAZEL_TARGET_TYPE = ios_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2129,7 +2111,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/Watch2ExtensionBinary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:Watch2ExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchOS2App.ipa\nblaze-bin/tulsi_e2e_complex/Watch2Extension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:Watch2Extension";
 				BAZEL_TARGET_TYPE = apple_watch2_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2158,7 +2139,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_complex/WatchExtensionBinary.appex.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:WatchExtensionBinary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_complex/WatchExtension.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_complex:WatchExtension";
 				BAZEL_TARGET_TYPE = apple_watch1_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;

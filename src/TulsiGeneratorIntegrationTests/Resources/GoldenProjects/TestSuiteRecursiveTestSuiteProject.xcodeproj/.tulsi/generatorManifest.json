@@ -13,19 +13,16 @@
 
     ],
     "TestSuiteXCTest" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/TestSuiteXCTest.ipa"
+
     ],
     "TestApplication" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa"
+
     ],
     "tagged_xctest_2" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/Three\/tagged_xctest_2.ipa"
+
     ],
     "tagged_xctest_1" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/Three\/tagged_xctest_1.ipa"
+
     ],
     "_bazel_clean_" : [
 

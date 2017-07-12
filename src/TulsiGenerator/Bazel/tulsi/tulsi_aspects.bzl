@@ -586,16 +586,6 @@ def _tulsi_sources_aspect(target, ctx):
   if binary_attributes:
     inheritable_attributes = binary_attributes + inheritable_attributes
 
-  # TODO(b/35322727): Remove this logic when outputs are discovered using
-  # tulsi_outputs_aspect
-  ipa_output_label = None
-  if target_kind == 'apple_watch2_extension':
-    # watch2 extensions need to use the IPA produced for the app_name attribute.
-    ipa_name = _get_opt_attr(rule_attr, 'app_name') + '.ipa'
-    ipa_output_label = '//' + target.label.package + ':' + ipa_name
-  elif target_kind in _IPA_GENERATING_RULES:
-    ipa_output_label = str(target.label) + '.ipa'
-
   extensions = [str(t.label) for t in _getattr_as_list(rule_attr, 'extensions')]
 
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
@@ -632,7 +622,6 @@ def _tulsi_sources_aspect(target, ctx):
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,
       generated_includes=generated_includes,
-      ipa_output_label=ipa_output_label,
       iphoneos_deployment_target=_extract_minimum_os_for_platform(
           ctx, apple_common.platform_type.ios),
       # TODO(abaire): Uncomment if/when Bazel supports macOS.

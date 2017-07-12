@@ -20,14 +20,13 @@
 
     ],
     "Application" : [
-      "blaze-bin\/tulsi_e2e_simple\/Application.ipa"
+
     ],
     "XCTest" : [
-      "blaze-bin\/tulsi_e2e_simple\/Application.ipa",
-      "blaze-bin\/tulsi_e2e_simple\/XCTest.ipa"
+
     ],
     "TargetApplication" : [
-      "blaze-bin\/tulsi_e2e_simple\/TargetApplication.ipa"
+
     ]
   },
   "intermediateArtifacts" : {

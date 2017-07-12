@@ -603,7 +603,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCUITest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCUITest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				BAZEL_TARGET_TYPE = apple_ui_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -625,7 +624,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -644,7 +642,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
 				BAZEL_TARGET_TYPE = apple_unit_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -702,7 +699,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -778,7 +774,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCUITest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCUITest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				BAZEL_TARGET_TYPE = apple_ui_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -800,7 +795,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -819,7 +813,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
 				BAZEL_TARGET_TYPE = apple_unit_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -878,7 +871,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -954,7 +946,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCUITest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCUITest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				BAZEL_TARGET_TYPE = apple_ui_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -984,7 +975,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1011,7 +1001,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
 				BAZEL_TARGET_TYPE = apple_unit_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1082,7 +1071,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1109,7 +1097,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCUITest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCUITest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				BAZEL_TARGET_TYPE = apple_ui_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1139,7 +1126,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1166,7 +1152,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/XCTest.ipa\nblaze-bin/tulsi_e2e_simple_skylark/XCTest";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCTest";
 				BAZEL_TARGET_TYPE = apple_unit_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1238,7 +1223,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/SkylarkTargetApplication.apple_binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication.apple_binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:SkylarkTargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;

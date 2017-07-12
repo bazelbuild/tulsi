@@ -448,10 +448,6 @@ class BazelBuildBridge(object):
                        'set.  Please file a bug against Tulsi.')
       sys.exit(1)
 
-    # Declared outputs of the target.
-    self.bazel_outputs = os.environ.get('BAZEL_OUTPUTS', [])
-    if self.bazel_outputs:
-      self.bazel_outputs = self.bazel_outputs.split('\n')
     # Bazel's notion of the type of artifact being generated.
     self.bazel_target_type = os.environ.get('BAZEL_TARGET_TYPE')
     # Path into which generated artifacts should be copied.

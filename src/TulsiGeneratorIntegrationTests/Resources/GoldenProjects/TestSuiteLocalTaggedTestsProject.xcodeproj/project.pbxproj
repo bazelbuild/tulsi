@@ -314,7 +314,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteXCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -339,7 +338,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -391,7 +389,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -423,7 +420,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteXCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -448,7 +444,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -501,7 +496,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -533,7 +527,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteXCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -565,7 +558,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -630,7 +622,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -657,7 +648,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteXCTest.ipa\nblaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -689,7 +679,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = TestSuite/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//TestSuite:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestApplication.ipa";
 				BAZEL_TARGET = "//TestSuite:TestApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -755,7 +744,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/TestSuite/TestSuiteNonXCTest.ipa";
 				BAZEL_TARGET = "//TestSuite:TestSuiteNonXCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				DEBUG_INFORMATION_FORMAT = dwarf;

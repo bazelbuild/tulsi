@@ -307,9 +307,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildPath = "test/objclib"
     let rule2TargetName = "ObjectiveCLibrary"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
-    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       makeTestRuleEntry(rule2BuildTarget, type: "objc_library"),
     ])
 
@@ -422,13 +421,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "TestBundle"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
-    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
-                        attributes: rule2Attributes as [String: AnyObject],
-                        implicitIPATarget: ipa),
+                        attributes: rule2Attributes as [String: AnyObject]),
     ])
 
     do {
@@ -535,13 +532,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "TestBundle"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
-    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: ipa),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
-                        attributes: rule2Attributes as [String: AnyObject],
-                        implicitIPATarget: ipa),
+                        attributes: rule2Attributes as [String: AnyObject]),
       ])
 
     do {
@@ -657,15 +652,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
-    let appIPA = BuildLabel("test/app:TestApplication.ipa")
-    let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources,
-                                     implicitIPATarget: testIPA)
+                                     sourceFiles: testSources)
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: appIPA),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       testRule,
     ])
     do {
@@ -777,8 +769,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       type: "ios_test_bundle",
       attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-      type: "ios_application",
-      implicitIPATarget: BuildLabel("test/app:App.ipa"))
+      type: "ios_application")
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
       type: "\(testRuleType)",
       attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
@@ -860,8 +851,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                 type: "ios_test_bundle",
                                                 attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-                                              type: "ios_application",
-                                              implicitIPATarget: BuildLabel("test/app:App.ipa"))
+                                              type: "ios_application")
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
                                           type: "\(testRuleType)",
                                           attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
@@ -947,15 +937,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
-    let appIPA = BuildLabel("test/app:TestApplication.ipa")
-    let testIPA = BuildLabel("test/testbundle/TestBundle.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources,
-                                     implicitIPATarget: testIPA)
+                                     sourceFiles: testSources)
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: appIPA),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       testRule,
       ])
     do {
@@ -1126,12 +1113,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
-    let ipa = BuildLabel("test/app:TestApplication.ipa")
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources,
-                                     implicitIPATarget: ipa)
+                                     sourceFiles: testSources)
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: [:])
     } catch let e as NSError {
@@ -1194,11 +1179,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule1BuildTarget = "\(rule1BuildPath):\(targetName)"
     let rule2BuildPath = "test/test2"
     let rule2BuildTarget = "\(rule2BuildPath):\(targetName)"
-    let rule1IPA = BuildLabel("test/test1:\(targetName).ipa")
-    let rule2IPA = BuildLabel("test/test2:\(targetName).ipa")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", implicitIPATarget: rule1IPA),
-      makeTestRuleEntry(rule2BuildTarget, type: "ios_application", implicitIPATarget: rule2IPA),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application"),
     ])
 
     do {
@@ -1295,13 +1278,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let targetName = "targetName"
     let buildPath = "test/test1"
     let buildTarget = "\(buildPath):\(targetName)"
-    let ipa = BuildLabel("\(buildPath):\(targetName).ipa")
     let bundleID = "bundleID"
     let rules = Set([
       makeTestRuleEntry(buildTarget,
                         type: "ios_application",
-                        bundleID: bundleID,
-                        implicitIPATarget: ipa),
+                        bundleID: bundleID),
     ])
 
     do {
@@ -1361,11 +1342,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let appTargetName = "targetName"
     let appBuildPath = "test/app"
     let appBuildTarget = "\(appBuildPath):\(appTargetName)"
-    let appIPA = BuildLabel("\(appBuildPath):\(appTargetName).ipa")
     let watchAppTargetName = "watchAppTargetName"
     let watchAppBuildPath = "test/watchapp"
     let watchAppBuildTarget = "\(watchAppBuildPath):\(watchAppTargetName)"
-    let watchAppIPA = BuildLabel("\(watchAppBuildPath):\(watchAppTargetName).ipa")
     let watchExtTargetName = "_tulsi_appex_\(watchAppTargetName)"
 
     let appBundleID = "appBundleID"
@@ -1375,13 +1354,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(appBuildTarget,
                         type: "ios_application",
                         extensions: Set([BuildLabel(watchAppBuildTarget)]),
-                        bundleID: appBundleID,
-                        implicitIPATarget: appIPA),
+                        bundleID: appBundleID),
       makeTestRuleEntry(watchAppBuildTarget,
                         type: "apple_watch2_extension",
                         bundleID: watchAppBundleID,
-                        extensionBundleID: watchExtBundleID,
-                        implicitIPATarget: watchAppIPA)
+                        extensionBundleID: watchExtBundleID)
     ])
 
     do {
@@ -1896,13 +1873,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let package = "test/package/1"
     let target = "\(package):\(targetName)"
     let targetType = "ios_test"
-    let ipa = BuildLabel("test/app:TestApplication.ipa")
 
     let testRule = makeTestRuleEntry(target,
                                      type: targetType,
                                      artifacts: ["some/path/to/an/ipa.ipa",
-                                                 "test/app/TestApplication.ipa"],
-                                     implicitIPATarget: ipa)
+                                                 "test/app/TestApplication.ipa"])
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: [:])
     } catch let e as NSError {
@@ -1915,7 +1890,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-        "BAZEL_OUTPUTS": "test/app/TestApplication.ipa\nsome/path/to/an/ipa.ipa",
         "BAZEL_TARGET": target,
         "BAZEL_TARGET_TYPE": targetType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
@@ -2078,8 +2052,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
-                                 swiftLanguageVersion: String? = nil,
-                                 implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
+                                 swiftLanguageVersion: String? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
                              type: type,
                              attributes: attributes,
@@ -2090,8 +2063,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              bundleID: bundleID,
                              extensionBundleID: extensionBundleID,
                              buildFilePath: buildFilePath,
-                             swiftLanguageVersion: swiftLanguageVersion,
-                             implicitIPATarget: implicitIPATarget)
+                             swiftLanguageVersion: swiftLanguageVersion)
   }
 
   private class TestBazelFileInfo : BazelFileInfo {
@@ -2110,8 +2082,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
                                  buildFilePath: String? = nil,
-                                 swiftLanguageVersion: String? = nil,
-                                 implicitIPATarget: BuildLabel? = nil) -> RuleEntry {
+                                 swiftLanguageVersion: String? = nil) -> RuleEntry {
     let artifactInfos = artifacts.map() { TestBazelFileInfo(fullPath: $0) }
     let sourceInfos = sourceFiles.map() { TestBazelFileInfo(fullPath: $0) }
     return RuleEntry(label: label,
@@ -2124,8 +2095,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      bundleID: bundleID,
                      extensionBundleID: extensionBundleID,
                      buildFilePath: buildFilePath,
-                     swiftLanguageVersion: swiftLanguageVersion,
-                     implicitIPATarget: implicitIPATarget)
+                     swiftLanguageVersion: swiftLanguageVersion)
   }
 
   private struct TargetDefinition {

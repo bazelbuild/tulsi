@@ -458,7 +458,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -484,7 +483,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -538,7 +536,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -586,7 +583,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -612,7 +608,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -667,7 +662,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -715,7 +709,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -747,7 +740,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -814,7 +806,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -841,7 +832,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/XCTest.ipa\nblaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:XCTest";
 				BAZEL_TARGET_TYPE = ios_test;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -873,7 +863,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/Application.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -941,7 +930,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
 				BAZEL_BINARY_DSYM = tulsi_e2e_simple/Binary.app.dSYM;
 				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple:Binary";
-				BAZEL_OUTPUTS = "blaze-bin/tulsi_e2e_simple/TargetApplication.ipa";
 				BAZEL_TARGET = "//tulsi_e2e_simple:TargetApplication";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;

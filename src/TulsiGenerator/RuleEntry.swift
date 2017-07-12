@@ -330,10 +330,6 @@ public final class RuleEntry: RuleInfo {
     return "iphoneos"
   }()
 
-  /// For rule types that generate an implicit name.ipa target, returns a BuildLabel usable to
-  /// generate the IPA.
-  let implicitIPATarget: BuildLabel?
-
   init(label: BuildLabel,
        type: String,
        attributes: [String: AnyObject],
@@ -357,7 +353,6 @@ public final class RuleEntry: RuleInfo {
        swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
-       implicitIPATarget: BuildLabel? = nil,
        extensionType: String? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
@@ -397,7 +392,6 @@ public final class RuleEntry: RuleInfo {
     self.swiftToolchain = swiftToolchain
     self.swiftTransitiveModules = swiftTransitiveModules
     self.objCModuleMaps = objCModuleMaps
-    self.implicitIPATarget = implicitIPATarget
     self.extensionType = extensionType
 
     var linkedTargetLabels = Set<BuildLabel>()
@@ -433,7 +427,6 @@ public final class RuleEntry: RuleInfo {
                    swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],
-                   implicitIPATarget: BuildLabel? = nil,
                    extensionType: String? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
@@ -458,7 +451,6 @@ public final class RuleEntry: RuleInfo {
               swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
-              implicitIPATarget: implicitIPATarget,
               extensionType: extensionType)
   }
 

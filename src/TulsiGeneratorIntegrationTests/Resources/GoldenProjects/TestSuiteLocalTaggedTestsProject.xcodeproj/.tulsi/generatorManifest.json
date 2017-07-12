@@ -9,14 +9,13 @@
   ],
   "targets" : {
     "TestSuiteXCTest" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa",
-      "blaze-bin\/TestSuite\/TestSuiteXCTest.ipa"
+
     ],
     "TestApplication" : [
-      "blaze-bin\/TestSuite\/TestApplication.ipa"
+
     ],
     "TestSuiteNonXCTest" : [
-      "blaze-bin\/TestSuite\/TestSuiteNonXCTest.ipa"
+
     ],
     "_idx_TestSuiteXCTest_Binary_TestSuiteNonXCTest_4665994C" : [
 
