@@ -170,6 +170,18 @@ objc_library(
         "Library/textual_hdrs/TextualHdrsHeader.h",
     ],
     xibs = ["Library/xibs/xib.xib"],
+    deps = [":ObjcProtos"],
+)
+
+objc_proto_library(
+    name = "ObjcProtos",
+    uses_protobuf = 1,
+    deps = [":Protos"],
+)
+
+proto_library(
+    name = "Protos",
+    srcs = ["ProtoFile.proto"],
 )
 
 objc_library(

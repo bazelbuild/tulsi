@@ -275,14 +275,15 @@ final class BazelAspectInfoExtractor {
       let generatedNonARCSourceInfos = dict["generated_non_arc_files"] as? [[String: AnyObject]] ?? []
       appendGeneratedSourceArtifacts(generatedNonARCSourceInfos, to: &nonARCSources)
 
-      let generatedIncludePaths: [RuleEntry.IncludePath]?
-      if let includes = dict["generated_includes"] as? [String] {
-        generatedIncludePaths = includes.map() {
+      let includePaths: [RuleEntry.IncludePath]?
+      if let includes = dict["includes"] as? [String] {
+        includePaths = includes.map() {
           RuleEntry.IncludePath($0, directoryArtifacts.contains($0))
         }
       } else {
-        generatedIncludePaths = nil
+        includePaths = nil
       }
+      let defines = dict["defines"] as? [String]
       let dependencies = Set(dict["deps"] as? [String] ?? [])
       let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String
@@ -340,7 +341,8 @@ final class BazelAspectInfoExtractor {
                                 tvOSDeploymentTarget: tvOSDeploymentTarget,
                                 watchOSDeploymentTarget: watchOSDeploymentTarget,
                                 buildFilePath: buildFilePath,
-                                generatedIncludePaths: generatedIncludePaths,
+                                defines: defines,
+                                includePaths: includePaths,
                                 swiftLanguageVersion: swiftLanguageVersion,
                                 swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,

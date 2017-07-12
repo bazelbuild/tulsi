@@ -163,10 +163,8 @@ public final class RuleEntry: RuleInfo {
     case compiler_defines
     case copts
     case datamodels
-    case defines
     case enable_modules
     case has_swift_dependency
-    case includes
     case launch_storyboard
     case pch
     case swift_language_version
@@ -194,14 +192,17 @@ public final class RuleEntry: RuleInfo {
   /// Artifacts produced by Bazel when this rule is built.
   public let artifacts: [BazelFileInfo]
 
+  /// Defines to be applied to this rule by Bazel.
+  public let defines: [String]?
+
   /// Source files associated with this rule.
   public let sourceFiles: [BazelFileInfo]
 
   /// Non-ARC source files associated with this rule.
   public let nonARCSourceFiles: [BazelFileInfo]
 
-  /// Paths to generated directories that will include header files.
-  public let generatedIncludePaths: [IncludePath]?
+  /// Paths to directories that will include header files.
+  public let includePaths: [IncludePath]?
 
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<String>
@@ -348,7 +349,8 @@ public final class RuleEntry: RuleInfo {
        tvOSDeploymentTarget: String? = nil,
        watchOSDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
-       generatedIncludePaths: [IncludePath]? = nil,
+       defines: [String]? = nil,
+       includePaths: [IncludePath]? = nil,
        swiftLanguageVersion: String? = nil,
        swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
@@ -387,7 +389,8 @@ public final class RuleEntry: RuleInfo {
     self.tvOSDeploymentTarget = tvOSDeploymentTarget
     self.watchOSDeploymentTarget = watchOSDeploymentTarget
     self.buildFilePath = buildFilePath
-    self.generatedIncludePaths = generatedIncludePaths
+    self.defines = defines
+    self.includePaths = includePaths
     self.swiftLanguageVersion = swiftLanguageVersion
     self.swiftToolchain = swiftToolchain
     self.swiftTransitiveModules = swiftTransitiveModules
@@ -422,7 +425,8 @@ public final class RuleEntry: RuleInfo {
                    tvOSDeploymentTarget: String? = nil,
                    watchOSDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
-                   generatedIncludePaths: [IncludePath]? = nil,
+                   defines: [String]? = nil,
+                   includePaths: [IncludePath]? = nil,
                    swiftLanguageVersion: String? = nil,
                    swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
@@ -446,7 +450,8 @@ public final class RuleEntry: RuleInfo {
               tvOSDeploymentTarget: tvOSDeploymentTarget,
               watchOSDeploymentTarget: watchOSDeploymentTarget,
               buildFilePath: buildFilePath,
-              generatedIncludePaths: generatedIncludePaths,
+              defines: defines,
+              includePaths: includePaths,
               swiftLanguageVersion: swiftLanguageVersion,
               swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,

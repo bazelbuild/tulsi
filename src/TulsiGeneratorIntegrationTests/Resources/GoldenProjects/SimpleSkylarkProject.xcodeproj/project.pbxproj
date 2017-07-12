@@ -56,6 +56,7 @@
 		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
+		43D68C286D0B724800000000 /* ProtoFile.proto */ = {isa = PBXFileReference; lastKnownFileType = dyn.age81a6xtsv1u; path = ProtoFile.proto; sourceTree = "<group>"; };
 		43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SkylarkTargetApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28739856DA00000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28800EB7BE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
@@ -243,6 +244,7 @@
 				43D68C28B7EA446800000000 /* BUILD */,
 				966FB6DEC5C9C21400000000 /* Binary */,
 				966FB6DE29C889FA00000000 /* Library */,
+				43D68C286D0B724800000000 /* ProtoFile.proto */,
 				43D68C2894BEDE5200000000 /* Settings.bundle */,
 				C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */,
 				966FB6DEEF2E7F4000000000 /* XCTest */,
@@ -719,7 +721,7 @@
 				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
@@ -733,7 +735,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-bin/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
@@ -761,7 +763,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
@@ -891,7 +893,7 @@
 				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
@@ -905,7 +907,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-bin/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/blaze-genfiles/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
@@ -933,7 +935,7 @@
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;

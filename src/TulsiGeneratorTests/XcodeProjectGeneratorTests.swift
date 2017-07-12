@@ -232,7 +232,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     secondaryArtifacts: [BazelFileInfo] = [],
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
-                                    generatedIncludePaths: [RuleEntry.IncludePath]? = nil,
+                                    defines: [String]? = nil,
+                                    includePaths: [RuleEntry.IncludePath]? = nil,
                                     extensions: Set<BuildLabel>? = nil,
                                     extensionType: String? = nil) -> RuleEntry {
     return RuleEntry(label: label,
@@ -246,7 +247,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      weakDependencies: weakDependencies,
                      extensions: extensions,
                      buildFilePath: buildFilePath,
-                     generatedIncludePaths: generatedIncludePaths,
+                     defines: defines,
+                     includePaths: includePaths,
                      extensionType: extensionType)
   }
 

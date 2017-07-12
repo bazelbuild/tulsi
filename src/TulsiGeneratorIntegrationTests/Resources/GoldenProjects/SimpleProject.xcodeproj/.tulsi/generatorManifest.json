@@ -6,26 +6,30 @@
     "XCTest.xctest\/**",
     "blaze-bin\/tulsi_e2e_simple\/Application-MergedInfo.plist",
     "blaze-bin\/tulsi_e2e_simple\/TargetApplication-MergedInfo.plist",
+    "lib_idx_Binary_A56A3DAA.a",
     "lib_idx_Library_1A8360DD.a",
-    "lib_idx_XCTest_Binary_31228BEA.a"
+    "lib_idx_XCTest_8BB84E40.a"
   ],
   "targets" : {
-    "_bazel_clean_" : [
-
-    ],
-    "_idx_XCTest_Binary_31228BEA" : [
-
-    ],
     "_idx_Library_1A8360DD" : [
 
     ],
-    "Application" : [
+    "TargetApplication" : [
 
     ],
     "XCTest" : [
 
     ],
-    "TargetApplication" : [
+    "_bazel_clean_" : [
+
+    ],
+    "_idx_Binary_A56A3DAA" : [
+
+    ],
+    "Application" : [
+
+    ],
+    "_idx_XCTest_8BB84E40" : [
 
     ]
   },
