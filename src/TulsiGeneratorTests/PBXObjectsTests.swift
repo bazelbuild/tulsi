@@ -179,6 +179,7 @@ class PBXObjectsTests: XCTestCase {
         "app",
         "bundle",
         "xcassets",
+        "xcstickers",
     ]
     for ext in bundleExtensionsToTest {
       let filename = "filename.\(ext)"

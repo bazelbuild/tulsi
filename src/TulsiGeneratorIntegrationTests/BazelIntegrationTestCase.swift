@@ -196,6 +196,7 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   /// Creates a file in the test workspace with the given contents.
+  @discardableResult
   func makeFileNamed(_ name: String,
                      withContent content: String = "",
                      inSubdirectory subdirectory: String? = nil,

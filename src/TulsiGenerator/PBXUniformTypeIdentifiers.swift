@@ -229,6 +229,7 @@ let DirExtensionToUTI = [
   "xcdatamodeld": "wrapper.xcdatamodeld",
   "xcmappingmodel": "wrapper.xcmappingmodel",
   "xctest": "wrapper.cfbundle",
+  "xcstickers": "folder.stickers",
   "xpc": "wrapper.xpc-service",
 ]
 

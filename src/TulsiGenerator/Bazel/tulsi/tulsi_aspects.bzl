@@ -269,9 +269,11 @@ def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
 
 def _collect_asset_catalogs(rule_attr):
   """Extracts xcassets directories from the given rule attributes."""
-  return _collect_bundle_paths(rule_attr,
-                               ['app_asset_catalogs', 'asset_catalogs'],
-                               '.xcassets')
+  attrs = ['app_asset_catalogs', 'asset_catalogs']
+  bundles = _collect_bundle_paths(rule_attr, attrs, '.xcassets')
+  bundles.extend(_collect_bundle_paths(rule_attr, attrs, '.xcstickers'))
+
+  return bundles
 
 
 def _collect_bundle_imports(rule_attr):

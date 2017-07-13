@@ -3,6 +3,7 @@
   "artifacts" : [
     "SkylarkApplication.app\/**",
     "SkylarkTargetApplication.app\/**",
+    "StickerExtension.appex\/**",
     "XCTest.xctest\/**",
     "XCUITest.xctest\/**",
     "_idx_XCTestCodeSwift_2FB5517B.framework\/**",
@@ -28,6 +29,9 @@
     "XCTest" : [
 
     ],
+    "StickerExtension" : [
+
+    ],
     "SkylarkApplication" : [
 
     ],
@@ -42,6 +46,9 @@
     ]
   },
   "intermediateArtifacts" : {
+    "StickerExtension" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin"
+    ],
     "SkylarkTargetApplication" : [
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.apple_binary_lipobin",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication_entitlements.entitlements",
@@ -56,6 +63,8 @@
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.zip",
       "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.h",
       "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.m",
       "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
@@ -67,6 +76,8 @@
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
       "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.zip",
       "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_binary_lipobin",
       "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_bundle.ipa",
       "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.h",
@@ -87,6 +98,7 @@
     "..\/..\/tulsi_e2e_simple_skylark\/Binary\/Assets.xcassets\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/Binary\/Base.lproj\/One.storyboard",
     "..\/..\/tulsi_e2e_simple_skylark\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Ext-Info.plist",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/hdrs\/HdrsHeader.h",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/pch\/PCHFile.pch",
     "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/SrcsHeader.h",
@@ -99,6 +111,7 @@
     "..\/..\/tulsi_e2e_simple_skylark\/ProtoFile.proto",
     "..\/..\/tulsi_e2e_simple_skylark\/Settings.bundle\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/Stickers.xcstickers\/**",
     "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/Tests.swift",
     "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/XCTests.mm",
     "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/XCUITests.mm"

@@ -97,7 +97,9 @@ objc_library(
 ## Skylark-based test rules.
 load(
     "//tools/build_defs/apple:ios.bzl",
+    "apple_product_type",
     "skylark_ios_application",
+    "skylark_ios_extension",
     "ios_unit_test",
     "ios_ui_test",
 )
@@ -106,6 +108,7 @@ load("//tools/build_defs/apple:swift.bzl", "swift_library")
 skylark_ios_application(
     name = "SkylarkApplication",
     bundle_id = "com.google.Tulsi.Application",
+    extensions = [":StickerExtension"],
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
@@ -120,6 +123,15 @@ skylark_ios_application(
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
     deps = [":MainLibrary"],
+)
+
+skylark_ios_extension(
+    name = "StickerExtension",
+    asset_catalogs = ["Stickers.xcstickers/asset.png"],
+    bundle_id = "com.google.Tulsi.TargetApplication.extension",
+    families = ["iphone"],
+    infoplists = ["Ext-Info.plist"],
+    product_type = apple_product_type.messages_sticker_pack_extension,
 )
 
 objc_bundle(

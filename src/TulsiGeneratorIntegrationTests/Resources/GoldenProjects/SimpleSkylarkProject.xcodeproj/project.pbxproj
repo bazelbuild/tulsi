@@ -44,7 +44,9 @@
 
 /* Begin PBXFileReference section */
 		43D68C281112407E00000000 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		43D68C2826D093AA00000000 /* StickerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = StickerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		43D68C2841C6E0E600000000 /* Ext-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Ext-Info.plist"; sourceTree = "<group>"; };
 		43D68C284342A9EC00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C284611198400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = _idx_XCTestCodeSwift_2FB5517B.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +56,7 @@
 		43D68C2856F87EF800000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src4.m; sourceTree = "<group>"; };
 		43D68C28577B7A7A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src3.m; sourceTree = "<group>"; };
 		43D68C28578645F400000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = src2.m; sourceTree = "<group>"; };
+		43D68C285D7CCDDA00000000 /* Stickers.xcstickers */ = {isa = PBXFileReference; lastKnownFileType = folder.stickers; path = Stickers.xcstickers; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
 		43D68C286D0B724800000000 /* ProtoFile.proto */ = {isa = PBXFileReference; lastKnownFileType = dyn.age81a6xtsv1u; path = ProtoFile.proto; sourceTree = "<group>"; };
@@ -95,6 +98,7 @@
 			children = (
 				43D68C28B9C699F600000000 /* SkylarkApplication.app */,
 				43D68C286DAAC6CC00000000 /* SkylarkTargetApplication.app */,
+				43D68C2826D093AA00000000 /* StickerExtension.appex */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				43D68C28AB52552000000000 /* XCUITest.xctest */,
 				43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */,
@@ -243,10 +247,12 @@
 				966FB6DE6B144ABC00000000 /* Application */,
 				43D68C28B7EA446800000000 /* BUILD */,
 				966FB6DEC5C9C21400000000 /* Binary */,
+				43D68C2841C6E0E600000000 /* Ext-Info.plist */,
 				966FB6DE29C889FA00000000 /* Library */,
 				43D68C286D0B724800000000 /* ProtoFile.proto */,
 				43D68C2894BEDE5200000000 /* Settings.bundle */,
 				C517CBBD7466E43000000000 /* SimpleTest.xcdatamodeld */,
+				43D68C285D7CCDDA00000000 /* Stickers.xcstickers */,
 				966FB6DEEF2E7F4000000000 /* XCTest */,
 				966FB6DEBECFDF8000000000 /* XCUITest */,
 			);
@@ -329,6 +335,22 @@
 			productName = _idx_Library_22D3B3D5;
 			productReference = 43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6BB03F10600000000 /* StickerExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583903428F900000000 /* Build configuration list for PBXNativeTarget "StickerExtension" */;
+			buildPhases = (
+				84B42271A29901AB00000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = StickerExtension;
+			productName = StickerExtension;
+			productReference = 43D68C2826D093AA00000000 /* StickerExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		3D31C5E6BECFDF8000000000 /* XCUITest */ = {
 			isa = PBXNativeTarget;
@@ -444,6 +466,7 @@
 			targets = (
 				3D31C5E6C3E8068C00000000 /* SkylarkApplication */,
 				3D31C5E6F353FBEA00000000 /* SkylarkTargetApplication */,
+				3D31C5E6BB03F10600000000 /* StickerExtension */,
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				3D31C5E6BECFDF8000000000 /* XCUITest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
@@ -496,6 +519,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B42271A29901AB00000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:StickerExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271AA81D59F00000000 /* ShellScript */ = {
@@ -718,6 +755,26 @@
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/StickerExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
+				PRODUCT_NAME = StickerExtension;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -730,7 +787,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000006 /* Debug */ = {
+		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -744,7 +801,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000007 /* Debug */ = {
+		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -758,7 +815,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000008 /* Debug */ = {
+		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -890,6 +947,26 @@
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/StickerExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
+				PRODUCT_NAME = StickerExtension;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -902,7 +979,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000006 /* Release */ = {
+		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -916,7 +993,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000007 /* Release */ = {
+		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -930,7 +1007,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000008 /* Release */ = {
+		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -1095,6 +1172,34 @@
 			};
 			name = __TulsiTestRunner_Debug;
 		};
+		44936BD6C928366700000005 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/StickerExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
+				PRODUCT_NAME = StickerExtension;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = NO;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
 		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1247,22 +1352,50 @@
 			};
 			name = __TulsiTestRunner_Release;
 		};
+		44936BD6FCBCA00300000005 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_simple_skylark/StickerExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:StickerExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
+				PRODUCT_NAME = StickerExtension;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000005 /* Debug */,
-				44936BD6A3D45CE900000005 /* Release */,
+				44936BD67EED3C4D00000006 /* Debug */,
+				44936BD6A3D45CE900000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000006 /* Debug */,
-				44936BD6A3D45CE900000006 /* Release */,
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1309,8 +1442,18 @@
 		DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000008 /* Debug */,
-				44936BD6A3D45CE900000008 /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD6A3D45CE900000009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583903428F900000000 /* Build configuration list for PBXNativeTarget "StickerExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD6A3D45CE900000005 /* Release */,
+				44936BD6C928366700000005 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000005 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1333,8 +1476,8 @@
 		DE475583D3B1CC6700000000 /* Build configuration list for PBXNativeTarget "_idx_XCTestCodeSwift_2FB5517B" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
