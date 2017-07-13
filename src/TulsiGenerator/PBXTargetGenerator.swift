@@ -1332,6 +1332,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       //               Note that doing this would also require per-config aspect passes.
       if configName == "Debug" {
         addPreprocessorDefine("DEBUG=1", toConfig: config)
+
+        // TODO(jerry): remove when above comment is resolved.
+        // we want to install the DSYM bundles.
+        config.buildSettings["TULSI_USE_DSYM"] = "YES"
       } else if configName == "Release" {
         addPreprocessorDefine("NDEBUG=1", toConfig: config)
 

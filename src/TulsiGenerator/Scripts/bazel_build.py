@@ -641,7 +641,9 @@ class BazelBuildBridge(object):
         timer.End()
         if exit_code:
           return exit_code
-        if dsym_path:
+        # We don't want to run the DSYM Patcher.
+        # Clang is setup to generate one relative to the workspace.
+        if False:
           timer = Timer('Patching DSYM source file paths',
                         'patching_dsym').Start()
           exit_code = self._PatchdSYMPaths(dsym_path)
