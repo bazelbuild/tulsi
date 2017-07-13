@@ -26,8 +26,7 @@ for p in $(xcrun dwarfdump "$DSYM" -r 0 | grep AT_comp_dir -B2 | grep -v '\-\-' 
     #
     # Dwarfpatch uses this file to fix our dSYM
     if [[ "$RELATIVE_PATH" == external* ]]; then
-      # HACK: Temporarily use REAL_WORKSPACE here to support non-sandboxed builds.
-      echo ",$TO_REPLACE,$REAL_WORKSPACE," >> "$PREFIX_MAP"
+      echo ",$TO_REPLACE,$BAZEL_WORKSPACE," >> "$PREFIX_MAP"
     else
       echo ",$TO_REPLACE,$REAL_WORKSPACE," >> "$PREFIX_MAP"
     fi
