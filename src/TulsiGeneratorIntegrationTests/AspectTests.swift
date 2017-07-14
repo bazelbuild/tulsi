@@ -110,7 +110,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                        BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 18)
+    XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -261,40 +261,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:TodayExtension")
         .dependsOn("//tulsi_test:TodayExtensionBinary")
 
-    checker.assertThat("//tulsi_test:WatchExtensionBinary")
-        .hasSources(["tulsi_test/WatchExtensionBinary/srcs/watch_extension_binary.m"])
-
-    checker.assertThat("//tulsi_test:WatchExtension")
-        .dependsOn("//tulsi_test:WatchExtensionBinary")
-        .hasAttribute(.supporting_files,
-                      value: [["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/app_entitlements.entitlements",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/app_infoplists/Info.plist",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/app_resources.file",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/app_structured_resources.file",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/ext_entitlements.entitlements",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/ext_infoplists/Info.plist",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/ext_resources.file",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/ext_structured_resources.file",
-                               "src": true],
-                              ["is_dir": false,
-                               "path": "tulsi_test/WatchExtension/app_asset_catalogs.xcassets",
-                               "src": true]] as NSArray)
-
     checker.assertThat("//tulsi_test:XCTest")
         .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
@@ -309,7 +275,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 18)
+    XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 

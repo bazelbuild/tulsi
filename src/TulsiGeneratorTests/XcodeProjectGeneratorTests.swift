@@ -203,11 +203,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
     validate(["ios_application"], "iphoneos")
     validate(["ios_application", "ios_application"], "iphoneos")
-    validate(["ios_application", "apple_watch2_extension"], "iphoneos")
-    validate(["apple_watch2_extension"], "watchos")
-    validate(["apple_watch2_extension", "apple_watch2_extension"], "watchos")
-    validate(["apple_watch2_extension", "_tvos_extension"], nil)
-    validate(["ios_application", "apple_watch2_extension", "_tvos_extension"], nil)
     validate(["ios_application", "_tvos_extension"], nil)
     validate(["_tvos_extension"], "appletvos")
   }

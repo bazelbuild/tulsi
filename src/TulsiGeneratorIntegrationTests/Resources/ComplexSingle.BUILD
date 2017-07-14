@@ -27,8 +27,6 @@ ios_application(
     entitlements = "Application/entitlements.entitlements",
     extensions = [
         ":TodayExtension",
-        ":WatchExtension",
-        ":Watch2Extension",
     ],
     structured_resources = [
         "Application/structured_resources.file1",
@@ -229,88 +227,6 @@ ios_extension(
     resources = [
         "TodayExtension/resources/file1",
         "TodayExtension/resources/file2.file",
-    ],
-)
-
-apple_watch_extension_binary(
-    name = "WatchExtensionBinary",
-    srcs = [
-        "WatchExtensionBinary/srcs/watch_extension_binary.m",
-    ],
-    sdk_frameworks = [
-        "WatchKit",
-    ],
-)
-
-apple_watch1_extension(
-    name = "WatchExtension",
-    app_asset_catalogs = [
-        "WatchExtension/app_asset_catalogs.xcassets/app_asset_file.png",
-    ],
-    app_entitlements = "WatchExtension/app_entitlements.entitlements",
-    app_infoplists = [
-        "WatchExtension/app_infoplists/Info.plist",
-    ],
-    app_name = "WatchApp",
-    app_resources = [
-        "WatchExtension/app_resources.file",
-    ],
-    app_structured_resources = [
-        "WatchExtension/app_structured_resources.file",
-    ],
-    binary = ":WatchExtensionBinary",
-    ext_entitlements = "WatchExtension/ext_entitlements.entitlements",
-    ext_infoplists = [
-        "WatchExtension/ext_infoplists/Info.plist",
-    ],
-    ext_resources = [
-        "WatchExtension/ext_resources.file",
-    ],
-    ext_structured_resources = [
-        "WatchExtension/ext_structured_resources.file",
-    ],
-)
-
-apple_watch2_extension(
-    name = "Watch2Extension",
-    app_asset_catalogs = [
-        "Watch2Extension/app_asset_catalogs.xcassets/app_asset_file.png",
-    ],
-    app_entitlements = "Watch2Extension/app_entitlements.entitlements",
-    app_infoplists = [
-        "Watch2Extension/app_infoplists/Info.plist",
-    ],
-    app_name = "WatchOS2App",
-    app_resources = [
-        "Watch2Extension/app_resources.file",
-    ],
-    app_storyboards = [
-        "Watch2Extension/Interface.storyboard",
-    ],
-    app_structured_resources = [
-        "Watch2Extension/app_structured_resources.file",
-    ],
-    binary = ":Watch2ExtensionBinary",
-    ext_entitlements = "Watch2Extension/ext_entitlements.entitlements",
-    ext_infoplists = [
-        "Watch2Extension/ext_infoplists/Info.plist",
-    ],
-    ext_resources = [
-        "Watch2Extension/ext_resources.file",
-    ],
-    ext_structured_resources = [
-        "Watch2Extension/ext_structured_resources.file",
-    ],
-)
-
-apple_binary(
-    name = "Watch2ExtensionBinary",
-    srcs = [
-        "Watch2ExtensionBinary/srcs/watch2_extension_binary.m",
-    ],
-    platform_type = "watchos",
-    sdk_frameworks = [
-        "WatchKit",
     ],
 )
 

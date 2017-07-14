@@ -65,7 +65,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_complex_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_complex_test"])
 
-    XCTAssertEqual(infos.count, 23)
+    XCTAssertEqual(infos.count, 19)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_complex_test:Application")
@@ -130,26 +130,6 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_complex_test:TodayExtension")
         .hasType("ios_extension")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_complex_test:WatchExtensionBinary")
-        .hasType("apple_watch_extension_binary")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_complex_test:WatchExtension")
-        .hasType("apple_watch1_extension")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_complex_test:Watch2ExtensionBinary")
-        .hasType("apple_binary")
-        .hasNoLinkedTargetLabels()
-        .hasNoDependencies()
-
-    checker.assertThat("//tulsi_complex_test:Watch2Extension")
-        .hasType("apple_watch2_extension")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
@@ -267,8 +247,6 @@ class QueryTests_BuildFilesExtraction: BazelIntegrationTestCase {
     let targets = [
       BuildLabel("//\(testDir):Application"),
       BuildLabel("//\(testDir):TodayExtension"),
-      BuildLabel("//\(testDir):WatchExtension"),
-      BuildLabel("//\(testDir):Watch2Extension"),
     ]
 
     let fileLabels = infoExtractor.extractBuildfiles(targets)

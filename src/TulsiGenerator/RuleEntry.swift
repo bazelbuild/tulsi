@@ -128,8 +128,6 @@ public final class RuleEntry: RuleInfo {
   static let BuildTypeToTargetType = [
       "apple_ui_test": PBXTarget.ProductType.UIUnitTest,
       "apple_unit_test": PBXTarget.ProductType.UnitTest,
-      "apple_watch1_extension": PBXTarget.ProductType.Watch1App,
-      "apple_watch2_extension": PBXTarget.ProductType.Watch2App,
       "ios_application": PBXTarget.ProductType.Application,
       "ios_extension": PBXTarget.ProductType.AppExtension,
       "ios_framework": PBXTarget.ProductType.Framework,
