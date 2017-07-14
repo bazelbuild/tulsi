@@ -303,7 +303,6 @@ final class BazelAspectInfoExtractor {
         extensions = nil
       }
       let bundleID = dict["bundle_id"] as? String
-      let extensionBundleID = dict["ext_bundle_id"] as? String
 
       var extensionType: String?
       if ruleType == "ios_extension", let infoplistPath = dict["infoplist"] as? String {
@@ -335,7 +334,6 @@ final class BazelAspectInfoExtractor {
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,
                                 bundleID: bundleID,
-                                extensionBundleID: extensionBundleID,
                                 iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
                                 macOSDeploymentTarget: macOSDeploymentTarget,
                                 tvOSDeploymentTarget: tvOSDeploymentTarget,

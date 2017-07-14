@@ -566,8 +566,6 @@ def _tulsi_sources_aspect(target, ctx):
   extensions = [str(t.label) for t in _getattr_as_list(rule_attr, 'extensions')]
 
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
-  if not bundle_id:
-    bundle_id = _get_opt_attr(rule_attr, 'app_bundle_id')
 
   # Build up any local transitive attributes and apply them.
   swift_language_version, swift_toolchain = _extract_swift_language_version(ctx)
@@ -603,7 +601,6 @@ def _tulsi_sources_aspect(target, ctx):
       bundle_id=bundle_id,
       defines=target_defines,
       deps=compile_deps,
-      ext_bundle_id=_get_opt_attr(rule_attr, 'ext_bundle_id'),
       extensions=extensions,
       framework_imports=_collect_framework_imports(rule_attr),
       generated_files=generated_files,
