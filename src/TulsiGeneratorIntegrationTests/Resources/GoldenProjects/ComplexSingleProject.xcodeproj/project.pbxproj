@@ -87,7 +87,6 @@
 		43D68C283D391B8200000002 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localized.strings; sourceTree = "<group>"; };
 		43D68C283D51411800000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		43D68C28428DF50400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Plist1.plist; sourceTree = "<group>"; };
-		43D68C2842EC763600000000 /* WatchExtension-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "WatchExtension-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C284437EBAE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C2845522B5A00000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = src5.mm; sourceTree = "<group>"; };
 		43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Library_20EC2F4A.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,10 +104,7 @@
 		43D68C285DB74CA000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ObjCBundle.bundle; sourceTree = "<group>"; };
 		43D68C285E11926600000000 /* lib_idx_SubLibrary_19588DB9.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibrary_19588DB9.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C285F81D61600000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
-		43D68C285F81D61600000001 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2862292A3400000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xib.xib; sourceTree = "<group>"; };
-		43D68C2863429DF600000000 /* Watch2Extension-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Watch2Extension-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C2867FA782E00000000 /* lib_idx_WatchExtensionBinary_020F3F9D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_WatchExtensionBinary_020F3F9D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C286CB3C3A800000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28723DC36E00000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NonARCFile.mm; sourceTree = "<group>"; };
@@ -117,24 +113,14 @@
 		43D68C289349B5E800000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = EN.strings; sourceTree = "<group>"; };
 		43D68C289394A30C00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = One.storyboard; sourceTree = "<group>"; };
 		43D68C2896A0AE2E00000000 /* lib_idx_TodayExtensionBinary_999643E7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_TodayExtensionBinary_999643E7.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2897997C9400000000 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_resources.file; sourceTree = "<group>"; };
-		43D68C2897997C9400000001 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = ext_resources.file; sourceTree = "<group>"; };
-		43D68C2897D54C2400000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = ext_entitlements.entitlements; sourceTree = "<group>"; };
-		43D68C2897D54C2400000001 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = ext_entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C28985256C400000000 /* AssetsOne.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AssetsOne.xcassets; sourceTree = "<group>"; };
 		43D68C289B7A36EA00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = output.m; sourceTree = "<group>"; };
 		43D68C28A02DAD1000000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; path = structured_resources.file2; sourceTree = "<group>"; };
-		43D68C28A3F5767600000000 /* app_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_structured_resources.file; sourceTree = "<group>"; };
-		43D68C28A3F5767600000001 /* app_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_structured_resources.file; sourceTree = "<group>"; };
 		43D68C28A937534C00000000 /* lib_idx_Watch2ExtensionBinary_F2D70ACE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_Watch2ExtensionBinary_F2D70ACE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A9D693E000000000 /* sub_library_with_identical_defines.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sub_library_with_identical_defines.m; sourceTree = "<group>"; };
 		43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B202E93C00000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; path = Two.storyboard; sourceTree = "<group>"; };
 		43D68C28B7B6EFA200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		43D68C28B7B6EFA200000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		43D68C28B7B6EFA200000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		43D68C28B7B6EFA200000003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		43D68C28B7B6EFA200000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
 		43D68C28B82DAD1200000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; path = structured_resources.file1; sourceTree = "<group>"; };
 		43D68C28BBC8EE6A00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,13 +137,8 @@
 		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28E2B74A9200000000 /* Watch2Extension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Watch2Extension.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28EEED3A8400000000 /* lib_idx_NonPropagatedLibrary_CoreDataResources_C5359ACA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_NonPropagatedLibrary_CoreDataResources_C5359ACA.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28EF237CF400000000 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
-		43D68C28EF237CF400000001 /* app_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; path = app_resources.file; sourceTree = "<group>"; };
 		43D68C28F1F4A85E00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NonLocalized.strings; sourceTree = "<group>"; };
-		43D68C28F295667A00000000 /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Interface.storyboard; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28FB38EC0400000000 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
-		43D68C28FB38EC0400000001 /* app_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; path = app_entitlements.entitlements; sourceTree = "<group>"; };
 		43D68C28FC6EC1C000000000 /* ComplexSingle.bzl */ = {isa = PBXFileReference; lastKnownFileType = com.google.bazel.skylark; path = ComplexSingle.bzl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,16 +178,7 @@
 		966FB6DE18CF8FA800000000 /* Watch2Extension */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28F295667A00000000 /* Interface.storyboard */,
 				43D68C28C05E0C0A00000000 /* app_asset_catalogs.xcassets */,
-				43D68C28FB38EC0400000000 /* app_entitlements.entitlements */,
-				966FB6DE331AF5B000000000 /* app_infoplists */,
-				43D68C28EF237CF400000000 /* app_resources.file */,
-				43D68C28A3F5767600000000 /* app_structured_resources.file */,
-				43D68C2897D54C2400000000 /* ext_entitlements.entitlements */,
-				966FB6DE7349765000000000 /* ext_infoplists */,
-				43D68C2897997C9400000000 /* ext_resources.file */,
-				43D68C285F81D61600000000 /* ext_structured_resources.file */,
 			);
 			path = Watch2Extension;
 			sourceTree = "<group>";
@@ -270,22 +242,6 @@
 				43D68C28C54C350C00000000 /* AnotherPCHFile.pch */,
 			);
 			path = pch;
-			sourceTree = "<group>";
-		};
-		966FB6DE331AF5B000000000 /* app_infoplists */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28B7B6EFA200000001 /* Info.plist */,
-			);
-			path = app_infoplists;
-			sourceTree = "<group>";
-		};
-		966FB6DE331AF5B000000001 /* app_infoplists */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28B7B6EFA200000003 /* Info.plist */,
-			);
-			path = app_infoplists;
 			sourceTree = "<group>";
 		};
 		966FB6DE364BD42800000000 /* es.lproj */ = {
@@ -369,22 +325,6 @@
 				966FB6DEB73A031C00000003 /* srcs */,
 			);
 			path = NonPropagatedLibrary;
-			sourceTree = "<group>";
-		};
-		966FB6DE7349765000000000 /* ext_infoplists */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28B7B6EFA200000002 /* Info.plist */,
-			);
-			path = ext_infoplists;
-			sourceTree = "<group>";
-		};
-		966FB6DE7349765000000001 /* ext_infoplists */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28B7B6EFA200000004 /* Info.plist */,
-			);
-			path = ext_infoplists;
 			sourceTree = "<group>";
 		};
 		966FB6DE7511F27000000000 /* ObjCFramework */ = {
@@ -585,14 +525,6 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28C05E0C0A00000001 /* app_asset_catalogs.xcassets */,
-				43D68C28FB38EC0400000001 /* app_entitlements.entitlements */,
-				966FB6DE331AF5B000000001 /* app_infoplists */,
-				43D68C28EF237CF400000001 /* app_resources.file */,
-				43D68C28A3F5767600000001 /* app_structured_resources.file */,
-				43D68C2897D54C2400000001 /* ext_entitlements.entitlements */,
-				966FB6DE7349765000000001 /* ext_infoplists */,
-				43D68C2897997C9400000001 /* ext_resources.file */,
-				43D68C285F81D61600000001 /* ext_structured_resources.file */,
 			);
 			path = WatchExtension;
 			sourceTree = "<group>";
@@ -626,8 +558,6 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */,
-				43D68C2863429DF600000000 /* Watch2Extension-MergedInfo.plist */,
-				43D68C2842EC763600000000 /* WatchExtension-MergedInfo.plist */,
 			);
 			path = tulsi_e2e_complex;
 			sourceTree = "<group>";

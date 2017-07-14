@@ -39,19 +39,6 @@ _TULSI_COMPILE_DEPS = [
 # that are used by Bazel to build but do not need special handling in the
 # generated Xcode project. For example, Info.plist and entitlements files.
 _SUPPORTING_FILE_ATTRIBUTES = [
-    # apple_watch1_extension
-    'app_entitlements',
-    'app_infoplists',
-    'app_resources',
-    'app_storyboards',
-    'app_strings',
-    'app_structured_resources',
-    'ext_entitlements',
-    'ext_infoplists',
-    'ext_resources',
-    'ext_strings',
-    'ext_structured_resources',
-
     'entitlements',
     'infoplist',
     'infoplists',
@@ -63,10 +50,9 @@ _SUPPORTING_FILE_ATTRIBUTES = [
 ]
 
 # Set of rules with implicit <label>.ipa IPA outputs.
+# TODO(b/33050780): This is only used for the native rules and will be removed
+# in the future
 _IPA_GENERATING_RULES = set([
-    'apple_watch1_extension',
-    # apple_watch2_extension also generates an implicit IPA but the naming
-    # cannot be derived from the target label alone so it is special cased.
     'ios_application',
     'ios_extension',
     'ios_test',
@@ -78,8 +64,6 @@ _IPA_GENERATING_RULES = set([
 
 # Set of rules that generate MergedInfo.plist files as part of the build.
 _MERGEDINFOPLIST_GENERATING_RULES = set([
-    'apple_watch1_extension',
-    'apple_watch2_extension',
     'ios_application',
     'tvos_application',
     '_ios_application',
@@ -598,6 +582,7 @@ def _tulsi_sources_aspect(target, ctx):
   infoplist = None
 
   # Only Skylark versions of ios_extension have the 'apple_bundle' provider.
+  # TODO(b/37912213): Migrate to the new-style providers.
   if target_kind == 'ios_extension' and hasattr(target, 'apple_bundle'):
     infoplist = target.apple_bundle.infoplist
 
@@ -680,27 +665,24 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'tulsi_generated_files'):
         tulsi_generated_files += dep.tulsi_generated_files
 
-  # TODO(b/35322727): Move apple_watch2_extension into _IPA_GENERATING_RULES
-  # when dynamic outputs is the default strategy and it does need to be
-  # special-cased above.
-  ipa_output_name = None
-  if target_kind == 'apple_watch2_extension':
-    # watch2 extensions need to use the IPA produced for the app_name attribute.
-    ipa_output_name = _get_opt_attr(target, 'attr.app_name')
-  elif target_kind in _IPA_GENERATING_RULES:
-    ipa_output_name = target.label.name
+  # TODO(b/37912213): Migrate to the new-style providers.
+  if hasattr(target, 'apple_bundle'):
+    artifacts = [target.apple_bundle.archive.path]
+  else:  # TODO(b/33050780): Remove this branch when native rules are deleted.
+    ipa_output_name = None
+    if target_kind in _IPA_GENERATING_RULES:
+      ipa_output_name = target.label.name
 
-  artifacts = [x.path for x in target.files]
-  if ipa_output_name:
-    # Some targets produce more than one IPA or ZIP (e.g. ios_test will generate
-    # two IPAs for the test and host bundles), we want to filter only exact
-    # matches to label name.
-    # TODO(b/37244852): Use a defined provider to get outputs instead.
+    artifacts = [x.path for x in target.files]
+    if ipa_output_name:
+      # Some targets produce more than one IPA or ZIP (e.g. ios_test will
+      # generate two IPAs for the test and host bundles), we want to filter only
+      # exact matches to label name.
+      output_ipa = '/%s.ipa' % ipa_output_name
+      output_zip = '/%s.zip' % ipa_output_name
 
-    output_ipa = '/%s.ipa' % ipa_output_name
-    output_zip = '/%s.zip' % ipa_output_name
-
-    artifacts = [x for x in artifacts if x.endswith(output_ipa) or x.endswith(output_zip)]
+      artifacts = [x for x in artifacts if x.endswith(output_ipa)
+                   or x.endswith(output_zip)]
 
   # Collect generated files for bazel_build.py to copy under Tulsi root.
   all_files = depset()
