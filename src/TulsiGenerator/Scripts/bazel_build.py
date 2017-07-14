@@ -827,7 +827,9 @@ class BazelBuildBridge(object):
         os.path.basename(primary_artifact))[0]
 
     if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
-      exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path)
+      bundle_name = output_data.get('bundle_name')
+      exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path,
+                                     bundle_name=bundle_name)
       if exit_code:
         return exit_code
 
@@ -918,7 +920,7 @@ class BazelBuildBridge(object):
       return 650
     return 0
 
-  def _UnpackTarget(self, ipa_path, output_path):
+  def _UnpackTarget(self, ipa_path, output_path, bundle_name=None):
     """Unpacks generated IPA into the given expected output path."""
     self._PrintVerbose('Unpacking %s to %s' % (ipa_path, output_path))
 
@@ -931,9 +933,13 @@ class BazelBuildBridge(object):
     # structures.
     is_ipa = ipa_path.endswith('.ipa')
 
-    # Tulsi expects the bundle within the IPA to be the product name with the
-    # suffix expected by Xcode attached to it.
-    expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
+    if bundle_name:
+      expected_bundle_name = bundle_name + self.wrapper_suffix
+    else:
+      # TODO(b/33050780): Remove this branch when native rules are removed.
+      # With old native rules Tulsi expects the bundle within the IPA to be the
+      # product name with the suffix expected by Xcode attached to it.
+      expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
 
     # The directory structure within the IPA is then determined based on Bazel's
     # package and/or product type.

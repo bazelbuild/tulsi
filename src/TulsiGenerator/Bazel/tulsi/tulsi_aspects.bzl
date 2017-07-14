@@ -662,9 +662,12 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'tulsi_generated_files'):
         tulsi_generated_files += dep.tulsi_generated_files
 
+  bundle_name = None
   # TODO(b/37912213): Migrate to the new-style providers.
   if hasattr(target, 'apple_bundle'):
     artifacts = [target.apple_bundle.archive.path]
+    if hasattr(target.apple_bundle, 'bundle_name'):
+      bundle_name = target.apple_bundle.bundle_name
   else:  # TODO(b/33050780): Remove this branch when native rules are deleted.
     ipa_output_name = None
     if target_kind in _IPA_GENERATING_RULES:
@@ -700,7 +703,8 @@ def _tulsi_outputs_aspect(target, ctx):
 
   info = _struct_omitting_none(
       artifacts=artifacts,
-      generated_sources=[(x.path, x.short_path) for x in tulsi_generated_files])
+      generated_sources=[(x.path, x.short_path) for x in tulsi_generated_files],
+      bundle_name=bundle_name)
 
   output = ctx.new_file(target.label.name + '.tulsiouts')
   ctx.file_action(output, info.to_json())
