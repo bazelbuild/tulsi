@@ -60,6 +60,7 @@ final class XcodeProjectGenerator {
   static let UtilDirectorySubpath = "\(TulsiArtifactDirectory)/Utils"
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
+  static let ManifestFileSubpath = "\(TulsiArtifactDirectory)/generatorManifest.json"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let WorkspaceFile = "WORKSPACE"
@@ -214,6 +215,17 @@ final class XcodeProjectGenerator {
                                                                            context: config.projectName)
     createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
     localizedMessageLogger.logProfilingEnd(artifactFolderProfileToken)
+
+    let manifestProfileToken = localizedMessageLogger.startProfiling("writing_manifest",
+                                                                     context: config.projectName)
+
+    let manifestFileURL = projectURL.appendingPathComponent(XcodeProjectGenerator.ManifestFileSubpath,
+                                                                 isDirectory: false)
+    let manifest = GeneratorManifest(localizedMessageLogger: localizedMessageLogger,
+                                     pbxProject: projectInfo.project,
+                                     intermediateArtifacts: projectInfo.intermediateArtifacts)
+    manifest.writeToURL(manifestFileURL)
+    localizedMessageLogger.logProfilingEnd(manifestProfileToken)
 
     return projectURL
   }
@@ -1038,6 +1050,89 @@ final class XcodeProjectGenerator {
           }
         }
         return ret
+      }
+    }
+  }
+
+  /// Encapsulates high level information about the generated Xcode project intended for use by
+  /// external scripts or to aid debugging.
+  private class GeneratorManifest {
+    /// Version number used to track changes to the format of the generated manifest.
+    // This number may be used by consumers of the manifest for compatibility detection.
+    private static let ManifestFormatVersion = 3
+    /// Suffix for manifest entries whose recursive contents are used by the Xcode project.
+    private static let BundleSuffix = "/**"
+    private static let NormalBundleTypes = Set(DirExtensionToUTI.values)
+
+    private let localizedMessageLogger: LocalizedMessageLogger
+    private let pbxProject: PBXProject
+    var fileReferences: Set<String>! = nil
+    var targets: [String: [String]]! = nil
+    let intermediateArtifacts: [String: [String]]
+    var artifacts: Set<String>! = nil
+
+    init(localizedMessageLogger: LocalizedMessageLogger,
+         pbxProject: PBXProject,
+         intermediateArtifacts: [String: [String]]) {
+      self.localizedMessageLogger = localizedMessageLogger
+      self.pbxProject = pbxProject
+      self.intermediateArtifacts = intermediateArtifacts
+    }
+
+    @discardableResult
+    func writeToURL(_ outputURL: URL) -> Bool {
+      if fileReferences == nil {
+        parsePBXProject()
+      }
+      let dict: [String: Any] = [
+          "manifestVersion": GeneratorManifest.ManifestFormatVersion,
+          "fileReferences": Array(fileReferences).sorted(),
+          "targets": targets,
+          "intermediateArtifacts": intermediateArtifacts,
+          "artifacts": Array(artifacts).sorted(),
+      ]
+      do {
+        let data = try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
+                                                                                   options: .prettyPrinted)
+        return ((try? data.write(to: outputURL, options: [.atomic])) != nil)
+      } catch let e as NSError {
+        localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path): \(e.localizedDescription)")
+        return false
+      } catch {
+        localizedMessageLogger.infoMessage("Failed to write manifest file \(outputURL.path): Unexpected exception")
+        return false
+      }
+    }
+
+    private func parsePBXProject() {
+      fileReferences = Set()
+      targets = [:]
+      artifacts = Set()
+
+      for ref in pbxProject.mainGroup.allSources {
+        let artifactPath: String
+        // Bundle-type artifacts are appended with BundleSuffix to indicate that the recursive
+        // contents of the bundle are needed.
+        if ref.fileType == "wrapper.xcdatamodel",
+           let parent = ref.parent as? XCVersionGroup,
+           parent.versionGroupType == "wrapper.xcdatamodel" {
+          artifactPath = parent.sourceRootRelativePath + GeneratorManifest.BundleSuffix
+        } else if let refType = ref.fileType,
+            GeneratorManifest.NormalBundleTypes.contains(refType) {
+          artifactPath = ref.sourceRootRelativePath + GeneratorManifest.BundleSuffix
+        } else {
+          artifactPath = ref.sourceRootRelativePath
+        }
+
+        if ref.isInputFile {
+          fileReferences.insert(artifactPath)
+        } else {
+          artifacts.insert(artifactPath)
+        }
+      }
+
+      for target in pbxProject.allTargets {
+        targets[target.name] = []
       }
     }
   }

@@ -1,0 +1,119 @@
+{
+  "manifestVersion" : 3,
+  "artifacts" : [
+    "SkylarkApplication.app\/**",
+    "SkylarkTargetApplication.app\/**",
+    "StickerExtension.appex\/**",
+    "XCTest.xctest\/**",
+    "XCUITest.xctest\/**",
+    "_idx_XCTestCodeSwift_2FB5517B.framework\/**",
+    "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication-MergedInfo.plist",
+    "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication-MergedInfo.plist",
+    "lib_idx_Library_22D3B3D5.a",
+    "lib_idx_MainLibrary_E33E600C.a",
+    "lib_idx_XCUITestCode_XCTestCode_1D881332.a"
+  ],
+  "targets" : {
+    "SkylarkTargetApplication" : [
+
+    ],
+    "_idx_XCUITestCode_XCTestCode_1D881332" : [
+
+    ],
+    "_idx_MainLibrary_E33E600C" : [
+
+    ],
+    "_bazel_clean_" : [
+
+    ],
+    "XCTest" : [
+
+    ],
+    "StickerExtension" : [
+
+    ],
+    "SkylarkApplication" : [
+
+    ],
+    "_idx_Library_22D3B3D5" : [
+
+    ],
+    "_idx_XCTestCodeSwift_2FB5517B" : [
+
+    ],
+    "XCUITest" : [
+
+    ]
+  },
+  "intermediateArtifacts" : {
+    "StickerExtension" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin"
+    ],
+    "SkylarkTargetApplication" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication_entitlements.entitlements",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkTargetApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.h",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.m",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
+      "blaze-genfiles\/tulsi_e2e_simple_skylark\/Protos-descriptor-set.proto.bin"
+    ],
+    "SkylarkApplication" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.zip",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.h",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.m",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
+      "blaze-genfiles\/tulsi_e2e_simple_skylark\/Protos-descriptor-set.proto.bin"
+    ],
+    "XCUITest" : [
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication.ipa",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/SkylarkApplication_entitlements.entitlements.c",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.apple_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/StickerExtension.zip",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_binary_lipobin",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/XCUITest_test_bundle.ipa",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.h",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/_generated_protos\/ObjcProtos\/tulsi_e2e_simple_skylark\/ProtoFile.pbobjc.m",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libMainLibrary.a",
+      "blaze-bin\/tulsi_e2e_simple_skylark\/libXCUITestCode.a",
+      "blaze-genfiles\/tulsi_e2e_simple_skylark\/Protos-descriptor-set.proto.bin"
+    ],
+    "XCTest" : [
+
+    ]
+  },
+  "fileReferences" : [
+    "..\/..\/tulsi_e2e_simple_skylark\/Application\/Info.plist",
+    "..\/..\/tulsi_e2e_simple_skylark\/Application\/Launch.storyboard",
+    "..\/..\/tulsi_e2e_simple_skylark\/BUILD",
+    "..\/..\/tulsi_e2e_simple_skylark\/Binary\/Assets.xcassets\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/Binary\/Base.lproj\/One.storyboard",
+    "..\/..\/tulsi_e2e_simple_skylark\/Binary\/srcs\/main.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Ext-Info.plist",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/hdrs\/HdrsHeader.h",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/pch\/PCHFile.pch",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/SrcsHeader.h",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src1.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src2.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src3.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/srcs\/src4.m",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/textual_hdrs\/TextualHdrsHeader.h",
+    "..\/..\/tulsi_e2e_simple_skylark\/Library\/xibs\/xib.xib",
+    "..\/..\/tulsi_e2e_simple_skylark\/ProtoFile.proto",
+    "..\/..\/tulsi_e2e_simple_skylark\/Settings.bundle\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/SimpleTest.xcdatamodeld\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/Stickers.xcstickers\/**",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/Tests.swift",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCTest\/srcs\/XCTests.mm",
+    "..\/..\/tulsi_e2e_simple_skylark\/XCUITest\/srcs\/XCUITests.mm"
+  ]
+}
