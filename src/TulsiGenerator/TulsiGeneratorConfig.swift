@@ -227,14 +227,14 @@ public class TulsiGeneratorConfig {
     }
   }
 
-  public func configByResolvingInheritedOptions(_ parentOptions: TulsiOptionSet) -> TulsiGeneratorConfig {
-    let resolvedOptions = options.optionSetByInheritingFrom(parentOptions)
+  public func configByResolvingInheritedSettingsFromProject(_ project: TulsiProject) -> TulsiGeneratorConfig {
+    let resolvedOptions = options.optionSetByInheritingFrom(project.options)
     return TulsiGeneratorConfig(projectName: projectName,
                                 buildTargetLabels: buildTargetLabels,
                                 pathFilters: pathFilters,
                                 additionalFilePaths: additionalFilePaths,
                                 options: resolvedOptions,
-                                bazelURL: bazelURL)
+                                bazelURL: project.bazelURL ?? bazelURL)
   }
 
   public func configByAppendingPathFilters(_ additionalPathFilters: Set<String>) -> TulsiGeneratorConfig {

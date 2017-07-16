@@ -75,9 +75,8 @@ struct HeadlessXcodeProjectGenerator {
 
     var config = try loadConfig(configURL, bazelURL: explicitBazelURL)
     config = config.configByAppendingPathFilters(arguments.additionalPathFilters)
-
-    if let projectOptionSet = projectDocument.optionSet {
-      config = config.configByResolvingInheritedOptions(projectOptionSet)
+    if let project = projectDocument.project {
+      config = config.configByResolvingInheritedSettingsFromProject(project);
     }
 
     let workspaceRootURL: URL
