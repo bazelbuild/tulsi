@@ -22,19 +22,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
   let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
-  // For the sake of simplicity in maintaining the golden data, copied Tulsi artifacts are
-  // assumed to have been installed correctly.
-  private let copiedTulsiArtifactRegex = try! NSRegularExpression(pattern: "^Only in .*?\\.xcodeproj/\\.tulsi.+$",
-                                                                  options: [])
-
   final func validateDiff(_ diffLines: [String], file: StaticString = #file, line: UInt = #line) {
     for diff in diffLines {
-      let range = NSMakeRange(0, (diff as NSString).length)
-      if copiedTulsiArtifactRegex.firstMatch(in: diff,
-                                             options: NSRegularExpression.MatchingOptions.anchored,
-                                             range: range) != nil {
-        continue
-      }
       XCTFail(diff, file: file, line: line)
     }
   }
@@ -58,6 +47,10 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     let semaphore = DispatchSemaphore(value: 0)
     let task = TaskRunner.createTask("/usr/bin/diff",
                                      arguments: ["-rq",
+                                                 // For the sake of simplicity in maintaining the
+                                                 // golden data, copied Tulsi artifacts are
+                                                 // assumed to have been installed correctly.
+                                                 "--exclude=.tulsi",
                                                  projectURL.path,
                                                  goldenProjectURL.path]) {
       completionInfo in
