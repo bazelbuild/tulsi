@@ -144,6 +144,32 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
+
+  func test_watchProject() {
+    let testDir = "tulsi_e2e_watch"
+    installBUILDFile("Watch", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: Set<BuildLabel>())]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "WatchProject"
+    guard let projectURL = generateProjectNamed(projectName,
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/...",
+                                                              "blaze-bin/...",
+                                                              "blaze-genfiles/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
+                                                  // The test has already been marked as failed.
+                                                  return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
 }
 
 // End to end tests that generate xcodeproj bundles and validate them against golden versions.

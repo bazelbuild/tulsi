@@ -21,10 +21,10 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   // This list needs to be kept up to date with whatever Bazel supports and determines the set of
   // user-selectable target types displayed in the Tulsi UI.
   // This filter does not limit Tulsi from generating targets for other types, however. Notably,
-  // since apple_watch2_extension extensions are tightly bound to their host binary, Tulsi
-  // automatically generates all targets referenced in an ios_application's "extensions" attribute
-  // rather than risk the user accidentally selecting the extension without the host. For this
-  // reason, apple_watch1_extension and ios_extension are both omitted as well.
+  // since watchos_applications are tightly bound to their host binary, Tulsi automatically
+  // generates all targets referenced in an ios_application's "extensions" attribute rather than
+  // risk the user accidentally selecting the extension without the host. For this reason,
+  // ios_extension and watchos_extension are omitted as well.
   static let filteredFileTypes = [
       "apple_unit_test",
       "apple_ui_test",

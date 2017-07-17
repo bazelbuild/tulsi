@@ -53,6 +53,9 @@
 /* Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable. */
 "ExternalRepositoryResolutionFailed" = "Failed to resolve external repository reference '%1$@' to a full file path. The generated project may have broken file references inside of that group.";
 
+/* Failed to find a watchOS application extension with the given name. The project will not be able to launch the watch app. */
+"FindingWatchExtensionFailed" = "Failed to find watchOS extension '%1$@'. The generated project will not able to run the watch app.";
+
 /* Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues. */
 "GeneratingTestHost" = "Generating target for test host '%1$@' needed by '%2$@'. Generated targets will not include sources and will use project default options to build.";
 
@@ -61,9 +64,6 @@
 
 /* Warning to show when a user has selected an XCTest but not its host application. */
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
-
-/* Message to show when the bundle identifier for watchOS app extension %1$@ could not be found and the resulting project will not be able to launch the watch app. */
-"SettingWatchExtensionBundleIDFailed" = "Failed to extract bundle identifier for the extension of watchOS app '%1$@'. Xcode will not be able to launch the watch app on the simulator or devices.";
 
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";

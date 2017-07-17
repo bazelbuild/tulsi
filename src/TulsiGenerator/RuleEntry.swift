@@ -137,6 +137,8 @@ public final class RuleEntry: RuleInfo {
       "swift_library": PBXTarget.ProductType.StaticLibrary,
       "tvos_application": PBXTarget.ProductType.Application,
       "tvos_extension": PBXTarget.ProductType.TVAppExtension,
+      "watchos_application": PBXTarget.ProductType.Watch2App,
+      "watchos_extension": PBXTarget.ProductType.Watch2Extension,
 
 
       // Support new rules that have underscore-prefixed names because they are wrapped by macros.
@@ -313,9 +315,8 @@ public final class RuleEntry: RuleInfo {
       return nil
     }
 
-    // Watch1App intentionally uses the iphoneos SDK, the watchos SDK was only added by Apple for
-    // watchOS2 and later.
-    if targetType == .Watch2App {
+    // The watchos SDK was only added by Apple for watchOS2 and later.
+    if targetType == .Watch2App || targetType == .Watch2Extension {
       return "watchos"
     }
 

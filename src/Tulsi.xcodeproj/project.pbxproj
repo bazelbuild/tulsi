@@ -115,6 +115,7 @@
 		3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */; };
 		3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */; };
 		3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */; };
+		547C3C021F1949740055BAED /* Watch.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 547C3C001F1949110055BAED /* Watch.BUILD */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */; };
 		8B29E2D01BF9386200680E11 /* TulsiProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */; };
 		8B8F559B1BE3ECDC0095AF7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F559A1BE3ECDC0095AF7F /* AppDelegate.swift */; };
@@ -301,6 +302,7 @@
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
 		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
 		3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitterTests.swift; sourceTree = "<group>"; };
+		547C3C001F1949110055BAED /* Watch.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Watch.BUILD; path = Resources/Watch.BUILD; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceFilterViewController.swift; sourceTree = "<group>"; };
 		8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectDocument.swift; sourceTree = "<group>"; };
 		8B8F1B111BF6BDD50008013B /* BuildLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildLabel.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 		3DAEE4721C8600BE00BA1C67 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				547C3C001F1949110055BAED /* Watch.BUILD */,
 				3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */,
 				3D9677C11D467EAE00799275 /* ComplexSingle.bzl */,
 				3D7B77C61C9098A4004786EF /* GoldenProjects */,
@@ -822,6 +825,7 @@
 				3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */,
 				3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */,
 				3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */,
+				547C3C021F1949740055BAED /* Watch.BUILD in Resources */,
 				3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

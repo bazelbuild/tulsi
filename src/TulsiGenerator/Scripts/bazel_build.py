@@ -1342,6 +1342,10 @@ class BazelBuildBridge(object):
   def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates ~/.lldbinit-tulsi to enable debugging of Bazel binaries."""
 
+    # Apple Watch app binaries do not contain any sources.
+    if self.product_type == 'com.apple.product-type.application.watchapp2':
+      return 0
+
     self._LinkTulsiLLDBInit()
 
     with open(self._TULSI_LLDBINIT_FILE, 'w') as out:

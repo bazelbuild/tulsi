@@ -27,11 +27,13 @@ _TULSI_COMPILE_DEPS = [
     'binary',
     'bundles',
     'deps',
+    'extension',
     'extensions',
     'settings_bundle',
     'non_propagated_deps',
     'test_bundle',
     'test_host',
+    'watch_application',
     'xctest_app',
 ]
 
@@ -564,6 +566,14 @@ def _tulsi_sources_aspect(target, ctx):
     inheritable_attributes = binary_attributes + inheritable_attributes
 
   extensions = [str(t.label) for t in _getattr_as_list(rule_attr, 'extensions')]
+  # Tulsi considers WatchOS apps and extensions as an "extension"
+  if target_kind == 'watchos_application':
+    watch_ext = _get_label_attr(rule_attr, 'extension.label')
+    extensions.append(watch_ext)
+  if target_kind == 'ios_application':
+    watch_app = _get_label_attr(rule_attr, 'watch_application.label')
+    if watch_app:
+      extensions.append(watch_app)
 
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
 

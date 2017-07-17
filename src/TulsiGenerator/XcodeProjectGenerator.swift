@@ -300,6 +300,9 @@ final class XcodeProjectGenerator {
           // Add the RuleEntry itself and any registered extensions.
           expandedTargetLabels.insert(label)
           expandedTargetLabels.formUnion(ruleEntry.extensions)
+
+          // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
+          expandTargetLabels(ruleEntry.extensions)
         } else {
           // Expand the test_suite to its set of tests.
           testSuiteRules[ruleEntry.label] = ruleEntry

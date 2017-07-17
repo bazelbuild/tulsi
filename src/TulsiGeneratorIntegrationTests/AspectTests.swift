@@ -327,6 +327,35 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.xctest, value: true)
         .hasSources(["tulsi_test/XCTestWithDefaultHost/srcs/src1.mm"])
   }
+
+  func testWatch() {
+    installBUILDFile("Watch", intoSubdirectory: "tulsi_test")
+    let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
+                                                                      startupOptions: bazelStartupOptions,
+                                                                      buildOptions: bazelBuildOptions)
+    XCTAssertEqual(ruleEntries.count, 13)
+
+    let checker = InfoChecker(ruleEntries: ruleEntries)
+
+    checker.assertThat("//tulsi_test:Application")
+      .dependsOn("//tulsi_test:ApplicationLibrary")
+      .dependsOn("//tulsi_test:ApplicationResources")
+
+    checker.assertThat("//tulsi_test:ApplicationLibrary")
+      .hasSources(["tulsi_test/Library/srcs/main.m"])
+      .hasIncludes(["tulsi_test/Library/includes/one/include",
+                    "tulsi-includes/x/x/tulsi_test/Library/includes/one/include"])
+
+    checker.assertThat("//tulsi_test:WatchApplication")
+      .dependsOn("//tulsi_test:WatchApplicationResources")
+
+    checker.assertThat("//tulsi_test:WatchExtension")
+      .dependsOn("//tulsi_test:WatchExtensionLibrary")
+      .dependsOn("//tulsi_test:WatchExtensionResources")
+
+    checker.assertThat("//tulsi_test:WatchExtensionLibrary")
+      .hasSources(["tulsi_test/Watch2ExtensionBinary/srcs/watch2_extension_binary.m"])
+  }
 }
 
 // Tests for test_suite support.
