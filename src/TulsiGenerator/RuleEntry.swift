@@ -140,13 +140,6 @@ public final class RuleEntry: RuleInfo {
       "watchos_application": PBXTarget.ProductType.Watch2App,
       "watchos_extension": PBXTarget.ProductType.Watch2Extension,
 
-
-      // Support new rules that have underscore-prefixed names because they are wrapped by macros.
-      "_ios_application": PBXTarget.ProductType.Application,
-      "_ios_extension": PBXTarget.ProductType.AppExtension,
-      "_tvos_application": PBXTarget.ProductType.Application,
-      "_tvos_extension": PBXTarget.ProductType.TVAppExtension,
-
       // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
       // XCTest test rules.
       "_test_host_": PBXTarget.ProductType.Application,
@@ -322,8 +315,7 @@ public final class RuleEntry: RuleInfo {
 
     // tvOS apps and iOS apps both use the same product type, so we have to use
     // the rule name to distinguish them.
-    if targetType == .TVAppExtension || self.type == "tvos_application" ||
-        self.type == "_tvos_application" {
+    if targetType == .TVAppExtension || self.type == "tvos_application" {
       return "appletvos"
     }
 

@@ -203,8 +203,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
     validate(["ios_application"], "iphoneos")
     validate(["ios_application", "ios_application"], "iphoneos")
-    validate(["ios_application", "_tvos_extension"], nil)
-    validate(["_tvos_extension"], "appletvos")
+    validate(["ios_application", "tvos_extension"], nil)
+    validate(["tvos_extension"], "appletvos")
   }
 
   // MARK: - Private methods

@@ -60,16 +60,12 @@ _IPA_GENERATING_RULES = set([
     'ios_test',
     'objc_binary',
     'tvos_application',
-    '_ios_application',
-    '_tvos_application',
 ])
 
 # Set of rules that generate MergedInfo.plist files as part of the build.
 _MERGEDINFOPLIST_GENERATING_RULES = set([
     'ios_application',
     'tvos_application',
-    '_ios_application',
-    '_tvos_application',
 ])
 
 # Set of rules whose outputs should be treated as generated sources.
