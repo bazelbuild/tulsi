@@ -421,7 +421,8 @@ def _extract_minimum_os_for_platform(ctx, platform):
   """Extracts the minimum OS version for the given apple_common.platform."""
   apple_frag = _get_opt_attr(ctx.fragments, 'apple')
 
-  current_platform_str = _get_opt_attr(ctx, 'rule.attr.platform_type')
+  current_platform_str = (_get_opt_attr(ctx, 'rule.attr.platform_type')
+                          or _get_opt_attr(ctx, 'rule.attr._platform_type'))
   if not current_platform_str:
     current_platform_str = str(apple_frag.single_arch_platform.platform_type)
   # Bazel is changing its API to only provide minimum OS for the current
@@ -429,6 +430,10 @@ def _extract_minimum_os_for_platform(ctx, platform):
   # does not match the current platform.
   if current_platform_str != str(platform):
     return None
+
+  min_os = _get_opt_attr(ctx, 'rule.attr.minimum_os_version')
+  if min_os:
+    return min_os
 
   min_os = apple_frag.minimum_os_for_platform_type(platform)
 
