@@ -1494,9 +1494,24 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     } else {
       changeDirectoryAction = "cd \"\(workingDirectory)\""
     }
-    let shellScript = "set -e\n" +
+
+    let shellScript: String
+    if let templatePath = options[.BuildActionScriptTemplate].commonValue {
+      // Load the user specified template. The tempalte path is relative to the project
+      // root. Sub the following values:
+      // __CHANGE_DIRECTORY_ACTION__
+      // __BAZEL_COMMAND__
+      let scriptRoot = "\(workspaceRootURL.path)/\(templatePath)"
+      let templateString = try! String(contentsOfFile: scriptRoot)
+      shellScript = templateString.replacingOccurrences(of: "__CHANGE_DIRECTORY_ACTION__",
+                                                        with: changeDirectoryAction)
+                                  .replacingOccurrences(of: "__BAZEL_COMMAND__",
+                                                        with: "\(commandLine) --install_generated_artifacts")
+    } else {
+      shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
         "exec \(commandLine) --install_generated_artifacts"
+    }
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
     buildPhase.showEnvVarsInLog = true

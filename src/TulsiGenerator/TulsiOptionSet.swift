@@ -48,6 +48,9 @@ public enum TulsiOptionKey: String {
   case BazelBuildStartupOptionsDebug,
        BazelBuildStartupOptionsRelease
 
+  // Set a template for the script
+  case BuildActionScriptTemplate
+
   // Pre action scripts for build, launch, and test actions.
   case BuildActionPreActionScript,
        LaunchActionPreActionScript,
@@ -85,6 +88,7 @@ public class TulsiOptionSet: Equatable {
       .BazelBuildStartupOptionsDebug: .BazelBuildStartupOptions,
       .BazelBuildStartupOptionsRelease: .BazelBuildStartupOptions,
       .BuildActionPreActionScript: .PreActionScriptOptions,
+      .BuildActionScriptTemplate: .BazelBuildOptions,
       .LaunchActionPreActionScript: .PreActionScriptOptions,
       .TestActionPreActionScript: .PreActionScriptOptions,
       .BuildActionPostActionScript: .PostActionScriptOptions,
@@ -267,6 +271,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.BuildActionScriptTemplate, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
 

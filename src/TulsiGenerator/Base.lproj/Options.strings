@@ -27,6 +27,7 @@
 
 "PreActionScriptOptions" = "PreActionScripts";
 "PostActionScriptOptions" = "PostActionScripts";
+"BuildActionScriptTemplate" = "BuildActionScriptTemplate";
 "BuildActionPreActionScript" = "Build";
 "BuildActionPostActionScript" = "Build";
 "LaunchActionPreActionScript" = "Run";
