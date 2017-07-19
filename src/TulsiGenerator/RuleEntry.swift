@@ -177,6 +177,7 @@ public final class RuleEntry: RuleInfo {
     // For the ios_test rule, contains a label reference to the ios_application target to be used as
     // the test host when running the tests.
     case xctest_app
+    case module_name
   }
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).

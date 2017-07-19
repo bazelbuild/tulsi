@@ -477,6 +477,13 @@ def _collect_module_maps(target):
       maps += module_maps
   return maps
 
+def _get_module_name(label):
+  return (label
+          .replace("//", "")
+          .replace("@", "")
+          .replace("/", "_")
+          .replace(":", "_"))
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -557,6 +564,7 @@ def _tulsi_sources_aspect(target, ctx):
       bridging_header=_collect_first_file(rule_attr, 'bridging_header'),
       compiler_defines=_extract_compiler_defines(ctx),
       enable_modules=_get_opt_attr(rule_attr, 'enable_modules'),
+      module_name=_get_opt_attr(rule_attr, 'module_name') or _get_module_name(str(target.label)),
       launch_storyboard=_collect_first_file(rule_attr, 'launch_storyboard'),
       pch=_collect_first_file(rule_attr, 'pch'),
   )

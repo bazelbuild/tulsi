@@ -231,6 +231,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
     let enableModules: Bool
+    let moduleName: String
 
     /// Returns the full name that should be used when generating a target for this indexer.
     var indexerName: String {
@@ -275,7 +276,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       if !(preprocessorDefines == other.preprocessorDefines &&
-          enableModules == other.enableModules &&
+        enableModules == other.enableModules &&
+        moduleName == other.moduleName &&
           otherCFlags == other.otherCFlags &&
           otherSwiftFlags == other.otherSwiftFlags &&
           frameworkSearchPaths == other.frameworkSearchPaths &&
@@ -313,7 +315,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
                          bridgingHeader: bridgingHeader,
-                         enableModules: enableModules)
+                         enableModules: enableModules,
+                         moduleName: moduleName)
     }
   }
 
@@ -569,6 +572,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         addFileReference(bridgingHeader)
       }
       let enableModules = (ruleEntry.attributes[.enable_modules] as? Int) == 1
+      let moduleName = ruleEntry.attributes[.module_name] as! String
 
       addBuildFileForRule(ruleEntry)
 
@@ -630,7 +634,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
-                                      enableModules: enableModules)
+                                      enableModules: enableModules,
+                                      moduleName: moduleName)
         if (ruleEntry.type == "swift_library") {
           frameworkIndexers[indexerData.indexerName] = indexerData
         } else {
@@ -1015,6 +1020,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
+    buildSettings["PRODUCT_MODULE_NAME"] = data.moduleName
 
     if let pchFile = data.pchFile {
       buildSettings["GCC_PREFIX_HEADER"] = PBXTargetGenerator.projectRefForBazelFileInfo(pchFile)
