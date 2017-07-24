@@ -145,12 +145,20 @@ def _convert_outpath_to_symlink_path(path, use_tulsi_symlink=False):
       return path[:first_dash + 1] + '/'.join(components[2:])
   return path
 
+def _is_bazel_external_file(f):
+  """Returns True if the given file is a Bazel external file."""
+  return f.path.startswith('external/')
+
 
 def _file_metadata(f, use_tulsi_symlink=False):
   """Returns metadata about a given File."""
   if not f:
     return None
 
+  # Special case handling for Bazel external files which have a path that starts
+  # with 'external/' but their short_path and root.path have no mention of being
+  # external.
+  out_path = f.path if _is_bazel_external_file(f) else f.short_path
   if not f.is_source:
     root_path = f.root.path
     symlink_path = _convert_outpath_to_symlink_path(
@@ -174,7 +182,7 @@ def _file_metadata(f, use_tulsi_symlink=False):
   is_dir = (f.basename.find('.') == -1)
 
   return _struct_omitting_none(
-      path=f.short_path,
+      path=out_path,
       src=f.is_source,
       root=root_execution_path_fragment,
       is_dir=is_dir
