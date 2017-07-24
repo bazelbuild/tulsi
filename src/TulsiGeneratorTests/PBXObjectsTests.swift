@@ -20,6 +20,7 @@ class PBXObjectsTests: XCTestCase {
   enum ExpectedStructure {
     case fileReference(String)
     case group(String, contents: [ExpectedStructure])
+    case groupWithName(String, path: String, contents: [ExpectedStructure])
   }
 
   var project: PBXProject! = nil
@@ -43,19 +44,19 @@ class PBXObjectsTests: XCTestCase {
     let expectedStructure: [ExpectedStructure] = [
         .fileReference("root"),
         .group("test", contents: [
-            .fileReference("file"),
+            .fileReference("test/file"),
         ]),
         .group("deeply", contents: [
             .group("nested", contents: [
                 .group("files", contents: [
-                    .fileReference("1"),
-                    .fileReference("2"),
+                    .fileReference("deeply/nested/files/1"),
+                    .fileReference("deeply/nested/files/2"),
                 ]),
             ]),
         ]),
         .group("/", contents: [
             .group("empty", contents: [
-                .fileReference("component"),
+                .fileReference("/empty/component"),
             ]),
         ]),
     ]
@@ -87,12 +88,12 @@ class PBXObjectsTests: XCTestCase {
         .fileReference("1"),
         .fileReference("2"),
         .group("unique", contents: [
-            .fileReference("1"),
-            .fileReference("2"),
+            .fileReference("unique/1"),
+            .fileReference("unique/2"),
         ]),
         .group("overlapping", contents: [
-            .fileReference("file"),
-            .fileReference("2"),
+            .fileReference("overlapping/file"),
+            .fileReference("overlapping/2"),
         ]),
     ]
 
@@ -112,8 +113,8 @@ class PBXObjectsTests: XCTestCase {
         .fileReference("test"),
         .fileReference("bundle.xcassets"),
         .group("subdir", contents: [
-            .fileReference("test.app"),
-            .fileReference("test2.app"),
+            .fileReference("subdir/test.app"),
+            .fileReference("subdir/test2.app"),
         ]),
     ]
 
@@ -130,9 +131,9 @@ class PBXObjectsTests: XCTestCase {
     ]
     let expectedSourceRelativePaths = [
         "1": "1",
-        "2": "test/2",
-        "3": "deeply/nested/files/3",
-        "4": "deeply/nested/files/4"
+        "test/2": "test/2",
+        "deeply/nested/files/3": "deeply/nested/files/3",
+        "deeply/nested/files/4": "deeply/nested/files/4"
     ]
     project.getOrCreateGroupsAndFileReferencesForPaths(paths)
     for fileRef in project.mainGroup.allSources {
@@ -192,6 +193,49 @@ class PBXObjectsTests: XCTestCase {
     }
   }
 
+  func testExternalReferencePathMigration() {
+    let mainGroup = project.mainGroup
+    let movedDir = "fancyExternalDir"
+    let paths = [
+      "dir/file",
+      "external/project/README.md",
+      "external/project/src/file.ext",
+    ]
+    let expectedStructure: [ExpectedStructure] = [
+      .group("dir", contents: [
+        .fileReference("dir/file"),
+      ]),
+      .groupWithName("@project", path: movedDir, contents: [
+        .fileReference("README.md"),
+        .group("src", contents: [
+          .fileReference("src/file.ext"),
+        ]),
+      ]),
+    ]
+
+    project.getOrCreateGroupsAndFileReferencesForPaths(paths)
+    guard let extGroup = mainGroup.childGroupsByName["external"] else {
+      XCTAssert(false, "Unable to find external group for mainGroup \(mainGroup)")
+      return
+    }
+
+    for child in extGroup.children {
+      guard let group = child as? PBXGroup else {
+        XCTAssert(false, "Expected child of external group \(extGroup) to be a group, not \(child)")
+        continue
+      }
+
+      let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
+                                                           path: movedDir,
+                                                           sourceTree: .Absolute)
+      newChild.migrateChildrenOfGroup(group)
+    }
+    mainGroup.removeChild(extGroup)
+
+
+    assertProjectStructure(expectedStructure, forGroup: project.mainGroup)
+  }
+
   // MARK: - Helper methods
 
   func assertProjectStructure(_ expectedStructure: [ExpectedStructure],
@@ -209,6 +253,10 @@ class PBXObjectsTests: XCTestCase {
 
         case .group(let name, let grandChildren):
           let childGroup = assertGroup(group, containsGroupWithName: name, line: line)
+          assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
+
+        case .groupWithName(let name, let path, let grandChildren):
+          let childGroup = assertGroup(group, containsGroupWithName: name, path: path, line: line)
           assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
       }
     }
@@ -229,11 +277,18 @@ class PBXObjectsTests: XCTestCase {
 
   func assertGroup(_ group: PBXGroup,
                    containsGroupWithName name: String,
+                   path: String? = nil,
                    line: UInt = #line) -> PBXGroup {
     let child = group.childGroupsByName[name]
     XCTAssertNotNil(child,
                     "Failed to find child group '\(name)' in group '\(group.name)'",
                     line: line)
+    if let path = path {
+      XCTAssertNotNil(child!.path, "Expected child \(child!) to have a non-nil path")
+      XCTAssertEqual(child!.path, path, "Child path \(child!.path!) != expected path \(path)")
+    } else {
+      XCTAssertNil(child!.path, "Expected child \(child!) to have a nil path")
+    }
     return child!
   }
 }

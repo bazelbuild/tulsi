@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6AF494707A3F9CA00000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2807A3F9CA00000000 /* b.swift */; };
-		E6AF4947CF4FCCC400000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28CF4FCCC400000000 /* a.swift */; };
+		E6AF49475E97AA6800000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C285E97AA6800000000 /* a.swift */; };
+		E6AF4947BC62D8EE00000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BC62D8EE00000000 /* b.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,12 +21,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C2807A3F9CA00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = b.swift; sourceTree = "<group>"; };
-		43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = _idx_SwiftLibrary_EA7FC891.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C28CF4FCCC400000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = a.swift; sourceTree = "<group>"; };
-		43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "Application-MergedInfo.plist"; sourceTree = "<group>"; };
-		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891.framework; path = _idx_SwiftLibrary_EA7FC891.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C285E97AA6800000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = tulsi_e2e_swift/SwiftLibrary/srcs/a.swift; sourceTree = "<group>"; };
+		43D68C28BC62D8EE00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = tulsi_e2e_swift/SwiftLibrary/srcs/b.swift; sourceTree = "<group>"; };
+		43D68C28E9B61AB000000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_swift/Application-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F61CF22100000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -35,62 +35,62 @@
 			children = (
 				43D68C28F49055A600000000 /* Application.app */,
 				43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */,
-				966FB6DE59D91CB800000000 /* blaze-bin */,
+				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE3C610C0C00000000 /* tulsi_e2e_swift */ = {
+		966FB6DE2CEC8E5C00000000 /* blaze-bin */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28D9BE81AC00000000 /* Application-MergedInfo.plist */,
+				966FB6DE9E30860600000000 /* tulsi_e2e_swift */,
 			);
-			path = tulsi_e2e_swift;
+			name = "blaze-bin";
 			sourceTree = "<group>";
 		};
-		966FB6DE3C610C0C00000001 /* tulsi_e2e_swift */ = {
+		966FB6DE582F53CF00000000 /* SwiftLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B7EA446800000000 /* BUILD */,
-				966FB6DEB05EA79E00000000 /* SwiftLibrary */,
+				966FB6DE5B9D018E00000000 /* srcs */,
 			);
-			path = tulsi_e2e_swift;
+			name = SwiftLibrary;
 			sourceTree = "<group>";
 		};
-		966FB6DE59D91CB800000000 /* blaze-bin */ = {
+		966FB6DE5B9D018E00000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE3C610C0C00000000 /* tulsi_e2e_swift */,
+				43D68C285E97AA6800000000 /* a.swift */,
+				43D68C28BC62D8EE00000000 /* b.swift */,
 			);
-			path = "blaze-bin";
+			name = srcs;
 			sourceTree = "<group>";
 		};
-		966FB6DEB05EA79E00000000 /* SwiftLibrary */ = {
+		966FB6DE9E30860600000000 /* tulsi_e2e_swift */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DEB73A031C00000000 /* srcs */,
+				43D68C28E9B61AB000000000 /* Application-MergedInfo.plist */,
 			);
-			path = SwiftLibrary;
+			name = tulsi_e2e_swift;
+			sourceTree = "<group>";
+		};
+		966FB6DE9E30860600000001 /* tulsi_e2e_swift */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28F61CF22100000000 /* BUILD */,
+				966FB6DE582F53CF00000000 /* SwiftLibrary */,
+			);
+			name = tulsi_e2e_swift;
 			sourceTree = "<group>";
 		};
 		966FB6DEB6031FE700000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE3C610C0C00000001 /* tulsi_e2e_swift */,
+				966FB6DE9E30860600000001 /* tulsi_e2e_swift */,
 			);
 			name = mainGroup;
 			path = ../..;
 			sourceTree = SOURCE_ROOT;
-		};
-		966FB6DEB73A031C00000000 /* srcs */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28CF4FCCC400000000 /* a.swift */,
-				43D68C2807A3F9CA00000000 /* b.swift */,
-			);
-			path = srcs;
-			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -191,8 +191,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947CF4FCCC400000000 /* a.swift in srcs */,
-				E6AF494707A3F9CA00000000 /* b.swift in srcs */,
+				E6AF49475E97AA6800000000 /* a.swift in srcs */,
+				E6AF4947BC62D8EE00000000 /* b.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

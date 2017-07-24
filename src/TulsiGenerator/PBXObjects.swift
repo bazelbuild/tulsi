@@ -115,9 +115,8 @@ final class XCBuildConfiguration: PBXObjectProtocol {
 class PBXReference: PBXObjectProtocol {
   var globalID: String = ""
   let name: String
-  let path: String?
+  var path: String?
   let sourceTree: SourceTree
-  var serializesName = false
 
   var isa: String {
     assertionFailure("PBXReference must be subclassed")
@@ -176,9 +175,7 @@ class PBXReference: PBXObjectProtocol {
   }
 
   func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
-    if serializesName {
-      try serializer.addField("name", name)
-    }
+    try serializer.addField("name", name)
     try serializer.addField("path", path)
     try serializer.addField("sourceTree", sourceTree.rawValue)
   }
@@ -354,12 +351,45 @@ class PBXGroup: PBXReference, Hashable {
     }
   }
 
+  // Recursively updates the child's path for a migration to self.
+  func updatePathForChild(_ child: PBXReference, currentPath: String?) {
+    // Assume the name of the PBXReference is a component of the path.
+    let childPath: String
+    if let currentPath = currentPath {
+      childPath = currentPath + "/" + child.name
+    } else {
+      childPath = child.name
+    }
+
+    if let child = child as? PBXGroup {
+      for grandchild in child.children {
+        child.updatePathForChild(grandchild, currentPath: childPath)
+      }
+    } else if let child = child as? PBXFileReference {
+      // Remove old source path reference. All PBXFileReferences should have valid paths as
+      // non-main/external groups no longer have any paths, meaning a PBXFileReference without a
+      // path shouldn't exist as it doesn't point to anything.
+      var sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: child.path!)
+      fileReferencesBySourceTreePath.removeValue(forKey: sourceTreePath)
+
+      // Add in new source path reference.
+      sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: childPath)
+      fileReferencesBySourceTreePath[sourceTreePath] = child
+
+      child.path = childPath
+    }
+  }
+
   /// Takes ownership of the children of the given group. Note that this leaves the "other" group in
   /// an invalid state and it should be discarded (for example, via removeChild).
   func migrateChildrenOfGroup(_ other: PBXGroup) {
     for child in other.children {
       child._parent = self
       children.append(child)
+
+      // Update path for the child and its entire tree.
+      updatePathForChild(child, currentPath: nil)
+
       if let child = child as? XCVersionGroup {
         childVersionGroupsByName[child.name] = child
       } else if let child = child as? PBXVariantGroup {
@@ -1063,7 +1093,6 @@ final class PBXProject: PBXObjectProtocol {
       self.mainGroup = PBXGroup(name: "mainGroup", path: nil, sourceTree: .SourceRoot, parent: nil)
     }
     self.name = name
-    self.mainGroup.serializesName = true
   }
 
   func createNativeTarget(_ name: String, targetType: PBXTarget.ProductType) -> PBXNativeTarget {
@@ -1072,7 +1101,6 @@ final class PBXProject: PBXObjectProtocol {
 
     let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
                                                               path: nil)
-    productsGroup.serializesName = true
     let productName = targetType.productName(name)
     let productReference = productsGroup.getOrCreateFileReferenceBySourceTree(.BuiltProductsDir,
                                                                               path: productName)
@@ -1148,8 +1176,8 @@ final class PBXProject: PBXObjectProtocol {
   }
 
   /// Creates subgroups and file references for the given set of paths. Path directory components
-  /// will be expanded into nested PBXGroup instances with the filename component made into a
-  /// PBXFileReference.
+  /// will be expanded into nested PBXGroup instances, but will not have individual path components.
+  /// The full path is made into a PBXFileReference under the inner most PBXGroup.
   /// Returns a tuple containing the PBXGroup and PBXFileReference instances that were touched while
   /// processing the set of paths.
   @discardableResult
@@ -1175,7 +1203,7 @@ final class PBXProject: PBXObjectProtocol {
     var group = mainGroup
     for component in path.components(separatedBy: "/") {
       let groupName = component.isEmpty ? "/" : component
-      group = group.getOrCreateChildGroupByName(groupName, path: component)
+      group = group.getOrCreateChildGroupByName(groupName, path: nil)
     }
     return group
   }
@@ -1186,7 +1214,7 @@ final class PBXProject: PBXObjectProtocol {
 
     let versionedGroupName = (path as NSString).lastPathComponent
     let versionedGroup = group.getOrCreateChildVersionGroupByName(versionedGroupName,
-                                                                  path: versionedGroupName)
+                                                                  path: path)
     versionedGroup.versionGroupType = versionGroupType
     return versionedGroup
   }
@@ -1228,7 +1256,7 @@ final class PBXProject: PBXObjectProtocol {
     var accessedGroups = Set<PBXGroup>()
 
     // Traverse the directory components of the path, converting them to Xcode
-    // PBXGroups.
+    // PBXGroups without a path component.
     let components = path.components(separatedBy: "/")
     for i in 0 ..< components.count - 1 {
       // Check to see if this component is actually a bundle that should be treated as a file
@@ -1237,7 +1265,8 @@ final class PBXProject: PBXObjectProtocol {
       // TODO(abaire): Look into proper support for localization bundles. This will naively create
       //               a bundle grouping rather than including the per-locale strings.
       if let ext = currentComponent.pbPathExtension, let uti = DirExtensionToUTI[ext] {
-        let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: currentComponent)
+        let partialPath = components[0...i].joined(separator: "/")
+        let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: partialPath)
         fileRef.fileTypeOverride = uti
 
         // Contents of bundles should never be referenced directly so this path
@@ -1247,11 +1276,11 @@ final class PBXProject: PBXObjectProtocol {
 
       // Create a subgroup for this simple path component.
       let groupName = currentComponent.isEmpty ? "/" : currentComponent
-      group = group.getOrCreateChildGroupByName(groupName, path: currentComponent)
+      group = group.getOrCreateChildGroupByName(groupName, path: nil)
       accessedGroups.insert(group)
     }
 
-    let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: components.last!)
+    let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: path)
     return (accessedGroups, fileRef)
   }
 }

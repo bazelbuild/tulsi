@@ -412,7 +412,7 @@ final class XcodeProjectGenerator {
     guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
     let externalChildren = externalGroup.children as! [PBXGroup]
     for child in externalChildren {
-      guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.path!)") else {
+      guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.name)") else {
         localizedMessageLogger.warning("ExternalRepositoryResolutionFailed",
                                        comment: "Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable.",
                                        context: config.projectName,
@@ -423,7 +423,6 @@ final class XcodeProjectGenerator {
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
                                                            sourceTree: .Absolute)
-      newChild.serializesName = true
       newChild.migrateChildrenOfGroup(child)
     }
     mainGroup.removeChild(externalGroup)

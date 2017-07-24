@@ -527,7 +527,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let path = target.fullPath as NSString
         let group = project.getOrCreateGroupForPath(path.deletingLastPathComponent)
         let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
-                                                             path: path.lastPathComponent)
+                                                             path: path as String)
         ref.isInputFile = target.targetType == .sourceFile
       }
 

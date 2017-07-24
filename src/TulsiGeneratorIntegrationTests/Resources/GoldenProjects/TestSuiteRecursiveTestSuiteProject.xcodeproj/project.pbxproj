@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6AF4947330B5D6000000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
-		E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C28330B5D6000000000 /* TestSuiteXCTest.m */; };
-		E6AF49473611DBCE00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283611DBCE00000000 /* main.m */; };
-		E6AF494790A3170600000000 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2890A3170600000000 /* tagged_xctest_1.m */; };
-		E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2890A3170600000000 /* tagged_xctest_1.m */; };
-		E6AF494798A50B0400000000 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2898A50B0400000000 /* tagged_xctest_2.m */; };
-		E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2898A50B0400000000 /* tagged_xctest_2.m */; };
+		E6AF49470F481BC600000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C280F481BC600000000 /* TestSuiteXCTest.m */; };
+		E6AF49470F481BC600000001 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 43D68C280F481BC600000000 /* TestSuiteXCTest.m */; };
+		E6AF49471FC199BA00000000 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C281FC199BA00000000 /* tagged_xctest_1.m */; };
+		E6AF49471FC199BA00000001 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C281FC199BA00000000 /* tagged_xctest_1.m */; };
+		E6AF494723BF89BA00000000 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2823BF89BA00000000 /* tagged_xctest_2.m */; };
+		E6AF494723BF89BA00000001 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 43D68C2823BF89BA00000000 /* tagged_xctest_2.m */; };
+		E6AF4947DF47E07900000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28DF47E07900000000 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,27 +32,37 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = tagged_xctest_2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28330B5D6000000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSuiteXCTest.m; sourceTree = "<group>"; };
-		43D68C283611DBCE00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2890A3170600000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_1.m; sourceTree = "<group>"; };
-		43D68C2898A50B0400000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tagged_xctest_2.m; sourceTree = "<group>"; };
-		43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28B7EA446800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C28B7EA446800000001 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; path = BUILD; sourceTree = "<group>"; };
-		43D68C28F35B462E00000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; path = "TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C280514D6D800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Three/BUILD; sourceTree = "<group>"; };
+		43D68C280F481BC600000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteXCTest.m; path = TestSuite/TestSuite/TestSuiteXCTest.m; sourceTree = "<group>"; };
+		43D68C281FC199BA00000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_1.m; path = TestSuite/Three/tagged_xctest_1.m; sourceTree = "<group>"; };
+		43D68C2823BF89BA00000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_2.m; path = TestSuite/Three/tagged_xctest_2.m; sourceTree = "<group>"; };
+		43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = tagged_xctest_2.xctest; path = tagged_xctest_2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28588752AD00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; };
+		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = tagged_xctest_1.xctest; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C289092682100000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-MergedInfo.plist"; path = "blaze-bin/TestSuite/TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a; path = lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = TestSuiteXCTest.xctest; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28DF47E07900000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TestSuite/Binary/srcs/main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE2008A7BC00000000 /* Three */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C280514D6D800000000 /* BUILD */,
+				43D68C281FC199BA00000000 /* tagged_xctest_1.m */,
+				43D68C2823BF89BA00000000 /* tagged_xctest_2.m */,
+			);
+			name = Three;
+			sourceTree = "<group>";
+		};
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C285A2F8B6E00000000 /* TestApplication.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
-				966FB6DE59D91CB800000000 /* blaze-bin */,
+				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
 				43D68C28A088DB1000000000 /* lib_idx_tagged_xctest_2_Binary_TestSuiteXCTest_tagged_xctest_1_97DFB03E.a */,
 				43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */,
 				43D68C282CFB11EE00000000 /* tagged_xctest_2.xctest */,
@@ -60,75 +70,65 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE2FAB912400000000 /* TestSuite */ = {
+		966FB6DE2CEC8E5C00000000 /* blaze-bin */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28F35B462E00000000 /* TestApplication-MergedInfo.plist */,
+				966FB6DE97D5C89200000000 /* TestSuite */,
 			);
-			path = TestSuite;
+			name = "blaze-bin";
 			sourceTree = "<group>";
 		};
-		966FB6DE2FAB912400000001 /* TestSuite */ = {
+		966FB6DE5B9D018E00000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B7EA446800000000 /* BUILD */,
-				966FB6DEC5C9C21400000000 /* Binary */,
-				966FB6DE2FAB912400000002 /* TestSuite */,
-				966FB6DE40114F7800000000 /* Three */,
+				43D68C28DF47E07900000000 /* main.m */,
 			);
-			path = TestSuite;
+			name = srcs;
 			sourceTree = "<group>";
 		};
-		966FB6DE2FAB912400000002 /* TestSuite */ = {
+		966FB6DE97D5C89200000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28330B5D6000000000 /* TestSuiteXCTest.m */,
+				43D68C289092682100000000 /* TestApplication-MergedInfo.plist */,
 			);
-			path = TestSuite;
+			name = TestSuite;
 			sourceTree = "<group>";
 		};
-		966FB6DE40114F7800000000 /* Three */ = {
+		966FB6DE97D5C89200000001 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B7EA446800000001 /* BUILD */,
-				43D68C2890A3170600000000 /* tagged_xctest_1.m */,
-				43D68C2898A50B0400000000 /* tagged_xctest_2.m */,
+				43D68C28588752AD00000000 /* BUILD */,
+				966FB6DEE2E4E10A00000000 /* Binary */,
+				966FB6DE97D5C89200000002 /* TestSuite */,
+				966FB6DE2008A7BC00000000 /* Three */,
 			);
-			path = Three;
+			name = TestSuite;
 			sourceTree = "<group>";
 		};
-		966FB6DE59D91CB800000000 /* blaze-bin */ = {
+		966FB6DE97D5C89200000002 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE2FAB912400000000 /* TestSuite */,
+				43D68C280F481BC600000000 /* TestSuiteXCTest.m */,
 			);
-			path = "blaze-bin";
+			name = TestSuite;
 			sourceTree = "<group>";
 		};
 		966FB6DEB6031FE700000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE2FAB912400000001 /* TestSuite */,
+				966FB6DE97D5C89200000001 /* TestSuite */,
 			);
 			name = mainGroup;
 			path = ../..;
 			sourceTree = SOURCE_ROOT;
 		};
-		966FB6DEB73A031C00000000 /* srcs */ = {
+		966FB6DEE2E4E10A00000000 /* Binary */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C283611DBCE00000000 /* main.m */,
+				966FB6DE5B9D018E00000000 /* srcs */,
 			);
-			path = srcs;
-			sourceTree = "<group>";
-		};
-		966FB6DEC5C9C21400000000 /* Binary */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DEB73A031C00000000 /* srcs */,
-			);
-			path = Binary;
+			name = Binary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,7 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947330B5D6000000000 /* TestSuiteXCTest.m in TestSuite */,
+				E6AF49470F481BC600000000 /* TestSuiteXCTest.m in TestSuite */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,7 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494798A50B0400000000 /* tagged_xctest_2.m in Three */,
+				E6AF494723BF89BA00000000 /* tagged_xctest_2.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494790A3170600000000 /* tagged_xctest_1.m in Three */,
+				E6AF49471FC199BA00000000 /* tagged_xctest_1.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,10 +364,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494798A50B0400000001 /* tagged_xctest_2.m in Three */,
-				E6AF49473611DBCE00000000 /* main.m in srcs */,
-				E6AF4947330B5D6000000001 /* TestSuiteXCTest.m in TestSuite */,
-				E6AF494790A3170600000001 /* tagged_xctest_1.m in Three */,
+				E6AF494723BF89BA00000001 /* tagged_xctest_2.m in Three */,
+				E6AF4947DF47E07900000000 /* main.m in srcs */,
+				E6AF49470F481BC600000001 /* TestSuiteXCTest.m in TestSuite */,
+				E6AF49471FC199BA00000001 /* tagged_xctest_1.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
