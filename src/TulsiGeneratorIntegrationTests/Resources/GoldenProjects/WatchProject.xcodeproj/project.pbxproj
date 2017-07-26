@@ -31,20 +31,18 @@
 /* Begin PBXFileReference section */
 		43D68C280E956A7800000000 /* WatchExtension_entitlements.entitlements.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; name = WatchExtension_entitlements.entitlements.c; path = "blaze-bin/tulsi_e2e_watch/WatchExtension_entitlements.entitlements.c"; sourceTree = "<group>"; };
 		43D68C28119442C800000000 /* watch2_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = watch2_extension_binary.m; path = tulsi_e2e_watch/Watch2ExtensionBinary/srcs/watch2_extension_binary.m; sourceTree = "<group>"; };
-		43D68C281204366A00000000 /* WatchExtension_entitlements.entitlements */ = {isa = PBXFileReference; explicitFileType = "com.apple.xcode.entitlements-property-list"; name = WatchExtension_entitlements.entitlements; path = "blaze-bin/tulsi_e2e_watch/WatchExtension_entitlements.entitlements"; sourceTree = "<group>"; };
-		43D68C2818297F6400000000 /* WatchApplication_entitlements.entitlements */ = {isa = PBXFileReference; explicitFileType = "com.apple.xcode.entitlements-property-list"; name = WatchApplication_entitlements.entitlements; path = "blaze-bin/tulsi_e2e_watch/WatchApplication_entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C281DE45A2F00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = tulsi_e2e_watch/Watch2Extension/app_infoplists/Info.plist; sourceTree = "<group>"; };
 		43D68C2849C0CECB00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_watch/BUILD; sourceTree = "<group>"; };
 		43D68C284E902D9E00000000 /* WatchApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = WatchApplication.app; path = WatchApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2856B4320300000000 /* AssetsTwo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AssetsTwo.xcassets; path = tulsi_e2e_watch/Library/AssetsTwo.xcassets; sourceTree = "<group>"; };
 		43D68C286652CA7F00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = tulsi_e2e_watch/Watch2Extension/ext_infoplists/Info.plist; sourceTree = "<group>"; };
 		43D68C2876FA849200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = tulsi_e2e_watch/Application/Info.plist; sourceTree = "<group>"; };
+		43D68C2877C8468600000000 /* WatchApplication_entitlements.entitlements.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; name = WatchApplication_entitlements.entitlements.c; path = "blaze-bin/tulsi_e2e_watch/WatchApplication_entitlements.entitlements.c"; sourceTree = "<group>"; };
 		43D68C2879CDE3DC00000000 /* lib_idx_WatchExtensionLibrary_WatchExtension.apple_binary_34715D29.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_WatchExtensionLibrary_WatchExtension.apple_binary_34715D29.a; path = lib_idx_WatchExtensionLibrary_WatchExtension.apple_binary_34715D29.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C288DEAF9BC00000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = ext_structured_resources.file; path = tulsi_e2e_watch/Watch2Extension/ext_structured_resources.file; sourceTree = "<group>"; };
 		43D68C2894D05BE000000000 /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Interface.storyboard; path = tulsi_e2e_watch/Watch2Extension/Interface.storyboard; sourceTree = "<group>"; };
 		43D68C289A58CE9A00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = tulsi_e2e_watch/Library/srcs/main.m; sourceTree = "<group>"; };
 		43D68C28A048C3AC00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = tulsi_e2e_watch/Application/entitlements.entitlements; sourceTree = "<group>"; };
-		43D68C28AF3CE2AC00000000 /* Application_entitlements.entitlements */ = {isa = PBXFileReference; explicitFileType = "com.apple.xcode.entitlements-property-list"; name = Application_entitlements.entitlements; path = "blaze-bin/tulsi_e2e_watch/Application_entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C28BBC8EE6A00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = WatchExtension.appex; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28C6BEF59A00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_watch/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28C7BA6FCA00000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = ext_entitlements.entitlements; path = tulsi_e2e_watch/Watch2Extension/ext_entitlements.entitlements; sourceTree = "<group>"; };
@@ -69,10 +67,8 @@
 		966FB6DE099EE73000000001 /* tulsi_e2e_watch */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28AF3CE2AC00000000 /* Application_entitlements.entitlements */,
 				43D68C28CAE1840C00000000 /* Application_entitlements.entitlements.c */,
-				43D68C2818297F6400000000 /* WatchApplication_entitlements.entitlements */,
-				43D68C281204366A00000000 /* WatchExtension_entitlements.entitlements */,
+				43D68C2877C8468600000000 /* WatchApplication_entitlements.entitlements.c */,
 				43D68C280E956A7800000000 /* WatchExtension_entitlements.entitlements.c */,
 			);
 			name = tulsi_e2e_watch;
