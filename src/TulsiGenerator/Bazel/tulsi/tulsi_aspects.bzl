@@ -51,33 +51,33 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'xibs',
 ]
 
-# Set of rules with implicit <label>.ipa IPA outputs.
+# List of rules with implicit <label>.ipa IPA outputs.
 # TODO(b/33050780): This is only used for the native rules and will be removed
 # in the future
-_IPA_GENERATING_RULES = set([
+_IPA_GENERATING_RULES = [
     'ios_application',
     'ios_extension',
     'ios_test',
     'objc_binary',
     'tvos_application',
-])
+]
 
-# Set of rules that generate MergedInfo.plist files as part of the build.
-_MERGEDINFOPLIST_GENERATING_RULES = set([
+# List of rules that generate MergedInfo.plist files as part of the build.
+_MERGEDINFOPLIST_GENERATING_RULES = [
     'ios_application',
     'tvos_application',
-])
+]
 
-# Set of rules whose outputs should be treated as generated sources.
-_SOURCE_GENERATING_RULES = set([
+# List of rules whose outputs should be treated as generated sources.
+_SOURCE_GENERATING_RULES = [
     'j2objc_library',
-])
+]
 
-# Set of rules whose outputs should be treated as generated sources that do not
+# List of rules whose outputs should be treated as generated sources that do not
 # use ARC.
-_NON_ARC_SOURCE_GENERATING_RULES = set([
+_NON_ARC_SOURCE_GENERATING_RULES = [
     'objc_proto_library',
-])
+]
 
 def _dict_omitting_none(**kwargs):
   """Creates a dict from the args, dropping keys with None or [] values."""
@@ -232,7 +232,7 @@ def _collect_supporting_files(rule_attr):
 
 def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
   """Extracts subpaths with the given bundle_ext for the given attributes."""
-  discovered_paths = set()
+  discovered_paths = depset()
   bundles = []
   if not bundle_ext.endswith('/'):
     bundle_ext += '/'
@@ -285,7 +285,7 @@ def _collect_xcdatamodeld_files(obj, attr_path):
   files = _collect_files(obj, attr_path)
   if not files:
     return []
-  discovered_paths = set()
+  discovered_paths = depset()
   datamodelds = []
   for f in files:
     end = f.path.find('.xcdatamodel/')
@@ -418,7 +418,7 @@ def _extract_generated_sources(target):
   file_metadatas = []
   objc_provider = _get_opt_attr(target, 'objc')
   if hasattr(objc_provider, 'source') and hasattr(objc_provider, 'header'):
-    all_files = set(objc_provider.source)
+    all_files = depset(objc_provider.source)
     all_files += objc_provider.header
     file_metadatas = [_file_metadata(f) for f in all_files]
 
@@ -491,7 +491,7 @@ def _tulsi_sources_aspect(target, ctx):
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
 
-  tulsi_info_files = set()
+  tulsi_info_files = depset()
   transitive_attributes = dict()
   for attr_name in _TULSI_COMPILE_DEPS:
     deps = _getattr_as_list(rule_attr, attr_name)
@@ -647,7 +647,7 @@ def _tulsi_sources_aspect(target, ctx):
   # Create an action to write out this target's info.
   output = ctx.new_file(target.label.name + '.tulsiinfo')
   ctx.file_action(output, info.to_json())
-  tulsi_info_files += set([output])
+  tulsi_info_files += depset([output])
 
   if infoplist:
     tulsi_info_files += [infoplist]
