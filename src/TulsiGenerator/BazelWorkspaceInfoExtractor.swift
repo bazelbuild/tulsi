@@ -99,12 +99,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ruleEntryCache
   }
 
-  func resolveExternalReferencePath(_ path: String) -> String? {
-    let execRoot = workspacePathInfoFetcher.getExecutionRoot()
-    let fullURL = NSURL.fileURL(withPathComponents: [execRoot, path])?.resolvingSymlinksInPath()
-    return fullURL?.path
-  }
-
   func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     return queryExtractor.extractBuildfiles(forTargets)
   }
