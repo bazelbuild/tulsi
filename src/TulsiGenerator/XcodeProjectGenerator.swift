@@ -405,6 +405,12 @@ final class XcodeProjectGenerator {
                                 intermediateArtifacts: intermediateArtifacts)
   }
 
+  // Resolves the given Bazel path (which is expected to begin with external/) to a filesystem path.
+  // This is intended to be used to resolve "@external_repo" style labels to paths usable by Xcode.
+  func resolveExternalReferencePath(_ path: String, xcodeProject: PBXProject) -> String {
+    return "\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
+  }
+
   // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
   // "external" container to absolute filesystem references.
   private func patchExternalRepositoryReferences(_ xcodeProject: PBXProject) {
@@ -412,17 +418,10 @@ final class XcodeProjectGenerator {
     guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
     let externalChildren = externalGroup.children as! [PBXGroup]
     for child in externalChildren {
-      guard let resolvedPath = workspaceInfoExtractor.resolveExternalReferencePath("external/\(child.name)") else {
-        localizedMessageLogger.warning("ExternalRepositoryResolutionFailed",
-                                       comment: "Failed to look up a valid filesystem path for the external repository group given as %1$@. The project should work correctly, but any files inside of the cited group will be unavailable.",
-                                       context: config.projectName,
-                                       values: child.path!)
-        continue
-      }
-
+      let resolvedPath = resolveExternalReferencePath("external/\(child.name)", xcodeProject: xcodeProject)
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
-                                                           sourceTree: .Absolute)
+                                                           sourceTree: .Group)
       newChild.migrateChildrenOfGroup(child)
     }
     mainGroup.removeChild(externalGroup)

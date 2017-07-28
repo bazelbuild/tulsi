@@ -378,7 +378,7 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -484,7 +484,7 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
@@ -611,7 +611,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -732,7 +732,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "${TULSI_WR}/blaze-WORKSPACENAME";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
