@@ -287,10 +287,7 @@ final class BazelAspectInfoExtractor {
       let dependencies = Set(dict["deps"] as? [String] ?? [])
       let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String
-      let iPhoneOSDeploymentTarget = dict["iphoneos_deployment_target"] as? String
-      let macOSDeploymentTarget = dict["macos_deployment_target"] as? String
-      let tvOSDeploymentTarget = dict["tvos_deployment_target"] as? String
-      let watchOSDeploymentTarget = dict["watchos_deployment_target"] as? String
+      let osDeploymentTarget = dict["os_deployment_target"] as? String
       let secondaryArtifacts = MakeBazelFileInfos("secondary_product_artifacts")
       let swiftLanguageVersion = dict["swift_language_version"] as? String
       let swiftToolchain = dict["swift_toolchain"] as? String
@@ -303,6 +300,7 @@ final class BazelAspectInfoExtractor {
         extensions = nil
       }
       let bundleID = dict["bundle_id"] as? String
+      let platformType = dict["platform_type"] as? String
 
       var extensionType: String?
       if ruleType == "ios_extension", let infoplistPath = dict["infoplist"] as? String {
@@ -334,10 +332,8 @@ final class BazelAspectInfoExtractor {
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,
                                 bundleID: bundleID,
-                                iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
-                                macOSDeploymentTarget: macOSDeploymentTarget,
-                                tvOSDeploymentTarget: tvOSDeploymentTarget,
-                                watchOSDeploymentTarget: watchOSDeploymentTarget,
+                                platformType: platformType,
+                                osDeploymentTarget: osDeploymentTarget,
                                 buildFilePath: buildFilePath,
                                 defines: defines,
                                 includePaths: includePaths,

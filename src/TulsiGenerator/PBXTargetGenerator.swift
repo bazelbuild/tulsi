@@ -217,10 +217,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let includes: [String]
     let frameworkSearchPaths: [String]
     let swiftIncludePaths: [String]
-    let iPhoneOSDeploymentTarget: String?
-    let macOSDeploymentTarget: String?
-    let tvOSDeploymentTarget: String?
-    let watchOSDeploymentTarget: String?
+    let deploymentTarget: RuleEntry.DeploymentTarget
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
@@ -275,10 +272,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           frameworkSearchPaths == other.frameworkSearchPaths &&
           includes == other.includes &&
           swiftIncludePaths == other.swiftIncludePaths &&
-          iPhoneOSDeploymentTarget == other.iPhoneOSDeploymentTarget &&
-          macOSDeploymentTarget == other.macOSDeploymentTarget &&
-          tvOSDeploymentTarget == other.tvOSDeploymentTarget &&
-          watchOSDeploymentTarget == other.watchOSDeploymentTarget) {
+          deploymentTarget == other.deploymentTarget) {
         return false
       }
 
@@ -300,10 +294,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                          includes: includes,
                          frameworkSearchPaths: frameworkSearchPaths,
                          swiftIncludePaths: swiftIncludePaths,
-                         iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
-                         macOSDeploymentTarget: macOSDeploymentTarget,
-                         tvOSDeploymentTarget: tvOSDeploymentTarget,
-                         watchOSDeploymentTarget: watchOSDeploymentTarget,
+                         deploymentTarget: deploymentTarget,
                          buildPhase: newBuildPhase,
                          pchFile: pchFile,
                          bridgingHeader: bridgingHeader,
@@ -608,6 +599,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
            "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
         }
 
+        let deploymentTarget: RuleEntry.DeploymentTarget
+        if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
+          deploymentTarget = ruleDeploymentTarget
+        } else {
+          deploymentTarget = RuleEntry.DeploymentTarget(platform: .ios, osVersion: "9.0")
+          localizedMessageLogger.warning("NoDeploymentTarget",
+                                         comment: "Rule Entry for %1$@ has no DeploymentTarget set. Defaulting to iOS 9.",
+                                         values: ruleEntry.label.value)
+        }
+
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
                                       dependencies: Set(dependencyLabels),
@@ -617,10 +618,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       includes: resolvedIncludes,
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
-                                      iPhoneOSDeploymentTarget: ruleEntry.iPhoneOSDeploymentTarget,
-                                      macOSDeploymentTarget: ruleEntry.macOSDeploymentTarget,
-                                      tvOSDeploymentTarget: ruleEntry.tvOSDeploymentTarget,
-                                      watchOSDeploymentTarget: ruleEntry.watchOSDeploymentTarget,
+                                      deploymentTarget: deploymentTarget,
                                       buildPhase: buildPhase,
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
@@ -1051,22 +1049,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joined(separator: " ")
     }
 
-    if let iPhoneOSDeploymentTarget = data.iPhoneOSDeploymentTarget {
-      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
-    }
-
-    if let macOSDeploymentTarget = data.macOSDeploymentTarget {
-      buildSettings["MACOSX_DEPLOYMENT_TARGET"] = macOSDeploymentTarget
-    }
-
-    if let tvOSDeploymentTarget = data.tvOSDeploymentTarget {
-      buildSettings["TVOS_DEPLOYMENT_TARGET"] = tvOSDeploymentTarget
-    }
-
-    if let watchOSDeploymentTarget = data.watchOSDeploymentTarget {
-      buildSettings["WATCHOS_DEPLOYMENT_TARGET"] = watchOSDeploymentTarget
-    }
-
     // Force the indexers to target the x86_64 simulator. This minimizes issues triggered by
     // Xcode's use of SourceKit to parse Swift-based code. Specifically, Xcode appears to use the
     // first ARCHS value that also appears in VALID_ARCHS when attempting to process swiftmodule's
@@ -1074,17 +1056,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Anecdotally it would appear that users target 64-bit simulators more often than armv7 devices
     // (the first architecture in Xcode 8's default value), so this change increases the chance that
     // the LI parser is able to find appropriate swiftmodule artifacts generated by the Bazel build.
+    // Default the sdkroot to iOS sim.
+    let deploymentTarget = data.deploymentTarget
+    let platform = deploymentTarget.platform
+    buildSettings["SDKROOT"] = platform.simulatorSDK
+
     buildSettings["ARCHS"] = "x86_64"
-
-    let sdkroot: String
-    switch (target as? PBXNativeTarget)?.productType {
-      case .Watch2App?, .Watch2Extension?:
-        sdkroot = "watchsimulator"
-      default:
-        sdkroot = "iphonesimulator"
-    }
-
-    buildSettings["SDKROOT"] = sdkroot
+    buildSettings[platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion
     buildSettings["VALID_ARCHS"] = "x86_64"
 
     createBuildConfigurationsForList(target.buildConfigurationList,
@@ -1379,20 +1357,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] = "Stub Launch Image"
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(entry)
 
-    if let iPhoneOSDeploymentTarget = entry.iPhoneOSDeploymentTarget {
-      buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] = iPhoneOSDeploymentTarget
-    }
-
-    if let macOSDeploymentTarget = entry.macOSDeploymentTarget {
-      buildSettings["MACOSX_DEPLOYMENT_TARGET"] = macOSDeploymentTarget
-    }
-
-    if let tvOSDeploymentTarget = entry.tvOSDeploymentTarget {
-      buildSettings["TVOS_DEPLOYMENT_TARGET"] = tvOSDeploymentTarget
-    }
-
-    if let watchOSDeploymentTarget = entry.watchOSDeploymentTarget {
-      buildSettings["WATCHOS_DEPLOYMENT_TARGET"] = watchOSDeploymentTarget
+    if let deploymentTarget = entry.deploymentTarget {
+      buildSettings[deploymentTarget.platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion
     }
 
     // watchOS1 apps require TARGETED_DEVICE_FAMILY to be overridden as they are a specialization of

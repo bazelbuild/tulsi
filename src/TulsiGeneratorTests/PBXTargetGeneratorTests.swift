@@ -1356,15 +1356,21 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(appBuildTarget,
                         type: "ios_application",
                         extensions: Set([BuildLabel(watchAppBuildTarget)]),
-                        bundleID: appBundleID),
+                        bundleID: appBundleID,
+                        platformType: "ios",
+                        osDeploymentTarget: "9.0"),
       makeTestRuleEntry(watchAppBuildTarget,
                         type: "watchos_application",
                         extensions: Set([BuildLabel(watchExtBuildTarget)]),
                         bundleID: watchAppBundleID,
-                        extensionBundleID: watchExtBundleID),
+                        extensionBundleID: watchExtBundleID,
+                        platformType: "watchos",
+                        osDeploymentTarget: "2.0"),
       makeTestRuleEntry(watchExtBuildTarget,
                         type: "watchos_extension",
-                        bundleID: watchExtBundleID)
+                        bundleID: watchExtBundleID,
+                        platformType: "watchos",
+                        osDeploymentTarget: "2.0")
     ])
 
     do {
@@ -1389,6 +1395,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_BUNDLE_IDENTIFIER": appBundleID,
           "PRODUCT_NAME": appTargetName,
           "SDKROOT": "iphoneos",
+          "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
           "TULSI_BUILD_PATH": appBuildPath,
           "TULSI_USE_DSYM": "NO",
       ]
@@ -1428,6 +1435,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_BUNDLE_IDENTIFIER": watchAppBundleID,
           "PRODUCT_NAME": watchAppTargetName,
           "SDKROOT": "watchos",
+          "WATCHOS_DEPLOYMENT_TARGET": "2.0",
           "TULSI_BUILD_PATH": watchAppBuildPath,
           "TULSI_USE_DSYM": "NO",
       ]
@@ -1467,6 +1475,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_BUNDLE_IDENTIFIER": watchExtBundleID,
           "PRODUCT_NAME": watchExtTargetName,
           "SDKROOT": "watchos",
+          "WATCHOS_DEPLOYMENT_TARGET": "2.0",
           "TULSI_BUILD_PATH": watchExtBuildPath,
           "TULSI_USE_DSYM": "NO",
       ]
@@ -2065,6 +2074,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
+                                 platformType: String? = nil,
+                                 osDeploymentTarget: String? = nil,
                                  buildFilePath: String? = nil,
                                  swiftLanguageVersion: String? = nil) -> RuleEntry {
     return makeTestRuleEntry(BuildLabel(label),
@@ -2076,6 +2087,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              extensions: extensions,
                              bundleID: bundleID,
                              extensionBundleID: extensionBundleID,
+                             platformType: platformType,
+                             osDeploymentTarget: osDeploymentTarget,
                              buildFilePath: buildFilePath,
                              swiftLanguageVersion: swiftLanguageVersion)
   }
@@ -2095,6 +2108,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  extensionBundleID: String? = nil,
+                                 platformType: String? = nil,
+                                 osDeploymentTarget: String? = nil,
                                  buildFilePath: String? = nil,
                                  swiftLanguageVersion: String? = nil) -> RuleEntry {
     let artifactInfos = artifacts.map() { TestBazelFileInfo(fullPath: $0) }
@@ -2108,6 +2123,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      extensions: extensions,
                      bundleID: bundleID,
                      extensionBundleID: extensionBundleID,
+                     platformType: platformType,
+                     osDeploymentTarget: osDeploymentTarget,
                      buildFilePath: buildFilePath,
                      swiftLanguageVersion: swiftLanguageVersion)
   }
@@ -2262,6 +2279,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
         "SDKROOT": "iphonesimulator",
+        "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
         "VALID_ARCHS": "x86_64",
     ]
     if pchFile != nil {

@@ -424,26 +424,25 @@ def _extract_generated_sources(target):
 
   return file_metadatas
 
+def _get_platform_type(ctx):
+  """Return the current apple_common.platform_type as a string."""
+  current_platform = (_get_opt_attr(ctx, 'rule.attr.platform_type')
+                      or _get_opt_attr(ctx, 'rule.attr._platform_type'))
+  if not current_platform:
+    apple_frag = _get_opt_attr(ctx.fragments, 'apple')
+    current_platform = str(apple_frag.single_arch_platform.platform_type)
+  return current_platform
 
-def _extract_minimum_os_for_platform(ctx, platform):
+def _extract_minimum_os_for_platform(ctx, platform_type_str):
   """Extracts the minimum OS version for the given apple_common.platform."""
   apple_frag = _get_opt_attr(ctx.fragments, 'apple')
-
-  current_platform_str = (_get_opt_attr(ctx, 'rule.attr.platform_type')
-                          or _get_opt_attr(ctx, 'rule.attr._platform_type'))
-  if not current_platform_str:
-    current_platform_str = str(apple_frag.single_arch_platform.platform_type)
-  # Bazel is changing its API to only provide minimum OS for the current
-  # configuration platform type, so return none if the requested platform
-  # does not match the current platform.
-  if current_platform_str != str(platform):
-    return None
 
   min_os = _get_opt_attr(ctx, 'rule.attr.minimum_os_version')
   if min_os:
     return min_os
 
-  min_os = apple_frag.minimum_os_for_platform_type(platform)
+  platform_type = getattr(apple_common.platform_type, platform_type_str)
+  min_os = apple_frag.minimum_os_for_platform_type(platform_type)
 
   if not min_os:
     return None
@@ -613,6 +612,8 @@ def _tulsi_sources_aspect(target, ctx):
                        for x in objc_provider.include]
     target_defines = objc_provider.define.to_list()
 
+  platform_type = _get_platform_type(ctx)
+
   info = _struct_omitting_none(
       artifacts=artifacts,
       attr=_struct_omitting_none(**all_attributes),
@@ -625,15 +626,7 @@ def _tulsi_sources_aspect(target, ctx):
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,
       includes=target_includes,
-      iphoneos_deployment_target=_extract_minimum_os_for_platform(
-          ctx, apple_common.platform_type.ios),
-      # TODO(abaire): Uncomment if/when Bazel supports macOS.
-      # macos_deployment_target=_extract_minimum_os_for_platform(
-      #     ctx, apple_common.platform_type.macosx),
-      tvos_deployment_target=_extract_minimum_os_for_platform(
-          ctx, apple_common.platform_type.tvos),
-      watchos_deployment_target=_extract_minimum_os_for_platform(
-          ctx, apple_common.platform_type.watchos),
+      os_deployment_target=_extract_minimum_os_for_platform(ctx, platform_type),
       label=str(target.label),
       non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
@@ -642,6 +635,7 @@ def _tulsi_sources_aspect(target, ctx):
       objc_module_maps=list(objc_module_maps),
       type=target_kind,
       infoplist=infoplist.basename if infoplist else None,
+      platform_type=platform_type,
   )
 
   # Create an action to write out this target's info.

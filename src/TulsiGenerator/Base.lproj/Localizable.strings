@@ -65,6 +65,9 @@
 /* Warning to show when a user has selected an XCTest but not its host application. */
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
 
+/* Warning to show when a RuleEntry does not have a DeploymentTarget to be used by the indexer. */
+"NoDeploymentTarget" = "Rule Entry for %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
+
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
 

@@ -145,6 +145,50 @@ public final class RuleEntry: RuleInfo {
       "_test_host_": PBXTarget.ProductType.Application,
   ]
 
+  /// Valid Apple Platform Types.
+  /// See https://docs.bazel.build/versions/master/skylark/lib/apple_common.html#platform_type
+  public enum PlatformType: String {
+    case ios
+    case macos
+    case tvos
+    case watchos
+
+    var buildSettingsDeploymentTarget: String {
+      switch self {
+        case .ios: return "IPHONEOS_DEPLOYMENT_TARGET"
+        case .macos: return "MACOSX_DEPLOYMENT_TARGET"
+        case .tvos: return "TVOS_DEPLOYMENT_TARGET"
+        case .watchos: return "WATCHOS_DEPLOYMENT_TARGET"
+      }
+    }
+    var simulatorSDK: String {
+      switch self {
+        case .ios: return "iphonesimulator"
+        case .macos: return "macosx"
+        case .tvos: return "appletvsimulator"
+        case .watchos: return "watchsimulator"
+      }
+    }
+    var deviceSDK: String {
+      switch self {
+        case .ios: return "iphoneos"
+        case .macos: return "macosx"
+        case .tvos: return "appletvos"
+        case .watchos: return "watchos"
+      }
+    }
+  }
+
+  /// Target platform and os version to be used when generating the project.
+  public struct DeploymentTarget : Equatable {
+    let platform: PlatformType
+    let osVersion: String
+
+    public static func ==(lhs: RuleEntry.DeploymentTarget, rhs: RuleEntry.DeploymentTarget) -> Bool {
+      return lhs.platform == rhs.platform && lhs.osVersion == rhs.osVersion
+    }
+  }
+
   /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
   /// Encyclopedia (see http://bazel.build/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.
@@ -222,17 +266,8 @@ public final class RuleEntry: RuleInfo {
   /// List containing the transitive ObjC modulemaps on which this rule depends.
   public let objCModuleMaps: [BazelFileInfo]
 
-  /// The minimum iOS version supported by this target.
-  public let iPhoneOSDeploymentTarget: String?
-
-  /// The minimum macOS version supported by this target.
-  public let macOSDeploymentTarget: String?
-
-  /// The minimum tvOS version supported by this target.
-  public let tvOSDeploymentTarget: String?
-
-  /// The minimum watchOS version supported by this target.
-  public let watchOSDeploymentTarget: String?
+  /// The deployment platform target for this target.
+  public let deploymentTarget: DeploymentTarget?
 
   /// Set of labels that this rule depends on but does not require.
   // NOTE(abaire): This is a hack used for test_suite rules, where the possible expansions retrieved
@@ -304,22 +339,10 @@ public final class RuleEntry: RuleInfo {
   /// Returns the value to be used as the Xcode SDKROOT for the build target generated for this
   /// RuleEntry.
   private(set) lazy var XcodeSDKRoot: String? = { [unowned self] in
-    guard let targetType = self.pbxTargetType else {
-      return nil
+    if let platformType = self.deploymentTarget?.platform {
+      return platformType.deviceSDK
     }
-
-    // The watchos SDK was only added by Apple for watchOS2 and later.
-    if targetType == .Watch2App || targetType == .Watch2Extension {
-      return "watchos"
-    }
-
-    // tvOS apps and iOS apps both use the same product type, so we have to use
-    // the rule name to distinguish them.
-    if targetType == .TVAppExtension || self.type == "tvos_application" {
-      return "appletvos"
-    }
-
-    return "iphoneos"
+    return PlatformType.ios.deviceSDK
   }()
 
   init(label: BuildLabel,
@@ -335,10 +358,8 @@ public final class RuleEntry: RuleInfo {
        extensions: Set<BuildLabel>? = nil,
        bundleID: String? = nil,
        extensionBundleID: String? = nil,
-       iPhoneOSDeploymentTarget: String? = nil,
-       macOSDeploymentTarget: String? = nil,
-       tvOSDeploymentTarget: String? = nil,
-       watchOSDeploymentTarget: String? = nil,
+       platformType: String? = nil,
+       osDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
        defines: [String]? = nil,
        includePaths: [IncludePath]? = nil,
@@ -358,6 +379,12 @@ public final class RuleEntry: RuleInfo {
       checkedAttributes[checkedKey] = value
     }
     self.attributes = checkedAttributes
+    let parsedPlatformType: PlatformType?
+    if let platformTypeStr = platformType {
+      parsedPlatformType = PlatformType(rawValue: platformTypeStr)
+    } else {
+      parsedPlatformType = nil
+    }
 
     self.artifacts = artifacts
     self.sourceFiles = sourceFiles
@@ -375,10 +402,11 @@ public final class RuleEntry: RuleInfo {
     }
     self.bundleID = bundleID
     self.extensionBundleID = extensionBundleID
-    self.iPhoneOSDeploymentTarget = iPhoneOSDeploymentTarget
-    self.macOSDeploymentTarget = macOSDeploymentTarget
-    self.tvOSDeploymentTarget = tvOSDeploymentTarget
-    self.watchOSDeploymentTarget = watchOSDeploymentTarget
+    var deploymentTarget: DeploymentTarget? = nil
+    if let platform = parsedPlatformType, let osVersion = osDeploymentTarget {
+        deploymentTarget = DeploymentTarget(platform: platform, osVersion: osVersion)
+    }
+    self.deploymentTarget = deploymentTarget
     self.buildFilePath = buildFilePath
     self.defines = defines
     self.includePaths = includePaths
@@ -411,10 +439,8 @@ public final class RuleEntry: RuleInfo {
                    extensions: Set<BuildLabel>? = nil,
                    bundleID: String? = nil,
                    extensionBundleID: String? = nil,
-                   iPhoneOSDeploymentTarget: String? = nil,
-                   macOSDeploymentTarget: String? = nil,
-                   tvOSDeploymentTarget: String? = nil,
-                   watchOSDeploymentTarget: String? = nil,
+                   platformType: String? = nil,
+                   osDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
                    defines: [String]? = nil,
                    includePaths: [IncludePath]? = nil,
@@ -436,10 +462,8 @@ public final class RuleEntry: RuleInfo {
               extensions: extensions,
               bundleID: bundleID,
               extensionBundleID: extensionBundleID,
-              iPhoneOSDeploymentTarget: iPhoneOSDeploymentTarget,
-              macOSDeploymentTarget: macOSDeploymentTarget,
-              tvOSDeploymentTarget: tvOSDeploymentTarget,
-              watchOSDeploymentTarget: watchOSDeploymentTarget,
+              platformType: platformType,
+              osDeploymentTarget: osDeploymentTarget,
               buildFilePath: buildFilePath,
               defines: defines,
               includePaths: includePaths,

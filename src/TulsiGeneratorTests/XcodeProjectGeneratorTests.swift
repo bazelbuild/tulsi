@@ -193,18 +193,23 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testProjectSDKROOT() {
-    func validate(_ types: [String], _ expectedSDKROOT: String?, line: UInt = #line) {
-      let rules = types.map() {
-        XcodeProjectGeneratorTests.makeRuleEntry(BuildLabel($0), type: $0)
+    func validate(_ types: [(String, String)], _ expectedSDKROOT: String?, line: UInt = #line) {
+      let rules = types.map() { tuple in
+        // Both the platform and osDeploymentTarget must be set in order to create a valid
+        // deploymentTarget for the RuleEntry.
+        XcodeProjectGeneratorTests.makeRuleEntry(BuildLabel(tuple.0), type: tuple.0, platformType: tuple.1,
+                                                 osDeploymentTarget: "this_must_not_be_nil")
       }
       let sdkroot = XcodeProjectGenerator.projectSDKROOT(rules)
       XCTAssertEqual(sdkroot, expectedSDKROOT, line: line)
     }
 
-    validate(["ios_application"], "iphoneos")
-    validate(["ios_application", "ios_application"], "iphoneos")
-    validate(["ios_application", "tvos_extension"], nil)
-    validate(["tvos_extension"], "appletvos")
+    let iosAppTuple = ("ios_application", "ios")
+    let tvExtensionTuple = ("tvos_extension", "tvos")
+    validate([iosAppTuple], "iphoneos")
+    validate([iosAppTuple, iosAppTuple], "iphoneos")
+    validate([iosAppTuple, tvExtensionTuple], nil)
+    validate([tvExtensionTuple], "appletvos")
   }
 
   // MARK: - Private methods
@@ -230,7 +235,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     defines: [String]? = nil,
                                     includePaths: [RuleEntry.IncludePath]? = nil,
                                     extensions: Set<BuildLabel>? = nil,
-                                    extensionType: String? = nil) -> RuleEntry {
+                                    extensionType: String? = nil,
+                                    platformType: String? = nil,
+                                    osDeploymentTarget: String? = nil) -> RuleEntry {
     return RuleEntry(label: label,
                      type: type,
                      attributes: attributes,
@@ -241,6 +248,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      secondaryArtifacts: secondaryArtifacts,
                      weakDependencies: weakDependencies,
                      extensions: extensions,
+                     platformType: platformType,
+                     osDeploymentTarget: osDeploymentTarget,
                      buildFilePath: buildFilePath,
                      defines: defines,
                      includePaths: includePaths,
