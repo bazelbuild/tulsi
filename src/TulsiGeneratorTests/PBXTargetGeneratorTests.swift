@@ -1507,6 +1507,173 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateMacOSTarget() {
+    let appTargetName = "targetName"
+    let appBuildPath = "test/app"
+    let appBuildTarget = "\(appBuildPath):\(appTargetName)"
+    let macCLIAppTargetName = "macCLIAppTargetName"
+    let macCLIAppBuildPath = "test/maclicapp"
+    let macCLIAppBuildTarget = "\(macCLIAppBuildPath):\(macCLIAppTargetName)"
+    let macAppExtTargetName = "macExtTargetName"
+    let macAppExtBuildPath = "test/macappext"
+    let macAppExtBuildTarget = "\(macAppExtBuildPath):\(macAppExtTargetName)"
+
+    let appBundleID = "appBundleID"
+    let macCLIAppBundleID = "macCLIAppBundleID"
+    let macAppExtBundleID = "macAppExtBundleID"
+    let rules = Set([
+      makeTestRuleEntry(appBuildTarget,
+                        type: "macos_application",
+                        extensions: Set([BuildLabel(macAppExtBuildTarget)]),
+                        bundleID: appBundleID,
+                        platformType: "macos",
+                        osDeploymentTarget: "10.12"),
+      makeTestRuleEntry(macAppExtBuildTarget,
+                        type: "macos_extension",
+                        bundleID: macAppExtBundleID,
+                        platformType: "macos",
+                        osDeploymentTarget: "10.12"),
+      makeTestRuleEntry(macCLIAppBuildTarget,
+                        type: "macos_command_line_application",
+                        bundleID: macCLIAppBundleID,
+                        platformType: "macos",
+                        osDeploymentTarget: "10.12")
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 3)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": appBuildTarget,
+        "BAZEL_TARGET_TYPE": "macos_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_BUNDLE_IDENTIFIER": appBundleID,
+        "PRODUCT_NAME": appTargetName,
+        "SDKROOT": "macosx",
+        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "TULSI_BUILD_PATH": appBuildPath,
+        "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+        name: appTargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": macAppExtBuildTarget,
+        "BAZEL_TARGET_TYPE": "macos_extension",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": "${PROJECT_ROOT}/asd/Stub_test-macappext-macExtTargetName.plist",
+        "PRODUCT_BUNDLE_IDENTIFIER": macAppExtBundleID,
+        "PRODUCT_NAME": macAppExtTargetName,
+        "SDKROOT": "macosx",
+        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "TULSI_BUILD_PATH": macAppExtBuildPath,
+        "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+        name: macAppExtTargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: macAppExtBuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": macCLIAppBuildTarget,
+        "BAZEL_TARGET_TYPE": "macos_command_line_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": "TestInfo.plist",
+        "PRODUCT_BUNDLE_IDENTIFIER": macCLIAppBundleID,
+        "PRODUCT_NAME": macCLIAppTargetName,
+        "SDKROOT": "macosx",
+        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "TULSI_BUILD_PATH": macCLIAppBuildPath,
+        "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+        name: macCLIAppTargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: macCLIAppBuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,

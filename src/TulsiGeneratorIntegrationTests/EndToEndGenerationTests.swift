@@ -163,8 +163,38 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                               "blaze-genfiles/..."],
                                                 additionalFilePaths: additionalFilePaths,
                                                 outputDir: "tulsi_e2e_output/") else {
-                                                  // The test has already been marked as failed.
-                                                  return
+      // The test has already been marked as failed.
+      return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
+  func test_macProject() {
+    let testDir = "tulsi_e2e_mac"
+    installBUILDFile("Mac", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):MyMacOSApp")
+    let commandLineAppLabel = BuildLabel("//\(testDir):MyCommandLineApp")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "macos_application",
+                                 linkedTargetLabels: Set<BuildLabel>()),
+                        RuleInfo(label: commandLineAppLabel,
+                                 type: "macos_command_line_application",
+                                 linkedTargetLabels: Set<BuildLabel>())]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "MacOSProject"
+    guard let projectURL = generateProjectNamed(projectName,
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/...",
+                                                  "blaze-bin/...",
+                                                  "blaze-genfiles/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
+      // The test has already been marked as failed.
+      return
     }
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)

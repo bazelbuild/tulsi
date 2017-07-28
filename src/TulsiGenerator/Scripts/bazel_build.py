@@ -503,6 +503,14 @@ class BazelBuildBridge(object):
         os.environ['TARGET_BUILD_DIR'],
         os.environ.get('CONTENTS_FOLDER_PATH', ''))
 
+    # For macOS applications and extensions, Xcode includes the Contents/ at
+    # the end, which we don't want.
+    if (self.bazel_target_type == 'macos_application'
+        or self.bazel_target_type == 'macos_extension'):
+      head, tail = os.path.split(self.content_folder_path)
+      if tail == 'Contents':
+        self.content_folder_path = head
+
     # Path to where Xcode expects the binary to be placed.
     self.binary_path = os.path.join(
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
