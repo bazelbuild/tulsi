@@ -267,7 +267,6 @@ def _collect_asset_catalogs(rule_attr):
   attrs = ['app_asset_catalogs', 'asset_catalogs']
   bundles = _collect_bundle_paths(rule_attr, attrs, '.xcassets')
   bundles.extend(_collect_bundle_paths(rule_attr, attrs, '.xcstickers'))
-
   return bundles
 
 
