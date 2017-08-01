@@ -1160,9 +1160,6 @@ final class PBXProject: PBXObjectProtocol {
 
   func linkTestTarget(_ testTarget: PBXTarget, toHostTarget hostTarget: PBXTarget) {
     testTargetLinkages.append((testTarget, hostTarget))
-    testTarget.createDependencyOn(hostTarget,
-                                  proxyType:PBXContainerItemProxy.ProxyType.targetReference,
-                                  inProject: self)
   }
 
   func linkedTestTargetsForHost(_ host: PBXTarget) -> [PBXTarget] {
