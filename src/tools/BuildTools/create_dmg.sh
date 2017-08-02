@@ -132,29 +132,6 @@ readonly dev=$(echo ${devs} | cut -f 1 -d ' ')
   fi
 
   popd > /dev/null
-
-  # Set up the sizes and positions of the contents.
-  echo '
-  tell application "Finder"
-    tell disk "'${volname}'"
-      open
-      set current view of container window to icon view
-      set toolbar visible of container window to false
-      set statusbar visible of container window to false
-      set the bounds of container window to {400, 100, 800, '${window_bottom}'}
-      set viewOptions to the icon view options of container window
-      set arrangement of viewOptions to not arranged
-      set icon size of viewOptions to 128
-      set position of item "'${src_bundle_file}'" of container window to {10, 10}
-      set position of item "Applications" of container window to {200, 10}
-      '"${additional_files_command}"'
-      close
-      open
-      update without registering applications
-      delay 4
-     end tell
-   end tell
-' | osascript
 )
 
 # Convert the dmg to a compressed read-only one.
