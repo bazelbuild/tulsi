@@ -673,7 +673,8 @@ class BazelBuildBridge(object):
         '--experimental_show_artifacts',
         '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
-        '--override_repository=tulsi=%s' % tulsi_package_dir])
+        '--override_repository=tulsi=%s' % tulsi_package_dir,
+        '--tool_tag=tulsi:bazel_build'])
 
     if self.code_coverage_enabled:
       self._PrintVerbose('Enabling code coverage information.')
