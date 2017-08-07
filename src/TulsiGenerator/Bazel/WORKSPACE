@@ -14,3 +14,4 @@
 
 # Defines a workspace to allow injection of Tulsi's Bazel aspects for target
 # inspection.
+workspace(name = "tulsi")
