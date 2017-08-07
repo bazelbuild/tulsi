@@ -1248,10 +1248,8 @@ final class PBXProject: PBXObjectProtocol {
     try serializer.addField("knownRegions", ["en"])
   }
 
-  // MARK: - Private methods
-
-  private func createGroupsAndFileReferenceForPath(_ path: String,
-                                                   underGroup parent: PBXGroup) -> (Set<PBXGroup>, PBXFileReference) {
+  func createGroupsAndFileReferenceForPath(_ path: String,
+                                           underGroup parent: PBXGroup) -> (Set<PBXGroup>, PBXFileReference) {
     var group = parent
     var accessedGroups = Set<PBXGroup>()
 

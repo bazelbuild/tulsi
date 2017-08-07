@@ -509,10 +509,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let nonSourceVersionedFileInfos = ruleEntry.versionedNonSourceArtifacts.filter(includeFileInProject)
 
       for target in ruleEntry.normalNonSourceArtifacts.filter(includeFileInProject) {
-        let path = target.fullPath as NSString
-        let group = project.getOrCreateGroupForPath(path.deletingLastPathComponent)
-        let ref = group.getOrCreateFileReferenceBySourceTree(.Group,
-                                                             path: path as String)
+        let path = target.fullPath
+        let (_, ref) = project.createGroupsAndFileReferenceForPath(path, underGroup: project.mainGroup)
         ref.isInputFile = target.targetType == .sourceFile
       }
 

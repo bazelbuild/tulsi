@@ -33,6 +33,7 @@
 		43D68C2825BD245B00000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C282B9FD21100000000 /* MyCommandLineApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyCommandLineApp-Info.plist"; path = "tulsi_e2e_mac/MyCommandLineApp-Info.plist"; sourceTree = "<group>"; };
 		43D68C283E03F31400000000 /* MyTodayExtension_entitlements.entitlements.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; name = MyTodayExtension_entitlements.entitlements.c; path = "blaze-bin/tulsi_e2e_mac/MyTodayExtension_entitlements.entitlements.c"; sourceTree = "<group>"; };
+		43D68C28477A69B300000000 /* MacAppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = MacAppIcon.xcassets; path = tulsi_e2e_mac/MacAppIcon.xcassets; sourceTree = "<group>"; };
 		43D68C2854DD95A300000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = tulsi_e2e_mac/Resources/Main.storyboard; sourceTree = "<group>"; };
 		43D68C2859D7FD9000000000 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = tulsi_e2e_mac/src/AppDelegate.h; sourceTree = "<group>"; };
 		43D68C285C15513400000000 /* TodayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TodayViewController.xib; path = tulsi_e2e_mac/Resources/extensions/today/TodayViewController.xib; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 			children = (
 				43D68C28CBE52D2300000000 /* BUILD */,
 				43D68C28B24B823900000000 /* Info.plist */,
+				43D68C28477A69B300000000 /* MacAppIcon.xcassets */,
 				43D68C282B9FD21100000000 /* MyCommandLineApp-Info.plist */,
 				43D68C2825BD245B00000000 /* MyTodayExtension-Entitlements.entitlements */,
 				43D68C28FE9E50BD00000000 /* MyTodayExtension-Info.plist */,

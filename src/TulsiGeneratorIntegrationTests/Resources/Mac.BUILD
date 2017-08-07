@@ -46,7 +46,11 @@ apple_bundle_version(
 
 filegroup(
     name = "MacAppIcon.xcassets",
-    srcs = glob(["MacAppIcon.xcassets/**/*"]),
+    srcs = [
+        "MacAppIcon.xcassets/MacAppIcon.appiconset/Contents.json",
+        "MacAppIcon.xcassets/MacAppIcon.appiconset/MacAppIcon-16.png",
+        "MacAppIcon.xcassets/MacAppIcon.appiconset/MacAppIcon-16@2x.png",
+    ],
 )
 
 objc_library(
