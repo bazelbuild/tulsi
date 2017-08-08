@@ -31,6 +31,7 @@ import sys
 import textwrap
 import time
 import zipfile
+import bazel_options
 import tulsi_logging
 
 
@@ -686,6 +687,9 @@ class BazelBuildBridge(object):
       bazel_command.append('--apple_generate_dsym')
 
     bazel_command.extend(options.targets)
+
+    extra_options = bazel_options.BazelOptions(os.environ)
+    bazel_command.extend(extra_options.bazel_feature_flags())
 
     return (bazel_command, 0)
 

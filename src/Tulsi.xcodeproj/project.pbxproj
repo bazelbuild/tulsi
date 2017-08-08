@@ -130,6 +130,7 @@
 		AB18CB663B4A10F9BA45D02F /* TulsiCommandlineParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */; };
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
+		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -325,6 +326,7 @@
 		AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelIntegrationTestCase.swift; sourceTree = "<group>"; };
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
+		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -484,6 +486,7 @@
 			children = (
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
 				D33C204E1EC108CC00867450 /* tulsi_logging.py */,
+				D3F78C671F391E9700AE0571 /* bazel_options.py */,
 				3D156AE11C1C8D9C00183439 /* bazel_clean.sh */,
 				3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */,
 			);
@@ -798,6 +801,7 @@
 				2D9DB34A1E5DECA40021EAF4 /* XCTRunner.entitlements in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
 				D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */,
+				D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */,
 				3D9926911C29F1410094E098 /* bazel_clean.sh in Resources */,
 				3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */,
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
