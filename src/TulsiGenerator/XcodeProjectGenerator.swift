@@ -395,36 +395,18 @@ final class XcodeProjectGenerator {
                                                                                ruleEntryMap: ruleEntryMap)
     }
 
+    let referencePatcher = BazelXcodeProjectPatcher(fileManager: fileManager)
+    profileAction("patching_bazel_relative_references") {
+      referencePatcher.patchBazelRelativeReferences(xcodeProject, workspaceRootURL)
+    }
     profileAction("patching_external_repository_references") {
-      patchExternalRepositoryReferences(xcodeProject)
+      referencePatcher.patchExternalRepositoryReferences(xcodeProject)
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
                                 indexerTargets: indexerTargets,
                                 intermediateArtifacts: intermediateArtifacts)
-  }
-
-  // Resolves the given Bazel path (which is expected to begin with external/) to a filesystem path.
-  // This is intended to be used to resolve "@external_repo" style labels to paths usable by Xcode.
-  func resolveExternalReferencePath(_ path: String, xcodeProject: PBXProject) -> String {
-    return "\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
-  }
-
-  // Examines the given xcodeProject, patching any groups that were generated under Bazel's magical
-  // "external" container to absolute filesystem references.
-  private func patchExternalRepositoryReferences(_ xcodeProject: PBXProject) {
-    let mainGroup = xcodeProject.mainGroup
-    guard let externalGroup = mainGroup.childGroupsByName["external"] else { return }
-    let externalChildren = externalGroup.children as! [PBXGroup]
-    for child in externalChildren {
-      let resolvedPath = resolveExternalReferencePath("external/\(child.name)", xcodeProject: xcodeProject)
-      let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
-                                                           path: resolvedPath,
-                                                           sourceTree: .Group)
-      newChild.migrateChildrenOfGroup(child)
-    }
-    mainGroup.removeChild(externalGroup)
   }
 
   private func installWorkspaceSettings(_ projectURL: URL) throws {

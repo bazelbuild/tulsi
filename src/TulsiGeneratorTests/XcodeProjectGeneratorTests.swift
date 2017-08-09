@@ -266,6 +266,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
     let projectURL = URL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
     mockFileManager.allowedDirectoryCreates.insert(projectURL.path)
 
+    let tulsiworkspace = projectURL.appendingPathComponent("tulsi-workspace")
+    mockFileManager.allowedDirectoryCreates.insert(tulsiworkspace.path)
+
     let xcshareddata = projectURL.appendingPathComponent("project.xcworkspace/xcshareddata")
     mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path)
 
