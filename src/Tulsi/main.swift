@@ -27,6 +27,9 @@ private func main() {
     exit(0)
   }
 
+  let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
+  LogMessage.postSyslog("Tulsi CLI: version \(version)")
+
   let queue = DispatchQueue(label: "com.google.Tulsi.xcodeProjectGenerator", attributes: [])
   queue.async {
     do {
