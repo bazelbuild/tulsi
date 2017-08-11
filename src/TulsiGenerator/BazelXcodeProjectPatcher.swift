@@ -17,7 +17,7 @@ import Foundation
 // Provides methods to patch up Bazel specific PBX objects and references before project generation.
 // This will remove any invalid .xcassets in order to make Xcode happy, as well as apply a
 // BazelPBXReferencePatcher to any files that can't be found. As a backup, paths are set to be
-// relative to the Bazel exec root.
+// relative to the Bazel exec root for non-generated files.
 final class BazelXcodeProjectPatcher {
 
   // FileManager used to check for presence of PBXFileReferences when patching.
@@ -61,9 +61,12 @@ final class BazelXcodeProjectPatcher {
       return
     }
 
+    // Default to be relative to the bazel exec root if the FileReferencePatcher doesn't handle the
+    // patch AND the file is actually an input file (not a generated file).
     if !fileReferencePatcher.patchNonPresentFileReference(file: file,
                                                           url: url,
-                                                          workspaceRootURL: workspaceRootURL) {
+                                                          workspaceRootURL: workspaceRootURL),
+       file.isInputFile {
       file.path = resolvePathFromBazelExecRoot(file.path!)
     }
   }

@@ -33,19 +33,19 @@
 
 /* Begin PBXFileReference section */
 		43D68C280514D6D800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Three/BUILD; sourceTree = "<group>"; };
-		43D68C282EFEC1E400000000 /* TestSuite-Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Three-XCTest.xctest"; path = "tulsi-workspace/TestSuite-Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2830D2727A00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/Three/XCTest.m"; sourceTree = "<group>"; };
-		43D68C284E4730EA00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = "tulsi-workspace/TestApplication.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Three-XCTest.xctest"; path = "TestSuite-Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2853A382C000000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/One/BUILD; sourceTree = "<group>"; };
 		43D68C28588752AD00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; };
-		43D68C286BC2F86400000000 /* TestSuite-Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Two-XCTest.xctest"; path = "tulsi-workspace/TestSuite-Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2887CC81F400000000 /* TestSuite-One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-One-XCTest.xctest"; path = "tulsi-workspace/TestSuite-One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C289607B43200000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a; path = "tulsi-workspace/lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C287B8A6A8600000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a; path = lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C289092682100000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-MergedInfo.plist"; path = "blaze-bin/TestSuite/TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C2899C3A61800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Two/BUILD; sourceTree = "<group>"; };
-		43D68C28BC17BB3D00000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-MergedInfo.plist"; path = "tulsi-workspace/blaze-bin/TestSuite/TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28D835DF2200000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/One/XCTest.m"; sourceTree = "<group>"; };
+		43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Two-XCTest.xctest"; path = "TestSuite-Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28E6396A2500000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/TestSuite/Binary/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C28E8EE103A00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/Two/XCTest.m"; sourceTree = "<group>"; };
+		43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-One-XCTest.xctest"; path = "TestSuite-One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -61,12 +61,12 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C284E4730EA00000000 /* TestApplication.app */,
-				43D68C2887CC81F400000000 /* TestSuite-One-XCTest.xctest */,
-				43D68C282EFEC1E400000000 /* TestSuite-Three-XCTest.xctest */,
-				43D68C286BC2F86400000000 /* TestSuite-Two-XCTest.xctest */,
+				43D68C285A2F8B6E00000000 /* TestApplication.app */,
+				43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */,
+				43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */,
+				43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */,
 				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
-				43D68C289607B43200000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */,
+				43D68C287B8A6A8600000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,7 +108,7 @@
 		966FB6DE97D5C89200000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28BC17BB3D00000000 /* TestApplication-MergedInfo.plist */,
+				43D68C289092682100000000 /* TestApplication-MergedInfo.plist */,
 			);
 			name = TestSuite;
 			sourceTree = "<group>";
@@ -178,7 +178,7 @@
 			);
 			name = "TestSuite-One-XCTest";
 			productName = "TestSuite-One-XCTest";
-			productReference = 43D68C2887CC81F400000000 /* TestSuite-One-XCTest.xctest */;
+			productReference = 43D68C28FF916CC800000000 /* TestSuite-One-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6042EA8D800000000 /* TestSuite-Three-XCTest */ = {
@@ -196,7 +196,7 @@
 			);
 			name = "TestSuite-Three-XCTest";
 			productName = "TestSuite-Three-XCTest";
-			productReference = 43D68C282EFEC1E400000000 /* TestSuite-Three-XCTest.xctest */;
+			productReference = 43D68C284E81BC7800000000 /* TestSuite-Three-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E661C54D6C00000000 /* _idx_XCTest_Binary_XCTest_XCTest_B9D951D7 */ = {
@@ -212,7 +212,7 @@
 			);
 			name = _idx_XCTest_Binary_XCTest_XCTest_B9D951D7;
 			productName = _idx_XCTest_Binary_XCTest_XCTest_B9D951D7;
-			productReference = 43D68C289607B43200000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */;
+			productReference = 43D68C287B8A6A8600000000 /* lib_idx_XCTest_Binary_XCTest_XCTest_B9D951D7.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E67C4CFB5800000000 /* TestSuite-Two-XCTest */ = {
@@ -230,7 +230,7 @@
 			);
 			name = "TestSuite-Two-XCTest";
 			productName = "TestSuite-Two-XCTest";
-			productReference = 43D68C286BC2F86400000000 /* TestSuite-Two-XCTest.xctest */;
+			productReference = 43D68C28DEE022F800000000 /* TestSuite-Two-XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6EC64700400000000 /* TestApplication */ = {
@@ -246,7 +246,7 @@
 			);
 			name = TestApplication;
 			productName = TestApplication;
-			productReference = 43D68C284E4730EA00000000 /* TestApplication.app */;
+			productReference = 43D68C285A2F8B6E00000000 /* TestApplication.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
