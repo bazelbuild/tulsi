@@ -485,6 +485,17 @@ def _collect_module_maps(target):
       maps += module_maps
   return maps
 
+# TODO(b/64490743): Add these files to the Xcode project.
+def _collect_swift_header(target):
+  """Returns a depset of Swift generated headers found on the given target."""
+  headers = depset()
+  # swift_* targets put the generated header into their objc provider HEADER
+  # field.
+  if hasattr(target, 'swift'):
+    headers += target.objc.header
+  return headers
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
@@ -706,6 +717,7 @@ def _tulsi_outputs_aspect(target, ctx):
       all_files += objc_provider.source
       all_files += objc_provider.header
 
+  all_files += _collect_swift_header(target)
   all_files += _collect_swift_modules(target)
   all_files += _collect_module_maps(target)
   all_files += (_collect_artifacts(rule, 'attr.srcs')
