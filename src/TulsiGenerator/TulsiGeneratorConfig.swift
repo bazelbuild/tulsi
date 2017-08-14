@@ -160,6 +160,13 @@ public class TulsiGeneratorConfig {
     let additionalFilePaths = dict[TulsiGeneratorConfig.AdditionalFilePathsKey] as? [String]
     let rawPathFilters = Set<String>(dict[TulsiGeneratorConfig.PathFiltersKey] as? [String] ?? [])
 
+    // While //foo/bar is a valid filesystem path, Xcode won't open a project with such a path in
+    // its structures, leading to arduous debug process.
+    if let badPath = additionalFilePaths?.first(where: { $0.hasPrefix("//") }) {
+      throw ConfigError.deserializationFailed("Invalid additional file path: \(badPath)")
+    }
+
+
     // Convert any path filters specified as build labels to their package paths.
     var pathFilters = Set<String>()
     for sourceTarget in rawPathFilters {

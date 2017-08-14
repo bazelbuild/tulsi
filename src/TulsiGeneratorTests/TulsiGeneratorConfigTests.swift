@@ -89,4 +89,22 @@ class TulsiGeneratorConfigTests: XCTestCase {
       XCTFail("Unexpected assertion")
     }
   }
+
+  func testLoadWithInvalidAdditionalFilePaths() {
+    do {
+      let dict = [
+        "additionalFilePaths": ["//path/to/file"],
+        "buildTargets": buildTargetLabels,
+        "projectName": projectName,
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
+      config = try TulsiGeneratorConfig(data: data)
+
+      XCTFail("Unexpectedly succeeded with an invalid file path")
+    } catch TulsiGeneratorConfig.ConfigError.deserializationFailed(let message) {
+      XCTAssert(message.contains("//path/to/file"))
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
 }
