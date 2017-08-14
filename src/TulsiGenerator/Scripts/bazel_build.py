@@ -440,7 +440,7 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
-    self.patch_lldbinit_enabled = os.environ.get('PATCH_LLDBINIT_ENABLED', 'NO') == 'YES'
+    self.use_lldb_init = os.environ.get('TULSI_USE_LLDBINIT', 'NO') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -630,7 +630,7 @@ class BazelBuildBridge(object):
     # In cases where a dSYM bundle was produced, the post_processor will have
     # already corrected the paths and use of target.source-map is redundant (and
     # appears to trigger actual problems in Xcode 8.1 betas).
-    if self.patch_lldbinit_enabled and self.xcode_version_major >= 800:
+    if self.use_lldb_init and self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
       exit_code = self._UpdateLLDBInit(self.generate_dsym)
       timer.End()
