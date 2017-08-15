@@ -1338,6 +1338,70 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateTargetWithBundleName() {
+    let targetName = "targetName"
+    let buildPath = "test/test1"
+    let buildTarget = "\(buildPath):\(targetName)"
+    let bundleName = "bundleName"
+    let rules = Set([
+      makeTestRuleEntry(buildTarget,
+                        type: "ios_application",
+                        bundleName: bundleName),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": buildTarget,
+        "BAZEL_TARGET_TYPE": "ios_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": bundleName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": buildPath,
+        "TULSI_USE_DSYM": "NO",
+      ]
+      let expectedTarget = TargetDefinition(
+        name: targetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+
+  }
+
   func testGenerateWatchOSTarget() {
     let appTargetName = "targetName"
     let appBuildPath = "test/app"
@@ -2240,6 +2304,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  dependencies: Set<String> = Set(),
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
+                                 bundleName: String? = nil,
                                  extensionBundleID: String? = nil,
                                  platformType: String? = nil,
                                  osDeploymentTarget: String? = nil,
@@ -2253,6 +2318,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              dependencies: dependencies,
                              extensions: extensions,
                              bundleID: bundleID,
+                             bundleName: bundleName,
                              extensionBundleID: extensionBundleID,
                              platformType: platformType,
                              osDeploymentTarget: osDeploymentTarget,
@@ -2274,6 +2340,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  dependencies: Set<String> = Set(),
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
+                                 bundleName: String? = nil,
                                  extensionBundleID: String? = nil,
                                  platformType: String? = nil,
                                  osDeploymentTarget: String? = nil,
@@ -2289,6 +2356,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      dependencies: dependencies,
                      extensions: extensions,
                      bundleID: bundleID,
+                     bundleName: bundleName,
                      extensionBundleID: extensionBundleID,
                      platformType: platformType,
                      osDeploymentTarget: osDeploymentTarget,

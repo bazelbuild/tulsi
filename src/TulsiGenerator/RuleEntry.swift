@@ -290,6 +290,9 @@ public final class RuleEntry: RuleInfo {
   // The CFBundleIdentifier associated with the target for this rule, if any.
   public let bundleID: String?
 
+  /// The bundle name associated with the target for this rule, if any.
+  public let bundleName: String?
+
   /// The CFBundleIdentifier of the watchOS extension target associated with this rule, if any.
   public let extensionBundleID: String?
 
@@ -360,6 +363,7 @@ public final class RuleEntry: RuleInfo {
        weakDependencies: Set<BuildLabel>? = nil,
        extensions: Set<BuildLabel>? = nil,
        bundleID: String? = nil,
+       bundleName: String? = nil,
        extensionBundleID: String? = nil,
        platformType: String? = nil,
        osDeploymentTarget: String? = nil,
@@ -404,6 +408,7 @@ public final class RuleEntry: RuleInfo {
       self.extensions = Set()
     }
     self.bundleID = bundleID
+    self.bundleName = bundleName
     self.extensionBundleID = extensionBundleID
     var deploymentTarget: DeploymentTarget? = nil
     if let platform = parsedPlatformType, let osVersion = osDeploymentTarget {
@@ -441,6 +446,7 @@ public final class RuleEntry: RuleInfo {
                    weakDependencies: Set<BuildLabel>? = nil,
                    extensions: Set<BuildLabel>? = nil,
                    bundleID: String? = nil,
+                   bundleName: String? = nil,
                    extensionBundleID: String? = nil,
                    platformType: String? = nil,
                    osDeploymentTarget: String? = nil,
@@ -464,6 +470,7 @@ public final class RuleEntry: RuleInfo {
               weakDependencies: weakDependencies,
               extensions: extensions,
               bundleID: bundleID,
+              bundleName: bundleName,
               extensionBundleID: extensionBundleID,
               platformType: platformType,
               osDeploymentTarget: osDeploymentTarget,

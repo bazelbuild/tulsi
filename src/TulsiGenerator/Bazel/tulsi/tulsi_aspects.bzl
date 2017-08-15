@@ -501,6 +501,7 @@ def _tulsi_sources_aspect(target, ctx):
   rule = ctx.rule
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
+  bundle_name = _get_opt_attr(target, 'apple_bundle.bundle_name')
 
   tulsi_info_files = depset()
   transitive_attributes = dict()
@@ -631,6 +632,7 @@ def _tulsi_sources_aspect(target, ctx):
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       bundle_id=bundle_id,
+      bundle_name=bundle_name,
       defines=target_defines,
       deps=compile_deps,
       extensions=extensions,
@@ -687,12 +689,10 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'tulsi_generated_files'):
         tulsi_generated_files += dep.tulsi_generated_files
 
-  bundle_name = None
+  bundle_name = _get_opt_attr(target, 'apple_bundle.bundle_name')
   # TODO(b/37912213): Migrate to the new-style providers.
   if hasattr(target, 'apple_bundle'):
     artifacts = [target.apple_bundle.archive.path]
-    if hasattr(target.apple_bundle, 'bundle_name'):
-      bundle_name = target.apple_bundle.bundle_name
   else:  # TODO(b/33050780): Remove this branch when native rules are deleted.
     ipa_output_name = None
     if target_kind in _IPA_GENERATING_RULES:

@@ -301,6 +301,7 @@ final class BazelAspectInfoExtractor {
         extensions = nil
       }
       let bundleID = dict["bundle_id"] as? String
+      let bundleName = dict["bundle_name"] as? String
       let platformType = dict["platform_type"] as? String
 
       var extensionType: String?
@@ -333,6 +334,7 @@ final class BazelAspectInfoExtractor {
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,
                                 bundleID: bundleID,
+                                bundleName: bundleName,
                                 platformType: platformType,
                                 osDeploymentTarget: osDeploymentTarget,
                                 buildFilePath: buildFilePath,

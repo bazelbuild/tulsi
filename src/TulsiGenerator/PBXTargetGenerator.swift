@@ -1342,7 +1342,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var buildSettings = options.buildSettingsForTarget(name)
     buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
 
-    buildSettings["PRODUCT_NAME"] = name
+
+    buildSettings["PRODUCT_NAME"] = entry.bundleName ?? name
     if let bundleID = entry.bundleID {
       buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleID
     }

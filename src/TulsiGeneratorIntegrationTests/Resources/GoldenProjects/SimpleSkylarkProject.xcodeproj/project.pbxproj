@@ -668,7 +668,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
-				PRODUCT_NAME = SkylarkApplication;
+				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = NO;
@@ -859,7 +859,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
-				PRODUCT_NAME = SkylarkApplication;
+				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_USE_DSYM = YES;
@@ -1065,7 +1065,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
-				PRODUCT_NAME = SkylarkApplication;
+				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
@@ -1244,7 +1244,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
-				PRODUCT_NAME = SkylarkApplication;
+				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";

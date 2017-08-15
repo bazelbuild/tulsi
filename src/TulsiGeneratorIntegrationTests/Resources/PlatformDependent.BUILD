@@ -108,6 +108,7 @@ load("//tools/build_defs/apple:swift.bzl", "swift_library")
 skylark_ios_application(
     name = "SkylarkApplication",
     bundle_id = "com.google.Tulsi.Application",
+    bundle_name = "SkylarkApp",
     extensions = [":StickerExtension"],
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
