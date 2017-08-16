@@ -73,6 +73,23 @@ public class TulsiGeneratorConfig {
     return filename.replacingOccurrences(of: "/", with: "_")
   }
 
+  // Tries to resolve a URL to the Bazel exectuable via:
+  // 1. Passed in bazelURL argument.
+  // 2. BazelPath set on the TulsiOptionSet.
+  // 3. BazelLocator's findBazelForWorkspaceRoot.
+  //
+  // If none of these succeed, this returns nil.
+  public static func resolveBazelURL(_ bazelURL: URL?, options: TulsiOptionSet) -> URL? {
+    if let bazelURL = bazelURL {
+      return bazelURL
+    } else if let savedBazelPath = options[.BazelPath].commonValue {
+      return URL(fileURLWithPath: savedBazelPath)
+    } else if let locatedURL = BazelLocator.findBazelForWorkspaceRoot(nil) {
+      return locatedURL
+    }
+    return nil
+  }
+
   public static func load(_ inputFile: URL, bazelURL: URL? = nil) throws -> TulsiGeneratorConfig {
     let fileManager = FileManager.default
     guard let data = fileManager.contents(atPath: inputFile.path) else {
@@ -102,21 +119,13 @@ public class TulsiGeneratorConfig {
               pathFilters: Set<String>,
               additionalFilePaths: [String]?,
               options: TulsiOptionSet,
-              bazelURL: URL?) {
+              bazelURL: URL) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
     self.pathFilters = pathFilters
     self.additionalFilePaths = additionalFilePaths
     self.options = options
-
-    if let bazelURL = bazelURL {
-      self.bazelURL = bazelURL
-    } else if let savedBazelPath = options[.BazelPath].commonValue {
-      self.bazelURL = URL(fileURLWithPath: savedBazelPath)
-    } else {
-      // TODO(abaire): Flag a fallback to searching for the binary.
-      self.bazelURL = URL(fileURLWithPath: "")
-    }
+    self.bazelURL = bazelURL
   }
 
   public convenience init(projectName: String,
@@ -124,7 +133,7 @@ public class TulsiGeneratorConfig {
                           pathFilters: Set<String>,
                           additionalFilePaths: [String]?,
                           options: TulsiOptionSet,
-                          bazelURL: URL?) {
+                          bazelURL: URL) {
     self.init(projectName: projectName,
               buildTargetLabels: buildTargets.map({ $0.label }),
               pathFilters: pathFilters,
@@ -188,6 +197,10 @@ public class TulsiGeneratorConfig {
       }
     }
     let options = TulsiOptionSet(fromDictionary: optionsDict)
+
+    guard let bazelURL = TulsiGeneratorConfig.resolveBazelURL(bazelURL, options: options) else {
+      throw ConfigError.deserializationFailed("Unable to find Bazel Path")
+    }
 
     self.init(projectName: projectName,
               buildTargetLabels: buildTargetLabels.map({ BuildLabel($0) }),

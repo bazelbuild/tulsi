@@ -705,6 +705,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return $0.path
     })
 
+    guard let bazelURL = TulsiGeneratorConfig.resolveBazelURL(bazelURL,
+                                                              options: configOptions) else {
+      let msg = NSLocalizedString("Error_ResolveBazelPathFailure",
+                                  comment: "Error when unable to locate Bazel.")
+      LogMessage.postError(msg, details: "Generator config needs a bazelURL.")
+      return nil
+    }
+
     // Check to see if the document is sparsely loaded or not.
     if isEntireFileLoaded {
       return TulsiGeneratorConfig(projectName: concreteProjectName,

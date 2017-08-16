@@ -29,6 +29,9 @@
 /* Error for a generation attempt without a valid target output folder even though one should exist. */
 "Error_NoOutputFolder" = "No output folder selected. This is likely a Tulsi bug, please report.";
 
+/* Error when unable to find the Bazel executable. */
+"Error_ResolveBazelPathFailure" = "Unable to locate your Bazel executable.";
+
 /* Message to show at the top of WORKSPACE file selector sheet, explaining what to do. */
 "NewProject_SetProjectWorkspaceMessage" = "Select the location of the Bazel \"WORKSPACE\" file for this project.";
 

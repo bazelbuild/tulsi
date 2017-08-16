@@ -58,7 +58,8 @@ class TulsiGeneratorConfigTests: XCTestCase {
           "sourceFilters": [String](pathFilters),
       ] as [String : Any]
       let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
-      config = try TulsiGeneratorConfig(data: data)
+      let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
+      config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
       XCTAssertEqual(config.buildTargetLabels, buildTargetLabels.map({ BuildLabel($0) }))
@@ -79,7 +80,8 @@ class TulsiGeneratorConfigTests: XCTestCase {
           "sourceFilters": sourceFilters,
       ] as [String : Any]
       let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
-      config = try TulsiGeneratorConfig(data: data)
+      let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
+      config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
       XCTAssertEqual(config.buildTargetLabels, buildTargetLabels.map({ BuildLabel($0) }))
