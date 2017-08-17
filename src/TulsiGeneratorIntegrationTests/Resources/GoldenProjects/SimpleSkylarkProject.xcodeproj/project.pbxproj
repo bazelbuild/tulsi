@@ -777,7 +777,7 @@
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
 				SDKROOT = iphonesimulator;
@@ -805,7 +805,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
@@ -819,7 +819,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
@@ -969,7 +969,7 @@
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5;
 				SDKROOT = iphonesimulator;
@@ -997,7 +997,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
@@ -1011,7 +1011,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
 				SDKROOT = iphonesimulator;
