@@ -84,7 +84,7 @@ public class TulsiGeneratorConfig {
       return bazelURL
     } else if let savedBazelPath = options[.BazelPath].commonValue {
       return URL(fileURLWithPath: savedBazelPath)
-    } else if let locatedURL = BazelLocator.findBazelForWorkspaceRoot(nil) {
+    } else if let locatedURL = BazelLocator.bazelURL {
       return locatedURL
     }
     return nil

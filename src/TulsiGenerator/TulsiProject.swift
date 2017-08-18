@@ -105,7 +105,7 @@ public final class TulsiProject {
     if let bazelPath = self.options[.BazelPath].projectValue {
       self.bazelURL = URL(fileURLWithPath: bazelPath)
     } else {
-      self.bazelURL = BazelLocator.findBazelForWorkspaceRoot(workspaceRootURL)
+      self.bazelURL = BazelLocator.bazelURL
       self.options[.BazelPath].projectValue = self.bazelURL?.path
     }
     self.options[.WorkspaceRootPath].projectValue = workspaceRootURL.path
