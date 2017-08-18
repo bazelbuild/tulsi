@@ -65,11 +65,11 @@ ios_test(
 # TODO(abaire): Move to ComplexSingle.BUILD when the rules are open sourced.
 load(
     "//tools/build_defs/apple:tvos.bzl",
-    "skylark_tvos_application",
-    "skylark_tvos_extension",
+    "tvos_application",
+    "tvos_extension",
 )
 
-skylark_tvos_application(
+tvos_application(
     name = "tvOSApplication",
     bundle_id = "c.test.tvOSApplication",
     extensions = [":tvOSExtension"],
@@ -79,7 +79,7 @@ skylark_tvos_application(
     deps = [":tvOSLibrary"],
 )
 
-skylark_tvos_extension(
+tvos_extension(
     name = "tvOSExtension",
     bundle_id = "c.test.tvOSExtension",
     infoplists = [
