@@ -21,8 +21,8 @@ load(
 )
 load(
     "//tools/build_defs/apple:watchos.bzl",
-    "skylark_watchos_application",
-    "skylark_watchos_extension",
+    "watchos_application",
+    "watchos_extension",
 )
 
 skylark_ios_application(
@@ -62,7 +62,7 @@ objc_library(
     ],
 )
 
-skylark_watchos_application(
+watchos_application(
     name = "WatchApplication",
     bundle_id = "application.watch.app.bundle_id",
     entitlements = "Watch2Extension/app_entitlements.entitlements",
@@ -83,7 +83,7 @@ objc_library(
     ],
 )
 
-skylark_watchos_extension(
+watchos_extension(
     name = "WatchExtension",
     bundle_id = "application.watch.ext.bundle_id",
     entitlements = "Watch2Extension/ext_entitlements.entitlements",
