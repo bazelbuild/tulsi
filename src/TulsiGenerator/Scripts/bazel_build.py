@@ -31,6 +31,8 @@ import sys
 import textwrap
 import time
 import zipfile
+
+import bazel_build_events
 import bazel_options
 import tulsi_logging
 
@@ -414,6 +416,8 @@ class _OptionsParser(object):
 class BazelBuildBridge(object):
   """Handles invoking Bazel and unpacking generated binaries."""
 
+  BUILD_EVENTS_FILE = 'build_events.json'
+
   def __init__(self):
     self.verbose = 0
     self.build_path = None
@@ -515,6 +519,12 @@ class BazelBuildBridge(object):
     # Path to where Xcode expects the binary to be placed.
     self.binary_path = os.path.join(
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
+
+    # Path to the Build Events JSON file.
+    self.build_events_file_path = os.path.join(
+        self.project_file_path,
+        '.tulsi',
+        BazelBuildBridge.BUILD_EVENTS_FILE)
 
     self.is_simulator = self.platform_name.endswith('simulator')
     # Check to see if code signing actions should be skipped or not.
@@ -671,7 +681,7 @@ class BazelBuildBridge(object):
         os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
 
     bazel_command.extend([
-        '--experimental_show_artifacts',
+        '--build_event_json_file=%s' % self.build_events_file_path,
         '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
@@ -712,10 +722,6 @@ class BazelBuildBridge(object):
         output_line = '%s warning: %s' % (match.group(1), match.group(2))
       return output_line
 
-    def ExtractOutputs(output_line):
-      if output_line.startswith('>>>') and output_line.endswith('.tulsiouts'):
-        return output_line[3:]
-
     patch_xcode_parsable_line = PatchBazelWarningStatements
     if self.main_group_path != self.project_dir:
       # Match (likely) filename:line_number: lines.
@@ -728,47 +734,61 @@ class BazelBuildBridge(object):
         return output_line
       patch_xcode_parsable_line = PatchOutputLine
 
-    process = subprocess.Popen(command,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT,
-                               bufsize=1)
-    output_locations = []
-    linebuf = ''
-    while process.returncode is None:
-      for line in process.stdout.readline():
-        # Occasionally Popen's line-buffering appears to break down. Not
-        # entirely certain why this happens, but we use an accumulator to
-        # try to deal with it.
-        if not line.endswith('\n'):
-          linebuf += line
-          continue
-
-        complete_line = linebuf + line
-        # >>> marks the start of an aspect output location.
-        # .tulsiouts files contin build output locations
-        # TODO(b/35322727): Use BEP instead of stderr output.
-        output_path = ExtractOutputs(complete_line.strip())
-        if output_path:
-          output_locations.append(output_path)
-        else:
-          line = patch_xcode_parsable_line(complete_line)
-        linebuf = ''
+    def HandleOutput(output):
+      for line in output.splitlines():
+        line = patch_xcode_parsable_line(line) + '\n'
         sys.stdout.write(line)
         sys.stdout.flush()
-      process.poll()
 
-    output, _ = process.communicate()
-    output = linebuf + output
+    def WatcherUpdate(watcher):
+      """Processes any new events in the given watcher.
 
-    for line in output.split('\n'):
-      output_path = ExtractOutputs(line)
-      if output_path:
-        output_locations.append(output_path)
-      else:
-        line = patch_xcode_parsable_line(line)
-      print line
+      Args:
+        watcher: a BazelBuildEventsWatcher object.
 
-    return process.returncode, output_locations
+      Returns:
+        A list of new tulsiout file names seen.
+      """
+      new_events = watcher.check_for_new_events()
+      new_outputs = []
+      for build_event in new_events:
+        if build_event.stderr:
+          HandleOutput(build_event.stderr)
+        if build_event.stdout:
+          HandleOutput(build_event.stdout)
+        if build_event.files:
+          outputs = [x for x in build_event.files if x.endswith('.tulsiouts')]
+          new_outputs.extend(outputs)
+      return new_outputs
+
+    # Make sure the BEP JSON file exists and is empty. We do this to prevent
+    # any sort of race between the watcher, bazel, and the old file contents.
+    open(self.build_events_file_path, 'w').close()
+
+    with open(self.build_events_file_path, 'r') as bep_file:
+      watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
+                                                           _PrintXcodeWarning)
+      process = subprocess.Popen(command, close_fds=True)
+      output_locations = []
+      while process.returncode is None:
+        output_locations.extend(WatcherUpdate(watcher))
+        time.sleep(0.1)
+        process.poll()
+
+      output_locations.extend(WatcherUpdate(watcher))
+
+      if process.returncode == 0:
+        if not output_locations:
+          _PrintXcodeError('Unable to find location of the .tulsiouts file.'
+                           'Please report this as a Tulsi bug, including the'
+                           'contents of %s.' % self.build_events_file_path)
+          return 1, output_locations
+        if not watcher.is_build_complete():
+          _PrintXcodeWarning('Unable to resolve all build events.'
+                             'Please report this as a Tulsi bug, including the'
+                             'contents of %s.' % self.build_events_file_path)
+
+      return process.returncode, output_locations
 
   def _EnsureBazelBinIsValid(self):
     """Ensures that the Bazel output path points at a real directory."""
