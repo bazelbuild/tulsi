@@ -765,10 +765,16 @@ class BazelBuildBridge(object):
     # any sort of race between the watcher, bazel, and the old file contents.
     open(self.build_events_file_path, 'w').close()
 
+    # Start Bazel without any extra files open besides /dev/null, which is used
+    # to ignore the output.
+    with open(os.devnull, 'w') as devnull:
+      process = subprocess.Popen(command,
+                                 stdout=devnull,
+                                 stderr=subprocess.STDOUT)
+
     with open(self.build_events_file_path, 'r') as bep_file:
       watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
                                                            _PrintXcodeWarning)
-      process = subprocess.Popen(command, close_fds=True)
       output_locations = []
       while process.returncode is None:
         output_locations.extend(WatcherUpdate(watcher))
