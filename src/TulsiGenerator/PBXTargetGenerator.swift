@@ -1485,8 +1485,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   private func createBuildPhaseForRuleEntry(_ entry: RuleEntry) -> PBXShellScriptBuildPhase? {
-    let buildLabel = entry.label.value
-    let commandLine = buildScriptCommandlineForBuildLabels(buildLabel,
+    let buildLabels = [entry.label.value, "$TULSI_EXTRA_TARGETS"]
+    let commandLine = buildScriptCommandlineForBuildLabels(buildLabels,
                                                            withOptionsForTargetLabel: entry.label)
     let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     let changeDirectoryAction: String
@@ -1523,10 +1523,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Constructs a commandline string that will invoke the bazel build script to generate the given
   /// buildLabels (a space-separated set of Bazel target labels) with user options set for the given
   /// optionsTarget.
-  private func buildScriptCommandlineForBuildLabels(_ buildLabels: String,
+  private func buildScriptCommandlineForBuildLabels(_ buildLabels: [String],
                                                     withOptionsForTargetLabel target: BuildLabel) -> String {
     var commandLine = "\"\(buildScriptPath)\" " +
-        "\(buildLabels) " +
+        "\(buildLabels.joined(separator:" ")) " +
         "--bazel \"\(commandLineScriptBazelPath())\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
         "--verbose "
