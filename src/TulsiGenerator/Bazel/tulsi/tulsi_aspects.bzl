@@ -491,7 +491,7 @@ def _collect_swift_header(target):
   headers = depset()
   # swift_* targets put the generated header into their objc provider HEADER
   # field.
-  if hasattr(target, 'swift'):
+  if hasattr(target, 'swift') and hasattr(target, 'objc'):
     headers += target.objc.header
   return headers
 
