@@ -951,6 +951,10 @@ final class XcodeProjectGenerator {
     }
   }
 
+  func logPendingMessages() {
+    workspaceInfoExtractor.logQueuedInfoMessages()
+  }
+
 
   /// Models a node in a path trie.
   private class PathTrie {

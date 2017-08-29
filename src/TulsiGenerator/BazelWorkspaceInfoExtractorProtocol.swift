@@ -31,6 +31,9 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// BUILD targets.
   func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel
 
+  /// Print out detailed [Info] messaging normally hidden from the info extraction process.
+  func logQueuedInfoMessages()
+
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: URL {get set}
 

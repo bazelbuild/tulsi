@@ -30,6 +30,7 @@ final class BazelQueryInfoExtractor {
   let workspaceRootURL: URL
 
   private let localizedMessageLogger: LocalizedMessageLogger
+  private var queuedInfoMessages = [String]()
 
   private typealias CompletionHandler = (Process, Data, String?, String) -> Void
 
@@ -113,7 +114,8 @@ final class BazelQueryInfoExtractor {
       let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query,
                                                                        outputKind: "xml",
                                                                        additionalArguments: ["--keep_going"])
-      localizedMessageLogger.infoMessage(debugInfo)
+      // TODO(b/64979751): Stream this debugInfo to a file.
+      self.queuedInfoMessages.append(debugInfo)
 
       if let labels = extractSourceFileLabelsFromBazelXMLOutput(data) {
         buildFiles = Set(labels)
@@ -125,7 +127,7 @@ final class BazelQueryInfoExtractor {
 
       localizedMessageLogger.logProfilingEnd(profilingStart)
     } catch {
-      // The error has already been displayed to the user.
+      // Error will be displayed at the end of project generation.
       return Set()
     }
 
@@ -331,5 +333,16 @@ final class BazelQueryInfoExtractor {
                                    values: e.localizedDescription)
       return nil
     }
+  }
+
+  func logQueuedInfoMessages() {
+    guard !self.queuedInfoMessages.isEmpty else {
+      return
+    }
+    localizedMessageLogger.infoMessage("Log of Bazel query output follows:")
+    for message in self.queuedInfoMessages {
+      localizedMessageLogger.infoMessage(message)
+    }
+    self.queuedInfoMessages.removeAll()
   }
 }

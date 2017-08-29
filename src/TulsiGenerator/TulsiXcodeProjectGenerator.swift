@@ -82,18 +82,23 @@ public final class TulsiXcodeProjectGenerator {
   public func generateXcodeProjectInFolder(_ outputFolderURL: URL) throws -> URL {
     do {
       return try xcodeProjectGenerator.generateXcodeProjectInFolder(outputFolderURL)
-    } catch PBXTargetGenerator.ProjectSerializationError.unsupportedTargetType(let targetType) {
-      throw GeneratorError.unsupportedTargetType(targetType)
-    } catch PBXTargetGenerator.ProjectSerializationError.generalFailure(let info) {
-      throw GeneratorError.serializationFailed(info)
-    } catch XcodeProjectGenerator.ProjectGeneratorError.serializationFailed(let info) {
-      throw GeneratorError.serializationFailed(info)
-    } catch XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let labels) {
-      throw GeneratorError.serializationFailed("Failed to resolve labels: \(labels)")
-    } catch let e as NSError {
-      throw GeneratorError.serializationFailed("Unexpected exception \(e.localizedDescription)")
     } catch let e {
-      throw GeneratorError.serializationFailed("Unexpected exception \(e)")
+      LogMessage.postInfo("Project generation failed. Printing Bazel logs that could contain the error.")
+      xcodeProjectGenerator.logPendingMessages()
+      switch e {
+      case PBXTargetGenerator.ProjectSerializationError.unsupportedTargetType(let targetType):
+        throw GeneratorError.unsupportedTargetType(targetType)
+      case PBXTargetGenerator.ProjectSerializationError.generalFailure(let info):
+        throw GeneratorError.serializationFailed(info)
+      case XcodeProjectGenerator.ProjectGeneratorError.serializationFailed(let info):
+        throw GeneratorError.serializationFailed(info)
+      case XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let labels):
+        throw GeneratorError.serializationFailed("Failed to resolve labels: \(labels)")
+      case let e as NSError:
+        throw GeneratorError.serializationFailed("Unexpected exception \(e.localizedDescription)")
+      default:
+        throw GeneratorError.serializationFailed("Unexpected exception \(e)")
+      }
     }
   }
 }

@@ -48,4 +48,6 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func extractBuildfiles<T:Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     return Set()
   }
+
+  func logQueuedInfoMessages() {}
 }
