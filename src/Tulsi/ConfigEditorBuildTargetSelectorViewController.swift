@@ -28,6 +28,8 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   static let filteredFileTypes = [
       "apple_unit_test",
       "apple_ui_test",
+      "cc_binary",
+      "cc_library",
       "objc_binary",  // TODO(abaire): Remove when app-related attributes are removed from Bazel.
       "objc_library",
       "ios_application",

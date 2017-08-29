@@ -200,6 +200,30 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
+
+  func test_simpleCCProject() {
+    let testDir = "tulsi_e2e_ccsimple"
+    let appLabel = BuildLabel("//\(testDir):ccBinary")
+    installBUILDFile("Simple", intoSubdirectory: testDir)
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "cc_binary",
+                                 linkedTargetLabels: Set<BuildLabel>())]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "SimpleCCProject"
+
+    guard let projectURL = generateProjectNamed(projectName,
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
+                                                  // The test has already been marked as failed.
+                                                  return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
 }
 
 // End to end tests that generate xcodeproj bundles and validate them against golden versions.

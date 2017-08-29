@@ -46,6 +46,16 @@ objc_binary(
     ],
 )
 
+cc_binary(
+    name = "ccBinary",
+    srcs = [
+        "Binary/srcs/main.cc",
+    ],
+    deps = [
+        ":ccLibrary",
+    ],
+)
+
 objc_library(
     name = "Library",
     srcs = [
@@ -69,6 +79,19 @@ objc_library(
         "Library/textual_hdrs/TextualHdrsHeader.h",
     ],
     xibs = ["Library/xibs/xib.xib"],
+)
+
+cc_library(
+    name = "ccLibrary",
+    srcs = [
+        "Library/srcs/SrcsHeader.h",
+        "Library/srcs/src1.c",
+        "Library/srcs/src2.c",
+    ],
+    hdrs = [
+        "Library/hdrs/HdrsHeader.h",
+    ],
+    defines = ["LIBRARY_DEFINES_DEFINE=1"],
 )
 
 ios_test(
