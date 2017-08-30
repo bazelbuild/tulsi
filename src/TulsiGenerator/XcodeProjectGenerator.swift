@@ -385,6 +385,9 @@ final class XcodeProjectGenerator {
         }
       }
 
+      // TODO(b/65198307): Remove when we swap entirely to BEP.
+      buildSettings["TULSI_USE_BEP"] = "YES"
+
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }

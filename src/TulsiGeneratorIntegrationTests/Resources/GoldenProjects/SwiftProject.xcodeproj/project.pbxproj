@@ -236,6 +236,7 @@
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SwiftProject;
+				TULSI_USE_BEP = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -305,6 +306,7 @@
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SwiftProject;
+				TULSI_USE_BEP = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -380,6 +382,7 @@
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SwiftProject;
+				TULSI_USE_BEP = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -448,6 +451,7 @@
 				TOOLCHAINS = com.apple.dt.toolchain.XcodeDefault;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SwiftProject;
+				TULSI_USE_BEP = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";

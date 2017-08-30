@@ -444,6 +444,7 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
+    self.use_bep = os.environ.get('TULSI_USE_BEP', 'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -680,8 +681,13 @@ class BazelBuildBridge(object):
     tulsi_package_dir = os.path.abspath(
         os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
 
+    if self.use_bep:
+      bazel_command.append('--build_event_json_file=%s' %
+                           self.build_events_file_path)
+    else:
+      bazel_command.append('--experimental_show_artifacts')
+
     bazel_command.extend([
-        '--build_event_json_file=%s' % self.build_events_file_path,
         '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
@@ -722,6 +728,10 @@ class BazelBuildBridge(object):
         output_line = '%s warning: %s' % (match.group(1), match.group(2))
       return output_line
 
+    def ExtractOutputs(output_line):
+      if output_line.startswith('>>>') and output_line.endswith('.tulsiouts'):
+        return output_line[3:]
+
     patch_xcode_parsable_line = PatchBazelWarningStatements
     if self.main_group_path != self.project_dir:
       # Match (likely) filename:line_number: lines.
@@ -761,38 +771,80 @@ class BazelBuildBridge(object):
           new_outputs.extend(outputs)
       return new_outputs
 
-    # Make sure the BEP JSON file exists and is empty. We do this to prevent
-    # any sort of race between the watcher, bazel, and the old file contents.
-    open(self.build_events_file_path, 'w').close()
+    if self.use_bep:
+      # Make sure the BEP JSON file exists and is empty. We do this to prevent
+      # any sort of race between the watcher, bazel, and the old file contents.
+      open(self.build_events_file_path, 'w').close()
 
-    # Start Bazel without any extra files open besides /dev/null, which is used
-    # to ignore the output.
-    with open(os.devnull, 'w') as devnull:
-      process = subprocess.Popen(command,
-                                 stdout=devnull,
-                                 stderr=subprocess.STDOUT)
+      # Start Bazel without any extra files open besides /dev/null, which is
+      # used to ignore the output.
+      with open(os.devnull, 'w') as devnull:
+        process = subprocess.Popen(command,
+                                   stdout=devnull,
+                                   stderr=subprocess.STDOUT)
 
-    with open(self.build_events_file_path, 'r') as bep_file:
-      watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
-                                                           _PrintXcodeWarning)
-      output_locations = []
-      while process.returncode is None:
+      with open(self.build_events_file_path, 'r') as bep_file:
+        watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
+                                                             _PrintXcodeWarning)
+        output_locations = []
+        while process.returncode is None:
+          output_locations.extend(WatcherUpdate(watcher))
+          time.sleep(0.1)
+          process.poll()
+
         output_locations.extend(WatcherUpdate(watcher))
-        time.sleep(0.1)
-        process.poll()
 
-      output_locations.extend(WatcherUpdate(watcher))
-
-      if process.returncode == 0:
-        if not output_locations:
-          _PrintXcodeError('Unable to find location of the .tulsiouts file.'
-                           'Please report this as a Tulsi bug, including the'
-                           'contents of %s.' % self.build_events_file_path)
-          return 1, output_locations
-        if not watcher.is_build_complete():
-          _PrintXcodeWarning('Unable to resolve all build events.'
+        if process.returncode == 0:
+          if not output_locations:
+            _PrintXcodeError('Unable to find location of the .tulsiouts file.'
                              'Please report this as a Tulsi bug, including the'
                              'contents of %s.' % self.build_events_file_path)
+            return 1, output_locations
+          if not watcher.is_build_complete():
+            _PrintXcodeWarning('Unable to resolve all build events. Please'
+                               'report this as a Tulsi bug, including the'
+                               'contents of %s.' % self.build_events_file_path)
+
+        return process.returncode, output_locations
+    else:  # TODO(b/65198307): Remove this to complete swap to BEP.
+      process = subprocess.Popen(command,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT,
+                                 bufsize=1)
+      output_locations = []
+      linebuf = ''
+      while process.returncode is None:
+        for line in process.stdout.readline():
+          # Occasionally Popen's line-buffering appears to break down. Not
+          # entirely certain why this happens, but we use an accumulator to
+          # try to deal with it.
+          if not line.endswith('\n'):
+            linebuf += line
+            continue
+
+          complete_line = linebuf + line
+          # >>> marks the start of an aspect output location.
+          # .tulsiouts files contin build output locations
+          output_path = ExtractOutputs(complete_line.strip())
+          if output_path:
+            output_locations.append(output_path)
+          else:
+            line = patch_xcode_parsable_line(complete_line)
+          linebuf = ''
+          sys.stdout.write(line)
+          sys.stdout.flush()
+        process.poll()
+
+      output, _ = process.communicate()
+      output = linebuf + output
+
+      for line in output.split('\n'):
+        output_path = ExtractOutputs(line)
+        if output_path:
+          output_locations.append(output_path)
+        else:
+          line = patch_xcode_parsable_line(line)
+        print line
 
       return process.returncode, output_locations
 
