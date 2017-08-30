@@ -45,14 +45,15 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
 
     var diffOutput = [String]()
     let semaphore = DispatchSemaphore(value: 0)
-    let task = TaskRunner.createTask("/usr/bin/diff",
-                                     arguments: ["-rq",
-                                                 // For the sake of simplicity in maintaining the
-                                                 // golden data, copied Tulsi artifacts are
-                                                 // assumed to have been installed correctly.
-                                                 "--exclude=.tulsi",
-                                                 projectURL.path,
-                                                 goldenProjectURL.path]) {
+    let process = ProcessRunner.createProcess("/usr/bin/diff",
+                                              arguments: ["-rq",
+                                                          // For the sake of simplicity in
+                                                          // maintaining the golden data, copied
+                                                          // Tulsi artifacts are assumed to have
+                                                          // been installed correctly.
+                                                          "--exclude=.tulsi",
+                                                          projectURL.path,
+                                                          goldenProjectURL.path]) {
       completionInfo in
         defer {
           semaphore.signal()
@@ -63,8 +64,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
           XCTFail("No output received for diff command", file: file, line: line)
         }
     }
-    task.currentDirectoryPath = workspaceRootURL.path
-    task.launch()
+    process.currentDirectoryPath = workspaceRootURL.path
+    process.launch()
 
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     return diffOutput

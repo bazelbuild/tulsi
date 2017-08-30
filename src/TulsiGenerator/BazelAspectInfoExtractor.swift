@@ -72,16 +72,16 @@ final class BazelAspectInfoExtractor {
 
     let semaphore = DispatchSemaphore(value: 0)
     var extractedEntries = [BuildLabel: RuleEntry]()
-    let task = bazelAspectTaskForTargets(targets.map({ $0.value }),
-                                         aspect: "tulsi_sources_aspect",
-                                         startupOptions: startupOptions,
-                                         buildOptions: buildOptions,
-                                         progressNotifier: progressNotifier) {
-      (task: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
+    let process = bazelAspectProcessForTargets(targets.map({ $0.value }),
+                                               aspect: "tulsi_sources_aspect",
+                                               startupOptions: startupOptions,
+                                               buildOptions: buildOptions,
+                                               progressNotifier: progressNotifier) {
+      (process: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer { semaphore.signal() }
         let artifacts = generatedArtifacts?.filter { $0.hasSuffix(".tulsiinfo") }
 
-        if task.terminationStatus == 0,
+        if process.terminationStatus == 0,
           let artifacts = artifacts, !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
@@ -93,9 +93,9 @@ final class BazelAspectInfoExtractor {
         }
     }
 
-    if let task = task {
-      task.currentDirectoryPath = workspaceRootURL.path
-      task.launch()
+    if let process = process {
+      process.currentDirectoryPath = workspaceRootURL.path
+      process.launch()
       _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
@@ -105,14 +105,14 @@ final class BazelAspectInfoExtractor {
 
   // MARK: - Private methods
 
-  // Generates an NSTask that will run the given aspect against the given Bazel targets, capturing
+  // Generates a Process that will run the given aspect against the given Bazel targets, capturing
   // the output data and passing it to the terminationHandler.
-  private func bazelAspectTaskForTargets(_ targets: [String],
-                                         aspect: String,
-                                         startupOptions: [String] = [],
-                                         buildOptions: [String] = [],
-                                         progressNotifier: ProgressNotifier? = nil,
-                                         terminationHandler: @escaping CompletionHandler) -> Process? {
+  private func bazelAspectProcessForTargets(_ targets: [String],
+                                            aspect: String,
+                                            startupOptions: [String] = [],
+                                            buildOptions: [String] = [],
+                                            progressNotifier: ProgressNotifier? = nil,
+                                            terminationHandler: @escaping CompletionHandler) -> Process? {
 
     let infoExtractionNotifier = ProgressNotifier(name: WorkspaceInfoExtraction,
                                                   maxValue: 1,
@@ -147,10 +147,10 @@ final class BazelAspectInfoExtractor {
     arguments.append(contentsOf: targets)
     localizedMessageLogger.infoMessage("Running \(bazelURL.path) with arguments: \(arguments)")
 
-    let task = TulsiTaskRunner.createProcess(bazelURL.path,
-                                             arguments: arguments,
-                                             messageLogger: localizedMessageLogger,
-                                             loggingIdentifier: "bazel_extract_source_info") {
+    let process = TulsiProcessRunner.createProcess(bazelURL.path,
+                                                   arguments: arguments,
+                                                   messageLogger: localizedMessageLogger,
+                                                   loggingIdentifier: "bazel_extract_source_info") {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: Bundle(for: type(of: self)),
@@ -166,7 +166,7 @@ final class BazelAspectInfoExtractor {
         terminationHandler(completionInfo.process, artifacts, debugInfo)
     }
 
-    return task
+    return process
   }
 
   // Parses Bazel stderr for "Build artifacts:" followed by >>>(artifact_path). This is a hacky and

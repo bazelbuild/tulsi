@@ -16,8 +16,7 @@ import Foundation
 
 
 /// Encapsulates functionality to launch and manage Processes.
-public final class TaskRunner {
-  // TODO(nglevin): Rename "TaskRunner" to "ProcessRunner", corresponding to Swift 2 -> 3.
+public final class ProcessRunner {
 
   /// Information retrieved through execution of a process.
   public struct CompletionInfo {
@@ -89,8 +88,8 @@ public final class TaskRunner {
 
   public typealias CompletionHandler = (CompletionInfo) -> Void
 
-  private static var defaultInstance: TaskRunner = {
-    TaskRunner()
+  private static var defaultInstance: ProcessRunner = {
+    ProcessRunner()
   }()
 
   /// The outstanding processes.
@@ -104,19 +103,18 @@ public final class TaskRunner {
 
   /// Prepares a Process using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
-  static func createTask(_ launchPath: String,
-                         arguments: [String],
-                         environment: [String: String]? = nil,
-                         messageLogger: LocalizedMessageLogger? = nil,
-                         loggingIdentifier: String? = nil,
-                         terminationHandler: @escaping CompletionHandler) -> Process {
-    // TODO(nglevin): Rename "createTask" to "createProcess", corresponding to Swift 2 -> 3.
-    return defaultInstance.createTask(launchPath,
-                                      arguments: arguments,
-                                      environment: environment,
-                                      messageLogger: messageLogger,
-                                      loggingIdentifier: loggingIdentifier,
-                                      terminationHandler: terminationHandler)
+  static func createProcess(_ launchPath: String,
+                            arguments: [String],
+                            environment: [String: String]? = nil,
+                            messageLogger: LocalizedMessageLogger? = nil,
+                            loggingIdentifier: String? = nil,
+                            terminationHandler: @escaping CompletionHandler) -> Process {
+    return defaultInstance.createProcess(launchPath,
+                                         arguments: arguments,
+                                         environment: environment,
+                                         messageLogger: messageLogger,
+                                         loggingIdentifier: loggingIdentifier,
+                                         terminationHandler: terminationHandler)
   }
 
   // MARK: - Private methods
@@ -130,13 +128,12 @@ public final class TaskRunner {
     processReader.stop()
   }
 
-  private func createTask(_ launchPath: String,
-                          arguments: [String],
-                          environment: [String: String]? = nil,
-                          messageLogger: LocalizedMessageLogger? = nil,
-                          loggingIdentifier: String? = nil,
-                          terminationHandler: @escaping CompletionHandler) -> Process {
-    // TODO(nglevin): Rename "createTask" to "createProcess", corresponding to Swift 2 -> 3.
+  private func createProcess(_ launchPath: String,
+                             arguments: [String],
+                             environment: [String: String]? = nil,
+                             messageLogger: LocalizedMessageLogger? = nil,
+                             loggingIdentifier: String? = nil,
+                             terminationHandler: @escaping CompletionHandler) -> Process {
     let process = Process()
     process.launchPath = launchPath
     process.arguments = arguments

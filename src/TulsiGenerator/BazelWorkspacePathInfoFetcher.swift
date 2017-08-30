@@ -83,10 +83,10 @@ class BazelWorkspacePathInfoFetcher {
       return
     }
 
-    let task = TulsiTaskRunner.createProcess(bazelURL.path,
-                                             arguments: ["info"],
-                                             messageLogger: localizedMessageLogger,
-                                             loggingIdentifier: "bazel_get_package_path" ) {
+    let process = TulsiProcessRunner.createProcess(bazelURL.path,
+                                                   arguments: ["info"],
+                                                   messageLogger: localizedMessageLogger,
+                                                   loggingIdentifier: "bazel_get_package_path" ) {
       completionInfo in
         defer {
           self.localizedMessageLogger.logProfilingEnd(profilingStart)
@@ -114,8 +114,8 @@ class BazelWorkspacePathInfoFetcher {
                                           details: stderr as String?,
                                           values: completionInfo.process.terminationStatus)
     }
-    task.currentDirectoryPath = workspaceRootURL.path
-    task.launch()
+    process.currentDirectoryPath = workspaceRootURL.path
+    process.launch()
   }
 
   private func extractWorkspaceInfo(_ output: NSString) {

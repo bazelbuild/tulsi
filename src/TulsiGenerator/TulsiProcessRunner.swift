@@ -15,11 +15,10 @@
 import Foundation
 
 
-/// Wraps the standard TaskRunner and injects Tulsi-specific environment variables.
-public final class TulsiTaskRunner {
-  // TODO(nglevin): Rename "TulsiTaskRunner" to "TulsiProcessRunner", corresponding to Swift 2 -> 3.
+/// Wraps the standard ProcessRunner and injects Tulsi-specific environment variables.
+public final class TulsiProcessRunner {
 
-  public typealias CompletionHandler = (TaskRunner.CompletionInfo) -> Void
+  public typealias CompletionHandler = (ProcessRunner.CompletionInfo) -> Void
 
   private static var defaultEnvironment: [String: String] = {
     var environment = ProcessInfo.processInfo.environment
@@ -44,11 +43,11 @@ public final class TulsiTaskRunner {
         env[key] = value
       }
     }
-    return TaskRunner.createTask(launchPath,
-                                 arguments: arguments,
-                                 environment: env,
-                                 messageLogger: messageLogger,
-                                 loggingIdentifier: loggingIdentifier,
-                                 terminationHandler: terminationHandler)
+    return ProcessRunner.createProcess(launchPath,
+                                       arguments: arguments,
+                                       environment: env,
+                                       messageLogger: messageLogger,
+                                       loggingIdentifier: loggingIdentifier,
+                                       terminationHandler: terminationHandler)
   }
 }

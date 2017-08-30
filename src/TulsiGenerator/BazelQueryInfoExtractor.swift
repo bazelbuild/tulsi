@@ -50,11 +50,11 @@ final class BazelQueryInfoExtractor {
     var infos = [RuleInfo]()
     let query = packages.map({ "kind(rule, \($0):all)"}).joined(separator: "+")
     do {
-      let (task, data, stderr, debugInfo) =
-          try self.bazelSynchronousQueryTask(query,
-                                             outputKind: "xml",
-                                             loggingIdentifier: "bazel_query_fetch_rules")
-      if task.terminationStatus != 0 {
+      let (process, data, stderr, debugInfo) =
+          try self.bazelSynchronousQueryProcess(query,
+                                                outputKind: "xml",
+                                                loggingIdentifier: "bazel_query_fetch_rules")
+      if process.terminationStatus != 0 {
         showExtractionError(debugInfo, stderr: stderr, displayLastLineIfNoErrorLines: true)
       } else if let entries = self.extractRuleInfosFromBazelXMLOutput(data) {
         infos = entries
@@ -83,10 +83,10 @@ final class BazelQueryInfoExtractor {
     let joinedLabelDeps = labelDeps.joined(separator: "+")
     let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
     do {
-      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query,
-                                                                       outputKind: "xml",
-                                                                       additionalArguments: ["--keep_going"],
-                                                                       loggingIdentifier: "bazel_query_expand_test_suite_rules")
+      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryProcess(query,
+                                                                          outputKind: "xml",
+                                                                          additionalArguments: ["--keep_going"],
+                                                                          loggingIdentifier: "bazel_query_expand_test_suite_rules")
       if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
         infos = entries
       }
@@ -115,10 +115,10 @@ final class BazelQueryInfoExtractor {
     do {
       // Errors in the BUILD structure being examined should not prevent partial extraction, so this
       // command is considered successful if it returns any valid data at all.
-      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryTask(query,
-                                                                       outputKind: "xml",
-                                                                       additionalArguments: ["--keep_going"],
-                                                                       loggingIdentifier: "bazel_query_extracting_skylark_files")
+      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryProcess(query,
+                                                                          outputKind: "xml",
+                                                                          additionalArguments: ["--keep_going"],
+                                                                          loggingIdentifier: "bazel_query_extracting_skylark_files")
       self.queuedInfoMessages.append(debugInfo)
 
       if let labels = extractSourceFileLabelsFromBazelXMLOutput(data) {
@@ -159,14 +159,14 @@ final class BazelQueryInfoExtractor {
                                  details: details)
   }
 
-  // Generates an NSTask that will perform a bazel query, capturing the output data and passing it
+  // Generates a Process that will perform a bazel query, capturing the output data and passing it
   // to the terminationHandler.
-  private func bazelQueryTask(_ query: String,
-                              outputKind: String? = nil,
-                              additionalArguments: [String] = [],
-                              message: String = "",
-                              loggingIdentifier: String? = nil,
-                              terminationHandler: @escaping CompletionHandler) throws -> Process {
+  private func bazelQueryProcess(_ query: String,
+                                 outputKind: String? = nil,
+                                 additionalArguments: [String] = [],
+                                 message: String = "",
+                                 loggingIdentifier: String? = nil,
+                                 terminationHandler: @escaping CompletionHandler) throws -> Process {
     guard FileManager.default.fileExists(atPath: bazelURL.path) else {
       localizedMessageLogger.error("BazelBinaryNotFound",
                                    comment: "Error to show when the bazel binary cannot be found at the previously saved location %1$@.",
@@ -195,10 +195,10 @@ final class BazelQueryInfoExtractor {
     }
     localizedMessageLogger.infoMessage("\(message)Running \(bazelURL.path) with arguments: \(arguments)")
 
-    let task = TulsiTaskRunner.createProcess(bazelURL.path,
-                                             arguments: arguments,
-                                             messageLogger: localizedMessageLogger,
-                                             loggingIdentifier: loggingIdentifier) {
+    let process = TulsiProcessRunner.createProcess(bazelURL.path,
+                                                   arguments: arguments,
+                                                   messageLogger: localizedMessageLogger,
+                                                   loggingIdentifier: loggingIdentifier) {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: Bundle(for: type(of: self)),
@@ -215,28 +215,28 @@ final class BazelQueryInfoExtractor {
                          debugInfo)
     }
 
-    return task
+    return process
   }
 
   /// Performs the given Bazel query synchronously in the workspaceRootURL directory.
-  private func bazelSynchronousQueryTask(_ query: String,
-                                         outputKind: String? = nil,
-                                         additionalArguments: [String] = [],
-                                         message: String = "",
-                                         loggingIdentifier: String? = nil) throws -> (bazelTask: Process,
-                                                                                      returnedData: Data,
-                                                                                      stderrString: String?,
-                                                                                      debugInfo: String) {
+  private func bazelSynchronousQueryProcess(_ query: String,
+                                            outputKind: String? = nil,
+                                            additionalArguments: [String] = [],
+                                            message: String = "",
+                                            loggingIdentifier: String? = nil) throws -> (bazelProcess: Process,
+                                                                                         returnedData: Data,
+                                                                                         stderrString: String?,
+                                                                                         debugInfo: String) {
     let semaphore = DispatchSemaphore(value: 0)
     var data: Data! = nil
     var stderr: String? = nil
     var info: String! = nil
 
-    let task = try bazelQueryTask(query,
-                                  outputKind: outputKind,
-                                  additionalArguments: additionalArguments,
-                                  message: message,
-                                  loggingIdentifier: loggingIdentifier) {
+    let process = try bazelQueryProcess(query,
+                                        outputKind: outputKind,
+                                        additionalArguments: additionalArguments,
+                                        message: message,
+                                        loggingIdentifier: loggingIdentifier) {
       (_: Process, returnedData: Data, stderrString: String?, debugInfo: String) in
         data = returnedData
         stderr = stderrString
@@ -244,11 +244,11 @@ final class BazelQueryInfoExtractor {
       semaphore.signal()
     }
 
-    task.currentDirectoryPath = workspaceRootURL.path
-    task.launch()
+    process.currentDirectoryPath = workspaceRootURL.path
+    process.launch()
 
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-    return (task, data, stderr, info)
+    return (process, data, stderr, info)
   }
 
   private func extractRuleInfosWithRuleInputsFromBazelXMLOutput(_ bazelOutput: Data) -> [RuleInfo: Set<BuildLabel>]? {

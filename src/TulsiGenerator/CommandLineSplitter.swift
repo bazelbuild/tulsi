@@ -16,7 +16,7 @@ import Foundation
 
 
 /// Splits a string containing commandline arguments into an array of strings suitable for use by
-/// NSTask.
+/// Process.
 class CommandLineSplitter {
   let scriptPath: String
 
@@ -32,7 +32,7 @@ class CommandLineSplitter {
 
     var splitCommands: [String]? = nil
     let semaphore = DispatchSemaphore(value: 0)
-    let task = TaskRunner.createTask(scriptPath, arguments: [commandLine]) {
+    let process = ProcessRunner.createProcess(scriptPath, arguments: [commandLine]) {
       completionInfo in
         defer { semaphore.signal() }
 
@@ -43,7 +43,7 @@ class CommandLineSplitter {
         let split = stdout.components(separatedBy: CharacterSet.newlines)
         splitCommands = [String](split.dropLast())
     }
-    task.launch()
+    process.launch()
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
 
     return splitCommands
