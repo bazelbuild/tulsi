@@ -58,6 +58,16 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasType("ios_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_test:Application"))
         .hasNoDependencies()
+
+    checker.assertThat("//tulsi_test:ccLibrary")
+      .hasType("cc_library")
+      .hasNoLinkedTargetLabels()
+      .hasNoDependencies()
+
+    checker.assertThat("//tulsi_test:ccBinary")
+      .hasType("cc_binary")
+      .hasNoLinkedTargetLabels()
+      .hasNoDependencies()
   }
 
 
