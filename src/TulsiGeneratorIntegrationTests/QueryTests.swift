@@ -31,7 +31,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
 
-    XCTAssertEqual(infos.count, 5)
+    XCTAssertEqual(infos.count, 7)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_test:Application")
