@@ -147,7 +147,10 @@ final class BazelAspectInfoExtractor {
     arguments.append(contentsOf: targets)
     localizedMessageLogger.infoMessage("Running \(bazelURL.path) with arguments: \(arguments)")
 
-    let task = TulsiTaskRunner.createTask(bazelURL.path, arguments: arguments) {
+    let task = TulsiTaskRunner.createProcess(bazelURL.path,
+                                             arguments: arguments,
+                                             messageLogger: localizedMessageLogger,
+                                             loggingIdentifier: "bazel_extract_source_info") {
       completionInfo in
         let debugInfoFormatString = NSLocalizedString("DebugInfoForBazelCommand",
                                                       bundle: Bundle(for: type(of: self)),
@@ -160,7 +163,7 @@ final class BazelAspectInfoExtractor {
 
         let artifacts = BazelAspectInfoExtractor.extractBuildArtifactsFromOutput(stderr)
         self.removeGeneratedSymlinks()
-        terminationHandler(completionInfo.task, artifacts, debugInfo)
+        terminationHandler(completionInfo.process, artifacts, debugInfo)
     }
 
     return task

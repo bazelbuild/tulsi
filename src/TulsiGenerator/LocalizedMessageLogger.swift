@@ -17,6 +17,28 @@ import Foundation
 
 /// Provides functionality to log messages using a localized string table.
 class LocalizedMessageLogger {
+
+  /// Structure representing a logging session in process.
+  struct LogSessionHandle {
+    /// A name for this process, visible to the user via logging.
+    let name: String
+    /// When this logging session began.
+    var startTime: Date
+    /// Additional contextual information about this logging session, to be visible via logging.
+    let context: String?
+
+    init(_ name: String, context: String?) {
+      self.name = name
+      self.startTime = Date()
+      self.context = context
+    }
+
+    /// Reset the start time for this logging session to the moment when method was called.
+    mutating func resetStartTime() {
+      startTime = Date()
+    }
+  }
+
   let bundle: Bundle?
 
   init(bundle: Bundle?) {
@@ -25,16 +47,19 @@ class LocalizedMessageLogger {
 
   func startProfiling(_ name: String,
                       message: String? = nil,
-                      context: String? = nil) -> (String, Date, String?) {
+                      context: String? = nil) -> LogSessionHandle {
     if let concreteMessage = message {
       syslogMessage(concreteMessage, context: context)
     }
-    return (name, Date(), context)
+    return LogSessionHandle(name, context: context)
   }
 
-  func logProfilingEnd(_ token: (String, Date, String?)) {
-    let timeTaken = Date().timeIntervalSince(token.1)
-    syslogMessage(String(format: "** Completed %@ in %.4fs", token.0, timeTaken), context: token.2)
+  func logProfilingEnd(_ token: LogSessionHandle) {
+    let timeTaken = Date().timeIntervalSince(token.startTime)
+    syslogMessage(String(format: "** Completed %@ in %.4fs",
+                         token.name,
+                         timeTaken),
+                  context: token.context)
   }
 
   func error(_ key: String,

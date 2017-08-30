@@ -83,14 +83,17 @@ class BazelWorkspacePathInfoFetcher {
       return
     }
 
-    let task = TulsiTaskRunner.createTask(bazelURL.path, arguments: ["info"]) {
+    let task = TulsiTaskRunner.createProcess(bazelURL.path,
+                                             arguments: ["info"],
+                                             messageLogger: localizedMessageLogger,
+                                             loggingIdentifier: "bazel_get_package_path" ) {
       completionInfo in
         defer {
           self.localizedMessageLogger.logProfilingEnd(profilingStart)
           self.fetchCompleted = true
           self.semaphore.signal()
         }
-        if completionInfo.task.terminationStatus == 0 {
+        if completionInfo.process.terminationStatus == 0 {
           if let stdout = NSString(data: completionInfo.stdout, encoding: String.Encoding.utf8.rawValue) {
             self.extractWorkspaceInfo(stdout)
             return
@@ -109,7 +112,7 @@ class BazelWorkspacePathInfoFetcher {
         self.localizedMessageLogger.error("BazelWorkspaceInfoQueryFailed",
                                           comment: "Extracting path info from bazel failed. The exit code is %1$d.",
                                           details: stderr as String?,
-                                          values: completionInfo.task.terminationStatus)
+                                          values: completionInfo.process.terminationStatus)
     }
     task.currentDirectoryPath = workspaceRootURL.path
     task.launch()

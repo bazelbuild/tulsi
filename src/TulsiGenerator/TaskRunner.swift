@@ -15,24 +15,74 @@
 import Foundation
 
 
-/// Encapsulates functionality to launch and manage NSTasks.
+/// Encapsulates functionality to launch and manage Processes.
 public final class TaskRunner {
+  // TODO(nglevin): Rename "TaskRunner" to "ProcessRunner", corresponding to Swift 2 -> 3.
 
-  /// Information retrieved through execution of a task.
+  /// Information retrieved through execution of a process.
   public struct CompletionInfo {
-    /// The task that was executed.
-    public let task: Process
+    /// The process that was executed.
+    public let process: Process
 
     /// The commandline that was executed, suitable for pasting in terminal to reproduce.
     public let commandlineString: String
-    /// The task's standard output.
+    /// The process's standard output.
     public let stdout: Data
-    /// The task's standard error.
+    /// The process's standard error.
     public let stderr: Data
 
-    /// The exit status for the task.
+    /// The exit status for the process.
     public var terminationStatus: Int32 {
-      return task.terminationStatus
+      return process.terminationStatus
+    }
+  }
+
+  /// Coordinates logging with Process lifetime to accurately report when a given process started.
+  final class TimedProcessRunnerObserver: NSObject {
+    /// Context for KVO
+    private static var KVOContext: Int = 0
+
+    /// Mapping between Processes and LogSessionHandles created for each.
+    private var pendingLogHandles = Dictionary<Process, LocalizedMessageLogger.LogSessionHandle>()
+
+    /// Start logging the given Process with KVO to determine the time when it starts running.
+    fileprivate func startLoggingProcessTime(process: Process,
+                                             loggingIdentifier: String,
+                                             messageLogger: LocalizedMessageLogger) {
+      self.pendingLogHandles[process] = messageLogger.startProfiling(loggingIdentifier)
+      process.addObserver(self,
+                          forKeyPath: #keyPath(Process.isRunning),
+                          options: .new,
+                          context: &TimedProcessRunnerObserver.KVOContext)
+    }
+
+    /// Report the time this process has taken, and cleanup its logging handle and KVO observer.
+    fileprivate func stopLogging(process: Process, messageLogger: LocalizedMessageLogger) {
+      if let logHandle = self.pendingLogHandles[process] {
+        messageLogger.logProfilingEnd(logHandle)
+        process.removeObserver(self,
+                               forKeyPath: #keyPath(Process.isRunning),
+                               context: &TimedProcessRunnerObserver.KVOContext)
+        self.pendingLogHandles.removeValue(forKey: process)
+      }
+    }
+
+    /// KVO to set the logger start time to the moment when the Process indicates that it's running.
+    override public func observeValue(forKeyPath keyPath: String?,
+                                      of object: Any?,
+                                      change: [NSKeyValueChangeKey : Any]?,
+                                      context: UnsafeMutableRawPointer?) {
+      if context != &TimedProcessRunnerObserver.KVOContext {
+        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        return
+      }
+
+      if keyPath == #keyPath(Process.isRunning),
+          let newValue = change?[NSKeyValueChangeKey.newKey] as? NSNumber,
+          newValue.boolValue,
+          let process = object as? Process {
+        pendingLogHandles[process]?.resetStartTime()
+      }
     }
   }
 
@@ -43,50 +93,69 @@ public final class TaskRunner {
     TaskRunner()
   }()
 
-    /// The outstanding tasks.
-  private var pendingTasks = Set<Process>()
-  private let taskReader: TaskOutputReader
+  /// The outstanding processes.
+  private var pendingProcesses = Set<Process>()
+  private let processReader: ProcessOutputReader
 
-  /// Prepares an NSTask using the given launch binary with the given arguments that will collect
+
+  /// Handle KVO around processes to determine when a process starts running.
+  private let timedProcessRunnerObserver = TimedProcessRunnerObserver()
+
+
+  /// Prepares a Process using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
-  public static func createTask(_ launchPath: String,
-                         arguments: [String]? = nil,
+  static func createTask(_ launchPath: String,
+                         arguments: [String],
                          environment: [String: String]? = nil,
+                         messageLogger: LocalizedMessageLogger? = nil,
+                         loggingIdentifier: String? = nil,
                          terminationHandler: @escaping CompletionHandler) -> Process {
+    // TODO(nglevin): Rename "createTask" to "createProcess", corresponding to Swift 2 -> 3.
     return defaultInstance.createTask(launchPath,
                                       arguments: arguments,
                                       environment: environment,
+                                      messageLogger: messageLogger,
+                                      loggingIdentifier: loggingIdentifier,
                                       terminationHandler: terminationHandler)
   }
 
   // MARK: - Private methods
 
   private init() {
-    taskReader = TaskOutputReader()
-    taskReader.start()
+    processReader = ProcessOutputReader()
+    processReader.start()
   }
 
   deinit {
-    taskReader.stop()
+    processReader.stop()
   }
 
   private func createTask(_ launchPath: String,
-                          arguments: [String]? = nil,
+                          arguments: [String],
                           environment: [String: String]? = nil,
+                          messageLogger: LocalizedMessageLogger? = nil,
+                          loggingIdentifier: String? = nil,
                           terminationHandler: @escaping CompletionHandler) -> Process {
-    let task = Process()
-    task.launchPath = launchPath
-    task.arguments = arguments
+    // TODO(nglevin): Rename "createTask" to "createProcess", corresponding to Swift 2 -> 3.
+    let process = Process()
+    process.launchPath = launchPath
+    process.arguments = arguments
     if let environment = environment {
-      task.environment = environment
+      process.environment = environment
+    }
+    // If the localizedMessageLogger was passed as an arg, start logging the runtime of the process.
+    if let messageLogger = messageLogger {
+      timedProcessRunnerObserver.startLoggingProcessTime(process: process,
+                                                         loggingIdentifier: (loggingIdentifier ?? launchPath),
+                                                         messageLogger: messageLogger)
     }
 
     let dispatchGroup = DispatchGroup()
     let notificationCenter = NotificationCenter.default
     func registerAndStartReader(_ fileHandle: FileHandle, outputData: NSMutableData) -> NSObjectProtocol {
       let observer = notificationCenter.addObserver(forName: NSNotification.Name.NSFileHandleReadToEndOfFileCompletion,
-                                                           object: fileHandle,
-                                                           queue: nil) { (notification: Notification) in
+                                                    object: fileHandle,
+                                                    queue: nil) { (notification: Notification) in
         defer { dispatchGroup.leave() }
         if let err = notification.userInfo?["NSFileHandleError"] as? NSNumber {
           assertionFailure("Read from pipe failed with error \(err)")
@@ -104,35 +173,35 @@ public final class TaskRunner {
       // done on the calling thread. By observation, it appears that data will not be read if the
       // main queue is in event tracking mode.
       let selector = #selector(FileHandle.readToEndOfFileInBackgroundAndNotify as (FileHandle) -> () -> Void)
-      fileHandle.perform(selector, on: taskReader.thread, with: nil, waitUntilDone: true)
+      fileHandle.perform(selector, on: processReader.thread, with: nil, waitUntilDone: true)
       return observer
     }
 
     let stdoutData = NSMutableData()
-    task.standardOutput = Pipe()
-    let stdoutObserver = registerAndStartReader((task.standardOutput! as AnyObject).fileHandleForReading,
+    process.standardOutput = Pipe()
+    let stdoutObserver = registerAndStartReader((process.standardOutput! as AnyObject).fileHandleForReading,
                                                 outputData: stdoutData)
     let stderrData = NSMutableData()
-    task.standardError = Pipe()
-    let stderrObserver = registerAndStartReader((task.standardError! as AnyObject).fileHandleForReading,
+    process.standardError = Pipe()
+    let stderrObserver = registerAndStartReader((process.standardError! as AnyObject).fileHandleForReading,
                                                 outputData: stderrData)
 
-    task.terminationHandler = { (task: Process) -> Void in
+    process.terminationHandler = { (process: Process) -> Void in
       // The termination handler's thread is used to allow the caller's callback to do off-main work
       // as well.
       assert(!Thread.isMainThread,
-             "Task termination handler unexpectedly called on main thread.")
+             "Process termination handler unexpectedly called on main thread.")
       _ = dispatchGroup.wait(timeout: DispatchTime.distantFuture)
 
-      // Construct a string suitable for cutting and pasting into the commandline.
-      let commandlineArguments: String
-      if let arguments = arguments {
-        commandlineArguments = " " + arguments.map({ "\"\($0)\"" }).joined(separator: " ")
-      } else {
-        commandlineArguments = ""
+      // If the localizedMessageLogger was an arg, report total runtime of this process + cleanup.
+      if let messageLogger = messageLogger {
+        self.timedProcessRunnerObserver.stopLogging(process: process, messageLogger: messageLogger)
       }
-      let commandlineRunnableString = "\"\(task.launchPath!)\"\(commandlineArguments)"
-      terminationHandler(CompletionInfo(task: task,
+
+      // Construct a string suitable for cutting and pasting into the commandline.
+      let commandlineArguments = " " + arguments.map({ "\"\($0)\"" }).joined(separator: " ")
+      let commandlineRunnableString = "\"\(process.launchPath!)\"\(commandlineArguments)"
+      terminationHandler(CompletionInfo(process: process,
                                         commandlineString: commandlineRunnableString,
                                         stdout: stdoutData as Data,
                                         stderr: stderrData as Data))
@@ -140,25 +209,25 @@ public final class TaskRunner {
       Thread.doOnMainQueue {
         notificationCenter.removeObserver(stdoutObserver)
         notificationCenter.removeObserver(stderrObserver)
-        assert(self.pendingTasks.contains(task), "terminationHandler called with unexpected task")
-        self.pendingTasks.remove(task)
+        assert(self.pendingProcesses.contains(process), "terminationHandler called with unexpected process")
+        self.pendingProcesses.remove(process)
       }
     }
 
     Thread.doOnMainQueue {
-      self.pendingTasks.insert(task)
+      self.pendingProcesses.insert(process)
     }
-    return task
+    return process
   }
 
 
-  // MARK: - TaskOutputReader
+  // MARK: - ProcessOutputReader
 
-  // Provides a thread/runloop that may be used to read NSTask output pipes.
-  private class TaskOutputReader: NSObject {
+  // Provides a thread/runloop that may be used to read Process output pipes.
+  private class ProcessOutputReader: NSObject {
     lazy var thread: Thread = { [unowned self] in
       let value = Thread(target: self, selector: #selector(threadMain(_:)), object: nil)
-      value.name = "com.google.Tulsi.TaskOutputReader"
+      value.name = "com.google.Tulsi.ProcessOutputReader"
       return value
     }()
 
@@ -170,10 +239,10 @@ public final class TaskRunner {
     }
 
     func stop() {
-      perform(#selector(TaskOutputReader.stopThread),
-                      on:thread,
-                      with:nil,
-                      waitUntilDone: false)
+      perform(#selector(ProcessOutputReader.stopThread),
+                        on:thread,
+                        with:nil,
+                        waitUntilDone: false)
     }
 
     // MARK: - Private methods

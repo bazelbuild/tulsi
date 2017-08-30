@@ -17,6 +17,7 @@ import Foundation
 
 /// Wraps the standard TaskRunner and injects Tulsi-specific environment variables.
 public final class TulsiTaskRunner {
+  // TODO(nglevin): Rename "TulsiTaskRunner" to "TulsiProcessRunner", corresponding to Swift 2 -> 3.
 
   public typealias CompletionHandler = (TaskRunner.CompletionInfo) -> Void
 
@@ -28,12 +29,14 @@ public final class TulsiTaskRunner {
     return environment
   }()
 
-  /// Prepares an NSTask using the given launch binary with the given arguments that will collect
+  /// Prepares a Process using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
-  public static func createTask(_ launchPath: String,
-                                arguments: [String]? = nil,
-                                environment: [String: String]? = nil,
-                                terminationHandler: @escaping CompletionHandler) -> Process {
+  static func createProcess(_ launchPath: String,
+                            arguments: [String],
+                            environment: [String: String]? = nil,
+                            messageLogger: LocalizedMessageLogger? = nil,
+                            loggingIdentifier: String? = nil,
+                            terminationHandler: @escaping CompletionHandler) -> Process {
 
     var env = defaultEnvironment
     if let environment = environment {
@@ -44,6 +47,8 @@ public final class TulsiTaskRunner {
     return TaskRunner.createTask(launchPath,
                                  arguments: arguments,
                                  environment: env,
+                                 messageLogger: messageLogger,
+                                 loggingIdentifier: loggingIdentifier,
                                  terminationHandler: terminationHandler)
   }
 }
