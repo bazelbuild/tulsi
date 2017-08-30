@@ -31,7 +31,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let additionalFilePaths = ["additional/File1", "additional/File2"]
 
-  let bazelURL = URL(fileURLWithPath: "/test/dir/testBazel")
+  let bazelURL = TulsiParameter(value: URL(fileURLWithPath: "/test/dir/testBazel"),
+                            source: .explicitlyProvided)
 
   let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
       buildScript: URL(fileURLWithPath: "/scripts/Build"),

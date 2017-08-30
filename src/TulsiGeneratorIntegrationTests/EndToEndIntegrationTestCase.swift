@@ -87,12 +87,13 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     options[.BazelBuildOptionsDebug].projectValue = debugBuildOptions.joined(separator: " ")
     options[.BazelBuildOptionsRelease].projectValue = releaseBuildOptions.joined(separator: " ")
 
+    let bazelURLParam = TulsiParameter(value: fakeBazelURL, source: .explicitlyProvided)
     let config = TulsiGeneratorConfig(projectName: projectName,
                                       buildTargets: buildTargets,
                                       pathFilters: Set<String>(pathFilters),
                                       additionalFilePaths: additionalFilePaths,
                                       options: options,
-                                      bazelURL: fakeBazelURL)
+                                      bazelURL: bazelURLParam)
 
     guard let outputFolderURL = makeTestSubdirectory(outputDir) else {
       XCTFail("Failed to create output folder, aborting test.")

@@ -60,8 +60,13 @@ public class TulsiGeneratorConfig {
   /// The options for this config.
   public let options: TulsiOptionSet
 
-  /// Path to the Bazel binary.
-  public var bazelURL: URL
+  /// URL to the Bazel binary.
+  private let bazelURLValue: TulsiParameter<URL>
+
+  /// URL to the Bazel binary, computed from bazelURLValue.
+  public var bazelURL: URL {
+    return bazelURLValue.value
+  }
 
   static let ProjectNameKey = "projectName"
   static let BuildTargetsKey = "buildTargets"
@@ -79,13 +84,14 @@ public class TulsiGeneratorConfig {
   // 3. BazelLocator's findBazelForWorkspaceRoot.
   //
   // If none of these succeed, this returns nil.
-  public static func resolveBazelURL(_ bazelURL: URL?, options: TulsiOptionSet) -> URL? {
+  public static func resolveBazelURL(_ bazelURL: URL?,
+                                     options: TulsiOptionSet) -> TulsiParameter<URL>? {
     if let bazelURL = bazelURL {
-      return bazelURL
+      return TulsiParameter(value: bazelURL, source: .explicitlyProvided)
     } else if let savedBazelPath = options[.BazelPath].commonValue {
-      return URL(fileURLWithPath: savedBazelPath)
+      return TulsiParameter(value: URL(fileURLWithPath: savedBazelPath), source: .options)
     } else if let locatedURL = BazelLocator.bazelURL {
-      return locatedURL
+      return TulsiParameter(value: locatedURL, source: .fallback)
     }
     return nil
   }
@@ -119,13 +125,13 @@ public class TulsiGeneratorConfig {
               pathFilters: Set<String>,
               additionalFilePaths: [String]?,
               options: TulsiOptionSet,
-              bazelURL: URL) {
+              bazelURL: TulsiParameter<URL>) {
     self.projectName = projectName
     self.buildTargetLabels = buildTargetLabels
     self.pathFilters = pathFilters
     self.additionalFilePaths = additionalFilePaths
     self.options = options
-    self.bazelURL = bazelURL
+    self.bazelURLValue = bazelURL
   }
 
   public convenience init(projectName: String,
@@ -133,7 +139,7 @@ public class TulsiGeneratorConfig {
                           pathFilters: Set<String>,
                           additionalFilePaths: [String]?,
                           options: TulsiOptionSet,
-                          bazelURL: URL) {
+                          bazelURL: TulsiParameter<URL>) {
     self.init(projectName: projectName,
               buildTargetLabels: buildTargets.map({ $0.label }),
               pathFilters: pathFilters,
@@ -249,12 +255,13 @@ public class TulsiGeneratorConfig {
 
   public func configByResolvingInheritedSettingsFromProject(_ project: TulsiProject) -> TulsiGeneratorConfig {
     let resolvedOptions = options.optionSetByInheritingFrom(project.options)
+    let newBazelURL = bazelURLValue.reduce(TulsiParameter(value: project.bazelURL, source: .project))
     return TulsiGeneratorConfig(projectName: projectName,
                                 buildTargetLabels: buildTargetLabels,
                                 pathFilters: pathFilters,
                                 additionalFilePaths: additionalFilePaths,
                                 options: resolvedOptions,
-                                bazelURL: project.bazelURL ?? bazelURL)
+                                bazelURL: newBazelURL)
   }
 
   public func configByAppendingPathFilters(_ additionalPathFilters: Set<String>) -> TulsiGeneratorConfig {
@@ -264,6 +271,6 @@ public class TulsiGeneratorConfig {
                                 pathFilters: newPathFilters,
                                 additionalFilePaths: additionalFilePaths,
                                 options: options,
-                                bazelURL: bazelURL)
+                                bazelURL: bazelURLValue)
   }
 }

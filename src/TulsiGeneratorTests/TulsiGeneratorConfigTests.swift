@@ -18,26 +18,43 @@ import XCTest
 
 class TulsiGeneratorConfigTests: XCTestCase {
   let projectName = "TestProject"
+  let projectBundleURL = URL(fileURLWithPath: "/test/project/tulsiproject/")
+  let projectBazelURL = URL(fileURLWithPath: "/test/project/path/to/bazel")
+  let workspaceRootURL = URL(fileURLWithPath: "/test/project/root/")
+  let bazelPackages = [
+    "a/package",
+    "b/where/are/we",
+    "missingno/c",
+  ]
+
   let buildTargetLabels = ["build/target/label:1", "build/target/label:2"]
   let pathFilters = Set<String>(["build/target/path/1",
                                  "build/target/path/2",
                                  "source/target/path"])
   let additionalFilePaths = ["path/to/file", "path/to/another/file"]
 
-  var config: TulsiGeneratorConfig! = nil
+
+  var project: TulsiProject! = nil
 
   override func setUp() {
     super.setUp()
-    config = TulsiGeneratorConfig(projectName: projectName,
-                                  buildTargetLabels: buildTargetLabels.map({ BuildLabel($0) }),
-                                  pathFilters: pathFilters,
-                                  additionalFilePaths: additionalFilePaths,
-                                  options: TulsiOptionSet(),
-                                  bazelURL: URL(fileURLWithPath: ""))
+    project = TulsiProject(projectName: projectName,
+                           projectBundleURL: projectBundleURL,
+                           workspaceRootURL: workspaceRootURL,
+                           bazelPackages: bazelPackages)
+    project.bazelURL = projectBazelURL
   }
 
   func testSave() {
     do {
+      let bazelURL = TulsiParameter(value: URL(fileURLWithPath: ""),
+                                source: .explicitlyProvided)
+      let config = TulsiGeneratorConfig(projectName: projectName,
+                                        buildTargetLabels: buildTargetLabels.map({ BuildLabel($0) }),
+                                        pathFilters: pathFilters,
+                                        additionalFilePaths: additionalFilePaths,
+                                        options: TulsiOptionSet(),
+                                        bazelURL: bazelURL)
       let data = try config.save()
       let dict = try JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions()) as! [String: Any]
       XCTAssertEqual(dict["additionalFilePaths"] as! [String], additionalFilePaths)
@@ -59,7 +76,7 @@ class TulsiGeneratorConfigTests: XCTestCase {
       ] as [String : Any]
       let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
-      config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
+      let config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
       XCTAssertEqual(config.buildTargetLabels, buildTargetLabels.map({ BuildLabel($0) }))
@@ -81,7 +98,7 @@ class TulsiGeneratorConfigTests: XCTestCase {
       ] as [String : Any]
       let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
       let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
-      config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
+      let config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
 
       XCTAssertEqual(config.additionalFilePaths ?? [], additionalFilePaths)
       XCTAssertEqual(config.buildTargetLabels, buildTargetLabels.map({ BuildLabel($0) }))
@@ -100,11 +117,93 @@ class TulsiGeneratorConfigTests: XCTestCase {
         "projectName": projectName,
       ] as [String : Any]
       let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
-      config = try TulsiGeneratorConfig(data: data)
+      _ = try TulsiGeneratorConfig(data: data)
 
       XCTFail("Unexpectedly succeeded with an invalid file path")
     } catch TulsiGeneratorConfig.ConfigError.deserializationFailed(let message) {
       XCTAssert(message.contains("//path/to/file"))
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
+
+  func testExplicitlyProvidedURL() {
+    do {
+      let dict = [
+        "projectName": projectName,
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
+      let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
+      let config = try TulsiGeneratorConfig(data: data, bazelURL: bazelURL)
+
+      XCTAssertEqual(config.bazelURL, bazelURL)
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
+
+  func testExplicitlyProvidedURLOverridesProjectAndOptionsSetting() {
+    do {
+      let dict = [
+        "projectName": projectName,
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
+      let bazelURL = URL(fileURLWithPath: "/path/to/bazel")
+      let optionsURL = URL(fileURLWithPath: "/options/path/to/bazel")
+      let options = [
+        "optionSet": [ "BazelPath": [ "p": optionsURL.path ]],
+        ] as [String: Any]
+      let optionData = try JSONSerialization.data(withJSONObject: options, options: JSONSerialization.WritingOptions())
+
+      var config = try TulsiGeneratorConfig(data: data,
+                                            additionalOptionData: optionData,
+                                            bazelURL: bazelURL)
+      config = config.configByResolvingInheritedSettingsFromProject(project)
+
+      XCTAssertEqual(config.bazelURL, bazelURL)
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
+
+  func testOptionsURL() {
+    do {
+      let dict = [
+        "projectName": projectName,
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
+
+      let optionsURL = URL(fileURLWithPath: "/options/path/to/bazel")
+      let options = [
+        "optionSet": [ "BazelPath": [ "p": optionsURL.path ]],
+      ] as [String: Any]
+      let optionData = try JSONSerialization.data(withJSONObject: options, options: JSONSerialization.WritingOptions())
+
+      let config = try TulsiGeneratorConfig(data: data,
+                                            additionalOptionData: optionData)
+      XCTAssertEqual(config.bazelURL, optionsURL)
+    } catch {
+      XCTFail("Unexpected assertion")
+    }
+  }
+
+  func testOptionsURLOverridesProjectSetting() {
+    do {
+      let dict = [
+        "projectName": projectName,
+      ] as [String : Any]
+      let data = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
+
+      let optionsURL = URL(fileURLWithPath: "/options/path/to/bazel")
+      let options = [
+        "optionSet": [ "BazelPath": [ "p": optionsURL.path ]],
+      ] as [String: Any]
+      let optionData = try JSONSerialization.data(withJSONObject: options, options: JSONSerialization.WritingOptions())
+
+      var config = try TulsiGeneratorConfig(data: data,
+                                            additionalOptionData: optionData)
+      config = config.configByResolvingInheritedSettingsFromProject(project)
+      XCTAssertEqual(config.bazelURL, optionsURL)
     } catch {
       XCTFail("Unexpected assertion")
     }
