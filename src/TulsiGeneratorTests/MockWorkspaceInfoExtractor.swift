@@ -50,4 +50,6 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   }
 
   func logQueuedInfoMessages() {}
+
+  func hasQueuedInfoMessages() -> Bool { return false }
 }

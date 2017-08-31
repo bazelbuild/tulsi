@@ -107,6 +107,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     queryExtractor.logQueuedInfoMessages()
   }
 
+  func hasQueuedInfoMessages() -> Bool {
+    return queryExtractor.hasQueuedInfoMessages()
+  }
+
   // MARK: - Private methods
 
   private func extractTestSuiteRules(_ labels: [BuildLabel]) {

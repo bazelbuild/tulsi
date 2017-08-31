@@ -955,7 +955,10 @@ final class XcodeProjectGenerator {
   }
 
   func logPendingMessages() {
-    workspaceInfoExtractor.logQueuedInfoMessages()
+    if workspaceInfoExtractor.hasQueuedInfoMessages() {
+      localizedMessageLogger.infoMessage("Printing Bazel logs that could contain the error.")
+      workspaceInfoExtractor.logQueuedInfoMessages()
+    }
   }
 
 

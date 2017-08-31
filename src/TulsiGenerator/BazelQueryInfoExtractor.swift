@@ -72,7 +72,7 @@ final class BazelQueryInfoExtractor {
   // The information provided represents the full possible set of tests for each test_suite; the
   // actual expansion by Bazel may not include all of the returned labels and will be done
   // recursively such that a test_suite whose expansion contains another test_suite would expand to
-  // the contents of the incldued suite.
+  // the contents of the included suite.
   func extractTestSuiteRules(_ testSuiteLabels: [BuildLabel]) -> [RuleInfo: Set<BuildLabel>] {
     if testSuiteLabels.isEmpty { return [:] }
     let profilingStart = localizedMessageLogger.startProfiling("expand_test_suite_rules",
@@ -90,9 +90,9 @@ final class BazelQueryInfoExtractor {
       if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
         infos = entries
       }
-      // Note that this query is expected to return a non-zero exit code on occasion, so no error
-      // message is logged.
-      localizedMessageLogger.infoMessage(debugInfo)
+      // Note that this query is expected to return a non-zero exit code on occasion, so messages
+      // should be handled as [Info]s, not errors.
+      self.queuedInfoMessages.append(debugInfo)
       localizedMessageLogger.logProfilingEnd(profilingStart)
     } catch {
       // The error has already been displayed to the user.
@@ -354,5 +354,9 @@ final class BazelQueryInfoExtractor {
       localizedMessageLogger.infoMessage(message)
     }
     self.queuedInfoMessages.removeAll()
+  }
+
+  func hasQueuedInfoMessages() -> Bool {
+    return !self.queuedInfoMessages.isEmpty
   }
 }

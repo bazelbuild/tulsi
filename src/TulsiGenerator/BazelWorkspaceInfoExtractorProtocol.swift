@@ -34,6 +34,9 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// Print out detailed [Info] messaging normally hidden from the info extraction process.
   func logQueuedInfoMessages()
 
+  /// Report if we have any [Info] messaging hidden from the info extraction process.
+  func hasQueuedInfoMessages() -> Bool
+
   /// URL to the Bazel binary used by this extractor.
   var bazelURL: URL {get set}
 

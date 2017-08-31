@@ -83,7 +83,7 @@ public final class TulsiXcodeProjectGenerator {
     do {
       return try xcodeProjectGenerator.generateXcodeProjectInFolder(outputFolderURL)
     } catch let e {
-      LogMessage.postInfo("Project generation failed. Printing Bazel logs that could contain the error.")
+      LogMessage.postError("Project generation failed.")
       xcodeProjectGenerator.logPendingMessages()
       switch e {
       case PBXTargetGenerator.ProjectSerializationError.unsupportedTargetType(let targetType):
