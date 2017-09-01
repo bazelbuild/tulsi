@@ -14,6 +14,9 @@
 
 import Foundation
 
+enum BazelWorkspaceInfoExtractorError: Error {
+  case aspectExtractorFailed(String)
+}
 
 /// Defines an object that can extract information from a Bazel workspace.
 protocol BazelWorkspaceInfoExtractorProtocol {
@@ -25,7 +28,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// omitted from the returned dictionary).
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) -> [BuildLabel: RuleEntry]
+                            buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry]
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.

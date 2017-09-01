@@ -21,6 +21,9 @@ final class XcodeProjectGenerator {
     /// General Xcode project creation failure with associated debug info.
     case serializationFailed(String)
 
+    /// The aspect info for the labels could not be built.
+    case labelAspectFailure(String)
+
     /// The given labels failed to resolve to valid targets.
     case labelResolutionFailed(Set<BuildLabel>)
   }
@@ -241,7 +244,7 @@ final class XcodeProjectGenerator {
 
   /// Invokes Bazel to load any missing information in the config file.
   private func resolveConfigReferences() throws {
-    let resolvedLabels = loadRuleEntryMap()
+    let resolvedLabels = try loadRuleEntryMap()
     let unresolvedLabels = config.buildTargetLabels.filter() { resolvedLabels[$0] == nil }
     if !unresolvedLabels.isEmpty {
       throw ProjectGeneratorError.labelResolutionFailed(Set<BuildLabel>(unresolvedLabels))
@@ -276,7 +279,7 @@ final class XcodeProjectGenerator {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
     }
 
-    let ruleEntryMap = loadRuleEntryMap()
+    let ruleEntryMap = try loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
     var testSuiteRules = [BuildLabel: RuleEntry]()
     // Ideally this should use a generic SequenceType, but Swift 2.2 sometimes crashes in this case.
@@ -443,10 +446,14 @@ final class XcodeProjectGenerator {
     try writeWorkspaceSettings(perUserWorkspaceSettings, toDirectoryAtURL: workspaceUserDataURL)
   }
 
-  private func loadRuleEntryMap() -> [BuildLabel: RuleEntry] {
-    return workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
-                                                       startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                       buildOptions: config.options[.BazelBuildOptionsDebug])
+  private func loadRuleEntryMap() throws -> [BuildLabel: RuleEntry] {
+    do {
+      return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
+                                                             startupOptions: config.options[.BazelBuildStartupOptionsDebug],
+                                                             buildOptions: config.options[.BazelBuildOptionsDebug])
+    } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
+      throw ProjectGeneratorError.labelAspectFailure("Failed to build aspects required for label resolution: \(info)")
+    }
   }
 
   // Writes Xcode schemes for non-indexer targets if they don't already exist.

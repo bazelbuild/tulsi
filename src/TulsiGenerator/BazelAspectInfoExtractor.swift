@@ -18,6 +18,8 @@ import Foundation
 // Provides methods utilizing Bazel aspects to extract information from a workspace.
 final class BazelAspectInfoExtractor: QueuedLogging {
   enum ExtractorError: Error {
+    /// Failed to build aspects.
+    case buildFailed
     /// Parsing an aspect's output failed with the given debug info.
     case parsingFailed(String)
   }
@@ -58,7 +60,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Bazel workspace for the given set of Bazel targets.
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
-                                   buildOptions: [String] = []) -> [BuildLabel: RuleEntry] {
+                                   buildOptions: [String] = []) throws -> [BuildLabel: RuleEntry] {
     guard !targets.isEmpty else {
       return [:]
     }
@@ -98,6 +100,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       process.currentDirectoryPath = workspaceRootURL.path
       process.launch()
       _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+      guard process.terminationStatus == 0 else {
+        throw ExtractorError.buildFailed
+      }
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
 

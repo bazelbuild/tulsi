@@ -436,9 +436,27 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let selectedLabels = self.selectedRuleInfos.map() { $0.label }
     let optionSet = self.optionSet!
     Thread.doOnQOSUserInitiatedThread() {
-      let resolvedLabels = self.infoExtractor.ruleEntriesForLabels(selectedLabels,
-                                                                   startupOptions: optionSet[.BazelBuildStartupOptionsDebug],
-                                                                   buildOptions: optionSet[.BazelBuildOptionsDebug])
+      defer {
+        Thread.doOnMainQueue() {
+          self.sourcePaths = [UISourcePath](sourcePathMap.values)
+          callback(self.sourcePaths)
+          self.processingTaskFinished()
+        }
+      }
+      let resolvedLabels: [BuildLabel: RuleEntry]
+      do {
+        let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
+        let buildOptions = optionSet[.BazelBuildOptionsDebug]
+        resolvedLabels = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
+                                                                     startupOptions: startupOptions,
+                                                                     buildOptions: buildOptions)
+      } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
+        LogMessage.postError("Label resolution failed: \(info)")
+        return
+      } catch let e {
+        LogMessage.postError("Label resolution failed. \(e)")
+        return
+      }
 
       var unresolvedLabels = Set<BuildLabel>()
       var sourceRuleEntries = [RuleEntry]()
@@ -515,12 +533,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         guard let path = buildfileLabel.asFileName else { continue }
         addPath(path)
       }
-
-      Thread.doOnMainQueue() {
-        defer { self.processingTaskFinished() }
-        self.sourcePaths = [UISourcePath](sourcePathMap.values)
-        callback(self.sourcePaths)
-      }
     }
   }
 
@@ -573,17 +585,25 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   func finishLoadingDocument(_ completionHandler: @escaping ((TulsiGeneratorConfigDocument) -> Void)) {
     processingTaskStarted()
     Thread.doOnQOSUserInitiatedThread() {
-      // Resolve labels to UIRuleEntries, warning on any failures.
-      self.resolveLabelReferences() {
-        if let concreteBuildTargetLabels = self.buildTargetLabels {
-          let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
-                                      comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
-          LogMessage.postWarning(String(format: fmt,
-                                        concreteBuildTargetLabels.map({ $0.description })))
-        }
+      defer {
         self.processingTaskFinished()
         self._entireFileLoaded = true
         completionHandler(self)
+      }
+      do {
+        // Resolve labels to UIRuleEntries, warning on any failures.
+        try self.resolveLabelReferences() {
+          if let concreteBuildTargetLabels = self.buildTargetLabels {
+            let fmt = NSLocalizedString("Warning_LabelResolutionFailed",
+                                        comment: "A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@.")
+            LogMessage.postWarning(String(format: fmt,
+                                          concreteBuildTargetLabels.map({ $0.description })))
+          }
+        }
+      } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
+        LogMessage.postError("Label resolution failed: \(info)")
+      } catch let e {
+        LogMessage.postError("Label resolution failed. \(e)")
       }
     }
   }
@@ -741,7 +761,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   /// Resolves buildTargetLabels, leaving it populated with any labels that failed to be resolved.
   /// The given completion handler is invoked on the main thread once the labels are fully resolved.
-  private func resolveLabelReferences(_ completionHandler: @escaping ((Void) -> Void)) {
+  private func resolveLabelReferences(_ completionHandler: @escaping ((Void) -> Void)) throws {
     guard let concreteBuildTargetLabels = buildTargetLabels, !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
       Thread.doOnMainQueue() {
@@ -750,9 +770,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
-    let resolvedLabels = infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
-                                                            startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
-                                                            buildOptions: optionSet![.BazelBuildOptionsDebug])
+    let resolvedLabels = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
+                                                                startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
+                                                                buildOptions: optionSet![.BazelBuildOptionsDebug])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {

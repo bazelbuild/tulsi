@@ -399,13 +399,13 @@ class BazelIntegrationTestCase: XCTestCase {
                         details: String?,
                         context: String?,
                         values: CVarArg...) {
-      XCTFail("> Critical error logged: \(key) - \(values)")
+      LogMessage.postError("> Critical error logged: \(key) - \(values)")
     }
 
     fileprivate func handleMessage(_ item: LogMessage) {
       switch item.level {
         case .Error:
-          XCTFail("> Critical error logged: \(item.message)\nDetails:\n\(String(describing: item.details))")
+          print("> Critical error logged: \(item.message)\nDetails:\n\(String(describing: item.details))")
         case .Warning:
           print("> W: \(item.message)")
         case .Info:

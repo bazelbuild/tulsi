@@ -92,6 +92,8 @@ public final class TulsiXcodeProjectGenerator {
         throw GeneratorError.serializationFailed(info)
       case XcodeProjectGenerator.ProjectGeneratorError.serializationFailed(let info):
         throw GeneratorError.serializationFailed(info)
+      case XcodeProjectGenerator.ProjectGeneratorError.labelAspectFailure(let info):
+        throw GeneratorError.serializationFailed(info)
       case XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let labels):
         throw GeneratorError.serializationFailed("Failed to resolve labels: \(labels)")
       case let e as NSError:

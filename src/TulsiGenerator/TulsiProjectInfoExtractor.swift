@@ -17,6 +17,9 @@ import Foundation
 
 // Provides functionality to generate a TulsiGeneratorConfig from a TulsiProject.
 public final class TulsiProjectInfoExtractor {
+  public enum ExtractorError: Error {
+    case ruleEntriesFailed(String)
+  }
   private let project: TulsiProject
   private let localizedMessageLogger: LocalizedMessageLogger
   var workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
@@ -43,18 +46,22 @@ public final class TulsiProjectInfoExtractor {
 
   public func ruleEntriesForInfos(_ infos: [RuleInfo],
                                   startupOptions: TulsiOption,
-                                  buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
-    return ruleEntriesForLabels(infos.map({ $0.label }),
-                                startupOptions: startupOptions,
-                                buildOptions: buildOptions)
+                                  buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry] {
+    return try ruleEntriesForLabels(infos.map({ $0.label }),
+                                    startupOptions: startupOptions,
+                                    buildOptions: buildOptions)
   }
 
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
-                                   buildOptions: TulsiOption) -> [BuildLabel: RuleEntry] {
-    return workspaceInfoExtractor.ruleEntriesForLabels(labels,
-                                                       startupOptions: startupOptions,
-                                                       buildOptions: buildOptions)
+                                   buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry] {
+    do {
+      return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
+                                                             startupOptions: startupOptions,
+                                                             buildOptions: buildOptions)
+    } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
+      throw ExtractorError.ruleEntriesFailed(info)
+    }
   }
 
   public func extractBuildfiles(_ targets: [BuildLabel]) -> Set<BuildLabel> {
