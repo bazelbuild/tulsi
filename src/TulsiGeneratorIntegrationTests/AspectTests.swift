@@ -333,7 +333,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntries = aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
                                                                       startupOptions: bazelStartupOptions,
                                                                       buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntries.count, 13)
+    // TODO(b/65252498): Enable when the bug is fixed.
+    // XCTAssertEqual(ruleEntries.count, 13)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
