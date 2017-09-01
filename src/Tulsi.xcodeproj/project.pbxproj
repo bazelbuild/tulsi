@@ -135,6 +135,7 @@
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
+		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -335,6 +336,7 @@
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
+		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -476,6 +478,7 @@
 				3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */,
 				3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */,
 				3DAEE45D1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift */,
+				E19C1C561F5886A000D6E38A /* QueuedLogging.swift */,
 				3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */,
 				8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */,
 				3DA65B431C6854EF0055448E /* LocalizedMessageLogger.swift */,
@@ -932,6 +935,7 @@
 				3D9926881C29F10B0094E098 /* PBXTargetGenerator.swift in Sources */,
 				3DA65B1B1C67B9DE0055448E /* TulsiGeneratorConfig.swift in Sources */,
 				3D47D6BA1D13190E005B5BF3 /* NSJSONSerializationExtensions.swift in Sources */,
+				E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

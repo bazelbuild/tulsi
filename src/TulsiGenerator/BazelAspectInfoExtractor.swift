@@ -16,7 +16,7 @@ import Foundation
 
 
 // Provides methods utilizing Bazel aspects to extract information from a workspace.
-final class BazelAspectInfoExtractor {
+final class BazelAspectInfoExtractor: QueuedLogging {
   enum ExtractorError: Error {
     /// Parsing an aspect's output failed with the given debug info.
     case parsingFailed(String)
@@ -37,6 +37,7 @@ final class BazelAspectInfoExtractor {
   // Absolute path to the workspace containing the Tulsi aspect bzl file.
   private let aspectWorkspacePath: String
   private let localizedMessageLogger: LocalizedMessageLogger
+  private var queuedInfoMessages: [String] = []
 
   private typealias CompletionHandler = (Process, [String]?, String) -> Void
 
@@ -86,7 +87,7 @@ final class BazelAspectInfoExtractor {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
         } else {
-          self.localizedMessageLogger.infoMessage(debugInfo)
+          self.queuedInfoMessages.append(debugInfo)
           self.localizedMessageLogger.error("BazelInfoExtractionFailed",
                                             comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                             details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
@@ -390,5 +391,22 @@ final class BazelAspectInfoExtractor {
     }
 
     return ruleMap
+  }
+
+  // MARK: - QueuedLogging
+
+  func logQueuedInfoMessages() {
+    guard !self.queuedInfoMessages.isEmpty else {
+      return
+    }
+    localizedMessageLogger.infoMessage("Log of Bazel aspect info output follows:")
+    for message in self.queuedInfoMessages {
+      localizedMessageLogger.infoMessage(message)
+    }
+    self.queuedInfoMessages.removeAll()
+  }
+
+  var hasQueuedInfoMessages: Bool {
+    return !self.queuedInfoMessages.isEmpty
   }
 }

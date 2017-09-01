@@ -105,10 +105,11 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func logQueuedInfoMessages() {
     queryExtractor.logQueuedInfoMessages()
+    aspectExtractor.logQueuedInfoMessages()
   }
 
   func hasQueuedInfoMessages() -> Bool {
-    return queryExtractor.hasQueuedInfoMessages()
+    return aspectExtractor.hasQueuedInfoMessages || queryExtractor.hasQueuedInfoMessages
   }
 
   // MARK: - Private methods

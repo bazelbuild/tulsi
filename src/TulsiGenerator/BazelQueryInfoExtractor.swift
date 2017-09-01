@@ -17,7 +17,7 @@ import Foundation
 
 // Provides methods utilizing Bazel query (http://bazel.build/docs/query.html) to extract
 // information from a workspace.
-final class BazelQueryInfoExtractor {
+final class BazelQueryInfoExtractor: QueuedLogging {
 
   enum ExtractorError: Error {
     /// A valid Bazel binary could not be located.
@@ -345,6 +345,8 @@ final class BazelQueryInfoExtractor {
     }
   }
 
+  // MARK: - QueuedLogging
+
   func logQueuedInfoMessages() {
     guard !self.queuedInfoMessages.isEmpty else {
       return
@@ -356,7 +358,7 @@ final class BazelQueryInfoExtractor {
     self.queuedInfoMessages.removeAll()
   }
 
-  func hasQueuedInfoMessages() -> Bool {
+  var hasQueuedInfoMessages: Bool {
     return !self.queuedInfoMessages.isEmpty
   }
 }
