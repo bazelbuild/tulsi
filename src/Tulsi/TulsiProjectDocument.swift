@@ -175,7 +175,6 @@ final class TulsiProjectDocument: NSDocument,
       return false
     }
     bazelPackages!.append(package)
-    updateRuleEntries()
     return true
   }
 
