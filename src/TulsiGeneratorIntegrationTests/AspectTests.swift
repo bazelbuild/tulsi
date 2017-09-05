@@ -439,13 +439,14 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   }
 
   func testTestSuite_ExplicitXCTests() {
-    var ruleEntries = [BuildLabel: RuleEntry]()
+    let ruleEntries: [BuildLabel: RuleEntry]
     do {
       ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
                                                                         startupOptions: bazelStartupOptions,
                                                                         buildOptions: bazelBuildOptions)
     } catch let e {
       XCTFail("Received exception of \(e).")
+      return
     }
     XCTAssertEqual(ruleEntries.count, 5)
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -466,13 +467,14 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   }
 
   func testTestSuite_ExplicitNonXCTests() {
-    var ruleEntries = [BuildLabel: RuleEntry]()
+    let ruleEntries: [BuildLabel: RuleEntry]
     do {
       ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_NonXCTests")],
                                                                         startupOptions: bazelStartupOptions,
                                                                         buildOptions: bazelBuildOptions)
     } catch let e {
       XCTFail("Received exception of \(e).")
+      return
     }
     XCTAssertEqual(ruleEntries.count, 3)
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -489,13 +491,14 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   }
 
   func testTestSuite_TaggedTests() {
-    var ruleEntries = [BuildLabel: RuleEntry]()
+    let ruleEntries: [BuildLabel: RuleEntry]
     do {
       ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
                                                                         startupOptions: bazelStartupOptions,
                                                                         buildOptions: bazelBuildOptions)
     } catch let e {
       XCTFail("Received exception of \(e).")
+      return
     }
     XCTAssertEqual(ruleEntries.count, 4)
     let checker = InfoChecker(ruleEntries: ruleEntries)
