@@ -115,6 +115,7 @@
 		3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */; };
 		3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */; };
 		3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */; };
+		5416093C1F5854090016769C /* BazelBuildEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5416093B1F5854090016769C /* BazelBuildEvents.swift */; };
 		541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 541CAE391F2A571900FE5771 /* Mac.BUILD */; };
 		5429EA8B1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */; };
 		5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */; };
@@ -310,6 +311,7 @@
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
 		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
 		3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitterTests.swift; sourceTree = "<group>"; };
+		5416093B1F5854090016769C /* BazelBuildEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildEvents.swift; sourceTree = "<group>"; };
 		541CAE391F2A571900FE5771 /* Mac.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Mac.BUILD; path = Resources/Mac.BUILD; sourceTree = "<group>"; };
 		5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelPBXReferencePatcher.swift; sourceTree = "<group>"; };
 		5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelXcodeProjectPatcher.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				3DCFE5E11C80B92D00D7F31B /* ProgressNotifier.swift */,
 				3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */,
 				5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */,
+				5416093B1F5854090016769C /* BazelBuildEvents.swift */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -930,6 +933,7 @@
 				3D9926951C29F1E80094E098 /* RuleEntry.swift in Sources */,
 				54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */,
 				3DA65B441C6854EF0055448E /* LocalizedMessageLogger.swift in Sources */,
+				5416093C1F5854090016769C /* BazelBuildEvents.swift in Sources */,
 				3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */,
 				3D9926971C29FB180094E098 /* TulsiProjectInfoExtractor.swift in Sources */,
 				5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */,

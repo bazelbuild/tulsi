@@ -38,7 +38,10 @@ public enum TulsiOptionKey: String {
       EnvironmentVariables,
 
       // Option to enable compilation after error.
-      BazelContinueBuildingAfterError
+      BazelContinueBuildingAfterError,
+
+      // Whether Tulsi should use Build Events to find generated artifacts.
+      BEPSupportEnabled
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -264,6 +267,7 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
+    addBoolOption(.BEPSupportEnabled, .Generic, true)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])

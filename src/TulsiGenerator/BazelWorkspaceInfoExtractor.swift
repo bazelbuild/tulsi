@@ -64,7 +64,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry] {
+                            buildOptions: TulsiOption,
+                            bepOption: TulsiOption) throws -> [BuildLabel: RuleEntry] {
     func isLabelMissing(_ label: BuildLabel) -> Bool { return ruleEntryCache[label] == nil }
     let missingLabels = labels.filter(isLabelMissing)
     if missingLabels.isEmpty { return ruleEntryCache }
@@ -74,6 +75,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       guard let options = options else { return [] }
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
+    let bepSupportEnabled = bepOption.commonValueAsBool ?? true
 
     // TODO(abaire): Support per-target and per-config options during aspect lookups.
     let startupOptions = splitOptionString(startupOptions.commonValue)
@@ -83,7 +85,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       let ruleEntries =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
-                                                        buildOptions: buildOptions)
+                                                        buildOptions: buildOptions,
+                                                        bepEnabled: bepSupportEnabled)
       for (label, entry) in ruleEntries {
         ruleEntryCache[label] = entry
       }

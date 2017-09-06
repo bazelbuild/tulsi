@@ -28,7 +28,8 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// omitted from the returned dictionary).
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry]
+                            buildOptions: TulsiOption,
+                            bepOption: TulsiOption) throws -> [BuildLabel: RuleEntry]
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.

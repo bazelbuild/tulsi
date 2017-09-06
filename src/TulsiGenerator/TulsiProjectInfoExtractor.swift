@@ -46,19 +46,23 @@ public final class TulsiProjectInfoExtractor {
 
   public func ruleEntriesForInfos(_ infos: [RuleInfo],
                                   startupOptions: TulsiOption,
-                                  buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry] {
+                                  buildOptions: TulsiOption,
+                                  bepOption: TulsiOption) throws -> [BuildLabel: RuleEntry] {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
-                                    buildOptions: buildOptions)
+                                    buildOptions: buildOptions,
+                                    bepOption: bepOption)
   }
 
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
-                                   buildOptions: TulsiOption) throws -> [BuildLabel: RuleEntry] {
+                                   buildOptions: TulsiOption,
+                                   bepOption: TulsiOption) throws -> [BuildLabel: RuleEntry] {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
                                                              startupOptions: startupOptions,
-                                                             buildOptions: buildOptions)
+                                                             buildOptions: buildOptions,
+                                                             bepOption: bepOption)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ExtractorError.ruleEntriesFailed(info)
     }

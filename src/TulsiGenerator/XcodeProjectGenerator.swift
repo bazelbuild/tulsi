@@ -450,7 +450,8 @@ final class XcodeProjectGenerator {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                             buildOptions: config.options[.BazelBuildOptionsDebug])
+                                                             buildOptions: config.options[.BazelBuildOptionsDebug],
+                                                             bepOption: config.options[.BEPSupportEnabled])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure("Failed to build aspects required for label resolution: \(info)")
     }

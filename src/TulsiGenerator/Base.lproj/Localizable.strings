@@ -35,6 +35,9 @@
 /* Bazel 'buildfiles' query failed to extract information. */
 "BazelBuildfilesQueryFailed" = "Failed to query information about build files for this Bazel workspace. Skylark files and some BUILD files may be omitted from the project.";
 
+/* Error when parsing a Bazel Build Event for BEP when running Bazel. */
+"BazelParseBuildEventFailed" = "Failed to parse a Bazel Build Event. This may be a Tulsi bug, please report. Additional Context: %1$@";
+
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
 "CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
 
@@ -49,6 +52,9 @@
 
 /* Message to show when the execution root was not able to be extracted from the workspace. */
 "ExecutionRootNotFound" = "Was not able to extract the execution root from the workspace. This is a Tulsi or Bazel bug, please report.";
+
+/* Failed to readString from FileLineReader when handling the BEP file. */
+"FileLineReaderReadStringFailed" = "Failed to readString from the BEP JSON file. This is a Tulsi or Bazel bug, please report.";
 
 /* Failed to find a watchOS application extension with the given name. The project will not be able to launch the watch app. */
 "FindingWatchExtensionFailed" = "Failed to find watchOS extension '%1$@'. The generated project will not able to run the watch app.";
