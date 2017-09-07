@@ -85,7 +85,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                                message: "Extracting info for \(targets.count) rules")
 
     let semaphore = DispatchSemaphore(value: 0)
-    var extractedEntries = [BuildLabel: RuleEntry]()
+    var artifacts = [String]()
+    var processDebugInfo: String? = nil
     let process = bazelAspectProcessForTargets(targets.map({ $0.value }),
                                                aspect: "tulsi_sources_aspect",
                                                startupOptions: startupOptions,
@@ -94,17 +95,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                progressNotifier: progressNotifier) {
       (process: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
         defer { semaphore.signal() }
-        let artifacts = generatedArtifacts?.filter { $0.hasSuffix(".tulsiinfo") }
-
-        if process.terminationStatus == 0,
-          let artifacts = artifacts, !artifacts.isEmpty {
-          extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
-                                                                  progressNotifier: progressNotifier)
-        } else {
-          self.queuedInfoMessages.append(debugInfo)
-          self.localizedMessageLogger.error("BazelInfoExtractionFailed",
-                                            comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
-                                            details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
+        processDebugInfo = debugInfo
+        if let generatedArtifacts = generatedArtifacts {
+          artifacts = generatedArtifacts.filter { $0.hasSuffix(".tulsiinfo") }
         }
     }
 
@@ -112,13 +105,17 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       process.currentDirectoryPath = workspaceRootURL.path
       process.launch()
       _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-      guard process.terminationStatus == 0 else {
+      guard process.terminationStatus == 0, !artifacts.isEmpty else {
+        let debugInfo = processDebugInfo ?? "<No Debug Info>"
+        localizedMessageLogger.infoMessage(debugInfo)
+        localizedMessageLogger.error("BazelInfoExtractionFailed",
+                                     comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
+                                     details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
         throw ExtractorError.buildFailed
       }
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
-
-    return extractedEntries
+    return extractRuleEntriesFromArtifacts(artifacts, progressNotifier: progressNotifier)
   }
 
   // MARK: - Private methods
@@ -154,7 +151,13 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       process.currentDirectoryPath = workspaceRootURL.path
       process.launch()
       _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+
       guard process.terminationStatus == 0 else {
+        let debugInfo = processDebugInfo ?? "<No Debug Info>"
+        localizedMessageLogger.infoMessage(debugInfo)
+        localizedMessageLogger.error("BazelInfoExtractionFailed",
+                                     comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
+                                     details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
         throw ExtractorError.buildFailed
       }
 
@@ -164,7 +167,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         let events = try reader.readAllEvents()
         let artifacts = events.flatMap { $0.files.lazy.filter { $0.hasSuffix(".tulsiinfo") } }
 
-        if process.terminationStatus == 0, !artifacts.isEmpty {
+        if !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
         } else {
@@ -173,12 +176,14 @@ final class BazelAspectInfoExtractor: QueuedLogging {
           self.localizedMessageLogger.error("BazelInfoExtractionFailed",
                                             comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                             details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
+          throw ExtractorError.buildFailed
         }
-      } catch let e {
+      } catch let e as NSError {
         self.localizedMessageLogger.infoMessage(e.localizedDescription)
         self.localizedMessageLogger.error("BazelInfoExtractionFailed",
                                           comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                           details: "Failed to read all build events. See the error above.")
+        throw ExtractorError.buildFailed
       }
     }
     localizedMessageLogger.logProfilingEnd(profilingStart)
