@@ -793,7 +793,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let searchPaths = ["$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
-                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
+                       "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)/**",
                        "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(tulsiIncludesPath)"
     ]
     // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
