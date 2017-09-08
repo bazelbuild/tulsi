@@ -107,7 +107,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       _ = semaphore.wait(timeout: DispatchTime.distantFuture)
       guard process.terminationStatus == 0, !artifacts.isEmpty else {
         let debugInfo = processDebugInfo ?? "<No Debug Info>"
-        localizedMessageLogger.infoMessage(debugInfo)
+        queuedInfoMessages.append(debugInfo)
         localizedMessageLogger.error("BazelInfoExtractionFailed",
                                      comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                      details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
@@ -154,7 +154,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
       guard process.terminationStatus == 0 else {
         let debugInfo = processDebugInfo ?? "<No Debug Info>"
-        localizedMessageLogger.infoMessage(debugInfo)
+        queuedInfoMessages.append(debugInfo)
         localizedMessageLogger.error("BazelInfoExtractionFailed",
                                      comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                      details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
@@ -172,17 +172,16 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                                   progressNotifier: progressNotifier)
         } else {
           let debugInfo = processDebugInfo ?? "<No Debug Info>"
-          self.localizedMessageLogger.infoMessage(debugInfo)
+          queuedInfoMessages.append(debugInfo)
           self.localizedMessageLogger.error("BazelInfoExtractionFailed",
                                             comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
                                             details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
           throw ExtractorError.buildFailed
         }
       } catch let e as NSError {
-        self.localizedMessageLogger.infoMessage(e.localizedDescription)
         self.localizedMessageLogger.error("BazelInfoExtractionFailed",
                                           comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
-                                          details: "Failed to read all build events. See the error above.")
+                                          details: "Failed to read all build events. Error: \(e.localizedDescription)")
         throw ExtractorError.buildFailed
       }
     }
