@@ -249,6 +249,7 @@ class _OptionsParser(object):
       else:
         self._WarnUnknownPlatform()
         self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
+
     return options
 
   @staticmethod
@@ -509,12 +510,25 @@ class BazelBuildBridge(object):
     self.binary_path = os.path.join(
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
 
+    # Calculate the root of our derived data path, this is used to derive the
+    # index store path location which will be used for index while building.
+    # We're not attempting to find the path if is not in the default location
+    # for now.
+    derived_data_path_components = self.derived_sources_folder_path.split('/')
+    if 'DerivedData' in derived_data_path_components:
+        derived_data_root = '/'.join(derived_data_path_components[:derived_data_path_components.index('DerivedData') + 2])
+        self.index_store_path = os.path.join(derived_data_root, 'Index/DataStore')
+    else:
+        _PrintXcodeWarning('Unable to determine derived data path. Check if -derivedDataPath was specified which alters the default location.')
+        self.index_store_path = None
+
     self.is_simulator = self.platform_name.endswith('simulator')
     # Check to see if code signing actions should be skipped or not.
     if self.is_simulator:
       self.codesigning_allowed = False
     else:
       self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
+
 
     self.post_processor_binary = os.path.join(self.project_file_path,
                                               '.tulsi',
@@ -689,6 +703,13 @@ class BazelBuildBridge(object):
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')
+
+    # Starting in XCode 9, you can enable the index-store-path copt which
+    # powers indexing while building
+    if self.xcode_version_major >= 900 and self.index_store_path:
+        bazel_command.extend([
+            '--copt=-index-store-path',
+            '--copt=%s' % self.index_store_path])
 
     bazel_command.extend(options.targets)
 
