@@ -58,8 +58,8 @@ private func main() {
     } catch HeadlessModeError.invalidBazelPath {
       print("The path to the bazel binary is invalid")
       exit(14)
-    } catch HeadlessModeError.generationFailed(let reason) {
-      print("Generation failed: \(reason)")
+    } catch HeadlessModeError.generationFailed() {
+      print("Xcode project generation failed")
       exit(15)
     } catch HeadlessModeError.invalidWorkspaceRootOverride {
       print("The parameter given as the workspace root path is not a valid directory")

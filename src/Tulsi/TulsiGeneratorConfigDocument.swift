@@ -36,8 +36,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   enum GenerationResult {
     /// Generation succeeded. The associated URL points at the generated Xcode project.
     case success(URL)
-    /// Generation failed. The associated String provides error info.
-    case failure(String)
+    /// Generation failed.
+    case failure
   }
 
   /// The type for Tulsi generator config documents.
@@ -271,7 +271,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     LogMessage.postSyslog("Generate[FAIL]: \(timeTaken)",
                           details: errorInfo,
                           context: config.projectName)
-    return .failure(errorInfo)
+    return .failure
   }
 
   deinit {
@@ -573,10 +573,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     switch result {
       case .success(let url):
         return url
-      case .failure(let errorInfo):
+      case .failure:
         let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                     comment: "A general, critical failure during project generation.")
-        LogMessage.postError(msg, details: errorInfo)
+        LogMessage.postError(msg)
         return nil
     }
   }

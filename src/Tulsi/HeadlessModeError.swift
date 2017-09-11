@@ -26,7 +26,7 @@ enum HeadlessModeError: Error {
   /// The given configuration file requires that an explicit output path be given.
   case explicitOutputOptionRequired
   /// XCode project generation failed for the given reason.
-  case generationFailed(String)
+  case generationFailed
   /// The path to the Bazel binary given on the commandline is invalid.
   case invalidBazelPath
   /// A workspace root override was given but references an invalid param.

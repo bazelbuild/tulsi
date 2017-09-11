@@ -453,7 +453,7 @@ final class XcodeProjectGenerator {
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
                                                              bepOption: config.options[.BEPSupportEnabled])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
-      throw ProjectGeneratorError.labelAspectFailure("Failed to build aspects required for label resolution: \(info)")
+      throw ProjectGeneratorError.labelAspectFailure(info)
     }
   }
 

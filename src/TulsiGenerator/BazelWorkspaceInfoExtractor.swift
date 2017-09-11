@@ -91,7 +91,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
         ruleEntryCache[label] = entry
       }
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
-      throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built")
+      throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")
     }
 
     // Because certain label types are expanded by Bazel prior to aspect invocation (most notably

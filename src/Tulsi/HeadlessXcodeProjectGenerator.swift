@@ -114,8 +114,8 @@ struct HeadlessXcodeProjectGenerator {
           print("Opening generated project in Xcode")
           NSWorkspace.shared().open(url)
         }
-      case .failure(let errorInfo):
-        throw HeadlessModeError.generationFailed(errorInfo)
+      case .failure:
+        throw HeadlessModeError.generationFailed
     }
   }
 
