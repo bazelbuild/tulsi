@@ -37,6 +37,15 @@ import bazel_options
 import tulsi_logging
 
 
+# List of frameworks that Xcode injects into test host targets that should be
+# re-signed when running the tests on devices.
+XCODE_INJECTED_FRAMEWORKS = [
+    'IDEBundleInjection',
+    'XCTAutomationSupport',
+    'XCTest',
+]
+
+
 def _PrintXcodeWarning(msg):
   sys.stdout.write(':: warning: %s\n' % msg)
   sys.stdout.flush()
@@ -1288,9 +1297,7 @@ class BazelBuildBridge(object):
     if not self.codesigning_allowed:
       return 0
 
-    xcode_injected_frameworks = ['XCTest', 'IDEBundleInjection']
-
-    for framework in xcode_injected_frameworks:
+    for framework in XCODE_INJECTED_FRAMEWORKS:
       framework_path = os.path.join(
           bundle, 'Frameworks', '%s.framework' % framework)
       if os.path.isdir(framework_path):
