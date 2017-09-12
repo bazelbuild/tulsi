@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D9DB34A1E5DECA40021EAF4 /* XCTRunner.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 2D9DB3491E5DEC680021EAF4 /* XCTRunner.entitlements */; };
+		2D7A8EB51F67220400392DA3 /* macOSXCTRunner.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 2D7A8EB41F6720EB00392DA3 /* macOSXCTRunner.entitlements */; };
+		2D9DB34A1E5DECA40021EAF4 /* iOSXCTRunner.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 2D9DB3491E5DEC680021EAF4 /* iOSXCTRunner.entitlements */; };
+		2DD7C6C21F6886D400163B92 /* TulsiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BB71C761B8800544AE0 /* TulsiError.swift */; };
+		2DD7C6C41F6887DB00163B92 /* DeploymentTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */; };
 		3D029B581C6421B400779E8E /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029B571C6421B400779E8E /* ProcessRunner.swift */; };
 		3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */; };
 		3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3D062FA11DA6C76900E79AD4 /* Swift.BUILD */; };
@@ -26,7 +29,6 @@
 		3D387BAD1C7500B500544AE0 /* NewGeneratorConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D387BAF1C7500B500544AE0 /* NewGeneratorConfigViewController.xib */; };
 		3D387BB21C75352E00544AE0 /* XcodeProjectGenerationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BB01C75352E00544AE0 /* XcodeProjectGenerationProgressViewController.swift */; };
 		3D387BB41C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D387BB61C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib */; };
-		3D387BB81C761B8800544AE0 /* TulsiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BB71C761B8800544AE0 /* TulsiError.swift */; };
 		3D3DDD141CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D3DDD161CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib */; };
 		3D47D6BA1D13190E005B5BF3 /* NSJSONSerializationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D47D6B91D13190E005B5BF3 /* NSJSONSerializationExtensions.swift */; };
 		3D4E5A421D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4E5A411D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift */; };
@@ -136,8 +138,8 @@
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
-        E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
 		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
+		E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,7 +206,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2D9DB3491E5DEC680021EAF4 /* XCTRunner.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = XCTRunner.entitlements; sourceTree = "<group>"; };
+		2D7A8EB41F6720EB00392DA3 /* macOSXCTRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSXCTRunner.entitlements; sourceTree = "<group>"; };
+		2D9DB3491E5DEC680021EAF4 /* iOSXCTRunner.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = iOSXCTRunner.entitlements; sourceTree = "<group>"; };
+		2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeploymentTarget.swift; sourceTree = "<group>"; };
 		3D029B571C6421B400779E8E /* ProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorPackageManagerViewController.swift; sourceTree = "<group>"; };
 		3D062FA11DA6C76900E79AD4 /* Swift.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Swift.BUILD; path = Resources/Swift.BUILD; sourceTree = "<group>"; };
@@ -339,8 +343,8 @@
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
-        E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
+		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -394,7 +398,8 @@
 				3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */,
 				3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */,
 				3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */,
-				2D9DB3491E5DEC680021EAF4 /* XCTRunner.entitlements */,
+				2D9DB3491E5DEC680021EAF4 /* iOSXCTRunner.entitlements */,
+				2D7A8EB41F6720EB00392DA3 /* macOSXCTRunner.entitlements */,
 			);
 			name = GeneratedProjectResources;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				3DD0DE461C654E79008B0CDF /* TulsiProject.swift */,
 				3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */,
 				54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */,
+				2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -819,7 +825,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D9DB34A1E5DECA40021EAF4 /* XCTRunner.entitlements in Resources */,
+				2D7A8EB51F67220400392DA3 /* macOSXCTRunner.entitlements in Resources */,
+				2D9DB34A1E5DECA40021EAF4 /* iOSXCTRunner.entitlements in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
 				D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */,
 				54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */,
@@ -917,6 +924,7 @@
 				3D029B581C6421B400779E8E /* ProcessRunner.swift in Sources */,
 				5429EA8B1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift in Sources */,
 				3D99268F1C29F1100094E098 /* PBXProjSerializer.swift in Sources */,
+				2DD7C6C41F6887DB00163B92 /* DeploymentTarget.swift in Sources */,
 				3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */,
 				3D1F2E261CF760420008CE83 /* BazelLocator.swift in Sources */,
 				3DAEE45E1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift in Sources */,
@@ -983,9 +991,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D387BB81C761B8800544AE0 /* TulsiError.swift in Sources */,
 				3DB1FC2B1C32DCBC0080198C /* MessageViewController.swift in Sources */,
 				3D4E5A421D07123900DAB0B4 /* HeadlessXcodeProjectGenerator.swift in Sources */,
+				2DD7C6C21F6886D400163B92 /* TulsiError.swift in Sources */,
 				3D0849F11C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift in Sources */,
 				3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */,
 				3D7CED5B1CC171CD0073204D /* SplashScreenWindowController.swift in Sources */,

@@ -46,7 +46,6 @@ enum SourceTree: String {
   case DeveloperDir = "DEVELOPER_DIR"
 }
 
-
 // Models a path within an Xcode project file.
 struct SourceTreePath: Hashable {
   /// Indicates the type of "path".
@@ -829,6 +828,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   var buildActionDependencies = Set<PBXTarget>()
   /// The build phases to be executed to generate this target.
   var buildPhases = [PBXBuildPhase]()
+  /// Deployment target for this target, if available.
+  let deploymentTarget: DeploymentTarget?
 
   var isa: String {
     assertionFailure("PBXTarget must be subclassed")
@@ -843,8 +844,9 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     return name
   }
 
-  init(name: String) {
+  init(name: String, deploymentTarget: DeploymentTarget?) {
     self.name = name
+    self.deploymentTarget = deploymentTarget
   }
 
   /// Creates a dependency on the given target.
@@ -902,9 +904,9 @@ final class PBXNativeTarget: PBXTarget {
     return "PBXNativeTarget"
   }
 
-  init(name: String, productType: ProductType) {
+  init(name: String, deploymentTarget: DeploymentTarget?, productType: ProductType) {
     self.productType = productType
-    super.init(name: name)
+    super.init(name: name, deploymentTarget: deploymentTarget)
   }
 
   override func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
@@ -928,11 +930,15 @@ final class PBXLegacyTarget: PBXTarget {
     return "PBXLegacyTarget"
   }
 
-  init(name: String, buildToolPath: String, buildArguments: String, buildWorkingDirectory: String) {
+  init(name: String,
+       deploymentTarget: DeploymentTarget?,
+       buildToolPath: String,
+       buildArguments: String,
+       buildWorkingDirectory: String) {
     self.buildToolPath = buildToolPath
     self.buildArgumentsString = buildArguments
     self.buildWorkingDirectory = buildWorkingDirectory
-    super.init(name: name)
+    super.init(name: name, deploymentTarget: deploymentTarget)
   }
 
   override func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
@@ -1095,8 +1101,12 @@ final class PBXProject: PBXObjectProtocol {
     self.name = name
   }
 
-  func createNativeTarget(_ name: String, targetType: PBXTarget.ProductType) -> PBXNativeTarget {
-    let value = PBXNativeTarget(name: name, productType: targetType)
+  func createNativeTarget(_ name: String,
+                          deploymentTarget: DeploymentTarget?,
+                          targetType: PBXTarget.ProductType) -> PBXNativeTarget {
+    let value = PBXNativeTarget(name: name,
+                                deploymentTarget: deploymentTarget,
+                                productType: targetType)
     targetByName[name] = value
 
     let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
@@ -1112,10 +1122,12 @@ final class PBXProject: PBXObjectProtocol {
   }
 
   func createLegacyTarget(_ name: String,
+                          deploymentTarget: DeploymentTarget?,
                           buildToolPath: String,
                           buildArguments: String,
                           buildWorkingDirectory: String) -> PBXLegacyTarget {
     let value = PBXLegacyTarget(name: name,
+                                deploymentTarget: deploymentTarget,
                                 buildToolPath: buildToolPath,
                                 buildArguments: buildArguments,
                                 buildWorkingDirectory: buildWorkingDirectory)

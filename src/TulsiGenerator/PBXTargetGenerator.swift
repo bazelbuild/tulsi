@@ -217,7 +217,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let includes: [String]
     let frameworkSearchPaths: [String]
     let swiftIncludePaths: [String]
-    let deploymentTarget: RuleEntry.DeploymentTarget
+    let deploymentTarget: DeploymentTarget
     let buildPhase: PBXSourcesBuildPhase
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
@@ -597,11 +597,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
            "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
         }
 
-        let deploymentTarget: RuleEntry.DeploymentTarget
+        let deploymentTarget: DeploymentTarget
         if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
           deploymentTarget = ruleDeploymentTarget
         } else {
-          deploymentTarget = RuleEntry.DeploymentTarget(platform: .ios, osVersion: "9.0")
+          deploymentTarget = DeploymentTarget(platform: .ios, osVersion: "9.0")
           localizedMessageLogger.warning("NoDeploymentTarget",
                                          comment: "Rule Entry for %1$@ has no DeploymentTarget set. Defaulting to iOS 9.",
                                          values: ruleEntry.label.value)
@@ -641,7 +641,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     func generateIndexer(_ name: String,
                          indexerType: PBXTarget.ProductType,
                          data: IndexerData) {
-      let indexingTarget = project.createNativeTarget(name, targetType: indexerType)
+      let indexingTarget = project.createNativeTarget(name, deploymentTarget: nil, targetType: indexerType)
       indexingTarget.buildPhases.append(data.buildPhase)
       addConfigsForIndexingTarget(indexingTarget, data: data)
 
@@ -688,6 +688,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let bazelPath = bazelURL.path
     bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
+                                                        deploymentTarget: nil,
                                                         buildToolPath: "\(scriptPath)",
                                                         buildArguments: "\"\(bazelPath)\" \"\(bazelBinPath)\"",
                                                         buildWorkingDirectory: workingDirectory)
@@ -1087,20 +1088,24 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Attempt to update the build configs for the target to include BUNDLE_LOADER and TEST_HOST
     // values, linking the test target to its host.
-    if let hostProduct = hostTarget.productReference?.path,
-           let hostProductName = hostTarget.productName {
+    if let hostTargetPath = hostTarget.productReference?.path,
+       let hostTargetProductName = hostTarget.productName,
+       let deploymentTarget = target.deploymentTarget {
       let testSettings: [String: String]
       if ruleEntry.pbxTargetType == .UIUnitTest {
         testSettings = [
-          "TEST_TARGET_NAME": hostProductName,
+          "TEST_TARGET_NAME": hostTargetProductName,
+          "TULSI_TEST_RUNNER_ONLY": "YES",
+        ]
+      } else if let testHostPath = deploymentTarget.platform.testHostPath(hostTargetPath: hostTargetPath,
+                                                                          hostTargetProductName: hostTargetProductName) {
+        testSettings = [
+          "BUNDLE_LOADER": "$(TEST_HOST)",
+          "TEST_HOST": testHostPath,
           "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
       } else {
-        testSettings = [
-          "BUNDLE_LOADER": "$(TEST_HOST)",
-          "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(hostProduct)/\(hostProductName)",
-          "TULSI_TEST_RUNNER_ONLY": "YES",
-        ]
+        testSettings = [:]
       }
 
       // Inherit the resolved values from the indexer.
@@ -1333,7 +1338,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.unsupportedTargetType(entry.type)
     }
-    let target = project.createNativeTarget(name, targetType: pbxTargetType)
+    let target = project.createNativeTarget(name,
+                                            deploymentTarget: entry.deploymentTarget,
+                                            targetType: pbxTargetType)
 
     for f in entry.secondaryArtifacts {
       project.createProductReference(f.fullPath)

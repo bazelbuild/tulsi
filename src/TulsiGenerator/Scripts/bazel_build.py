@@ -503,28 +503,18 @@ class BazelBuildBridge(object):
 
     # Path where Xcode expects the artifacts to be written to. This is not the
     # codesigning_path as device vs simulator builds have different signing
-    # requirements, so Xcode expects different things to be signed. This is
+    # requirements, so Xcode expects different paths to be signed. This is
     # mostly apparent on XCUITests where simulator builds set the codesigning
     # path to be the .xctest bundle, but for device builds it is actually the
     # UI runner app (since it needs to be codesigned to run on the device.) The
-    # contents folder path is a stable path on where to put the expected
+    # FULL_PRODUCT_NAME variable is a stable path on where to put the expected
     # artifacts. For static libraries (objc_library, swift_library),
-    # CONTENTS_FOLDER_PATH does not exist, but the location where Xcode expects
-    # the archive coincides with the TARGET_BUILD_DIR, so using an empty
-    # default for CONTENTS_FOLDER_PATH supports both bundle and single artifact
-    # outputs.
+    # FULL_PRODUCT_NAME corresponds to the .a file name, which coincides with
+    # the expected location for a single artifact output.
     # TODO(b/35811023): Check these paths are still valid.
-    self.content_folder_path = os.path.join(
+    self.artifact_output_path = os.path.join(
         os.environ['TARGET_BUILD_DIR'],
-        os.environ.get('CONTENTS_FOLDER_PATH', ''))
-
-    # For macOS applications and extensions, Xcode includes the Contents/ at
-    # the end, which we don't want.
-    if (self.bazel_target_type == 'macos_application'
-        or self.bazel_target_type == 'macos_extension'):
-      head, tail = os.path.split(self.content_folder_path)
-      if tail == 'Contents':
-        self.content_folder_path = head
+        os.environ['FULL_PRODUCT_NAME'])
 
     # Path to where Xcode expects the binary to be placed.
     self.binary_path = os.path.join(
@@ -548,10 +538,14 @@ class BazelBuildBridge(object):
                                               'Utils',
                                               'post_processor')
     if self.codesigning_allowed:
+      platform_prefix = 'iOS'
+      if self.platform_name.startswith('macos'):
+        platform_prefix = 'macOS'
+      entitlements_filename = '%sXCTRunner.entitlements' % platform_prefix
       self.runner_entitlements_template = os.path.join(self.project_file_path,
                                                        '.tulsi',
                                                        'Resources',
-                                                       'XCTRunner.entitlements')
+                                                       entitlements_filename)
 
     self.main_group_path = os.getcwd()
 
@@ -891,7 +885,7 @@ class BazelBuildBridge(object):
 
   def _InstallArtifact(self, outputs):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
-    xcode_artifact_path = self.content_folder_path
+    xcode_artifact_path = self.artifact_output_path
 
     if os.path.isdir(xcode_artifact_path):
       try:
@@ -1055,6 +1049,14 @@ class BazelBuildBridge(object):
         expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
       elif self.product_type == 'com.apple.product-type.application.watchapp2':
         expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
+      elif self.platform_name.startswith('macos'):
+        # The test rules for now need to output .ipa files instead of .zip
+        # files. For this reason, macOS xctest bundles are detected as IPA
+        # files. So, if we're building for macOS and it's and IPA, just use
+        # the expected_bundle_name.
+        # TODO(b/34774324): Clean this so macOS bundles always fall outside of
+        # the is_ipa if branch.
+        expected_ipa_subpath = expected_bundle_name
       else:
         expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
     else:
@@ -1089,8 +1091,9 @@ class BazelBuildBridge(object):
         dir_components = self._SplitPathComponents(filename)
 
         # Get the file's path, ignoring the payload components if the archive
-        # is an IPA.
-        if is_ipa:
+        # is an IPA and it's not a macOS bundle.
+        # TODO(b/34774324): Clean this.
+        if is_ipa and not self.platform_name.startswith('macos'):
           subpath = os.path.join(*dir_components[2:])
         else:
           subpath = os.path.join(*dir_components[1:])
@@ -1258,7 +1261,7 @@ class BazelBuildBridge(object):
       return 0
     # Extract the signing identity from the bundle at the expected output path
     # since that's where the signed bundle from bazel was placed.
-    signing_identity = self._ExtractSigningIdentity(self.content_folder_path)
+    signing_identity = self._ExtractSigningIdentity(self.artifact_output_path)
     if not signing_identity:
       return 800
 
@@ -1331,10 +1334,10 @@ class BazelBuildBridge(object):
       contents = template.read()
       contents = contents.replace(
           '$(TeamIdentifier)',
-          self._ExtractSigningTeamIdentifier(self.content_folder_path))
+          self._ExtractSigningTeamIdentifier(self.artifact_output_path))
       contents = contents.replace(
           '$(BundleIdentifier)',
-          self._ExtractSigningBundleIdentifier(self.content_folder_path))
+          self._ExtractSigningBundleIdentifier(self.artifact_output_path))
       with open(output_file, 'w') as output:
         output.write(contents)
     return output_file

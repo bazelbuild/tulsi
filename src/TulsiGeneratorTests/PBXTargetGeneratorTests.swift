@@ -425,7 +425,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
-                        attributes: rule2Attributes as [String: AnyObject]),
+                        attributes: rule2Attributes as [String: AnyObject],
+                        platformType: "ios",
+                        osDeploymentTarget: "8.0"),
     ])
 
     do {
@@ -487,6 +489,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+          "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
@@ -536,7 +539,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
-                        attributes: rule2Attributes as [String: AnyObject]),
+                        attributes: rule2Attributes as [String: AnyObject],
+                        platformType: "ios",
+                        osDeploymentTarget: "8.0"),
       ])
 
     do {
@@ -597,8 +602,244 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "BAZEL_TARGET_TYPE": testRuleType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
         "PRODUCT_NAME": rule2TargetName,
         "SDKROOT": "iphoneos",
+        "TEST_TARGET_NAME": rule1TargetName,
+        "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule2TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesMacOSUnitTests() {
+    let testRuleType = "apple_unit_test"
+    let testHostAttributeName = "test_host"
+    let rule1BuildPath = "test/app"
+    let rule1TargetName = "TestApplication"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let rule2BuildPath = "test/testbundle"
+    let rule2TargetName = "TestBundle"
+    let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
+    let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget,
+                        type: "macos_application",
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      makeTestRuleEntry(rule2BuildTarget,
+                        type: testRuleType,
+                        attributes: rule2Attributes as [String: AnyObject],
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/app:TestApplication",
+        "BAZEL_TARGET_TYPE": "macos_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "macosx",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "BUNDLE_LOADER": "$(TEST_HOST)",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule2TargetName,
+        "SDKROOT": "macosx",
+        "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/Contents/MacOS/\(rule1TargetName)",
+        "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule2TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesMacOSUITests() {
+    let testRuleType = "apple_ui_test"
+    let testHostAttributeName = "test_host"
+    let rule1BuildPath = "test/app"
+    let rule1TargetName = "TestApplication"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let rule2BuildPath = "test/testbundle"
+    let rule2TargetName = "TestBundle"
+    let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
+    let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget,
+                        type: "macos_application",
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      makeTestRuleEntry(rule2BuildTarget,
+                        type: testRuleType,
+                        attributes: rule2Attributes as [String: AnyObject],
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/app:TestApplication",
+        "BAZEL_TARGET_TYPE": "macos_application",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "macosx",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule2TargetName,
+        "SDKROOT": "macosx",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": rule2BuildPath,
         "TULSI_TEST_RUNNER_ONLY": "YES",
@@ -655,7 +896,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources)
+                                     sourceFiles: testSources,
+                                     platformType: "ios",
+                                     osDeploymentTarget: "8.0")
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       testRule,
@@ -716,6 +959,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+          "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
@@ -773,7 +1017,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
       type: "\(testRuleType)",
       attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
-                   "test_host": testHostRuleEntry.label.value as AnyObject])
+                   "test_host": testHostRuleEntry.label.value as AnyObject],
+      platformType: "ios",
+      osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [objcLibraryRuleEntry,
                                                           appleBinaryRuleEntry,
@@ -799,6 +1045,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "BUNDLE_LOADER": "$(TEST_HOST)",
       "DEBUG_INFORMATION_FORMAT": "dwarf",
       "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+      "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
       "PRODUCT_NAME": testRuleTargetName,
       "SDKROOT": "iphoneos",
       "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
@@ -855,7 +1102,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
                                           type: "\(testRuleType)",
                                           attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
-                                                       "test_host": testHostRuleEntry.label.value as AnyObject])
+                                                       "test_host": testHostRuleEntry.label.value as AnyObject],
+                                          platformType: "ios",
+                                          osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRuleEntry,
                                                           appleBinaryRuleEntry,
@@ -881,6 +1130,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "BUNDLE_LOADER": "$(TEST_HOST)",
       "DEBUG_INFORMATION_FORMAT": "dwarf",
       "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+      "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
       "PRODUCT_NAME": testRuleTargetName,
       "SDKROOT": "iphoneos",
       "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
@@ -940,7 +1190,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources)
+                                     sourceFiles: testSources,
+                                     platformType: "ios",
+                                     osDeploymentTarget: "8.0")
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
       testRule,
@@ -1000,6 +1252,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "BAZEL_TARGET_TYPE": testRuleType,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
         "PRODUCT_NAME": testRuleTargetName,
         "SDKROOT": "iphoneos",
         "TEST_TARGET_NAME": rule1TargetName,

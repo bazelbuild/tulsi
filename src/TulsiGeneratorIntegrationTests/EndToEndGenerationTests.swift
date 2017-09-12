@@ -201,6 +201,38 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     validateDiff(diffLines)
   }
 
+  func test_macTestsProject() {
+    let testDir = "tulsi_e2e_mac"
+    installBUILDFile("Mac", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):MyMacOSApp")
+    let unitTestsLabel = BuildLabel("//\(testDir):UnitTests")
+    let uiTestsLabel = BuildLabel("//\(testDir):UITests")
+    let hostLabels = Set<BuildLabel>([appLabel])
+    let buildTargets = [RuleInfo(label: unitTestsLabel,
+                                 type: "apple_unit_test",
+                                 linkedTargetLabels: hostLabels),
+                        RuleInfo(label: uiTestsLabel,
+                                 type: "apple_ui_test",
+                                 linkedTargetLabels: hostLabels)]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "MacOSTestsProject"
+    guard let projectURL = generateProjectNamed(projectName,
+                                                buildTargets: buildTargets,
+                                                pathFilters: ["\(testDir)/...",
+                                                  "blaze-bin/...",
+                                                  "blaze-genfiles/..."],
+                                                additionalFilePaths: additionalFilePaths,
+                                                outputDir: "tulsi_e2e_output/") else {
+                                                  // The test has already been marked as failed.
+                                                  return
+    }
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
   func test_simpleCCProject() {
     let testDir = "tulsi_e2e_ccsimple"
     let appLabel = BuildLabel("//\(testDir):ccBinary")

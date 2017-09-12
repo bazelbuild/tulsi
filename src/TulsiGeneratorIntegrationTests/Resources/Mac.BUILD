@@ -20,6 +20,8 @@ load(
     "macos_application",
     "macos_command_line_application",
     "macos_extension",
+    "macos_unit_test",
+    "macos_ui_test",
 )
 load(
     "//tools/build_defs/apple:versioning.bzl",
@@ -111,4 +113,28 @@ objc_library(
 apple_bundle_version(
     name = "CommandLineVersion",
     build_version = "1.0",
+)
+
+# Test targets
+
+objc_library(
+    name = "UnitTestsLib",
+    srcs = ["test/UnitTests.m"],
+)
+
+objc_library(
+    name = "UITestsLib",
+    srcs = ["test/UITests.m"],
+)
+
+macos_unit_test(
+    name = "UnitTests",
+    test_host = ":MyMacOSApp",
+    deps = [":UnitTestsLib"],
+)
+
+macos_ui_test(
+    name = "UITests",
+    test_host = ":MyMacOSApp",
+    deps = [":UITestsLib"],
 )

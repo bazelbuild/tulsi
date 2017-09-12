@@ -150,50 +150,6 @@ public final class RuleEntry: RuleInfo {
       "_test_host_": PBXTarget.ProductType.Application,
   ]
 
-  /// Valid Apple Platform Types.
-  /// See https://docs.bazel.build/versions/master/skylark/lib/apple_common.html#platform_type
-  public enum PlatformType: String {
-    case ios
-    case macos
-    case tvos
-    case watchos
-
-    var buildSettingsDeploymentTarget: String {
-      switch self {
-        case .ios: return "IPHONEOS_DEPLOYMENT_TARGET"
-        case .macos: return "MACOSX_DEPLOYMENT_TARGET"
-        case .tvos: return "TVOS_DEPLOYMENT_TARGET"
-        case .watchos: return "WATCHOS_DEPLOYMENT_TARGET"
-      }
-    }
-    var simulatorSDK: String {
-      switch self {
-        case .ios: return "iphonesimulator"
-        case .macos: return "macosx"
-        case .tvos: return "appletvsimulator"
-        case .watchos: return "watchsimulator"
-      }
-    }
-    var deviceSDK: String {
-      switch self {
-        case .ios: return "iphoneos"
-        case .macos: return "macosx"
-        case .tvos: return "appletvos"
-        case .watchos: return "watchos"
-      }
-    }
-  }
-
-  /// Target platform and os version to be used when generating the project.
-  public struct DeploymentTarget : Equatable {
-    let platform: PlatformType
-    let osVersion: String
-
-    public static func ==(lhs: RuleEntry.DeploymentTarget, rhs: RuleEntry.DeploymentTarget) -> Bool {
-      return lhs.platform == rhs.platform && lhs.osVersion == rhs.osVersion
-    }
-  }
-
   /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
   /// Encyclopedia (see http://bazel.build/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.

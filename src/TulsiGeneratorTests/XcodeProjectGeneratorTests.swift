@@ -39,7 +39,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
       cleanScript: URL(fileURLWithPath: "/scripts/Clean"),
       extraBuildScripts: [URL(fileURLWithPath: "/scripts/Logging")],
       postProcessor: URL(fileURLWithPath: "/utils/covmap_patcher"),
-      uiRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/XCTRunner.entitlements"),
+      iOSUIRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/iOSXCTRunner.entitlements"),
+      macOSUIRunnerEntitlements: URL(fileURLWithPath: "/generatedProjectResources/macOSXCTRunner.entitlements"),
       stubInfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubInfoPlist.plist"),
       stubIOSAppExInfoPlistTemplate: URL(fileURLWithPath: "/generatedProjectResources/stubIOSAppExInfoPlist.plist"),
       stubWatchOS2InfoPlist: URL(fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
@@ -433,7 +434,9 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     var testTargetLinkages = [(PBXTarget, BuildLabel)]()
     for (name, entry) in namedRuleEntries {
-      let target = project.createNativeTarget(name, targetType: entry.pbxTargetType!)
+      let target = project.createNativeTarget(name,
+                                              deploymentTarget: entry.deploymentTarget,
+                                              targetType: entry.pbxTargetType!)
 
       for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
         if let hostLabelString = entry.attributes[attribute] as? String {

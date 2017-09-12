@@ -303,10 +303,13 @@ class PBXProjSerializerTests: XCTestCase {
       let config = targetProject.buildConfigurationList.getOrCreateBuildConfiguration(projectLevelBuildConfigName)
       config.buildSettings = projectLevelBuildConfigSettings
     }
-    let nativePBXTarget = targetProject.createNativeTarget(nativeTarget.name, targetType: nativeTarget.targetType)
+    let nativePBXTarget = targetProject.createNativeTarget(nativeTarget.name,
+                                                           deploymentTarget: nil,
+                                                           targetType: nativeTarget.targetType)
     let config = nativePBXTarget.buildConfigurationList.getOrCreateBuildConfiguration(nativeTarget.config)
     config.buildSettings = nativeTarget.settings
     let legacyPBXTarget = targetProject.createLegacyTarget(legacyTarget.name,
+                                                           deploymentTarget: nil,
                                                            buildToolPath: legacyTarget.buildToolPath,
                                                            buildArguments: legacyTarget.buildArguments,
                                                            buildWorkingDirectory: legacyTarget.buildWorkingDirectory)

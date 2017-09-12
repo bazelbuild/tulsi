@@ -35,7 +35,8 @@ final class XcodeProjectGenerator {
     let cleanScript: URL  // The script to run on "clean" actions.
     let extraBuildScripts: [URL] // Any additional scripts to install into the project bundle.
     let postProcessor: URL  // Binary post processor utility.
-    let uiRunnerEntitlements: URL  // Entitlements file template for UI Test runner apps.
+    let iOSUIRunnerEntitlements: URL  // Entitlements file template for iOS UI Test runner apps.
+    let macOSUIRunnerEntitlements: URL  // Entitlements file template for macOS UI Test runner apps.
     let stubInfoPlist: URL  // Stub Info.plist (needed for Xcode 8).
     let stubIOSAppExInfoPlistTemplate: URL  // Stub Info.plist (needed for app extension targets).
     let stubWatchOS2InfoPlist: URL  // Stub Info.plist (needed for watchOS2 app targets).
@@ -67,7 +68,8 @@ final class XcodeProjectGenerator {
   private static let CleanScript = "bazel_clean.sh"
   private static let WorkspaceFile = "WORKSPACE"
   private static let PostProcessorUtil = "post_processor"
-  private static let UIRunnerEntitlements = "XCTRunner.entitlements"
+  private static let IOSUIRunnerEntitlements = "iOSXCTRunner.entitlements"
+  private static let MacOSUIRunnerEntitlements = "macOSXCTRunner.entitlements"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
@@ -813,7 +815,8 @@ final class XcodeProjectGenerator {
                                                                context: config.projectName)
     localizedMessageLogger.infoMessage("Installing project resources")
 
-    installFiles([(resourceURLs.uiRunnerEntitlements, XcodeProjectGenerator.UIRunnerEntitlements),
+    installFiles([(resourceURLs.iOSUIRunnerEntitlements, XcodeProjectGenerator.IOSUIRunnerEntitlements),
+                  (resourceURLs.macOSUIRunnerEntitlements, XcodeProjectGenerator.MacOSUIRunnerEntitlements),
                   (resourceURLs.stubInfoPlist, XcodeProjectGenerator.StubInfoPlistFilename),
                   (resourceURLs.stubWatchOS2InfoPlist, XcodeProjectGenerator.StubWatchOS2InfoPlistFilename),
                   (resourceURLs.stubWatchOS2AppExInfoPlist, XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename),
