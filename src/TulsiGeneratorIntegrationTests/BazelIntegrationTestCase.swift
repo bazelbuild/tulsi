@@ -412,6 +412,8 @@ class BazelIntegrationTestCase: XCTestCase {
           print("> I: \(item.message)")
         case .Syslog:
           print("> S: \(item.message)")
+        case .Debug:
+          print("> D: \(item.message)")
       }
     }
   }
