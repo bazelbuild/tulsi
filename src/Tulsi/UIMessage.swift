@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Cocoa
+import TulsiGenerator
 
 /// Defines an object that holds an array of UIMessages.
 protocol MessageLogProtocol: class {
@@ -22,18 +23,13 @@ protocol MessageLogProtocol: class {
 
 /// Models a single user-facing message.
 final class UIMessage: NSObject, NSPasteboardWriting {
-  @objc
-  enum MessageType: Int {
-    case info, warning, error
-  }
-
   dynamic let text: String
-  dynamic let messageType: MessageType
+  dynamic let messagePriority: TulsiGenerator.LogMessagePriority
   let timestamp = Date()
 
-  init(text: String, type: MessageType) {
+  init(text: String, type: TulsiGenerator.LogMessagePriority) {
     self.text = text
-    self.messageType = type
+    self.messagePriority = type
   }
 
   // MARK: - NSPasteboardWriting
@@ -47,7 +43,7 @@ final class UIMessage: NSObject, NSPasteboardWriting {
       let timeString = DateFormatter.localizedString(from: timestamp,
                                                                dateStyle: .none,
                                                                timeStyle: .medium)
-      return "[\(timeString)](\(messageType.rawValue)): \(text)"
+      return "[\(timeString)](\(messagePriority.rawValue)): \(text)"
     }
     return nil
   }

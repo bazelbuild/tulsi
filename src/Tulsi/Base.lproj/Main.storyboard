@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -309,11 +310,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="cRR-iz-tQR">
-                                                            <rect key="frame" x="1" y="1" width="654" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="653" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="6nZ-MN-JNi">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="654" height="17"/>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6nZ-MN-JNi">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="653" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="UI Config" id="q9L-Hb-MSD">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -350,7 +351,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="UA8-cJ-thj">
-                                                            <rect key="frame" x="658" y="1" width="48" height="17"/>
+                                                            <rect key="frame" x="657.5" y="1" width="47" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="FJ0-ep-4iH">
@@ -594,14 +595,14 @@ Gw
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="LuT-eW-86N">
-                                                            <rect key="frame" x="1" y="1" width="621" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="622" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gu0-Vl-OiO" colorLabel="IBBuiltInLabel-Green">
                                                                     <rect key="frame" x="3" y="2" width="14" height="14"/>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="X7s-cY-9ge"/>
                                                                     <connections>
-                                                                        <binding destination="LuT-eW-86N" name="value" keyPath="objectValue.messageType" id="BGb-y5-pgc">
+                                                                        <binding destination="LuT-eW-86N" name="value" keyPath="objectValue.messagePriority" id="BGb-y5-pgc">
                                                                             <dictionary key="options">
                                                                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                 <bool key="NSConditionallySetsEnabled" value="NO"/>
@@ -610,7 +611,7 @@ Gw
                                                                         </binding>
                                                                     </connections>
                                                                 </imageView>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" allowsExpansionToolTips="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jPI-Ev-okr">
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" allowsExpansionToolTips="YES" setsMaxLayoutWidthAtFirstLayout="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPI-Ev-okr">
                                                                     <rect key="frame" x="22" y="0.0" width="599" height="17"/>
                                                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Table View Cell" id="Ge9-jU-LVK">
                                                                         <font key="font" metaFont="system"/>
@@ -755,11 +756,11 @@ CA
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="A5C-qi-bzq">
-                                                            <rect key="frame" x="1" y="1" width="705" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="704" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="NMB-YA-dlg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="705" height="17"/>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMB-YA-dlg">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="704" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="//Some/Package/Path" id="kTS-hR-9lA">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -978,7 +979,7 @@ CA
                                                             <rect key="frame" x="437" y="1" width="142" height="19"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="wZD-kA-cFl">
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wZD-kA-cFl">
                                                                     <rect key="frame" x="0.0" y="1" width="140" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="rule_type" id="Ak1-OD-zar">
                                                                         <font key="font" metaFont="system"/>
@@ -1037,7 +1038,7 @@ CA
                                     </binding>
                                 </connections>
                             </progressIndicator>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="yhB-E0-ghf">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhB-E0-ghf">
                                 <rect key="frame" x="190" y="173" width="240" height="39"/>
                                 <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" drawsBackground="YES" id="gh7-qf-iwd">
                                     <font key="font" metaFont="system"/>
@@ -1286,7 +1287,7 @@ Please check this project's packages.</string>
                         <rect key="frame" x="0.0" y="0.0" width="334" height="74"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pjO-M7-Y7v">
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pjO-M7-Y7v">
                                 <rect key="frame" x="4" y="4" width="326" height="66"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="66" id="ep1-Eu-81i"/>
@@ -1357,7 +1358,7 @@ Please check this project's packages.</string>
                                                                     <rect key="frame" x="1" y="1" width="152" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="XIV-JA-QLS">
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XIV-JA-QLS">
                                                                             <rect key="frame" x="0.0" y="0.0" width="152" height="17"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="17" id="lHl-fK-XKL"/>
@@ -1438,11 +1439,11 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="97C-ck-8nj">
-                                                                    <rect key="frame" x="1" y="1" width="130" height="17"/>
+                                                                    <rect key="frame" x="1" y="1" width="129" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ypQ-IN-W6z">
-                                                                            <rect key="frame" x="0.0" y="2" width="130" height="14"/>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypQ-IN-W6z">
+                                                                            <rect key="frame" x="0.0" y="3" width="129" height="14"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Setting (via bindings)" id="Caz-sl-MAl">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1487,11 +1488,11 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView identifier="TableCellView" id="YMp-DA-LoX" userLabel="TableCellView" customClass="TextTableCellView" customModule="Tulsi" customModuleProvider="target">
-                                                                    <rect key="frame" x="133" y="1" width="153" height="17"/>
+                                                                    <rect key="frame" x="133.5" y="1" width="153" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="dNR-lb-Qb0" customClass="OptionsEditorTextField" customModule="Tulsi" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="2" width="153" height="14"/>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dNR-lb-Qb0" customClass="OptionsEditorTextField" customModule="Tulsi" customModuleProvider="target">
+                                                                            <rect key="frame" x="0.0" y="1" width="153" height="14"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Text Value" usesSingleLineMode="YES" id="6JF-JR-Kah">
                                                                                 <font key="font" metaFont="smallSystem"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1518,7 +1519,7 @@ Please check this project's packages.</string>
                                                                     </connections>
                                                                 </tableCellView>
                                                                 <tableCellView identifier="PopUpButtonCell" id="oYh-zc-ZM8" userLabel="PopUpButtonCell" customClass="PopUpButtonTableCellView" customModule="Tulsi" customModuleProvider="target">
-                                                                    <rect key="frame" x="133" y="20" width="153" height="17"/>
+                                                                    <rect key="frame" x="133.5" y="20" width="153" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="R15-06-ru9">
@@ -1558,7 +1559,7 @@ Please check this project's packages.</string>
                                                                     </connections>
                                                                 </tableCellView>
                                                                 <tableCellView identifier="BoldPopUpButtonCell" id="kO7-54-VYI" userLabel="PopUpButtonCell" customClass="PopUpButtonTableCellView" customModule="Tulsi" customModuleProvider="target">
-                                                                    <rect key="frame" x="133" y="39" width="153" height="17"/>
+                                                                    <rect key="frame" x="133.5" y="39" width="153" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="dWe-x5-135">
@@ -1613,7 +1614,7 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="NSK-dd-w7F">
-                                                                    <rect key="frame" x="289" y="1" width="148" height="17"/>
+                                                                    <rect key="frame" x="289.5" y="1" width="148" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
@@ -1632,10 +1633,10 @@ Please check this project's packages.</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="zKg-DP-uTh">
-                                                                    <rect key="frame" x="440" y="1" width="147" height="17"/>
+                                                                    <rect key="frame" x="440.5" y="1" width="147" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGM-OR-kqV">
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGM-OR-kqV">
                                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" sendsActionOnEndEditing="YES" title="Default (via bindings)" id="4eQ-7P-ir6">

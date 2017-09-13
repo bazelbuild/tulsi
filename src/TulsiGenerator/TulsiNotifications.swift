@@ -24,7 +24,30 @@ public let TulsiMessageNotification = "com.google.tulsi.Message"
 
 /// Message levels used by TulsiMessage notifications.
 public enum TulsiMessageLevel: String {
-  case Error, Warning, Info, Syslog
+  case Error, Warning, Syslog, Info, Debug
+}
+
+/// Message levels used for identifying priority and ordering in UI. @objc to use from a Storyboard.
+@objc
+public enum LogMessagePriority: Int {
+  case error, warning, syslog, info, debug
+}
+
+extension TulsiMessageLevel {
+  public var logRank: LogMessagePriority {
+    switch self {
+    case .Error:
+      return .error
+    case .Warning:
+      return .warning
+    case .Syslog:
+      return .syslog
+    case .Info:
+      return .info
+    case .Debug:
+      return .debug
+    }
+  }
 }
 
 public struct LogMessage {
@@ -47,6 +70,10 @@ public struct LogMessage {
 
   public static func postSyslog(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Syslog, message: message, details: details, context: context)
+  }
+
+  public static func postDebug(_ message: String, details: String? = nil, context: String? = nil) {
+    postMessage(.Debug, message: message, details: details, context: context)
   }
 
   /// Convenience method to post a notification that may be converted into a TulsiMessageItem.

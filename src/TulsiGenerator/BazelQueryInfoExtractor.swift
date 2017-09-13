@@ -351,9 +351,9 @@ final class BazelQueryInfoExtractor: QueuedLogging {
     guard !self.queuedInfoMessages.isEmpty else {
       return
     }
-    localizedMessageLogger.infoMessage("Log of Bazel query output follows:")
+    localizedMessageLogger.debugMessage("Log of Bazel query output follows:")
     for message in self.queuedInfoMessages {
-      localizedMessageLogger.infoMessage(message)
+      localizedMessageLogger.debugMessage(message)
     }
     self.queuedInfoMessages.removeAll()
   }

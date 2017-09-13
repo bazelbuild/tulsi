@@ -513,6 +513,9 @@ final class TulsiProjectDocument: NSDocument,
 
       case .Syslog:
         break
+
+      case .Debug:
+        messages.append(UIMessage(text: fullMessage, type: .debug))
     }
   }
 

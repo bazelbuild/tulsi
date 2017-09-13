@@ -35,7 +35,7 @@ class TulsiCommandlineParser {
     let tulsiprojName: String?
     let outputFolder: String?
     let workspaceRootOverride: String?
-    let verbose: Bool
+    let verboseLevel: TulsiMessageLevel
     let suppressWORKSPACECheck: Bool
     let openXcodeOnSuccess: Bool
     let additionalPathFilters: Set<String>
@@ -49,7 +49,7 @@ class TulsiCommandlineParser {
       tulsiprojName = nil
       outputFolder = nil
       workspaceRootOverride = nil
-      verbose = true
+      verboseLevel = .Info
       suppressWORKSPACECheck = false
       openXcodeOnSuccess = true
       additionalPathFilters = Set()
@@ -71,7 +71,15 @@ class TulsiCommandlineParser {
       generatorConfig = standardizedPath(TulsiCommandlineParser.ParamGeneratorConfigLong)
       tulsiprojName = standardizedPath(TulsiCommandlineParser.ParamCreateTulsiProj)
       outputFolder = standardizedPath(TulsiCommandlineParser.ParamOutputFolderLong)
-      verbose = !(dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true)
+
+      if (dict[TulsiCommandlineParser.ParamVerboseLong] as? Bool == true) {
+        verboseLevel = .Debug
+      } else if (dict[TulsiCommandlineParser.ParamQuietLong] as? Bool == true) {
+        verboseLevel = .Syslog
+      } else {
+        verboseLevel = .Info
+      }
+
       workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
       suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
@@ -92,6 +100,8 @@ class TulsiCommandlineParser {
   static let ParamNoWorkspaceCheck = "--no-workspace-check"
   static let ParamOutputFolderShort = "-o"
   static let ParamOutputFolderLong = "--outputfolder"
+  static let ParamVerboseShort = "-v"
+  static let ParamVerboseLong = "--verbose"
   static let ParamQuietShort = "-q"
   static let ParamQuietLong = "--quiet"
   static let ParamWorkspaceRootShort = "-w"
@@ -170,6 +180,10 @@ class TulsiCommandlineParser {
           TulsiCommandlineParser.printUsage()
           exit(1)
 
+        case TulsiCommandlineParser.ParamVerboseShort:
+          fallthrough
+        case TulsiCommandlineParser.ParamVerboseLong:
+          parsedArguments[TulsiCommandlineParser.ParamVerboseLong] = true as AnyObject?
         case TulsiCommandlineParser.ParamQuietShort:
           fallthrough
         case TulsiCommandlineParser.ParamQuietLong:
@@ -282,7 +296,9 @@ class TulsiCommandlineParser {
         "  \(ParamBazel) <path>: Path to the Bazel binary.",
         "  \(ParamWorkspaceRootLong) <path>: Path to the folder containing the Bazel WORKSPACE file.",
         "  \(ParamOutputFolderLong) <path>: Sets the folder into which the generated content should be saved.",
-        "  \(ParamQuietLong): Hide verbose info messages (warning: may also hide some error details).",
+        "  \(ParamVerboseLong): Show additional debug info, can be helpful for debugging bazel invocations.",
+        "    Overrides \(ParamQuietLong) if both are present. ",
+        "  \(ParamQuietLong): Hide all debug info messages (warning: may also hide some error details).",
         "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project.",
         ""
     ]

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Cocoa
+import TulsiGenerator
 
 
 /// NSTableView that posts a notification when live resizing completes.
@@ -146,12 +147,12 @@ final class MessageTypeToImageValueTransformer : ValueTransformer {
 
   override func transformedValue(_ value: Any?) -> Any? {
     guard let intValue = value as? Int,
-          let messageType = UIMessage.MessageType(rawValue: intValue) else {
+          let messageType = TulsiGenerator.LogMessagePriority(rawValue: intValue) else {
       return nil
     }
 
     switch messageType {
-      case .info:
+      case .info, .debug, .syslog:
         return NSImage(named: "message_info")
       case .warning:
         return NSImage(named: "message_warning")
