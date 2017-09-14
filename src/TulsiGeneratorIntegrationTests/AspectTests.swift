@@ -385,7 +385,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     }
     let checker = InfoChecker(ruleEntries: ruleEntries)
     checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
-        .hasTestHost("//tools/objc:xctest_app")
+        .hasTestHost("//tools/build_defs/apple/testing:ios_default_host")
         .hasAttribute(.xctest, value: true)
         .hasSources(["tulsi_test/XCTestWithDefaultHost/srcs/src1.mm"])
   }
