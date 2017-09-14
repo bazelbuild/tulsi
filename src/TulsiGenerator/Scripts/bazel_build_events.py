@@ -56,8 +56,6 @@ class BazelBuildEvent(object):
 
   Public Properties:
     event_dict: the source dictionary for this event.
-    id_as_string: 'id' in event_dict as a json string, if any.
-    children_id_strings: list of all children id strings.
     stdout: stdout string, if any.
     stderr: stderr string, if any.
     files: list of file URIs.
@@ -73,12 +71,6 @@ class BazelBuildEvent(object):
       A BazelBuildEvent instance.
     """
     self.event_dict = event_dict
-    self.id_as_string = (json.dumps(event_dict['id']) if 'id' in event_dict
-                         else None)
-    children = event_dict.get('children', [])
-    self.children_id_strings = [json.dumps(x) for x in children]
-    self._children_by_id_string = {}
-
     self.stdout = None
     self.stderr = None
     self.files = []
@@ -98,112 +90,21 @@ class BazelBuildEvent(object):
       if uri.startswith('file://'):
         self.files.append(uri[7:])
 
-  def is_resolved(self):
-    """Returns True iff this build event is considered resolved.
-
-    This means all of it's children (and their children, recursively) are
-    present in the tree.
-    """
-    children_id_strings = self.children_id_strings
-    if not children_id_strings:
-      return True
-    children_by_id = self._children_by_id_string
-    for child_id in children_id_strings:
-      if child_id not in children_by_id:
-        return False
-      if not children_by_id[child_id].is_resolved():
-        return False
-    return True
-
-  def resolved_children_events(self):
-    """Returns all of the currently resolved child BazelBuildEvents."""
-    events = []
-    children_id_strings = self.children_id_strings
-    if not children_id_strings:
-      return events
-    children_by_id = self._children_by_id_string
-    for child_id in children_id_strings:
-      if child_id in children_by_id:
-        events.append(children_by_id[child_id])
-    return events
-
-  def insert_child(self, child_event):
-    """Inserts the specified BazelBuildEvent as a child."""
-    self._children_by_id_string[child_event.id_as_string] = child_event
-
-
-class _BazelBuildEventTree(object):
-  """Class to help resolve a structured tree from a stream of Build Events."""
-
-  def __init__(self, root_build_event, warning_handler):
-    """Creates a new BazelBuildEventTree object.
-
-    Args:
-      root_build_event: The root BazelBuildEvent
-      warning_handler: Handler function for warnings accepting a single string.
-
-    Returns:
-      A BazelBuildEventTree instance.
-    """
-    self.root_build_event = root_build_event
-    self.warning_handler = warning_handler
-    self.event_parents_by_id = {}
-    self._index_children_of_event(self.root_build_event)
-
-  def insert_child(self, build_event):
-    """Inserts the BazelBuildEvent into the tree."""
-    self._attach_child_event_to_parent(build_event)
-    self._index_children_of_event(build_event)
-
-  def is_complete(self):
-    """Returns True iff the root of the tree is considered resolved.
-
-    This means all of it's children (and their children, recursively) are
-    present in the tree.
-    """
-    return self.root_build_event.is_resolved()
-
-  def _attach_child_event_to_parent(self, build_event):
-    """Attach a build_event to its proper parent using our parent index."""
-    event_id = build_event.id_as_string
-    if not event_id:
-      event_str = json.dumps(build_event.event_dict)
-      self._warn('BazelBuildEvent %s does not have an id!' % event_str)
-      return
-    parent = self.event_parents_by_id.get(event_id, None)
-    if not parent:
-      self._warn('Unable to find parent for BazelBuildEvent %s!' % event_id)
-      return
-    parent.insert_child(build_event)
-
-  def _index_children_of_event(self, build_event):
-    """Index the children of build_event so we can easily attach them later."""
-    event_parents_by_id = self.event_parents_by_id
-    for child_id in build_event.children_id_strings:
-      event_parents_by_id[child_id] = build_event
-
-  def _warn(self, msg):
-    """Logs the warning to the warning_handler if it exists."""
-    if self.warning_handler:
-      self.warning_handler(msg)
-
 
 class BazelBuildEventsWatcher(object):
   """Watches a build events JSON file."""
 
-  def __init__(self, json_file, warning_handler=None):
+  def __init__(self, json_file):
     """Creates a new BazelBuildEventsWatcher object.
 
     Args:
       json_file: The JSON file object to watch.
-      warning_handler: Handler function for warnings accepting a single string.
 
     Returns:
       A BazelBuildEventsWatcher instance.
     """
     self.file_reader = _FileLineReader(json_file)
     self.build_event_tree = None
-    self.warning_handler = warning_handler
 
   def check_for_new_events(self):
     """Checks the file for new BazelBuildEvents.
@@ -218,14 +119,5 @@ class BazelBuildEventsWatcher(object):
         break
       build_event_dict = json.loads(line)
       build_event = BazelBuildEvent(build_event_dict)
-      if not self.build_event_tree:
-        handler = self.warning_handler
-        self.build_event_tree = _BazelBuildEventTree(build_event, handler)
-      else:
-        self.build_event_tree.insert_child(build_event)
       new_events.append(build_event)
     return new_events
-
-  def is_build_complete(self):
-    tree = self.build_event_tree
-    return tree.is_complete() if tree else False

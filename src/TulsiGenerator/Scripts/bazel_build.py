@@ -787,8 +787,7 @@ class BazelBuildBridge(object):
                                    stderr=subprocess.STDOUT)
 
       with open(self.build_events_file_path, 'r') as bep_file:
-        watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
-                                                             _PrintXcodeWarning)
+        watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file)
         output_locations = []
         while process.returncode is None:
           output_locations.extend(WatcherUpdate(watcher))
@@ -803,11 +802,6 @@ class BazelBuildBridge(object):
                              'Please report this as a Tulsi bug, including the'
                              'contents of %s.' % self.build_events_file_path)
             return 1, output_locations
-          if not watcher.is_build_complete():
-            _PrintXcodeWarning('Unable to resolve all build events. Please'
-                               'report this as a Tulsi bug, including the'
-                               'contents of %s.' % self.build_events_file_path)
-
         return process.returncode, output_locations
     else:  # TODO(b/65198307): Remove this to complete swap to BEP.
       process = subprocess.Popen(command,
