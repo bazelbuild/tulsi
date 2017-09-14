@@ -890,10 +890,14 @@ class BazelBuildBridge(object):
 
   def _InstallGeneratedHeaders(self, output_files):
     """Installs Bazel-generated headers into tulsi-includes directory."""
-    tulsi_root = os.path.join(self.bazel_build_workspace_root, 'tulsi-includes')
+    tulsi_root = os.path.join(self.workspace_root, 'tulsi-includes')
 
+    # We need to check if the path is a symlink since a link to an invalid path
+    # will evaluate to False for os.path.exists
     if os.path.exists(tulsi_root):
       shutil.rmtree(tulsi_root)
+    elif os.path.islink(tulsi_root):
+      os.unlink(tulsi_root)
     else:
       os.mkdir(tulsi_root)
 

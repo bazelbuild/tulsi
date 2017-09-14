@@ -546,6 +546,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let otherCFlags = NSMutableOrderedSet()
       if let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty {
         for opt in copts {
+          if opt.hasPrefix("-W") {
+            continue
+          }
           // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
           //     encyclopedia.
           if opt.hasPrefix("-D") {
