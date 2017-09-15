@@ -27,7 +27,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                    localizedMessageLogger: localizedMessageLogger)
   }
 
-  func testSimple() {
+  func testSimple() throws {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("SimpleDataModelsTestv1", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
     makeTestXCDataModel("SimpleDataModelsTestv2", inSubdirectory: "tulsi_test/SimpleTest.xcdatamodeld")
@@ -35,17 +35,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE")
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_VALUE=1")
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
-                                                                         BuildLabel("//tulsi_test:XCTest")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: buildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
+                                                                           BuildLabel("//tulsi_test:XCTest")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: buildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 4)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -119,6 +113,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                   bepEnabled: true)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       // Expected failure on malformed BUILD file.
+      XCTAssert(aspectInfoExtractor.hasQueuedInfoMessages)
       return
     } catch let e {
       XCTFail("Expected exception of type 'BazelAspectInfoExtractor.ExtractorError.buildFailed' " +
@@ -128,29 +123,23 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         "to be thrown for bazel aspect build error.")
   }
 
-  func testComplexSingle_DefaultConfig_BepEnabled() {
-    complexSingleTest_DefaultConfig(bepEnabled: true)
+  func testComplexSingle_DefaultConfig_BepEnabled() throws {
+    try complexSingleTest_DefaultConfig(bepEnabled: true)
   }
 
-  func testComplexSingle_DefaultConfig_BepDisabled() {
-    complexSingleTest_DefaultConfig(bepEnabled: false)
+  func testComplexSingle_DefaultConfig_BepDisabled() throws {
+    try complexSingleTest_DefaultConfig(bepEnabled: false)
   }
 
-  func complexSingleTest_DefaultConfig(bepEnabled: Bool) {
+  func complexSingleTest_DefaultConfig(bepEnabled: Bool) throws {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
     makeTestXCDataModel("DataModelsTestv2", inSubdirectory: "tulsi_test/Test.xcdatamodeld")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
-                                                                         BuildLabel("//tulsi_test:XCTest")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: bepEnabled)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application"),
+                                                                           BuildLabel("//tulsi_test:XCTest")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: bepEnabled)
     XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -309,20 +298,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/XCTest/srcs/defaultTestSource.m"])
   }
 
-  func testComplexSingle_ConfigTestEnabled() {
+  func testComplexSingle_ConfigTestEnabled() throws {
     bazelBuildOptions.append("--define=TEST=1")
 
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_test")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
-                                                                 startupOptions: bazelStartupOptions,
-                                                                 buildOptions: bazelBuildOptions,
-                                                                 bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 14)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
@@ -334,18 +317,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/XCTest/srcs/configTestSource.m"])
   }
 
-  func testPlatformDependent() {
+  func testPlatformDependent() throws {
     installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 6)
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -371,18 +348,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/file.java"])
   }
 
-  func testPlatformDependentXCTestWithDefaultApp() {
+  func testPlatformDependentXCTestWithDefaultApp() throws {
     installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithDefaultHost")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithDefaultHost")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     let checker = InfoChecker(ruleEntries: ruleEntries)
     checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
         .hasTestHost("//tools/build_defs/apple/testing:ios_default_host")
@@ -390,18 +361,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/XCTestWithDefaultHost/srcs/src1.mm"])
   }
 
-  func testWatch() {
+  func testWatch() throws {
     installBUILDFile("Watch", intoSubdirectory: "tulsi_test")
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     // TODO(b/65252498): Enable when the bug is fixed.
     // XCTAssertEqual(ruleEntries.count, 13)
 
@@ -452,17 +417,11 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                      fromResourceDirectory: "TestSuite/Three")
   }
 
-  func testTestSuite_ExplicitXCTests() {
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+  func testTestSuite_ExplicitXCTests() throws {
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 5)
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -481,17 +440,11 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
 
   }
 
-  func testTestSuite_ExplicitNonXCTests() {
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_NonXCTests")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+  func testTestSuite_ExplicitNonXCTests() throws {
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_NonXCTests")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 3)
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -506,17 +459,11 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
         .hasSources(["\(testDir)/Three/nonXCTest.m"])
   }
 
-  func testTestSuite_TaggedTests() {
-    let ruleEntries: [BuildLabel: RuleEntry]
-    do {
-      ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
-                                                                        startupOptions: bazelStartupOptions,
-                                                                        buildOptions: bazelBuildOptions,
-                                                                        bepEnabled: true)
-    } catch let e {
-      XCTFail("Received exception of \(e).")
-      return
-    }
+  func testTestSuite_TaggedTests() throws {
+    let ruleEntries = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
+                                                                          startupOptions: bazelStartupOptions,
+                                                                          buildOptions: bazelBuildOptions,
+                                                                          bepEnabled: true)
     XCTAssertEqual(ruleEntries.count, 4)
     let checker = InfoChecker(ruleEntries: ruleEntries)
 

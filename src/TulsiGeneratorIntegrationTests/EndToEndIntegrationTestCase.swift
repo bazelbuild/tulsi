@@ -19,6 +19,13 @@ import XCTest
 // Base class for end-to-end tests that generate xcodeproj bundles and validate them against golden
 // versions.
 class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
+  enum Error: Swift.Error {
+    /// A subdirectory for the Xcode project could not be created.
+    case testSubdirectoryNotCreated
+    /// The Xcode project could not be generated.
+    case projectGenerationFailure(String)
+  }
+
   let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
@@ -76,7 +83,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                   pathFilters: [String],
                                   additionalFilePaths: [String] = [],
                                   outputDir: String,
-                                  options: TulsiOptionSet = TulsiOptionSet()) -> URL? {
+                                  options: TulsiOptionSet = TulsiOptionSet()) throws -> URL {
     if !bazelStartupOptions.isEmpty {
       options[.BazelBuildStartupOptionsDebug].projectValue =
           bazelStartupOptions.joined(separator: " ")
@@ -97,8 +104,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                       bazelURL: bazelURLParam)
 
     guard let outputFolderURL = makeTestSubdirectory(outputDir) else {
-      XCTFail("Failed to create output folder, aborting test.")
-      return nil
+      throw Error.testSubdirectoryNotCreated
     }
 
     let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
@@ -122,10 +128,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
       errorInfo = "Unsupported target type: \(targetType)"
     } catch TulsiXcodeProjectGenerator.GeneratorError.serializationFailed(let details) {
       errorInfo = "General failure: \(details)"
-    } catch _ {
-      errorInfo = "Unexpected failure"
+    } catch let error {
+      errorInfo = "Unexpected failure: \(error)"
     }
-    XCTFail(errorInfo)
-    return nil
+    throw Error.projectGenerationFailure(errorInfo)
   }
 }

@@ -178,6 +178,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
   func testTestSuite_ExplicitXCTests() {
     let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):explicit_XCTests")])
     XCTAssertEqual(infos.count, 1)
+    XCTAssert(infoExtractor.hasQueuedInfoMessages)
     let checker = InfoChecker(infos: infos)
 
     checker.assertThat("//\(testDir):explicit_XCTests")
@@ -191,6 +192,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
   func testTestSuite_ExplicitNonXCTests() {
     let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):explicit_NonXCTests")])
     XCTAssertEqual(infos.count, 1)
+    XCTAssert(infoExtractor.hasQueuedInfoMessages)
     let checker = InfoChecker(infos: infos)
 
     checker.assertThat("//\(testDir):explicit_NonXCTests")
@@ -204,6 +206,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
   func testTestSuite_LocalTaggedTests() {
     let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):local_tagged_tests")])
     XCTAssertEqual(infos.count, 1)
+    XCTAssert(infoExtractor.hasQueuedInfoMessages)
     let checker = InfoChecker(infos: infos)
 
     // Tagged tests are expected to return all *_test rules in the same package, regardless of the
@@ -219,6 +222,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
   func testTestSuite_RecursiveTestSuites() {
     let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):recursive_test_suite")])
     XCTAssertEqual(infos.count, 2)
+    XCTAssert(infoExtractor.hasQueuedInfoMessages)
     let checker = InfoChecker(infos: infos)
 
     checker.assertThat("//\(testDir):recursive_test_suite")
@@ -260,6 +264,7 @@ class QueryTests_BuildFilesExtraction: BazelIntegrationTestCase {
     ]
 
     let fileLabels = infoExtractor.extractBuildfiles(targets)
+    XCTAssert(infoExtractor.hasQueuedInfoMessages)
 
     // Several file labels should've been retrieved, but these can be platform and Bazel version
     // specific, so they're assumed to be correct if the primary BUILD file and the nop Skylark file

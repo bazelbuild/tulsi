@@ -18,7 +18,7 @@ import XCTest
 
 // End to end tests that generate xcodeproj bundles and validate them against golden versions.
 class EndToEndGenerationTests: EndToEndIntegrationTestCase {
-  func test_SimpleProject() {
+  func test_SimpleProject() throws {
     let testDir = "tulsi_e2e_simple"
     installBUILDFile("Simple", intoSubdirectory: testDir)
     makeTestXCDataModel("SimpleDataModelsTestv1",
@@ -70,21 +70,65 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     options.options[.TestActionPostActionScript]?.projectValue = "This is a test post action script"
     options.options[.TestActionPostActionScript]?.targetValues?[targetLabel.value] = "This is a target specific test post action script"
 
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/",
-                                                options: options) else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/",
+                                              options: options)
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_ComplexSingleProject() {
+  func test_BrokenSourceBUILD() {
+    let aspectLogExpectation = expectation(description:
+      "Should see a statement that Bazel aspect info is being printed to our logs."
+    )
+    let observerName = NSNotification.Name(rawValue: TulsiMessageNotification)
+    let observer = NotificationCenter.default.addObserver(forName: observerName,
+                                                          object: nil,
+                                                          queue: nil) {
+      notification in
+      guard let item = LogMessage(notification: notification),
+          item.message == "Log of Bazel aspect info output follows:" &&
+          item.level == .Info else {
+        return
+      }
+      aspectLogExpectation.fulfill()
+    }
+    defer { NotificationCenter.default.removeObserver(observer) }
+
+    let testDir = "tulsi_e2e_broken_build"
+    installBUILDFile("SimpleBad", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: Set<BuildLabel>())]
+
+    do {
+      _ = try generateProjectNamed("BrokenSourceBuildProject",
+                                   buildTargets: buildTargets,
+                                   pathFilters: ["\(testDir)/...",
+                                                 "blaze-bin/...",
+                                                 "blaze-genfiles/..."],
+                                   outputDir: "tulsi_e2e_output/")
+    } catch Error.projectGenerationFailure(let info) {
+      // Expected failure on malformed BUILD file.
+      XCTAssertEqual(info, "General failure: Bazel aspects could not be built.")
+      waitForExpectations(timeout: 0.0, handler: nil)
+      return
+    } catch Error.testSubdirectoryNotCreated {
+      XCTFail("Failed to create output folder, aborting test.")
+    } catch let error {
+      XCTFail("Unexpected failure: \(error)")
+    }
+    XCTFail("Expected exception of type 'BazelAspectInfoExtractor.ExtractorError.buildFailed' " +
+      "to be thrown for bazel aspect build error.")
+  }
+
+  func test_ComplexSingleProject() throws {
     let testDir = "tulsi_e2e_complex"
     installBUILDFile("ComplexSingle", intoSubdirectory: testDir)
     makeTestXCDataModel("DataModelsTestv1", inSubdirectory: "\(testDir)/Test.xcdatamodeld")
@@ -104,22 +148,19 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "ComplexSingleProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/...",
-                                                              "blaze-bin/...",
-                                                              "blaze-genfiles/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_SwiftProject() {
+  func test_SwiftProject() throws {
     let testDir = "tulsi_e2e_swift"
     installBUILDFile("Swift", intoSubdirectory: testDir)
 
@@ -130,22 +171,19 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "SwiftProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/...",
-                                                              "blaze-bin/...",
-                                                              "blaze-genfiles/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_watchProject() {
+  func test_watchProject() throws {
     let testDir = "tulsi_e2e_watch"
     installBUILDFile("Watch", intoSubdirectory: testDir)
 
@@ -156,22 +194,19 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "WatchProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/...",
-                                                              "blaze-bin/...",
-                                                              "blaze-genfiles/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_macProject() {
+  func test_macProject() throws {
     let testDir = "tulsi_e2e_mac"
     installBUILDFile("Mac", intoSubdirectory: testDir)
 
@@ -186,22 +221,19 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "MacOSProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/...",
-                                                  "blaze-bin/...",
-                                                  "blaze-genfiles/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_macTestsProject() {
+  func test_macTestsProject() throws {
     let testDir = "tulsi_e2e_mac"
     installBUILDFile("Mac", intoSubdirectory: testDir)
 
@@ -218,22 +250,19 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "MacOSTestsProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/...",
-                                                  "blaze-bin/...",
-                                                  "blaze-genfiles/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-                                                  // The test has already been marked as failed.
-                                                  return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_simpleCCProject() {
+  func test_simpleCCProject() throws {
     let testDir = "tulsi_e2e_ccsimple"
     let appLabel = BuildLabel("//\(testDir):ccBinary")
     installBUILDFile("Simple", intoSubdirectory: testDir)
@@ -243,15 +272,11 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "SimpleCCProject"
-
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/..."],
-                                                additionalFilePaths: additionalFilePaths,
-                                                outputDir: "tulsi_e2e_output/") else {
-                                                  // The test has already been marked as failed.
-                                                  return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -282,7 +307,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
                      fromResourceDirectory: "TestSuite/Three")
   }
 
-  func test_ExplicitXCTestsProject() {
+  func test_ExplicitXCTestsProject() throws {
     let buildTargets = [
         appRule,
         RuleInfo(label: BuildLabel("//\(testDir):explicit_XCTests"),
@@ -291,20 +316,17 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     ]
 
     let projectName = "TestSuiteExplicitXCTestsProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/..."],
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/..."],
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_TestSuiteLocalTaggedTestsProject() {
+  func test_TestSuiteLocalTaggedTestsProject() throws {
     let buildTargets = [
         appRule,
         RuleInfo(label: BuildLabel("//\(testDir):local_tagged_tests"),
@@ -313,20 +335,17 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     ]
 
     let projectName = "TestSuiteLocalTaggedTestsProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/..."],
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/..."],
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
 
-  func test_TestSuiteRecursiveTestSuiteProject() {
+  func test_TestSuiteRecursiveTestSuiteProject() throws {
     let buildTargets = [
         appRule,
         RuleInfo(label: BuildLabel("//\(testDir):recursive_test_suite"),
@@ -335,13 +354,10 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     ]
 
     let projectName = "TestSuiteRecursiveTestSuiteProject"
-    guard let projectURL = generateProjectNamed(projectName,
-                                                buildTargets: buildTargets,
-                                                pathFilters: ["\(testDir)/..."],
-                                                outputDir: "tulsi_e2e_output/") else {
-      // The test has already been marked as failed.
-      return
-    }
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/..."],
+                                              outputDir: "tulsi_e2e_output/")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)

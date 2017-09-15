@@ -373,7 +373,7 @@ class BazelIntegrationTestCase: XCTestCase {
                                                         queue: nil) {
         [weak self] (notification: Notification) in
           guard let item = LogMessage(notification: notification) else {
-            XCTFail("Invalid message notification received (failed to conver to LogMessage)")
+            XCTFail("Invalid message notification received (failed to convert to LogMessage)")
             return
           }
           self?.handleMessage(item)
