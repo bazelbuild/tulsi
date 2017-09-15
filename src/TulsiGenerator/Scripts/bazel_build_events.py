@@ -104,7 +104,6 @@ class BazelBuildEventsWatcher(object):
       A BazelBuildEventsWatcher instance.
     """
     self.file_reader = _FileLineReader(json_file)
-    self.build_event_tree = None
 
   def check_for_new_events(self):
     """Checks the file for new BazelBuildEvents.

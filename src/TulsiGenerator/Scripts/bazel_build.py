@@ -20,6 +20,7 @@ main group in order to generate correct debug symbols.
 """
 
 import collections
+import hashlib
 import json
 import os
 import re
@@ -520,12 +521,6 @@ class BazelBuildBridge(object):
     self.binary_path = os.path.join(
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
 
-    # Path to the Build Events JSON file.
-    self.build_events_file_path = os.path.join(
-        self.project_file_path,
-        '.tulsi',
-        BazelBuildBridge.BUILD_EVENTS_FILE)
-
     self.is_simulator = self.platform_name.endswith('simulator')
     # Check to see if code signing actions should be skipped or not.
     if self.is_simulator:
@@ -574,6 +569,16 @@ class BazelBuildBridge(object):
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
+
+    # Path to the Build Events JSON file uses the md5 hash of the targets.
+    targets_str = ';'.join(parser.targets)
+    hash_val = hashlib.md5(targets_str).hexdigest()
+    filename = '%s_%s' % (hash_val, BazelBuildBridge.BUILD_EVENTS_FILE)
+    self.build_events_file_path = os.path.join(
+        self.project_file_path,
+        '.tulsi',
+        filename)
+
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
       return retval
