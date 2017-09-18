@@ -18,11 +18,11 @@ import TulsiGenerator
 
 /// Writes events to the console.
 final class EventLogger {
-  private let verbose: Bool
+  private let verboseLevel: TulsiMessageLevel
   private var observer: NSObjectProtocol? = nil
 
-  init(verbose: Bool) {
-    self.verbose = verbose
+  init(verboseLevel: TulsiMessageLevel) {
+    self.verboseLevel = verboseLevel
   }
 
   deinit {
@@ -37,18 +37,24 @@ final class EventLogger {
                                                       queue: nil) {
       [weak self] (notification: Notification) in
         guard let item = LogMessage(notification: notification),
-              let verbose = self?.verbose, verbose || item.level != .Info else {
+            let verboseLevel = self?.verboseLevel,
+            verboseLevel.logRank.rawValue >= item.level.logRank.rawValue else {
           return
         }
-
-        let level: String = item.level.rawValue
-        let details: String
-        if let itemDetails = item.details {
-          details = " \(itemDetails)"
-        } else {
-          details = ""
-        }
-        print("[\(level)] \(item.message)\(details)")
+        self?.logItem(item)
     }
+  }
+
+  // MARK: - Private methods
+
+  private func logItem(_ item: LogMessage) {
+    let level: String = item.level.rawValue
+    let details: String
+    if let itemDetails = item.details {
+      details = " \(itemDetails)"
+    } else {
+      details = ""
+    }
+    print("[\(level)] \(item.message)\(details)")
   }
 }
