@@ -52,8 +52,10 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
     self.localizedMessageLogger = localizedMessageLogger
+
+    let buildEventsFileName = "build_events_\(getpid()).json"
     self.buildEventsFilePath =
-        (NSTemporaryDirectory() as NSString).appendingPathComponent("build_events.json")
+        (NSTemporaryDirectory() as NSString).appendingPathComponent(buildEventsFileName)
 
     bundle = Bundle(for: type(of: self))
 
@@ -170,6 +172,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         if !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
                                                                   progressNotifier: progressNotifier)
+          try? FileManager.default.removeItem(atPath: buildEventsFilePath)
         } else {
           let debugInfo = processDebugInfo ?? "<No Debug Info>"
           queuedInfoMessages.append(debugInfo)
