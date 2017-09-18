@@ -17,12 +17,12 @@ import Foundation
 
 extension Thread {
   /// Performs the given closure on the main queue.
-  public class func doOnMainQueue(_ closure: @escaping (Void) -> Void ) {
+  public class func doOnMainQueue(_ closure: @escaping () -> Void ) {
     DispatchQueue.main.async(execute: closure)
   }
 
   /// Performs the given closure on the system thread reserved for user-initiated activities.
-  public class func doOnQOSUserInitiatedThread(_ closure: @escaping (Void) -> Void ) {
+  public class func doOnQOSUserInitiatedThread(_ closure: @escaping () -> Void ) {
     DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async(execute: closure)
   }
 }

@@ -763,7 +763,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   /// Resolves buildTargetLabels, leaving it populated with any labels that failed to be resolved.
   /// The given completion handler is invoked on the main thread once the labels are fully resolved.
-  private func resolveLabelReferences(_ completionHandler: @escaping ((Void) -> Void)) throws {
+  private func resolveLabelReferences(_ completionHandler: @escaping (() -> Void)) throws {
     guard let concreteBuildTargetLabels = buildTargetLabels, !concreteBuildTargetLabels.isEmpty else {
       buildTargetLabels = nil
       Thread.doOnMainQueue() {

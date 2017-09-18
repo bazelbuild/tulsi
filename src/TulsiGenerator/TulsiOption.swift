@@ -218,7 +218,7 @@ public func ==(lhs: TulsiOption, rhs: TulsiOption) -> Bool {
     if b == nil { return false }
     return a! == b!
   }
-  func optionalDictsAreEqual<K, V>(_ a: [K: V]?, _ b: [K: V]?) -> Bool where K: Equatable, V: Equatable {
+  func optionalDictsAreEqual<K, V>(_ a: [K: V]?, _ b: [K: V]?) -> Bool where V: Equatable {
     if a == nil { return b == nil }
     if b == nil { return false }
     return a! == b!
