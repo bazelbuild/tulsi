@@ -139,6 +139,7 @@
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
 		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
+		E1C0EBDB1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */; };
 		E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
 /* End PBXBuildFile section */
 
@@ -344,6 +345,7 @@
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
+		E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeGeneratorInvalidPaths.swift; sourceTree = "<group>"; };
 		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -464,6 +466,7 @@
 				3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */,
 				54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */,
 				2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */,
+				E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -937,6 +940,7 @@
 				3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */,
 				3D9926871C29F10B0094E098 /* BazelQueryInfoExtractor.swift in Sources */,
 				3D8B34BA1C4EB37C0090F3AD /* TulsiNotifications.swift in Sources */,
+				E1C0EBDB1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift in Sources */,
 				3DA65B5E1C692FA20055448E /* NSURLExtensions.swift in Sources */,
 				3D9926951C29F1E80094E098 /* RuleEntry.swift in Sources */,
 				54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */,

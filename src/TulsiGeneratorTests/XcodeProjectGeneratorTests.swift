@@ -143,6 +143,25 @@ class XcodeProjectGeneratorTests: XCTestCase {
     }
   }
 
+  func testInvalidPathThrows() {
+    let ruleEntries = XcodeProjectGeneratorTests.labelToRuleEntryMapForLabels(buildTargetLabels)
+    prepareGenerator(ruleEntries)
+    let invalidOutputFolderString = "/dev/null/bazel-build"
+    let invalidOutputFolderURL = URL(fileURLWithPath: invalidOutputFolderString)
+
+    do {
+      _ = try generator.generateXcodeProjectInFolder(invalidOutputFolderURL)
+      XCTFail("Generation succeeded unexpectedly")
+    } catch XcodeProjectGenerator.ProjectGeneratorError.invalidXcodeProjectPath(let pathFound,
+                                                                                let reason) {
+      // Expected failure on path with a /bazel-* directory.
+      XCTAssertEqual(pathFound, invalidOutputFolderString)
+      XCTAssertEqual(reason, "a Bazel generated temp directory (\"/bazel-\")")
+    } catch let e {
+      XCTFail("Unexpected exception \(e)")
+    }
+  }
+
   func testTestSuiteSchemeGeneration() {
     checkTestSuiteSchemeGeneration("ios_test", testHostAttributeName: "xctest_app")
   }

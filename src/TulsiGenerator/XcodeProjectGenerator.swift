@@ -26,6 +26,9 @@ final class XcodeProjectGenerator {
 
     /// The given labels failed to resolve to valid targets.
     case labelResolutionFailed(Set<BuildLabel>)
+
+    /// The given |path| to generate this Xcode project is invalid because it is within |reason|.
+    case invalidXcodeProjectPath(path: String, reason: String)
   }
 
   /// Encapsulates the source paths of various resources (scripts, utilities, etc...) that will be
@@ -165,6 +168,7 @@ final class XcodeProjectGenerator {
     let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project",
                                                                        context: config.projectName)
     defer { localizedMessageLogger.logProfilingEnd(generateProfilingToken) }
+    try validateXcodeProjectPath(outputFolderURL)
     try resolveConfigReferences()
 
     let mainGroup = pbxTargetGeneratorType.mainGroupForOutputFolder(outputFolderURL,
@@ -242,6 +246,17 @@ final class XcodeProjectGenerator {
 
     /// Map of target name to any intermediate artifact files.
     let intermediateArtifacts: [String: [String]]
+  }
+
+  /// Throws an exception if the Xcode project path is found to be in a forbidden location,
+  /// assuming macOS default of a case-insensitive filesystem.
+  private func validateXcodeProjectPath(_ outputPath: URL) throws {
+    for (invalidPath, reason) in invalidXcodeProjectPathsWithReasons {
+      if outputPath.absoluteString.lowercased().range(of: invalidPath.lowercased()) != nil {
+        throw ProjectGeneratorError.invalidXcodeProjectPath(path: outputPath.path, reason: reason +
+            " (\"\(invalidPath)\")")
+      }
+    }
   }
 
   /// Invokes Bazel to load any missing information in the config file.

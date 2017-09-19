@@ -97,6 +97,10 @@ public final class TulsiXcodeProjectGenerator {
         throw GeneratorError.serializationFailed(info)
       case XcodeProjectGenerator.ProjectGeneratorError.labelResolutionFailed(let labels):
         throw GeneratorError.serializationFailed("Failed to resolve labels: \(labels)")
+      case XcodeProjectGenerator.ProjectGeneratorError.invalidXcodeProjectPath(let path,
+                                                                               let reason):
+        throw GeneratorError.serializationFailed("Xcode project cannot be generated in " +
+            "\(path) because it lies within \(reason).")
       case let e as NSError:
         throw GeneratorError.serializationFailed("Unexpected exception \(e.localizedDescription)")
       default:
