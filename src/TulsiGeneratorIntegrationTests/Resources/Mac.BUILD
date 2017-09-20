@@ -14,7 +14,6 @@
 
 # MacOS mock BUILD file for testing.
 
-# Load Skylark macros.
 load(
     "//tools/build_defs/apple:macos.bzl",
     "macos_application",
@@ -23,10 +22,7 @@ load(
     "macos_unit_test",
     "macos_ui_test",
 )
-load(
-    "//tools/build_defs/apple:versioning.bzl",
-    "apple_bundle_version",
-)
+load("//tools/build_defs/apple:versioning.bzl", "apple_bundle_version")
 
 macos_application(
     name = "MyMacOSApp",
@@ -129,12 +125,14 @@ objc_library(
 
 macos_unit_test(
     name = "UnitTests",
+    minimum_os_version = "10.12",
     test_host = ":MyMacOSApp",
     deps = [":UnitTestsLib"],
 )
 
 macos_ui_test(
     name = "UITests",
+    minimum_os_version = "10.12",
     test_host = ":MyMacOSApp",
     deps = [":UITestsLib"],
 )

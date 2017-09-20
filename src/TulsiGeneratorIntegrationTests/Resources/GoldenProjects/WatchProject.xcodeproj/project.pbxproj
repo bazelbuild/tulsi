@@ -420,7 +420,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -475,7 +475,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_06BBE256;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
@@ -541,7 +541,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -596,7 +596,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_06BBE256;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
@@ -668,7 +668,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -792,7 +792,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";

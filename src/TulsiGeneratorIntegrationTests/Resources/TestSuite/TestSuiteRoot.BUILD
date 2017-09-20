@@ -18,6 +18,11 @@ package(
     default_visibility = ["//TestSuite:__subpackages__"],
 )
 
+load(
+    "//tools/build_defs/apple:ios.bzl",
+    ios_application = "skylark_ios_application",
+)
+
 test_suite(
     name = "explicit_XCTests",
     tests = [
@@ -51,16 +56,26 @@ test_suite(
 
 ios_application(
     name = "TestApplication",
-    binary = ":Binary",
-)
-
-objc_binary(
-    name = "Binary",
-    srcs = [
-        "Binary/srcs/main.m",
+    bundle_id = "com.example.testapplication",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Info.plist"],
+    minimum_os_version = "8.0",
+    deps = [
+        ":ApplicationLibrary",
     ],
 )
 
+objc_library(
+    name = "ApplicationLibrary",
+    srcs = [
+        "Application/srcs/main.m",
+    ],
+)
+
+# TODO(b/66187599): Migrate these when support is removed.
 ios_test(
     name = "TestSuiteXCTest",
     srcs = ["TestSuite/TestSuiteXCTest.m"],

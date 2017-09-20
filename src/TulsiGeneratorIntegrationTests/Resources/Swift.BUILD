@@ -14,15 +14,26 @@
 
 # mock BUILD file using Swift targets for aspect testing.
 
+load(
+    "//tools/build_defs/apple:ios.bzl",
+    ios_application = "skylark_ios_application",
+)
 load("//tools/build_defs/apple:swift.bzl", "swift_library")
 
 ios_application(
     name = "Application",
-    binary = ":Binary",
+    bundle_id = "com.example.invalid",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Info.plist"],
+    minimum_os_version = "8.0",
+    deps = [":ApplicationLibrary"],
 )
 
-objc_binary(
-    name = "Binary",
+objc_library(
+    name = "ApplicationLibrary",
     srcs = [
         "//tools/objc:objc_dummy.m",
     ],

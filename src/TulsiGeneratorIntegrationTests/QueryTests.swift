@@ -31,7 +31,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
 
-    XCTAssertEqual(infos.count, 7)
+    XCTAssertEqual(infos.count, 16)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_test:Application")
@@ -44,8 +44,8 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
       .hasNoLinkedTargetLabels()
       .hasNoDependencies()
 
-    checker.assertThat("//tulsi_test:Binary")
-        .hasType("objc_binary")
+    checker.assertThat("//tulsi_test:ApplicationLibrary")
+        .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
@@ -54,8 +54,13 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
+    checker.assertThat("//tulsi_test:TestLibrary")
+      .hasType("objc_library")
+      .hasNoLinkedTargetLabels()
+      .hasNoDependencies()
+
     checker.assertThat("//tulsi_test:XCTest")
-        .hasType("ios_test")
+        .hasType("apple_unit_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_test:Application"))
         .hasNoDependencies()
 
@@ -75,7 +80,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_complex_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_complex_test"])
 
-    XCTAssertEqual(infos.count, 19)
+    XCTAssertEqual(infos.count, 37)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_complex_test:Application")
@@ -83,8 +88,13 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_complex_test:Binary")
-        .hasType("objc_binary")
+    checker.assertThat("//tulsi_complex_test:ApplicationResources")
+        .hasType("objc_library")
+        .hasNoLinkedTargetLabels()
+        .hasNoDependencies()
+
+    checker.assertThat("//tulsi_complex_test:ApplicationLibrary")
+        .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
@@ -133,8 +143,8 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
-    checker.assertThat("//tulsi_complex_test:TodayExtensionBinary")
-        .hasType("ios_extension_binary")
+    checker.assertThat("//tulsi_complex_test:TodayExtensionLibrary")
+        .hasType("objc_library")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
@@ -144,7 +154,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:XCTest")
-        .hasType("ios_test")
+        .hasType("apple_unit_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_complex_test:Application"))
         .hasNoDependencies()
   }

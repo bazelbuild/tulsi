@@ -23,6 +23,7 @@
 /* Begin PBXFileReference section */
 		43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891.framework; path = _idx_SwiftLibrary_EA7FC891.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A81C321400000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
+		43D68C28ADF10C6300000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
 		43D68C28DA373E9A00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
 		43D68C28E9B61AB000000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_swift/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28F61CF22100000000 /* BUILD */,
+				43D68C28ADF10C6300000000 /* Info.plist */,
 				966FB6DE582F53CF00000000 /* SwiftLibrary */,
 			);
 			name = tulsi_e2e_swift;
@@ -246,15 +248,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
+				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
@@ -268,7 +270,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";
@@ -317,15 +319,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
+				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
@@ -339,7 +341,7 @@
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";
@@ -392,8 +394,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
+				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -401,12 +403,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -462,8 +464,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Binary";
+				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
 				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -471,12 +473,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.Application;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;

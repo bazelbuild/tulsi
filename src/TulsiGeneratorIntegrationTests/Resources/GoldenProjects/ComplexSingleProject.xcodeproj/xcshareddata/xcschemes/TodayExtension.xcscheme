@@ -18,9 +18,9 @@
     </TestAction>
     <LaunchAction selectedDebuggerIdentifier="" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES" launchAutomaticallySubstyle="2">
         <EnvironmentVariables></EnvironmentVariables>
-        <MacroExpansion>
+        <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BlueprintIdentifier="3D31C5E61F218FDA00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="TodayExtension.appex" BlueprintName="TodayExtension" BuildableIdentifier="primary"></BuildableReference>
-        </MacroExpansion>
+        </BuildableProductRunnable>
     </LaunchAction>
     <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
         <BuildableProductRunnable runnableDebuggingMode="0">

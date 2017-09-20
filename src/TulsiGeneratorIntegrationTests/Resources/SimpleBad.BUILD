@@ -14,9 +14,21 @@
 
 # Bad mock BUILD file for aspect testing.
 
+load(
+    "//tools/build_defs/apple:ios.bzl",
+    ios_application = "skylark_ios_application",
+)
+
 ios_application(
     name = "Application",
-    launch_image = "Binary_Assets_LaunchImage",
+    bundle_id = "com.example.invalid",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Info.plist"],
+    launch_images = ["Binary_Assets_LaunchImage"],
     launch_storyboard = "Application/Launch.storyboard",
     lolno = "binaary",
+    minimum_os_version = "9.0",
 )

@@ -177,6 +177,7 @@ public final class RuleEntry: RuleInfo {
     // For the apple_unit_test and apple_ui_test rules, contains a label reference to the
     // ios_application target to be used as the test host when running the tests.
     case test_host
+    // TODO(b/66187599): Remove these when ios_test support is removed.
     // For the ios_test rule, specifies whether the test is XCTest based or not (i.e. KIF).
     case xctest
     // For the ios_test rule, contains a label reference to the ios_application target to be used as

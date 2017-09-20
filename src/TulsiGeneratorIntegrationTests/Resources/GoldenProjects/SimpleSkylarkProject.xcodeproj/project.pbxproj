@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E6AF49470363E91A00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C280363E91A00000000 /* main.m */; };
 		E6AF494707AD023D00000000 /* Tests.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2807AD023D00000000 /* Tests.swift */; };
 		E6AF494707AD023D00000001 /* Tests.swift in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2807AD023D00000000 /* Tests.swift */; };
 		E6AF494744067B5100000000 /* XCUITests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2844067B5100000000 /* XCUITests.mm */; };
@@ -18,7 +19,7 @@
 		E6AF49478C4244FC00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288C4244FC00000000 /* src4.m */; };
 		E6AF4947D035C16900000000 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D035C16900000000 /* XCTests.mm */; };
 		E6AF4947D035C16900000001 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D035C16900000000 /* XCTests.mm */; };
-		E6AF4947D939855F00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D939855F00000000 /* main.m */; };
+		E6AF4947F44F077B00000000 /* file.java in tulsi_e2e_simple_skylark */ = {isa = PBXBuildFile; fileRef = 43D68C28F44F077B00000000 /* file.java */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +44,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C280363E91A00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C2807AD023D00000000 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tests.swift; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCTest/srcs/Tests.swift"; sourceTree = "<group>"; };
+		43D68C2815EBBAA000000000 /* lib_idx_JavaLibrary_C16E964B.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_JavaLibrary_C16E964B.a; path = lib_idx_JavaLibrary_C16E964B.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C281CB1D2D900000000 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Settings.bundle"; sourceTree = "<group>"; };
 		43D68C28259988BC00000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Launch.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Application/Launch.storyboard"; sourceTree = "<group>"; };
 		43D68C2826D093AA00000000 /* StickerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = StickerExtension.appex; path = StickerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,7 +57,6 @@
 		43D68C2844067B5100000000 /* XCUITests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = XCUITests.mm; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCUITest/srcs/XCUITests.mm"; sourceTree = "<group>"; };
 		43D68C284819A7D200000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = "tulsi-workspace/SimpleDataModelsTestv2.xcdatamodel"; sourceTree = "<group>"; };
 		43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_XCTestCodeSwift_2FB5517B.framework; path = _idx_XCTestCodeSwift_2FB5517B.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2853035B7A00000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Binary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28594086D300000000 /* ProtoFile.proto */ = {isa = PBXFileReference; lastKnownFileType = dyn.age81a6xtsv1u; name = ProtoFile.proto; path = "tulsi-workspace/tulsi_e2e_simple_skylark/ProtoFile.proto"; sourceTree = "<group>"; };
 		43D68C285AC5B07A00000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/srcs/src1.m"; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,12 +72,13 @@
 		43D68C28A669C03500000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/xibs/xib.xib"; sourceTree = "<group>"; };
 		43D68C28A96EB07300000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCUITest.xctest; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B88954B500000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28B9C699F600000000 /* SkylarkApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = SkylarkApplication.app; path = SkylarkApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CEA253A400000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkTargetApplication-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28D035C16900000000 /* XCTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = XCTests.mm; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCTest/srcs/XCTests.mm"; sourceTree = "<group>"; };
 		43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_22D3B3D5.a; path = lib_idx_Library_22D3B3D5.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28D939855F00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Binary/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C28EFA24FC800000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = "tulsi-workspace/SimpleDataModelsTestv1.xcdatamodel"; sourceTree = "<group>"; };
+		43D68C28F44F077B00000000 /* file.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; name = file.java; path = "tulsi-workspace/tulsi_e2e_simple_skylark/file.java"; sourceTree = "<group>"; };
 		43D68C28FB7A74E700000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_simple_skylark/BUILD; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,6 +93,7 @@
 				43D68C28AB52552000000000 /* XCUITest.xctest */,
 				43D68C284F2A6A6E00000000 /* _idx_XCTestCodeSwift_2FB5517B.framework */,
 				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
+				43D68C2815EBBAA000000000 /* lib_idx_JavaLibrary_C16E964B.a */,
 				43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */,
 				43D68C2882EBA69000000000 /* lib_idx_MainLibrary_E33E600C.a */,
 				43D68C288CE3D89000000000 /* lib_idx_XCUITestCode_XCTestCode_1D881332.a */,
@@ -116,7 +120,7 @@
 		966FB6DE56C029FB00000000 /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2853035B7A00000000 /* One.storyboard */,
+				43D68C28B88954B500000000 /* One.storyboard */,
 			);
 			name = Base.lproj;
 			sourceTree = "<group>";
@@ -124,7 +128,7 @@
 		966FB6DE5B9D018E00000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28D939855F00000000 /* main.m */,
+				43D68C280363E91A00000000 /* main.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -178,6 +182,15 @@
 			name = Library;
 			sourceTree = "<group>";
 		};
+		966FB6DE957F116500000000 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE56C029FB00000000 /* Base.lproj */,
+				966FB6DE5B9D018E00000000 /* srcs */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
 		966FB6DE97917B0F00000000 /* pch */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,15 +242,6 @@
 			name = XCUITest;
 			sourceTree = "<group>";
 		};
-		966FB6DEE2E4E10A00000000 /* Binary */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE56C029FB00000000 /* Base.lproj */,
-				966FB6DE5B9D018E00000000 /* srcs */,
-			);
-			name = Binary;
-			sourceTree = "<group>";
-		};
 		966FB6DEF58E46CC00000000 /* tulsi_e2e_simple_skylark */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,9 +254,9 @@
 		966FB6DEF58E46CC00000001 /* tulsi_e2e_simple_skylark */ = {
 			isa = PBXGroup;
 			children = (
+				966FB6DE957F116500000000 /* App */,
 				966FB6DEB58A255E00000000 /* Application */,
 				43D68C28FB7A74E700000000 /* BUILD */,
-				966FB6DEE2E4E10A00000000 /* Binary */,
 				43D68C288EA0254100000000 /* Ext-Info.plist */,
 				966FB6DE94E444FD00000000 /* Library */,
 				43D68C28594086D300000000 /* ProtoFile.proto */,
@@ -261,6 +265,7 @@
 				43D68C283A0868B500000000 /* Stickers.xcstickers */,
 				966FB6DE77973FA000000000 /* XCTest */,
 				966FB6DEDF67EFC000000000 /* XCUITest */,
+				43D68C28F44F077B00000000 /* file.java */,
 			);
 			name = tulsi_e2e_simple_skylark;
 			sourceTree = "<group>";
@@ -285,11 +290,27 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3D31C5E626E6D50E00000000 /* _idx_JavaLibrary_C16E964B */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583C06144FD00000000 /* Build configuration list for PBXNativeTarget "_idx_JavaLibrary_C16E964B" */;
+			buildPhases = (
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_JavaLibrary_C16E964B;
+			productName = _idx_JavaLibrary_C16E964B;
+			productReference = 43D68C2815EBBAA000000000 /* lib_idx_JavaLibrary_C16E964B.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */;
 			buildPhases = (
-				605793E20000000000000003 /* Sources */,
+				605793E20000000000000004 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -306,7 +327,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583D3B1CC6700000000 /* Build configuration list for PBXNativeTarget "_idx_XCTestCodeSwift_2FB5517B" */;
 			buildPhases = (
-				605793E20000000000000004 /* Sources */,
+				605793E20000000000000005 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -322,7 +343,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */;
 			buildPhases = (
-				605793E20000000000000002 /* Sources */,
+				605793E20000000000000003 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -388,7 +409,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */;
 			buildPhases = (
-				605793E20000000000000005 /* Sources */,
+				605793E20000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -468,6 +489,7 @@
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				3D31C5E6BECFDF8000000000 /* XCUITest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				3D31C5E626E6D50E00000000 /* _idx_JavaLibrary_C16E964B */,
 				3D31C5E6A0C7226800000000 /* _idx_Library_22D3B3D5 */,
 				3D31C5E6284E117E00000000 /* _idx_MainLibrary_E33E600C */,
 				3D31C5E67C1BC86200000000 /* _idx_XCTestCodeSwift_2FB5517B */,
@@ -585,10 +607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49475AC5B07A00000000 /* src1.m in srcs */,
-				E6AF49476C872CB800000000 /* src2.m in srcs */,
-				E6AF49477C84C8BE00000000 /* src3.m in srcs */,
-				E6AF49478C4244FC00000000 /* src4.m in srcs */,
+				E6AF4947F44F077B00000000 /* file.java in tulsi_e2e_simple_skylark */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,8 +615,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49477130578F00000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */,
-				E6AF4947D939855F00000000 /* main.m in srcs */,
+				E6AF49475AC5B07A00000000 /* src1.m in srcs */,
+				E6AF49476C872CB800000000 /* src2.m in srcs */,
+				E6AF49477C84C8BE00000000 /* src3.m in srcs */,
+				E6AF49478C4244FC00000000 /* src4.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,11 +626,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494707AD023D00000001 /* Tests.swift in srcs */,
+				E6AF49477130578F00000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */,
+				E6AF49470363E91A00000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		605793E20000000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF494707AD023D00000001 /* Tests.swift in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		605793E20000000000000006 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -666,7 +696,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
 				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
@@ -742,7 +772,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
@@ -762,7 +792,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
 				PRODUCT_NAME = StickerExtension;
 				SDKROOT = iphoneos;
@@ -775,12 +805,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				PRODUCT_NAME = _idx_JavaLibrary_C16E964B;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -790,9 +818,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
+				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				SDKROOT = iphonesimulator;
+				VALID_ARCHS = x86_64;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
 				SDKROOT = iphonesimulator;
@@ -800,7 +843,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000008 /* Debug */ = {
+		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -814,12 +857,12 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000009 /* Debug */ = {
+		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
@@ -858,7 +901,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.Application;
 				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
@@ -935,7 +978,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication;
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
@@ -955,7 +998,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TargetApplication.extension;
 				PRODUCT_NAME = StickerExtension;
 				SDKROOT = iphoneos;
@@ -968,12 +1011,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				PRODUCT_NAME = _idx_JavaLibrary_C16E964B;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -983,9 +1024,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
+				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/Binary/includes $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_Library_22D3B3D5;
+				SDKROOT = iphonesimulator;
+				VALID_ARCHS = x86_64;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C;
 				SDKROOT = iphonesimulator;
@@ -993,7 +1049,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000008 /* Release */ = {
+		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
@@ -1007,12 +1063,12 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000009 /* Release */ = {
+		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332;
@@ -1061,7 +1117,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1158,7 +1214,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1186,7 +1242,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1241,7 +1297,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1339,7 +1395,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1367,7 +1423,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_simple_skylark-StickerExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1388,16 +1444,16 @@
 		DE4755831650A2DA00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_22D3B3D5" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000006 /* Debug */,
-				44936BD6A3D45CE900000006 /* Release */,
+				44936BD67EED3C4D00000007 /* Debug */,
+				44936BD6A3D45CE900000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		DE47558318E15AF500000000 /* Build configuration list for PBXNativeTarget "_idx_MainLibrary_E33E600C" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000007 /* Debug */,
-				44936BD6A3D45CE900000007 /* Release */,
+				44936BD67EED3C4D00000008 /* Debug */,
+				44936BD6A3D45CE900000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1444,8 +1500,8 @@
 		DE47558384FA8FF500000000 /* Build configuration list for PBXNativeTarget "_idx_XCUITestCode_XCTestCode_1D881332" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000009 /* Debug */,
-				44936BD6A3D45CE900000009 /* Release */,
+				44936BD67EED3C4D0000000A /* Debug */,
+				44936BD6A3D45CE90000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1469,6 +1525,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
+		DE475583C06144FD00000000 /* Build configuration list for PBXNativeTarget "_idx_JavaLibrary_C16E964B" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000006 /* Debug */,
+				44936BD6A3D45CE900000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1478,8 +1542,8 @@
 		DE475583D3B1CC6700000000 /* Build configuration list for PBXNativeTarget "_idx_XCTestCodeSwift_2FB5517B" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000008 /* Debug */,
-				44936BD6A3D45CE900000008 /* Release */,
+				44936BD67EED3C4D00000009 /* Debug */,
+				44936BD6A3D45CE900000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

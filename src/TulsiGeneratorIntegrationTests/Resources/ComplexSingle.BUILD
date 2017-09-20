@@ -21,56 +21,83 @@ config_setting(
     values = {"define": "TEST=1"},
 )
 
+load(
+    "//tools/build_defs/apple:ios.bzl",
+    "apple_product_type",
+    ios_application = "skylark_ios_application",
+    ios_extension = "skylark_ios_extension",
+    "ios_unit_test",
+    "ios_ui_test",
+)
+load(
+    "//tools/build_defs/apple:tvos.bzl",
+    "tvos_application",
+    "tvos_extension",
+)
+
 ios_application(
     name = "Application",
-    binary = ":Binary",
+    bundle_id = "example.iosapp",
     entitlements = "Application/entitlements.entitlements",
     extensions = [
         ":TodayExtension",
     ],
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Application/Info.plist"],
+    minimum_os_version = "8.0",
+    deps = [
+        ":ApplicationLibrary",
+        ":ApplicationResources",
+    ],
+)
+
+objc_library(
+    name = "ApplicationResources",
     structured_resources = [
         "Application/structured_resources.file1",
         "Application/structured_resources.file2",
     ],
 )
 
-objc_binary(
-    name = "Binary",
+objc_library(
+    name = "ApplicationLibrary",
     srcs = [
-        "Binary/srcs/main.m",
+        "Application/srcs/main.m",
         ":SrcGenerator",
     ],
     asset_catalogs = [
-        "Binary/AssetsOne.xcassets/test_file.ico",
-        "Binary/AssetsOne.xcassets/another_file.ico",
-        "Binary/AssetsTwo.xcassets/png_file.png",
+        "Application/AssetsOne.xcassets/test_file.ico",
+        "Application/AssetsOne.xcassets/another_file.ico",
+        "Application/AssetsTwo.xcassets/png_file.png",
     ],
     bundles = [":ObjCBundle"],
     defines = [
         "A=BINARY_DEFINE",
     ],
     includes = [
-        "Binary/includes/first/include",
-        "Binary/includes/second/include",
+        "Application/includes/first/include",
+        "Application/includes/second/include",
     ],
-    infoplist = "Binary/Info.plist",
     non_arc_srcs = [
-        "Binary/non_arc_srcs/NonARCFile.mm",
+        "Application/non_arc_srcs/NonARCFile.mm",
     ],
     non_propagated_deps = [
         ":NonPropagatedLibrary",
     ],
     storyboards = [
-        "Binary/Base.lproj/One.storyboard",
+        "Application/Base.lproj/One.storyboard",
         ":StoryboardGenerator",
     ],
     strings = [
-        "Binary/Base.lproj/Localizable.strings",
-        "Binary/Base.lproj/Localized.strings",
-        "Binary/en.lproj/Localized.strings",
-        "Binary/en.lproj/EN.strings",
-        "Binary/es.lproj/Localized.strings",
-        "Binary/NonLocalized.strings",
+        "Application/Base.lproj/Localizable.strings",
+        "Application/Base.lproj/Localized.strings",
+        "Application/en.lproj/Localized.strings",
+        "Application/en.lproj/EN.strings",
+        "Application/es.lproj/Localized.strings",
+        "Application/NonLocalized.strings",
     ],
     deps = [
         ":CoreDataResources",
@@ -180,16 +207,21 @@ objc_library(
     includes = ["SubLibraryWithDifferentDefines/includes"],
 )
 
-ios_test(
-    name = "XCTest",
+objc_library(
+    name = "TestLibrary",
     srcs = select({
         ":config_test_enabled": ["XCTest/srcs/configTestSource.m"],
         "//conditions:default": ["XCTest/srcs/defaultTestSource.m"],
     }),
-    xctest = 1,
-    xctest_app = ":Application",
+)
+
+ios_unit_test(
+    name = "XCTest",
+    minimum_os_version = "8.0",
+    test_host = ":Application",
     deps = [
         ":Library",
+        ":TestLibrary",
     ],
 )
 
@@ -210,20 +242,32 @@ objc_framework(
     ],
 )
 
-ios_extension_binary(
-    name = "TodayExtensionBinary",
-    srcs = [
-        "TodayExtensionBinary/srcs/today_extension_binary.m",
+ios_extension(
+    name = "TodayExtension",
+    bundle_id = "example.iosapp.todayextension",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = [
+        "TodayExtension/Plist1.plist",
+    ],
+    minimum_os_version = "8.0",
+    deps = [
+        ":TodayExtensionLibrary",
+        ":TodayExtensionResources",
     ],
 )
 
-ios_extension(
-    name = "TodayExtension",
-    binary = "TodayExtensionBinary",
-    infoplists = [
-        "TodayExtension/Plist1.plist",
-        "TodayExtension/Plist2.plist",
+objc_library(
+    name = "TodayExtensionLibrary",
+    srcs = [
+        "TodayExtension/srcs/today_extension_library.m",
     ],
+)
+
+objc_library(
+    name = "TodayExtensionResources",
     resources = [
         "TodayExtension/resources/file1",
         "TodayExtension/resources/file2.file",
@@ -259,4 +303,31 @@ genrule(
     srcs = ["StoryboardGenerator/srcs/storyboard_input.file"],
     outs = ["StoryboardGenerator/outs/Two.storyboard"],
     cmd = "cp $< $@",
+)
+
+tvos_application(
+    name = "tvOSApplication",
+    bundle_id = "c.test.tvOSApplication",
+    extensions = [":tvOSExtension"],
+    infoplists = [
+        "tvOSApplication/Info.plist",
+    ],
+    minimum_os_version = "10.0",
+    deps = [":tvOSLibrary"],
+)
+
+tvos_extension(
+    name = "tvOSExtension",
+    bundle_id = "c.test.tvOSExtension",
+    infoplists = [
+        "tvOSExtension/Info.plist",
+    ],
+    minimum_os_version = "10.0",
+    deps = [":tvOSLibrary"],
+)
+
+objc_library(
+    name = "tvOSLibrary",
+    srcs = ["tvOSLibrary/srcs/src.m"],
+    enable_modules = True,
 )

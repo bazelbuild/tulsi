@@ -14,18 +14,13 @@
 
 # WatchOS mock BUILD file for aspect testing.
 
-# Load Skylark macros.
 load(
     "//tools/build_defs/apple:ios.bzl",
-    "skylark_ios_application",
+    ios_application = "skylark_ios_application",
 )
-load(
-    "//tools/build_defs/apple:watchos.bzl",
-    "watchos_application",
-    "watchos_extension",
-)
+load("//tools/build_defs/apple:watchos.bzl", "watchos_application", "watchos_extension")
 
-skylark_ios_application(
+ios_application(
     name = "Application",
     bundle_id = "application.bundle_id",
     entitlements = "Application/entitlements.entitlements",
@@ -34,6 +29,7 @@ skylark_ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
+    minimum_os_version = "8.0",
     watch_application = ":WatchApplication",
     deps = [
         ":ApplicationLibrary",
@@ -68,6 +64,7 @@ watchos_application(
     entitlements = "Watch2Extension/app_entitlements.entitlements",
     extension = ":WatchExtension",
     infoplists = ["Watch2Extension/app_infoplists/Info.plist"],
+    minimum_os_version = "3.0",
     storyboards = ["Watch2Extension/Interface.storyboard"],
     deps = [":WatchApplicationResources"],
 )
@@ -88,6 +85,7 @@ watchos_extension(
     bundle_id = "application.watch.ext.bundle_id",
     entitlements = "Watch2Extension/ext_entitlements.entitlements",
     infoplists = ["Watch2Extension/ext_infoplists/Info.plist"],
+    minimum_os_version = "3.0",
     deps = [
         ":WatchExtensionLibrary",
         ":WatchExtensionResources",

@@ -14,33 +14,55 @@
 
 # Simple mock BUILD file for aspect testing.
 
+load(
+    "//tools/build_defs/apple:ios.bzl",
+    ios_application = "skylark_ios_application",
+    "ios_unit_test",
+)
+
 ios_application(
     name = "Application",
-    binary = ":Binary",
-    launch_image = "Binary_Assets_LaunchImage",
+    bundle_id = "application.bundle_id",
+    entitlements = "Application/entitlements.entitlements",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Application/Info.plist"],
+    launch_images = ["Binary_Assets_LaunchImage"],
     launch_storyboard = "Application/Launch.storyboard",
+    minimum_os_version = "8.0",
+    deps = [":ApplicationLibrary"],
 )
 
 ios_application(
     name = "TargetApplication",
-    binary = ":Binary",
-    launch_image = "Binary_Assets_LaunchImage",
+    bundle_id = "application.bundle_id",
+    entitlements = "Application/entitlements.entitlements",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = ["Application/Info.plist"],
+    launch_images = ["Binary_Assets_LaunchImage"],
     launch_storyboard = "Application/Launch.storyboard",
+    minimum_os_version = "8.0",
+    deps = [":ApplicationLibrary"],
 )
 
-objc_binary(
-    name = "Binary",
+objc_library(
+    name = "ApplicationLibrary",
     srcs = [
-        "Binary/srcs/main.m",
+        "ApplicationLibrary/srcs/main.m",
     ],
-    asset_catalogs = ["Binary/Assets.xcassets/asset.png"],
+    asset_catalogs = ["ApplicationLibrary/Assets.xcassets/asset.png"],
     datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
-        "BINARY_ADDITIONAL_DEFINE",
-        "BINARY_ANOTHER_DEFINE=2",
+        "APPLIB_ADDITIONAL_DEFINE",
+        "APPLIB_ANOTHER_DEFINE=2",
     ],
-    includes = ["Binary/includes"],
-    storyboards = ["Binary/Base.lproj/One.storyboard"],
+    includes = ["ApplicationLibrary/includes"],
+    storyboards = ["ApplicationLibrary/Base.lproj/One.storyboard"],
     deps = [
         ":Library",
     ],
@@ -94,14 +116,21 @@ cc_library(
     defines = ["LIBRARY_DEFINES_DEFINE=1"],
 )
 
-ios_test(
-    name = "XCTest",
+objc_library(
+    name = "TestLibrary",
     srcs = [
         "XCTest/srcs/src1.mm",
     ],
-    xctest = 1,
-    xctest_app = ":Application",
     deps = [
         ":Library",
+    ],
+)
+
+ios_unit_test(
+    name = "XCTest",
+    minimum_os_version = "8.0",
+    test_host = ":Application",
+    deps = [
+        ":TestLibrary",
     ],
 )

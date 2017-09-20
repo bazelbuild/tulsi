@@ -14,98 +14,17 @@
 
 # Mock BUILD file for aspect testing.
 
-ios_application(
-    name = "Application",
-    binary = ":Binary",
-)
-
-objc_binary(
-    name = "Binary",
-    srcs = [
-        "Binary/srcs/main.m",
-    ],
-    deps = [
-        ":J2ObjCLibrary",
-        ":ObjCProtoLibrary",
-    ],
-)
-
-proto_library(
-    name = "ProtoLibrary",
-    srcs = ["protolibrary.proto"],
-)
-
-objc_proto_library(
-    name = "ObjCProtoLibrary",
-    deps = [
-        ":ProtoLibrary",
-    ],
-)
-
-j2objc_library(
-    name = "J2ObjCLibrary",
-    deps = [
-        ":JavaLibrary",
-    ],
-)
-
-java_library(
-    name = "JavaLibrary",
-    srcs = ["file.java"],
-)
-
-ios_test(
-    name = "XCTestWithDefaultHost",
-    srcs = [
-        "XCTestWithDefaultHost/srcs/src1.mm",
-    ],
-)
-
-## Skylark-based tvOS rules.
-# TODO(abaire): Move to ComplexSingle.BUILD when the rules are open sourced.
-load(
-    "//tools/build_defs/apple:tvos.bzl",
-    "tvos_application",
-    "tvos_extension",
-)
-
-tvos_application(
-    name = "tvOSApplication",
-    bundle_id = "c.test.tvOSApplication",
-    extensions = [":tvOSExtension"],
-    infoplists = [
-        "tvOSApplication/Info.plist",
-    ],
-    deps = [":tvOSLibrary"],
-)
-
-tvos_extension(
-    name = "tvOSExtension",
-    bundle_id = "c.test.tvOSExtension",
-    infoplists = [
-        "tvOSExtension/Info.plist",
-    ],
-    deps = [":tvOSLibrary"],
-)
-
-objc_library(
-    name = "tvOSLibrary",
-    srcs = ["tvOSLibrary/srcs/src.m"],
-    enable_modules = True,
-)
-
-## Skylark-based test rules.
 load(
     "//tools/build_defs/apple:ios.bzl",
     "apple_product_type",
-    "skylark_ios_application",
-    "skylark_ios_extension",
+    ios_application = "skylark_ios_application",
+    ios_extension = "skylark_ios_extension",
     "ios_unit_test",
     "ios_ui_test",
 )
 load("//tools/build_defs/apple:swift.bzl", "swift_library")
 
-skylark_ios_application(
+ios_application(
     name = "SkylarkApplication",
     bundle_id = "com.google.Tulsi.Application",
     bundle_name = "SkylarkApp",
@@ -113,25 +32,28 @@ skylark_ios_application(
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
+    minimum_os_version = "8.0",
     settings_bundle = ":SettingsBundle",
     deps = [":MainLibrary"],
 )
 
-skylark_ios_application(
+ios_application(
     name = "SkylarkTargetApplication",
     bundle_id = "com.google.Tulsi.TargetApplication",
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
+    minimum_os_version = "8.0",
     deps = [":MainLibrary"],
 )
 
-skylark_ios_extension(
+ios_extension(
     name = "StickerExtension",
     asset_catalogs = ["Stickers.xcstickers/asset.png"],
     bundle_id = "com.google.Tulsi.TargetApplication.extension",
     families = ["iphone"],
     infoplists = ["Ext-Info.plist"],
+    minimum_os_version = "8.0",
     product_type = apple_product_type.messages_sticker_pack_extension,
 )
 
@@ -145,16 +67,16 @@ objc_bundle(
 objc_library(
     name = "MainLibrary",
     srcs = [
-        "Binary/srcs/main.m",
+        "App/srcs/main.m",
     ],
-    asset_catalogs = ["Binary/Assets.xcassets/asset.png"],
+    asset_catalogs = ["App/Assets.xcassets/asset.png"],
     datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
         "BINARY_ADDITIONAL_DEFINE",
         "BINARY_ANOTHER_DEFINE=2",
     ],
-    includes = ["Binary/includes"],
-    storyboards = ["Binary/Base.lproj/One.storyboard"],
+    includes = ["App/includes"],
+    storyboards = ["App/Base.lproj/One.storyboard"],
     deps = [
         ":Library",
     ],
@@ -183,7 +105,10 @@ objc_library(
         "Library/textual_hdrs/TextualHdrsHeader.h",
     ],
     xibs = ["Library/xibs/xib.xib"],
-    deps = [":ObjcProtos"],
+    deps = [
+        "J2ObjCLibrary",
+        ":ObjcProtos",
+    ],
 )
 
 objc_proto_library(
@@ -195,6 +120,18 @@ objc_proto_library(
 proto_library(
     name = "Protos",
     srcs = ["ProtoFile.proto"],
+)
+
+j2objc_library(
+    name = "J2ObjCLibrary",
+    deps = [
+        ":JavaLibrary",
+    ],
+)
+
+java_library(
+    name = "JavaLibrary",
+    srcs = ["file.java"],
 )
 
 objc_library(
@@ -224,7 +161,17 @@ swift_library(
 
 ios_unit_test(
     name = "XCTest",
+    minimum_os_version = "8.0",
     test_host = ":SkylarkApplication",
+    deps = [
+        ":XCTestCode",
+        ":XCTestCodeSwift",
+    ],
+)
+
+ios_unit_test(
+    name = "XCTestWithDefaultHost",
+    minimum_os_version = "8.0",
     deps = [
         ":XCTestCode",
         ":XCTestCodeSwift",
@@ -233,6 +180,7 @@ ios_unit_test(
 
 ios_ui_test(
     name = "XCUITest",
+    minimum_os_version = "8.0",
     runner = "//tools/objc/sim_devices:default_runner",
     test_host = ":SkylarkApplication",
     deps = [
