@@ -270,6 +270,11 @@ def _collect_asset_catalogs(rule_attr):
   return bundles
 
 
+def _collect_scenekit_assets(rule_attr):
+  """Extracts scenekit directories from the given rule attributes."""
+  return _collect_bundle_paths(rule_attr, ['resources'], '.scnassets')
+
+
 def _collect_bundle_imports(rule_attr):
   """Extracts bundle directories from the given rule attributes."""
   return _collect_bundle_paths(rule_attr,
@@ -556,7 +561,8 @@ def _tulsi_sources_aspect(target, ctx):
 
   supporting_files = (_collect_supporting_files(rule_attr) +
                       _collect_asset_catalogs(rule_attr) +
-                      _collect_bundle_imports(rule_attr))
+                      _collect_bundle_imports(rule_attr) +
+                      _collect_scenekit_assets(rule_attr))
 
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.

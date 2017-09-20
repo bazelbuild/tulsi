@@ -231,6 +231,7 @@ let DirExtensionToUTI = [
   "xctest": "wrapper.cfbundle",
   "xcstickers": "folder.stickers",
   "xpc": "wrapper.xpc-service",
+  "scnassets": "wrapper.scnassets"
 ]
 
 // Helper methods to extract filename-like substrings from strings.
