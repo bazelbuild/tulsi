@@ -45,7 +45,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:Binary")
+        .dependsOn("//tulsi_test:Application.apple_binary")
         .hasListAttribute(.compiler_defines,
                           containing: ["A_COMMANDLINE_DEFINE",
                                        "A_COMMANDLINE_DEFINE_WITH_VALUE=1",
@@ -53,6 +53,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.launch_storyboard, value: ["is_dir": false,
                                                   "path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true] as NSDictionary)
+
+    checker.assertThat("//tulsi_test:Application.apple_binary")
+        .dependsOn("//tulsi_test:ApplicationLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:Library")
@@ -97,8 +100,15 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true]] as NSArray)
 
     checker.assertThat("//tulsi_test:XCTest")
-        .dependsOn("//tulsi_test:Library")
         .hasTestHost("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest_test_bundle")
+
+    checker.assertThat("//tulsi_test:XCTest_test_bundle")
+        .dependsOn("//tulsi_test:XCTest_test_binary")
+        .dependsOn("//tulsi_test:Application")
+
+    checker.assertThat("//tulsi_test:XCTest_test_binary")
         .dependsOn("//tulsi_test:TestLibrary")
   }
 
@@ -151,7 +161,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:Binary")
+        .dependsOn("//tulsi_test:Application.apple_binary")
+        .dependsOn("//tulsi_test:TodayExtension")
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/Application/Info.plist",
@@ -295,11 +306,22 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/TodayExtension/srcs/today_extension_library.m"])
 
     checker.assertThat("//tulsi_test:TodayExtension")
+        .dependsOn("//tulsi_test:TodayExtension.apple_binary")
+
+    checker.assertThat("//tulsi_test:TodayExtension.apple_binary")
         .dependsOn("//tulsi_test:TodayExtensionLibrary")
         .dependsOn("//tulsi_test:TodayExtensionResources")
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest_test_bundle")
+
+    checker.assertThat("//tulsi_test:XCTest_test_bundle")
+        .dependsOn("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest_test_binary")
+
+    checker.assertThat("//tulsi_test:XCTest_test_binary")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:TestLibrary")
   }
@@ -325,6 +347,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest_test_bundle")
+
+    checker.assertThat("//tulsi_test:XCTest_test_bundle")
+        .dependsOn("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest_test_binary")
+
+    checker.assertThat("//tulsi_test:XCTest_test_binary")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:TestLibrary")
   }
@@ -348,6 +378,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:SkylarkApplication")
+        .dependsOn("//tulsi_test:SkylarkApplication.apple_binary")
+
+    checker.assertThat("//tulsi_test:SkylarkApplication.apple_binary")
         .dependsOn("//tulsi_test:MainLibrary")
 
     checker.assertThat("//tulsi_test:MainLibrary")
@@ -375,6 +408,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntries: ruleEntries)
     checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
         .hasTestHost("//tools/build_defs/apple/testing:ios_default_host")
+        .dependsOn("//tools/build_defs/apple/testing:ios_default_host")
+        .dependsOn("//tulsi_test:XCTestWithDefaultHost_test_bundle")
+
+    checker.assertThat("//tulsi_test:XCTestWithDefaultHost_test_bundle")
+        .dependsOn("//tools/build_defs/apple/testing:ios_default_host")
+        .dependsOn("//tulsi_test:XCTestWithDefaultHost_test_binary")
+
+    checker.assertThat("//tulsi_test:XCTestWithDefaultHost_test_binary")
         .dependsOn("//tulsi_test:XCTestCode")
         .dependsOn("//tulsi_test:XCTestCodeSwift")
   }
@@ -391,6 +432,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
     checker.assertThat("//tulsi_test:Application")
+      .dependsOn("//tulsi_test:Application.apple_binary")
+
+    checker.assertThat("//tulsi_test:Application.apple_binary")
       .dependsOn("//tulsi_test:ApplicationLibrary")
       .dependsOn("//tulsi_test:ApplicationResources")
 
@@ -400,9 +444,16 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                     "tulsi-includes/x/x/tulsi_test/Library/includes/one/include"])
 
     checker.assertThat("//tulsi_test:WatchApplication")
+      .dependsOn("//tulsi_test:WatchExtension")
+      .dependsOn("//tulsi_test:WatchApplication.apple_binary")
+
+    checker.assertThat("//tulsi_test:WatchApplication.apple_binary")
       .dependsOn("//tulsi_test:WatchApplicationResources")
 
     checker.assertThat("//tulsi_test:WatchExtension")
+      .dependsOn("//tulsi_test:WatchExtension.apple_binary")
+
+    checker.assertThat("//tulsi_test:WatchExtension.apple_binary")
       .dependsOn("//tulsi_test:WatchExtensionLibrary")
       .dependsOn("//tulsi_test:WatchExtensionResources")
 
@@ -547,9 +598,9 @@ private class InfoChecker {
     @discardableResult
     func dependsOn(_ targetLabel: String, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
-      XCTAssertNotNil(ruleEntry.dependencies.contains(targetLabel),
-                      "\(ruleEntry) must depend on \(targetLabel)",
-                      line: line)
+      XCTAssert(ruleEntry.dependencies.contains(targetLabel),
+                "\(ruleEntry) must depend on \(targetLabel)",
+                line: line)
       return self
     }
 
