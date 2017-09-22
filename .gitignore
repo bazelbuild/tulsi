@@ -7,3 +7,6 @@
 
 # Build artifacts
 src/build/
+
+# macOS
+.DS_Store

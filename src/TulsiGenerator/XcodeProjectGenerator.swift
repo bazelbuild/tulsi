@@ -475,7 +475,6 @@ final class XcodeProjectGenerator {
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
                                                            sourceTree: .SourceRoot)
-      newChild.serializesName = true
       newChild.migrateChildrenOfGroup(child)
     }
     mainGroup.removeChild(externalGroup)
