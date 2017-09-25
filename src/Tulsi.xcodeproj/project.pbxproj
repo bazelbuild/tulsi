@@ -121,6 +121,8 @@
 		541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 541CAE391F2A571900FE5771 /* Mac.BUILD */; };
 		5429EA8B1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */; };
 		5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */; };
+		546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */; };
+		546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */; };
 		547C3C021F1949740055BAED /* Watch.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 547C3C001F1949110055BAED /* Watch.BUILD */; };
 		54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
@@ -320,6 +322,8 @@
 		541CAE391F2A571900FE5771 /* Mac.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Mac.BUILD; path = Resources/Mac.BUILD; sourceTree = "<group>"; };
 		5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelPBXReferencePatcher.swift; sourceTree = "<group>"; };
 		5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelXcodeProjectPatcher.swift; sourceTree = "<group>"; };
+		546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellEscapingTests.swift; sourceTree = "<group>"; };
 		547C3C001F1949110055BAED /* Watch.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Watch.BUILD; path = Resources/Watch.BUILD; sourceTree = "<group>"; };
 		54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiParameter.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
@@ -430,6 +434,7 @@
 				3D9926961C29FB180094E098 /* TulsiProjectInfoExtractor.swift */,
 				3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */,
 				3DA65B271C67E9720055448E /* TulsiXcodeProjectGenerator.swift */,
+				546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */,
 			);
 			path = TulsiGenerator;
 			sourceTree = "<group>";
@@ -449,6 +454,7 @@
 				3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */,
 				3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */,
 				3DA65B3D1C6849140055448E /* XcodeProjectGeneratorTests.swift */,
+				546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */,
 			);
 			path = TulsiGeneratorTests;
 			sourceTree = "<group>";
@@ -949,6 +955,7 @@
 				3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */,
 				3D9926971C29FB180094E098 /* TulsiProjectInfoExtractor.swift in Sources */,
 				5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */,
+				546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */,
 				3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */,
 				3D9E1A511C6F87670026EE68 /* NSThreadExtensions.swift in Sources */,
 				3D99268E1C29F1100094E098 /* BazelWorkspaceInfoExtractorProtocol.swift in Sources */,
@@ -964,6 +971,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */,
+				546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */,
 				3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */,
 				3DA65B481C685BF30055448E /* MockWorkspaceInfoExtractor.swift in Sources */,
 				3D9926811C29F0CC0094E098 /* PBXTargetGeneratorTests.swift in Sources */,

@@ -140,11 +140,16 @@ public final class ProcessRunner {
     if let environment = environment {
       process.environment = environment
     }
+    // Construct a string suitable for cutting and pasting into the commandline.
+    let commandlineArguments = arguments.map { $0.escapingForShell }.joined(separator: " ")
+    let commandlineRunnableString = "\(launchPath.escapingForShell) \(commandlineArguments)"
+
     // If the localizedMessageLogger was passed as an arg, start logging the runtime of the process.
     if let messageLogger = messageLogger {
       timedProcessRunnerObserver.startLoggingProcessTime(process: process,
                                                          loggingIdentifier: (loggingIdentifier ?? launchPath),
                                                          messageLogger: messageLogger)
+      messageLogger.infoMessage("Running \(commandlineRunnableString)")
     }
 
     let dispatchGroup = DispatchGroup()
@@ -195,9 +200,6 @@ public final class ProcessRunner {
         self.timedProcessRunnerObserver.stopLogging(process: process, messageLogger: messageLogger)
       }
 
-      // Construct a string suitable for cutting and pasting into the commandline.
-      let commandlineArguments = " " + arguments.map({ "\"\($0)\"" }).joined(separator: " ")
-      let commandlineRunnableString = "\"\(process.launchPath!)\"\(commandlineArguments)"
       terminationHandler(CompletionInfo(process: process,
                                         commandlineString: commandlineRunnableString,
                                         stdout: stdoutData as Data,

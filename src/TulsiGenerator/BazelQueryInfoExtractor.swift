@@ -193,7 +193,6 @@ final class BazelQueryInfoExtractor: QueuedLogging {
     if message != "" {
       message = "\(message)\n"
     }
-    localizedMessageLogger.infoMessage("\(message)Running \(bazelURL.path) with arguments: \(arguments)")
 
     let process = TulsiProcessRunner.createProcess(bazelURL.path,
                                                    arguments: arguments,

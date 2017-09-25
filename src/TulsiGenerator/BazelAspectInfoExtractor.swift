@@ -237,7 +237,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     }
     arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)
-    localizedMessageLogger.infoMessage("Running \(bazelURL.path) with arguments: \(arguments)")
 
     let process = TulsiProcessRunner.createProcess(bazelURL.path,
                                                    arguments: arguments,
