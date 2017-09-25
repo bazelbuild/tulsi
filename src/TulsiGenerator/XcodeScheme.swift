@@ -194,8 +194,8 @@ final class XcodeScheme {
       // themselves added.
       let linkedTestTargets = project.linkedTestTargetsForHost(target)
       if linkedTestTargets.isEmpty {
-        let host = project.linkedHostForTestTarget(target)
-        if host != nil {
+        if let nativeTarget = target as? PBXNativeTarget,
+           nativeTarget.productType.isTest {
           testTargets = [target]
         } else {
           testTargets = []

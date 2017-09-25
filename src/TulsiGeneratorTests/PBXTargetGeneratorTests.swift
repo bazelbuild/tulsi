@@ -873,6 +873,143 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
+  func testGenerateTargetWithNoSourcesNoHostMacOSUnitTests() {
+    let testRuleType = "apple_unit_test"
+    let rule1BuildPath = "test/testbundle"
+    let rule1TargetName = "TestBundle"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget,
+                        type: testRuleType,
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "macosx",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetWithSourcesNoHostMacOSUnitTests() {
+    let testRuleType = "apple_unit_test"
+    let rule1BuildPath = "test/testbundle"
+    let rule1TargetName = "TestBundle"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let testSources = ["test/src1.m", "test/src2.m"]
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget,
+                        type: testRuleType,
+                        sourceFiles: testSources,
+                        platformType: "macos",
+                        osDeploymentTarget: "10.11"),
+      ])
+
+    do {
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "BAZEL_TARGET_TYPE": testRuleType,
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "MACOSX_DEPLOYMENT_TARGET": "10.11",
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "macosx",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_TEST_RUNNER_ONLY": "YES",
+        "TULSI_USE_DSYM": "NO",
+        ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget),
+          SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
   func testGenerateTargetsForLinkedRuleEntriesWithSources() {
     checkGenerateTargetsForLinkedRuleEntriesWithSources("ios_test",
                                                         testHostAttributeName: "xctest_app")
@@ -886,10 +1023,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   func checkGenerateTargetsForLinkedRuleEntriesWithSources(_ testRuleType: String,
                                                            testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
-    let rule1TargetName = "TestApplication"
+    let rule1TargetName = "TestHost"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
     let testRuleBuildPath = "test/testbundle"
-    let testRuleTargetName = "TestBundle"
+    let testRuleTargetName = "Tests"
     let testRuleBuildTarget = "\(testRuleBuildPath):\(testRuleTargetName)"
     let testRuleAttributes = [testHostAttributeName: rule1BuildTarget]
     let testSources = ["sourceFile1.m", "sourceFile2.mm"]
@@ -915,7 +1052,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-          "BAZEL_TARGET": "test/app:TestApplication",
+          "BAZEL_TARGET": "test/app:TestHost",
           "BAZEL_TARGET_TYPE": "ios_application",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
           "INFOPLIST_FILE": stubPlistPaths.defaultStub,
@@ -954,7 +1091,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     do {
       let expectedBuildSettings = [
           "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-          "BAZEL_TARGET": "test/testbundle:TestBundle",
+          "BAZEL_TARGET": "test/testbundle:Tests",
           "BAZEL_TARGET_TYPE": testRuleType,
           "BUNDLE_LOADER": "$(TEST_HOST)",
           "DEBUG_INFORMATION_FORMAT": "dwarf",
@@ -1419,7 +1556,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ],
           expectedBuildPhases: [
               BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
-                                              buildTarget: testRuleBuildTarget)
+                                                   buildTarget: testRuleBuildTarget),
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2405,6 +2542,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": package,
         "TULSI_USE_DSYM": "NO",
+        "TULSI_TEST_RUNNER_ONLY": "YES",
     ]
     let expectedTarget = TargetDefinition(
         name: "TestTarget",

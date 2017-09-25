@@ -119,6 +119,11 @@ objc_library(
 )
 
 objc_library(
+    name = "UnitTestsNoHostLib",
+    srcs = ["test/UnitTestsNoHost.m"],
+)
+
+objc_library(
     name = "UITestsLib",
     srcs = ["test/UITests.m"],
 )
@@ -128,6 +133,12 @@ macos_unit_test(
     minimum_os_version = "10.12",
     test_host = ":MyMacOSApp",
     deps = [":UnitTestsLib"],
+)
+
+macos_unit_test(
+    name = "UnitTestsNoHost",
+    bundle_id = "com.tulsi.tests",
+    deps = [":UnitTestsNoHostLib"],
 )
 
 macos_ui_test(

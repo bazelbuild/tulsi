@@ -267,11 +267,15 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
 
     let appLabel = BuildLabel("//\(testDir):MyMacOSApp")
     let unitTestsLabel = BuildLabel("//\(testDir):UnitTests")
+    let unitTestsNoHostLabel = BuildLabel("//\(testDir):UnitTestsNoHost")
     let uiTestsLabel = BuildLabel("//\(testDir):UITests")
     let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [RuleInfo(label: unitTestsLabel,
                                  type: "apple_unit_test",
                                  linkedTargetLabels: hostLabels),
+                        RuleInfo(label: unitTestsNoHostLabel,
+                                 type: "apple_unit_test",
+                                 linkedTargetLabels: []),
                         RuleInfo(label: uiTestsLabel,
                                  type: "apple_ui_test",
                                  linkedTargetLabels: hostLabels)]

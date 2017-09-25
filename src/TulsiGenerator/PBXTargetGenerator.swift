@@ -767,7 +767,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
                                           ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
-    var testTargetLinkages = [(PBXTarget, BuildLabel, RuleEntry)]()
+    var testTargetLinkages = [(PBXNativeTarget, BuildLabel?, RuleEntry)]()
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
                                             maxValue: namedRuleEntries.count)
     var allIntermediateArtifacts = [String: [String]]()
@@ -780,10 +780,24 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                                               ruleEntryMap: ruleEntryMap)
       allIntermediateArtifacts[name] = intermediateArtifacts
 
-      for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
+      let testHostAttribute: RuleEntry.Attribute?
+      switch entry.type {
+      case "ios_test":
+        testHostAttribute = .xctest_app
+      case "apple_unit_test", "apple_ui_test":
+        testHostAttribute = .test_host
+      default:
+        testHostAttribute = nil
+      }
+
+      if let attribute = testHostAttribute {
         if let hostLabelString = entry.attributes[attribute] as? String {
           let hostLabel = BuildLabel(hostLabelString)
           testTargetLinkages.append((target, hostLabel, entry))
+        } else if entry.pbxTargetType == .UnitTest {
+          // If there is no host and it's a unit test, assume it doesn't need one, i.e. it's a
+          // library based test.
+          testTargetLinkages.append((target, nil, entry))
         }
       }
 
@@ -813,8 +827,22 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     for (testTarget, testHostLabel, entry) in testTargetLinkages {
+      let testHostTarget: PBXNativeTarget?
+      if let hostTargetLabel = testHostLabel {
+        testHostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget
+        if testHostTarget == nil {
+          // If the user did not choose to include the host target it won't be available so the linkage
+          // can be skipped, but the test won't be runnable in Xcode.
+          localizedMessageLogger.warning("MissingTestHost",
+                                         comment: "Warning to show when a user has selected an XCTest but not its host application.",
+                                         values: entry.label.value, hostTargetLabel.value)
+          continue
+        }
+      } else {
+        testHostTarget = nil
+      }
       updateTestTarget(testTarget,
-                       withLinkageToHostTarget: testHostLabel,
+                       withLinkageToHostTarget: testHostTarget,
                        ruleEntry: entry,
                        ruleEntryMap: ruleEntryMap)
     }
@@ -1069,57 +1097,42 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                      indexerSettingsOnly: true)
   }
 
-  // Updates the build settings and optionally adds a "Compile sources" phase for the given test
-  // bundle target.
-  private func updateTestTarget(_ target: PBXTarget,
-                                withLinkageToHostTarget hostTargetLabel: BuildLabel,
+  /// Updates the build settings and optionally adds a "Compile sources" phase for the given test
+  /// bundle target.
+  private func updateTestTarget(_ target: PBXNativeTarget,
+                                withLinkageToHostTarget hostTarget: PBXNativeTarget?,
                                 ruleEntry: RuleEntry,
                                 ruleEntryMap: [BuildLabel: RuleEntry]) {
-    guard let hostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget else {
-      // If the user did not choose to include the host target it won't be available so the linkage
-      // can be skipped, but the test won't be runnable in Xcode.
-      localizedMessageLogger.warning("MissingTestHost",
-                                     comment: "Warning to show when a user has selected an XCTest but not its host application.",
-                                     values: ruleEntry.label.value, hostTargetLabel.value)
-      return
+    // If the test target has a test host, check that it was included in the Tulsi configuration.
+    if let hostTarget = hostTarget {
+      project.linkTestTarget(target, toHostTarget: hostTarget)
     }
+    updateTestTargetIndexer(target, ruleEntry: ruleEntry, hostTarget: hostTarget)
+    updateTestTargetBuildPhases(target, ruleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
+  }
 
-    project.linkTestTarget(target, toHostTarget: hostTarget)
+  /// Updates the test target indexer with test specific values.
+  private func updateTestTargetIndexer(_ target: PBXNativeTarget,
+                                       ruleEntry: RuleEntry,
+                                       hostTarget: PBXNativeTarget?) {
+    let testSettings = targetTestSettings(target, hostTarget: hostTarget)
 
-    // Attempt to update the build configs for the target to include BUNDLE_LOADER and TEST_HOST
-    // values, linking the test target to its host.
-    if let hostTargetPath = hostTarget.productReference?.path,
-       let hostTargetProductName = hostTarget.productName,
-       let deploymentTarget = target.deploymentTarget {
-      let testSettings: [String: String]
-      if ruleEntry.pbxTargetType == .UIUnitTest {
-        testSettings = [
-          "TEST_TARGET_NAME": hostTargetProductName,
-          "TULSI_TEST_RUNNER_ONLY": "YES",
-        ]
-      } else if let testHostPath = deploymentTarget.platform.testHostPath(hostTargetPath: hostTargetPath,
-                                                                          hostTargetProductName: hostTargetProductName) {
-        testSettings = [
-          "BUNDLE_LOADER": "$(TEST_HOST)",
-          "TEST_HOST": testHostPath,
-          "TULSI_TEST_RUNNER_ONLY": "YES",
-        ]
-      } else {
-        testSettings = [:]
-      }
+    // Inherit the resolved values from the indexer.
+    let indexerName = PBXTargetGenerator.indexerNameForTargetName(ruleEntry.label.targetName!,
+                                                                  hash: ruleEntry.label.hashValue)
+    let indexerTarget = indexerTargetByName[indexerName]
+    updateMissingBuildConfigurationsForList(target.buildConfigurationList,
+                                            withBuildSettings: testSettings,
+                                            inheritingFromConfigurationList: indexerTarget?.buildConfigurationList,
+                                            suppressingBuildSettings: ["ARCHS", "VALID_ARCHS"])
+  }
 
-      // Inherit the resolved values from the indexer.
-      let indexerName = PBXTargetGenerator.indexerNameForTargetName(ruleEntry.label.targetName!,
-                                                                    hash: ruleEntry.label.hashValue)
-      let indexerTarget = indexerTargetByName[indexerName]
-      updateMissingBuildConfigurationsForList(target.buildConfigurationList,
-                                              withBuildSettings: testSettings,
-                                              inheritingFromConfigurationList: indexerTarget?.buildConfigurationList,
-                                              suppressingBuildSettings: ["ARCHS", "VALID_ARCHS"])
-    }
-
+  /// Updates the test build phases to include sources to be indexed.
+  private func updateTestTargetBuildPhases(_ target: PBXNativeTarget,
+                                           ruleEntry: RuleEntry,
+                                           ruleEntryMap: [BuildLabel: RuleEntry]) {
     let (testSourceFileInfos, testNonArcSourceFileInfos, containsSwift) =
-        testSourceFiles(forRuleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
+      testSourceFiles(forRuleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
 
     // For the Swift dummy files phase to work, it has to be placed before the Compile Sources build
     // phase.
@@ -1129,12 +1142,34 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
     if !testSourceFileInfos.isEmpty || !testNonArcSourceFileInfos.isEmpty {
       var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos)
-      let (nonARCFiles, nonARCSettings) = generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos)
+      let (nonARCFiles, nonARCSettings) =
+          generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos)
       fileReferences.append(contentsOf: nonARCFiles)
       let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
       target.buildPhases.append(buildPhase)
     }
+  }
+
+  /// Returns test specific settings for test targets.
+  private func targetTestSettings(_ target: PBXNativeTarget,
+                                  hostTarget: PBXNativeTarget?) -> [String: String] {
+    var testSettings = ["TULSI_TEST_RUNNER_ONLY": "YES"]
+    // Attempt to update the build configs for the target to include BUNDLE_LOADER and TEST_HOST
+    // values, linking the test target to its host.
+    if let hostTargetPath = hostTarget?.productReference?.path,
+      let hostTargetProductName = hostTarget?.productName,
+      let deploymentTarget = target.deploymentTarget {
+
+      if target.productType == .UIUnitTest {
+        testSettings["TEST_TARGET_NAME"] = hostTargetProductName
+      } else if let testHostPath = deploymentTarget.platform.testHostPath(hostTargetPath: hostTargetPath,
+                                                                          hostTargetProductName: hostTargetProductName) {
+        testSettings["BUNDLE_LOADER"] = "$(TEST_HOST)"
+        testSettings["TEST_HOST"] = testHostPath
+      }
+    }
+    return testSettings
   }
 
   // Returns a tuple containing the sources and non-ARC sources for a ruleEntry of a test rule (e.g.

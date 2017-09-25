@@ -700,6 +700,11 @@ class PBXTarget: PBXObjectProtocol, Hashable {
       return self == .Watch1App || self == .Watch2App
     }
 
+    /// Whether or not this ProductType denotes a test bundle.
+    var isTest: Bool {
+      return self == .UnitTest || self == .UIUnitTest
+    }
+
     /// Returns the extension type associated with this watch app type (or nil if this ProductType
     /// is not a WatchApp type).
     var watchAppExtensionType: ProductType? {
@@ -919,7 +924,7 @@ final class PBXNativeTarget: PBXTarget {
 }
 
 
-/// Models a target that executes an arbitray binary.
+/// Models a target that executes an arbitrary binary.
 final class PBXLegacyTarget: PBXTarget {
   let buildArgumentsString: String
   let buildToolPath: String
