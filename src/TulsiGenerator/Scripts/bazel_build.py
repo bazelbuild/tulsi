@@ -173,6 +173,8 @@ class _OptionsParser(object):
       config_platform = 'watchos'
     elif self.platform_name.startswith('iphone'):
       config_platform = 'ios'
+    elif self.platform_name.startswith('macos'):
+      config_platform = 'darwin'
     elif self.platform_name.startswith('appletv'):
       config_platform = 'tvos'
     else:
@@ -256,6 +258,8 @@ class _OptionsParser(object):
                                self.sdk_version)
       elif self.platform_name.startswith('iphone'):
         self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
+      elif self.platform_name.startswith('macos'):
+        self._AddDefaultOption(options, '--macos_sdk_version', self.sdk_version)
       elif self.platform_name.startswith('appletv'):
         self._AddDefaultOption(options, '--tvos_sdk_version', self.sdk_version)
       else:
