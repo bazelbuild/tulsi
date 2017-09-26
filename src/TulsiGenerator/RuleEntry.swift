@@ -209,6 +209,9 @@ public final class RuleEntry: RuleInfo {
   /// Set of ios_application extension labels that this rule utilizes.
   public let extensions: Set<BuildLabel>
 
+  /// Set of ios_application framework labels that this rule utilizes.
+  public let frameworkLabels: Set<BuildLabel>
+
   /// .framework bundles provided by this rule.
   public let frameworkImports: [BazelFileInfo]
 
@@ -321,6 +324,7 @@ public final class RuleEntry: RuleInfo {
        secondaryArtifacts: [BazelFileInfo] = [],
        weakDependencies: Set<BuildLabel>? = nil,
        extensions: Set<BuildLabel>? = nil,
+       frameworkLabels: Set<BuildLabel>? = nil,
        bundleID: String? = nil,
        bundleName: String? = nil,
        extensionBundleID: String? = nil,
@@ -366,6 +370,11 @@ public final class RuleEntry: RuleInfo {
     } else {
       self.extensions = Set()
     }
+    if let frameworkLabels = frameworkLabels {
+      self.frameworkLabels = frameworkLabels
+    } else {
+      self.frameworkLabels = Set()
+    }
     self.bundleID = bundleID
     self.bundleName = bundleName
     self.extensionBundleID = extensionBundleID
@@ -404,6 +413,7 @@ public final class RuleEntry: RuleInfo {
                    secondaryArtifacts: [BazelFileInfo] = [],
                    weakDependencies: Set<BuildLabel>? = nil,
                    extensions: Set<BuildLabel>? = nil,
+                   frameworkLabels: Set<BuildLabel>? = nil,
                    bundleID: String? = nil,
                    bundleName: String? = nil,
                    extensionBundleID: String? = nil,
@@ -428,6 +438,7 @@ public final class RuleEntry: RuleInfo {
               secondaryArtifacts: secondaryArtifacts,
               weakDependencies: weakDependencies,
               extensions: extensions,
+              frameworkLabels: frameworkLabels,
               bundleID: bundleID,
               bundleName: bundleName,
               extensionBundleID: extensionBundleID,

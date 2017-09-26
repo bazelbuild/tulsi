@@ -56,6 +56,12 @@
 /* Failed to readString from FileLineReader when handling the BEP file. */
 "FileLineReaderReadStringFailed" = "Failed to readString from the BEP JSON file. This is a Tulsi or Bazel bug, please report.";
 
+/* Failed to find a dynamic framework with the given name. The generated project will not be able to run the app. */
+"FindingDynamicFrameworkFailed" = "Failed to find dynamic framework '%1$@'. The generated project will not be able to run the app.";
+
+/* Failed to find an extension with the given name. The generated project will not be able to run the app. */
+"FindingExtensionFailed" = "Failed to find extension '%1$@'. The generated project will not be able to run the app.";
+
 /* Failed to find a watchOS application extension with the given name. The project will not be able to launch the watch app. */
 "FindingWatchExtensionFailed" = "Failed to find watchOS extension '%1$@'. The generated project will not able to run the watch app.";
 

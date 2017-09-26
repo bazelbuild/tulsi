@@ -596,6 +596,8 @@ def _tulsi_sources_aspect(target, ctx):
     if watch_app:
       extensions.append(watch_app)
 
+  frameworks = [str(t.label) for t in _getattr_as_list(rule_attr, 'frameworks')]
+
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
 
   # Build up any local transitive attributes and apply them.
@@ -636,6 +638,7 @@ def _tulsi_sources_aspect(target, ctx):
       defines=target_defines,
       deps=compile_deps,
       extensions=extensions,
+      frameworks=frameworks,
       framework_imports=_collect_framework_imports(rule_attr),
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,

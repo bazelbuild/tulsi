@@ -32,6 +32,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		819366721F218FDB00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E61F218FDA00000000;
+		};
 		819366726921D83500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
@@ -574,6 +580,7 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B421F218FDB00000000 /* PBXTargetDependency */,
 			);
 			name = Application;
 			productName = Application;
@@ -838,6 +845,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4DAD0B421F218FDB00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366721F218FDB00000000 /* PBXContainerItemProxy */;
+		};
 		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
@@ -912,6 +923,26 @@
 		44936BD67EED3C4D00000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
+				PRODUCT_NAME = TodayExtension;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_USE_DSYM = NO;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -940,26 +971,6 @@
 				TULSI_USE_BEP = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-			};
-			name = Debug;
-		};
-		44936BD67EED3C4D00000003 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
-				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
-				BAZEL_TARGET_TYPE = ios_extension;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
-				PRODUCT_NAME = TodayExtension;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -1091,6 +1102,26 @@
 		44936BD6A3D45CE900000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
+				PRODUCT_NAME = TodayExtension;
+				SDKROOT = iphoneos;
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_USE_DSYM = YES;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1120,26 +1151,6 @@
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-			};
-			name = Release;
-		};
-		44936BD6A3D45CE900000003 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
-				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
-				BAZEL_TARGET_TYPE = ios_extension;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
-				PRODUCT_NAME = TodayExtension;
-				SDKROOT = iphoneos;
-				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -1287,6 +1298,34 @@
 		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
+				PRODUCT_NAME = TodayExtension;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_USE_DSYM = NO;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1320,34 +1359,6 @@
 				TULSI_USE_BEP = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
-			};
-			name = __TulsiTestRunner_Debug;
-		};
-		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
-				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
-				BAZEL_TARGET_TYPE = ios_extension;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
-				PRODUCT_NAME = TodayExtension;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1410,6 +1421,34 @@
 		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
+				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
+				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
+				BAZEL_TARGET_TYPE = ios_extension;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
+				PRODUCT_NAME = TodayExtension;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_USE_DSYM = YES;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1447,34 +1486,6 @@
 			};
 			name = __TulsiTestRunner_Release;
 		};
-		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_complex/TodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_complex:TodayExtension.apple_binary";
-				BAZEL_TARGET = "//tulsi_e2e_complex:TodayExtension";
-				BAZEL_TARGET_TYPE = ios_extension;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
-				PRODUCT_NAME = TodayExtension;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_USE_DSYM = YES;
-			};
-			name = __TulsiTestRunner_Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1505,10 +1516,10 @@
 		DE4755836798DA7E00000000 /* Build configuration list for PBXProject "ComplexSingleProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000002 /* Debug */,
-				44936BD6A3D45CE900000002 /* Release */,
-				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1531,10 +1542,10 @@
 		DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD6A3D45CE900000003 /* Release */,
-				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
+				44936BD67EED3C4D00000002 /* Debug */,
+				44936BD6A3D45CE900000002 /* Release */,
+				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

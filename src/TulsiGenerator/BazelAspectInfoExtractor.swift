@@ -394,6 +394,12 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       } else {
         extensions = nil
       }
+      let frameworkLabels: Set<BuildLabel>?
+      if let frameworkLabelList = dict["frameworks"] as? [String] {
+        frameworkLabels = Set(frameworkLabelList.map({ BuildLabel($0) }))
+      } else {
+        frameworkLabels = nil
+      }
       let bundleID = dict["bundle_id"] as? String
       let bundleName = dict["bundle_name"] as? String
       let platformType = dict["platform_type"] as? String
@@ -427,6 +433,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,
+                                frameworkLabels: frameworkLabels,
                                 bundleID: bundleID,
                                 bundleName: bundleName,
                                 platformType: platformType,

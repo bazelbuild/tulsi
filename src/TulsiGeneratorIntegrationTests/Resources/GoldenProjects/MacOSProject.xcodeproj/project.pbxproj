@@ -14,6 +14,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8193667265954B6B00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EAB92C4AB700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D31C5E665954B6A00000000;
+		};
 		819366726921D83500000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAB92C4AB700000000 /* Project object */;
@@ -216,6 +222,7 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				4DAD0B4265954B6B00000000 /* PBXTargetDependency */,
 			);
 			name = MyMacOSApp;
 			productName = MyMacOSApp;
@@ -309,6 +316,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4DAD0B4265954B6B00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 8193667265954B6B00000000 /* PBXContainerItemProxy */;
+		};
 		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
