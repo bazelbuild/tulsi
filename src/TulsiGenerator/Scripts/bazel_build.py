@@ -554,9 +554,11 @@ class BazelBuildBridge(object):
     if 'DerivedData' in derived_data_path_components:
         derived_data_root = '/'.join(derived_data_path_components[:derived_data_path_components.index('DerivedData') + 2])
         self.index_store_path = os.path.join(derived_data_root, 'Index/DataStore')
+        self.tulsi_index_store_path = os.path.join(derived_data_root, '.TulsiDataStore')
     else:
         _PrintXcodeWarning('Unable to determine derived data path. Check if -derivedDataPath was specified which alters the default location.')
         self.index_store_path = None
+        self.tulsi_index_store_path = None
 
     self.is_simulator = self.platform_name.endswith('simulator')
     # Check to see if code signing actions should be skipped or not.
@@ -634,6 +636,8 @@ class BazelBuildBridge(object):
     if exit_code:
       _PrintXcodeError('Failed to ensure existence of bazel-bin directory.')
       return exit_code
+
+    self._HydrateIndexStore()
 
     # This needs to run after `bazel build`, since it depends on the Bazel
     # workspace directory
@@ -758,12 +762,14 @@ class BazelBuildBridge(object):
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')
 
-    # Starting in XCode 9, you can enable the index-store-path copt which
-    # powers indexing while building
+    # Xcode 9 introduced the ability to prepopulate the indexer store
+    # during compilations.
+    # The compiler stores artifacts in this directory and they are later
+    # read by Xcode. See _HydrateIndexStore for more info
     if self.xcode_version_major >= 900 and self.index_store_path:
         bazel_command.extend([
             '--copt=-index-store-path',
-            '--copt=%s' % self.index_store_path])
+            '--copt=%s' % self.tulsi_index_store_path])
 
     bazel_command.extend(options.targets)
 
@@ -771,6 +777,20 @@ class BazelBuildBridge(object):
     bazel_command.extend(extra_options.bazel_feature_flags())
 
     return (bazel_command, 0)
+
+  def _HydrateIndexStore(self):
+     """
+     Hydrates the index store that Xcode "knows about" with the one we built
+     during compilation. Xcode basically watches this directory and runs
+     indexer processes when it changes.
+
+     Do not put artifacts in this directory while Xcode is building, otherwise
+     Xcode will starve its self for resources and slow down the build.
+     """
+     output = subprocess.check_output(['ditto',
+                                      self.tulsi_index_store_path,
+                                      self.index_store_path,
+                                      ])
 
   def _RunBazelAndPatchOutput(self, command):
     """Runs subprocess command, patching output as it's received."""
