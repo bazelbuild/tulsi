@@ -94,16 +94,18 @@ class BazelBuildEvent(object):
 class BazelBuildEventsWatcher(object):
   """Watches a build events JSON file."""
 
-  def __init__(self, json_file):
+  def __init__(self, json_file, warning_handler=None):
     """Creates a new BazelBuildEventsWatcher object.
 
     Args:
       json_file: The JSON file object to watch.
+      warning_handler: Handler function for warnings accepting a single string.
 
     Returns:
       A BazelBuildEventsWatcher instance.
     """
     self.file_reader = _FileLineReader(json_file)
+    self.warning_handler = warning_handler
 
   def check_for_new_events(self):
     """Checks the file for new BazelBuildEvents.
@@ -116,7 +118,14 @@ class BazelBuildEventsWatcher(object):
       line = self.file_reader.check_for_changes()
       if not line:
         break
-      build_event_dict = json.loads(line)
+      try:
+        build_event_dict = json.loads(line)
+      except (UnicodeDecodeError, ValueError) as e:
+        handler = self.warning_handler
+        if handler:
+          handler('Could not decode BEP event "%s"\n' % line)
+          handler('Received error of %s, "%s"\n' % (type(e), e))
+        break
       build_event = BazelBuildEvent(build_event_dict)
       new_events.append(build_event)
     return new_events

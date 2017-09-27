@@ -21,6 +21,7 @@ main group in order to generate correct debug symbols.
 
 import collections
 import hashlib
+import io
 import json
 import os
 import re
@@ -795,8 +796,10 @@ class BazelBuildBridge(object):
                                    stdout=devnull,
                                    stderr=subprocess.STDOUT)
 
-      with open(self.build_events_file_path, 'r') as bep_file:
-        watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file)
+      with io.open(self.build_events_file_path, 'r', -1, 'utf-8', 'ignore'
+                  ) as bep_file:
+        watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
+                                                             _PrintXcodeWarning)
         output_locations = []
         while process.returncode is None:
           output_locations.extend(WatcherUpdate(watcher))
