@@ -979,8 +979,8 @@ inline void UpdateLineInfoSizeInfo(uint8_t *existing_data_ptr,
   T *header_length_ptr = reinterpret_cast<T *>(
       existing_data_ptr + header_length_offset);
 
-  *unit_length_ptr = static_cast<T>(new_compilation_unit_length);
-  *header_length_ptr = static_cast<T>(new_header_length);
+  memcpy(unit_length_ptr, &new_compilation_unit_length, sizeof(T));
+  memcpy(header_length_ptr, &new_header_length, sizeof(T));
   if (swap_byte_ordering) {
     if (sizeof(T) == sizeof(uint64_t)) {
       OSSwapInt64(*unit_length_ptr);

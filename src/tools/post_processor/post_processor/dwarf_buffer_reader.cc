@@ -37,7 +37,7 @@ bool DWARFBufferReader::ReadWORD(uint16_t *out) {
     fprintf(stderr, "Failed to read WORD value.\n");
     return false;
   }
-  *out = *(reinterpret_cast<const uint16_t*>(read_ptr_));
+  memcpy(out, read_ptr_, sizeof(uint16_t));
   read_ptr_ += sizeof(*out);
   if (swap_byte_ordering_) {
     OSSwapInt16(*out);
@@ -51,7 +51,7 @@ bool DWARFBufferReader::ReadDWORD(uint32_t *out) {
     fprintf(stderr, "Failed to read DWORD value.\n");
     return false;
   }
-  *out = *(reinterpret_cast<const uint32_t*>(read_ptr_));
+  memcpy(out, read_ptr_, sizeof(uint32_t));
   read_ptr_ += sizeof(*out);
   if (swap_byte_ordering_) {
     OSSwapInt32(*out);
@@ -65,7 +65,7 @@ bool DWARFBufferReader::ReadQWORD(uint64_t *out) {
     fprintf(stderr, "Failed to read QWORD value.\n");
     return false;
   }
-  *out = *(reinterpret_cast<const uint64_t*>(read_ptr_));
+  memcpy(out, read_ptr_, sizeof(uint64_t));
   read_ptr_ += sizeof(*out);
   if (swap_byte_ordering_) {
     OSSwapInt64(*out);
