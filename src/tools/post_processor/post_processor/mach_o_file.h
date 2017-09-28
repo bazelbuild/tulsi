@@ -557,6 +557,7 @@ SerializeWithDeferredWrites(std::vector<uint8_t> *buffer) {
     command_new->fileoff =
         static_cast<__typeof__(command_new->fileoff)>(new_data_offset);
     command_new->filesize += segment_resize_bytes;
+    command_new->vmsize += segment_resize_bytes;
 
     if (resize == segment_resizes.end()) {
       // If no sections are changed, the existing data is simply moved to the
