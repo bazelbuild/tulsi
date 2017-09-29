@@ -748,6 +748,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     buildSettings["TULSI_VERSION"] = tulsiVersion
 
+    // Set default Python STDOUT encoding of scripts run by Xcode (such as bazel_build.py) to UTF-8.
+    // Otherwise, this would be the Python 2 default of ASCII, causing various encoding errors when
+    // handling UTF-8 output from Bazel BEP in bazel_build.py.
+    buildSettings["PYTHONIOENCODING"] = "utf8"
+
     let searchPaths = ["$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",

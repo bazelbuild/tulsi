@@ -220,6 +220,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
                                + "$(TULSI_BWRS)/tulsi-includes/x/x",
         "ONLY_ACTIVE_ARCH": "YES",
+        "PYTHONIOENCODING": "utf8",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
         "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",
@@ -270,6 +271,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                + "$(TULSI_BWRS)/tulsi-includes/x/x",
         "SDKROOT": projectSDKROOT,
         "ONLY_ACTIVE_ARCH": "YES",
+        "PYTHONIOENCODING": "utf8",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
         "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",

@@ -536,6 +536,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
+				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;
@@ -682,6 +683,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
+				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;
@@ -861,6 +863,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
@@ -1015,6 +1018,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
