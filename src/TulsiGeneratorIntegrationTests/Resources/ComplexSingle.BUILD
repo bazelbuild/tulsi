@@ -24,8 +24,8 @@ config_setting(
 load(
     "//tools/build_defs/apple:ios.bzl",
     "apple_product_type",
-    ios_application = "skylark_ios_application",
-    ios_extension = "skylark_ios_extension",
+    "ios_application",
+    "ios_extension",
     "ios_unit_test",
     "ios_ui_test",
 )

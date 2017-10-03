@@ -20,7 +20,7 @@ package(
 
 load(
     "//tools/build_defs/apple:ios.bzl",
-    ios_application = "skylark_ios_application",
+    "ios_application",
 )
 
 test_suite(

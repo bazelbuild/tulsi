@@ -16,7 +16,7 @@
 
 load(
     "//tools/build_defs/apple:ios.bzl",
-    ios_application = "skylark_ios_application",
+    "ios_application",
 )
 load("//tools/build_defs/apple:watchos.bzl", "watchos_application", "watchos_extension")
 
