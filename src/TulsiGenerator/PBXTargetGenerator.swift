@@ -810,7 +810,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       switch entry.pbxTargetType {
         case .Watch2App?, .Application?:
           appTargets[name] = (target, entry)
-        case .Framework?, .Watch2Extension?, .AppExtension?:
+        case .Watch2Extension?, .AppExtension?:
+          appTargets[name] = (target, entry)
+          targetsByEntry[entry] = target
+        case .Framework?:
           targetsByEntry[entry] = target
         default:
           break
