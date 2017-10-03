@@ -40,7 +40,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                           startupOptions: bazelStartupOptions,
                                                                           buildOptions: buildOptions,
                                                                           bepEnabled: true)
-    XCTAssertEqual(ruleEntries.count, 10)
+    XCTAssertEqual(ruleEntries.count, 11)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -156,7 +156,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                           startupOptions: bazelStartupOptions,
                                                                           buildOptions: bazelBuildOptions,
                                                                           bepEnabled: bepEnabled)
-    XCTAssertEqual(ruleEntries.count, 25)
+    XCTAssertEqual(ruleEntries.count, 26)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
@@ -341,7 +341,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                                           startupOptions: bazelStartupOptions,
                                                                           buildOptions: bazelBuildOptions,
                                                                           bepEnabled: true)
-    XCTAssertEqual(ruleEntries.count, 25)
+    XCTAssertEqual(ruleEntries.count, 26)
 
     let checker = InfoChecker(ruleEntries: ruleEntries)
 
