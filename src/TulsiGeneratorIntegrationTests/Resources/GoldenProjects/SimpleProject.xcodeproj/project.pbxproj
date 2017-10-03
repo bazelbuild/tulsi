@@ -13,8 +13,8 @@
 		E6AF494741E053A700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2841E053A700000000 /* main.m */; };
 		E6AF49478B9856D200000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288B9856D200000000 /* src1.m */; };
 		E6AF4947AD49D31000000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28AD49D31000000000 /* src2.m */; };
-		E6AF4947B4874E1300000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28B4874E1300000000 /* memleaks.m */; };
 		E6AF4947CD6F6F5600000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28CD6F6F5600000000 /* src3.m */; };
+		E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28CFB68C6700000000 /* memleaks.m */; };
 		E6AF4947ED1C8B9400000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28ED1C8B9400000000 /* src4.m */; };
 /* End PBXBuildFile section */
 
@@ -54,11 +54,11 @@
 		43D68C288B9856D200000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src1.m"; sourceTree = "<group>"; };
 		43D68C28AC13992A00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C28AD49D31000000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src2.m"; sourceTree = "<group>"; };
-		43D68C28B4874E1300000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = "tulsi-workspace/tools/objc/memleaks/memleaks.m"; sourceTree = "<group>"; };
 		43D68C28B6B94D0C00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 		43D68C28BEBE5EAE00000000 /* lib_idx_TestLibrary_92E29781.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TestLibrary_92E29781.a; path = lib_idx_TestLibrary_92E29781.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28C349AC4E00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28CD6F6F5600000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src3.m"; sourceTree = "<group>"; };
+		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28D437E2BC00000000 /* TargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TargetApplication-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple/TargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28D69C1D8C00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_simple/Application/entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C28D98253B200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_simple/Application/Info.plist"; sourceTree = "<group>"; };
@@ -177,7 +177,7 @@
 		966FB6DE9336EC7600000000 /* memleaks */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B4874E1300000000 /* memleaks.m */,
+				43D68C28CFB68C6700000000 /* memleaks.m */,
 			);
 			name = memleaks;
 			sourceTree = "<group>";
@@ -460,7 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947B4874E1300000000 /* memleaks.m in memleaks */,
+				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
 				E6AF494719E313D100000000 /* src1.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
