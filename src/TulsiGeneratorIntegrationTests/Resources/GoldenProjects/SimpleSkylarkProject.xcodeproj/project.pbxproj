@@ -17,7 +17,7 @@
 		E6AF49477130578F00000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple_skylark */ = {isa = PBXBuildFile; fileRef = C517CBBD7130578F00000000 /* SimpleTest.xcdatamodeld */; };
 		E6AF49477C84C8BE00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C287C84C8BE00000000 /* src3.m */; };
 		E6AF49478C4244FC00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288C4244FC00000000 /* src4.m */; };
-		E6AF4947B4874E1300000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28B4874E1300000000 /* memleaks.m */; };
+		E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28CFB68C6700000000 /* memleaks.m */; };
 		E6AF4947D035C16900000000 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D035C16900000000 /* XCTests.mm */; };
 		E6AF4947D035C16900000001 /* XCTests.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28D035C16900000000 /* XCTests.mm */; };
 		E6AF4947F44F077B00000000 /* file.java in tulsi_e2e_simple_skylark */ = {isa = PBXBuildFile; fileRef = 43D68C28F44F077B00000000 /* file.java */; };
@@ -79,10 +79,10 @@
 		43D68C28A669C03500000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/xibs/xib.xib"; sourceTree = "<group>"; };
 		43D68C28A96EB07300000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCUITest.xctest; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28B4874E1300000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = "tulsi-workspace/tools/objc/memleaks/memleaks.m"; sourceTree = "<group>"; };
 		43D68C28B88954B500000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28B9C699F600000000 /* SkylarkApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = SkylarkApplication.app; path = SkylarkApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CEA253A400000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkTargetApplication-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28D035C16900000000 /* XCTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = XCTests.mm; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCTest/srcs/XCTests.mm"; sourceTree = "<group>"; };
 		43D68C28D66ECB8200000000 /* lib_idx_Library_22D3B3D5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_22D3B3D5.a; path = lib_idx_Library_22D3B3D5.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28EFA24FC800000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = "tulsi-workspace/SimpleDataModelsTestv1.xcdatamodel"; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 		966FB6DE9336EC7600000000 /* memleaks */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B4874E1300000000 /* memleaks.m */,
+				43D68C28CFB68C6700000000 /* memleaks.m */,
 			);
 			name = memleaks;
 			sourceTree = "<group>";
@@ -632,7 +632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947B4874E1300000000 /* memleaks.m in memleaks */,
+				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
 				E6AF494707AD023D00000000 /* Tests.swift in srcs */,
 				E6AF4947D035C16900000000 /* XCTests.mm in srcs */,
 			);

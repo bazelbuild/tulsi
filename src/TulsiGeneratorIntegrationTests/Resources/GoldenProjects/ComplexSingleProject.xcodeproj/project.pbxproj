@@ -23,9 +23,9 @@
 		E6AF49479B31F4AA00000001 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C289B31F4AA00000000 /* src2.m */; };
 		E6AF4947AB2790F000000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28AB2790F000000000 /* src3.m */; };
 		E6AF4947AB2790F000000001 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28AB2790F000000000 /* src3.m */; };
-		E6AF4947B4874E1300000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28B4874E1300000000 /* memleaks.m */; };
 		E6AF4947BAE52D2E00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BAE52D2E00000000 /* src4.m */; };
 		E6AF4947BAE52D2E00000001 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BAE52D2E00000000 /* src4.m */; };
+		E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28CFB68C6700000000 /* memleaks.m */; };
 		E6AF4947D879895C00000000 /* Test.xcdatamodeld in tulsi_e2e_complex */ = {isa = PBXBuildFile; fileRef = C517CBBDD879895C00000000 /* Test.xcdatamodeld */; };
 		E6AF4947ED583D0500000000 /* today_extension_library.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28ED583D0500000000 /* today_extension_library.m */; };
 		E6AF4947F643652200000000 /* defaultTestSource.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28F643652200000000 /* defaultTestSource.m */; };
@@ -124,12 +124,12 @@
 		43D68C28AB2790F000000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src3.m"; sourceTree = "<group>"; };
 		43D68C28AEB2B20C00000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B112D95100000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; name = structured_resources.file2; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file2"; sourceTree = "<group>"; };
-		43D68C28B4874E1300000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = "tulsi-workspace/tools/objc/memleaks/memleaks.m"; sourceTree = "<group>"; };
 		43D68C28B72F496D00000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = test.framework; path = "tulsi-workspace/tulsi_e2e_complex/ObjCFramework/test.framework"; sourceTree = "<group>"; };
 		43D68C28BAE52D2E00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28BD12D84F00000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; name = structured_resources.file1; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file1"; sourceTree = "<group>"; };
 		43D68C28C005AE4600000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a; path = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CF36936300000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28DC6A997500000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NonARCFile.mm; path = "tulsi-workspace/tulsi_e2e_complex/Application/non_arc_srcs/NonARCFile.mm"; sourceTree = "<group>"; };
 		43D68C28ED583D0500000000 /* today_extension_library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = today_extension_library.m; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/srcs/today_extension_library.m"; sourceTree = "<group>"; };
 		43D68C28EEE1AA8400000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; name = file1; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file1"; sourceTree = "<group>"; };
@@ -458,7 +458,7 @@
 		966FB6DE9336EC7600000000 /* memleaks */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28B4874E1300000000 /* memleaks.m */,
+				43D68C28CFB68C6700000000 /* memleaks.m */,
 			);
 			name = memleaks;
 			sourceTree = "<group>";
@@ -802,7 +802,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947B4874E1300000000 /* memleaks.m in memleaks */,
+				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
 				E6AF4947958553E300000000 /* src5.mm in srcs */,
 				E6AF49478970786C00000000 /* src1.m in srcs */,
 				E6AF49479B31F4AA00000000 /* src2.m in srcs */,
