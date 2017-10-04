@@ -1193,13 +1193,6 @@ class BazelBuildBridge(object):
       return 0, None
 
     input_dsym_full_path = os.path.join(self.build_path, target_dsym)
-    # ios_extension incorrectly names dSYM bundles as .app while
-    # skylark_ios_extension correctly names them with .appex. To support both
-    # rules, try and locate either name.
-    if not os.path.isdir(input_dsym_full_path):
-      target_dsym = target_dsym.replace('.appex', '.app')
-      input_dsym_full_path = os.path.join(self.build_path, target_dsym)
-
     output_full_path = os.path.join(output_dir, target_dsym)
     if os.path.isdir(output_full_path):
       try:
