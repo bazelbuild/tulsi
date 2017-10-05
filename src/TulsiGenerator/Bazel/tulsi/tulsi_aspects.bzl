@@ -436,14 +436,13 @@ def _get_platform_type(ctx):
 
 def _extract_minimum_os_for_platform(ctx, platform_type_str):
   """Extracts the minimum OS version for the given apple_common.platform."""
-  apple_frag = _get_opt_attr(ctx.fragments, 'apple')
-
   min_os = _get_opt_attr(ctx, 'rule.attr.minimum_os_version')
   if min_os:
     return min_os
 
   platform_type = getattr(apple_common.platform_type, platform_type_str)
-  min_os = apple_frag.minimum_os_for_platform_type(platform_type)
+  min_os = (ctx.attr._tulsi_xcode_config[apple_common.XcodeVersionConfig]
+            .minimum_os_for_platform_type(platform_type))
 
   if not min_os:
     return None
@@ -748,6 +747,8 @@ def _tulsi_outputs_aspect(target, ctx):
 
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
+    attrs = {
+        '_tulsi_xcode_config': attr.label(default=Label('//tools/osx:current_xcode_config')) },
     attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
 )
@@ -760,4 +761,3 @@ tulsi_outputs_aspect = aspect(
     attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
 )
-
