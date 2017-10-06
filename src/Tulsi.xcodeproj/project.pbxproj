@@ -348,6 +348,7 @@
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
+		E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects_paths.bzl; path = tulsi/tulsi_aspects_paths.bzl; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
 		E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeGeneratorInvalidPaths.swift; sourceTree = "<group>"; };
 		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
@@ -565,6 +566,7 @@
 		3DB8F6C41CA9E1060045B0CF /* tulsi */ = {
 			isa = PBXGroup;
 			children = (
+				E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */,
 				3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */,
 				3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */,
 			);
@@ -906,6 +908,7 @@
 			inputPaths = (
 				"$(SRCROOT)/TulsiGenerator/Bazel/tulsi/aspect.BUILD",
 				"$(SRCROOT)/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl",
+				"$(SRCROOT)/TulsiGenerator/Bazel/tulsi/tulsi_aspects_paths.bzl",
 			);
 			name = "Copy Tulsi aspect bundle resources";
 			outputPaths = (
@@ -914,7 +917,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -eu\nreadonly target_dir=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi\"\nmkdir -p \"${target_dir}\"\ncp -f \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl\" \"${target_dir}\"\ncp -f \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/aspect.BUILD\" \"${target_dir}/BUILD\"\n";
+			shellScript = "set -eu\nreadonly target_dir=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tulsi\"\nmkdir -p \"${target_dir}\"\ncp -f \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects.bzl\" \"${target_dir}\"\ncp -f \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/tulsi_aspects_paths.bzl\" \"${target_dir}\"\ncp -f \"${SRCROOT}/TulsiGenerator/Bazel/tulsi/aspect.BUILD\" \"${target_dir}/BUILD\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
