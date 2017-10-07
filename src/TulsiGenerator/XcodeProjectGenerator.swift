@@ -309,11 +309,8 @@ final class XcodeProjectGenerator {
           expandedTargetLabels.insert(label)
           expandedTargetLabels.formUnion(ruleEntry.extensions)
 
-          // Recursively expand extensions.
+          // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
           expandTargetLabels(ruleEntry.extensions)
-
-          // Recursively expand ios_frameworks.
-          expandTargetLabels(ruleEntry.frameworkLabels)
         } else {
           // Expand the test_suite to its set of tests.
           testSuiteRules[ruleEntry.label] = ruleEntry
@@ -525,17 +522,14 @@ final class XcodeProjectGenerator {
         postActionScripts[.TestAction] = config.options[.TestActionPostActionScript, ruleEntry.label.value] ?? nil
         return postActionScripts
     }
-    // Build a map of extension and framework targets to hosts so the hosts may be referenced as
-    // additional build requirements. This is necessary for watchOS2 targets (Xcode will spawn an
-    // error when attempting to run the app without the scheme linkage, even though Bazel will
-    // create the embedded host correctly) and to propagate dSYMs for extensions and frameworks.
-    var targetHosts = [BuildLabel: RuleEntry]()
+    // Build a map of extension targets to hosts so the hosts may be referenced as additional build
+    // requirements. This is necessary for watchOS2 targets (Xcode will spawn an error when
+    // attempting to run the app without the scheme linkage, even though Bazel will create the
+    // embedded host correctly) and does not harm other extensions.
+    var extensionHosts = [BuildLabel: RuleEntry]()
     for entry in info.buildRuleEntries {
       for extensionLabel in entry.extensions {
-        targetHosts[extensionLabel] = entry
-      }
-      for frameworkLabel in entry.frameworkLabels {
-        targetHosts[frameworkLabel] = entry
+        extensionHosts[extensionLabel] = entry
       }
     }
 
@@ -585,7 +579,7 @@ final class XcodeProjectGenerator {
       var additionalBuildTargets = target.buildActionDependencies.map() {
         ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
       }
-      if let host = targetHosts[entry.label] {
+      if let host = extensionHosts[entry.label] {
         guard let hostTarget = targetForLabel(host.label) else {
           localizedMessageLogger.warning("XCSchemeGenerationFailed",
                                          comment: "Warning shown when generation of an Xcode scheme failed for build target %1$@",

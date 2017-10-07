@@ -776,9 +776,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
                                             maxValue: namedRuleEntries.count)
     var allIntermediateArtifacts = [String: [String]]()
-    var appTargets = [String: (PBXNativeTarget, RuleEntry)]()
-    var targetsByEntry = [RuleEntry: PBXNativeTarget]()
-
+    var watchAppTargets = [String: (PBXNativeTarget, RuleEntry)]()
+    var watchExtensionsByEntry = [RuleEntry: PBXNativeTarget]()
     for (name, entry) in namedRuleEntries {
       progressNotifier.incrementValue()
       let (target, intermediateArtifacts) = try createBuildTargetForRuleEntry(entry,
@@ -808,41 +807,28 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       switch entry.pbxTargetType {
-        case .Watch2App?, .Application?:
-          appTargets[name] = (target, entry)
-        case .Watch2Extension?, .AppExtension?:
-          appTargets[name] = (target, entry)
-          targetsByEntry[entry] = target
-        case .Framework?:
-          targetsByEntry[entry] = target
+        case .Watch2App?:
+          watchAppTargets[name] = (target, entry)
+        case .Watch2Extension?:
+          watchExtensionsByEntry[entry] = target
         default:
           break
       }
     }
 
     // The watch app target must have an explicit dependency on the watch extension target.
-    //
-    // In addition, for generating proper dSYMs once and only once per target, app targets must have
-    // an explicit dependency on their dynamic frameworks and extensions.
-    for (_, (appTarget, ruleEntry)) in appTargets {
-
-      createDependencies(parentTarget: appTarget,
-                         parentRuleEntry: ruleEntry,
-                         childTargetsByEntry: targetsByEntry,
-                         childTargetType: .Framework,
-                         ruleEntryMap: ruleEntryMap)
-
-      createDependencies(parentTarget: appTarget,
-                         parentRuleEntry: ruleEntry,
-                         childTargetsByEntry: targetsByEntry,
-                         childTargetType: .AppExtension,
-                         ruleEntryMap: ruleEntryMap)
-
-      createDependencies(parentTarget: appTarget,
-                         parentRuleEntry: ruleEntry,
-                         childTargetsByEntry: targetsByEntry,
-                         childTargetType: .Watch2Extension,
-                         ruleEntryMap: ruleEntryMap)
+    for (_, (watchAppTarget, watchRuleEntry)) in watchAppTargets {
+      for ext in watchRuleEntry.extensions {
+        if let extEntry = ruleEntryMap[ext], extEntry.pbxTargetType == .Watch2Extension {
+          if let watchExtensionTarget = watchExtensionsByEntry[extEntry] {
+            watchAppTarget.createDependencyOn(watchExtensionTarget, proxyType: .targetReference, inProject: project)
+          } else {
+            localizedMessageLogger.warning("FindingWatchExtensionFailed",
+                                           comment: "Message to show when the watchOS app extension %1$@ could not be found and the resulting project will not be able to launch the watch app.",
+                                           values: extEntry.label.value)
+          }
+        }
+      }
     }
 
     for (testTarget, testHostLabel, entry) in testTargetLinkages {
@@ -870,47 +856,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // MARK: - Private methods
-
-  /// Create a formal dependency between two targets in an Xcode project.
-  private func createDependencies(parentTarget: PBXNativeTarget,
-                                  parentRuleEntry: RuleEntry,
-                                  childTargetsByEntry: [RuleEntry: PBXNativeTarget],
-                                  childTargetType: PBXTarget.ProductType,
-                                  ruleEntryMap: [BuildLabel: RuleEntry]) {
-    let childTargetLabels: Set<BuildLabel>
-    let warningKey: String
-    let warningCommentType: String
-    switch childTargetType {
-      case .Framework:
-        childTargetLabels = parentRuleEntry.frameworkLabels
-        warningKey = "FindingDynamicFrameworkFailed"
-        warningCommentType = "dynamic framework"
-      case .AppExtension:
-        childTargetLabels = parentRuleEntry.extensions
-        warningKey = "FindingExtensionFailed"
-        warningCommentType = "app extension"
-      case .Watch2Extension:
-        childTargetLabels = parentRuleEntry.extensions
-        warningKey = "FindingWatchExtensionFailed"
-        warningCommentType = "watchOS app extension"
-      default:
-        return
-    }
-    for childTargetLabel in childTargetLabels {
-      if let childTargetEntry = ruleEntryMap[childTargetLabel],
-        childTargetEntry.pbxTargetType == childTargetType {
-        if let childTarget = childTargetsByEntry[childTargetEntry] {
-          parentTarget.createDependencyOn(childTarget,
-                                          proxyType: .targetReference,
-                                          inProject: project)
-        } else {
-          localizedMessageLogger.warning(warningKey,
-                                         comment: "Message to show when the \(warningCommentType) %1$@ could not be found and the resulting project will not be able to launch the app.",
-                                         values: childTargetEntry.label.value)
-        }
-      }
-    }
-  }
 
   /// Generates a filter function that may be used to verify that a path string is allowed by the
   /// given set of pathFilters.
