@@ -19,8 +19,8 @@ NOTE: This script must be executed in the same directory as the Xcode project's
 main group in order to generate correct debug symbols.
 """
 
+import atexit
 import collections
-import hashlib
 import io
 import json
 import os
@@ -56,6 +56,22 @@ def _PrintXcodeWarning(msg):
 def _PrintXcodeError(msg):
   sys.stderr.write(':: error: %s\n' % msg)
   sys.stderr.flush()
+
+
+CLEANUP_BEP_FILE_AT_EXIT = False
+
+
+# Function to be called atexit to clean up the BEP file if one is present.
+# This is especially useful in cases of abnormal termination (such as what
+# happens when Xcode is killed).
+def _BEPFileExitCleanup(bep_file_path):
+  if not CLEANUP_BEP_FILE_AT_EXIT:
+    return
+  try:
+    os.remove(bep_file_path)
+  except OSError as e:
+    _PrintXcodeWarning('Failed to remove BEP file from %s. Error: %s' %
+                       (bep_file_path, e.strerror))
 
 
 class Timer(object):
@@ -575,10 +591,9 @@ class BazelBuildBridge(object):
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
 
-    # Path to the Build Events JSON file uses the md5 hash of the targets.
-    targets_str = ';'.join(parser.targets)
-    hash_val = hashlib.md5(targets_str).hexdigest()
-    filename = '%s_%s' % (hash_val, BazelBuildBridge.BUILD_EVENTS_FILE)
+    # Path to the Build Events JSON file uses pid and is removed if the
+    # build is successful.
+    filename = '%d_%s' % (os.getpid(), BazelBuildBridge.BUILD_EVENTS_FILE)
     self.build_events_file_path = os.path.join(
         self.project_file_path,
         '.tulsi',
@@ -796,6 +811,11 @@ class BazelBuildBridge(object):
                                    stdout=devnull,
                                    stderr=subprocess.STDOUT)
 
+      # Register atexit function to clean up BEP file.
+      atexit.register(_BEPFileExitCleanup, self.build_events_file_path)
+      global CLEANUP_BEP_FILE_AT_EXIT
+      CLEANUP_BEP_FILE_AT_EXIT = True
+
       with io.open(self.build_events_file_path, 'r', -1, 'utf-8', 'ignore'
                   ) as bep_file:
         watcher = bazel_build_events.BazelBuildEventsWatcher(bep_file,
@@ -810,6 +830,7 @@ class BazelBuildBridge(object):
 
         if process.returncode == 0:
           if not output_locations:
+            CLEANUP_BEP_FILE_AT_EXIT = False
             _PrintXcodeError('Unable to find location of the .tulsiouts file.'
                              'Please report this as a Tulsi bug, including the'
                              'contents of %s.' % self.build_events_file_path)
