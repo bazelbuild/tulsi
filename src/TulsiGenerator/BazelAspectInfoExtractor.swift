@@ -87,7 +87,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                                message: "Extracting info for \(targets.count) rules")
 
     let semaphore = DispatchSemaphore(value: 0)
-    var artifacts = [String]()
+    var artifacts = Set<String>()
     var processDebugInfo: String? = nil
     let process = bazelAspectProcessForTargets(targets.map({ $0.value }),
                                                aspect: "tulsi_sources_aspect",
@@ -99,7 +99,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         defer { semaphore.signal() }
         processDebugInfo = debugInfo
         if let generatedArtifacts = generatedArtifacts {
-          artifacts = generatedArtifacts.filter { $0.hasSuffix(".tulsiinfo") }
+          artifacts = Set(generatedArtifacts.filter { $0.hasSuffix(".tulsiinfo") })
         }
     }
 
@@ -167,7 +167,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           localizedMessageLogger: localizedMessageLogger)
       do {
         let events = try reader.readAllEvents()
-        let artifacts = events.flatMap { $0.files.lazy.filter { $0.hasSuffix(".tulsiinfo") } }
+        let artifacts = Set(events.flatMap { $0.files.lazy.filter { $0.hasSuffix(".tulsiinfo") } })
 
         if !artifacts.isEmpty {
           extractedEntries = self.extractRuleEntriesFromArtifacts(artifacts,
@@ -305,7 +305,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   }
 
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
-  private func extractRuleEntriesFromArtifacts(_ files: [String],
+  private func extractRuleEntriesFromArtifacts(_ files: Set<String>,
                                                progressNotifier: ProgressNotifier? = nil) -> [BuildLabel: RuleEntry] {
     let fileManager = FileManager.default
 
