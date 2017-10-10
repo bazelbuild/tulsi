@@ -145,20 +145,6 @@ class PBXReference: PBXObjectProtocol {
   }
   fileprivate weak var _parent: PBXReference?
 
-  /// Returns the path to this file reference relative to the source root group.
-  /// Access time is linear, depending on the number of parent groups.
-  var sourceRootRelativePath: String {
-    var parentHierarchy = [path!]
-    var group = parent
-    while (group != nil && group!.path != nil) {
-      parentHierarchy.append(group!.path!)
-      group = group!.parent
-    }
-
-    let fullPath = parentHierarchy.reversed().joined(separator: "/")
-    return fullPath
-  }
-
   init(name: String, path: String?, sourceTree: SourceTree, parent: PBXReference? = nil) {
     self.name = name;
     self.path = path
@@ -219,6 +205,21 @@ final class PBXFileReference: PBXReference, Hashable {
   private lazy var _pbPathUTI: String? = { [unowned self] in
     return self.name.pbPathUTI
   }()
+
+  /// Returns the path to this file reference relative to the source root group.
+  /// Access time is linear, depending on the number of parent groups.
+  var sourceRootRelativePath: String {
+    var parentHierarchy = [path!]
+    var group = parent
+    while (group != nil && group!.path != nil) {
+      parentHierarchy.append(group!.path!)
+      group = group!.parent
+    }
+
+    let fullPath = parentHierarchy.reversed().joined(separator: "/")
+    return fullPath
+  }
+
 
   init(name: String, path: String?, sourceTree: SourceTree, parent: PBXGroup?) {
     super.init(name: name, path: path, sourceTree: sourceTree, parent: parent)
@@ -402,6 +403,11 @@ class PBXGroup: PBXReference, Hashable {
     }
   }
 
+  /// Returns the (first) child file reference with the given name, if any.
+  func childFileReference(withName name: String) -> PBXFileReference? {
+    return fileReferencesBySourceTreePath.values.first { $0.name == name }
+  }
+
   override func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
     try super.serializeInto(serializer)
     try serializer.addField("children", children.sorted(by: {$0.name < $1.name}))
@@ -456,8 +462,9 @@ final class XCVersionGroup: PBXGroup {
   }
 
   func setCurrentVersionByName(_ name: String) -> Bool {
-    let sourceTreePath = SourceTreePath(sourceTree: .Group, path: name)
-    guard let value = fileReferencesBySourceTreePath[sourceTreePath] else {
+    // We have to go by name instead of path as PBXFileReferences' paths are relative to the
+    // mainGroup while the name is just the name of the file.
+    guard let value = childFileReference(withName: name) else {
       return false
     }
 
@@ -1231,7 +1238,7 @@ final class PBXProject: PBXObjectProtocol {
 
     let versionedGroupName = (path as NSString).lastPathComponent
     let versionedGroup = group.getOrCreateChildVersionGroupByName(versionedGroupName,
-                                                                  path: path)
+                                                                  path: nil)
     versionedGroup.versionGroupType = versionGroupType
     return versionedGroup
   }

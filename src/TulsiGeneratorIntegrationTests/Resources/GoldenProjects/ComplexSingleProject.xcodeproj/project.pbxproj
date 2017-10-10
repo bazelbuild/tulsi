@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E6AF494706F127E800000000 /* Test.xcdatamodeld in tulsi_e2e_complex */ = {isa = PBXBuildFile; fileRef = C517CBBD06F127E800000000 /* Test.xcdatamodeld */; };
 		E6AF4947151F1CC400000000 /* non_propagated.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28151F1CC400000000 /* non_propagated.m */; };
 		E6AF49471A41382100000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281A41382100000000 /* src.mm */; };
 		E6AF49473148FC2600000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283148FC2600000000 /* src.mm */; };
@@ -26,7 +27,6 @@
 		E6AF4947BAE52D2E00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BAE52D2E00000000 /* src4.m */; };
 		E6AF4947BAE52D2E00000001 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28BAE52D2E00000000 /* src4.m */; };
 		E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28CFB68C6700000000 /* memleaks.m */; };
-		E6AF4947D879895C00000000 /* Test.xcdatamodeld in tulsi_e2e_complex */ = {isa = PBXBuildFile; fileRef = C517CBBDD879895C00000000 /* Test.xcdatamodeld */; };
 		E6AF4947ED583D0500000000 /* today_extension_library.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28ED583D0500000000 /* today_extension_library.m */; };
 		E6AF4947F643652200000000 /* defaultTestSource.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28F643652200000000 /* defaultTestSource.m */; };
 		E6AF4947F643652200000001 /* defaultTestSource.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28F643652200000000 /* defaultTestSource.m */; };
@@ -85,11 +85,11 @@
 		43D68C281A41382100000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C2829C9947000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ObjCBundle.bundle; path = "tulsi-workspace/tulsi_e2e_complex/ObjCBundle.bundle"; sourceTree = "<group>"; };
 		43D68C283148FC2600000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/srcs/src.mm"; sourceTree = "<group>"; };
+		43D68C283591DFD900000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv1.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28442EC9D700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C2845AE2B9000000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_complex/Library/xib.xib"; sourceTree = "<group>"; };
 		43D68C284770519E00000000 /* lib_idx_Library_20EC2F4A.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A.a; path = lib_idx_Library_20EC2F4A.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C284B750D1A00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv2.xcdatamodel; path = "tulsi-workspace/DataModelsTestv2.xcdatamodel"; sourceTree = "<group>"; };
 		43D68C284C2792D600000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28520AA0DE00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; name = output.m; path = "blaze-genfiles/tulsi_e2e_complex/SrcGenerator/outs/output.m"; sourceTree = "<group>"; };
 		43D68C2852C6516600000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
@@ -99,7 +99,6 @@
 		43D68C285EBBC35700000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C286266EC1F00000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28627DA73600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = file2.file; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file2.file"; sourceTree = "<group>"; };
-		43D68C2862B9551400000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv1.xcdatamodel; path = "tulsi-workspace/DataModelsTestv1.xcdatamodel"; sourceTree = "<group>"; };
 		43D68C2864E4F83800000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; name = Two.storyboard; path = "blaze-genfiles/tulsi_e2e_complex/StoryboardGenerator/outs/Two.storyboard"; sourceTree = "<group>"; };
 		43D68C286A36B02900000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDifferentDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C286E7B37CF00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = NonLocalized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/NonLocalized.strings"; sourceTree = "<group>"; };
@@ -124,6 +123,7 @@
 		43D68C28C005AE4600000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a; path = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CF36936300000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
+		43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv2.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28DC6A997500000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NonARCFile.mm; path = "tulsi-workspace/tulsi_e2e_complex/Application/non_arc_srcs/NonARCFile.mm"; sourceTree = "<group>"; };
 		43D68C28ED583D0500000000 /* today_extension_library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = today_extension_library.m; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/srcs/today_extension_library.m"; sourceTree = "<group>"; };
 		43D68C28EEE1AA8400000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; name = file1; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file1"; sourceTree = "<group>"; };
@@ -442,7 +442,7 @@
 				966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */,
 				966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */,
 				966FB6DE4467252500000000 /* SubLibraryWithIdenticalDefines */,
-				C517CBBDD879895C00000000 /* Test.xcdatamodeld */,
+				C517CBBD06F127E800000000 /* Test.xcdatamodeld */,
 				966FB6DE0F90C7ED00000000 /* TodayExtension */,
 				966FB6DE77973FA000000000 /* XCTest */,
 			);
@@ -820,7 +820,7 @@
 			buildActionMask = 0;
 			files = (
 				E6AF4947ED583D0500000000 /* today_extension_library.m in srcs */,
-				E6AF4947D879895C00000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
+				E6AF494706F127E800000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
 				E6AF4947151F1CC400000000 /* non_propagated.m in srcs */,
 				E6AF4947F643652200000001 /* defaultTestSource.m in srcs */,
 			);
@@ -1607,15 +1607,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C517CBBDD879895C00000000 /* Test.xcdatamodeld */ = {
+		C517CBBD06F127E800000000 /* Test.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				43D68C2862B9551400000000 /* DataModelsTestv1.xcdatamodel */,
-				43D68C284B750D1A00000000 /* DataModelsTestv2.xcdatamodel */,
+				43D68C283591DFD900000000 /* DataModelsTestv1.xcdatamodel */,
+				43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */,
 			);
-			currentVersion = 43D68C284B750D1A00000000 /* DataModelsTestv2.xcdatamodel */;
+			currentVersion = 43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */;
 			name = Test.xcdatamodeld;
-			path = tulsi_e2e_complex/Test.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

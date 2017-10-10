@@ -984,7 +984,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         groups[versionedGroupPath] = versionedGroup
       }
       let ref = versionedGroup.getOrCreateFileReferenceBySourceTree(.Group,
-                                                                    path: path.lastPathComponent)
+                                                                    path: path as String)
       ref.isInputFile = info.targetType == .sourceFile
     }
 

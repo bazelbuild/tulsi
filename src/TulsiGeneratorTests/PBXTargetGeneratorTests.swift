@@ -2790,7 +2790,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      "Mismatch in file count in build phase:\n\(phase.files)\n\(fileSet)",
                      line: line)
       for buildFile in phase.files {
-        let path = buildFile.fileRef.sourceRootRelativePath
+        guard let fileRef = buildFile.fileRef as? PBXFileReference else {
+          continue
+        }
+        let path = fileRef.sourceRootRelativePath
         XCTAssert(fileSet.contains(path),
                   "Found unexpected file '\(path)' in build phase",
                   line: line)

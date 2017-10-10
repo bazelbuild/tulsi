@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		E6AF494719E313D100000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2819E313D100000000 /* src1.mm */; };
 		E6AF494719E313D100000001 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2819E313D100000000 /* src1.mm */; };
-		E6AF494734A293E700000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */ = {isa = PBXBuildFile; fileRef = C517CBBD34A293E700000000 /* SimpleTest.xcdatamodeld */; };
 		E6AF494741E053A700000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2841E053A700000000 /* main.m */; };
 		E6AF49478B9856D200000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288B9856D200000000 /* src1.m */; };
 		E6AF4947AD49D31000000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28AD49D31000000000 /* src2.m */; };
+		E6AF4947BA33721800000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */ = {isa = PBXBuildFile; fileRef = C517CBBDBA33721800000000 /* SimpleTest.xcdatamodeld */; };
 		E6AF4947CD6F6F5600000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28CD6F6F5600000000 /* src3.m */; };
 		E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */ = {isa = PBXBuildFile; fileRef = 43D68C28CFB68C6700000000 /* memleaks.m */; };
 		E6AF4947ED1C8B9400000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28ED1C8B9400000000 /* src4.m */; };
@@ -45,13 +45,13 @@
 		43D68C2819E313D100000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src1.mm; path = "tulsi-workspace/tulsi_e2e_simple/XCTest/srcs/src1.mm"; sourceTree = "<group>"; };
 		43D68C2841E053A700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C284759C53900000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
-		43D68C284819A7D200000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = "tulsi-workspace/SimpleDataModelsTestv2.xcdatamodel"; sourceTree = "<group>"; };
 		43D68C2854A2185400000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Launch.storyboard; path = "tulsi-workspace/tulsi_e2e_simple/Application/Launch.storyboard"; sourceTree = "<group>"; };
 		43D68C28594CBB3F00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_simple/BUILD; sourceTree = "<group>"; };
 		43D68C285A65770D00000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple/Library/xibs/xib.xib"; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C287E5CAD8600000000 /* lib_idx_Library_1A8360DD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_1A8360DD.a; path = lib_idx_Library_1A8360DD.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C288B9856D200000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src1.m"; sourceTree = "<group>"; };
+		43D68C28A556FB7A00000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28AC13992A00000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C28AD49D31000000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src2.m"; sourceTree = "<group>"; };
 		43D68C28B6B94D0C00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 		43D68C28ECA2D00200000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28ED1C8B9400000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28EF16FD1000000000 /* lib_idx_ApplicationLibrary_BB2F88FA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_BB2F88FA.a; path = lib_idx_ApplicationLibrary_BB2F88FA.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28EFA24FC800000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = "tulsi-workspace/SimpleDataModelsTestv1.xcdatamodel"; sourceTree = "<group>"; };
+		43D68C28EFB26B8400000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -160,7 +160,7 @@
 				966FB6DEC4D81E7A00000000 /* ApplicationLibrary */,
 				43D68C28594CBB3F00000000 /* BUILD */,
 				966FB6DE94E444FD00000000 /* Library */,
-				C517CBBD34A293E700000000 /* SimpleTest.xcdatamodeld */,
+				C517CBBDBA33721800000000 /* SimpleTest.xcdatamodeld */,
 				966FB6DE77973FA000000000 /* XCTest */,
 			);
 			name = tulsi_e2e_simple;
@@ -469,7 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494734A293E700000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */,
+				E6AF4947BA33721800000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */,
 				E6AF494741E053A700000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1113,15 +1113,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C517CBBD34A293E700000000 /* SimpleTest.xcdatamodeld */ = {
+		C517CBBDBA33721800000000 /* SimpleTest.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				43D68C28EFA24FC800000000 /* SimpleDataModelsTestv1.xcdatamodel */,
-				43D68C284819A7D200000000 /* SimpleDataModelsTestv2.xcdatamodel */,
+				43D68C28A556FB7A00000000 /* SimpleDataModelsTestv1.xcdatamodel */,
+				43D68C28EFB26B8400000000 /* SimpleDataModelsTestv2.xcdatamodel */,
 			);
-			currentVersion = 43D68C28EFA24FC800000000 /* SimpleDataModelsTestv1.xcdatamodel */;
+			currentVersion = 43D68C28A556FB7A00000000 /* SimpleDataModelsTestv1.xcdatamodel */;
 			name = SimpleTest.xcdatamodeld;
-			path = tulsi_e2e_simple/SimpleTest.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
