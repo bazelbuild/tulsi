@@ -86,6 +86,8 @@ def _dict_omitting_none(**kwargs):
   """Creates a dict from the args, dropping keys with None or [] values."""
   return {name: kwargs[name]
           for name in kwargs
+          # Skylark doesn't support "is"; comparison is explicit for correctness.
+          # pylint: disable=g-equals-none,g-explicit-bool-comparison
           if kwargs[name] != None and kwargs[name] != []
          }
 
@@ -547,7 +549,7 @@ def _tulsi_sources_aspect(target, ctx):
   # Collect the dependencies of this rule, dropping any .jar files (which may be
   # created as artifacts of java/j2objc rules).
   dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
-  compile_deps = [str(l) for l in dep_labels if not l.name.endswith('.jar')]
+  compile_deps = [str(d) for d in dep_labels if not d.name.endswith('.jar')]
 
   binary_rule = _get_opt_attr(rule_attr, 'binary')
   if binary_rule and type(binary_rule) == 'list':
