@@ -29,15 +29,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C282135950800000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4.a; path = lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2826E34A2000000000 /* lib_idx_ApplicationLibrary_12894588_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_12894588_ios_min8.0.a; path = lib_idx_ApplicationLibrary_12894588_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2837CE81F900000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/TestSuite/Application/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C28588752AD00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; };
 		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285A574A6E00000000 /* TestSuiteNonXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteNonXCTest.m; path = "tulsi-workspace/TestSuite/TestSuite/TestSuiteNonXCTest.m"; sourceTree = "<group>"; };
 		43D68C2864939ADF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/TestSuite/Info.plist"; sourceTree = "<group>"; };
 		43D68C289092682100000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-MergedInfo.plist"; path = "blaze-bin/TestSuite/TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C2892723E0A00000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0.a; path = lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = TestSuiteXCTest.xctest; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28BEAC790400000000 /* lib_idx_ApplicationLibrary_12894588.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_12894588.a; path = lib_idx_ApplicationLibrary_12894588.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28E1F52E9200000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteXCTest.m; path = "tulsi-workspace/TestSuite/TestSuite/TestSuiteXCTest.m"; sourceTree = "<group>"; };
 		43D68C28E96DF56800000000 /* TestSuiteNonXCTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestSuiteNonXCTest.app; path = TestSuiteNonXCTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -50,8 +50,8 @@
 				43D68C28E96DF56800000000 /* TestSuiteNonXCTest.app */,
 				43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */,
 				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
-				43D68C28BEAC790400000000 /* lib_idx_ApplicationLibrary_12894588.a */,
-				43D68C282135950800000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4.a */,
+				43D68C2826E34A2000000000 /* lib_idx_ApplicationLibrary_12894588_ios_min8.0.a */,
+				43D68C2892723E0A00000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,22 +138,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E615F719A200000000 /* _idx_ApplicationLibrary_12894588 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558347840A8F00000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_12894588" */;
-			buildPhases = (
-				605793E20000000000000001 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_ApplicationLibrary_12894588;
-			productName = _idx_ApplicationLibrary_12894588;
-			productReference = 43D68C28BEAC790400000000 /* lib_idx_ApplicationLibrary_12894588.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E63648AA0600000000 /* TestSuiteNonXCTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558368BD242900000000 /* Build configuration list for PBXNativeTarget "TestSuiteNonXCTest" */;
@@ -188,9 +172,9 @@
 			productReference = 43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E6D16E8DF600000000 /* _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4 */ = {
+		3D31C5E6942525CC00000000 /* _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755834F637F3100000000 /* Build configuration list for PBXNativeTarget "_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4" */;
+			buildConfigurationList = DE475583E77050C200000000 /* Build configuration list for PBXNativeTarget "_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0" */;
 			buildPhases = (
 				605793E20000000000000002 /* Sources */,
 			);
@@ -199,9 +183,25 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4;
-			productName = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4;
-			productReference = 43D68C282135950800000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4.a */;
+			name = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0;
+			productName = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0;
+			productReference = 43D68C2892723E0A00000000 /* lib_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6D741188E00000000 /* _idx_ApplicationLibrary_12894588_ios_min8.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583E54EB6BD00000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_12894588_ios_min8.0" */;
+			buildPhases = (
+				605793E20000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_ApplicationLibrary_12894588_ios_min8.0;
+			productName = _idx_ApplicationLibrary_12894588_ios_min8.0;
+			productReference = 43D68C2826E34A2000000000 /* lib_idx_ApplicationLibrary_12894588_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EC64700400000000 /* TestApplication */ = {
@@ -247,8 +247,8 @@
 				3D31C5E63648AA0600000000 /* TestSuiteNonXCTest */,
 				3D31C5E6420BCBAA00000000 /* TestSuiteXCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E615F719A200000000 /* _idx_ApplicationLibrary_12894588 */,
-				3D31C5E6D16E8DF600000000 /* _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4 */,
+				3D31C5E6D741188E00000000 /* _idx_ApplicationLibrary_12894588_ios_min8.0 */,
+				3D31C5E6942525CC00000000 /* _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -440,7 +440,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_ApplicationLibrary_12894588;
+				PRODUCT_NAME = _idx_ApplicationLibrary_12894588_ios_min8.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -453,7 +453,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4;
+				PRODUCT_NAME = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -562,7 +562,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_ApplicationLibrary_12894588;
+				PRODUCT_NAME = _idx_ApplicationLibrary_12894588_ios_min8.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -575,7 +575,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4;
+				PRODUCT_NAME = _idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -841,22 +841,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558347840A8F00000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_12894588" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD6A3D45CE900000004 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755834F637F3100000000 /* Build configuration list for PBXNativeTarget "_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000005 /* Debug */,
-				44936BD6A3D45CE900000005 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		DE47558368BD242900000000 /* Build configuration list for PBXNativeTarget "TestSuiteNonXCTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -890,6 +874,22 @@
 		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583E54EB6BD00000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_12894588_ios_min8.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD6A3D45CE900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583E77050C200000000 /* Build configuration list for PBXNativeTarget "_idx_TestSuiteXCTest_TestSuiteNonXCTest_2FAABBB4_ios_min7.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD6A3D45CE900000005 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

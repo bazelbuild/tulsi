@@ -2,6 +2,9 @@
   Strings for the Tulsi Xcode project generator.
 */
 
+/* Error when unable to resolve which RuleEntry is a dep of another based on DeploymentTargets. The target label is in %1$@. */
+"AmbiguousRuleEntryReference" = "Unable to resolve proper configuration for target %1$@. Do you have a root-level library target set as a build target? Please check your Tulsi Config settings to make sure that no library targets are selected.";
+
 /* Error to show when tulsi_supported_targets_aspect produced data that could not be parsed. The artifact filename is in %1$@, additional information is in %2$@. */
 "BazelAspectSupportedTargetParsingFailed" = "Failed to parse information about supported target in '%1$@'. This is a Tulsi or Bazel bug, please report. Debug info: %2$@";
 
@@ -47,8 +50,14 @@
 /* Provides general information about a Bazel command; a more detailed error may be reported elsewhere. The Bazel command is %1$@, exit code is %2$d, stderr %3$@. */
 "DebugInfoForBazelCommand" = "Bazel command info:\n%1$@\nExited with code %2$d\n\n%3$@";
 
+/* A RuleEntry that depends on another did not have a DeploymentTarget set. The RuleEntry's label is %1$@, the dep's label is in %2$@. */
+"DependentRuleEntryHasNoDeploymentTarget" = "Error resolving RuleEntry dep. Target %1$@ depends on %2$@ yet it does not have a DeploymentTarget set. Please report this as a Tulsi bug.";
+
 /* Failed to create an important directory. The resulting project will most likely be broken. A bug should be reported. */
 "DirectoryCreationFailed" = "Failed to create directory '%1$@'. The generated project will probably malfunction, please report. Error: %2$@";
+
+/* We have multiple identical RuleEntries, meaning they have the same BuildLabel and Deployment Target. The RuleEntry's label is %1$@, the DeploymentTarget is in %2$@. */
+"DuplicateRuleEntries" = "Multiple entries were found for target %1$@ with a deployment target of %2$@. This may be due to building this target at the top-level as well as a transitive dep of a different top-level target. You may experience some issues with this target in the generated Xcode project. This may be hard to debug, please report.";
 
 /* Message to show when the execution root was not able to be extracted from the workspace. */
 "ExecutionRootNotFound" = "Was not able to extract the execution root from the workspace. This is a Tulsi or Bazel bug, please report.";
@@ -69,7 +78,10 @@
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
 
 /* Warning to show when a RuleEntry does not have a DeploymentTarget to be used by the indexer. */
-"NoDeploymentTarget" = "Rule Entry for %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
+"NoDeploymentTarget" = "Target %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
+
+/* Warning when a library target is used as a top level buildTarget. Target in %1$@, target type in %2$@. */
+"TopLevelLibraryTarget" = "You've included a %2$@ target (%1$@) in your project as a top-level build target. This is not supported and may trigger other warnings and errors. We advise you to no longer reference any %2$@ targets at the top level. Instead, use a top-level application or test target with %1$@ as a dependency.";
 
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";

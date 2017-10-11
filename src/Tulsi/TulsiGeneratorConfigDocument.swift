@@ -443,15 +443,15 @@ final class TulsiGeneratorConfigDocument: NSDocument,
           self.processingTaskFinished()
         }
       }
-      let resolvedLabels: [BuildLabel: RuleEntry]
+      let ruleEntryMap: RuleEntryMap
       do {
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
         let bepOption = optionSet[.BEPSupportEnabled]
-        resolvedLabels = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
-                                                                     startupOptions: startupOptions,
-                                                                     buildOptions: buildOptions,
-                                                                     bepOption: bepOption)
+        ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
+                                                                   startupOptions: startupOptions,
+                                                                   buildOptions: buildOptions,
+                                                                   bepOption: bepOption)
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
         return
@@ -463,10 +463,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       var unresolvedLabels = Set<BuildLabel>()
       var sourceRuleEntries = [RuleEntry]()
       for label in selectedLabels {
-        if let entry = resolvedLabels[label] {
-          sourceRuleEntries.append(entry)
-        } else {
+        let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
+        if ruleEntries.isEmpty {
           unresolvedLabels.insert(label)
+        } else {
+          sourceRuleEntries.append(contentsOf: ruleEntries)
         }
       }
 
@@ -479,12 +480,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
       var selectedRuleEntries = [RuleEntry]()
       for selectedRuleInfo in self.selectedRuleInfos {
-        if let entry = resolvedLabels[selectedRuleInfo.label] {
-          selectedRuleEntries.append(entry)
-        }
+        selectedRuleEntries.append(contentsOf: ruleEntryMap.ruleEntries(buildLabel: selectedRuleInfo.label))
       }
 
-      var processedEntries = Set<BuildLabel>()
+      var processedEntries = Set<RuleEntry>()
 
       let componentDelimiters = CharacterSet(charactersIn: "/:")
       func addPath(_ path: String) {
@@ -504,14 +503,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       }
 
       func extractSourcePaths(_ ruleEntry: RuleEntry) {
-        if processedEntries.contains(ruleEntry.label) {
+        if processedEntries.contains(ruleEntry) {
           // Rules that have already been processed will already have all of their transitive
           // sources captured.
           return
         }
-        processedEntries.insert(ruleEntry.label)
+        processedEntries.insert(ruleEntry)
         for dep in ruleEntry.dependencies {
-          guard let depRuleEntry = resolvedLabels[BuildLabel(dep)] else {
+          guard let depRuleEntry = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dep), depender: ruleEntry) else {
             // Some dependencies are expected to be unresolved, e.g., those that rely on implicit
             // outputs of other rules.
             continue
@@ -772,17 +771,24 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
-    let resolvedLabels = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
-                                                                startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
-                                                                buildOptions: optionSet![.BazelBuildOptionsDebug],
-                                                                bepOption: optionSet![.BEPSupportEnabled])
+    let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
+                                                              startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
+                                                              buildOptions: optionSet![.BazelBuildOptionsDebug],
+                                                              bepOption: optionSet![.BEPSupportEnabled])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {
-      guard let info = resolvedLabels[label] else {
+      let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
+      guard let info = ruleEntries.last else {
         unresolvedLabels.insert(label)
         continue
       }
+      if ruleEntries.count > 1 {
+        let fmt = NSLocalizedString("AmbiguousBuildTarget",
+                                    comment: "Multiple deployment targets found for RuleEntry. Label is in %1$@. Type is in %2$@.")
+        LogMessage.postWarning(String(format: fmt, label.description, info.type))
+      }
+
       let uiRuleEntry = UIRuleInfo(ruleInfo: info)
       uiRuleEntry.selected = true
       ruleInfos.append(uiRuleEntry)

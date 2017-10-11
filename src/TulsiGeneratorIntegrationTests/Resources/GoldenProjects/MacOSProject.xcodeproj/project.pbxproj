@@ -33,9 +33,9 @@
 		43D68C2859FC82CA00000000 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.m"; sourceTree = "<group>"; };
 		43D68C286BE5C4F400000000 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TodayViewController.h; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/TodayViewController.h"; sourceTree = "<group>"; };
 		43D68C2876BC0BC700000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
-		43D68C288A0F77F600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289199386500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
 		43D68C28936F558E00000000 /* MyTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = MyTodayExtension.appex; path = MyTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CBE52D2300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
 		43D68C28DE68C70F00000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
 		43D68C28F1794D7D00000000 /* MyCommandLineApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyCommandLineApp-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyCommandLineApp-Info.plist"; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 				43D68C281E9E743E00000000 /* MyCommandLineApp */,
 				43D68C2810C8DA6C00000000 /* MyMacOSApp.app */,
 				43D68C28936F558E00000000 /* MyTodayExtension.appex */,
-				43D68C288A0F77F600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608.a */,
+				43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,22 +174,6 @@
 			productReference = 43D68C281E9E743E00000000 /* MyCommandLineApp */;
 			productType = "com.apple.product-type.tool";
 		};
-		3D31C5E661E6A45C00000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583A80AEECE00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608" */;
-			buildPhases = (
-				605793E20000000000000000 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608;
-			productName = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608;
-			productReference = 43D68C288A0F77F600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E665954B6A00000000 /* MyTodayExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755839935C7EB00000000 /* Build configuration list for PBXNativeTarget "MyTodayExtension" */;
@@ -222,6 +206,22 @@
 			productReference = 43D68C2810C8DA6C00000000 /* MyMacOSApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		3D31C5E6F77D1C0800000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830ED6DB7C00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" */;
+			buildPhases = (
+				605793E20000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
+			productName = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
+			productReference = 43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -244,7 +244,7 @@
 				3D31C5E6F53E4F0A00000000 /* MyMacOSApp */,
 				3D31C5E665954B6A00000000 /* MyTodayExtension */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E661E6A45C00000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608 */,
+				3D31C5E6F77D1C0800000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12 */,
 			);
 		};
 /* End PBXProject section */
@@ -418,7 +418,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608;
+				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
@@ -527,7 +527,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608;
+				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
@@ -785,6 +785,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DE4755830ED6DB7C00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000004 /* Debug */,
+				44936BD6A3D45CE900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		DE4755832C9B8E5500000000 /* Build configuration list for PBXNativeTarget "MyCommandLineApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -822,14 +830,6 @@
 				44936BD6A3D45CE900000000 /* Release */,
 				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE475583A80AEECE00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000004 /* Debug */,
-				44936BD6A3D45CE900000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

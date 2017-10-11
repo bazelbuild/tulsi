@@ -77,6 +77,10 @@ final class XcodeProjectGenerator {
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
 
+  /// Rules which should not be generated at the top level.
+  private static let LibraryRulesForTopLevelWarning =
+      Set(["objc_library", "swift_library", "cc_library"])
+
   private let workspaceRootURL: URL
   private let config: TulsiGeneratorConfig
   private let localizedMessageLogger: LocalizedMessageLogger
@@ -261,10 +265,20 @@ final class XcodeProjectGenerator {
 
   /// Invokes Bazel to load any missing information in the config file.
   private func resolveConfigReferences() throws {
-    let resolvedLabels = try loadRuleEntryMap()
-    let unresolvedLabels = config.buildTargetLabels.filter() { resolvedLabels[$0] == nil }
+    let ruleEntryMap = try loadRuleEntryMap()
+    let unresolvedLabels = config.buildTargetLabels.filter {
+      !ruleEntryMap.hasAnyRuleEntry(withBuildLabel: $0)
+    }
     if !unresolvedLabels.isEmpty {
       throw ProjectGeneratorError.labelResolutionFailed(Set<BuildLabel>(unresolvedLabels))
+    }
+    for label in config.buildTargetLabels {
+      if let entry = ruleEntryMap.anyRuleEntry(withBuildLabel: label),
+         XcodeProjectGenerator.LibraryRulesForTopLevelWarning.contains(entry.type) {
+        localizedMessageLogger.warning("TopLevelLibraryTarget",
+                                       comment: "Warning when a library target is used as a top level buildTarget. Target in %1$@, target type in %2$@.",
+                                       values: entry.label.description, entry.type)
+      }
     }
   }
 
@@ -303,18 +317,22 @@ final class XcodeProjectGenerator {
     // TODO(abaire): Go back to using a generic here when support for Swift 2.2 is removed.
     func expandTargetLabels(_ labels: Set<BuildLabel>) {
       for label in labels {
-        guard let ruleEntry = ruleEntryMap[label] else { continue }
-        if ruleEntry.type != "test_suite" {
-          // Add the RuleEntry itself and any registered extensions.
-          expandedTargetLabels.insert(label)
-          expandedTargetLabels.formUnion(ruleEntry.extensions)
+        // Effectively we will only be using the last RuleEntry in the case of duplicates.
+        // We could log about duplicates here, but this would only lead to duplicate logging.
+        let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
+        for ruleEntry in ruleEntries {
+          if ruleEntry.type != "test_suite" {
+            // Add the RuleEntry itself and any registered extensions.
+            expandedTargetLabels.insert(label)
+            expandedTargetLabels.formUnion(ruleEntry.extensions)
 
-          // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
-          expandTargetLabels(ruleEntry.extensions)
-        } else {
-          // Expand the test_suite to its set of tests.
-          testSuiteRules[ruleEntry.label] = ruleEntry
-          expandTargetLabels(ruleEntry.weakDependencies)
+            // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
+            expandTargetLabels(ruleEntry.extensions)
+          } else {
+            // Expand the test_suite to its set of tests.
+            testSuiteRules[ruleEntry.label] = ruleEntry
+            expandTargetLabels(ruleEntry.weakDependencies)
+          }
         }
       }
     }
@@ -335,20 +353,23 @@ final class XcodeProjectGenerator {
                                               maxValue: expandedTargetLabels.count)
       for label in expandedTargetLabels {
         progressNotifier.incrementValue()
-        guard let ruleEntry = ruleEntryMap[label] else {
+        let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
+        guard !ruleEntries.isEmpty else {
           localizedMessageLogger.error("UnknownTargetRule",
                                        comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
                                        context: config.projectName,
                                        values: label.value)
           continue
         }
-        targetRules.insert(ruleEntry)
-        for hostTargetLabel in ruleEntry.linkedTargetLabels {
-          hostTargetLabels[hostTargetLabel] = ruleEntry.label
+        for ruleEntry in ruleEntries {
+          targetRules.insert(ruleEntry)
+          for hostTargetLabel in ruleEntry.linkedTargetLabels {
+            hostTargetLabels[hostTargetLabel] = ruleEntry.label
+          }
+          generator.registerRuleEntryForIndexer(ruleEntry,
+                                                ruleEntryMap: ruleEntryMap,
+                                                pathFilters: config.pathFilters)
         }
-        generator.registerRuleEntryForIndexer(ruleEntry,
-                                              ruleEntryMap: ruleEntryMap,
-                                              pathFilters: config.pathFilters)
       }
     }
     var indexerTargets = [String: PBXTarget]()
@@ -463,7 +484,7 @@ final class XcodeProjectGenerator {
     try writeWorkspaceSettings(perUserWorkspaceSettings, toDirectoryAtURL: workspaceUserDataURL)
   }
 
-  private func loadRuleEntryMap() throws -> [BuildLabel: RuleEntry] {
+  private func loadRuleEntryMap() throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],

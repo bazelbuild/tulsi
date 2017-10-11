@@ -36,6 +36,13 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
     self.type = type
     self.linkedTargetLabels = linkedTargetLabels
   }
+
+  func equals(_ other: RuleInfo) -> Bool {
+    guard type(of: self) == type(of: other) else {
+      return false
+    }
+    return self.type == other.type && self.label == other.label
+  }
 }
 
 
@@ -443,12 +450,12 @@ public final class RuleEntry: RuleInfo {
               extensionType: extensionType)
   }
 
-  public func discoverIntermediateArtifacts(_ ruleEntryMap: [BuildLabel: RuleEntry]) -> Set<BazelFileInfo> {
+  public func discoverIntermediateArtifacts(_ ruleEntryMap: RuleEntryMap) -> Set<BazelFileInfo> {
     if intermediateArtifacts != nil { return intermediateArtifacts! }
 
     var collectedArtifacts = Set<BazelFileInfo>()
     for dep in dependencies {
-      guard let dependentEntry = ruleEntryMap[BuildLabel(dep)] else {
+      guard let dependentEntry = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dep), depender: self) else {
         // TODO(abaire): Consider making this a standard Tulsi warning.
         // In theory it shouldn't happen and the unknown dep should be tracked elsewhere.
         print("Tulsi rule '\(label.value)' - Ignoring unknown dependency '\(dep)'")
@@ -480,10 +487,17 @@ public final class RuleEntry: RuleInfo {
     }
     return fileTargets
   }
+
+  override func equals(_ other: RuleInfo) -> Bool {
+    guard super.equals(other), let entry = other as? RuleEntry else {
+      return false
+    }
+    return deploymentTarget == entry.deploymentTarget
+  }
 }
 
 // MARK: - Equatable
 
 public func ==(lhs: RuleInfo, rhs: RuleInfo) -> Bool {
-  return lhs.type == rhs.type && lhs.label == rhs.label
+  return lhs.equals(rhs)
 }

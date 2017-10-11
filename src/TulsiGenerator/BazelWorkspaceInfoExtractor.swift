@@ -39,7 +39,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   private let queryExtractor: BazelQueryInfoExtractor
 
   // Cache of all RuleEntry instances loaded for the associated project.
-  private var ruleEntryCache = [BuildLabel: RuleEntry]()
+  private var ruleEntryCache = RuleEntryMap()
   // The set of labels for which a test_suite query has been run (to prevent duplicate queries).
   private var attemptedTestSuiteLabels = Set<BuildLabel>()
 
@@ -65,8 +65,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            bepOption: TulsiOption) throws -> [BuildLabel: RuleEntry] {
-    func isLabelMissing(_ label: BuildLabel) -> Bool { return ruleEntryCache[label] == nil }
+                            bepOption: TulsiOption) throws -> RuleEntryMap {
+    func isLabelMissing(_ label: BuildLabel) -> Bool {
+      return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
+    }
     let missingLabels = labels.filter(isLabelMissing)
     if missingLabels.isEmpty { return ruleEntryCache }
 
@@ -82,14 +84,12 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     let buildOptions = splitOptionString(buildOptions.commonValue)
 
     do {
-      let ruleEntries =
+      let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
                                                         bepEnabled: bepSupportEnabled)
-      for (label, entry) in ruleEntries {
-        ruleEntryCache[label] = entry
-      }
+      ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")
     }
@@ -126,10 +126,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   private func extractTestSuiteRules(_ labels: [BuildLabel]) {
     let testSuiteDependencies = queryExtractor.extractTestSuiteRules(labels)
     for (ruleInfo, possibleExpansions) in testSuiteDependencies {
-      ruleEntryCache[ruleInfo.label] = RuleEntry(label: ruleInfo.label,
+      ruleEntryCache.insert(ruleEntry: RuleEntry(label: ruleInfo.label,
                                                  type: ruleInfo.type,
                                                  attributes: [:],
-                                                 weakDependencies: possibleExpansions)
+                                                 weakDependencies: possibleExpansions))
     }
   }
 }

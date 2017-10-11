@@ -76,8 +76,8 @@ protocol PBXTargetGeneratorProtocol: class {
 
   /// Registers the given Bazel rule and its transitive dependencies for inclusion by the Xcode
   /// indexer, adding source files whose directories are present in pathFilters.
-  func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
-                                   ruleEntryMap: [BuildLabel: RuleEntry],
+  func registerRuleEntryForIndexer(_ ruleEntries: RuleEntry,
+                                   ruleEntryMap: RuleEntryMap,
                                    pathFilters: Set<String>)
 
   /// Generates indexer targets for rules that were previously registered through
@@ -99,7 +99,7 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Returns a map of target name to associated intermediate build artifacts.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(_ entries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]]
+                                          ruleEntryMap: RuleEntryMap) throws -> [String: [String]]
 }
 
 extension PBXTargetGeneratorProtocol {
@@ -193,8 +193,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Stores data about a given RuleEntry to be used in order to generate Xcode indexer targets.
   private struct IndexerData {
     /// Provides information about the RuleEntry instances supported by an IndexerData.
-    /// Specifically, NameInfoToken tuples provide the targetName and the full target label hash in
-    /// order to differentiate between rules with the same name but different paths.
+    /// Specifically, NameInfoToken tuples provide the targetName, full target label hash, and
+    /// potentially the target configuration in order to differentiate between rules with the
+    /// same name but different paths and configurations.
     struct NameInfoToken {
       let targetName: String
       let labelHash: Int
@@ -211,6 +212,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let indexerNameInfo: [NameInfoToken]
     let dependencies: Set<BuildLabel>
+    let resolvedDependencies: Set<RuleEntry>
     let preprocessorDefines: Set<String>
     let otherCFlags: [String]
     let otherSwiftFlags: [String]
@@ -222,6 +224,18 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let pchFile: BazelFileInfo?
     let bridgingHeader: BazelFileInfo?
     let enableModules: Bool
+
+    /// Returns the deploymentTarget as a string for an indexerName.
+    static func deploymentTargetLabel(_ deploymentTarget: DeploymentTarget) -> String {
+      return String(format: "%@_min%@",
+                    deploymentTarget.platform.rawValue,
+                    deploymentTarget.osVersion)
+    }
+
+    /// Returns the deploymentTarget as a string for the indexerName.
+    var deploymentTargetLabel: String {
+      return IndexerData.deploymentTargetLabel(deploymentTarget)
+    }
 
     /// Returns the full name that should be used when generating a target for this indexer.
     var indexerName: String {
@@ -236,7 +250,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
         fullHash = fullHash &+ token.labelHash
       }
-      return PBXTargetGenerator.indexerNameForTargetName(fullName, hash: fullHash)
+      return PBXTargetGenerator.indexerNameForTargetName(fullName,
+                                                         hash: fullHash,
+                                                         suffix: deploymentTargetLabel)
     }
 
     /// Returns an array of aliases for this indexer data. Each element is the full indexerName of
@@ -246,16 +262,26 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if indexerNameInfo.count > 1 {
         for token in indexerNameInfo {
           supportedTargets.append(PBXTargetGenerator.indexerNameForTargetName(token.targetName,
-                                                                              hash: token.labelHash))
+                                                                              hash: token.labelHash,
+                                                                              suffix: deploymentTargetLabel))
         }
       }
       return supportedTargets
     }
 
     /// Returns an array of indexing target names that this indexer depends on.
-    var indexerNamesForDependencies: [String] {
-      return dependencies.map() {
-        PBXTargetGenerator.indexerNameForTargetName($0.targetName!, hash: $0.hashValue)
+    var indexerNamesForResolvedDependencies: [String] {
+      let parentDeploymentTargetLabel = self.deploymentTargetLabel
+      return resolvedDependencies.map() { entry in
+        let deploymentTargetLabel: String
+        if let deploymentTarget = entry.deploymentTarget {
+          deploymentTargetLabel = IndexerData.deploymentTargetLabel(deploymentTarget)
+        } else {
+          deploymentTargetLabel = parentDeploymentTargetLabel
+        }
+        return PBXTargetGenerator.indexerNameForTargetName(entry.label.targetName!,
+                                                           hash: entry.label.hashValue,
+                                                           suffix: deploymentTargetLabel)
       }
     }
 
@@ -282,12 +308,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     /// Returns a new IndexerData instance that is the result of merging this indexer with another.
     func merging(_ other: IndexerData) -> IndexerData {
       let newDependencies = dependencies.union(other.dependencies)
+      let newResolvedDependencies = resolvedDependencies.union(other.resolvedDependencies)
       let newName = indexerNameInfo + other.indexerNameInfo
       let newBuildPhase = PBXSourcesBuildPhase()
       newBuildPhase.files = buildPhase.files + other.buildPhase.files
 
       return IndexerData(indexerNameInfo: newName,
                          dependencies: newDependencies,
+                         resolvedDependencies: newResolvedDependencies,
                          preprocessorDefines: preprocessorDefines,
                          otherCFlags: otherCFlags,
                          otherSwiftFlags: otherSwiftFlags,
@@ -381,6 +409,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
+  /// Returns the default Deployment Target (iOS 9). This is just a sensible default
+  /// in the odd case that we didn't get a Deployment Target from the Aspect.
+  private static func defaultDeploymentTarget() -> DeploymentTarget {
+    return DeploymentTarget(platform: .ios, osVersion: "9.0")
+  }
+
   init(bazelURL: URL,
        bazelBinPath: String,
        project: PBXProject,
@@ -415,7 +449,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
-                                   ruleEntryMap: [BuildLabel: RuleEntry],
+                                   ruleEntryMap: RuleEntryMap,
                                    pathFilters: Set<String>) {
     let includePathInProject = pathFilterFunc(pathFilters)
     func includeFileInProject(_ info: BazelFileInfo) -> Bool {
@@ -437,26 +471,29 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Map of build label to cumulative preprocessor framework search paths.
     // TODO(b/63628175): Clean this nested method to also retrieve framework_dir and framework_file
     // from the ObjcProvider, for both static and dynamic frameworks.
-    var processedEntries = [BuildLabel: (NSOrderedSet)]()
+    var processedEntries = [RuleEntry: (NSOrderedSet)]()
     @discardableResult
     func generateIndexerTargetGraphForRuleEntry(_ ruleEntry: RuleEntry) -> (NSOrderedSet) {
-      if let data = processedEntries[ruleEntry.label] {
+      var paths = [String]()
+      if let data = processedEntries[ruleEntry] {
         return data
       }
       var frameworkSearchPaths = NSMutableOrderedSet()
 
       defer {
-        processedEntries[ruleEntry.label] = (frameworkSearchPaths)
+        processedEntries[ruleEntry] = (frameworkSearchPaths)
       }
 
+      var resolvedDependecies = [RuleEntry]()
       for dep in ruleEntry.dependencies {
-        guard let depEntry = ruleEntryMap[BuildLabel(dep)] else {
+        guard let depEntry = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dep), depender: ruleEntry) else {
           localizedMessageLogger.warning("UnknownTargetRule",
                                          comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
                                          values: dep)
           continue
         }
 
+        resolvedDependecies.append(depEntry)
         let inheritedFrameworkSearchPaths = generateIndexerTargetGraphForRuleEntry(depEntry)
         frameworkSearchPaths.union(inheritedFrameworkSearchPaths)
       }
@@ -601,7 +638,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
           deploymentTarget = ruleDeploymentTarget
         } else {
-          deploymentTarget = DeploymentTarget(platform: .ios, osVersion: "9.0")
+          deploymentTarget = PBXTargetGenerator.defaultDeploymentTarget()
           localizedMessageLogger.warning("NoDeploymentTarget",
                                          comment: "Rule Entry for %1$@ has no DeploymentTarget set. Defaulting to iOS 9.",
                                          values: ruleEntry.label.value)
@@ -610,6 +647,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
                                       dependencies: Set(dependencyLabels),
+                                      resolvedDependencies: Set(resolvedDependecies),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
                                       otherSwiftFlags: otherSwiftFlags,
@@ -665,7 +703,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           continue
         }
 
-        for depName in data.indexerNamesForDependencies {
+        for depName in data.indexerNamesForResolvedDependencies {
           guard let indexerDependency = indexerTargetByName[depName], indexerDependency !== indexerTarget else {
             continue
           }
@@ -770,7 +808,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// list of any intermediate artifacts produced when building that target.
   @discardableResult
   func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
+                                          ruleEntryMap: RuleEntryMap) throws -> [String: [String]] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
     var testTargetLinkages = [(PBXNativeTarget, BuildLabel?, RuleEntry)]()
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
@@ -819,7 +857,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // The watch app target must have an explicit dependency on the watch extension target.
     for (_, (watchAppTarget, watchRuleEntry)) in watchAppTargets {
       for ext in watchRuleEntry.extensions {
-        if let extEntry = ruleEntryMap[ext], extEntry.pbxTargetType == .Watch2Extension {
+        if let extEntry = ruleEntryMap.ruleEntry(buildLabel: ext, depender: watchRuleEntry),
+            extEntry.pbxTargetType == .Watch2Extension {
           if let watchExtensionTarget = watchExtensionsByEntry[extEntry] {
             watchAppTarget.createDependencyOn(watchExtensionTarget, proxyType: .targetReference, inProject: project)
           } else {
@@ -1107,7 +1146,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func updateTestTarget(_ target: PBXNativeTarget,
                                 withLinkageToHostTarget hostTarget: PBXNativeTarget?,
                                 ruleEntry: RuleEntry,
-                                ruleEntryMap: [BuildLabel: RuleEntry]) {
+                                ruleEntryMap: RuleEntryMap) {
     // If the test target has a test host, check that it was included in the Tulsi configuration.
     if let hostTarget = hostTarget {
       project.linkTestTarget(target, toHostTarget: hostTarget)
@@ -1123,8 +1162,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let testSettings = targetTestSettings(target, hostTarget: hostTarget)
 
     // Inherit the resolved values from the indexer.
+    let deploymentTarget = ruleEntry.deploymentTarget ?? PBXTargetGenerator.defaultDeploymentTarget()
+    let deploymentTargetLabel = IndexerData.deploymentTargetLabel(deploymentTarget)
     let indexerName = PBXTargetGenerator.indexerNameForTargetName(ruleEntry.label.targetName!,
-                                                                  hash: ruleEntry.label.hashValue)
+                                                                  hash: ruleEntry.label.hashValue,
+                                                                  suffix: deploymentTargetLabel)
     let indexerTarget = indexerTargetByName[indexerName]
     updateMissingBuildConfigurationsForList(target.buildConfigurationList,
                                             withBuildSettings: testSettings,
@@ -1132,10 +1174,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                             suppressingBuildSettings: ["ARCHS", "VALID_ARCHS"])
   }
 
-  /// Updates the test build phases to include sources to be indexed.
   private func updateTestTargetBuildPhases(_ target: PBXNativeTarget,
                                            ruleEntry: RuleEntry,
-                                           ruleEntryMap: [BuildLabel: RuleEntry]) {
+                                           ruleEntryMap: RuleEntryMap) {
     let (testSourceFileInfos, testNonArcSourceFileInfos, containsSwift) =
       testSourceFiles(forRuleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
 
@@ -1180,7 +1221,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Returns a tuple containing the sources and non-ARC sources for a ruleEntry of a test rule (e.g.
   // apple_unit_test) and a boolean indicating whether the test sources include Swift files.
   private func testSourceFiles(forRuleEntry ruleEntry: RuleEntry,
-                               ruleEntryMap: [BuildLabel: RuleEntry]) -> ([BazelFileInfo], [BazelFileInfo], Bool) {
+                               ruleEntryMap: RuleEntryMap) -> ([BazelFileInfo], [BazelFileInfo], Bool) {
     // If this target doesn't have a test_bundle attribute, it must be an ios_test target, since
     // the test_bundle attribute is required only for apple_unit_test and apple_ui_test. For
     // ios_test, we return its sources directly.
@@ -1191,9 +1232,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
     // binary's direct dependencies. If at any point the expected graph is broken, just return empty
     // sources.
-    guard let testBundle = ruleEntryMap[BuildLabel(testBundleLabelString)],
-        let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
-        let testBundleBinary = ruleEntryMap[BuildLabel(testBundleBinaryLabelString)] else {
+    guard let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
+          let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
+          let testBundleBinary = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleBinaryLabelString), depender: testBundle) else {
       return ([], [], false)
     }
 
@@ -1204,7 +1245,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Once we have the binary's direct dependencies, gather all the possible sources of those
     // targets and return them.
     for dependency in testBundleBinary.dependencies {
-      guard let dependencyTarget = ruleEntryMap[BuildLabel(dependency)] else {
+      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dependency), depender: testBundleBinary) else {
         continue
       }
       sourceFiles.append(contentsOf: dependencyTarget.sourceFiles)
@@ -1338,13 +1379,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
-  static func indexerNameForTargetName(_ targetName: String, hash: Int) -> String {
+  static func indexerNameForTargetName(_ targetName: String, hash: Int, suffix: String?) -> String {
     let normalizedTargetName: String
     if targetName.characters.count > MaxIndexerNameLength {
       let endIndex = targetName.characters.index(targetName.startIndex, offsetBy: MaxIndexerNameLength - 4)
       normalizedTargetName = targetName.substring(to: endIndex) + "_etc"
     } else {
       normalizedTargetName = targetName
+    }
+    if let suffix = suffix {
+      return String(format: "\(IndexerTargetPrefix)\(normalizedTargetName)_%08X_%@", hash, suffix)
     }
     return String(format: "\(IndexerTargetPrefix)\(normalizedTargetName)_%08X", hash)
   }
@@ -1374,7 +1418,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// artifacts.
   private func createBuildTargetForRuleEntry(_ entry: RuleEntry,
                                              named name: String,
-                                             ruleEntryMap: [BuildLabel: RuleEntry]) throws -> (PBXNativeTarget, [String]) {
+                                             ruleEntryMap: RuleEntryMap) throws -> (PBXNativeTarget, [String]) {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.unsupportedTargetType(entry.type)
     }

@@ -431,7 +431,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
-                                   ruleEntryMap: [BuildLabel:RuleEntry],
+                                   ruleEntryMap: RuleEntryMap,
                                    pathFilters: Set<String>) {
   }
 
@@ -446,7 +446,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
-                                          ruleEntryMap: [BuildLabel: RuleEntry]) throws -> [String: [String]] {
+                                          ruleEntryMap: RuleEntryMap) throws -> [String: [String]] {
+    // This works as this file only tests native targets that don't have multiple configurations.
     let namedRuleEntries = ruleEntries.map() { (e: RuleEntry) -> (String, RuleEntry) in
       return (e.label.asFullPBXTargetName!, e)
     }

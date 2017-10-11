@@ -125,6 +125,7 @@
 		546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */; };
 		547C3C021F1949740055BAED /* Watch.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 547C3C001F1949110055BAED /* Watch.BUILD */; };
 		54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */; };
+		54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */; };
 		8B29E2D01BF9386200680E11 /* TulsiProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */; };
@@ -326,6 +327,7 @@
 		546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellEscapingTests.swift; sourceTree = "<group>"; };
 		547C3C001F1949110055BAED /* Watch.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Watch.BUILD; path = Resources/Watch.BUILD; sourceTree = "<group>"; };
 		54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiParameter.swift; sourceTree = "<group>"; };
+		54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEntryMap.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceFilterViewController.swift; sourceTree = "<group>"; };
 		8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectDocument.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */,
 				2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */,
 				E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */,
+				54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -941,6 +944,7 @@
 				3D1F2E261CF760420008CE83 /* BazelLocator.swift in Sources */,
 				3DAEE45E1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift in Sources */,
 				3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */,
+				54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */,
 				3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */,
 				3DCFE5E21C80B92D00D7F31B /* ProgressNotifier.swift in Sources */,
 				3DA65B281C67E9720055448E /* TulsiXcodeProjectGenerator.swift in Sources */,

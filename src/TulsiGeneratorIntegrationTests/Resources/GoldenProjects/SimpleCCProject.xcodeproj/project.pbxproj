@@ -25,10 +25,10 @@
 		43D68C280B4C210700000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; };
 		43D68C2836E2B24400000000 /* src2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src2.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src2.c"; sourceTree = "<group>"; };
 		43D68C2840C4A2B300000000 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = "tulsi-workspace/tulsi_e2e_ccsimple/Binary/srcs/main.cc"; sourceTree = "<group>"; };
+		43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a; path = lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B55D3E0600000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = "<group>"; };
 		43D68C28BEB0070E00000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = ccBinary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D27C3EF200000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
-		43D68C28D5AC426E00000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_ccBinary_F372BDE7.a; path = lib_idx_ccLibrary_ccBinary_F372BDE7.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28ED21EAD400000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,7 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28BEB0070E00000000 /* ccBinary.app */,
-				43D68C28D5AC426E00000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7.a */,
+				43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,6 +125,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3D31C5E683D3FEB200000000 /* _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755834E49238F00000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0" */;
+			buildPhases = (
+				605793E20000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
+			productName = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
+			productReference = 43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E689384A2400000000 /* ccBinary */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583130F2B4800000000 /* Build configuration list for PBXNativeTarget "ccBinary" */;
@@ -140,22 +156,6 @@
 			productName = ccBinary;
 			productReference = 43D68C28BEB0070E00000000 /* ccBinary.app */;
 			productType = "com.apple.product-type.application";
-		};
-		3D31C5E6ACB94A6E00000000 /* _idx_ccLibrary_ccBinary_F372BDE7 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583B67921E000000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_F372BDE7" */;
-			buildPhases = (
-				605793E20000000000000000 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_ccLibrary_ccBinary_F372BDE7;
-			productName = _idx_ccLibrary_ccBinary_F372BDE7;
-			productReference = 43D68C28D5AC426E00000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -176,7 +176,7 @@
 			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
 			targets = (
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6ACB94A6E00000000 /* _idx_ccLibrary_ccBinary_F372BDE7 */,
+				3D31C5E683D3FEB200000000 /* _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0 */,
 				3D31C5E689384A2400000000 /* ccBinary */,
 			);
 		};
@@ -262,7 +262,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_ccLibrary_ccBinary_F372BDE7;
+				PRODUCT_NAME = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -328,7 +328,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = _idx_ccLibrary_ccBinary_F372BDE7;
+				PRODUCT_NAME = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
 				SDKROOT = iphonesimulator;
 				VALID_ARCHS = x86_64;
 			};
@@ -495,7 +495,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583B67921E000000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_F372BDE7" */ = {
+		DE4755834E49238F00000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000001 /* Debug */,

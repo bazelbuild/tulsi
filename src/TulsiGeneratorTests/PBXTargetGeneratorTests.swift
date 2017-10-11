@@ -160,7 +160,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateBazelCleanTargetAppliesToRulesAddedBeforeAndAfter() {
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("before", type: "ios_application")], ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("before", type: "ios_application")], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -168,7 +168,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateBazelCleanTarget("scriptPath")
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("after", type: "ios_application")], ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("after", type: "ios_application")], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -293,7 +293,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForRuleEntriesWithNoEntries() {
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([], ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries([], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -315,7 +315,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -433,7 +433,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -547,7 +547,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -663,7 +663,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -781,7 +781,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -888,7 +888,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -957,7 +957,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1043,7 +1043,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       testRule,
     ])
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1307,10 +1307,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     assertTarget(expectedTarget, inTargets: targets)
   }
 
-  private func makeRuleEntryMap(withRuleEntries ruleEntries: [RuleEntry]) -> [BuildLabel: RuleEntry] {
-    var ruleEntryMap = [BuildLabel: RuleEntry]()
+  private func makeRuleEntryMap(withRuleEntries ruleEntries: [RuleEntry]) -> RuleEntryMap {
+    let ruleEntryMap = RuleEntryMap()
     for ruleEntry in ruleEntries {
-      ruleEntryMap[BuildLabel(ruleEntry.label.value)] = ruleEntry
+      ruleEntryMap.insert(ruleEntry: ruleEntry)
     }
     return ruleEntryMap
   }
@@ -1337,7 +1337,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       testRule,
       ])
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1473,7 +1473,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       test2Rule,
     ])
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1510,7 +1510,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      attributes: testRuleAttributes as [String: AnyObject],
                                      sourceFiles: testSources)
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
       return
@@ -1577,7 +1577,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1678,7 +1678,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1742,7 +1742,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1830,7 +1830,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -1997,7 +1997,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       ])
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -2133,7 +2133,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
     let targets = project.targetByName
@@ -2145,10 +2145,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2163,10 +2163,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2184,10 +2184,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2211,10 +2211,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2236,10 +2236,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters.union(Set([dataModel])))
     targetGenerator.generateIndexerTargets()
 
@@ -2265,10 +2265,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2290,10 +2290,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
-    let indexerTargetName = String(format: "_idx_TestApp_%08X", buildLabel.hashValue)
+    let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2311,7 +2311,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
     XCTAssertNil(fileRefForPath(buildFilePath))
@@ -2326,7 +2326,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
@@ -2341,7 +2341,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
@@ -2356,7 +2356,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
 
     let sourceFiles2 = ["2.swift"]
@@ -2366,14 +2366,14 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
 
-    let indexerTargetName = String(format: "_idx_TestLibrary_TestBinary_%08X",
+    let indexerTargetName = String(format: "_idx_TestLibrary_TestBinary_%08X_ios_min9.0",
                                    buildLabel1.hashValue &+ buildLabel2.hashValue)
     validateIndexerTarget(indexerTargetName,
                           sourceFileNames: sourceFiles1 + sourceFiles2,
@@ -2390,7 +2390,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2398,7 +2398,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
 
     let resultingTarget = targets.values.first!
-    XCTAssertLessThan(resultingTarget.name.characters.count, 200)
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
 
     validateIndexerTarget(resultingTarget.name,
                           sourceFileNames: sourceFiles1,
@@ -2415,18 +2415,18 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
 
     let sourceFiles2 = ["2.swift"]
-    let buildTargetName2 = String(repeating: "B", count: 200)
+    let buildTargetName2 = String(repeating: "B", count: 255)
     let buildLabel2 = BuildLabel("test/app:" + buildTargetName2)
     let ruleEntry2 = makeTestRuleEntry(buildLabel2,
                                        type: "objc_library",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2434,7 +2434,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
 
     let resultingTarget = targets.values.first!
-    XCTAssertLessThan(resultingTarget.name.characters.count, 200)
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
 
     validateIndexerTarget(resultingTarget.name,
                           sourceFileNames: sourceFiles1 + sourceFiles2,
@@ -2448,9 +2448,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFileNames)
-    let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
+    let indexer1TargetName = String(format: "_idx_TestBinary_%08X_ios_min9.0", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
 
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
@@ -2458,9 +2458,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "objc_library",
                                        attributes: [:],
                                        sourceFiles: sourceFileNames)
-    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X", buildLabel2.hashValue)
+    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X_ios_min9.0", buildLabel2.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2487,9 +2487,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ruleAttributes1 as [String : AnyObject],
                                        sourceFiles: sourceFileNames)
-    let indexer1TargetName = String(format: "_idx_TestBinary_%08X", buildLabel1.hashValue)
+    let indexer1TargetName = String(format: "_idx_TestBinary_%08X_ios_min9.0", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
 
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
@@ -2497,9 +2497,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "objc_library",
                                        attributes: [:],
                                        sourceFiles: sourceFileNames)
-    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X", buildLabel2.hashValue)
+    let indexer2TargetName = String(format: "_idx_TestLibrary_%08X_ios_min9.0", buildLabel2.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
-                                                ruleEntryMap: [:],
+                                                ruleEntryMap: RuleEntryMap(),
                                                 pathFilters: pathFilters)
     targetGenerator.generateIndexerTargets()
 
@@ -2525,7 +2525,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      artifacts: ["some/path/to/an/ipa.ipa",
                                                  "test/app/TestApplication.ipa"])
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: [:])
+      try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -2587,10 +2587,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      attributes: ["has_swift_dependency": true as AnyObject],
                                      dependencies: Set([swiftTarget]))
     let swiftLibraryRule = makeTestRuleEntry(swiftTarget, type: "swift_library")
+    let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRule])
 
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([testRule],
-                                                             ruleEntryMap: [BuildLabel(swiftTarget): swiftLibraryRule])
+                                                             ruleEntryMap: ruleEntryMap)
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }

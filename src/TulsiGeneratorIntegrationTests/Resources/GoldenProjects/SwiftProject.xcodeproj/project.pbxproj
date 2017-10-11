@@ -21,7 +21,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891.framework; path = _idx_SwiftLibrary_EA7FC891.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework; path = _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A81C321400000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
 		43D68C28ADF10C6300000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
 		43D68C28DA373E9A00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
@@ -35,7 +35,7 @@
 			isa = PBXGroup;
 			children = (
 				43D68C28F49055A600000000 /* Application.app */,
-				43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */,
+				43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */,
 				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
 			);
 			name = Products;
@@ -130,9 +130,9 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E6C63464CE00000000 /* _idx_SwiftLibrary_EA7FC891 */ = {
+		3D31C5E68D4F012A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583244F125D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891" */;
+			buildConfigurationList = DE4755838C94FE4B00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min8.0" */;
 			buildPhases = (
 				605793E20000000000000000 /* Sources */,
 			);
@@ -141,9 +141,9 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SwiftLibrary_EA7FC891;
-			productName = _idx_SwiftLibrary_EA7FC891;
-			productReference = 43D68C28262C565A00000000 /* _idx_SwiftLibrary_EA7FC891.framework */;
+			name = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
+			productName = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
+			productReference = 43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +166,7 @@
 			targets = (
 				3D31C5E66B144ABC00000000 /* Application */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6C63464CE00000000 /* _idx_SwiftLibrary_EA7FC891 */,
+				3D31C5E68D4F012A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -272,7 +272,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
+				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";
 				VALID_ARCHS = x86_64;
@@ -344,7 +344,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891;
+				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
 				SDKROOT = iphonesimulator;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";
 				VALID_ARCHS = x86_64;
@@ -495,7 +495,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE475583244F125D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891" */ = {
+		DE4755838C94FE4B00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min8.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000002 /* Debug */,
