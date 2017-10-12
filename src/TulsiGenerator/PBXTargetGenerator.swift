@@ -108,6 +108,14 @@ extension PBXTargetGeneratorProtocol {
   }
 }
 
+/// Assume external paths in Bazel are exported as ".."
+private func patchLeadingDotsForExternal(_ value: String) -> String {
+  if value.hasPrefix("..") {
+    let range = value.startIndex...value.index(value.startIndex, offsetBy: "..".characters.count)
+    return value.replacingCharacters(in: range, with: "external/")
+  }
+  return value
+}
 
 /// Concrete PBXProject target generator.
 final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
@@ -403,9 +411,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private static func projectRefForBazelFileInfo(_ info: BazelFileInfo) -> String {
     switch info.targetType {
       case .generatedFile:
-        return "$(\(WorkspaceRootVarName))/\(info.fullPath)"
+        return "$(\(WorkspaceRootVarName))/\(patchLeadingDotsForExternal(info.fullPath))"
       case .sourceFile:
-        return "$(\(BazelWorkspaceSymlinkVarName))/\(info.fullPath)"
+        return "$(\(BazelWorkspaceSymlinkVarName))/\(patchLeadingDotsForExternal(info.fullPath))"
     }
   }
 
@@ -536,8 +544,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // framework bundles are allowed by the include filters. The search path excludes the bundle
       // itself.
       ruleEntry.frameworkImports.forEach() {
-        let fullPath = $0.fullPath as NSString
-        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(fullPath.deletingLastPathComponent)"
+        let path = patchLeadingDotsForExternal($0.fullPath) as NSString
+        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path.deletingLastPathComponent)"
         frameworkSearchPaths.add(rootedPath)
       }
       let sourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
@@ -563,9 +571,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let otherCFlags = NSMutableOrderedSet()
       if let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty {
         for opt in copts {
-          if opt.hasPrefix("-Werror") {
-            continue
-          }
           // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
           //     encyclopedia.
           if opt.hasPrefix("-D") {
@@ -573,11 +578,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           } else if opt.hasPrefix("-I") {
             var path = opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2))
             if !path.hasPrefix("/") {
+              path = patchLeadingDotsForExternal(path)
               path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
             }
             localIncludes.add(path)
           } else {
-            otherCFlags.add(opt)
+            // Patch opts like `-isystem external/` or `-iquote external`
+            let patchedOpt = opt.replacingOccurrences(of: " external/", with: " $(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName)/external/")
+            otherCFlags.add(patchedOpt)
           }
         }
       }
@@ -1080,7 +1088,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
   // spaces it would be the string: key="value with spaces").
   private func addConfigsForIndexingTarget(_ target: PBXTarget, data: IndexerData) {
-
     var buildSettings = options.buildSettingsForTarget(target.name)
     buildSettings["PRODUCT_NAME"] = target.productName!
 
@@ -1090,7 +1097,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     var allOtherCFlags = data.otherCFlags
     if !data.preprocessorDefines.isEmpty {
-      allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map({"-D\($0)"}))
+      let filteredDefines = data.preprocessorDefines.filter { ($0.hasPrefix("__TIME") || $0.hasPrefix("__DATE")) == false }.sorted().map({"-D\($0)"})
+      allOtherCFlags.append(contentsOf: filteredDefines)
     }
 
     if !allOtherCFlags.isEmpty {
