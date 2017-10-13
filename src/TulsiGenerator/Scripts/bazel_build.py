@@ -485,8 +485,6 @@ class BazelBuildBridge(object):
                        'set.  Please file a bug against Tulsi.')
       sys.exit(1)
 
-    # Bazel's notion of the type of artifact being generated.
-    self.bazel_target_type = os.environ.get('BAZEL_TARGET_TYPE')
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
     # Whether or not code coverage information should be generated.
@@ -1228,21 +1226,6 @@ class BazelBuildBridge(object):
                                    input_dsym_full_path,
                                    output_full_path)
       return exit_code, output_full_path
-
-    if 'BAZEL_BINARY_DSYM' in os.environ:
-      # TODO(abaire): Remove this hack once Bazel generates dSYMs for
-      #               ios_application/etc... bundles instead of their
-      #               contained binaries.
-      bazel_dsym_path = os.environ['BAZEL_BINARY_DSYM']
-      build_path_prefix = os.environ.get('TULSI_BUILD_PATH', '')
-      if bazel_dsym_path.startswith(build_path_prefix):
-        bazel_dsym_path = bazel_dsym_path[len(build_path_prefix) + 1:]
-      input_dsym_full_path = os.path.join(self.build_path, bazel_dsym_path)
-      if os.path.isdir(input_dsym_full_path):
-        exit_code = self._CopyBundle(bazel_dsym_path,
-                                     input_dsym_full_path,
-                                     output_full_path)
-        return exit_code, output_full_path
 
     return 0, None
 

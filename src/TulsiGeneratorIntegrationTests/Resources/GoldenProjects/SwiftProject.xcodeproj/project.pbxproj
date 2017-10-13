@@ -249,10 +249,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -321,10 +318,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -397,10 +391,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -468,10 +459,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_swift/Application.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_swift:Application.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_swift:Application";
-				BAZEL_TARGET_TYPE = ios_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";

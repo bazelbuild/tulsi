@@ -355,10 +355,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyCommandLineApp.apple_binary.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyCommandLineApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyCommandLineApp";
-				BAZEL_TARGET_TYPE = macos_command_line_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -375,10 +372,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyMacOSApp.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyMacOSApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyMacOSApp";
-				BAZEL_TARGET_TYPE = macos_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -395,10 +389,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyTodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyTodayExtension.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyTodayExtension";
-				BAZEL_TARGET_TYPE = macos_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
@@ -464,10 +455,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyCommandLineApp.apple_binary.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyCommandLineApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyCommandLineApp";
-				BAZEL_TARGET_TYPE = macos_command_line_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -484,10 +472,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyMacOSApp.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyMacOSApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyMacOSApp";
-				BAZEL_TARGET_TYPE = macos_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
@@ -504,10 +489,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyTodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyTodayExtension.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyTodayExtension";
-				BAZEL_TARGET_TYPE = macos_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
@@ -577,10 +559,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyCommandLineApp.apple_binary.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyCommandLineApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyCommandLineApp";
-				BAZEL_TARGET_TYPE = macos_command_line_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -605,10 +584,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyMacOSApp.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyMacOSApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyMacOSApp";
-				BAZEL_TARGET_TYPE = macos_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -633,10 +609,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyTodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyTodayExtension.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyTodayExtension";
-				BAZEL_TARGET_TYPE = macos_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -702,10 +675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyCommandLineApp.apple_binary.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyCommandLineApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyCommandLineApp";
-				BAZEL_TARGET_TYPE = macos_command_line_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -730,10 +700,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyMacOSApp.apple_binary.app.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyMacOSApp.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyMacOSApp";
-				BAZEL_TARGET_TYPE = macos_application;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -758,10 +725,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_BINARY_DSYM = tulsi_e2e_mac/MyTodayExtension.apple_binary.appex.dSYM;
-				BAZEL_BINARY_TARGET = "//tulsi_e2e_mac:MyTodayExtension.apple_binary";
 				BAZEL_TARGET = "//tulsi_e2e_mac:MyTodayExtension";
-				BAZEL_TARGET_TYPE = macos_extension;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";

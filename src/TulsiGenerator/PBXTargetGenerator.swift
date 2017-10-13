@@ -1481,21 +1481,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // The following settings are simply passed through the environment for use by build scripts.
     buildSettings["BAZEL_TARGET"] = entry.label.value
-    buildSettings["BAZEL_TARGET_TYPE"] = entry.type
-
-    // TODO(abaire): Remove this hackaround when Bazel generates dSYMs for ios_applications.
-    // The build script uses the binary label to find and move the dSYM associated with an
-    // ios_application rule. In the future, Bazel should generate dSYMs directly for ios_application
-    // rules, at which point this may be removed.
-    if let binaryLabel = entry.attributes[.binary] as? String {
-      buildSettings["BAZEL_BINARY_TARGET"] = binaryLabel
-      let buildLabel = BuildLabel(binaryLabel)
-      let binaryPackage = buildLabel.packageName!
-      let binaryTarget = buildLabel.targetName!
-      let binaryBundle = pbxTargetType.productName(binaryTarget)
-      let dSYMPath =  "\(binaryPackage)/\(binaryBundle).dSYM"
-      buildSettings["BAZEL_BINARY_DSYM"] = dSYMPath
-    }
 
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
