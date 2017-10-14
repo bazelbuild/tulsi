@@ -113,7 +113,6 @@ objc_library(
 
 objc_proto_library(
     name = "ObjcProtos",
-    uses_protobuf = 1,
     deps = [":Protos"],
 )
 
