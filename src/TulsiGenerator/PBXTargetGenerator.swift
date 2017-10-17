@@ -910,10 +910,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Generates a filter function that may be used to verify that a path string is allowed by the
   /// given set of pathFilters.
   private func pathFilterFunc(_ pathFilters: Set<String>) -> (String) -> Bool {
-    // Hardcode in an inclusion for "external/" directory as it is supported natively by Bazel.
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
       $0.substring(to: $0.characters.index($0.endIndex, offsetBy: -3))
-    }).union(["external/"])
+    })
 
     func includePath(_ path: String) -> Bool {
       let dir = (path as NSString).deletingLastPathComponent
