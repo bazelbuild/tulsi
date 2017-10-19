@@ -379,7 +379,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // If outputFolder contains workspaceRoot, return a relative group with the path from
     // outputFolder to workspaceRoot
-    if workspaceRoot.hasPrefix(slashTerminatedOutputFolder) {
+
+    if workspaceRoot.lowercased().hasPrefix(slashTerminatedOutputFolder.lowercased()) {
       let index = workspaceRoot.characters.index(workspaceRoot.startIndex, offsetBy: slashTerminatedOutputFolder.characters.count)
       let relativePath = workspaceRoot.substring(from: index)
       return PBXGroup(name: "mainGroup",
@@ -390,7 +391,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // If workspaceRoot contains outputFolder, return a relative group using .. to walk up to
     // workspaceRoot from outputFolder.
-    if outputFolder.hasPrefix(slashTerminatedWorkspaceRoot) {
+    if outputFolder.lowercased().hasPrefix(slashTerminatedWorkspaceRoot.lowercased()) {
       let index = outputFolder.characters.index(outputFolder.startIndex, offsetBy: slashTerminatedWorkspaceRoot.characters.count + 1)
       let pathToWalkBackUp = outputFolder.substring(from: index) as NSString
       let numberOfDirectoriesToWalk = pathToWalkBackUp.pathComponents.count
