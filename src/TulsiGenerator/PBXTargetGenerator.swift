@@ -371,9 +371,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     let slashTerminatedOutputFolder = outputFolder + (outputFolder.hasSuffix("/") ? "" : "/")
     let slashTerminatedWorkspaceRoot = workspaceRoot + (workspaceRoot.hasSuffix("/") ? "" : "/")
-
+    
     // If workspaceRoot == outputFolder, return a relative group with no path.
-    if slashTerminatedOutputFolder == slashTerminatedWorkspaceRoot {
+    if slashTerminatedOutputFolder.caseInsensitiveCompare(slashTerminatedWorkspaceRoot) == .orderedSame  {
       return PBXGroup(name: "mainGroup", path: nil, sourceTree: .SourceRoot, parent: nil)
     }
 
