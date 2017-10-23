@@ -22,7 +22,7 @@ load("//tools/build_defs/apple:watchos.bzl", "watchos_application", "watchos_ext
 
 ios_application(
     name = "Application",
-    bundle_id = "application.bundle_id",
+    bundle_id = "application.bundle-id",
     entitlements = "Application/entitlements.entitlements",
     families = [
         "iphone",
@@ -60,7 +60,7 @@ objc_library(
 
 watchos_application(
     name = "WatchApplication",
-    bundle_id = "application.watch.app.bundle_id",
+    bundle_id = "application.watch.app.bundle-id",
     entitlements = "Watch2Extension/app_entitlements.entitlements",
     extension = ":WatchExtension",
     infoplists = ["Watch2Extension/app_infoplists/Info.plist"],
@@ -82,7 +82,7 @@ objc_library(
 
 watchos_extension(
     name = "WatchExtension",
-    bundle_id = "application.watch.ext.bundle_id",
+    bundle_id = "application.watch.ext.bundle-id",
     entitlements = "Watch2Extension/ext_entitlements.entitlements",
     infoplists = ["Watch2Extension/ext_infoplists/Info.plist"],
     minimum_os_version = "3.0",

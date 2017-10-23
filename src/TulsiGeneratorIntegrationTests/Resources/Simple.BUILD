@@ -22,7 +22,7 @@ load(
 
 ios_application(
     name = "Application",
-    bundle_id = "application.bundle_id",
+    bundle_id = "application.bundle-id",
     entitlements = "Application/entitlements.entitlements",
     families = [
         "iphone",
@@ -37,7 +37,7 @@ ios_application(
 
 ios_application(
     name = "TargetApplication",
-    bundle_id = "application.bundle_id",
+    bundle_id = "application.bundle-id",
     entitlements = "Application/entitlements.entitlements",
     families = [
         "iphone",

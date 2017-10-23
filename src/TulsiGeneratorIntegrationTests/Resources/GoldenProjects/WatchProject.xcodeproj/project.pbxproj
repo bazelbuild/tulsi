@@ -420,7 +420,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -436,7 +436,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.app.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.app.bundle-id";
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -453,7 +453,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.ext.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.ext.bundle-id";
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -534,7 +534,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -550,7 +550,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2InfoPlist.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.app.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.app.bundle-id";
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -567,7 +567,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubWatchOS2AppExInfoPlist.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.ext.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.ext.bundle-id";
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
@@ -658,7 +658,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -682,7 +682,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.app.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.app.bundle-id";
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -707,7 +707,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.ext.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.ext.bundle-id";
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -775,7 +775,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -799,7 +799,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.app.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.app.bundle-id";
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -824,7 +824,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.watch.ext.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.watch.ext.bundle-id";
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;

@@ -539,7 +539,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
@@ -592,7 +592,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
@@ -671,7 +671,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
@@ -725,7 +725,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
@@ -818,7 +818,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -884,7 +884,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -936,7 +936,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -1003,7 +1003,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = application.bundle_id;
+				PRODUCT_BUNDLE_IDENTIFIER = "application.bundle-id";
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
