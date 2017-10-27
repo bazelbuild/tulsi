@@ -459,9 +459,7 @@ def _extract_minimum_os_for_platform(ctx, platform_type_str):
 def _extract_swift_language_version(ctx):
   """Returns the Swift version set by the xcode_toolchain option for ctx."""
   swift_toolchain = _get_opt_attr(ctx, 'fragments.apple.xcode_toolchain')
-  if swift_toolchain == 'com.apple.dt.toolchain.Swift_2_3':
-    return ('2.3', swift_toolchain)
-  elif swift_toolchain:
+  if swift_toolchain:
     # TODO(abaire): Adjust as necessary once versions > 3.0 come out.
     return ('3.0', swift_toolchain)
 
