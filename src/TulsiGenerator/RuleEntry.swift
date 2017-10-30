@@ -317,30 +317,29 @@ public final class RuleEntry: RuleInfo {
     return PlatformType.ios.deviceSDK
   }()
 
-  init(label: BuildLabel,
-       type: String,
-       attributes: [String: AnyObject],
-       artifacts: [BazelFileInfo] = [],
-       sourceFiles: [BazelFileInfo] = [],
-       nonARCSourceFiles: [BazelFileInfo] = [],
-       dependencies: Set<String> = Set(),
-       frameworkImports: [BazelFileInfo] = [],
-       secondaryArtifacts: [BazelFileInfo] = [],
-       weakDependencies: Set<BuildLabel>? = nil,
-       extensions: Set<BuildLabel>? = nil,
-       bundleID: String? = nil,
-       bundleName: String? = nil,
-       extensionBundleID: String? = nil,
-       platformType: String? = nil,
-       osDeploymentTarget: String? = nil,
-       buildFilePath: String? = nil,
-       defines: [String]? = nil,
-       includePaths: [IncludePath]? = nil,
-       swiftLanguageVersion: String? = nil,
-       swiftToolchain: String? = nil,
-       swiftTransitiveModules: [BazelFileInfo] = [],
-       objCModuleMaps: [BazelFileInfo] = [],
-       extensionType: String? = nil) {
+ init(label: BuildLabel,
+      type: String,
+      attributes: [String: AnyObject],
+      artifacts: [BazelFileInfo] = [],
+      sourceFiles: [BazelFileInfo] = [],
+      nonARCSourceFiles: [BazelFileInfo] = [],
+      dependencies: Set<String> = Set(),
+      frameworkImports: [BazelFileInfo] = [],
+      secondaryArtifacts: [BazelFileInfo] = [],
+      weakDependencies: Set<BuildLabel>? = nil,
+      extensions: Set<BuildLabel>? = nil,
+      bundleID: String? = nil,
+      bundleName: String? = nil,
+      extensionBundleID: String? = nil,
+      buildFilePath: String? = nil,
+      defines: [String]? = nil,
+      includePaths: [IncludePath]? = nil,
+      swiftLanguageVersion: String? = nil,
+      swiftToolchain: String? = nil,
+      swiftTransitiveModules: [BazelFileInfo] = [],
+      objCModuleMaps: [BazelFileInfo] = [],
+      extensionType: String? = nil,
+      deploymentTarget: DeploymentTarget?) {
 
     var checkedAttributes = [Attribute: AnyObject]()
     for (key, value) in attributes {
@@ -352,13 +351,6 @@ public final class RuleEntry: RuleInfo {
       checkedAttributes[checkedKey] = value
     }
     self.attributes = checkedAttributes
-    let parsedPlatformType: PlatformType?
-    if let platformTypeStr = platformType {
-      parsedPlatformType = PlatformType(rawValue: platformTypeStr)
-    } else {
-      parsedPlatformType = nil
-    }
-
     self.artifacts = artifacts
     self.sourceFiles = sourceFiles
     self.nonARCSourceFiles = nonARCSourceFiles
@@ -376,11 +368,6 @@ public final class RuleEntry: RuleInfo {
     self.bundleID = bundleID
     self.bundleName = bundleName
     self.extensionBundleID = extensionBundleID
-    var deploymentTarget: DeploymentTarget? = nil
-    if let platform = parsedPlatformType, let osVersion = osDeploymentTarget {
-        deploymentTarget = DeploymentTarget(platform: platform, osVersion: osVersion)
-    }
-    self.deploymentTarget = deploymentTarget
     self.buildFilePath = buildFilePath
     self.defines = defines
     self.includePaths = includePaths
@@ -397,7 +384,73 @@ public final class RuleEntry: RuleInfo {
       }
     }
 
+    self.deploymentTarget = deploymentTarget
+
     super.init(label: label, type: type, linkedTargetLabels: linkedTargetLabels)
+  }
+
+  convenience init(label: BuildLabel,
+                   type: String,
+                   attributes: [String: AnyObject],
+                   artifacts: [BazelFileInfo] = [],
+                   sourceFiles: [BazelFileInfo] = [],
+                   nonARCSourceFiles: [BazelFileInfo] = [],
+                   dependencies: Set<String> = Set(),
+                   frameworkImports: [BazelFileInfo] = [],
+                   secondaryArtifacts: [BazelFileInfo] = [],
+                   weakDependencies: Set<BuildLabel>? = nil,
+                   extensions: Set<BuildLabel>? = nil,
+                   bundleID: String? = nil,
+                   bundleName: String? = nil,
+                   extensionBundleID: String? = nil,
+                   platformType: String? = nil,
+                   osDeploymentTarget: String? = nil,
+                   buildFilePath: String? = nil,
+                   defines: [String]? = nil,
+                   includePaths: [IncludePath]? = nil,
+                   swiftLanguageVersion: String? = nil,
+                   swiftToolchain: String? = nil,
+                   swiftTransitiveModules: [BazelFileInfo] = [],
+                   objCModuleMaps: [BazelFileInfo] = [],
+                   extensionType: String? = nil) {
+
+    let parsedPlatformType: PlatformType?
+    if let platformTypeStr = platformType {
+      parsedPlatformType = PlatformType(rawValue: platformTypeStr)
+    } else {
+      parsedPlatformType = nil
+    }
+    var deploymentTarget: DeploymentTarget? = nil
+    if let platform = parsedPlatformType,
+        let osVersion = osDeploymentTarget,
+        let dottedOSVersion = DottedVersion(osVersion) {
+      deploymentTarget = DeploymentTarget(platform: platform,
+                                          osVersion: dottedOSVersion)
+    }
+
+    self.init(label: label,
+              type: type,
+              attributes: attributes,
+              artifacts: artifacts,
+              sourceFiles: sourceFiles,
+              nonARCSourceFiles: nonARCSourceFiles,
+              dependencies: dependencies,
+              frameworkImports: frameworkImports,
+              secondaryArtifacts: secondaryArtifacts,
+              weakDependencies: weakDependencies,
+              extensions: extensions,
+              bundleID: bundleID,
+              bundleName: bundleName,
+              extensionBundleID: extensionBundleID,
+              buildFilePath: buildFilePath,
+              defines: defines,
+              includePaths: includePaths,
+              swiftLanguageVersion: swiftLanguageVersion,
+              swiftToolchain: swiftToolchain,
+              swiftTransitiveModules: swiftTransitiveModules,
+              objCModuleMaps: objCModuleMaps,
+              extensionType: extensionType,
+              deploymentTarget: deploymentTarget)
   }
 
   convenience init(label: String,

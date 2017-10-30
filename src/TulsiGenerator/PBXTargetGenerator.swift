@@ -229,7 +229,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     static func deploymentTargetLabel(_ deploymentTarget: DeploymentTarget) -> String {
       return String(format: "%@_min%@",
                     deploymentTarget.platform.rawValue,
-                    deploymentTarget.osVersion)
+                    deploymentTarget.osVersion.description)
     }
 
     /// Returns the deploymentTarget as a string for the indexerName.
@@ -412,7 +412,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Returns the default Deployment Target (iOS 9). This is just a sensible default
   /// in the odd case that we didn't get a Deployment Target from the Aspect.
   private static func defaultDeploymentTarget() -> DeploymentTarget {
-    return DeploymentTarget(platform: .ios, osVersion: "9.0")
+    return DeploymentTarget(platform: .ios, osVersion: DottedVersion("9.0")!)
   }
 
   init(bazelURL: URL,
@@ -1132,7 +1132,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["SDKROOT"] = platform.simulatorSDK
 
     buildSettings["ARCHS"] = "x86_64"
-    buildSettings[platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion
+    buildSettings[platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion.description
     buildSettings["VALID_ARCHS"] = "x86_64"
 
     createBuildConfigurationsForList(target.buildConfigurationList,
@@ -1447,7 +1447,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["INFOPLIST_FILE"] = stubInfoPlistPaths.stubPlist(entry)
 
     if let deploymentTarget = entry.deploymentTarget {
-      buildSettings[deploymentTarget.platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion
+      buildSettings[deploymentTarget.platform.buildSettingsDeploymentTarget] = deploymentTarget.osVersion.description
     }
 
     // watchOS1 apps require TARGETED_DEVICE_FAMILY to be overridden as they are a specialization of

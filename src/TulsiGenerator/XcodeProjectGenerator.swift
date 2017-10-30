@@ -401,10 +401,19 @@ final class XcodeProjectGenerator {
                                            isDirectory: false,
                                            targetType: .generatedFile)
 
+      // Find all rule entries for this label. Can be multiple to handle different test configs.
+      let testHostRuleEntries = ruleEntryMap.ruleEntries(buildLabel: hostLabel)
+
+      // Find the minimum deployment target found matching this test and its test host.
+      let minDeploymentTarget = testHostRuleEntries.lazy.flatMap { $0.deploymentTarget }
+                                                   .min { $0.osVersion < $1.osVersion }
+
+      // Add a new test host target, with the minimal set of attributes needed to run the test.
       targetRules.insert(RuleEntry(label: hostLabel,
                                    type: "_test_host_",
                                    attributes: [:],
-                                   artifacts: [expectedArtifact]))
+                                   artifacts: [expectedArtifact],
+                                   deploymentTarget: minDeploymentTarget))
     }
 
     let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)
