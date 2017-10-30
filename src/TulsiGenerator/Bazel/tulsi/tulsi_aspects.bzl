@@ -457,18 +457,11 @@ def _extract_minimum_os_for_platform(ctx, platform_type_str):
 
 
 def _extract_swift_language_version(ctx):
-  """Returns the Swift version set by the xcode_toolchain option for ctx."""
-  swift_toolchain = _get_opt_attr(ctx, 'fragments.apple.xcode_toolchain')
-  if swift_toolchain:
-    # TODO(abaire): Adjust as necessary once versions > 3.0 come out.
-    return ('3.0', swift_toolchain)
+  """Returns the Swift version of a swift_library rule."""
 
-  # TODO(abaire): Remove the fallback check for swift_library once
-  #               xcode_toolchain is available everywhere.
-  if ctx.rule.kind == 'swift_library':
-    return ('3.0', 'com.apple.dt.toolchain.XcodeDefault')
-
-  return (None, None)
+  if ctx.rule.kind != 'swift_library':
+    return None
+  return _get_label_attr(ctx, 'rule.attr.swift_version') or "3.0"
 
 
 def _collect_swift_modules(target):
@@ -601,12 +594,9 @@ def _tulsi_sources_aspect(target, ctx):
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
 
   # Build up any local transitive attributes and apply them.
-  swift_language_version, swift_toolchain = _extract_swift_language_version(ctx)
+  swift_language_version = _extract_swift_language_version(ctx)
   if swift_language_version:
     transitive_attributes['swift_language_version'] = swift_language_version
-    transitive_attributes['has_swift_dependency'] = True
-  if swift_toolchain:
-    transitive_attributes['swift_toolchain'] = swift_toolchain
     transitive_attributes['has_swift_dependency'] = True
 
   # Collect Info.plist files from an extension to figure out its type.

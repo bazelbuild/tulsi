@@ -458,6 +458,46 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:WatchExtensionLibrary")
       .hasSources(["tulsi_test/Watch2ExtensionBinary/srcs/watch2_extension_binary.m"])
   }
+
+  func testSwift() throws {
+    installBUILDFile("Swift", intoSubdirectory: "tulsi_test")
+    let labels = [BuildLabel("//tulsi_test:Application")]
+    let ruleEntryMap =
+        try aspectInfoExtractor.extractRuleEntriesForLabels(labels,
+                                                            startupOptions: bazelStartupOptions,
+                                                            buildOptions: bazelBuildOptions,
+                                                            bepEnabled: true)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 8)
+
+    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
+
+    checker.assertThat("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:Application.apple_binary")
+
+    checker.assertThat("//tulsi_test:Application.apple_binary")
+        .dependsOn("//tulsi_test:ApplicationLibrary")
+
+    checker.assertThat("//tulsi_test:ApplicationLibrary")
+        .dependsOn("//tulsi_test:SwiftLibrary")
+        .dependsOn("//tulsi_test:SwiftLibraryV3")
+        .dependsOn("//tulsi_test:SwiftLibraryV4")
+
+    checker.assertThat("//tulsi_test:SwiftLibrary")
+        .hasSources(["tulsi_test/SwiftLibrary/srcs/a.swift",
+                     "tulsi_test/SwiftLibrary/srcs/b.swift"])
+        .hasAttribute(.swift_language_version, value: "3")
+
+    checker.assertThat("//tulsi_test:SwiftLibraryV3")
+        .hasSources(["tulsi_test/SwiftLibraryV3/srcs/a.swift",
+                     "tulsi_test/SwiftLibraryV3/srcs/b.swift"])
+        .hasAttribute(.swift_language_version, value: "3")
+
+    checker.assertThat("//tulsi_test:SwiftLibraryV4")
+        .hasSources(["tulsi_test/SwiftLibraryV4/srcs/a.swift",
+                     "tulsi_test/SwiftLibraryV4/srcs/b.swift"])
+        .hasAttribute(.swift_language_version, value: "4")
+  }
+
 }
 
 // Tests for test_suite support.
