@@ -23,6 +23,7 @@ import atexit
 import collections
 import io
 import json
+from operator import itemgetter
 import os
 import re
 import shutil
@@ -476,6 +477,10 @@ class BazelBuildBridge(object):
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_bep = os.environ.get('TULSI_USE_BEP', 'YES') == 'YES'
+    self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
+                                               'YES') == 'YES'
+    self.use_bazel_execroot = os.environ.get('TULSI_BAZEL_EXECROOT',
+                                             'YES') == 'YES'
 
     # An experiment to collect all dSYM bundles from the build, not just the one
     # from the top target.
@@ -567,6 +572,7 @@ class BazelBuildBridge(object):
                                                        entitlements_filename)
 
     self.main_group_path = os.getcwd()
+    self.bazel_executable = None
 
   def Run(self, args):
     """Executes a Bazel build based on the environment and given arguments."""
@@ -590,6 +596,30 @@ class BazelBuildBridge(object):
     # bazel_bin_path is assumed to always end in "-bin".
     self.bazel_symlink_prefix = self.bazel_bin_path[:-3]
     self.bazel_genfiles_path = self.bazel_symlink_prefix + 'genfiles'
+    self.bazel_executable = parser.bazel_executable
+
+    # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
+    if self.use_debug_prefix_map:
+      if not self.use_bazel_execroot:
+        _PrintXcodeWarning('TULSI_DEBUG_PREFIX_MAP requires '
+                           'TULSI_BAZEL_EXECROOT to be set to YES. If you '
+                           'need TULSI_BAZEL_EXECROOT to be disabled, set it '
+                           'and TULSI_DEBUG_PREFIX_MAP to NO. Please report '
+                           'this as a Tulsi bug.')
+        return 1
+
+      # Add the debug source maps now that we have bazel_executable.
+      source_maps = self._ExtractTargetSourceMaps()
+
+      prefix_maps = []
+      for source_map in source_maps:
+        # Prefix with Xclang to pass these build options directly to Clang.
+        prefix_maps.append('--copt=-Xclang')
+        prefix_maps.append('--copt=-fdebug-prefix-map=%s=%s' %
+                           source_map)
+
+      # Extend our list of build options with maps just prior to building.
+      parser.build_options[_OptionsParser.ALL_CONFIGS].extend(prefix_maps)
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -668,10 +698,12 @@ class BazelBuildBridge(object):
     # debug symbol paths encoded in the binary to the paths expected by Xcode.
     # In cases where a dSYM bundle was produced, the post_processor will have
     # already corrected the paths and use of target.source-map is redundant (and
-    # appears to trigger actual problems in Xcode 8.1 betas).
+    # appears to trigger actual problems in Xcode 8.1 betas). The redundant path
+    # correction applies to debug prefix maps as well.
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
-      exit_code = self._UpdateLLDBInit(self.generate_dsym)
+      clear_source_map = self.generate_dsym or self.use_debug_prefix_map
+      exit_code = self._UpdateLLDBInit(clear_source_map)
       timer.End()
       if exit_code:
         _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
@@ -1512,15 +1544,17 @@ class BazelBuildBridge(object):
           '\tExtracting source paths for ' + self.full_product_name,
           'extracting_source_paths').Start()
 
-      source_paths = self._ExtractTargetSourcePaths()
+      source_maps = self._ExtractTargetSourceMaps()
+
+      # Sort paths alphabetically to keep ordering consistent.
+      sorted_source_maps = []
+      for source_map in source_maps:
+        sorted_source_maps.append('"%s" "%s"' % source_map)
+      sorted_source_maps.sort(reverse=True)
+
       timer.End()
 
-      if source_paths is None:
-        _PrintXcodeWarning('Failed to extract source paths for LLDB. '
-                           'File-based breakpoints will likely not work.')
-        return 900
-
-      if not source_paths:
+      if not sorted_source_maps:
         _PrintXcodeWarning('Extracted 0 source paths from %r. File-based '
                            'breakpoints may not work. Please report as a bug.' %
                            self.full_product_name)
@@ -1528,18 +1562,9 @@ class BazelBuildBridge(object):
 
       out.write('# This maps file paths used by Bazel to those used by %r.\n' %
                 os.path.basename(self.project_file_path))
-      workspace_root_parent = os.path.dirname(self.workspace_root)
 
-      source_maps = []
-      for p, symlink in source_paths:
-        if symlink:
-          local_path = os.path.join(workspace_root_parent, symlink)
-        else:
-          local_path = workspace_root_parent
-        source_maps.append('"%s" "%s"' % (p, local_path))
-      source_maps.sort(reverse=True)
-
-      out.write('settings set target.source-map %s\n' % ' '.join(source_maps))
+      out.write('settings set target.source-map %s\n' %
+                ' '.join(sorted_source_maps))
       self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0
@@ -1613,17 +1638,55 @@ class BazelBuildBridge(object):
 
     return 0
 
+  def _ExtractBazelInfoExecrootPaths(self):
+    """Extracts the path to the execution root found in this WORKSPACE.
+
+    Returns:
+      None: if an error occurred.
+      str: a string representing the absolute path to the execution root found
+           for the current Bazel WORKSPACE.
+    """
+    if not self.bazel_executable:
+      _PrintXcodeWarning('Attempted to find the execution root, but the '
+                         'path to the Bazel executable was not provided.')
+      return None
+
+    timer = Timer('Finding Bazel execution root', 'bazel_execroot').Start()
+    returncode, output = self._RunSubprocess([
+        self.bazel_executable,
+        'info',
+        'execution_root',
+        '--noshow_loading_progress',
+        '--noshow_progress',
+    ])
+    timer.End()
+
+    if returncode:
+      _PrintXcodeWarning('%s returned %d while finding the execution root'
+                         % (self.bazel_executable, returncode))
+      return None
+
+    for line in output.splitlines():
+      # Filter out output that does not contain the /execroot path.
+      if '/execroot' not in line:
+        continue
+      # Return the path from the first /execroot found.
+      return line
+    _PrintXcodeWarning('%s did not return a recognized /execroot path.'
+                       % self.bazel_executable)
+    return None
+
   def _ExtractTargetSourcePaths(self):
     """Extracts set((source paths, symlink)) from the target's debug symbols.
 
     Returns:
       None: if an error occurred.
-      set(str): containing tuples of unique source paths in the target binary
-                associated with the symlink used by Tulsi generated Xcode
-                projects if applicable. For example, a source path to a
-                /genfiles/ directory will be associated with "bazel-genfiles".
-                Paths will only be returned if they're available on the
-                local filesystem.
+      set(str, str): containing tuples of unique source paths in the target
+                     binary associated with the symlink used by Tulsi generated
+                     Xcode projects if applicable. For example, a source path
+                     to a /genfiles/ directory will be associated with
+                     "bazel-genfiles". Paths will only be returned if they're
+                     available on the local filesystem.
     """
     if not os.path.isfile(self.binary_path):
       _PrintXcodeWarning('No binary at expected path %r' % self.binary_path)
@@ -1689,6 +1752,39 @@ class BazelBuildBridge(object):
       source_path_prefixes.add((basepath, None))
 
     return source_path_prefixes
+
+  def _ExtractTargetSourceMaps(self):
+    """Extracts all source paths as tuples associated with the WORKSPACE path.
+
+    Returns:
+      set(): if an error occurred.
+      set(str, str): a set of tuples representing all absolute paths to source
+                     files compiled by Bazel as strings ($0) associated with
+                     the paths to Xcode-visible sources used for the purposes
+                     of Tulsi debugging as strings ($1), sorted in reverse
+                     alpha order.
+    """
+    source_maps = set()
+
+    workspace_root_parent = os.path.dirname(self.workspace_root)
+    if self.use_bazel_execroot:
+      # Query Bazel directly for the execution root.
+      execroot = self._ExtractBazelInfoExecrootPaths()
+      source_maps.add((os.path.dirname(execroot), workspace_root_parent))
+    else:
+      # Search for target source paths in app binary debug symbols.
+      source_path_prefixes = self._ExtractTargetSourcePaths()
+      for p, symlink in source_path_prefixes:
+        if symlink:
+          # Convert symlinks to absolute paths.
+          local_path = os.path.join(workspace_root_parent, symlink)
+        else:
+          local_path = workspace_root_parent
+        source_maps.add(p, local_path)
+      if source_maps:
+        sorted(source_maps, key=itemgetter(0), reverse=True)
+
+    return source_maps
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""

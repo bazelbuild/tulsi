@@ -441,6 +441,12 @@ final class XcodeProjectGenerator {
       // TODO(b/67857886): Remove after this feature has been tested.
       buildSettings["TULSI_COLLECT_DSYM"] = "YES"
 
+      // TODO(b/69180212): Remove if this feature causes no issues for four weeks after release.
+      buildSettings["TULSI_BAZEL_EXECROOT"] = "YES"
+
+      // TODO(b/69180247): Remove if this feature causes no issues for four weeks after release.
+      buildSettings["TULSI_DEBUG_PREFIX_MAP"] = "YES"
+
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
