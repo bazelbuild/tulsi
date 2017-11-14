@@ -613,8 +613,6 @@ class BazelBuildBridge(object):
 
       prefix_maps = []
       for source_map in source_maps:
-        # Prefix with Xclang to pass these build options directly to Clang.
-        prefix_maps.append('--copt=-Xclang')
         prefix_maps.append('--copt=-fdebug-prefix-map=%s=%s' %
                            source_map)
 
@@ -1545,16 +1543,9 @@ class BazelBuildBridge(object):
           'extracting_source_paths').Start()
 
       source_maps = self._ExtractTargetSourceMaps()
-
-      # Sort paths alphabetically to keep ordering consistent.
-      sorted_source_maps = []
-      for source_map in source_maps:
-        sorted_source_maps.append('"%s" "%s"' % source_map)
-      sorted_source_maps.sort(reverse=True)
-
       timer.End()
 
-      if not sorted_source_maps:
+      if not source_maps:
         _PrintXcodeWarning('Extracted 0 source paths from %r. File-based '
                            'breakpoints may not work. Please report as a bug.' %
                            self.full_product_name)
@@ -1563,8 +1554,12 @@ class BazelBuildBridge(object):
       out.write('# This maps file paths used by Bazel to those used by %r.\n' %
                 os.path.basename(self.project_file_path))
 
+      target_source_maps = []
+      for source_map in source_maps:
+        target_source_maps.append('"%s" "%s"' % source_map)
+
       out.write('settings set target.source-map %s\n' %
-                ' '.join(sorted_source_maps))
+                ' '.join(target_source_maps))
       self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0
