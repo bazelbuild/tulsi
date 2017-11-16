@@ -68,9 +68,6 @@
 /* Failed to find a watchOS application extension with the given name. The project will not be able to launch the watch app. */
 "FindingWatchExtensionFailed" = "Failed to find watchOS extension '%1$@'. The generated project will not able to run the watch app.";
 
-/* Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues. */
-"GeneratingTestHost" = "Generating target for test host '%1$@' needed by '%2$@'. Generated targets will not include sources and will use project default options to build.";
-
 /* Message to show when loading a .xccurrentversion file fails. */
 "LoadingXCCurrentVersionFailed" = "Failed to determine the current version for a versioned group %1$@. The generated project may malfunction. Error: %2$@";
 

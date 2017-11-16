@@ -469,6 +469,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
@@ -603,6 +604,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
@@ -752,6 +754,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -897,6 +900,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;

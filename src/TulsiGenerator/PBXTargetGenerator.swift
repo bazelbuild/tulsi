@@ -875,8 +875,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if let hostTargetLabel = testHostLabel {
         testHostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget
         if testHostTarget == nil {
-          // If the user did not choose to include the host target it won't be available so the linkage
-          // can be skipped, but the test won't be runnable in Xcode.
+          // If the user did not choose to include the host target it won't be available so the
+          // linkage can be skipped. We will still force the generation of this test host target to
+          // avoid issues when running tests as bundle targets in Xcode.
           localizedMessageLogger.warning("MissingTestHost",
                                          comment: "Warning to show when a user has selected an XCTest but not its host application.",
                                          values: entry.label.value, hostTargetLabel.value)

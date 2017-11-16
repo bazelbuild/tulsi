@@ -1254,6 +1254,12 @@ class BazelBuildBridge(object):
     """Copies the dSYM bundle to the given directory."""
     input_dsym_full_path = os.path.join(self.build_path, target_dsym)
     output_full_path = os.path.join(output_dir, target_dsym)
+
+    # TODO(b/69424131): Investigate why Bazel isn't returning dSYM that the
+    # aspect claims we should have for test hosts that belong to test builds.
+    if not os.path.isdir(input_dsym_full_path):
+      return 0, None
+
     if os.path.isdir(output_full_path):
       try:
         shutil.rmtree(output_full_path)
@@ -1262,13 +1268,10 @@ class BazelBuildBridge(object):
                          '%s' % (output_full_path, e))
         return 700, None
 
-    if os.path.isdir(input_dsym_full_path):
-      exit_code = self._CopyBundle(target_dsym,
-                                   input_dsym_full_path,
-                                   output_full_path)
-      return exit_code, output_full_path
-
-    return 0, None
+    exit_code = self._CopyBundle(target_dsym,
+                                 input_dsym_full_path,
+                                 output_full_path)
+    return exit_code, output_full_path
 
   def _InstallDSYMBundles(self, output_dir, aspect_outputs):
     """Copies any generated dSYM bundles to the given directory."""

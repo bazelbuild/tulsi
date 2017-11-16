@@ -387,33 +387,16 @@ final class XcodeProjectGenerator {
       generator.generateFileReferencesForFilePaths(paths, pathFilters: config.pathFilters)
     }
 
-    // Generate RuleEntry's for any test hosts to ensure that selected tests can be executed in
-    // Xcode.
-    for (hostLabel, testLabel) in hostTargetLabels {
+    // Add RuleEntrys for any test hosts to ensure that selected tests can be executed in Xcode.
+    for (hostLabel, _) in hostTargetLabels {
       if config.buildTargetLabels.contains(hostLabel) { continue }
-      localizedMessageLogger.warning("GeneratingTestHost",
-                                     comment: "Warning to show when a user has selected an XCTest (%2$@) but not its host application (%1$@), resulting in an automated target generation which may have issues.",
-                                     context: config.projectName,
-                                     values: hostLabel.value, testLabel.value)
-      let bazelBinPath = workspaceInfoExtractor.bazelBinPath
-      let expectedArtifact = BazelFileInfo(rootPath: bazelBinPath,
-                                           subPath: "\(hostLabel.asFileName!).ipa",
-                                           isDirectory: false,
-                                           targetType: .generatedFile)
-
-      // Find all rule entries for this label. Can be multiple to handle different test configs.
-      let testHostRuleEntries = ruleEntryMap.ruleEntries(buildLabel: hostLabel)
-
-      // Find the minimum deployment target found matching this test and its test host.
-      let minDeploymentTarget = testHostRuleEntries.lazy.flatMap { $0.deploymentTarget }
-                                                   .min { $0.osVersion < $1.osVersion }
-
-      // Add a new test host target, with the minimal set of attributes needed to run the test.
-      targetRules.insert(RuleEntry(label: hostLabel,
-                                   type: "_test_host_",
-                                   attributes: [:],
-                                   artifacts: [expectedArtifact],
-                                   deploymentTarget: minDeploymentTarget))
+      guard let recoveredHostRuleEntry = ruleEntryMap.anyRuleEntry(withBuildLabel: hostLabel) else {
+        // Already reported MissingTestHost warning in PBXTargetGenerator within
+        // generateBuildTargetsForRuleEntries(...).
+        continue
+      }
+      // Add the recovered test host target.
+      targetRules.insert(recoveredHostRuleEntry)
     }
 
     let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)
