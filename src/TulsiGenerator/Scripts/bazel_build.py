@@ -21,6 +21,8 @@ main group in order to generate correct debug symbols.
 
 import atexit
 import collections
+import errno
+import fcntl
 import io
 import json
 from operator import itemgetter
@@ -73,6 +75,11 @@ def _BEPFileExitCleanup(bep_file_path):
   except OSError as e:
     _PrintXcodeWarning('Failed to remove BEP file from %s. Error: %s' %
                        (bep_file_path, e.strerror))
+
+
+# Function to be called atexit to release the file lock on script termination.
+def _LockFileExitCleanup(lock_file_path):
+  lock_file_path.close()
 
 
 class Timer(object):
@@ -1823,6 +1830,24 @@ class BazelBuildBridge(object):
 
 
 if __name__ == '__main__':
+  sys.stdout.write('Queuing Tulsi build...\n')
+  sys.stdout.flush()
+  _locktimer = Timer('Acquiring /tmp/tulsi_bazel_build.lock',
+                     'tulsi_build_lock').Start()
+  # TODO(b/69414272): See if we can improve this for multiple WORKSPACEs.
+  _lockpath = '/tmp/tulsi_bazel_build.lock'
+  _lockfile = open('/tmp/tulsi_bazel_build.lock', 'w')
+  while True:
+    try:
+      fcntl.lockf(_lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
+      atexit.register(_LockFileExitCleanup, _lockfile)
+      break
+    except IOError as err:
+      if err.errno != errno.EAGAIN:
+        raise
+      else:
+        time.sleep(0.1)
+  _locktimer.End()
   _timer = Timer('Everything', 'complete_build').Start()
   _exit_code = BazelBuildBridge().Run(sys.argv)
   _timer.End()
