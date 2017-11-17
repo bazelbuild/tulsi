@@ -1732,7 +1732,7 @@ class BazelBuildBridge(object):
           local_path = os.path.join(workspace_root_parent, symlink)
         else:
           local_path = workspace_root_parent
-        source_maps.add(p, local_path)
+        source_maps.add((p, local_path))
       if source_maps:
         sorted(source_maps, key=itemgetter(0), reverse=True)
 
