@@ -64,8 +64,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption,
-                            bepOption: TulsiOption) throws -> RuleEntryMap {
+                            buildOptions: TulsiOption) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
     }
@@ -77,7 +76,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       guard let options = options else { return [] }
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
-    let bepSupportEnabled = bepOption.commonValueAsBool ?? true
 
     // TODO(abaire): Support per-target and per-config options during aspect lookups.
     let startupOptions = splitOptionString(startupOptions.commonValue)
@@ -87,8 +85,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
-                                                        buildOptions: buildOptions,
-                                                        bepEnabled: bepSupportEnabled)
+                                                        buildOptions: buildOptions)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")

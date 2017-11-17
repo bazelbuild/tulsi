@@ -32,8 +32,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption,
-                            bepOption: TulsiOption) throws -> RuleEntryMap {
+                            buildOptions: TulsiOption) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)
     let ret = RuleEntryMap()
     for label in labels {

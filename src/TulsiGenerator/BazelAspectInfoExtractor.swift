@@ -67,57 +67,13 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Bazel workspace for the given set of Bazel targets.
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
-                                   buildOptions: [String] = [],
-                                   bepEnabled: Bool) throws -> RuleEntryMap {
+                                   buildOptions: [String] = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
-    if bepEnabled {
-      return try extractRuleEntriesUsingBEP(targets,
-                                            startupOptions: startupOptions,
-                                            buildOptions: buildOptions)
-    }
-
-    let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
-                                            maxValue: targets.count,
-                                            indeterminate: false,
-                                            suppressStart: true)
-
-    let profilingStart = localizedMessageLogger.startProfiling("extract_source_info",
-                                                               message: "Extracting info for \(targets.count) rules")
-
-    let semaphore = DispatchSemaphore(value: 0)
-    var artifacts = Set<String>()
-    var processDebugInfo: String? = nil
-    let process = bazelAspectProcessForTargets(targets.map({ $0.value }),
-                                               aspect: "tulsi_sources_aspect",
-                                               startupOptions: startupOptions,
-                                               buildOptions: buildOptions,
-                                               bepEnabled: bepEnabled,
-                                               progressNotifier: progressNotifier) {
-      (process: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
-        defer { semaphore.signal() }
-        processDebugInfo = debugInfo
-        if let generatedArtifacts = generatedArtifacts {
-          artifacts = Set(generatedArtifacts.filter { $0.hasSuffix(".tulsiinfo") })
-        }
-    }
-
-    if let process = process {
-      process.currentDirectoryPath = workspaceRootURL.path
-      process.launch()
-      _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-      guard process.terminationStatus == 0, !artifacts.isEmpty else {
-        let debugInfo = processDebugInfo ?? "<No Debug Info>"
-        queuedInfoMessages.append(debugInfo)
-        localizedMessageLogger.error("BazelInfoExtractionFailed",
-                                     comment: "Error message for when a Bazel extractor did not complete successfully. Details are logged separately.",
-                                     details: BazelErrorExtractor.firstErrorLinesFromString(debugInfo))
-        throw ExtractorError.buildFailed
-      }
-    }
-    localizedMessageLogger.logProfilingEnd(profilingStart)
-    return extractRuleEntriesFromArtifacts(artifacts, progressNotifier: progressNotifier)
+    return try extractRuleEntriesUsingBEP(targets,
+                                          startupOptions: startupOptions,
+                                          buildOptions: buildOptions)
   }
 
   // MARK: - Private methods
@@ -142,7 +98,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                aspect: "tulsi_sources_aspect",
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
-                                               bepEnabled:  true,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
        defer { semaphore.signal() }
@@ -198,7 +153,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             aspect: String,
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
-                                            bepEnabled: Bool,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
 
@@ -229,12 +183,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
         "--tool_tag=tulsi:generator", // Add a tag for tracking.
+        "--build_event_json_file=\(self.buildEventsFilePath)",
     ])
-    if bepEnabled {
-      arguments.append("--build_event_json_file=" + self.buildEventsFilePath)
-    } else {
-      arguments.append("--experimental_show_artifacts")  // Print the artifacts generated by the aspect.
-    }
     arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)
 

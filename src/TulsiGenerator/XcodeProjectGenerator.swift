@@ -418,9 +418,6 @@ final class XcodeProjectGenerator {
         }
       }
 
-      // TODO(b/65198307): Remove when we swap entirely to BEP.
-      buildSettings["TULSI_USE_BEP"] = "YES"
-
       // TODO(b/67857886): Remove after this feature has been tested.
       buildSettings["TULSI_COLLECT_DSYM"] = "YES"
 
@@ -489,8 +486,7 @@ final class XcodeProjectGenerator {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                             buildOptions: config.options[.BazelBuildOptionsDebug],
-                                                             bepOption: config.options[.BEPSupportEnabled])
+                                                             buildOptions: config.options[.BazelBuildOptionsDebug])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
     }
