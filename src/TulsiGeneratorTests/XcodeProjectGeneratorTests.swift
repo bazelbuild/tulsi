@@ -219,7 +219,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
         // Both the platform and osDeploymentTarget must be set in order to create a valid
         // deploymentTarget for the RuleEntry.
         XcodeProjectGeneratorTests.makeRuleEntry(BuildLabel(tuple.0), type: tuple.0, platformType: tuple.1,
-                                                 osDeploymentTarget: "9.0")
+                                                 osDeploymentTarget: "this_must_not_be_nil")
       }
       let sdkroot = XcodeProjectGenerator.projectSDKROOT(rules)
       XCTAssertEqual(sdkroot, expectedSDKROOT, line: line)
