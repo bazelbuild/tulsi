@@ -408,6 +408,7 @@
 				TULSI_COLLECT_DSYM = YES;
 				TULSI_DEBUG_PREFIX_MAP = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
+				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -526,6 +527,7 @@
 				TULSI_COLLECT_DSYM = YES;
 				TULSI_DEBUG_PREFIX_MAP = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
+				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
@@ -665,6 +667,7 @@
 				TULSI_COLLECT_DSYM = YES;
 				TULSI_DEBUG_PREFIX_MAP = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
+				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
 			};
@@ -785,6 +788,7 @@
 				TULSI_COLLECT_DSYM = YES;
 				TULSI_DEBUG_PREFIX_MAP = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
+				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/../..";
