@@ -1085,12 +1085,7 @@ class BazelBuildBridge(object):
     # The directory structure within the IPA is then determined based on Bazel's
     # package and/or product type.
     if is_ipa:
-      if (self.package_type == 'com.apple.package-type.app-extension' or
-          self.product_type == 'com.apple.product-type.application.watchapp'):
-        expected_ipa_subpath = os.path.join('PlugIns', expected_bundle_name)
-      elif self.product_type == 'com.apple.product-type.application.watchapp2':
-        expected_ipa_subpath = os.path.join('Watch', expected_bundle_name)
-      elif self.platform_name.startswith('macos'):
+      if self.platform_name.startswith('macos'):
         # The test rules for now need to output .ipa files instead of .zip
         # files. For this reason, macOS xctest bundles are detected as IPA
         # files. So, if we're building for macOS and it's and IPA, just use
