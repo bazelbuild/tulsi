@@ -108,7 +108,6 @@ def _LockFileExitCleanup(lock_file_handle):
   lock_file_handle.close()
 
 
-# .
 def _LockFileAcquire(lock_path):
   """Force script to wait on global file lock to serialize build target actions.
 
