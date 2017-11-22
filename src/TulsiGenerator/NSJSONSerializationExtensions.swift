@@ -16,11 +16,26 @@ import Foundation
 
 
 extension JSONSerialization {
-  class func tulsi_newlineTerminatedDataWithJSONObject(_ obj: Any,
-                                                       options: JSONSerialization.WritingOptions) throws -> NSMutableData {
-    let content = try JSONSerialization.data(withJSONObject: obj, options: options)
-    let mutableContent = NSMutableData(data: content)
-    try mutableContent.tulsi_appendString("\n")
-    return mutableContent
+  enum EncodingError: Error {
+    // A string failed to be encoded into NSData as UTF8.
+    case stringUTF8EncodingError
+    // A JSON object failed to be encoded into an NSMutableString as UTF8.
+    case objectUTF8EncodingError
+  }
+
+  class func tulsi_newlineTerminatedUnescapedData(
+    jsonObject: Any,
+    options: JSONSerialization.WritingOptions
+  ) throws -> NSMutableData {
+    let content = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
+    guard var mutableString = String(data: content, encoding: String.Encoding.utf8) else {
+      throw EncodingError.objectUTF8EncodingError
+    }
+    mutableString.append("\n")
+    mutableString = mutableString.replacingOccurrences(of: "\\/", with: "/")
+    guard let output = mutableString.data(using: String.Encoding.utf8) else {
+      throw EncodingError.stringUTF8EncodingError
+    }
+    return NSMutableData(data: output)
   }
 }

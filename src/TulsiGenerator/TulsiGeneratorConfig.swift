@@ -230,8 +230,8 @@ public class TulsiGeneratorConfig {
     options.saveShareableOptionsIntoDictionary(&dict)
 
     do {
-      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                             options: .prettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
+                                                                        options: .prettyPrinted)
     } catch let e as NSError {
       throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
@@ -244,8 +244,8 @@ public class TulsiGeneratorConfig {
     options.savePerUserOptionsIntoDictionary(&dict)
     if dict.isEmpty { return nil }
     do {
-      return try JSONSerialization.tulsi_newlineTerminatedDataWithJSONObject(dict,
-                                                                             options: .prettyPrinted)
+      return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
+                                                                        options: .prettyPrinted)
     } catch let e as NSError {
       throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
