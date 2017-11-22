@@ -329,5 +329,5 @@ tvos_extension(
 objc_library(
     name = "tvOSLibrary",
     srcs = ["tvOSLibrary/srcs/src.m"],
-    enable_modules = True,
+    enable_modules = 1,
 )

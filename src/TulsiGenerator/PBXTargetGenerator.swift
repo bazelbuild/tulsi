@@ -588,7 +588,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if let bridgingHeader = bridgingHeader, includeFileInProject(bridgingHeader) {
         addFileReference(bridgingHeader)
       }
-      let enableModules = (ruleEntry.attributes[.enable_modules] as? Int) == 1
+      let enableModules = (ruleEntry.attributes[.enable_modules] as? Bool) == true
 
       addBuildFileForRule(ruleEntry)
 
