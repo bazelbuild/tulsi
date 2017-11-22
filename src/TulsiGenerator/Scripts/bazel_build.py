@@ -515,6 +515,7 @@ class BazelBuildBridge(object):
     # An experiment to collect all dSYM bundles from the build, not just the one
     # from the top target.
     # TODO(b/67857886): Remove after this feature has been tested.
+    # TODO(b/68936732): Remove after this feature has been tested.
     self.collect_dsym = os.environ.get('TULSI_COLLECT_DSYM', 'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
@@ -988,7 +989,39 @@ class BazelBuildBridge(object):
                        primary_artifact,
                        xcode_artifact_path)
 
+    # No return code check as this is not an essential operation.
+    self._InstallEmbeddedBundlesIfNecessary(output_data)
+
     return 0
+
+  def _InstallEmbeddedBundlesIfNecessary(self, output_data):
+    """Install embedded bundles next to the current target's output."""
+
+    # In order to find and load symbols for the binary installed on device,
+    # Instruments needs to "see" it in Spotlight index somewhere on the local
+    # filesystem. This is only needed for on-device instrumentation.
+    #
+    # Unfortunatelly, it does not seem to be possible to detect when a build is
+    # being made for profiling, thus we can't exclude this step for on-device
+    # non-profiling builds.
+    if not self.collect_dsym:
+      return
+
+    if self.is_simulator or ('embedded_bundles' not in output_data):
+      return
+
+    timer = Timer('Installing embedded bundles',
+                  'installing_embedded_bundles').Start()
+
+    for bundle_info in output_data['embedded_bundles']:
+      name = bundle_info['bundle_full_name']
+      # TODO(b/68936732): See if copying just the binary (not the whole bundle)
+      # is enough to make Instruments work.
+      source_path = os.path.join(bundle_info['archive_root'], name)
+      output_path = os.path.join(self.built_products_dir, name)
+      self._InstallBundle(source_path, output_path)
+
+    timer.End()
 
   def _InstallGeneratedHeaders(self, output_files):
     """Installs Bazel-generated headers into tulsi-includes directory."""
@@ -1032,6 +1065,24 @@ class BazelBuildBridge(object):
           os.unlink(dst)
 
         os.symlink(src, dst)
+
+  def _InstallBundle(self, source_path, output_path):
+    """Copies the bundle at source_path to output_path."""
+    if not os.path.isdir(source_path):
+      return 0, None
+
+    if os.path.isdir(output_path):
+      try:
+        shutil.rmtree(output_path)
+      except OSError as e:
+        _PrintXcodeError('Failed to remove stale bundle ""%s". '
+                         '%s' % (output_path, e))
+        return 700, None
+
+    exit_code = self._CopyBundle(os.path.basename(source_path),
+                                 source_path,
+                                 output_path)
+    return exit_code, output_path
 
   def _CopyBundle(self, source_path, full_source_path, output_path):
     """Copies the given bundle to the given expected output path."""
@@ -1157,6 +1208,7 @@ class BazelBuildBridge(object):
 
     return 0
 
+  # TODO(b/69631155): Replace with _InstallBundle.
   def _InstallDSYMBundle(self, target_dsym, output_dir):
     """Copies the dSYM bundle to the given directory."""
     input_dsym_full_path = os.path.join(self.build_path, target_dsym)
@@ -1200,7 +1252,9 @@ class BazelBuildBridge(object):
                              '%s' % (path, e))
           break
 
-        additional_bundles = data.get('dsym_bundle_names', [])
+        additional_bundles = [bi['bundle_full_name']
+                              for bi in data.get('embedded_bundles', [])
+                              if bi['has_dsym']]
         dsym_to_process.update('%s.dSYM' % name for name in additional_bundles)
 
     dsyms_found = []
