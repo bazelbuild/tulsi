@@ -268,9 +268,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       errorInfo = "Unexpected failure"
     }
     let timeTaken = String(format: "%.4fs", Date().timeIntervalSince(startTime))
-    LogMessage.postSyslog("Generate[FAIL]: \(timeTaken)",
-                          details: errorInfo,
-                          context: config.projectName)
+    LogMessage.postError("Generate[FAIL]: \(timeTaken)",
+                         details: errorInfo,
+                         context: config.projectName)
     return .failure
   }
 
