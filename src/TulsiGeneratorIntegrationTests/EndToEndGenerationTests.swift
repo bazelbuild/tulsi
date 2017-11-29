@@ -74,7 +74,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/",
+                                              outputDir: "tulsi_e2e_output",
                                               options: options)
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
@@ -113,7 +113,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                    pathFilters: ["\(testDir)/...",
                                                  "blaze-bin/...",
                                                  "blaze-genfiles/..."],
-                                   outputDir: "tulsi_e2e_output/")
+                                   outputDir: "tulsi_e2e_output")
     } catch Error.projectGenerationFailure(let info) {
       // Expected failure on malformed BUILD file.
       XCTAssertEqual(info, "General failure: Bazel aspects could not be built.")
@@ -161,7 +161,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -184,7 +184,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -207,7 +207,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -230,7 +230,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/\(testDir)/...",
                                                             "blaze-genfiles/\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: "SkylarkBundlingProject")
     validateDiff(diffLines)
@@ -257,7 +257,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -290,7 +290,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -310,7 +310,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -353,7 +353,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
@@ -372,7 +372,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
@@ -391,7 +391,7 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
-                                              outputDir: "tulsi_e2e_output/")
+                                              outputDir: "tulsi_e2e_output")
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
