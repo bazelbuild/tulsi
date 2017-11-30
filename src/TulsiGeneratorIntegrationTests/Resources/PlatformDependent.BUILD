@@ -21,6 +21,7 @@ load(
     "ios_extension",
     "ios_unit_test",
     "ios_ui_test",
+    "ios_legacy_test",
 )
 load("//tools/build_defs/apple:swift.bzl", "swift_library")
 
@@ -184,5 +185,20 @@ ios_ui_test(
     test_host = ":SkylarkApplication",
     deps = [
         ":XCUITestCode",
+    ],
+)
+
+objc_library(
+    name = "LegacyTestsLib",
+    srcs = [
+        "LegacyTests/LegacyTests.m",
+    ],
+)
+
+ios_legacy_test(
+    name = "LegacyTests",
+    minimum_os_version = "8.0",
+    deps = [
+        ":LegacyTestsLib",
     ],
 )

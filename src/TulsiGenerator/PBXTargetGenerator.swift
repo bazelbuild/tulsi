@@ -474,7 +474,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var processedEntries = [RuleEntry: (NSOrderedSet)]()
     @discardableResult
     func generateIndexerTargetGraphForRuleEntry(_ ruleEntry: RuleEntry) -> (NSOrderedSet) {
-      var paths = [String]()
       if let data = processedEntries[ruleEntry] {
         return data
       }

@@ -140,6 +140,7 @@ public final class RuleEntry: RuleInfo {
       "ios_application": PBXTarget.ProductType.Application,
       "ios_extension": PBXTarget.ProductType.AppExtension,
       "ios_framework": PBXTarget.ProductType.Framework,
+      "ios_legacy_test": PBXTarget.ProductType.Application,
       "ios_test": PBXTarget.ProductType.UnitTest,
       "macos_application": PBXTarget.ProductType.Application,
       "macos_command_line_application": PBXTarget.ProductType.Tool,
