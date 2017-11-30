@@ -141,7 +141,6 @@
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
-		E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */; };
 		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
 		E1C0EBDB1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */; };
 		E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
@@ -352,7 +351,6 @@
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
 		E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects_paths.bzl; path = tulsi/tulsi_aspects_paths.bzl; sourceTree = "<group>"; };
-		E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildSettingsFeatures.swift; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
 		E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeGeneratorInvalidPaths.swift; sourceTree = "<group>"; };
 		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
@@ -517,7 +515,6 @@
 				3DA65B451C68558A0055448E /* XcodeProjectGenerator.swift */,
 				5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */,
 				5416093B1F5854090016769C /* BazelBuildEvents.swift */,
-				E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -935,7 +932,6 @@
 			files = (
 				3D99268B1C29F1100094E098 /* PBXObjects.swift in Sources */,
 				3D123A531C659688002BEBA2 /* TulsiProject.swift in Sources */,
-				E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */,
 				3D99268A1C29F10B0094E098 /* GIDGenerator.swift in Sources */,
 				3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */,
 				3DEC9EDD1CF3421600769251 /* TulsiProcessRunner.swift in Sources */,

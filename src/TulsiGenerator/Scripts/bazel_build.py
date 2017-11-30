@@ -511,8 +511,6 @@ class BazelBuildBridge(object):
                                                'YES') == 'YES'
     self.use_bazel_execroot = os.environ.get('TULSI_BAZEL_EXECROOT',
                                              'YES') == 'YES'
-    self.remap_dotted_path = os.environ.get('TULSI_REMAP_DOTTED_PATHS',
-                                            'NO') == 'YES'
 
     # An experiment to collect all dSYM bundles from the build, not just the one
     # from the top target.
@@ -734,7 +732,7 @@ class BazelBuildBridge(object):
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
       clear_source_map = self.generate_dsym or self.use_debug_prefix_map
-      exit_code = self._UpdateLLDBInit(clear_source_map, self.remap_dotted_path)
+      exit_code = self._UpdateLLDBInit(clear_source_map)
       timer.End()
       if exit_code:
         _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
@@ -1493,12 +1491,7 @@ class BazelBuildBridge(object):
     if os.path.isfile(self._TULSI_LLDBINIT_EPILOGUE_FILE):
       outfile.write('command source %s\n' % self._TULSI_LLDBINIT_EPILOGUE_FILE)
 
-  def _UpdateLLDBInitDottedPathMap(self, lldbinit_file, remap_dotted_path):
-    if remap_dotted_path:
-      lldbinit_file.write('settings set target.source-map . "%s"\n' %
-                          os.path.dirname(self.workspace_root))
-
-  def _UpdateLLDBInit(self, clear_source_map=False, remap_dotted_path=False):
+  def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates ~/.lldbinit-tulsi to enable debugging of Bazel binaries."""
 
     # Apple Watch app binaries do not contain any sources.
@@ -1513,7 +1506,6 @@ class BazelBuildBridge(object):
 
       if clear_source_map:
         out.write('settings clear target.source-map\n')
-        self._UpdateLLDBInitDottedPathMap(out, remap_dotted_path)
         self._LinkTulsiLLDBInitEpilogue(out)
         return 0
 
@@ -1539,7 +1531,6 @@ class BazelBuildBridge(object):
 
       out.write('settings set target.source-map %s\n' %
                 ' '.join(target_source_maps))
-      self._UpdateLLDBInitDottedPathMap(out, remap_dotted_path)
       self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0

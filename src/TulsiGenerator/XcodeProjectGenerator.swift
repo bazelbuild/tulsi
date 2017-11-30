@@ -418,10 +418,17 @@ final class XcodeProjectGenerator {
         }
       }
 
-      // Update this project's build settings with the latest feature flags.
-      for featureFlag in bazelBuildSettingsFeatures {
-        buildSettings[featureFlag] = "YES"
-      }
+      // TODO(b/67857886): Remove after this feature has been tested.
+      buildSettings["TULSI_COLLECT_DSYM"] = "YES"
+
+      // TODO(b/69180212): Remove when all issues around this flag are resolved after release.
+      buildSettings["TULSI_BAZEL_EXECROOT"] = "YES"
+
+      // TODO(b/69180247): Remove when all issues around this flag are resolved after release.
+      buildSettings["TULSI_DEBUG_PREFIX_MAP"] = "YES"
+
+      // TODO(b/69552312): Remove if this feature causes no issues for four weeks after release.
+      buildSettings["TULSI_QUEUE_BUILDS"] = "YES"
 
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
