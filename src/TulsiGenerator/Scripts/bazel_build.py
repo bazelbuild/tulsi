@@ -38,6 +38,7 @@ import zipfile
 
 import bazel_build_events
 import bazel_options
+from execroot_path import BAZEL_EXECUTION_ROOT
 import tulsi_logging
 
 
@@ -1734,8 +1735,13 @@ class BazelBuildBridge(object):
 
     workspace_root_parent = os.path.dirname(self.workspace_root)
     if self.use_bazel_execroot:
-      # Query Bazel directly for the execution root.
-      execroot = self._ExtractBazelInfoExecrootPaths()
+      # If we have a cached execution root, check that it exists.
+      if os.path.exists(BAZEL_EXECUTION_ROOT):
+        # If so, use it.
+        execroot = BAZEL_EXECUTION_ROOT
+      else:
+        # Query Bazel directly for the execution root.
+        execroot = self._ExtractBazelInfoExecrootPaths()
       source_maps.add((os.path.dirname(execroot), workspace_root_parent))
     else:
       # Search for target source paths in app binary debug symbols.

@@ -76,6 +76,7 @@ final class XcodeProjectGenerator {
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
+  private static let CachedExecutionRootFilename = "execroot_path.py"
 
   /// Rules which should not be generated at the top level.
   private static let LibraryRulesForTopLevelWarning =
@@ -738,6 +739,35 @@ final class XcodeProjectGenerator {
     }
   }
 
+  /// Create a file that contains the execution root for the workspace of the generated project.
+  private func installCachedExecutionRoot(_ scriptDirectoryURL: URL) {
+    let executionRootFileURL = scriptDirectoryURL.appendingPathComponent(XcodeProjectGenerator.CachedExecutionRootFilename)
+
+    let execroot = workspaceInfoExtractor.bazelExecutionRoot.replacingOccurrences(of: "'",
+                                                                                  with: "")
+
+    // Entire script is one variable, directly referenced within bazel_build.py. If this is an empty
+    // string, the path will return False in an os.path.exists(...) call.
+    let script = "BAZEL_EXECUTION_ROOT = '\(execroot)'\n"
+
+    var errorInfo: String? = nil
+    do {
+      try writeDataHandler(executionRootFileURL, script.data(using: .utf8)!)
+    } catch let e as NSError {
+      errorInfo = e.localizedDescription
+    } catch {
+      errorInfo = "Unexpected exception"
+    }
+    if let errorInfo = errorInfo {
+      // Return an error, as failing to create the file will leave us without a buildable project.
+      localizedMessageLogger.error("BazelExecutionRootCacheFailed",
+                                   comment: XcodeProjectGenerator.CachedExecutionRootFilename +
+                                            "could not be created. \(errorInfo)",
+                                   context: config.projectName)
+      return
+    }
+  }
+
   private func installTulsiScripts(_ projectURL: URL) {
 
     let scriptDirectoryURL = projectURL.appendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
@@ -754,6 +784,7 @@ final class XcodeProjectGenerator {
                    toDirectory: scriptDirectoryURL)
       installFiles(resourceURLs.extraBuildScripts.map { ($0, $0.lastPathComponent) },
                    toDirectory: scriptDirectoryURL)
+      installCachedExecutionRoot(scriptDirectoryURL)
 
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }

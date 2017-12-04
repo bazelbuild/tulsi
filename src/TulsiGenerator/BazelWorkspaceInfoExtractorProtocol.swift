@@ -45,4 +45,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
 
   /// Workspace-relative path to the directory in which Bazel will install generated artifacts.
   var bazelBinPath: String {get}
+
+  /// Absolute path to the Bazel execution root.
+  var bazelExecutionRoot: String {get}
 }
