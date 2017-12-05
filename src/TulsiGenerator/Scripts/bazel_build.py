@@ -509,7 +509,7 @@ class BazelBuildBridge(object):
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
-                                               'YES') == 'YES'
+                                               'NO') == 'YES'
     self.use_bazel_execroot = os.environ.get('TULSI_BAZEL_EXECROOT',
                                              'YES') == 'YES'
 
