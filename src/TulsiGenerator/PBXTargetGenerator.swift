@@ -507,29 +507,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       let includes = NSMutableOrderedSet()
-      if let includePaths = ruleEntry.includePaths {
-        let rootedPaths: [String] = includePaths.map() { (path, recursive) in
-          let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
-          if recursive {
-            return "\(rootedPath)/**"
-          }
-          return rootedPath
-        }
-        includes.addObjects(from: rootedPaths)
-
-        /// Some targets that generate sources also provide header search paths into non-generated
-        /// sources. Using workspace root is needed for the former, but the latter has to be
-        /// included via the Bazel workspace root.
-        /// TODO(tulsi-team): See if we can merge the two locations to just Bazel workspace.
-        let bazelWorkspaceRootedPaths: [String] = includePaths.map() { (path, recursive) in
-          let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
-          if recursive {
-            return "\(rootedPath)/**"
-          }
-          return rootedPath
-        }
-        includes.addObjects(from: bazelWorkspaceRootedPaths)
-      }
+      addIncludes(ruleEntry, toSet: includes)
 
       // Search path entries are added for all framework imports, regardless of whether the
       // framework bundles are allowed by the include filters. The search path excludes the bundle
@@ -560,23 +538,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       var localPreprocessorDefines = defines
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
       let otherCFlags = NSMutableOrderedSet()
-      if let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty {
-        for opt in copts {
-          // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
-          //     encyclopedia.
-          if opt.hasPrefix("-D") {
-            localPreprocessorDefines.insert(opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2)))
-          } else if opt.hasPrefix("-I") {
-            var path = opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2))
-            if !path.hasPrefix("/") {
-              path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
-            }
-            localIncludes.add(path)
-          } else {
-            otherCFlags.add(opt)
-          }
-        }
-      }
+      addLocalSettings(ruleEntry, localDefines: &localPreprocessorDefines, localIncludes: localIncludes, otherCFlags: otherCFlags)
 
       let pchFile = BazelFileInfo(info: ruleEntry.attributes[.pch])
       if let pchFile = pchFile, includeFileInProject(pchFile) {
@@ -619,19 +581,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         resolvedIncludes.append("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
 
         let swiftIncludePaths = NSMutableOrderedSet()
-        for module in ruleEntry.swiftTransitiveModules {
-          let fullPath = module.fullPath as NSString
-          let includePath = fullPath.deletingLastPathComponent
-          swiftIncludePaths.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(includePath)")
-        }
+        addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
 
-        // Load module maps explicitly instead of letting Clang discover them on search paths. This
-        // is needed to avoid a case where Clang may load the same header both in modular and
-        // non-modular contexts, leading to duplicate definitions in the same file.
-        // See llvm.org/bugs/show_bug.cgi?id=19501
-        let otherSwiftFlags = ruleEntry.objCModuleMaps.map() {
-           "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
-        }
+        let otherSwiftFlags = NSMutableOrderedSet()
+        addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
 
         let deploymentTarget: DeploymentTarget
         if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
@@ -649,7 +602,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       resolvedDependencies: Set(resolvedDependecies),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
-                                      otherSwiftFlags: otherSwiftFlags,
+                                      otherSwiftFlags: otherSwiftFlags.array as! [String],
                                       includes: resolvedIncludes,
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
@@ -1150,15 +1103,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if let hostTarget = hostTarget {
       project.linkTestTarget(target, toHostTarget: hostTarget)
     }
-    updateTestTargetIndexer(target, ruleEntry: ruleEntry, hostTarget: hostTarget)
+    updateTestTargetIndexer(target, ruleEntry: ruleEntry, hostTarget: hostTarget, ruleEntryMap: ruleEntryMap)
     updateTestTargetBuildPhases(target, ruleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
   }
 
   /// Updates the test target indexer with test specific values.
   private func updateTestTargetIndexer(_ target: PBXNativeTarget,
                                        ruleEntry: RuleEntry,
-                                       hostTarget: PBXNativeTarget?) {
-    let testSettings = targetTestSettings(target, hostTarget: hostTarget)
+                                       hostTarget: PBXNativeTarget?,
+                                       ruleEntryMap: RuleEntryMap) {
+    let testSettings = targetTestSettings(target, hostTarget: hostTarget, ruleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
 
     // Inherit the resolved values from the indexer.
     let deploymentTarget = ruleEntry.deploymentTarget ?? PBXTargetGenerator.defaultDeploymentTarget()
@@ -1196,9 +1150,85 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
+  /// Adds includes paths from the RuleEntry to the given NSSet.
+  private func addIncludes(_ ruleEntry: RuleEntry,
+                           toSet includes: NSMutableOrderedSet) {
+    if let includePaths = ruleEntry.includePaths {
+      let rootedPaths: [String] = includePaths.map() { (path, recursive) in
+        let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
+        if recursive {
+          return "\(rootedPath)/**"
+        }
+        return rootedPath
+      }
+      includes.addObjects(from: rootedPaths)
+
+      /// Some targets that generate sources also provide header search paths into non-generated
+      /// sources. Using workspace root is needed for the former, but the latter has to be
+      /// included via the Bazel workspace root.
+      /// TODO(tulsi-team): See if we can merge the two locations to just Bazel workspace.
+      let bazelWorkspaceRootedPaths: [String] = includePaths.map() { (path, recursive) in
+        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
+        if recursive {
+          return "\(rootedPath)/**"
+        }
+        return rootedPath
+      }
+      includes.addObjects(from: bazelWorkspaceRootedPaths)
+    }
+  }
+
+  /// Adds swift include paths from the RuleEntry to the given NSSet.
+  private func addSwiftIncludes(_ ruleEntry: RuleEntry,
+                                toSet swiftIncludes: NSMutableOrderedSet) {
+    for module in ruleEntry.swiftTransitiveModules {
+      let fullPath = module.fullPath as NSString
+      let includePath = fullPath.deletingLastPathComponent
+      swiftIncludes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(includePath)")
+    }
+  }
+
+  /// Returns other swift compiler flags for the given target based on the RuleEntry.
+  private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toSet swiftFlags: NSMutableOrderedSet) {
+    // Load module maps explicitly instead of letting Clang discover them on search paths. This
+    // is needed to avoid a case where Clang may load the same header both in modular and
+    // non-modular contexts, leading to duplicate definitions in the same file.
+    // See llvm.org/bugs/show_bug.cgi?id=19501
+    swiftFlags.addObjects(from: ruleEntry.objCModuleMaps.map() {
+      "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
+    })
+  }
+
+  /// Reads the RuleEntry's copts and puts the arguments into the correct set.
+  private func addLocalSettings(_ ruleEntry: RuleEntry,
+                                localDefines: inout Set<String>,
+                                localIncludes: NSMutableOrderedSet,
+                                otherCFlags: NSMutableOrderedSet) {
+    guard let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty else {
+      return
+    }
+    for opt in copts {
+      // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
+      //     encyclopedia.
+      if opt.hasPrefix("-D") {
+        localDefines.insert(opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2)))
+      } else if opt.hasPrefix("-I") {
+        var path = opt.substring(from: opt.characters.index(opt.startIndex, offsetBy: 2))
+        if !path.hasPrefix("/") {
+          path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
+        }
+        localIncludes.add(path)
+      } else {
+        otherCFlags.add(opt)
+      }
+    }
+  }
+
   /// Returns test specific settings for test targets.
   private func targetTestSettings(_ target: PBXNativeTarget,
-                                  hostTarget: PBXNativeTarget?) -> [String: String] {
+                                  hostTarget: PBXNativeTarget?,
+                                  ruleEntry: RuleEntry,
+                                  ruleEntryMap: RuleEntryMap) -> [String: String] {
     var testSettings = ["TULSI_TEST_RUNNER_ONLY": "YES"]
     // Attempt to update the build configs for the target to include BUNDLE_LOADER and TEST_HOST
     // values, linking the test target to its host.
@@ -1214,6 +1244,58 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         testSettings["TEST_HOST"] = testHostPath
       }
     }
+
+    // If this target doesn't have a test_bundle attribute, it must be an ios_test target, since
+    // the test_bundle attribute is required only for apple_unit_test and apple_ui_test. This means
+    // we have no extra test settings to add.
+    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String else {
+      return testSettings
+    }
+
+    // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
+    // binary's build settings. If the chain is broken, just return the current testSettings.
+    guard let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
+          let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
+          let testBundleBinary = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleBinaryLabelString), depender: testBundle) else {
+      return testSettings
+    }
+
+    let includes = NSMutableOrderedSet()
+
+    // We don't use the defines at the moment but the function will add them anyway. We could try
+    // to use the defines but we'd have to do so on a per-file basis as this Test target can contain
+    // files from multiple targets.
+    var defines = Set<String>()
+    let swiftIncludePaths = NSMutableOrderedSet()
+    let otherSwiftFlags = NSMutableOrderedSet()
+
+    includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
+    addIncludes(ruleEntry, toSet: includes)
+    addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes, otherCFlags: NSMutableOrderedSet())
+    addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
+    addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
+
+    for dependency in testBundleBinary.dependencies {
+      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dependency), depender: testBundleBinary) else {
+        continue
+      }
+      addIncludes(dependencyTarget, toSet: includes)
+      addLocalSettings(dependencyTarget, localDefines: &defines, localIncludes: includes, otherCFlags: NSMutableOrderedSet())
+      addSwiftIncludes(dependencyTarget, toSet: swiftIncludePaths)
+      addOtherSwiftFlags(dependencyTarget, toSet: otherSwiftFlags)
+    }
+
+    let includesArr = includes.array as! [String]
+    testSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includesArr.joined(separator: " ")
+
+    if let swiftIncludes = swiftIncludePaths.array as? [String], !swiftIncludes.isEmpty {
+      testSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) " + swiftIncludes.joined(separator: " ")
+    }
+
+    if let otherSwiftFlagsArr = otherSwiftFlags.array as? [String], !otherSwiftFlagsArr.isEmpty {
+      testSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + otherSwiftFlagsArr.joined(separator: " ")
+    }
+
     return testSettings
   }
 

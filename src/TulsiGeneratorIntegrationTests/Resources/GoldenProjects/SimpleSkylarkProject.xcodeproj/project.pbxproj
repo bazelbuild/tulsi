@@ -701,6 +701,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = XCUITest;
@@ -737,10 +738,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -897,6 +900,7 @@
 				BAZEL_TARGET = "//tulsi_e2e_simple_skylark:XCUITest";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = XCUITest;
@@ -933,10 +937,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi-includes/x/x/third_party/protobuf/objectivec";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
 				TULSI_TEST_RUNNER_ONLY = YES;
@@ -1156,6 +1162,7 @@
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
@@ -1327,6 +1334,7 @@
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
