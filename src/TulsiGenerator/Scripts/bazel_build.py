@@ -29,6 +29,7 @@ from operator import itemgetter
 import os
 import re
 import shutil
+import signal
 import StringIO
 import subprocess
 import sys
@@ -75,6 +76,13 @@ def _BEPFileExitCleanup(bep_file_path):
   except OSError as e:
     _PrintXcodeWarning('Failed to remove BEP file from %s. Error: %s' %
                        (bep_file_path, e.strerror))
+
+
+def _InterruptHandler(signum, frame):
+  """Gracefully exit on SIGINT."""
+  del signum, frame  # Unused.
+  sys.stdout.write('Caught interrupt signal. Exiting...\n')
+  sys.exit(0)
 
 
 class Timer(object):
@@ -1804,6 +1812,7 @@ if __name__ == '__main__':
   if _queue_build:
     _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
   _timer = Timer('Everything', 'complete_build').Start()
+  signal.signal(signal.SIGINT, _InterruptHandler)
   _exit_code = BazelBuildBridge().Run(sys.argv)
   _timer.End()
   sys.exit(_exit_code)
