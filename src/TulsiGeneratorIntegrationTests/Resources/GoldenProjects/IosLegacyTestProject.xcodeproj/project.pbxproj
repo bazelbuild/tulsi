@@ -45,6 +45,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		966FB6DE6C1A2E9100000000 /* mainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE2BD1037D00000000 /* Products */,
+				966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */,
+			);
+			name = mainGroup;
+			path = ..;
+			sourceTree = SOURCE_ROOT;
+		};
 		966FB6DE7B75CD5200000000 /* LegacyTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -52,16 +62,6 @@
 			);
 			name = LegacyTests;
 			sourceTree = "<group>";
-		};
-		966FB6DEB6031FE700000000 /* mainGroup */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */,
-			);
-			name = mainGroup;
-			path = ../..;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -73,7 +73,7 @@
 			buildPhases = (
 			);
 			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
-			buildWorkingDirectory = "${SRCROOT}/../..";
+			buildWorkingDirectory = "${SRCROOT}/..";
 			dependencies = (
 			);
 			name = _bazel_clean_;
@@ -103,7 +103,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755838B7B6C8800000000 /* Build configuration list for PBXNativeTarget "LegacyTests" */;
 			buildPhases = (
-				84B42271530E309E00000000 /* ShellScript */,
+				84B422717A2C65C500000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -131,7 +131,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = 966FB6DEB6031FE700000000 /* mainGroup */;
+			mainGroup = 966FB6DE6C1A2E9100000000 /* mainGroup */;
 			targets = (
 				3D31C5E6F6EB9AA400000000 /* LegacyTests */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
@@ -141,7 +141,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271530E309E00000000 /* ShellScript */ = {
+		84B422717A2C65C500000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -152,7 +152,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/../..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_ios_legacy_test:LegacyTests --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_ios_legacy_test:LegacyTests --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -209,7 +209,7 @@
 				TULSI_PROJECT = IosLegacyTestProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/../..";
+				TULSI_WR = "${SRCROOT}/..";
 			};
 			name = Debug;
 		};
@@ -276,7 +276,7 @@
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/../..";
+				TULSI_WR = "${SRCROOT}/..";
 			};
 			name = Release;
 		};
@@ -347,7 +347,7 @@
 				TULSI_PROJECT = IosLegacyTestProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/../..";
+				TULSI_WR = "${SRCROOT}/..";
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -414,7 +414,7 @@
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/../..";
+				TULSI_WR = "${SRCROOT}/..";
 			};
 			name = __TulsiTestRunner_Release;
 		};
