@@ -18,7 +18,7 @@
 "BazelBinSymlinkNameNotFound" = "Was not able to extract the bazel bin symlink name from the workspace. This is a Tulsi or Bazel bug, please report.";
 
 /* Message to show when we are not able to generate the Python script containing an execution root. */
-"BazelExecutionRootCacheFailed" = "Could not generate a script that contains the execution root for the current Bazel workspace. This is a Tulsi bug, please report."
+"BazelExecutionRootCacheFailed" = "Could not generate a script that contains the execution root for the current Bazel workspace. This is a Tulsi bug, please report.";
 
 /* Error message for when a Bazel extractor did not complete successfully. Details are logged separately. */
 "BazelInfoExtractionFailed" = "Failed to retrieve information about the Bazel workspace. This usually means that the contents of a BUILD file are incorrect or flags are missing. Read the message log carefully for details.";
