@@ -260,6 +260,12 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     let fileManager = FileManager.default
 
     func parseTulsiTargetFile(_ filename: String) throws -> RuleEntry {
+      return try autoreleasepool {
+        return try parseTulsiTargetFileImpl(filename)
+      }
+    }
+
+    func parseTulsiTargetFileImpl(_ filename: String) throws -> RuleEntry {
       guard let data = fileManager.contents(atPath: filename) else {
         throw ExtractorError.parsingFailed("The file could not be read")
       }

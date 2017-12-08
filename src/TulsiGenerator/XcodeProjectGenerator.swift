@@ -367,9 +367,11 @@ final class XcodeProjectGenerator {
           for hostTargetLabel in ruleEntry.linkedTargetLabels {
             hostTargetLabels[hostTargetLabel] = ruleEntry.label
           }
-          generator.registerRuleEntryForIndexer(ruleEntry,
-                                                ruleEntryMap: ruleEntryMap,
-                                                pathFilters: config.pathFilters)
+          autoreleasepool {
+            generator.registerRuleEntryForIndexer(ruleEntry,
+                                                  ruleEntryMap: ruleEntryMap,
+                                                  pathFilters: config.pathFilters)
+          }
         }
       }
     }
