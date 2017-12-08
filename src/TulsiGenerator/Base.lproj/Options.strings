@@ -21,6 +21,7 @@
 "BazelBuildStartupOptionsRelease" = "Release";
 
 "BazelContinueBuildingAfterError" = "Continue building after error";
+"ObjCModuleMapWorkarounds" = "Experimental improvements for ObjC Modules in Swift.";
 
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";

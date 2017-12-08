@@ -38,7 +38,10 @@ public enum TulsiOptionKey: String {
       EnvironmentVariables,
 
       // Option to enable compilation after error.
-      BazelContinueBuildingAfterError
+      BazelContinueBuildingAfterError,
+
+      // Option to enable ObjC module map workarounds in the generated Xcodeproj.
+      ObjCModuleMapWorkarounds
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -264,6 +267,7 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
+    addBoolOption(.ObjCModuleMapWorkarounds, .Generic, true)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
