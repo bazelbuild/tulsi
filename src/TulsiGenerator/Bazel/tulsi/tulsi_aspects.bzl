@@ -40,6 +40,15 @@ _TULSI_COMPILE_DEPS = [
     'xctest_app',
 ]
 
+# These are attributes that contain bundles but should not be considered as
+# embedded bundles. For example, test bundles depend on app bundles
+# to be test hosts in bazel semantics, but in reality, Xcode treats the test
+# bundles as an embedded bundle of the app.
+_TULSI_NON_EMBEDDEDABLE_ATTRS = [
+    'test_host',
+    'xctest_app',
+]
+
 # List of all attributes whose contents should resolve to "support" files; files
 # that are used by Bazel to build but do not need special handling in the
 # generated Xcode project. For example, Info.plist and entitlements files.
@@ -704,9 +713,11 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'tulsi_generated_files'):
         tulsi_generated_files += dep.tulsi_generated_files
 
-      dep_bundle_info = _collect_bundle_info(dep)
-      if dep_bundle_info:
-        embedded_bundles += dep_bundle_info
+      # Retrieve the bundle info for embeddable attributes.
+      if attr_name not in _TULSI_NON_EMBEDDEDABLE_ATTRS:
+        dep_bundle_info = _collect_bundle_info(dep)
+        if dep_bundle_info:
+          embedded_bundles += dep_bundle_info
       if hasattr(dep, 'transitive_embedded_bundles'):
         embedded_bundles += dep.transitive_embedded_bundles
 
