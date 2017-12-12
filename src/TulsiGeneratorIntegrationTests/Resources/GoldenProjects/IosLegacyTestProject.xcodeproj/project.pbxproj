@@ -103,7 +103,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755838B7B6C8800000000 /* Build configuration list for PBXNativeTarget "LegacyTests" */;
 			buildPhases = (
-				84B422712CAAFD7300000000 /* ShellScript */,
+				84B422717A2C65C500000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -141,7 +141,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B422712CAAFD7300000000 /* ShellScript */ = {
+		84B422717A2C65C500000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -152,7 +152,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_ios_legacy_test:LegacyTests --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_ios_legacy_test:LegacyTests --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
