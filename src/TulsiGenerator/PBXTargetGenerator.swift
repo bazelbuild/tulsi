@@ -75,10 +75,13 @@ protocol PBXTargetGeneratorProtocol: class {
   func generateFileReferencesForFilePaths(_ paths: [String], pathFilters: Set<String>?)
 
   /// Registers the given Bazel rule and its transitive dependencies for inclusion by the Xcode
-  /// indexer, adding source files whose directories are present in pathFilters.
-  func registerRuleEntryForIndexer(_ ruleEntries: RuleEntry,
+  /// indexer, adding source files whose directories are present in pathFilters. The rule will
+  /// only be processed if it hasn't already (and therefore isn't in processedEntries).
+  /// - processedEntries: Map of RuleEntry to cumulative preprocessor framework search paths.
+  func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: RuleEntryMap,
-                                   pathFilters: Set<String>)
+                                   pathFilters: Set<String>,
+                                   processedEntries: inout [RuleEntry: (NSOrderedSet)])
 
   /// Generates indexer targets for rules that were previously registered through
   /// registerRuleEntryForIndexer. This method may only be called once, after all rule entries have
@@ -448,9 +451,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
   }
 
+  /// Registers the given Bazel rule and its transitive dependencies for inclusion by the Xcode
+  /// indexer, adding source files whose directories are present in pathFilters. The rule will
+  /// only be processed if it hasn't already (and therefore isn't in processedEntries).
+  /// - processedEntries: Map of RuleEntry to cumulative preprocessor framework search paths.
   func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: RuleEntryMap,
-                                   pathFilters: Set<String>) {
+                                   pathFilters: Set<String>,
+                                   processedEntries: inout [RuleEntry: (NSOrderedSet)]) {
     let includePathInProject = pathFilterFunc(pathFilters)
     func includeFileInProject(_ info: BazelFileInfo) -> Bool {
       return includePathInProject(info.fullPath)
@@ -468,10 +476,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       project.getOrCreateGroupsAndFileReferencesForPaths([buildFilePath])
     }
 
-    // Map of build label to cumulative preprocessor framework search paths.
     // TODO(b/63628175): Clean this nested method to also retrieve framework_dir and framework_file
     // from the ObjcProvider, for both static and dynamic frameworks.
-    var processedEntries = [RuleEntry: (NSOrderedSet)]()
     @discardableResult
     func generateIndexerTargetGraphForRuleEntry(_ ruleEntry: RuleEntry) -> (NSOrderedSet) {
       if let data = processedEntries[ruleEntry] {
@@ -797,12 +803,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       switch entry.pbxTargetType {
-        case .Watch2App?:
-          watchAppTargets[name] = (target, entry)
-        case .Watch2Extension?:
-          watchExtensionsByEntry[entry] = target
-        default:
-          break
+      case .Watch2App?:
+        watchAppTargets[name] = (target, entry)
+      case .Watch2Extension?:
+        watchExtensionsByEntry[entry] = target
+      default:
+        break
       }
     }
 
@@ -1556,15 +1562,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // removed, but requires changes to LLDB.
     let dSYMEnabled = entry.attributes[.has_swift_dependency] as? Bool ?? false
     buildSettings["TULSI_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
-    let intermediateArtifacts: [String]
+    let transitiveDepsArtifacts: [String]
     if !dSYMEnabled {
       // For targets that will not generate dSYMs, the set of intermediate libraries generated for
       // dependencies is provided so that downstream utilities may locate them (e.g., to patch DWARF
       // symbols).
-      intermediateArtifacts =
-          entry.discoverIntermediateArtifacts(ruleEntryMap).flatMap({ $0.fullPath }).sorted()
+      transitiveDepsArtifacts = entry.transitiveDepsArtifacts.flatMap({ $0.fullPath }).sorted()
     } else {
-      intermediateArtifacts = []
+      transitiveDepsArtifacts = []
     }
 
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
@@ -1589,7 +1594,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                 first: true)
     }
 
-    return (target, intermediateArtifacts)
+    return (target, transitiveDepsArtifacts)
   }
 
   private func createGenerateSwiftDummyFilesTestBuildPhase() -> PBXShellScriptBuildPhase {

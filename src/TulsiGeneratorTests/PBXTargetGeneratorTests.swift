@@ -2105,9 +2105,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateIndexerWithNoSources() {
     let ruleEntry = makeTestRuleEntry("test/app:TestApp", type: "ios_application")
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
     let targets = project.targetByName
     XCTAssert(targets.isEmpty)
@@ -2118,11 +2120,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2136,11 +2140,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                       sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2157,11 +2163,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2184,11 +2192,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2209,11 +2219,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_binary",
                                       attributes: ruleAttributes as [String : AnyObject],
                                       sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters.union(Set([dataModel])))
+                                                pathFilters: pathFilters.union(Set([dataModel])),
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     var allSourceFiles = sourceFileNames
@@ -2238,11 +2250,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2263,11 +2277,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let ruleEntry = makeTestRuleEntry(buildLabel,
                                       type: "ios_application",
                                       sourceFiles: allSourceFiles)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexerTargetName = String(format: "_idx_TestApp_%08X_ios_min9.0", buildLabel.hashValue)
 
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2283,9 +2299,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
     XCTAssertNil(fileRefForPath(buildFilePath))
   }
@@ -2298,9 +2316,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
@@ -2313,9 +2333,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                       type: "ios_application",
                                       sourceFiles: sourceFileNames,
                                       buildFilePath: buildFilePath)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
     XCTAssertNotNil(fileRefForPath(buildFilePath))
   }
@@ -2328,9 +2350,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
 
     let sourceFiles2 = ["2.swift"]
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
@@ -2340,7 +2364,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2362,9 +2387,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2387,9 +2414,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFiles1)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
 
     let sourceFiles2 = ["2.swift"]
     let buildTargetName2 = String(repeating: "B", count: 255)
@@ -2400,7 +2429,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        sourceFiles: sourceFiles2)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2421,10 +2451,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ["pch": ["path": pchFile.path!, "src": true] as AnyObject],
                                        sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexer1TargetName = String(format: "_idx_TestBinary_%08X_ios_min9.0", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
 
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
     let ruleEntry2 = makeTestRuleEntry(buildLabel2,
@@ -2434,7 +2466,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let indexer2TargetName = String(format: "_idx_TestLibrary_%08X_ios_min9.0", buildLabel2.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName
@@ -2460,10 +2493,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                        type: "ios_binary",
                                        attributes: ruleAttributes1 as [String : AnyObject],
                                        sourceFiles: sourceFileNames)
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
     let indexer1TargetName = String(format: "_idx_TestBinary_%08X_ios_min9.0", buildLabel1.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry1,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
 
     let buildLabel2 = BuildLabel("test/app:TestLibrary")
     let ruleEntry2 = makeTestRuleEntry(buildLabel2,
@@ -2473,7 +2508,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let indexer2TargetName = String(format: "_idx_TestLibrary_%08X_ios_min9.0", buildLabel2.hashValue)
     targetGenerator.registerRuleEntryForIndexer(ruleEntry2,
                                                 ruleEntryMap: RuleEntryMap(),
-                                                pathFilters: pathFilters)
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
     let targets = project.targetByName

@@ -350,6 +350,10 @@ final class XcodeProjectGenerator {
     }
 
     profileAction("gathering_sources_for_indexers") {
+      // Map from RuleEntry to cumulative preprocessor framework search paths.
+      // This is used to propagate framework search paths up the graph while also making sure that
+      // each RuleEntry is only registered once.
+      var processedEntries = [RuleEntry: (NSOrderedSet)]()
       let progressNotifier = ProgressNotifier(name: GatheringIndexerSources,
                                               maxValue: expandedTargetLabels.count)
       for label in expandedTargetLabels {
@@ -370,7 +374,8 @@ final class XcodeProjectGenerator {
           autoreleasepool {
             generator.registerRuleEntryForIndexer(ruleEntry,
                                                   ruleEntryMap: ruleEntryMap,
-                                                  pathFilters: config.pathFilters)
+                                                  pathFilters: config.pathFilters,
+                                                  processedEntries: &processedEntries)
           }
         }
       }

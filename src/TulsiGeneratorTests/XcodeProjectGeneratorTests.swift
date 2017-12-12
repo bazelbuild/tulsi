@@ -432,7 +432,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   func registerRuleEntryForIndexer(_ ruleEntry: RuleEntry,
                                    ruleEntryMap: RuleEntryMap,
-                                   pathFilters: Set<String>) {
+                                   pathFilters: Set<String>,
+                                   processedEntries: inout [RuleEntry: (NSOrderedSet)]) {
   }
 
   func generateIndexerTargets() -> [String: PBXTarget] {

@@ -509,6 +509,7 @@ def _tulsi_sources_aspect(target, ctx):
 
   tulsi_info_files = depset()
   transitive_attributes = dict()
+  transitive_deps_artifacts = depset()
   for attr_name in _TULSI_COMPILE_DEPS:
     deps = _getattr_as_list(rule_attr, attr_name)
     for dep in deps:
@@ -516,6 +517,10 @@ def _tulsi_sources_aspect(target, ctx):
         tulsi_info_files += dep.tulsi_info_files
       if hasattr(dep, 'transitive_attributes'):
         transitive_attributes += dep.transitive_attributes
+      if getattr(dep, 'artifacts', None):
+        transitive_deps_artifacts += dep.artifacts
+      if hasattr(dep, 'transitive_deps_artifacts'):
+        transitive_deps_artifacts += dep.transitive_deps_artifacts
 
   artifacts = _get_opt_attr(target, 'files')
   if artifacts:
@@ -630,6 +635,7 @@ def _tulsi_sources_aspect(target, ctx):
 
   info = _struct_omitting_none(
       artifacts=artifacts,
+      transitive_deps_artifacts=transitive_deps_artifacts.to_list(),
       attr=_struct_omitting_none(**all_attributes),
       build_file=ctx.build_file_path,
       bundle_id=bundle_id,
@@ -661,6 +667,8 @@ def _tulsi_sources_aspect(target, ctx):
   if infoplist:
     tulsi_info_files += [infoplist]
 
+  artifacts_depset = depset(artifacts) if artifacts else depset()
+
   return struct(
       # Matches the --output_groups on the bazel commandline.
       output_groups={
@@ -675,6 +683,10 @@ def _tulsi_sources_aspect(target, ctx):
       # Transitive info that should be applied to every rule that depends on
       # this rule.
       transitive_attributes=transitive_attributes,
+      # Artifacts from this rule.
+      artifacts=artifacts_depset,
+      # Artifacts from the transitive deps of this rule.
+      transitive_deps_artifacts=transitive_deps_artifacts,
   )
 
 
