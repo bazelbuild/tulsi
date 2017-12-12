@@ -38,6 +38,6 @@
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
 
-"SkipSkylarkFilesQuery" = "Don't add Skylark sources to the project";
-"SkipSkylarkFilesQuery_DESC" = "Avoid running a bazel query to get all BUILD and .bzl files in the build. This could save time during project generation.";
+"IncludeBuildSources" = "Include Bazel sources in the generated project.";
+"IncludeBuildSources_DESC" = "Add .bzl and BUILD files related to selected targets in the generated Xcode project. This may slow down project generation significantly.";
 

@@ -155,13 +155,17 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "ComplexSingleProject"
+
+    let projectOptions = TulsiOptionSet()
+    projectOptions[.IncludeBuildSources].projectValue = "YES"
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
                                                             "blaze-bin/...",
                                                             "blaze-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
-                                              outputDir: "tulsi_e2e_output")
+                                              outputDir: "tulsi_e2e_output",
+                                              options: projectOptions)
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)

@@ -94,7 +94,7 @@ class TulsiOptionSetTests: XCTestCase {
     parent[.BazelBuildStartupOptionsRelease].projectValue = parentValue
     parent[.ALWAYS_SEARCH_USER_PATHS].projectValue = "YES"
     parent[.SuppressSwiftUpdateCheck].projectValue = "NO"
-    parent[.SkipSkylarkFilesQuery].projectValue = "NO"
+    parent[.IncludeBuildSources].projectValue = "NO"
 
 
     let childValue = "ChildValue"

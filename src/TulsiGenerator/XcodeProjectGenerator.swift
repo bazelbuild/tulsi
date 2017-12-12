@@ -389,8 +389,8 @@ final class XcodeProjectGenerator {
       progressNotifier.incrementValue()
     }
 
-    if let skipSkylarkFiles = config.options[.SkipSkylarkFilesQuery].commonValueAsBool,
-       !skipSkylarkFiles {
+    if let includeSkylarkSources = config.options[.IncludeBuildSources].commonValueAsBool,
+       includeSkylarkSources {
       profileAction("adding_buildfiles") {
         let buildfiles = workspaceInfoExtractor.extractBuildfiles(expandedTargetLabels)
         let paths = buildfiles.map() { $0.asFileName! }
