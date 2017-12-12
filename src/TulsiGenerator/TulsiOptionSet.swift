@@ -41,7 +41,11 @@ public enum TulsiOptionKey: String {
       BazelContinueBuildingAfterError,
 
       // Option to enable ObjC module map workarounds in the generated Xcodeproj.
-      ObjCModuleMapWorkarounds
+      ObjCModuleMapWorkarounds,
+
+      // Skip running a bazel query to find all .bzl files
+      SkipSkylarkFilesQuery
+
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -273,6 +277,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
+    addBoolOption(.SkipSkylarkFilesQuery, .Generic, false)
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
