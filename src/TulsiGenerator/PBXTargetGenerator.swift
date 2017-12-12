@@ -1602,12 +1602,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "# Script to generate specific Swift files Xcode expects when running tests.\n" +
         "set -eu\n" +
         "ARCH_ARRAY=($ARCHS)\n" +
-        "SUFFIXES=(swiftdoc swiftmodule h)\n" +
+        "SUFFIXES=(swiftdoc swiftmodule)\n" +
         "for ARCH in \"${ARCH_ARRAY[@]}\"\n" +
         "do\n" +
+        "  touch \"$OBJECT_FILE_DIR_normal/$ARCH/$SWIFT_OBJC_INTERFACE_HEADER_NAME\"\n" +
         "  for SUFFIX in \"${SUFFIXES[@]}\"\n" +
         "  do\n" +
-        "    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_NAME.$SUFFIX\"\n" +
+        "    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_MODULE_NAME.$SUFFIX\"\n" +
         "  done\n" +
         "done\n"
 

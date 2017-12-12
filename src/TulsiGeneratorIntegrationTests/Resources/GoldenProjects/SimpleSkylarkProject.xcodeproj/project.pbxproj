@@ -454,7 +454,7 @@
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
 				84B422710582166400000000 /* ShellScript */,
-				84B42271339F729600000000 /* ShellScript */,
+				84B42271B548D02D00000000 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
@@ -540,20 +540,6 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271339F729600000000 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "# Script to generate specific Swift files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nSUFFIXES=(swiftdoc swiftmodule h)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  for SUFFIX in \"${SUFFIXES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_NAME.$SUFFIX\"\n  done\ndone\n";
-			showEnvVarsInLog = 1;
-		};
 		84B422715DA0CFC700000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
@@ -594,6 +580,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			showEnvVarsInLog = 1;
+		};
+		84B42271B548D02D00000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# Script to generate specific Swift files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nSUFFIXES=(swiftdoc swiftmodule)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  touch \"$OBJECT_FILE_DIR_normal/$ARCH/$SWIFT_OBJC_INTERFACE_HEADER_NAME\"\n  for SUFFIX in \"${SUFFIXES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_MODULE_NAME.$SUFFIX\"\n  done\ndone\n";
 			showEnvVarsInLog = 1;
 		};
 		84B42271C038672200000000 /* ShellScript */ = {
