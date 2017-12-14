@@ -1750,10 +1750,13 @@ class BazelBuildBridge(object):
       else:
         # Query Bazel directly for the execution root.
         execroot = self._ExtractBazelInfoExecrootPaths()
-      source_maps.add((os.path.dirname(execroot), workspace_root_parent))
+      if execroot:
+        source_maps.add((os.path.dirname(execroot), workspace_root_parent))
     else:
       # Search for target source paths in app binary debug symbols.
       source_path_prefixes = self._ExtractTargetSourcePaths()
+      if not source_path_prefixes:
+        return source_maps
       for p, symlink in source_path_prefixes:
         if symlink:
           # Convert symlinks to absolute paths.
