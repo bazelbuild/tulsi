@@ -13,8 +13,6 @@
 // limitations under the License.
 
 let bazelBuildSettingsFeatures = [
-  // TODO(b/67857886): Remove after this feature has been tested.
-  "TULSI_COLLECT_DSYM",
   // TODO(b/69180212): Remove when all issues around this flag are resolved after release.
   "TULSI_BAZEL_EXECROOT",
   // TODO(b/69180247): Remove when all issues around this flag are resolved after release.
