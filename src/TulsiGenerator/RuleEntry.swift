@@ -152,10 +152,6 @@ public final class RuleEntry: RuleInfo {
       "tvos_extension": PBXTarget.ProductType.TVAppExtension,
       "watchos_application": PBXTarget.ProductType.Watch2App,
       "watchos_extension": PBXTarget.ProductType.Watch2Extension,
-
-      // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
-      // XCTest test rules.
-      "_test_host_": PBXTarget.ProductType.Application,
   ]
 
   /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
