@@ -572,7 +572,6 @@ def _tulsi_sources_aspect(target, ctx):
       copts=_get_opt_attr(rule_attr, 'copts'),
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
       supporting_files=supporting_files,
-      xctest=_get_opt_attr(rule_attr, 'xctest'),
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
       test_host=_get_label_attr(rule_attr, 'test_host.label'),
       test_bundle=_get_label_attr(rule_attr, 'test_bundle.label'),

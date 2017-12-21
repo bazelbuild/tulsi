@@ -24,9 +24,3 @@ ios_test(
     srcs = ["XCTest.m"],
     xctest_app = "//TestSuite:TestApplication",
 )
-
-ios_test(
-    name = "NonXCTest",
-    srcs = ["nonXCTest.m"],
-    xctest = 0,
-)

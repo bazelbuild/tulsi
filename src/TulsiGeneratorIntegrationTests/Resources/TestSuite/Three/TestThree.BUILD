@@ -27,12 +27,6 @@ ios_test(
 )
 
 ios_test(
-    name = "NonXCTest",
-    srcs = ["nonXCTest.m"],
-    xctest = 0,
-)
-
-ios_test(
     name = "tagged_xctest_1",
     srcs = ["tagged_xctest_1.m"],
     tags = ["tagged"],

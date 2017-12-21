@@ -33,15 +33,6 @@ test_suite(
 )
 
 test_suite(
-    name = "explicit_NonXCTests",
-    tests = [
-        "//TestSuite/One:NonXCTest",
-        "//TestSuite/Three:NonXCTest",
-        "//TestSuite/Two:NonXCTest",
-    ],
-)
-
-test_suite(
     name = "local_tagged_tests",
     tags = ["tagged"],
 )
@@ -81,13 +72,6 @@ ios_test(
     srcs = ["TestSuite/TestSuiteXCTest.m"],
     tags = ["tagged"],
     xctest_app = ":TestApplication",
-)
-
-ios_test(
-    name = "TestSuiteNonXCTest",
-    srcs = ["TestSuite/TestSuiteNonXCTest.m"],
-    tags = ["tagged"],
-    xctest = 0,
 )
 
 ios_test(

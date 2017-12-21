@@ -518,52 +518,26 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
 
     checker.assertThat("//\(testDir)/One:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasAttribute(.xctest, value: true)
         .hasSources(["\(testDir)/One/XCTest.m"])
     checker.assertThat("//\(testDir)/Two:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasAttribute(.xctest, value: true)
         .hasSources(["\(testDir)/Two/XCTest.m"])
     checker.assertThat("//\(testDir)/Three:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasAttribute(.xctest, value: true)
         .hasSources(["\(testDir)/Three/XCTest.m"])
 
-  }
-
-  func testTestSuite_ExplicitNonXCTests() throws {
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_NonXCTests")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 3)
-    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-
-    checker.assertThat("//\(testDir)/One:NonXCTest")
-        .hasAttribute(.xctest, value: false)
-        .hasSources(["\(testDir)/One/nonXCTest.m"])
-    checker.assertThat("//\(testDir)/Two:NonXCTest")
-        .hasAttribute(.xctest, value: false)
-        .hasSources(["\(testDir)/Two/nonXCTest.m"])
-    checker.assertThat("//\(testDir)/Three:NonXCTest")
-        .hasAttribute(.xctest, value: false)
-        .hasSources(["\(testDir)/Three/nonXCTest.m"])
   }
 
   func testTestSuite_TaggedTests() throws {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 7)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 6)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):TestSuiteXCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasAttribute(.xctest, value: true)
         .hasSources(["\(testDir)/TestSuite/TestSuiteXCTest.m"])
-
-    checker.assertThat("//\(testDir):TestSuiteNonXCTest")
-        .hasAttribute(.xctest, value: false)
-        .hasSources(["\(testDir)/TestSuite/TestSuiteNonXCTest.m"])
   }
 }
 

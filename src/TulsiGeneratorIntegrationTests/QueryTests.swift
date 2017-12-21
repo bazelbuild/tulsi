@@ -199,20 +199,6 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
                           "//\(testDir)/Three:XCTest"])
   }
 
-  func testTestSuite_ExplicitNonXCTests() {
-    let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):explicit_NonXCTests")])
-    XCTAssertEqual(infos.count, 1)
-    XCTAssert(infoExtractor.hasQueuedInfoMessages)
-    let checker = InfoChecker(infos: infos)
-
-    checker.assertThat("//\(testDir):explicit_NonXCTests")
-        .hasType("test_suite")
-        .hasNoLinkedTargetLabels()
-        .hasDependencies(["//\(testDir)/One:NonXCTest",
-                          "//\(testDir)/Two:NonXCTest",
-                          "//\(testDir)/Three:NonXCTest"])
-  }
-
   func testTestSuite_LocalTaggedTests() {
     let infos = infoExtractor.extractTestSuiteRules([BuildLabel("//\(testDir):local_tagged_tests")])
     XCTAssertEqual(infos.count, 1)
@@ -225,7 +211,6 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
         .hasType("test_suite")
         .hasNoLinkedTargetLabels()
         .hasDependencies(["//\(testDir):TestSuiteXCTest",
-                          "//\(testDir):TestSuiteNonXCTest",
                           "//\(testDir):TestSuiteXCTestNotTagged"])
   }
 
@@ -246,8 +231,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
     checker.assertThat("//\(testDir)/Three:tagged_tests")
         .hasType("test_suite")
         .hasNoLinkedTargetLabels()
-        .hasDependencies(["//\(testDir)/Three:NonXCTest",
-                          "//\(testDir)/Three:XCTest",
+        .hasDependencies(["//\(testDir)/Three:XCTest",
                           "//\(testDir)/Three:tagged_xctest_1",
                           "//\(testDir)/Three:tagged_xctest_2"])
   }
