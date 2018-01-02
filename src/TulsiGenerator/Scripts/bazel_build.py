@@ -25,7 +25,6 @@ import errno
 import fcntl
 import io
 import json
-from operator import itemgetter
 import os
 import re
 import shutil
@@ -518,8 +517,6 @@ class BazelBuildBridge(object):
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
-    self.use_bazel_execroot = os.environ.get('TULSI_BAZEL_EXECROOT',
-                                             'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -634,14 +631,6 @@ class BazelBuildBridge(object):
 
     # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
     if self.use_debug_prefix_map:
-      if not self.use_bazel_execroot:
-        _PrintXcodeWarning('TULSI_DEBUG_PREFIX_MAP requires '
-                           'TULSI_BAZEL_EXECROOT to be set to YES. If you '
-                           'need TULSI_BAZEL_EXECROOT to be disabled, set it '
-                           'and TULSI_DEBUG_PREFIX_MAP to NO. Please report '
-                           'this as a Tulsi bug.')
-        return 1
-
       # Add the debug source maps now that we have bazel_executable.
       source_maps = self._ExtractTargetSourceMaps()
 
@@ -1641,83 +1630,6 @@ class BazelBuildBridge(object):
                        % self.bazel_executable)
     return None
 
-  def _ExtractTargetSourcePaths(self):
-    """Extracts set((source paths, symlink)) from the target's debug symbols.
-
-    Returns:
-      None: if an error occurred.
-      set(str, str): containing tuples of unique source paths in the target
-                     binary associated with the symlink used by Tulsi generated
-                     Xcode projects if applicable. For example, a source path
-                     to a /genfiles/ directory will be associated with
-                     "bazel-genfiles". Paths will only be returned if they're
-                     available on the local filesystem.
-    """
-    if not os.path.isfile(self.binary_path):
-      _PrintXcodeWarning('No binary at expected path %r' % self.binary_path)
-      return None
-
-    returncode, output = self._RunSubprocess([
-        'xcrun',
-        'dsymutil',
-        '-s',
-        self.binary_path
-    ])
-    if returncode:
-      _PrintXcodeWarning('dsymutil returned %d while examining symtable for %r'
-                         % (returncode, self.binary_path))
-      return None
-
-    # Symbol table lines of interest are of the form:
-    #  [index] n_strx (N_SO ) n_sect n_desc n_value 'source_path'
-    # where source_path is an absolute path (rather than a filename). There are
-    # several paths of interest:
-    # The path up to "/bin/" is mapped to bazel-bin.
-    # The path up to "/genfiles/" is mapped to bazel-genfiles.
-    # The path up to "execroot" covers any other cases.
-    source_path_re = re.compile(
-        r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/(.*?)\'\s*$')
-    source_path_prefixes = set()
-
-    # TODO(b/35624202): Remove when target.source_map problem is resolved.
-    paths_not_found = set()
-
-    bazel_out_symlink = self.bazel_symlink_prefix + 'out'
-    for line in output.split('\n'):
-      match = source_path_re.match(line)
-      if not match:
-        continue
-      basepath = match.group(1)
-      if not os.path.exists(basepath):
-        # TODO(b/35624202): Remove when target.source_map problem is resolved.
-        if basepath not in paths_not_found:
-          paths_not_found.add(basepath)
-          self._PrintPathNotFoundWarning(basepath)
-        continue
-      # Subpaths of interest will be of the form
-      # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
-      subpath = match.group(2)
-      components = subpath.split(os.sep, 5)
-      if len(components) >= 4 and components[1] == bazel_out_symlink:
-        symlink_component = components[3]
-        match_path = os.path.join(basepath, *components[:4])
-        if not os.path.exists(match_path):
-          # TODO(b/35624202): Remove when target.source_map problem is resolved.
-          if match_path not in paths_not_found:
-            paths_not_found.add(match_path)
-            self._PrintPathNotFoundWarning(match_path)
-          continue
-        if symlink_component == 'bin':
-          source_path_prefixes.add((match_path, self.bazel_bin_path))
-          continue
-        if symlink_component == 'genfiles':
-          source_path_prefixes.add((match_path, self.bazel_genfiles_path))
-          continue
-
-      source_path_prefixes.add((basepath, None))
-
-    return source_path_prefixes
-
   def _ExtractTargetSourceMaps(self):
     """Extracts all source paths as tuples associated with the WORKSPACE path.
 
@@ -1732,30 +1644,15 @@ class BazelBuildBridge(object):
     source_maps = set()
 
     workspace_root_parent = os.path.dirname(self.workspace_root)
-    if self.use_bazel_execroot:
-      # If we have a cached execution root, check that it exists.
-      if os.path.exists(BAZEL_EXECUTION_ROOT):
-        # If so, use it.
-        execroot = BAZEL_EXECUTION_ROOT
-      else:
-        # Query Bazel directly for the execution root.
-        execroot = self._ExtractBazelInfoExecrootPaths()
-      if execroot:
-        source_maps.add((os.path.dirname(execroot), workspace_root_parent))
+    # If we have a cached execution root, check that it exists.
+    if os.path.exists(BAZEL_EXECUTION_ROOT):
+      # If so, use it.
+      execroot = BAZEL_EXECUTION_ROOT
     else:
-      # Search for target source paths in app binary debug symbols.
-      source_path_prefixes = self._ExtractTargetSourcePaths()
-      if not source_path_prefixes:
-        return source_maps
-      for p, symlink in source_path_prefixes:
-        if symlink:
-          # Convert symlinks to absolute paths.
-          local_path = os.path.join(workspace_root_parent, symlink)
-        else:
-          local_path = workspace_root_parent
-        source_maps.add((p, local_path))
-      if source_maps:
-        sorted(source_maps, key=itemgetter(0), reverse=True)
+      # Query Bazel directly for the execution root.
+      execroot = self._ExtractBazelInfoExecrootPaths()
+    if execroot:
+      source_maps.add((os.path.dirname(execroot), workspace_root_parent))
 
     return source_maps
 

@@ -13,8 +13,6 @@
 // limitations under the License.
 
 let bazelBuildSettingsFeatures = [
-  // TODO(b/69180212): Remove when all issues around this flag are resolved after release.
-  "TULSI_BAZEL_EXECROOT",
   // TODO(b/69180247): Remove when all issues around this flag are resolved after release.
   "TULSI_DEBUG_PREFIX_MAP",
   // TODO(b/69552312): Remove if this feature causes no issues for four weeks after release.

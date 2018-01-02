@@ -779,7 +779,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3;
-				TULSI_BAZEL_EXECROOT = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_QUEUE_BUILDS = YES;
@@ -977,7 +976,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3;
-				TULSI_BAZEL_EXECROOT = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_QUEUE_BUILDS = YES;
@@ -1203,7 +1201,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 3;
-				TULSI_BAZEL_EXECROOT = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_QUEUE_BUILDS = YES;
@@ -1374,7 +1371,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 3;
-				TULSI_BAZEL_EXECROOT = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
 				TULSI_QUEUE_BUILDS = YES;
