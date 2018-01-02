@@ -143,6 +143,7 @@ public final class RuleEntry: RuleInfo {
       "ios_legacy_test": PBXTarget.ProductType.Application,
       "ios_test": PBXTarget.ProductType.UnitTest,
       "macos_application": PBXTarget.ProductType.Application,
+      "macos_bundle": PBXTarget.ProductType.Bundle,
       "macos_command_line_application": PBXTarget.ProductType.Tool,
       "macos_extension": PBXTarget.ProductType.AppExtension,
       "objc_binary": PBXTarget.ProductType.Application,
