@@ -367,6 +367,7 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
@@ -466,6 +467,7 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;
@@ -586,6 +588,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_VERSION = 9.99.999.9999;
@@ -679,6 +682,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_USE_DSYM = YES;

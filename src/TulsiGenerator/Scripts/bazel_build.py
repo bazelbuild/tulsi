@@ -517,6 +517,8 @@ class BazelBuildBridge(object):
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
+    self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
+                                              'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -698,12 +700,29 @@ class BazelBuildBridge(object):
           return exit_code
 
         for path in dsym_paths:
-          timer = Timer('Patching DSYM source file paths',
-                        'patching_dsym').Start()
-          exit_code = self._PatchdSYMPaths(path)
-          timer.End()
-          if exit_code:
-            return exit_code
+          # Starting with Xcode 9.x, a plist based solution exists for dSYM
+          # bundles that works with Swift as well as (Obj-)C(++).
+          if self.xcode_version_major >= 900 and self.use_patchless_dsyms:
+            timer = Timer('Adding remappings as plists to dSYM',
+                          'plist_dsym').Start()
+            exit_code = self._PlistdSYMPaths(path)
+            timer.End()
+            if exit_code:
+              _PrintXcodeError('Remapping dSYMs process returned %i, please '
+                               'report a Tulsi bug and attach a full Xcode '
+                               'build log.' % exit_code)
+              _PrintXcodeWarning('After filing the bug, change '
+                                 'TULSI_PATCHLESS_DSYMS in your Xcode '
+                                 'project\'s User-Defined Build Settings from '
+                                 'YES to NO.')
+              return exit_code
+          else:
+            timer = Timer('Patching DSYM source file paths',
+                          'patching_dsym').Start()
+            exit_code = self._PatchdSYMPaths(path)
+            timer.End()
+            if exit_code:
+              return exit_code
 
       # Starting with Xcode 7.3, XCTests inject several supporting frameworks
       # into the test host that need to be signed with the same identity as
@@ -1557,6 +1576,181 @@ class BazelBuildBridge(object):
 
     return 0
 
+  def _DWARFdSYMBinaries(self, dsym_bundle_path):
+    """Returns an array of abs paths to DWARF binaries in the dSYM bundle.
+
+    Args:
+      dsym_bundle_path: absolute path to the dSYM bundle.
+
+    Returns:
+      str[]: a list of strings representing the absolute paths to each binary
+             found within the dSYM bundle.
+    """
+    dwarf_dir = os.path.join(dsym_bundle_path,
+                             'Contents',
+                             'Resources',
+                             'DWARF')
+
+    dsym_binaries = []
+
+    for f in os.listdir(dwarf_dir):
+      # Ignore hidden files, such as .DS_Store files.
+      if not f.startswith('.'):
+        # Append full path info.
+        dsym_binary = os.path.join(dwarf_dir, f)
+        dsym_binaries.append(dsym_binary)
+
+    return dsym_binaries
+
+  def _UUIDsForBinaryAtPath(self, source_binary_path):
+    """Returns exit code of dwarfdump along with every UUID found for a binary.
+
+    Args:
+      source_binary_path: absolute path to the binary file.
+
+    Returns:
+      (Int, str[]): a tuple containing the return code of dwarfdump as its
+                    first element, and a list of strings representing each UUID
+                    found for each given binary slice found within the binary,
+                    if no error has occcured.
+    """
+
+    returncode, output = self._RunSubprocess([
+        'xcrun',
+        'dwarfdump',
+        '--uuid',
+        source_binary_path
+    ])
+    if returncode:
+      _PrintXcodeWarning('dwarfdump returned %d while finding the UUID for %s'
+                         % (returncode, source_binary_path))
+      return (returncode, [])
+
+    # All UUIDs for binary slices will be returned as the second from left,
+    # from output; "UUID: D4DE5AA2-79EE-36FE-980C-755AED318308 (x86_64)
+    # /Applications/Calendar.app/Contents/MacOS/Calendar"
+
+    uuids_found = []
+    for dwarfdump_output in output.split('\n'):
+      if not dwarfdump_output:
+        continue
+      found_output = re.match(r'^(?:UUID: )([^ ]+)', dwarfdump_output)
+      if not found_output:
+        continue
+      found_uuid = found_output.group(1)
+      if found_uuid:
+        uuids_found.append(found_uuid)
+
+    return (0, uuids_found)
+
+  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, source_maps):
+    """Creates a UUID.plist in a dSYM bundle to redirect sources.
+
+    Args:
+      dsym_bundle_path: absolute path to the dSYM bundle.
+      uuid: string representing the UUID of the binary slice with paths to
+            remap in the dSYM bundle.
+      source_maps: a set of tuples representing all absolute paths to source
+                   files compiled by Bazel as strings ($0) associated with the
+                   paths to Xcode-visible sources used for the purposes of
+                   Tulsi debugging as strings ($1).
+
+    Returns:
+      Int: the return code of plutil if a non-zero return code was found, or
+           "405", representing a failed copy action when creating the plist.
+    """
+
+    # Create a UUID plist at (dsym_bundle_path)/Contents/Resources/ from
+    # the plist that was already generated within the dSYM bundle.
+    remap_plist = os.path.join(dsym_bundle_path,
+                               'Contents',
+                               'Resources',
+                               '%s.plist' % uuid)
+    main_plist = os.path.join(dsym_bundle_path,
+                              'Contents',
+                              'Info.plist')
+    try:
+      shutil.copyfile(main_plist, remap_plist)
+    except IOError as e:
+      _PrintXcodeError('Failed to copy %s to %s, received error %s' %
+                       (main_plist, remap_plist, e))
+      return 405
+
+    # Via plutil, add the mappings from  _ExtractTargetSourceMaps(). Make
+    # sure that we also set DBGVersion to 2 via plutil.
+    returncode, _ = self._RunSubprocess([
+        'xcrun',
+        'plutil',
+        '-replace',
+        'DBGVersion',
+        '-string',
+        '"2"',
+        remap_plist
+    ])
+    if returncode:
+      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s'
+                         % (returncode, remap_plist))
+      return returncode
+
+    json_path_remappings = ''
+
+    for source_map in source_maps:
+      json_path_remappings += '"%s" : "%s", ' % source_map
+
+    # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
+    returncode, _ = self._RunSubprocess([
+        'xcrun',
+        'plutil',
+        '-replace',
+        'DBGSourcePathRemapping',
+        '-json',
+        '{ ' + json_path_remappings + ' }',
+        remap_plist
+    ])
+    if returncode:
+      _PrintXcodeWarning('plutil returned %d while adding '
+                         'DBGSourcePathRemapping to %s'
+                         % (returncode, remap_plist))
+      return returncode
+
+    return 0
+
+  def _PlistdSYMPaths(self, dsym_bundle_path):
+    """Adds Plists to a given dSYM bundle to redirect DWARF data."""
+
+    # Retrieve all paths that we are expected to remap.
+    source_maps = self._ExtractTargetSourceMaps()
+
+    if not source_maps:
+      _PrintXcodeWarning('Extracted 0 source paths. File-based breakpoints '
+                         'may not work. Please report as a bug.')
+      return 410
+
+    # Find the binaries within the dSYM bundle. UUIDs will match that of the
+    # binary it was based on.
+    dsym_binaries = self._DWARFdSYMBinaries(dsym_bundle_path)
+
+    if not dsym_binaries:
+      _PrintXcodeWarning('Could not find the binaries that the dSYM %s was '
+                         'based on to determine DWARF binary slices to patch. '
+                         'Debugging will probably fail.' % (dsym_bundle_path))
+      return 404
+
+    # Find the binary slice UUIDs with dwarfdump from each binary.
+    for source_binary_path in dsym_binaries:
+
+      returncode, uuids_found = self._UUIDsForBinaryAtPath(source_binary_path)
+      if returncode:
+        return returncode
+
+      # Create a plist per UUID, each indicating a binary slice to remap paths.
+      for uuid in uuids_found:
+        returncode = self._CreateUUIDPlist(dsym_bundle_path, uuid, source_maps)
+        if returncode:
+          return returncode
+
+    return 0
+
   def _PatchdSYMPaths(self, dsym_bundle_path):
     """Invokes post_processor to fix source paths in dSYM DWARF data."""
     if not self.bazel_build_workspace_root:
@@ -1638,8 +1832,7 @@ class BazelBuildBridge(object):
       set(str, str): a set of tuples representing all absolute paths to source
                      files compiled by Bazel as strings ($0) associated with
                      the paths to Xcode-visible sources used for the purposes
-                     of Tulsi debugging as strings ($1), sorted in reverse
-                     alpha order.
+                     of Tulsi debugging as strings ($1).
     """
     source_maps = set()
 

@@ -17,4 +17,6 @@ let bazelBuildSettingsFeatures = [
   "TULSI_DEBUG_PREFIX_MAP",
   // TODO(b/69552312): Remove if this feature causes no issues for four weeks after release.
   "TULSI_QUEUE_BUILDS",
+  // TODO(b/71515804): Remove if no issues are found in replacing post_processor with this.
+  "TULSI_PATCHLESS_DSYMS",
 ]
