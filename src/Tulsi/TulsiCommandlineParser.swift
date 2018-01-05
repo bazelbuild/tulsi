@@ -36,7 +36,6 @@ class TulsiCommandlineParser {
     let outputFolder: String?
     let workspaceRootOverride: String?
     let verboseLevel: TulsiMessageLevel
-    let suppressWORKSPACECheck: Bool
     let openXcodeOnSuccess: Bool
     let additionalPathFilters: Set<String>
     let buildStartupOptions: String?
@@ -50,7 +49,6 @@ class TulsiCommandlineParser {
       outputFolder = nil
       workspaceRootOverride = nil
       verboseLevel = .Info
-      suppressWORKSPACECheck = false
       openXcodeOnSuccess = true
       additionalPathFilters = Set()
       buildStartupOptions = nil
@@ -81,7 +79,6 @@ class TulsiCommandlineParser {
       }
 
       workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
-      suppressWORKSPACECheck = dict[TulsiCommandlineParser.ParamNoWorkspaceCheck] as? Bool == true
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
       additionalPathFilters = dict[TulsiCommandlineParser.ParamAdditionalPathFilters] as? Set<String> ?? Set()
       buildStartupOptions = dict[TulsiCommandlineParser.ParamBuildStartupOptions] as? String
@@ -97,7 +94,6 @@ class TulsiCommandlineParser {
   // Common options:
   static let ParamHelpShort = "-h"
   static let ParamHelpLong = "--help"
-  static let ParamNoWorkspaceCheck = "--no-workspace-check"
   static let ParamOutputFolderShort = "-o"
   static let ParamOutputFolderLong = "--outputfolder"
   static let ParamVerboseShort = "-v"
@@ -192,9 +188,6 @@ class TulsiCommandlineParser {
         case TulsiCommandlineParser.ParamBazel:
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBazel)
           i += 1
-
-        case TulsiCommandlineParser.ParamNoWorkspaceCheck:
-          parsedArguments[TulsiCommandlineParser.ParamNoWorkspaceCheck] = true as AnyObject?
 
         case TulsiCommandlineParser.ParamOutputFolderShort:
           fallthrough

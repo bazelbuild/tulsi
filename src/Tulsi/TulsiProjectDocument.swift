@@ -41,11 +41,6 @@ final class TulsiProjectDocument: NSDocument,
   /// Override for headless project generation (in which messages should not spawn alert dialogs).
   static var showAlertsOnErrors = true
 
-  /// Override to prevent explicit tests for the presence of a WORKSPACE file. This is only useful
-  /// in cases where Bazel will be invoked in such a way that the WORKSPACE file does not need to be
-  /// available locally (e.g., in a remote-build scenario).
-  static var suppressWORKSPACECheck = false
-
   /// Override to prevent rule entries from being extracted immediately during loading of project
   /// documents. This is only useful if the Bazel binary is expected to be set after the project
   /// document is loaded but before any other actions.
@@ -288,17 +283,15 @@ final class TulsiProjectDocument: NSDocument,
     }
 
     // Verify that the workspace is a valid one.
-    if !TulsiProjectDocument.suppressWORKSPACECheck {
-      let workspaceFile = project.workspaceRootURL.appendingPathComponent("WORKSPACE",
-                                                                          isDirectory: false)
-      var isDirectory = ObjCBool(false)
-      if !FileManager.default.fileExists(atPath: workspaceFile.path,
-                                         isDirectory: &isDirectory) || isDirectory.boolValue {
-        let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
-                                    comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
-        LogMessage.postError(String(format: fmt, workspaceFile.path))
-        throw DocumentError.invalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path)")
-      }
+    let workspaceFile = project.workspaceRootURL.appendingPathComponent("WORKSPACE",
+                                                                        isDirectory: false)
+    var isDirectory = ObjCBool(false)
+    if !FileManager.default.fileExists(atPath: workspaceFile.path,
+                                       isDirectory: &isDirectory) || isDirectory.boolValue {
+      let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
+                                  comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
+      LogMessage.postError(String(format: fmt, workspaceFile.path))
+      throw DocumentError.invalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path)")
     }
 
     if !TulsiProjectDocument.suppressRuleEntryUpdateOnLoad {

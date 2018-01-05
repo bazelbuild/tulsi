@@ -23,7 +23,6 @@ struct HeadlessXcodeProjectGenerator {
   /// Performs project generation.
   func generate() throws {
     TulsiProjectDocument.showAlertsOnErrors = false
-    TulsiProjectDocument.suppressWORKSPACECheck = arguments.suppressWORKSPACECheck
 
     let explicitBazelURL: URL?
     if let bazelPath = arguments.bazel {
@@ -38,7 +37,6 @@ struct HeadlessXcodeProjectGenerator {
 
     defer {
       TulsiProjectDocument.showAlertsOnErrors = true
-      TulsiProjectDocument.suppressWORKSPACECheck = false
       TulsiProjectDocument.suppressRuleEntryUpdateOnLoad = false
     }
 

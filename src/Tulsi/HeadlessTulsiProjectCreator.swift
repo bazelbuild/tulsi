@@ -85,14 +85,11 @@ struct HeadlessTulsiProjectCreator {
       workspaceRootURL = URL(fileURLWithPath: defaultFileManager.currentDirectoryPath,
                                isDirectory: true)
     }
-    let workspaceFileURL = try buildWORKSPACEFileURL(workspaceRootURL,
-                                                     suppressExistenceCheck: arguments.suppressWORKSPACECheck)
+    let workspaceFileURL = try buildWORKSPACEFileURL(workspaceRootURL)
 
     TulsiProjectDocument.showAlertsOnErrors = false
-    TulsiProjectDocument.suppressWORKSPACECheck = arguments.suppressWORKSPACECheck
     defer {
       TulsiProjectDocument.showAlertsOnErrors = true
-      TulsiProjectDocument.suppressWORKSPACECheck = false
     }
 
     try createTulsiProject(projectName,
@@ -233,17 +230,14 @@ struct HeadlessTulsiProjectCreator {
     return (projectBundleURL, projectName)
   }
 
-  private func buildWORKSPACEFileURL(_ workspaceRootURL: URL,
-                                     suppressExistenceCheck: Bool = false) throws -> URL {
+  private func buildWORKSPACEFileURL(_ workspaceRootURL: URL) throws -> URL {
 
     let workspaceFile = workspaceRootURL.appendingPathComponent("WORKSPACE", isDirectory: false)
 
-    if !suppressExistenceCheck {
-      var isDirectory = ObjCBool(false)
-      if !FileManager.default.fileExists(atPath: workspaceFile.path,
-                                         isDirectory: &isDirectory) || isDirectory.boolValue {
-        throw HeadlessModeError.missingWORKSPACEFile(workspaceRootURL.path)
-      }
+    var isDirectory = ObjCBool(false)
+    if !FileManager.default.fileExists(atPath: workspaceFile.path,
+                                       isDirectory: &isDirectory) || isDirectory.boolValue {
+      throw HeadlessModeError.missingWORKSPACEFile(workspaceRootURL.path)
     }
     return workspaceFile
   }
