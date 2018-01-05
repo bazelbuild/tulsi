@@ -519,10 +519,6 @@ class BazelBuildBridge(object):
                                                'NO') == 'YES'
     self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
                                               'YES') == 'YES'
-    self.stricter_remapping = os.environ.get('TULSI_STRICTER_REMAPPING',
-                                             'YES') == 'YES'
-    self.trailing_slashes = os.environ.get('TULSI_TRAILING_SLASHES',
-                                           'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -636,14 +632,6 @@ class BazelBuildBridge(object):
     self.bazel_executable = parser.bazel_executable
 
     # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
-    #
-    # NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
-    # reused across multiple machines by a distributed build system, unless the
-    # absolute paths to files visible to Xcode match perfectly between all of
-    # those machines.
-    #
-    # For this reason, -fdebug-prefix-map is provided as a default for non-
-    # distributed purposes.
     if self.use_debug_prefix_map:
       # Add the debug source maps now that we have bazel_executable.
       source_maps = self._ExtractTargetSourceMaps()
@@ -1250,9 +1238,6 @@ class BazelBuildBridge(object):
       for bundle_info in data.get('embedded_bundles', []):
         if not bundle_info['has_dsym']:
           continue
-        # Uses the parent of archive_root to find dSYM bundles associated with
-        # app/extension/df bundles. Currently hinges on implementation of the
-        # build rules.
         dsym_path = os.path.dirname(bundle_info['archive_root'])
         dsym_filename = '%s.dSYM' % bundle_info['bundle_full_name']
         child_dsyms.add((dsym_path, dsym_filename))
@@ -1675,7 +1660,7 @@ class BazelBuildBridge(object):
 
     # Via plutil, add the mappings from  _ExtractTargetSourceMaps(). Make
     # sure that we also set DBGVersion to 2 via plutil.
-    returncode, output = self._RunSubprocess([
+    returncode, _ = self._RunSubprocess([
         'xcrun',
         'plutil',
         '-replace',
@@ -1685,8 +1670,8 @@ class BazelBuildBridge(object):
         remap_plist
     ])
     if returncode:
-      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s: %s'
-                         % (returncode, remap_plist, output))
+      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s'
+                         % (returncode, remap_plist))
       return returncode
 
     json_path_remappings = ''
@@ -1695,7 +1680,7 @@ class BazelBuildBridge(object):
       json_path_remappings += '"%s" : "%s", ' % source_map
 
     # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
-    returncode, output = self._RunSubprocess([
+    returncode, _ = self._RunSubprocess([
         'xcrun',
         'plutil',
         '-replace',
@@ -1706,8 +1691,8 @@ class BazelBuildBridge(object):
     ])
     if returncode:
       _PrintXcodeWarning('plutil returned %d while adding '
-                         'DBGSourcePathRemapping to %s: %s'
-                         % (returncode, remap_plist, output))
+                         'DBGSourcePathRemapping to %s'
+                         % (returncode, remap_plist))
       return returncode
 
     return 0
@@ -1833,6 +1818,7 @@ class BazelBuildBridge(object):
     """
     source_maps = set()
 
+    workspace_root_parent = os.path.dirname(self.workspace_root)
     # If we have a cached execution root, check that it exists.
     if os.path.exists(BAZEL_EXECUTION_ROOT):
       # If so, use it.
@@ -1841,21 +1827,7 @@ class BazelBuildBridge(object):
       # Query Bazel directly for the execution root.
       execroot = self._ExtractBazelInfoExecrootPaths()
     if execroot:
-
-      sm_execroot = execroot
-      sm_workspace_root = self.workspace_root
-
-      if not self.stricter_remapping:
-        # Move one dirlevel up on both source and target.
-        sm_execroot = os.path.dirname(sm_execroot)
-        sm_workspace_root = os.path.dirname(sm_workspace_root)
-
-      if self.trailing_slashes:
-        # Add trailing slashes to paths to avoid ambiguity.
-        sm_execroot = os.path.normpath(sm_execroot) + os.sep
-        sm_workspace_root = os.path.normpath(sm_workspace_root) + os.sep
-
-      source_maps.add((sm_execroot, sm_workspace_root))
+      source_maps.add((os.path.dirname(execroot), workspace_root_parent))
 
     return source_maps
 
@@ -1892,6 +1864,12 @@ class BazelBuildBridge(object):
     if self.verbose > level:
       sys.stdout.write(msg + '\n')
       sys.stdout.flush()
+
+  # TODO(b/35624202): Remove when target.source_map problem is resolved.
+  def _PrintPathNotFoundWarning(self, path):
+    _PrintXcodeWarning('Found target source path not on local filesystem: %s' %
+                       path)
+    _PrintXcodeWarning('Ignoring path. Debugging might not work as expected.')
 
 
 if __name__ == '__main__':
