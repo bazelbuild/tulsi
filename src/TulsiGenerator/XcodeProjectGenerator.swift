@@ -248,9 +248,6 @@ final class XcodeProjectGenerator {
 
     /// A mapping of indexer targets by name.
     let indexerTargets: [String: PBXTarget]
-
-    /// Map of target name to any intermediate artifact files.
-    let intermediateArtifacts: [String: [String]]
   }
 
   /// Throws an exception if the Xcode project path is found to be in a forbidden location,
@@ -438,10 +435,9 @@ final class XcodeProjectGenerator {
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
 
-    var intermediateArtifacts = [String: [String]]()
     try profileAction("generating_build_targets") {
-      intermediateArtifacts = try generator.generateBuildTargetsForRuleEntries(targetRules,
-                                                                               ruleEntryMap: ruleEntryMap)
+      try generator.generateBuildTargetsForRuleEntries(targetRules,
+                                                       ruleEntryMap: ruleEntryMap)
     }
 
     let referencePatcher = BazelXcodeProjectPatcher(fileManager: fileManager)
@@ -454,8 +450,7 @@ final class XcodeProjectGenerator {
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
-                                indexerTargets: indexerTargets,
-                                intermediateArtifacts: intermediateArtifacts)
+                                indexerTargets: indexerTargets)
   }
 
   private func installWorkspaceSettings(_ projectURL: URL) throws {

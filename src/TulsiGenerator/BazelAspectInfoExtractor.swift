@@ -296,7 +296,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       }
 
       let artifacts = MakeBazelFileInfos("artifacts")
-      let transitiveDepsArtifacts = MakeBazelFileInfos("transitive_deps_artifacts")
       var sources = MakeBazelFileInfos("srcs")
 
       // Appends BazelFileInfo objects to the given array for any info dictionaries representing
@@ -383,7 +382,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 dependencies: dependencies,
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
-                                transitiveDepsArtifacts: Set(transitiveDepsArtifacts),
                                 extensions: extensions,
                                 bundleID: bundleID,
                                 bundleName: bundleName,
