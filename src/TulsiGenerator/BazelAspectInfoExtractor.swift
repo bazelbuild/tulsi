@@ -44,7 +44,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Path to the build events JSON file.
   private let buildEventsFilePath: String
 
-  private typealias CompletionHandler = (Process, [String]?, String) -> Void
+  private typealias CompletionHandler = (Process, String) -> Void
 
   init(bazelURL: URL,
        workspaceRootURL: URL,
@@ -99,7 +99,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
                                                progressNotifier: progressNotifier) {
-                                                (process: Process, generatedArtifacts: [String]?, debugInfo: String) -> Void in
+                                                (process: Process, debugInfo: String) -> Void in
        defer { semaphore.signal() }
        processDebugInfo = debugInfo
     }
@@ -202,33 +202,11 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                completionInfo.terminationStatus,
                                stderr)
 
-        let artifacts = BazelAspectInfoExtractor.extractBuildArtifactsFromOutput(stderr)
         self.removeGeneratedSymlinks()
-        terminationHandler(completionInfo.process, artifacts, debugInfo)
+        terminationHandler(completionInfo.process, debugInfo)
     }
 
     return process
-  }
-
-  // Parses Bazel stderr for "Build artifacts:" followed by >>>(artifact_path). This is a hacky and
-  // hopefully a temporary solution (based on --experimental_show_artifacts).
-  private static func extractBuildArtifactsFromOutput(_ output: NSString) -> [String]? {
-    let lines = output.components(separatedBy: CharacterSet.newlines)
-
-    let splitLines = lines.split(separator: "Build artifacts:")
-    if splitLines.count < 2 {
-      return nil
-    }
-    assert(splitLines.count == 2, "Unexpectedly found multiple 'Build artifacts:' lines.")
-
-    var artifacts = [String]()
-    for l: String in splitLines[1] {
-      if l.hasPrefix(">>>") {
-        artifacts.append(l.substring(from: l.characters.index(l.startIndex, offsetBy: 3)))
-      }
-    }
-
-    return artifacts
   }
 
   private func removeGeneratedSymlinks() {
