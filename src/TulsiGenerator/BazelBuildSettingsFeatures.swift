@@ -13,7 +13,7 @@
 // limitations under the License.
 
 let bazelBuildSettingsFeatures = [
-  // TODO(b/69180247): Remove when all issues around this flag are resolved after release.
+  // For non-distributed builds.
   "TULSI_DEBUG_PREFIX_MAP",
   // TODO(b/69552312): Remove if this feature causes no issues for four weeks after release.
   "TULSI_QUEUE_BUILDS",
