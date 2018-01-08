@@ -634,6 +634,14 @@ class BazelBuildBridge(object):
     self.bazel_executable = parser.bazel_executable
 
     # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
+    #
+    # NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
+    # reused across multiple machines by a distributed build system, unless the
+    # absolute paths to files visible to Xcode match perfectly between all of
+    # those machines.
+    #
+    # For this reason, -fdebug-prefix-map is provided as a default for non-
+    # distributed purposes.
     if self.use_debug_prefix_map:
       # Add the debug source maps now that we have bazel_executable.
       source_maps = self._ExtractTargetSourceMaps()
@@ -1240,6 +1248,9 @@ class BazelBuildBridge(object):
       for bundle_info in data.get('embedded_bundles', []):
         if not bundle_info['has_dsym']:
           continue
+        # Uses the parent of archive_root to find dSYM bundles associated with
+        # app/extension/df bundles. Currently hinges on implementation of the
+        # build rules.
         dsym_path = os.path.dirname(bundle_info['archive_root'])
         dsym_filename = '%s.dSYM' % bundle_info['bundle_full_name']
         child_dsyms.add((dsym_path, dsym_filename))
@@ -1662,7 +1673,7 @@ class BazelBuildBridge(object):
 
     # Via plutil, add the mappings from  _ExtractTargetSourceMaps(). Make
     # sure that we also set DBGVersion to 2 via plutil.
-    returncode, _ = self._RunSubprocess([
+    returncode, output = self._RunSubprocess([
         'xcrun',
         'plutil',
         '-replace',
@@ -1672,8 +1683,8 @@ class BazelBuildBridge(object):
         remap_plist
     ])
     if returncode:
-      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s'
-                         % (returncode, remap_plist))
+      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s: %s'
+                         % (returncode, remap_plist, output))
       return returncode
 
     json_path_remappings = ''
@@ -1682,7 +1693,7 @@ class BazelBuildBridge(object):
       json_path_remappings += '"%s" : "%s", ' % source_map
 
     # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
-    returncode, _ = self._RunSubprocess([
+    returncode, output = self._RunSubprocess([
         'xcrun',
         'plutil',
         '-replace',
@@ -1693,8 +1704,8 @@ class BazelBuildBridge(object):
     ])
     if returncode:
       _PrintXcodeWarning('plutil returned %d while adding '
-                         'DBGSourcePathRemapping to %s'
-                         % (returncode, remap_plist))
+                         'DBGSourcePathRemapping to %s: %s'
+                         % (returncode, remap_plist, output))
       return returncode
 
     return 0
@@ -1869,12 +1880,6 @@ class BazelBuildBridge(object):
     if self.verbose > level:
       sys.stdout.write(msg + '\n')
       sys.stdout.flush()
-
-  # TODO(b/35624202): Remove when target.source_map problem is resolved.
-  def _PrintPathNotFoundWarning(self, path):
-    _PrintXcodeWarning('Found target source path not on local filesystem: %s' %
-                       path)
-    _PrintXcodeWarning('Ignoring path. Debugging might not work as expected.')
 
 
 if __name__ == '__main__':
