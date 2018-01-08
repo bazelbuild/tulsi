@@ -378,7 +378,7 @@ private func escapeString(_ val: String) -> String {
   // string encodings vary from region to region, this representation makes the format fragile.
   // You may see strings containing unreadable sequences of ASCII characters; these are used to
   // represent Unicode characters.
-  let valueRange = NSMakeRange(0, val.count)
+  let valueRange = NSMakeRange(0, val.characters.count)
   if unquotedSerializableStringRegex.firstMatch(in: val, options: NSRegularExpression.MatchingOptions.anchored, range: valueRange) != nil {
     return val
   } else {

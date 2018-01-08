@@ -2398,7 +2398,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
 
     let resultingTarget = targets.values.first!
-    XCTAssertLessThan(resultingTarget.name.count, 255)
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
 
     validateIndexerTarget(resultingTarget.name,
                           sourceFileNames: sourceFiles1,
@@ -2437,7 +2437,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(targets.count, 1)
 
     let resultingTarget = targets.values.first!
-    XCTAssertLessThan(resultingTarget.name.count, 255)
+    XCTAssertLessThan(resultingTarget.name.characters.count, 255)
 
     validateIndexerTarget(resultingTarget.name,
                           sourceFileNames: sourceFiles1 + sourceFiles2,
