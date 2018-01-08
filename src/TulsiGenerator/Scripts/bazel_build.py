@@ -519,6 +519,8 @@ class BazelBuildBridge(object):
                                                'NO') == 'YES'
     self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
                                               'YES') == 'YES'
+    self.stricter_remapping = os.environ.get('TULSI_STRICTER_REMAPPING',
+                                             'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -1818,7 +1820,6 @@ class BazelBuildBridge(object):
     """
     source_maps = set()
 
-    workspace_root_parent = os.path.dirname(self.workspace_root)
     # If we have a cached execution root, check that it exists.
     if os.path.exists(BAZEL_EXECUTION_ROOT):
       # If so, use it.
@@ -1827,7 +1828,11 @@ class BazelBuildBridge(object):
       # Query Bazel directly for the execution root.
       execroot = self._ExtractBazelInfoExecrootPaths()
     if execroot:
-      source_maps.add((os.path.dirname(execroot), workspace_root_parent))
+      if self.stricter_remapping:
+        source_maps.add((execroot, self.workspace_root))
+      else:
+        source_maps.add((os.path.dirname(execroot),
+                         os.path.dirname(self.workspace_root)))
 
     return source_maps
 

@@ -78,10 +78,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C280828EFBF00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "bazel-bin/tulsi_e2e_complex/Application-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C280828EFBF00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_complex/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C280CF925C900000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28151F1CC400000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = non_propagated.m; path = "tulsi-workspace/tulsi_e2e_complex/NonPropagatedLibrary/srcs/non_propagated.m"; sourceTree = "<group>"; };
-		43D68C2817E5C54500000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; name = PCHFile.pch; path = "bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch"; sourceTree = "<group>"; };
+		43D68C2817E5C54500000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; name = PCHFile.pch; path = "blaze-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C281A41382100000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C2829C9947000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ObjCBundle.bundle; path = "tulsi-workspace/tulsi_e2e_complex/ObjCBundle.bundle"; sourceTree = "<group>"; };
 		43D68C283148FC2600000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/srcs/src.mm"; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28442EC9D700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C2845AE2B9000000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_complex/Library/xib.xib"; sourceTree = "<group>"; };
-		43D68C28520AA0DE00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; name = output.m; path = "bazel-genfiles/tulsi_e2e_complex/SrcGenerator/outs/output.m"; sourceTree = "<group>"; };
+		43D68C28520AA0DE00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; name = output.m; path = "blaze-genfiles/tulsi_e2e_complex/SrcGenerator/outs/output.m"; sourceTree = "<group>"; };
 		43D68C2852C6516600000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; path = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2858F5ABDF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_complex/Application/Info.plist"; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		43D68C285EBBC35700000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C286266EC1F00000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28627DA73600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = file2.file; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file2.file"; sourceTree = "<group>"; };
-		43D68C2864E4F83800000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; name = Two.storyboard; path = "bazel-genfiles/tulsi_e2e_complex/StoryboardGenerator/outs/Two.storyboard"; sourceTree = "<group>"; };
+		43D68C2864E4F83800000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; name = Two.storyboard; path = "blaze-genfiles/tulsi_e2e_complex/StoryboardGenerator/outs/Two.storyboard"; sourceTree = "<group>"; };
 		43D68C286A36B02900000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDifferentDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C286E7B37CF00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = NonLocalized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/NonLocalized.strings"; sourceTree = "<group>"; };
 		43D68C2875C5141000000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_complex/Application/srcs/main.m"; sourceTree = "<group>"; };
@@ -214,7 +214,7 @@
 				43D68C28F49055A600000000 /* Application.app */,
 				43D68C283A3B027E00000000 /* TodayExtension.appex */,
 				43D68C285E266A6000000000 /* XCTest.xctest */,
-				966FB6DE2CEC8E5C00000000 /* bazel-bin */,
+				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
 				43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */,
 				43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */,
 				43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */,
@@ -225,12 +225,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE2CEC8E5C00000000 /* bazel-bin */ = {
+		966FB6DE2CEC8E5C00000000 /* blaze-bin */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
 			);
-			name = "bazel-bin";
+			name = "blaze-bin";
 			sourceTree = "<group>";
 		};
 		966FB6DE36005C3A00000000 /* NonPropagatedLibrary */ = {
@@ -266,12 +266,12 @@
 			name = SubLibraryWithIdenticalDefines;
 			sourceTree = "<group>";
 		};
-		966FB6DE4DC850B700000000 /* bazel-genfiles */ = {
+		966FB6DE4DC850B700000000 /* blaze-genfiles */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
 			);
-			name = "bazel-genfiles";
+			name = "blaze-genfiles";
 			sourceTree = "<group>";
 		};
 		966FB6DE529F18AF00000000 /* PCHGenerator */ = {
@@ -388,7 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE4DC850B700000000 /* bazel-genfiles */,
+				966FB6DE4DC850B700000000 /* blaze-genfiles */,
 				966FB6DEA22704D700000000 /* tools */,
 				966FB6DE7DA6F9D500000002 /* tulsi_e2e_complex */,
 			);
@@ -541,7 +541,7 @@
 /* Begin PBXLegacyTarget section */
 		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"blaze-bin\"";
 			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
@@ -757,7 +757,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B422718C779BBF00000000 /* ShellScript */ = {
@@ -771,7 +771,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271DE3FAFC200000000 /* ShellScript */ = {
@@ -785,7 +785,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -957,7 +957,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
@@ -966,7 +966,6 @@
 				TULSI_PROJECT = ComplexSingleProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1021,7 +1020,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/blaze-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1135,7 +1134,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
@@ -1144,7 +1143,6 @@
 				TULSI_PROJECT = ComplexSingleProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -1200,7 +1198,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/blaze-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1343,7 +1341,6 @@
 				TULSI_PROJECT = ComplexSingleProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1463,7 +1460,6 @@
 				TULSI_PROJECT = ComplexSingleProject;
 				TULSI_QUEUE_BUILDS = YES;
 				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

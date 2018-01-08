@@ -13,7 +13,7 @@
 // limitations under the License.
 
 let bazelBuildSettingsFeatures = [
-  // For non-distributed builds.
+  // TODO(b/69180247): Remove when all issues around this flag are resolved after release.
   "TULSI_DEBUG_PREFIX_MAP",
   // TODO(b/69552312): Remove if this feature causes no issues for four weeks after release.
   "TULSI_QUEUE_BUILDS",
@@ -21,6 +21,4 @@ let bazelBuildSettingsFeatures = [
   "TULSI_PATCHLESS_DSYMS",
   // TODO(b/71645041): Remove if no issues are found in focusing our remapping like this.
   "TULSI_STRICTER_REMAPPING",
-  // TODO(b/71714998): Remove if no issues are found in adding a trailing slash to our remappings.
-  "TULSI_TRAILING_SLASHES",
 ]
