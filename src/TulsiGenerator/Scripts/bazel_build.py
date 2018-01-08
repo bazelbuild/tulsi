@@ -521,6 +521,8 @@ class BazelBuildBridge(object):
                                               'YES') == 'YES'
     self.stricter_remapping = os.environ.get('TULSI_STRICTER_REMAPPING',
                                              'YES') == 'YES'
+    self.trailing_slashes = os.environ.get('TULSI_TRAILING_SLASHES',
+                                           'YES') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -1839,11 +1841,21 @@ class BazelBuildBridge(object):
       # Query Bazel directly for the execution root.
       execroot = self._ExtractBazelInfoExecrootPaths()
     if execroot:
-      if self.stricter_remapping:
-        source_maps.add((execroot, self.workspace_root))
-      else:
-        source_maps.add((os.path.dirname(execroot),
-                         os.path.dirname(self.workspace_root)))
+
+      sm_execroot = execroot
+      sm_workspace_root = self.workspace_root
+
+      if not self.stricter_remapping:
+        # Move one dirlevel up on both source and target.
+        sm_execroot = os.path.dirname(sm_execroot)
+        sm_workspace_root = os.path.dirname(sm_workspace_root)
+
+      if self.trailing_slashes:
+        # Add trailing slashes to paths to avoid ambiguity.
+        sm_execroot = os.path.normpath(sm_execroot) + os.sep
+        sm_workspace_root = os.path.normpath(sm_workspace_root) + os.sep
+
+      source_maps.add((sm_execroot, sm_workspace_root))
 
     return source_maps
 
