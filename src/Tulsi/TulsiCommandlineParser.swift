@@ -207,7 +207,7 @@ class TulsiCommandlineParser {
 
             let pathFilters = valueString.components(separatedBy: " ").map() { path -> String in
               if path.hasPrefix("//") {
-                return path.substring(from: path.characters.index(path.startIndex, offsetBy: 2))
+                return path.substring(from: path.index(path.startIndex, offsetBy: 2))
               }
               return path
             }
