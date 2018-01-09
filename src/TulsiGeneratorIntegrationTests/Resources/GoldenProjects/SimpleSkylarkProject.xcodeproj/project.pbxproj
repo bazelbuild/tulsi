@@ -70,13 +70,13 @@
 		43D68C288BD42CAC00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = tulsi_e2e_simple_skylark/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C288C4244FC00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C288EA0254100000000 /* Ext-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Ext-Info.plist"; path = "tulsi_e2e_simple_skylark/Ext-Info.plist"; sourceTree = "<group>"; };
-		43D68C2893192BBE00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkApplication-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C2893192BBE00000000 /* SkylarkApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkApplication-MergedInfo.plist"; path = "bazel-bin/tulsi_e2e_simple_skylark/SkylarkApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28A669C03500000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/xibs/xib.xib"; sourceTree = "<group>"; };
 		43D68C28A96EB07300000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCUITest.xctest; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B88954B500000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28B9C699F600000000 /* SkylarkApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = SkylarkApplication.app; path = SkylarkApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28CEA253A400000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkTargetApplication-MergedInfo.plist"; path = "blaze-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
+		43D68C28CEA253A400000000 /* SkylarkTargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "SkylarkTargetApplication-MergedInfo.plist"; path = "bazel-bin/tulsi_e2e_simple_skylark/SkylarkTargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28D035C16900000000 /* XCTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = XCTests.mm; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCTest/srcs/XCTests.mm"; sourceTree = "<group>"; };
 		43D68C28F44F077B00000000 /* file.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; name = file.java; path = "tulsi-workspace/tulsi_e2e_simple_skylark/file.java"; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 				43D68C285E266A6000000000 /* XCTest.xctest */,
 				43D68C28AB52552000000000 /* XCUITest.xctest */,
 				43D68C283786664A00000000 /* _idx_XCTestCodeSwift_2FB5517B_ios_min8.0.framework */,
-				966FB6DE2CEC8E5C00000000 /* blaze-bin */,
+				966FB6DE2CEC8E5C00000000 /* bazel-bin */,
 				43D68C28360062FC00000000 /* lib_idx_JavaLibrary_C16E964B_ios_min8.0.a */,
 				43D68C285F948D5E00000000 /* lib_idx_Library_22D3B3D5_ios_min8.0.a */,
 				43D68C28FEECDEEC00000000 /* lib_idx_MainLibrary_E33E600C_ios_min8.0.a */,
@@ -111,12 +111,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE2CEC8E5C00000000 /* blaze-bin */ = {
+		966FB6DE2CEC8E5C00000000 /* bazel-bin */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DEF58E46CC00000000 /* tulsi_e2e_simple_skylark */,
 			);
-			name = "blaze-bin";
+			name = "bazel-bin";
 			sourceTree = "<group>";
 		};
 		966FB6DE3377C20200000000 /* textual_hdrs */ = {
@@ -302,7 +302,7 @@
 /* Begin PBXLegacyTarget section */
 		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"blaze-bin\"";
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
 			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
@@ -537,7 +537,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B422715DA0CFC700000000 /* ShellScript */ = {
@@ -551,7 +551,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B4227186BF238800000000 /* ShellScript */ = {
@@ -565,7 +565,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:StickerExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:StickerExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B422719C8233A000000000 /* ShellScript */ = {
@@ -579,7 +579,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 		84B42271B548D02D00000000 /* ShellScript */ = {
@@ -607,7 +607,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCUITest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"blaze-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --blazerc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCUITest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -774,7 +774,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
@@ -974,7 +974,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/blaze-bin $(TULSI_WR)/blaze-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
