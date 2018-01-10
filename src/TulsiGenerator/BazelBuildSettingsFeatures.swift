@@ -19,8 +19,6 @@ let bazelBuildSettingsFeatures = [
   "TULSI_QUEUE_BUILDS",
   // TODO(b/71515804): Remove if no issues are found in replacing post_processor with this.
   "TULSI_PATCHLESS_DSYMS",
-  // TODO(b/71645041): Remove if no issues are found in focusing our remapping like this.
-  "TULSI_STRICTER_REMAPPING",
   // TODO(b/71714998): Remove if no issues are found in adding a trailing slash to our remappings.
   "TULSI_TRAILING_SLASHES",
 ]

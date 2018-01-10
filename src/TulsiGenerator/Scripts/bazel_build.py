@@ -519,10 +519,10 @@ class BazelBuildBridge(object):
                                                'NO') == 'YES'
     self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
                                               'YES') == 'YES'
-    self.stricter_remapping = os.environ.get('TULSI_STRICTER_REMAPPING',
-                                             'YES') == 'YES'
     self.trailing_slashes = os.environ.get('TULSI_TRAILING_SLASHES',
                                            'YES') == 'YES'
+    self.remap_dotted_paths = os.environ.get('TULSI_REMAP_DOTTED_PATHS',
+                                             'NO') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -1845,17 +1845,24 @@ class BazelBuildBridge(object):
       sm_execroot = execroot
       sm_workspace_root = self.workspace_root
 
-      if not self.stricter_remapping:
-        # Move one dirlevel up on both source and target.
-        sm_execroot = os.path.dirname(sm_execroot)
-        sm_workspace_root = os.path.dirname(sm_workspace_root)
-
       if self.trailing_slashes:
         # Add trailing slashes to paths to avoid ambiguity.
         sm_execroot = os.path.normpath(sm_execroot) + os.sep
         sm_workspace_root = os.path.normpath(sm_workspace_root) + os.sep
 
       source_maps.add((sm_execroot, sm_workspace_root))
+
+      if self.xcode_version_major >= 900 and self.remap_dotted_paths:
+        if not self.use_patchless_dsyms:
+          _PrintXcodeWarning('TULSI_REMAP_DOTTED_PATHS requires '
+                             'TULSI_PATCHLESS_DSYMS to be set to YES. If you '
+                             'need TULSI_PATCHLESS_DSYMS to be disabled, set '
+                             'it and TULSI_REMAP_DOTTED_PATHS to NO. Please '
+                             'report this as a Tulsi bug.')
+          return source_maps
+        # Remap '.' to the workspace root. Simulates a relative path for Xcode-
+        # driven LLDB sessions.
+        source_maps.add(('.', sm_workspace_root))
 
     return source_maps
 
