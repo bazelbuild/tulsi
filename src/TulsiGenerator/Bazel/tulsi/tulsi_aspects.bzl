@@ -18,7 +18,12 @@ This file provides Bazel aspects used to obtain information about a given
 project and pass it back to Tulsi.
 """
 
-load(':tulsi_aspects_paths.bzl', 'TULSI_CURRENT_XCODE_CONFIG')
+load(
+    ':tulsi_aspects_paths.bzl',
+     'AppleBundleInfo',
+     'IosExtensionBundleInfo',
+     'TULSI_CURRENT_XCODE_CONFIG',
+)
 
 # List of all of the attributes that can link from a Tulsi-supported rule to a
 # Tulsi-supported dependency of that rule.
@@ -505,7 +510,9 @@ def _tulsi_sources_aspect(target, ctx):
   rule = ctx.rule
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
-  bundle_name = _get_opt_attr(target, 'apple_bundle.bundle_name')
+  bundle_name = None
+  if AppleBundleInfo in target:
+    bundle_name = target[AppleBundleInfo].bundle_name
 
   tulsi_info_files = depset()
   transitive_attributes = dict()
@@ -610,10 +617,9 @@ def _tulsi_sources_aspect(target, ctx):
   # Collect Info.plist files from an extension to figure out its type.
   infoplist = None
 
-  # Only Skylark versions of ios_extension have the 'apple_bundle' provider.
-  # TODO(b/37912213): Migrate to the new-style providers.
-  if target_kind == 'ios_extension' and hasattr(target, 'apple_bundle'):
-    infoplist = target.apple_bundle.infoplist
+  # Only Skylark versions of ios_extension have the AppleBundleInfo provider.
+  if IosExtensionBundleInfo in target:
+    infoplist = target[AppleBundleInfo].infoplist
 
   all_attributes = attributes + inheritable_attributes + transitive_attributes
 
@@ -683,9 +689,8 @@ def _tulsi_sources_aspect(target, ctx):
 
 def _collect_bundle_info(target):
   """Returns Apple bundle info for the given target, None if not a bundle."""
-  # TODO(b/37912213): Migrate to the new-style providers.
-  if hasattr(target, 'apple_bundle'):
-    apple_bundle = target.apple_bundle
+  if AppleBundleInfo in target:
+    apple_bundle = target[AppleBundleInfo]
     bundle_full_name = apple_bundle.bundle_name + apple_bundle.bundle_extension
     has_dsym = (apple_common.AppleDebugOutputs in target)
     return [struct(
@@ -724,10 +729,10 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'transitive_embedded_bundles'):
         embedded_bundles += dep.transitive_embedded_bundles
 
-  bundle_name = _get_opt_attr(target, 'apple_bundle.bundle_name')
-  # TODO(b/37912213): Migrate to the new-style providers.
-  if hasattr(target, 'apple_bundle'):
-    artifacts = [target.apple_bundle.archive.path]
+  bundle_name = None
+  if AppleBundleInfo in target:
+    bundle_name = target[AppleBundleInfo].bundle_name
+    artifacts = [target[AppleBundleInfo].archive.path]
   else:  # TODO(b/33050780): Remove this branch when native rules are deleted.
     ipa_output_name = None
     if target_kind in _IPA_GENERATING_RULES:

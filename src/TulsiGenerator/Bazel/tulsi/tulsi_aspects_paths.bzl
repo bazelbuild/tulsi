@@ -17,4 +17,15 @@
 Provides a small set of variables to be referenced for aspect dependencies.
 """
 
+load(
+    '@build_bazel_rules_apple//apple:providers.bzl',
+    _AppleBundleInfo='AppleBundleInfo',
+    _IosExtensionBundleInfo='IosExtensionBundleInfo',
+)
+
+# Re-export providers.
+AppleBundleInfo = _AppleBundleInfo
+IosExtensionBundleInfo = _IosExtensionBundleInfo
+
+# Export labels to paths.
 TULSI_CURRENT_XCODE_CONFIG = Label('@bazel_tools//tools/osx:current_xcode_config')
