@@ -497,16 +497,9 @@ class BazelBuildBridge(object):
     self.real_bazel_bin_path = None
     # The path to the Bazel's sandbox source root.
     self.bazel_build_workspace_root = None
-    self.bazel_genfiles_path = None
-    self.bazel_symlink_prefix = None
     self.codesign_attributes = {}
 
-    # Certain potentially expensive patchups need to be made for non-Xcode IDE
-    # integrations. There isn't a fool-proof way of determining if the script is
-    # being used with Xcode or not, but searching the CODESIGNING_FOLDER_PATH
-    # env var for "/Xcode/" should catch the majority of use-cases.
     self.codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
-    self.likely_xcode = self.codesigning_folder_path.find('/Xcode/') != -1
 
     self.xcode_action = os.environ['ACTION']  # The Xcode build action.
     # When invoked as an external build system script, Xcode will set ACTION to
@@ -547,8 +540,6 @@ class BazelBuildBridge(object):
     self.test_host_binary = os.environ.get('TEST_HOST')
     # Whether this target is a test or not.
     self.is_test = os.environ.get('WRAPPER_EXTENSION') == 'xctest'
-    # UTI type of the target.
-    self.package_type = os.environ.get('PACKAGE_TYPE')
     # Target platform.
     self.platform_name = os.environ['PLATFORM_NAME']
     # Type of the target artifact.
@@ -557,8 +548,6 @@ class BazelBuildBridge(object):
     self.project_dir = os.environ['PROJECT_DIR']
     # Path to the xcodeproj bundle.
     self.project_file_path = os.environ['PROJECT_FILE_PATH']
-    # Path to the parent of the Xcode project's mainGroup.
-    self.source_root = os.environ['SOURCE_ROOT']
     # Path to the directory containing the WORKSPACE file.
     self.workspace_root = os.path.abspath(os.environ['TULSI_WR'])
     # Set to the name of the generated bundle for bundle-type targets, None for
@@ -630,9 +619,6 @@ class BazelBuildBridge(object):
 
     self.verbose = parser.verbose
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
-    # bazel_bin_path is assumed to always end in "-bin".
-    self.bazel_symlink_prefix = self.bazel_bin_path[:-3]
-    self.bazel_genfiles_path = self.bazel_symlink_prefix + 'genfiles'
     self.bazel_executable = parser.bazel_executable
 
     # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
@@ -1902,9 +1888,7 @@ class BazelBuildBridge(object):
 
 
 if __name__ == '__main__':
-  _queue_build = os.environ.get('TULSI_QUEUE_BUILDS', 'YES') == 'YES'
-  if _queue_build:
-    _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
+  _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
   _timer = Timer('Everything', 'complete_build').Start()
   signal.signal(signal.SIGINT, _InterruptHandler)
   _exit_code = BazelBuildBridge().Run(sys.argv)
