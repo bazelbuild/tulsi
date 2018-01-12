@@ -493,10 +493,6 @@ class BazelBuildBridge(object):
     self.verbose = 0
     self.build_path = None
     self.bazel_bin_path = None
-    # The actual path to the Bazel output directory (not a symlink)
-    self.real_bazel_bin_path = None
-    # The path to the Bazel's sandbox source root.
-    self.bazel_build_workspace_root = None
     self.codesign_attributes = {}
 
     self.codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
@@ -664,10 +660,11 @@ class BazelBuildBridge(object):
       _PrintXcodeError('Bazel build failed.')
       return exit_code
 
-    exit_code = self._EnsureBazelBinIsValid()
-    if exit_code:
-      _PrintXcodeError('Failed to ensure existence of bazel-bin directory.')
-      return exit_code
+    if not os.path.exists(BAZEL_EXECUTION_ROOT):
+      _PrintXcodeError('No Bazel execution root was found at %s. Debugging '
+                       'experience will be compromised. Please report a Tulsi '
+                       'bug.' % BAZEL_EXECUTION_ROOT)
+      return 404
 
     # This needs to run after `bazel build`, since it depends on the Bazel
     # workspace directory
@@ -904,38 +901,6 @@ class BazelBuildBridge(object):
         return 1, output_locations
       return process.returncode, output_locations
 
-  def _EnsureBazelBinIsValid(self):
-    """Ensures that the Bazel output path points at a real directory."""
-
-    if not os.path.isdir(self.bazel_bin_path):
-      _PrintXcodeWarning('Bazel "-bin" path at "%s" non-existent' %
-                         (self.bazel_bin_path))
-      return 0
-
-    self.real_bazel_bin_path = (
-        os.path.abspath(os.path.realpath(self.bazel_bin_path)))
-    if not os.path.isdir(self.real_bazel_bin_path):
-      try:
-        os.makedirs(self.real_bazel_bin_path)
-      except OSError as e:
-        _PrintXcodeError('Failed to create Bazel binary dir at "%s". %s' %
-                         (self.real_bazel_bin_path, e))
-        return 20
-
-    # The Bazel bin path will be of the form:
-    #   <sandbox>/execroot/<workspace_path>/bazel-out/<arch>/bin
-    # As the workspace root is user-configurable and could be set to
-    # "bazel-out," the workspace path is obtained by slicing off the last
-    # three components.
-    path_components = self.real_bazel_bin_path.split(os.sep)
-    if len(path_components) < 5:
-      _PrintXcodeWarning('Failed to derive Bazel build root path from %r' %
-                         self.real_bazel_bin_path)
-    else:
-      self.bazel_build_workspace_root = (
-          os.sep + os.path.join(*path_components[:-3]))
-    return 0
-
   def _InstallArtifact(self, outputs):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
     xcode_artifact_path = self.artifact_output_path
@@ -1031,7 +996,7 @@ class BazelBuildBridge(object):
 
   def _InstallGeneratedHeaders(self, output_files):
     """Installs Bazel-generated headers into tulsi-includes directory."""
-    tulsi_root = os.path.join(self.bazel_build_workspace_root, 'tulsi-includes')
+    tulsi_root = os.path.join(BAZEL_EXECUTION_ROOT, 'tulsi-includes')
 
     if os.path.exists(tulsi_root):
       shutil.rmtree(tulsi_root)
@@ -1045,7 +1010,7 @@ class BazelBuildBridge(object):
 
       for gs in data['generated_sources']:
         real_path, link_path = gs
-        src = os.path.join(self.bazel_build_workspace_root, real_path)
+        src = os.path.join(BAZEL_EXECUTION_ROOT, real_path)
 
         # Bazel outputs are not guaranteed to be created if nothing references
         # them. This check skips the processing if an output was declared
@@ -1527,16 +1492,10 @@ class BazelBuildBridge(object):
 
   def _PatchLLVMCovmapPaths(self):
     """Invokes post_processor to fix source paths in LLVM coverage maps."""
-    if not self.bazel_build_workspace_root:
-      _PrintXcodeWarning('No Bazel sandbox root was detected, unable to '
-                         'determine coverage paths to patch. Code coverage '
-                         'will probably fail.')
-      return 0
-
     if not os.path.isfile(self.binary_path):
       return 0
 
-    self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
+    self._PrintVerbose('Patching %r -> %r' % (BAZEL_EXECUTION_ROOT,
                                               self.workspace_root), 1)
     args = [
         self.post_processor_binary,
@@ -1546,7 +1505,7 @@ class BazelBuildBridge(object):
       args.append('-v')
     args.extend([
         self.binary_path,
-        self.bazel_build_workspace_root,
+        BAZEL_EXECUTION_ROOT,
         self.workspace_root
     ])
     returncode, output = self._RunSubprocess(args)
@@ -1736,12 +1695,6 @@ class BazelBuildBridge(object):
 
   def _PatchdSYMPaths(self, dsym_bundle_path):
     """Invokes post_processor to fix source paths in dSYM DWARF data."""
-    if not self.bazel_build_workspace_root:
-      _PrintXcodeWarning('No Bazel sandbox root was detected, unable to '
-                         'determine DWARF paths to patch. Debugging will '
-                         'probably fail.')
-      return 0
-
     dwarf_subpath = os.path.join(dsym_bundle_path,
                                  'Contents',
                                  'Resources',
@@ -1755,9 +1708,9 @@ class BazelBuildBridge(object):
     if self.verbose > 1:
       args.append('-v')
     args.extend(binaries)
-    args.extend([self.bazel_build_workspace_root, self.workspace_root])
+    args.extend([BAZEL_EXECUTION_ROOT, self.workspace_root])
 
-    self._PrintVerbose('Patching %r -> %r' % (self.bazel_build_workspace_root,
+    self._PrintVerbose('Patching %r -> %r' % (BAZEL_EXECUTION_ROOT,
                                               self.workspace_root), 1)
     returncode, output = self._RunSubprocess(args)
     if returncode:
@@ -1857,7 +1810,8 @@ class BazelBuildBridge(object):
     tulsi_workspace = self.workspace_root + '/tulsi-workspace'
     if os.path.islink(tulsi_workspace):
       os.unlink(tulsi_workspace)
-    os.symlink(self.bazel_build_workspace_root, tulsi_workspace)
+
+    os.symlink(BAZEL_EXECUTION_ROOT, tulsi_workspace)
     if not os.path.exists(tulsi_workspace):
       _PrintXcodeError(
           'Linking Tulsi Workspace to %s failed.' % tulsi_workspace)
