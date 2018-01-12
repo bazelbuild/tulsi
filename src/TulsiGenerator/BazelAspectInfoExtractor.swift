@@ -67,20 +67,23 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Bazel workspace for the given set of Bazel targets.
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
-                                   buildOptions: [String] = []) throws -> RuleEntryMap {
+                                   buildOptions: [String] = [],
+                                   useAspectForTestSuites: Bool = true) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
-                                          buildOptions: buildOptions)
+                                          buildOptions: buildOptions,
+                                          useAspectForTestSuites: useAspectForTestSuites)
   }
 
   // MARK: - Private methods
 
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
                                           startupOptions: [String],
-                                          buildOptions: [String]) throws -> RuleEntryMap {
+                                          buildOptions: [String],
+                                          useAspectForTestSuites: Bool) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
     let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
@@ -98,6 +101,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                aspect: "tulsi_sources_aspect",
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
+                                               useAspectForTestSuites: useAspectForTestSuites,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
        defer { semaphore.signal() }
@@ -153,6 +157,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             aspect: String,
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
+                                            useAspectForTestSuites: Bool = true,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
 
@@ -185,6 +190,11 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--tool_tag=tulsi:generator", // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
     ])
+    // Don't replace test_suites with their tests. This allows the Aspect to discover the structure
+    // of the test_suite.
+    if useAspectForTestSuites {
+      arguments.append("--noexpand_test_suites")
+    }
     arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)
 
@@ -313,7 +323,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         includePaths = nil
       }
       let defines = dict["defines"] as? [String]
-      let dependencies = Set(dict["deps"] as? [String] ?? [])
+      let deps = dict["deps"] as? [String] ?? []
+      let dependencyLabels = Set(deps.map({ BuildLabel($0) }))
       let frameworkImports = MakeBazelFileInfos("framework_imports")
       let buildFilePath = dict["build_file"] as? String
       let osDeploymentTarget = dict["os_deployment_target"] as? String
@@ -357,7 +368,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 artifacts: artifacts,
                                 sourceFiles: sources,
                                 nonARCSourceFiles: nonARCSources,
-                                dependencies: dependencies,
+                                dependencies: dependencyLabels,
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,

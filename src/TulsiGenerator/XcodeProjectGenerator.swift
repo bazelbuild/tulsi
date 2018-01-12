@@ -329,7 +329,7 @@ final class XcodeProjectGenerator {
           } else {
             // Expand the test_suite to its set of tests.
             testSuiteRules[ruleEntry.label] = ruleEntry
-            expandTargetLabels(ruleEntry.weakDependencies)
+            expandTargetLabels(ruleEntry.testSuiteDependencies)
           }
         }
       }
@@ -488,7 +488,8 @@ final class XcodeProjectGenerator {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                             buildOptions: config.options[.BazelBuildOptionsDebug])
+                                                             buildOptions: config.options[.BazelBuildOptionsDebug],
+                                                             useAspectForTestSuitesOption: config.options[.UseAspectForTestSuites])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
     }
@@ -638,7 +639,7 @@ final class XcodeProjectGenerator {
     func extractTestTargets(_ testSuite: RuleEntry) -> (Set<PBXTarget>, PBXTarget?) {
       var suiteHostTarget: PBXTarget? = nil
       var validTests = Set<PBXTarget>()
-      for testEntryLabel in testSuite.weakDependencies {
+      for testEntryLabel in testSuite.testSuiteDependencies {
         if let recursiveTestSuite = info.testSuiteRuleEntries[testEntryLabel] {
           let (recursiveTests, recursiveSuiteHostTarget) = extractTestTargets(recursiveTestSuite)
           validTests.formUnion(recursiveTests)

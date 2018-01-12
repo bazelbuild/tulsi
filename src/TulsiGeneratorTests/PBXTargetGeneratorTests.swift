@@ -1133,7 +1133,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       sourceFiles: testSources)
     let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
       type: "apple_binary",
-      dependencies: Set([objcLibraryRuleEntry.label.value]))
+      dependencies: Set([BuildLabel(objcLibraryRuleEntry.label.value)]))
     let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
       type: "ios_test_bundle",
       attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
@@ -1218,7 +1218,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                   sourceFiles: testSources)
     let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
                                                  type: "apple_binary",
-                                                 dependencies: Set([swiftLibraryRuleEntry.label.value]))
+                                                 dependencies: Set([BuildLabel(swiftLibraryRuleEntry.label.value)]))
     let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
                                                 type: "ios_test_bundle",
                                                 attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
@@ -2593,7 +2593,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRule = makeTestRuleEntry(target,
                                      type: targetType,
                                      attributes: ["has_swift_dependency": true as AnyObject],
-                                     dependencies: Set([swiftTarget]))
+                                     dependencies: Set([BuildLabel(swiftTarget)]))
     let swiftLibraryRule = makeTestRuleEntry(swiftTarget, type: "swift_library")
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRule])
 
@@ -2702,7 +2702,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  attributes: [String: AnyObject] = [:],
                                  artifacts: [String] = [],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set(),
+                                 dependencies: Set<BuildLabel> = Set(),
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  bundleName: String? = nil,
@@ -2738,7 +2738,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  attributes: [String: AnyObject] = [:],
                                  artifacts: [String] = [],
                                  sourceFiles: [String] = [],
-                                 dependencies: Set<String> = Set(),
+                                 dependencies: Set<BuildLabel> = Set(),
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  bundleName: String? = nil,

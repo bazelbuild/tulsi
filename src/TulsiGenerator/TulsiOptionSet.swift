@@ -44,7 +44,10 @@ public enum TulsiOptionKey: String {
       ObjCModuleMapWorkarounds,
 
       // Include all .bzl files related to the build in the generated Xcodeproj.
-      IncludeBuildSources
+      IncludeBuildSources,
+
+      // Configures test_suite targets based using bazel aspects instead of bazel query.
+      UseAspectForTestSuites
 
 
   // Options for build invocations.
@@ -272,6 +275,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addBoolOption(.ObjCModuleMapWorkarounds, .Generic, true)
+    addBoolOption(.UseAspectForTestSuites, .Generic, false)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])

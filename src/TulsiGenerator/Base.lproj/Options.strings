@@ -23,6 +23,9 @@
 "BazelContinueBuildingAfterError" = "Continue building after error";
 "ObjCModuleMapWorkarounds" = "Experimental improvements for ObjC Modules in Swift.";
 
+"UseAspectForTestSuites" = "Expand test_suites via an aspect instead of bazel query.";
+"UseAspectForTestSuites_DESC" = "Requires a Bazel which supports --noexpand_test_suites";
+
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 

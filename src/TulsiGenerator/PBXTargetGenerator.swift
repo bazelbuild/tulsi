@@ -490,10 +490,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       var resolvedDependecies = [RuleEntry]()
       for dep in ruleEntry.dependencies {
-        guard let depEntry = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dep), depender: ruleEntry) else {
+        guard let depEntry = ruleEntryMap.ruleEntry(buildLabel: dep, depender: ruleEntry) else {
           localizedMessageLogger.warning("UnknownTargetRule",
                                          comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
-                                         values: dep)
+                                         values: dep.value)
           continue
         }
 
@@ -601,9 +601,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                          values: ruleEntry.label.value)
         }
 
-        let dependencyLabels = ruleEntry.dependencies.map() { BuildLabel($0) }
         let indexerData = IndexerData(indexerNameInfo: [IndexerData.NameInfoToken(ruleEntry: ruleEntry)],
-                                      dependencies: Set(dependencyLabels),
+                                      dependencies: ruleEntry.dependencies,
                                       resolvedDependencies: Set(resolvedDependecies),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
@@ -1287,7 +1286,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
 
     for dependency in testBundleBinary.dependencies {
-      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dependency), depender: testBundleBinary) else {
+      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: dependency, depender: testBundleBinary) else {
         continue
       }
       addIncludes(dependencyTarget, toSet: includes)
@@ -1337,7 +1336,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // Once we have the binary's direct dependencies, gather all the possible sources of those
     // targets and return them.
     for dependency in testBundleBinary.dependencies {
-      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dependency), depender: testBundleBinary) else {
+      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: dependency, depender: testBundleBinary) else {
         continue
       }
       sourceFiles.append(contentsOf: dependencyTarget.sourceFiles)

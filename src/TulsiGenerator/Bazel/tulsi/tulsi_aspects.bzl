@@ -39,6 +39,8 @@ _TULSI_COMPILE_DEPS = [
     'frameworks',
     'settings_bundle',
     'non_propagated_deps',
+    'tests',  # for test_suite when the --noexpand_test_suites flag is used.
+    '_implicit_tests',  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
     'test_bundle',
     'test_host',
     'watch_application',

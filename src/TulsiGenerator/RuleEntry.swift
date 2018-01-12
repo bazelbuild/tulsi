@@ -206,7 +206,7 @@ public final class RuleEntry: RuleInfo {
   public let includePaths: [IncludePath]?
 
   /// Set of the labels that this rule depends on.
-  public let dependencies: Set<String>
+  public let dependencies: Set<BuildLabel>
 
   /// Set of ios_application extension labels that this rule utilizes.
   public let extensions: Set<BuildLabel>
@@ -234,12 +234,26 @@ public final class RuleEntry: RuleInfo {
   public let deploymentTarget: DeploymentTarget?
 
   /// Set of labels that this rule depends on but does not require.
+  /// TODO(b/71904309): Remove this once test_suite fetching via Aspect is stable.
   // NOTE(abaire): This is a hack used for test_suite rules, where the possible expansions retrieved
   // via queries are filtered by the existence of the selected labels extracted via the normal
   // aspect path. Ideally the aspect would be able to directly express the relationship between the
   // test_suite and the test rules themselves, but that expansion is done prior to the application
   // of the aspect.
   public var weakDependencies = Set<BuildLabel>()
+
+  /// Set of labels that this test_suite depends on. If this target is not a test_suite, returns
+  /// an empty set. This maps directly to the `tests` attribute of the test_suite.
+  public var testSuiteDependencies: Set<BuildLabel> {
+    guard type == "test_suite" else { return Set() }
+
+    // Legacy support for expansion of test_suite via a Bazel query. If a Bazel query is used,
+    // `dependencies` will be empty and `weakDependencies` will contain the test_suite's
+    // dependencies. Otherwise, `dependencies` will contain the test_suite's dependencies.
+    guard dependencies.isEmpty else { return dependencies }
+
+    return weakDependencies
+  }
 
   /// The BUILD file that this rule was defined in.
   public let buildFilePath: String?
@@ -309,7 +323,7 @@ public final class RuleEntry: RuleInfo {
        artifacts: [BazelFileInfo] = [],
        sourceFiles: [BazelFileInfo] = [],
        nonARCSourceFiles: [BazelFileInfo] = [],
-       dependencies: Set<String> = Set(),
+       dependencies: Set<BuildLabel> = Set(),
        frameworkImports: [BazelFileInfo] = [],
        secondaryArtifacts: [BazelFileInfo] = [],
        weakDependencies: Set<BuildLabel>? = nil,
@@ -393,7 +407,7 @@ public final class RuleEntry: RuleInfo {
                    artifacts: [BazelFileInfo] = [],
                    sourceFiles: [BazelFileInfo] = [],
                    nonARCSourceFiles: [BazelFileInfo] = [],
-                   dependencies: Set<String> = Set(),
+                   dependencies: Set<BuildLabel> = Set(),
                    frameworkImports: [BazelFileInfo] = [],
                    secondaryArtifacts: [BazelFileInfo] = [],
                    weakDependencies: Set<BuildLabel>? = nil,

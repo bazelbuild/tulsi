@@ -373,10 +373,13 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     ]
 
     let projectName = "TestSuiteLocalTaggedTestsProject"
+    let options = TulsiOptionSet()
+    options.options[.UseAspectForTestSuites]?.projectValue = "NO"
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
-                                              outputDir: "tulsi_e2e_output")
+                                              outputDir: "tulsi_e2e_output",
+                                              options: options)
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)
@@ -392,10 +395,13 @@ class TestSuiteEndToEndGenerationTests: EndToEndIntegrationTestCase {
     ]
 
     let projectName = "TestSuiteRecursiveTestSuiteProject"
+    let options = TulsiOptionSet()
+    options.options[.UseAspectForTestSuites]?.projectValue = "NO"
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/..."],
-                                              outputDir: "tulsi_e2e_output")
+                                              outputDir: "tulsi_e2e_output",
+                                              options: options)
 
     let diffLines = diffProjectAt(projectURL,
                                   againstGoldenProject: projectName)

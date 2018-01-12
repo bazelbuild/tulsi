@@ -447,9 +447,11 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       do {
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
+        let useAspectForTestSuitesOption = optionSet[.UseAspectForTestSuites]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
-                                                                   buildOptions: buildOptions)
+                                                                   buildOptions: buildOptions,
+                                                                   useAspectForTestSuitesOption: useAspectForTestSuitesOption)
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
         return
@@ -508,7 +510,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         }
         processedEntries.insert(ruleEntry)
         for dep in ruleEntry.dependencies {
-          guard let depRuleEntry = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(dep), depender: ruleEntry) else {
+          guard let depRuleEntry = ruleEntryMap.ruleEntry(buildLabel: dep, depender: ruleEntry) else {
             // Some dependencies are expected to be unresolved, e.g., those that rely on implicit
             // outputs of other rules.
             continue
@@ -771,7 +773,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
                                                               startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
-                                                              buildOptions: optionSet![.BazelBuildOptionsDebug])
+                                                              buildOptions: optionSet![.BazelBuildOptionsDebug],
+                                                              useAspectForTestSuitesOption: optionSet![.UseAspectForTestSuites])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {

@@ -69,7 +69,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
-                            buildOptions: TulsiOption) throws -> RuleEntryMap {
+                            buildOptions: TulsiOption,
+                            useAspectForTestSuitesOption: TulsiOption) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
     }
@@ -85,15 +86,22 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     // TODO(abaire): Support per-target and per-config options during aspect lookups.
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
+    let useAspectForTestSuites = useAspectForTestSuitesOption.commonValueAsBool ?? true
 
     do {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
-                                                        buildOptions: buildOptions)
+                                                        buildOptions: buildOptions,
+                                                        useAspectForTestSuites: useAspectForTestSuites)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")
+    }
+
+    // If we use fetch the test_suites from the Aspect, no further work is needed.
+    guard !useAspectForTestSuites else {
+      return ruleEntryCache
     }
 
     // Because certain label types are expanded by Bazel prior to aspect invocation (most notably

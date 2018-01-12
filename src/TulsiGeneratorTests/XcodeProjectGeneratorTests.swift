@@ -249,7 +249,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     artifacts: [BazelFileInfo] = [],
                                     sourceFiles: [BazelFileInfo] = [],
                                     nonARCSourceFiles: [BazelFileInfo] = [],
-                                    dependencies: Set<String> = Set(),
+                                    dependencies: Set<BuildLabel> = Set(),
                                     secondaryArtifacts: [BazelFileInfo] = [],
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
