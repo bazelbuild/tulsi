@@ -1468,24 +1468,19 @@ class BazelBuildBridge(object):
           '\tExtracting source paths for ' + self.full_product_name,
           'extracting_source_paths').Start()
 
-      source_maps = self._ExtractTargetSourceMaps()
+      source_map = self._ExtractExecrootSourceMap()
       timer.End()
 
-      if not source_maps:
+      if not source_map:
         _PrintXcodeWarning('Extracted 0 source paths from %r. File-based '
                            'breakpoints may not work. Please report as a bug.' %
                            self.full_product_name)
         return 0
 
-      out.write('# This maps file paths used by Bazel to those used by %r.\n' %
+      out.write('# This maps Bazel\'s execution root to that used by %r.\n' %
                 os.path.basename(self.project_file_path))
 
-      target_source_maps = []
-      for source_map in source_maps:
-        target_source_maps.append('"%s" "%s"' % source_map)
-
-      out.write('settings set target.source-map %s\n' %
-                ' '.join(target_source_maps))
+      out.write('settings set target.source-map "%s" "%s"\n' % source_map)
       self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0
@@ -1775,7 +1770,21 @@ class BazelBuildBridge(object):
                      of Tulsi debugging as strings ($1).
     """
     source_maps = set()
+    execroot_map = self._ExtractExecrootSourceMap()
+    if execroot_map:
+      source_maps.add(execroot_map)
+    return source_maps
 
+  def _ExtractExecrootSourceMap(self):
+    """Extracts the execution root as a tuple with the WORKSPACE path.
+
+    Returns:
+      None: if an error occurred.
+      (str, str): a tuple representing the execution root path to source files
+                  compiled by Bazel as strings ($0) associated with the paths
+                  to Xcode-visible sources used for the purposes of Tulsi
+                  debugging as strings ($1).
+    """
     # If we have a cached execution root, check that it exists.
     if os.path.exists(BAZEL_EXECUTION_ROOT):
       # If so, use it.
@@ -1798,9 +1807,9 @@ class BazelBuildBridge(object):
         sm_execroot = os.path.normpath(sm_execroot) + os.sep
         sm_workspace_root = os.path.normpath(sm_workspace_root) + os.sep
 
-      source_maps.add((sm_execroot, sm_workspace_root))
+      return (sm_execroot, sm_workspace_root)
 
-    return source_maps
+    return None
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""
