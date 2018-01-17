@@ -1179,12 +1179,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // explicitly passing them via -fmodule-map-file: Xcode 8 seems to ignore the
     // -fmodule-map-file flag when using SourceKit for CMD+click and Xcode 9 seems to only
     // pass in the last -fmodule-map-file flag given.
-    let enableObjCModuleMapWorkaround = options[.ObjCModuleMapWorkarounds].commonValueAsBool ?? true
-    if enableObjCModuleMapWorkaround {
-      for moduleMap in ruleEntry.objCModuleMaps {
-        let fullPath = (moduleMap.fullPath as NSString).deletingLastPathComponent
-        includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(fullPath)")
-      }
+    for moduleMap in ruleEntry.objCModuleMaps {
+      let fullPath = (moduleMap.fullPath as NSString).deletingLastPathComponent
+      includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(fullPath)")
     }
   }
 
