@@ -1428,7 +1428,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
         if !indexerSettingsOnly {
           // Enable dSYM generation for release builds.
-          config.buildSettings["TULSI_USE_DSYM"] = "YES"
+          config.buildSettings["TULSI_MUST_USE_DSYM"] = "YES"
         }
       }
     }
@@ -1548,11 +1548,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]"] = "1,4"
     }
 
-    // Disable dSYM generation in general, unless the target has Swift dependencies. dSYM files are
-    // necessary for debugging Swift targets in Xcode 8; at some point this should be able to be
-    // removed, but requires changes to LLDB.
+    // Control generation of DSYM, necessary for debugging Swift in Xcode 8 and for taking advantage
+    // of multiple source mappings per breakpoint, as introduced by DBGVersion 2 in Xcode 9.
     let dSYMEnabled = entry.attributes[.has_swift_dependency] as? Bool ?? false
-    buildSettings["TULSI_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
+    buildSettings["TULSI_MUST_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
 
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually
