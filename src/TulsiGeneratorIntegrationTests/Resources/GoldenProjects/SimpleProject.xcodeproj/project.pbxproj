@@ -526,8 +526,8 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -544,7 +544,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -575,7 +575,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SimpleProject;
@@ -599,7 +598,7 @@
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -661,8 +660,8 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -679,7 +678,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -710,13 +709,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SimpleProject;
 				TULSI_STRICTER_REMAPPING = YES;
 				TULSI_TRAILING_SLASHES = YES;
+				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -735,7 +733,7 @@
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -804,8 +802,8 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -830,7 +828,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -866,7 +864,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SimpleProject;
@@ -898,7 +895,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -924,8 +921,8 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -950,7 +947,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -986,13 +983,12 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SimpleProject;
 				TULSI_STRICTER_REMAPPING = YES;
 				TULSI_TRAILING_SLASHES = YES;
+				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1019,7 +1015,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};

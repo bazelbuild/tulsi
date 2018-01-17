@@ -503,8 +503,7 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
-    self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
-                          os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
+    self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
     self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',

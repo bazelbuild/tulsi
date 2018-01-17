@@ -402,7 +402,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = WatchProject;
@@ -426,7 +425,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -442,7 +441,7 @@
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
@@ -459,7 +458,7 @@
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
@@ -517,13 +516,12 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_STRICTER_REMAPPING = YES;
 				TULSI_TRAILING_SLASHES = YES;
+				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -542,7 +540,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -558,7 +556,7 @@
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
@@ -575,7 +573,7 @@
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
@@ -638,7 +636,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = WatchProject;
@@ -670,7 +667,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -694,7 +691,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -719,7 +716,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = NO;
+				TULSI_USE_DSYM = NO;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -756,13 +753,12 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_STRICTER_REMAPPING = YES;
 				TULSI_TRAILING_SLASHES = YES;
+				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -789,7 +785,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -813,7 +809,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
@@ -838,7 +834,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
+				TULSI_USE_DSYM = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
