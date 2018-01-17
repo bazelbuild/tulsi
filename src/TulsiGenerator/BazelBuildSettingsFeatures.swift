@@ -16,7 +16,7 @@ let bazelBuildSettingsFeatures = [
   // For non-distributed builds.
   "TULSI_DEBUG_PREFIX_MAP",
   // TODO(b/71515804): Remove if no issues are found in replacing post_processor with this.
-//  "TULSI_PATCHLESS_DSYMS",
+  "TULSI_PATCHLESS_DSYMS",
   // TODO(b/71645041): Remove if no issues are found in focusing our remapping like this.
   "TULSI_STRICTER_REMAPPING",
   // TODO(b/71714998): Remove if no issues are found in adding a trailing slash to our remappings.

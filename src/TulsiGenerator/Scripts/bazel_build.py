@@ -1691,6 +1691,10 @@ class BazelBuildBridge(object):
         if returncode:
           return returncode
 
+    # Update spotlight index with this updated dSYM bundle in case the binary's
+    # UUID changed.
+    self._RunSubprocess(['mdimport', dsym_bundle_path])
+
     return 0
 
   def _PatchdSYMPaths(self, dsym_bundle_path):
