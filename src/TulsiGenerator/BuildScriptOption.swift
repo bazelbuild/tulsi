@@ -1,4 +1,4 @@
-// Copyright 2017 The Tulsi Authors. All rights reserved.
+// Copyright 2018 The Tulsi Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let bazelBuildSettingsFeatures = [
-  // For non-distributed builds.
-  "TULSI_DEBUG_PREFIX_MAP",
-  // TODO(b/71515804): Remove if no issues are found in replacing post_processor with this.
-  "TULSI_PATCHLESS_DSYMS",
-]
+import Foundation
+
+
+public enum BuildScriptOptionID: String {
+  case ExtraRemapPath = "TULSI_EXTRA_REMAP_PATH"
+}
+
+public struct BuildScriptOption {
+  let identifier: BuildScriptOptionID
+  let arguments: String
+
+  public init(_ id: BuildScriptOptionID, arguments: String) {
+    self.identifier = id
+    self.arguments = arguments
+  }
+}

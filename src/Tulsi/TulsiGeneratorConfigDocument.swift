@@ -242,7 +242,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                            withGeneratorConfig config: TulsiGeneratorConfig,
                                            workspaceRootURL: URL,
                                            messageLog: MessageLogProtocol?,
-                                           projectInfoExtractor: TulsiProjectInfoExtractor? = nil) -> GenerationResult {
+                                           projectInfoExtractor: TulsiProjectInfoExtractor? = nil,
+                                           buildScriptOptions: [BuildScriptOption] = []) -> GenerationResult {
+
     let tulsiVersion: String
     if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       tulsiVersion = cfBundleVersion
@@ -256,7 +258,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let startTime = Date()
 
     do {
-      let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
+      let url = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL,
+                                                                  buildScriptOptions: buildScriptOptions)
       let timeTaken = String(format: "%.4fs", Date().timeIntervalSince(startTime))
       LogMessage.postSyslog("Generate[OK]: \(timeTaken)", context: config.projectName)
       return .success(url)

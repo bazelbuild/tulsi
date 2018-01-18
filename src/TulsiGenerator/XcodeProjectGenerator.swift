@@ -169,7 +169,8 @@ final class XcodeProjectGenerator {
 
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
-  func generateXcodeProjectInFolder(_ outputFolderURL: URL) throws -> URL {
+  func generateXcodeProjectInFolder(_ outputFolderURL: URL,
+                                    buildScriptOptions: [BuildScriptOption] = []) throws -> URL {
     let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project",
                                                                        context: config.projectName)
     defer { localizedMessageLogger.logProfilingEnd(generateProfilingToken) }
@@ -186,7 +187,9 @@ final class XcodeProjectGenerator {
       watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
       watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
-    let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup, stubInfoPlistPaths: plistPaths)
+    let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup,
+                                                         stubInfoPlistPaths: plistPaths,
+                                                         buildScriptOptions: buildScriptOptions)
 
     let serializingProgressNotifier = ProgressNotifier(name: SerializingXcodeProject,
                                                        maxValue: 1,
@@ -280,8 +283,10 @@ final class XcodeProjectGenerator {
     }
   }
 
-  // Generates a PBXProject and a returns it along with a set of
-  private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup, stubInfoPlistPaths: StubInfoPlistPaths) throws -> GeneratedProjectInfo {
+  // Generates a PBXProject and a returns it along with a set of build, test and indexer targets.
+  private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup,
+                                              stubInfoPlistPaths: StubInfoPlistPaths,
+                                              buildScriptOptions: [BuildScriptOption] = []) throws -> GeneratedProjectInfo {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
 
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool, enabled {
@@ -429,6 +434,10 @@ final class XcodeProjectGenerator {
       // Update this project's build settings with the latest feature flags.
       for featureFlag in bazelBuildSettingsFeatures {
         buildSettings[featureFlag] = "YES"
+      }
+
+      for buildScriptOption in buildScriptOptions {
+        buildSettings[buildScriptOption.identifier.rawValue] = buildScriptOption.arguments
       }
 
       buildSettings["TULSI_PROJECT"] = config.projectName

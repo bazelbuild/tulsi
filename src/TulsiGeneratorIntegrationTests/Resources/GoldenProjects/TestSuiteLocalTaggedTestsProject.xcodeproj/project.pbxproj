@@ -369,8 +369,6 @@
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
-				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -470,8 +468,6 @@
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
-				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -592,8 +588,6 @@
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
-				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -687,8 +681,6 @@
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = TestSuiteLocalTaggedTestsProject;
-				TULSI_STRICTER_REMAPPING = YES;
-				TULSI_TRAILING_SLASHES = YES;
 				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

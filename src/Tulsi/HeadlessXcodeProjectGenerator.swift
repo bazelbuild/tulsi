@@ -101,10 +101,19 @@ struct HeadlessXcodeProjectGenerator {
               "\tBazel at '\(config.bazelURL.path)'.\n" +
               "This may take a while.")
 
+    var buildScriptOptions = [BuildScriptOption]()
+
+    if let extraRemapPath = arguments.extraRemapPath {
+      let extraRemapOption = BuildScriptOption(.ExtraRemapPath, arguments: extraRemapPath)
+      buildScriptOptions.append(extraRemapOption)
+    }
+
     let result = TulsiGeneratorConfigDocument.generateXcodeProjectInFolder(outputFolderURL,
                                                                            withGeneratorConfig: config,
                                                                            workspaceRootURL: workspaceRootURL,
-                                                                           messageLog: nil)
+                                                                           messageLog: nil,
+                                                                           buildScriptOptions: buildScriptOptions)
+
     switch result {
       case .success(let url):
         print("Generated project at \(url.path)")
