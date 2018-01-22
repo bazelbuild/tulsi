@@ -504,7 +504,7 @@ class BazelBuildBridge(object):
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
     self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
-                                              'YES') == 'YES'
+                                              'NO') == 'YES'
     self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
 
     # Target architecture.  Must be defined for correct setting of
