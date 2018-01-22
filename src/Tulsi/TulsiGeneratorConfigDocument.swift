@@ -336,29 +336,32 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   override func save(to url: URL,
-                          ofType typeName: String,
-                          for saveOperation: NSSaveOperationType,
-                          completionHandler: @escaping (Error?) -> Void) {
-    super.save(to: url, ofType: typeName, for: saveOperation) { (error: Error?) in
-      if let error = error {
-        let fmt = NSLocalizedString("Error_ConfigSaveFailed",
-                                    comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
-        LogMessage.postWarning(String(format: fmt, error.localizedDescription))
+                     ofType typeName: String,
+                     for saveOperation: NSSaveOperationType,
+                     completionHandler: @escaping (Error?) -> Void) {
+    var writeError: NSError? = nil
+    do {
+      // TODO(b/72220228): Replace with super.save when cause of NSDocument deadlocks is resolved.
+      try write(to: url, ofType: typeName, for: saveOperation, originalContentsURL: nil)
+    } catch let error as NSError {
+      let fmt = NSLocalizedString("Error_ConfigSaveFailed",
+                                  comment: "Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@.")
+      LogMessage.postWarning(String(format: fmt, error.localizedDescription))
 
-        let alert = NSAlert(error: error)
-        alert.runModal()
-      }
+      let alert = NSAlert(error: error)
+      alert.runModal()
 
-      completionHandler(error)
+      writeError = error
+    }
+    completionHandler(writeError)
 
-      if let concreteCompletionHandler = self.saveCompletionHandler {
-        concreteCompletionHandler(false, error)
-        self.saveCompletionHandler = nil
-      }
+    if let concreteCompletionHandler = self.saveCompletionHandler {
+      concreteCompletionHandler(false, writeError)
+      self.saveCompletionHandler = nil
+    }
 
-      if error == nil {
-        self.delegate?.didNameTulsiGeneratorConfigDocument(self)
-      }
+    if writeError == nil {
+      self.delegate?.didNameTulsiGeneratorConfigDocument(self)
     }
   }
 
@@ -366,15 +369,17 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     guard let config = makeConfig() else {
       throw TulsiError(code: .configNotSaveable)
     }
-    if typeName == TulsiGeneratorConfigDocument.FileType {
+    switch typeName {
+    case TulsiGeneratorConfigDocument.FileType:
       return try config.save() as Data
-    } else if typeName == TulsiGeneratorConfigDocument.PerUserFileType {
+    case TulsiGeneratorConfigDocument.PerUserFileType:
       if let userSettings = try config.savePerUserSettings() {
         return userSettings as Data
       }
       return Data()
+    default:
+      throw NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: nil)
     }
-    throw NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: nil)
   }
 
   override func read(from url: URL, ofType typeName: String) throws {
