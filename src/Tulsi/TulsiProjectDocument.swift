@@ -442,8 +442,7 @@ final class TulsiProjectDocument: NSDocument,
 
   // MARK: - TulsiGeneratorConfigDocumentDelegate
 
-  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument) {
-    guard let configName = document.configName else { return }
+  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument, configName: String) {
     if !generatorConfigNames.contains(configName) {
       let configNames = (generatorConfigNames + [configName]).sorted()
       generatorConfigNames = configNames

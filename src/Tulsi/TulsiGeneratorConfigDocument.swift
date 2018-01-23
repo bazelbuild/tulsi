@@ -18,7 +18,7 @@ import TulsiGenerator
 
 protocol TulsiGeneratorConfigDocumentDelegate: class {
   /// Called when the TulsiGeneratorConfigDocument is saved successfully with a new name.
-  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument)
+  func didNameTulsiGeneratorConfigDocument(_ document: TulsiGeneratorConfigDocument, configName: String)
 
   /// Used to retrieve project-level option values.
   func parentOptionSetForConfigDocument(_ document: TulsiGeneratorConfigDocument) -> TulsiOptionSet?
@@ -361,7 +361,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
 
     if writeError == nil {
-      self.delegate?.didNameTulsiGeneratorConfigDocument(self)
+      let configName = (url.lastPathComponent as NSString).deletingPathExtension
+      self.delegate?.didNameTulsiGeneratorConfigDocument(self, configName: configName)
     }
   }
 
