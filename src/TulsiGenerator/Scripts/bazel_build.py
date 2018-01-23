@@ -777,6 +777,7 @@ class BazelBuildBridge(object):
 
     bazel_command.extend([
         '--build_event_json_file=%s' % self.build_events_file_path,
+        #  '--bes_outerr_buffer_size=0',  #  Waiting on a new external release.
         '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
