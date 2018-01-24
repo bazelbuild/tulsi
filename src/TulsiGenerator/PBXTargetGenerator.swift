@@ -1242,7 +1242,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
     // binary's build settings. If the chain is broken, just return the current testSettings.
-    guard let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
+    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String,
+          let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
           let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
           let testBundleBinary = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleBinaryLabelString), depender: testBundle) else {
       return testSettings
