@@ -325,21 +325,22 @@ def _collect_xcdatamodeld_files(obj, attr_path):
   return datamodelds
 
 
-def _collect_dependency_labels(rule, attr_list):
+def _collect_dependency_labels(rule, filter, attr_list):
   """Collects Bazel labels for a list of dependency attributes.
 
   Args:
     rule: The Bazel rule whose dependencies should be collected.
+    filter: Filter to apply when gathering dependencies.
     attr_list: List of attribute names potentially containing Bazel labels for
         dependencies of the given rule.
 
   Returns:
     A list of the Bazel labels of dependencies of the given rule.
   """
-  rule_attrs = rule.attr
+  attr = rule.attr
   deps = [dep
           for attribute in attr_list
-          for dep in _getattr_as_list(rule_attrs, attribute)]
+          for dep in _filter_deps(filter, _getattr_as_list(attr, attribute))]
   return [dep.label for dep in deps if hasattr(dep, 'label')]
 
 
@@ -507,11 +508,26 @@ def _collect_swift_header(target):
   return headers
 
 
+def _target_filtering_info(ctx):
+  """Returns filtering information for test rules."""
+  rule = ctx.rule
+
+  # TODO(b/72406542): Clean this up to use a test provider if possible.
+  if rule.kind.endswith('_test'):
+    # Note that a test's size is considered a tag for filtering purposes.
+    size = _getattr_as_list(rule, 'attr.size')
+    tags = _getattr_as_list(rule, 'attr.tags')
+    return struct(tags=tags + size)
+  else:
+    return None
+
+
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
   rule = ctx.rule
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
+  filter = _filter_for_rule(rule)
   bundle_name = None
   if AppleBundleInfo in target:
     bundle_name = target[AppleBundleInfo].bundle_name
@@ -520,7 +536,7 @@ def _tulsi_sources_aspect(target, ctx):
   transitive_attributes = dict()
   for attr_name in _TULSI_COMPILE_DEPS:
     deps = _getattr_as_list(rule_attr, attr_name)
-    for dep in deps:
+    for dep in _filter_deps(filter, deps):
       if hasattr(dep, 'tulsi_info_files'):
         tulsi_info_files += dep.tulsi_info_files
       if hasattr(dep, 'transitive_attributes'):
@@ -558,7 +574,7 @@ def _tulsi_sources_aspect(target, ctx):
 
   # Collect the dependencies of this rule, dropping any .jar files (which may be
   # created as artifacts of java/j2objc rules).
-  dep_labels = _collect_dependency_labels(rule, _TULSI_COMPILE_DEPS)
+  dep_labels = _collect_dependency_labels(rule, filter, _TULSI_COMPILE_DEPS)
   compile_deps = [str(d) for d in dep_labels if not d.name.endswith('.jar')]
 
   binary_rule = _get_opt_attr(rule_attr, 'binary')
@@ -686,6 +702,8 @@ def _tulsi_sources_aspect(target, ctx):
       transitive_attributes=transitive_attributes,
       # Artifacts from this rule.
       artifacts=artifacts_depset,
+      # Filtering information for this target.
+      filtering_info=_target_filtering_info(ctx),
   )
 
 
@@ -701,6 +719,82 @@ def _collect_bundle_info(target):
         has_dsym=has_dsym)]
 
   return None
+
+
+# Due to b/71744111 we have to manually re-create tag filtering for test_suite
+# rules.
+def _tags_conform_to_filter(tags, filter):
+  """Mirrors Bazel tag filtering for test_suites.
+
+  This makes sure that the target has all of the required tags and none of
+  the excluded tags before we include them within a test_suite.
+
+  For more information on filtering inside Bazel, see
+  com.google.devtools.build.lib.packages.TestTargetUtils.java.
+
+  Args:
+    tags: all of the tags for the test target
+    filter: a struct containing excluded_tags and required_tags
+
+  Returns:
+    True if this target passes the filter and False otherwise.
+
+  """
+
+  # None of the excluded tags can be present.
+  for exclude in filter.excluded_tags:
+    if exclude in tags:
+      return False
+
+  # All of the required tags must be present.
+  for required in filter.required_tags:
+    if required not in tags:
+      return False
+
+  # All filters have been satisfied.
+  return True
+
+
+def _filter_for_rule(rule):
+  """Returns a filter for test_suite rules and None for other rules."""
+  if rule.kind != 'test_suite':
+    return None
+
+  excluded_tags = []
+  required_tags = []
+
+  tags = _getattr_as_list(rule, 'attr.tags')
+
+  for tag in tags:
+    if tag.startswith('-'):
+      excluded_tags.append(tag[1:])
+    elif tag.startswith('+'):
+      required_tags.append(tag[1:])
+    elif tag == 'manual':
+      # The manual tag is treated specially; it is ignored for filters.
+      continue
+    else:
+      required_tags.append(tag)
+  return struct(
+      excluded_tags=excluded_tags,
+      required_tags=required_tags,
+  )
+
+
+def _filter_deps(filter, deps):
+  """Filters dep targets based on tags."""
+  if not filter:
+    return deps
+
+  kept_deps = []
+  for dep in deps:
+    info = dep.filtering_info
+    # Only attempt to filter targets that support filtering.
+    # test_suites in a test_suite are not filtered, but their
+    # tests are.
+    if not info or _tags_conform_to_filter(info.tags, filter):
+      kept_deps.append(dep)
+  return kept_deps
 
 
 def _tulsi_outputs_aspect(target, ctx):
