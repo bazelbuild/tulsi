@@ -162,10 +162,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
     }
   }
 
-  func testTestSuiteSchemeGeneration() {
-    checkTestSuiteSchemeGeneration("ios_test", testHostAttributeName: "xctest_app")
-  }
-
   func testTestSuiteSchemeGenerationWithSkylarkUnitTest() {
     checkTestSuiteSchemeGeneration("apple_unit_test", testHostAttributeName: "test_host")
   }
@@ -459,11 +455,9 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                                               deploymentTarget: entry.deploymentTarget,
                                               targetType: entry.pbxTargetType!)
 
-      for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
-        if let hostLabelString = entry.attributes[attribute] as? String {
-          let hostLabel = BuildLabel(hostLabelString)
-          testTargetLinkages.append((target, hostLabel))
-        }
+      if let hostLabelString = entry.attributes[.test_host] as? String {
+        let hostLabel = BuildLabel(hostLabelString)
+        testTargetLinkages.append((target, hostLabel))
       }
     }
 

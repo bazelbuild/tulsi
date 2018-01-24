@@ -388,22 +388,20 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/file.java"])
   }
 
-  func testPlatformDependentXCTestWithDefaultApp() throws {
+  func testPlatformDependentXCTestWithNoTestHost() throws {
     installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithDefaultHost")],
+    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithNoTestHost")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-    checker.assertThat("//tulsi_test:XCTestWithDefaultHost")
-        .hasTestHost("//tools/build_defs/apple/testing:ios_default_host")
-        .dependsOn("//tools/build_defs/apple/testing:ios_default_host")
-        .dependsOn("//tulsi_test:XCTestWithDefaultHost_test_bundle")
+    checker.assertThat("//tulsi_test:XCTestWithNoTestHost")
+        .doesNotHaveTestHost()
+        .dependsOn("//tulsi_test:XCTestWithNoTestHost_test_bundle")
 
-    checker.assertThat("//tulsi_test:XCTestWithDefaultHost_test_bundle")
-        .dependsOn("//tools/build_defs/apple/testing:ios_default_host")
-        .dependsOn("//tulsi_test:XCTestWithDefaultHost_test_binary")
+    checker.assertThat("//tulsi_test:XCTestWithNoTestHost_test_bundle")
+        .dependsOn("//tulsi_test:XCTestWithNoTestHost_test_binary")
 
-    checker.assertThat("//tulsi_test:XCTestWithDefaultHost_test_binary")
+    checker.assertThat("//tulsi_test:XCTestWithNoTestHost_test_binary")
         .dependsOn("//tulsi_test:XCTestCode")
         .dependsOn("//tulsi_test:XCTestCodeSwift")
   }
@@ -514,18 +512,15 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: false)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 8)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 18)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir)/One:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasSources(["\(testDir)/One/XCTest.m"])
     checker.assertThat("//\(testDir)/Two:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasSources(["\(testDir)/Two/XCTest.m"])
     checker.assertThat("//\(testDir)/Three:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasSources(["\(testDir)/Three/XCTest.m"])
 
   }
 
@@ -534,20 +529,18 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: true)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 9)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 19)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):explicit_XCTests")
       .hasType("test_suite")
     checker.assertThat("//\(testDir)/One:XCTest")
       .hasTestHost("//\(testDir):TestApplication")
-      .hasSources(["\(testDir)/One/XCTest.m"])
     checker.assertThat("//\(testDir)/Two:XCTest")
       .hasTestHost("//\(testDir):TestApplication")
-      .hasSources(["\(testDir)/Two/XCTest.m"])
     checker.assertThat("//\(testDir)/Three:XCTest")
       .hasTestHost("//\(testDir):TestApplication")
-      .hasSources(["\(testDir)/Three/XCTest.m"])
+
 
   }
 
@@ -556,31 +549,23 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: false)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 6)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 10)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):TestSuiteXCTest")
         .hasTestHost("//\(testDir):TestApplication")
-        .hasSources(["\(testDir)/TestSuite/TestSuiteXCTest.m"])
   }
 
-  // TODO: Potentially support tagged tests from a test_suite via Aspect. When we do, this test
-  // should be updated the match testTestSuite_TaggedTests_Query().
   func testTestSuite_TaggedTests_Aspect() throws {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: true)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 8)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 11)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):TestSuiteXCTest")
       .hasTestHost("//\(testDir):TestApplication")
-      .hasSources(["\(testDir)/TestSuite/TestSuiteXCTest.m"])
-
-    checker.assertThat("//\(testDir):TestSuiteXCTestNotTagged")
-      .hasTestHost("//\(testDir):TestApplication")
-      .hasSources(["\(testDir)/TestSuite/RootXCTest.m"])
   }
 }
 
@@ -724,22 +709,27 @@ private class InfoChecker {
       return self
     }
 
-    /// Asserts that the contextual RuleEntry is an ios_test with an xctest_app identified by the
+    /// Asserts that the contextual RuleEntry is a test target with a test_host identified by the
     /// given label.
+    @discardableResult
     func hasTestHost(_ targetLabel: String, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
-      if let oldHostLabelString = ruleEntry.attributes[.xctest_app] as? String {
-        XCTAssertEqual(oldHostLabelString,
-                       targetLabel,
-                       "\(ruleEntry) expected to have an xctest_app of \(targetLabel)",
-                       line: line)
-        return self
-      }
       let hostLabelString = ruleEntry.attributes[.test_host] as? String
       XCTAssertEqual(hostLabelString,
                      targetLabel,
                      "\(ruleEntry) expected to have a test_host of \(targetLabel)",
                      line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry is a test target without a test_host.
+    @discardableResult
+    func doesNotHaveTestHost(line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      let hostLabelString = ruleEntry.attributes[.test_host] as? String
+      XCTAssertNil(hostLabelString,
+                   "\(ruleEntry) expected to not have a test host",
+                   line: line)
       return self
     }
 

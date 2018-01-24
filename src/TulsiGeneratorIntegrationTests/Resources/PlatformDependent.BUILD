@@ -170,7 +170,7 @@ ios_unit_test(
 )
 
 ios_unit_test(
-    name = "XCTestWithDefaultHost",
+    name = "XCTestWithNoTestHost",
     minimum_os_version = "8.0",
     deps = [
         ":XCTestCode",

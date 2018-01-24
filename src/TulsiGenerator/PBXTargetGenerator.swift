@@ -775,25 +775,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      named: name,
                                                      ruleEntryMap: ruleEntryMap)
 
-      let testHostAttribute: RuleEntry.Attribute?
-      switch entry.type {
-      case "ios_test":
-        testHostAttribute = .xctest_app
-      case "apple_unit_test", "apple_ui_test":
-        testHostAttribute = .test_host
-      default:
-        testHostAttribute = nil
-      }
-
-      if let attribute = testHostAttribute {
-        if let hostLabelString = entry.attributes[attribute] as? String {
-          let hostLabel = BuildLabel(hostLabelString)
-          testTargetLinkages.append((target, hostLabel, entry))
-        } else if entry.pbxTargetType == .UnitTest {
-          // If there is no host and it's a unit test, assume it doesn't need one, i.e. it's a
-          // library based test.
-          testTargetLinkages.append((target, nil, entry))
-        }
+      if let hostLabelString = entry.attributes[.test_host] as? String {
+        let hostLabel = BuildLabel(hostLabelString)
+        testTargetLinkages.append((target, hostLabel, entry))
+      } else if entry.pbxTargetType == .UnitTest {
+        // If there is no host and it's a unit test, assume it doesn't need one, i.e. it's a
+        // library based test.
+        testTargetLinkages.append((target, nil, entry))
       }
 
       switch entry.pbxTargetType {
@@ -1252,13 +1240,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
     }
 
-    // If this target doesn't have a test_bundle attribute, it must be an ios_test target, since
-    // the test_bundle attribute is required only for apple_unit_test and apple_ui_test. This means
-    // we have no extra test settings to add.
-    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String else {
-      return testSettings
-    }
-
     // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
     // binary's build settings. If the chain is broken, just return the current testSettings.
     guard let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
@@ -1310,9 +1291,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   // apple_unit_test) and a boolean indicating whether the test sources include Swift files.
   private func testSourceFiles(forRuleEntry ruleEntry: RuleEntry,
                                ruleEntryMap: RuleEntryMap) -> ([BazelFileInfo], [BazelFileInfo], Bool) {
-    // If this target doesn't have a test_bundle attribute, it must be an ios_test target, since
-    // the test_bundle attribute is required only for apple_unit_test and apple_ui_test. For
-    // ios_test, we return its sources directly.
+    // Check if the test target returns contains a test_bundle attribute get the test sources from.
     guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String else {
       return (ruleEntry.sourceFiles, ruleEntry.nonARCSourceFiles, false)
     }

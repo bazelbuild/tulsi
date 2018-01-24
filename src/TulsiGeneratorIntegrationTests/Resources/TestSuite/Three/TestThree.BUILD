@@ -14,30 +14,47 @@
 
 # Simple mock test.
 
+load("//tools/build_defs/apple:ios.bzl", "ios_unit_test")
+
 test_suite(
     name = "tagged_tests",
     tags = ["tagged"],
 )
 
-ios_test(
-    name = "XCTest",
+objc_library(
+    name = "XCTestLib",
     srcs = ["XCTest.m"],
-    xctest = 1,
-    xctest_app = "//TestSuite:TestApplication",
+    deps = ["//TestSuite:ApplicationLibrary"],
 )
 
-ios_test(
-    name = "tagged_xctest_1",
+objc_library(
+    name = "tagged_xctest_1_lib",
     srcs = ["tagged_xctest_1.m"],
-    tags = ["tagged"],
-    xctest = 1,
-    xctest_app = "//TestSuite:TestApplication",
+    deps = ["//TestSuite:ApplicationLibrary"],
 )
 
-ios_test(
-    name = "tagged_xctest_2",
+objc_library(
+    name = "tagged_xctest_2_lib",
     srcs = ["tagged_xctest_2.m"],
+    deps = ["//TestSuite:ApplicationLibrary"],
+)
+
+ios_unit_test(
+    name = "XCTest",
+    test_host = "//TestSuite:TestApplication",
+    deps = [":XCTestLib"],
+)
+
+ios_unit_test(
+    name = "tagged_xctest_1",
     tags = ["tagged"],
-    xctest = 1,
-    xctest_app = "//TestSuite:TestApplication",
+    test_host = "//TestSuite:TestApplication",
+    deps = [":tagged_xctest_1_lib"],
+)
+
+ios_unit_test(
+    name = "tagged_xctest_2",
+    tags = ["tagged"],
+    test_host = "//TestSuite:TestApplication",
+    deps = [":tagged_xctest_2_lib"],
 )

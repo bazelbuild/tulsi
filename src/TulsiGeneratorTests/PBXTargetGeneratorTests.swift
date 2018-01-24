@@ -402,11 +402,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
-  func testGenerateTargetsForLinkedRuleEntriesWithNoSources() {
-    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("ios_test",
-                                                          testHostAttributeName: "xctest_app")
-  }
-
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_unit_test",
                                                           testHostAttributeName: "test_host")
@@ -1000,11 +995,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
-  func testGenerateTargetsForLinkedRuleEntriesWithSources() {
-    checkGenerateTargetsForLinkedRuleEntriesWithSources("ios_test",
-                                                        testHostAttributeName: "xctest_app")
-  }
-
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_unit_test",
                                                         testHostAttributeName: "test_host")
@@ -1413,11 +1403,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
   }
 
-  func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages() {
-    checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-        "ios_test", testHostAttributeName: "xctest_app")
-  }
-
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
         "apple_unit_test", testHostAttributeName: "test_host")
@@ -1462,11 +1447,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
     XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
-  }
-
-  func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns() {
-    checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
-        "ios_test", testHostAttributeName: "xctest_app")
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarnsWithSkylarkUnitTest() {
@@ -2521,64 +2501,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     validateIndexerTarget(indexer2TargetName,
                           sourceFileNames: sourceFileNames,
                           inTargets: targets)
-  }
-
-  func testImplicitIPATargetListedAsFirstArtifact() {
-    let targetName = "TestTarget"
-    let package = "test/package/1"
-    let target = "\(package):\(targetName)"
-    let targetType = "ios_test"
-
-    let testRule = makeTestRuleEntry(target,
-                                     type: targetType,
-                                     artifacts: ["some/path/to/an/ipa.ipa",
-                                                 "test/app/TestApplication.ipa"])
-    do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: RuleEntryMap())
-    } catch let e as NSError {
-      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
-    }
-    XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
-
-    let targets = project.targetByName
-    XCTAssertEqual(targets.count, 1)
-
-    let expectedBuildSettings = [
-        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
-        "BAZEL_TARGET": target,
-        "DEBUG_INFORMATION_FORMAT": "dwarf",
-        "INFOPLIST_FILE": "TestInfo.plist",
-        "PRODUCT_NAME": targetName,
-        "SDKROOT": "iphoneos",
-        "TULSI_BUILD_PATH": package,
-        "TULSI_USE_DSYM": "NO",
-        "TULSI_TEST_RUNNER_ONLY": "YES",
-    ]
-    let expectedTarget = TargetDefinition(
-        name: "TestTarget",
-        buildConfigurations: [
-            BuildConfigurationDefinition(
-                name: "Debug",
-                expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
-            ),
-            BuildConfigurationDefinition(
-                name: "Release",
-                expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
-            ),
-            BuildConfigurationDefinition(
-                name: "__TulsiTestRunner_Debug",
-                expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-            ),
-            BuildConfigurationDefinition(
-                name: "__TulsiTestRunner_Release",
-                expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
-            ),
-        ],
-        expectedBuildPhases: [
-            BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
-        ]
-    )
-    assertTarget(expectedTarget, inTargets: targets)
   }
 
   func testSwiftTargetsGeneratedSYMBundles() {

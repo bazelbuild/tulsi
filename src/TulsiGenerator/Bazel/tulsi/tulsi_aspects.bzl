@@ -77,8 +77,6 @@ _SUPPORTING_FILE_ATTRIBUTES = [
 _IPA_GENERATING_RULES = [
     'ios_application',
     'ios_extension',
-    'ios_test',
-    'objc_binary',
     'tvos_application',
 ]
 
@@ -836,7 +834,7 @@ def _tulsi_outputs_aspect(target, ctx):
 
     artifacts = [x.path for x in target.files]
     if ipa_output_name:
-      # Some targets produce more than one IPA or ZIP (e.g. ios_test will
+      # Some targets produce more than one IPA or ZIP (e.g. ios_unit_test will
       # generate two IPAs for the test and host bundles), we want to filter only
       # exact matches to label name.
       output_ipa = '/%s.ipa' % ipa_output_name

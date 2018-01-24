@@ -21,6 +21,7 @@ package(
 load(
     "//tools/build_defs/apple:ios.bzl",
     "ios_application",
+    "ios_unit_test",
 )
 
 test_suite(
@@ -66,16 +67,27 @@ objc_library(
     ],
 )
 
-# TODO(b/66187599): Migrate these when support is removed.
-ios_test(
-    name = "TestSuiteXCTest",
+objc_library(
+    name = "TestSuiteXCTestLib",
     srcs = ["TestSuite/TestSuiteXCTest.m"],
-    tags = ["tagged"],
-    xctest_app = ":TestApplication",
+    deps = [":ApplicationLibrary"],
 )
 
-ios_test(
-    name = "TestSuiteXCTestNotTagged",
+objc_library(
+    name = "TestSuiteXCTestNotTaggedLib",
     srcs = ["TestSuite/RootXCTest.m"],
-    xctest_app = ":TestApplication",
+    deps = [":ApplicationLibrary"],
+)
+
+ios_unit_test(
+    name = "TestSuiteXCTest",
+    tags = ["tagged"],
+    test_host = ":TestApplication",
+    deps = [":TestSuiteXCTestLib"],
+)
+
+ios_unit_test(
+    name = "TestSuiteXCTestNotTagged",
+    test_host = ":TestApplication",
+    deps = [":TestSuiteXCTestNotTaggedLib"],
 )

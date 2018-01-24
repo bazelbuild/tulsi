@@ -39,7 +39,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  type: "ios_application",
                                  linkedTargetLabels: []),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
-                                 type: "ios_test",
+                                 type: "apple_unit_test",
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 

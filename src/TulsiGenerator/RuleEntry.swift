@@ -141,7 +141,6 @@ public final class RuleEntry: RuleInfo {
       "ios_extension": PBXTarget.ProductType.AppExtension,
       "ios_framework": PBXTarget.ProductType.Framework,
       "ios_legacy_test": PBXTarget.ProductType.Application,
-      "ios_test": PBXTarget.ProductType.UnitTest,
       "macos_application": PBXTarget.ProductType.Application,
       "macos_bundle": PBXTarget.ProductType.Bundle,
       "macos_command_line_application": PBXTarget.ProductType.Tool,
@@ -182,9 +181,6 @@ public final class RuleEntry: RuleInfo {
     // For the apple_unit_test and apple_ui_test rules, contains a label reference to the
     // ios_application target to be used as the test host when running the tests.
     case test_host
-    // For the ios_test rule, contains a label reference to the ios_application target to be used as
-    // the test host when running the tests.
-    case xctest_app
   }
 
   /// Bazel attributes for this rule (e.g., "binary": <some label> on an ios_application).
@@ -392,10 +388,8 @@ public final class RuleEntry: RuleInfo {
     self.extensionType = extensionType
 
     var linkedTargetLabels = Set<BuildLabel>()
-    for attribute in [.xctest_app, .test_host] as [RuleEntry.Attribute] {
-      if let hostLabelString = self.attributes[attribute] as? String {
-        linkedTargetLabels.insert(BuildLabel(hostLabelString))
-      }
+    if let hostLabelString = self.attributes[.test_host] as? String {
+      linkedTargetLabels.insert(BuildLabel(hostLabelString))
     }
 
     super.init(label: label, type: type, linkedTargetLabels: linkedTargetLabels)

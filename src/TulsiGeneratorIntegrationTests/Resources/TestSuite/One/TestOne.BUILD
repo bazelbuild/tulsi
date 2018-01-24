@@ -14,13 +14,21 @@
 
 # Simple mock test.
 
+load("//tools/build_defs/apple:ios.bzl", "ios_unit_test")
+
 test_suite(
     name = "explicit_XCTests",
     tests = [":XCTest"],
 )
 
-ios_test(
-    name = "XCTest",
+objc_library(
+    name = "XCTestLib",
     srcs = ["XCTest.m"],
-    xctest_app = "//TestSuite:TestApplication",
+    deps = ["//TestSuite:ApplicationLibrary"],
+)
+
+ios_unit_test(
+    name = "XCTest",
+    test_host = "//TestSuite:TestApplication",
+    deps = [":XCTestLib"],
 )
