@@ -717,6 +717,7 @@ class BazelBuildBridge(object):
       # into the test host that need to be signed with the same identity as
       # the host itself.
       if (self.is_test and self.xcode_version_minor >= 730 and
+          not self.platform_name.startswith('macos') and
           self.codesigning_allowed):
         exit_code = self._ResignTestArtifacts()
         if exit_code:
