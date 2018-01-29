@@ -941,8 +941,9 @@ class BazelBuildBridge(object):
 
     if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
       bundle_name = output_data.get('bundle_name')
-      exit_code = self._UnpackTarget(primary_artifact, xcode_artifact_path,
-                                     bundle_name=bundle_name)
+      exit_code = self._UnpackTarget(primary_artifact,
+                                     xcode_artifact_path,
+                                     bundle_name)
       if exit_code:
         return exit_code
 
@@ -1078,47 +1079,32 @@ class BazelBuildBridge(object):
       return 650
     return 0
 
-  def _UnpackTarget(self, ipa_path, output_path, bundle_name=None):
-    """Unpacks generated IPA into the given expected output path."""
-    self._PrintVerbose('Unpacking %s to %s' % (ipa_path, output_path))
+  def _UnpackTarget(self, bundle_path, output_path, bundle_name):
+    """Unpacks generated bundle into the given expected output path."""
+    self._PrintVerbose('Unpacking %s to %s' % (bundle_path, output_path))
 
-    if not os.path.isfile(ipa_path):
-      _PrintXcodeError('Generated IPA not found at "%s"' % ipa_path)
+    if not os.path.isfile(bundle_path):
+      _PrintXcodeError('Generated bundle not found at "%s"' % bundle_path)
       return 670
 
     # We need to handle IPAs (from the native rules) differently from ZIPs
     # (from the Skylark rules) because they output slightly different directory
     # structures.
-    is_ipa = ipa_path.endswith('.ipa')
+    is_ipa = bundle_path.endswith('.ipa')
 
-    if bundle_name:
-      expected_bundle_name = bundle_name + self.wrapper_suffix
-    else:
-      # TODO(b/33050780): Remove this branch when native rules are removed.
-      # With old native rules Tulsi expects the bundle within the IPA to be the
-      # product name with the suffix expected by Xcode attached to it.
-      expected_bundle_name = self.bazel_product_name + self.wrapper_suffix
+    expected_bundle_name = bundle_name + self.wrapper_suffix
 
     # The directory structure within the IPA is then determined based on Bazel's
     # package and/or product type.
     if is_ipa:
-      if self.platform_name.startswith('macos'):
-        # The test rules for now need to output .ipa files instead of .zip
-        # files. For this reason, macOS xctest bundles are detected as IPA
-        # files. So, if we're building for macOS and it's and IPA, just use
-        # the expected_bundle_name.
-        # TODO(b/34774324): Clean this so macOS bundles always fall outside of
-        # the is_ipa if branch.
-        expected_ipa_subpath = expected_bundle_name
-      else:
-        expected_ipa_subpath = os.path.join('Payload', expected_bundle_name)
+      expected_bundle_subpath = os.path.join('Payload', expected_bundle_name)
     else:
       # If the artifact is a ZIP, assume that the bundle is the top-level
       # directory (this is the way in which Skylark rules package artifacts
       # that are not standalone IPAs).
-      expected_ipa_subpath = expected_bundle_name
+      expected_bundle_subpath = expected_bundle_name
 
-    with zipfile.ZipFile(ipa_path, 'r') as zf:
+    with zipfile.ZipFile(bundle_path, 'r') as zf:
       for item in zf.infolist():
         filename = item.filename
 
@@ -1128,25 +1114,24 @@ class BazelBuildBridge(object):
         if basedir.endswith('Support') or basedir.endswith('Support2'):
           continue
 
-        if len(filename) < len(expected_ipa_subpath):
+        if len(filename) < len(expected_bundle_subpath):
           continue
 
         attributes = (item.external_attr >> 16) & 0777
         self._PrintVerbose('Extracting %s (%o)' % (filename, attributes),
                            level=1)
 
-        if not filename.startswith(expected_ipa_subpath):
+        if not filename.startswith(expected_bundle_subpath):
           # TODO(abaire): Make an error if Bazel modifies this behavior.
-          _PrintXcodeWarning('Mismatched extraction path. IPA content at '
-                             '"%s" expected to have subpath of "%s"' %
-                             (filename, expected_ipa_subpath))
+          _PrintXcodeWarning('Mismatched extraction path. Bundle content '
+                             'at "%s" expected to have subpath of "%s"' %
+                             (filename, expected_bundle_subpath))
 
         dir_components = self._SplitPathComponents(filename)
 
         # Get the file's path, ignoring the payload components if the archive
-        # is an IPA and it's not a macOS bundle.
-        # TODO(b/34774324): Clean this.
-        if is_ipa and not self.platform_name.startswith('macos'):
+        # is an IPA.
+        if is_ipa:
           subpath = os.path.join(*dir_components[2:])
         else:
           subpath = os.path.join(*dir_components[1:])
