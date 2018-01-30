@@ -343,6 +343,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = macosx;
+				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSProject;
@@ -364,7 +365,7 @@
 				PRODUCT_NAME = MyCommandLineApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -381,7 +382,7 @@
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -398,7 +399,7 @@
 				PRODUCT_NAME = MyTodayExtension;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
 		};
@@ -442,10 +443,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = macosx;
+				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSProject;
-				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -464,7 +466,7 @@
 				PRODUCT_NAME = MyCommandLineApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -481,7 +483,7 @@
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -498,7 +500,7 @@
 				PRODUCT_NAME = MyTodayExtension;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
 		};
@@ -547,6 +549,7 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSProject;
@@ -576,7 +579,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -601,7 +604,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -626,7 +629,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = NO;
+				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -662,10 +665,11 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSProject;
-				TULSI_USE_DSYM = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -692,7 +696,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -717,7 +721,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -742,7 +746,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_USE_DSYM = YES;
+				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
 		};
