@@ -195,6 +195,7 @@ class QueryTests_TestSuiteExtraction: BazelIntegrationTestCase {
         .hasType("test_suite")
         .hasNoLinkedTargetLabels()
         .hasDependencies(["//\(testDir)/One:XCTest",
+                          "//\(testDir)/One:LogicTest",
                           "//\(testDir)/Two:XCTest",
                           "//\(testDir)/Three:XCTest"])
   }

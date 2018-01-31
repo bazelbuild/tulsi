@@ -676,7 +676,9 @@ final class XcodeProjectGenerator {
           continue
         }
 
-        guard let testHostTarget = info.project.linkedHostForTestTarget(testTarget) as? PBXNativeTarget else {
+        // Only UnitTests do not need a test host; they are considered 'logic tests'.
+        let testHostTarget = info.project.linkedHostForTestTarget(testTarget) as? PBXNativeTarget
+        if testHostTarget == nil && testTarget.productType != .UnitTest {
           localizedMessageLogger.warning("TestSuiteTestHostResolutionFailed",
                                          comment: "Warning shown when the test host for a test %1$@ inside test suite %2$@ could not be found. The test will be ignored, but this state is unexpected and should be reported.",
                                          context: config.projectName,
@@ -696,7 +698,7 @@ final class XcodeProjectGenerator {
 
     func installSchemeForTestSuite(_ suite: RuleEntry, named suiteName: String) throws {
       let (validTests, extractedHostTarget) = extractTestTargets(suite)
-      guard let concreteTarget = extractedHostTarget, !validTests.isEmpty else {
+      guard !validTests.isEmpty else {
         localizedMessageLogger.warning("TestSuiteHasNoValidTests",
                                        comment: "Warning shown when none of the tests of a test suite %1$@ were able to be resolved.",
                                        context: config.projectName,
@@ -707,7 +709,7 @@ final class XcodeProjectGenerator {
       let filename = suiteName + "_Suite.xcscheme"
 
       let url = xcschemesURL.appendingPathComponent(filename)
-      let scheme = XcodeScheme(target: concreteTarget,
+      let scheme = XcodeScheme(target: extractedHostTarget,
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",

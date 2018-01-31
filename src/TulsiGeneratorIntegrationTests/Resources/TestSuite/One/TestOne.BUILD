@@ -18,7 +18,10 @@ load("//tools/build_defs/apple:ios.bzl", "ios_unit_test")
 
 test_suite(
     name = "explicit_XCTests",
-    tests = [":XCTest"],
+    tests = [
+        ":LogicTest",
+        ":XCTest",
+    ],
 )
 
 objc_library(
@@ -31,4 +34,14 @@ ios_unit_test(
     name = "XCTest",
     test_host = "//TestSuite:TestApplication",
     deps = [":XCTestLib"],
+)
+
+objc_library(
+    name = "LogicTestLib",
+    srcs = ["LogicTest.m"],
+)
+
+ios_unit_test(
+    name = "LogicTest",
+    deps = [":LogicTestLib"],
 )

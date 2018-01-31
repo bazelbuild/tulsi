@@ -35,7 +35,10 @@ final class XcodeScheme {
   }
 
   let version: String
-  let target: PBXTarget
+  /// Logic tests do not have a main buildable target.
+  let target: PBXTarget?
+  let primaryTargetBuildableReference: BuildableReference?
+
   let project: PBXProject
   let projectBundleName: String
   let testActionBuildConfig: String
@@ -52,14 +55,13 @@ final class XcodeScheme {
   // primary target.
   let additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]?
 
-  let primaryTargetBuildableReference: BuildableReference
   let commandlineArguments: [String]
   let environmentVariables: [String: String]
   let preActionScripts: [XcodeActionType: String]
   let postActionScripts: [XcodeActionType: String]
   let localizedMessageLogger: LocalizedMessageLogger
 
-  init(target: PBXTarget,
+  init(target: PBXTarget?,
        project: PBXProject,
        projectBundleName: String,
        testActionBuildConfig: String = "Debug",
@@ -80,7 +82,6 @@ final class XcodeScheme {
        postActionScripts: [XcodeActionType: String],
        localizedMessageLogger: LocalizedMessageLogger) {
     self.version = version
-    self.target = target
     self.project = project
     self.projectBundleName = projectBundleName
     self.testActionBuildConfig = testActionBuildConfig
@@ -103,8 +104,14 @@ final class XcodeScheme {
 
     self.localizedMessageLogger = localizedMessageLogger
 
-    primaryTargetBuildableReference = BuildableReference(target: target,
-                                                         projectBundleName: projectBundleName)
+    if let target = target {
+      self.target = target
+      primaryTargetBuildableReference = BuildableReference(target: target,
+                                                           projectBundleName: projectBundleName)
+    } else {
+      self.target = nil
+      primaryTargetBuildableReference = nil
+    }
   }
 
   func toXML() -> XMLDocument {
@@ -155,9 +162,11 @@ final class XcodeScheme {
       buildActionEntries.addChild(buildActionEntry)
     }
 
-    let primaryTargetEntryAttributes = XcodeScheme.makeBuildActionEntryAttributes()
-    addBuildActionEntry(primaryTargetBuildableReference,
-                        buildActionEntryAttributes: primaryTargetEntryAttributes)
+    if let primaryTargetBuildableReference = primaryTargetBuildableReference {
+      let primaryTargetEntryAttributes = XcodeScheme.makeBuildActionEntryAttributes()
+      addBuildActionEntry(primaryTargetBuildableReference,
+                          buildActionEntryAttributes: primaryTargetEntryAttributes)
+    }
     if let additionalBuildTargets = additionalBuildTargets {
       for (target, bundleName, entryAttributes) in additionalBuildTargets {
         let buildableReference = BuildableReference(target: target, projectBundleName: bundleName)
@@ -190,13 +199,19 @@ final class XcodeScheme {
     if let explicitTests = explicitTests {
       testTargets = explicitTests
     } else {
+
       // Hosts should have all of their hosted test targets added as testables and tests should have
       // themselves added.
-      let linkedTestTargets = project.linkedTestTargetsForHost(target)
+      let linkedTestTargets: [PBXTarget]
+      if let target = target {
+        linkedTestTargets = project.linkedTestTargetsForHost(target)
+      } else {
+        linkedTestTargets = []
+      }
       if linkedTestTargets.isEmpty {
         if let nativeTarget = target as? PBXNativeTarget,
            nativeTarget.productType.isTest {
-          testTargets = [target]
+          testTargets = [nativeTarget]
         } else {
           testTargets = []
         }
@@ -227,9 +242,13 @@ final class XcodeScheme {
     // Test hosts must be emitted as buildableProductRunnables to ensure that Xcode attempts to run
     // the test host binary.
     if explicitTests == nil {
-      element.addChild(buildableProductRunnable(runnableDebuggingMode))
+      if let runnable = buildableProductRunnable(runnableDebuggingMode) {
+        element.addChild(runnable)
+      }
     } else {
-      element.addChild(macroReference())
+      if let reference = macroReference() {
+        element.addChild(reference)
+      }
     }
     return element
   }
@@ -266,15 +285,21 @@ final class XcodeScheme {
         element.addChild(postActionElement(postActionScript))
     }
     if launchStyle != .AppExtension {
-      element.addChild(buildableProductRunnable(runnableDebuggingMode))
+      if let runnable = buildableProductRunnable(runnableDebuggingMode) {
+        element.addChild(runnable)
+      }
     } else if let extensionType = extensionType {
-      element.addChild(extensionRunnable(extensionType: extensionType))
-    } else {
+      if let runnable = extensionRunnable(extensionType: extensionType) {
+        element.addChild(runnable)
+      }
+    } else if let target = target {
       // This branch exists to keep compatibility with older packaging rules,
       // where ios_extension does not propagate its extension_type.
       localizedMessageLogger.warning("LegacyIOSExtensionNotSupported",
                                      comment: "Warning shown when generating an Xcode schema for target %1$@ which uses unsupported legacy ios_extension rule", values: target.name)
-      element.addChild(macroReference())
+      if let reference = macroReference() {
+        element.addChild(reference)
+      }
     }
     return element
   }
@@ -289,10 +314,15 @@ final class XcodeScheme {
         "debugDocumentVersioning": "YES",
     ]
     element.setAttributesWith(attributes)
+    let childRunnableDebuggingMode: RunnableDebuggingMode
+
     if launchStyle != .AppExtension {
-      element.addChild(buildableProductRunnable(runnableDebuggingMode))
+      childRunnableDebuggingMode = runnableDebuggingMode
     } else {
-      element.addChild(buildableProductRunnable(.Default))
+      childRunnableDebuggingMode = .Default
+    }
+    if let runnable = buildableProductRunnable(childRunnableDebuggingMode) {
+      element.addChild(runnable)
     }
 
     return element
@@ -316,7 +346,11 @@ final class XcodeScheme {
   }
 
   /// Container for BuildReference instances that may be run by Xcode.
-  private func buildableProductRunnable(_ runnableDebuggingMode: RunnableDebuggingMode) -> XMLElement {
+  private func buildableProductRunnable(_ runnableDebuggingMode: RunnableDebuggingMode) -> XMLElement? {
+    guard let target = target,
+          let primaryTargetBuildableReference = primaryTargetBuildableReference else {
+      return nil
+    }
     let element: XMLElement
     var attributes = ["runnableDebuggingMode": runnableDebuggingMode.rawValue]
     switch runnableDebuggingMode {
@@ -338,7 +372,10 @@ final class XcodeScheme {
     return element
   }
 
-  private func extensionRunnable(extensionType: String) -> XMLElement {
+  private func extensionRunnable(extensionType: String) -> XMLElement? {
+    guard let primaryTargetBuildableReference = primaryTargetBuildableReference else {
+      return nil
+    }
     let element: XMLElement
     let runnableDebuggingMode: RunnableDebuggingMode
     var attributes = [String: String]()
@@ -362,7 +399,10 @@ final class XcodeScheme {
 
   /// Container for the primary BuildableReference to be used in situations where it is not
   /// runnable.
-  private func macroReference() -> XMLElement {
+  private func macroReference() -> XMLElement? {
+    guard let primaryTargetBuildableReference = primaryTargetBuildableReference else {
+      return nil
+    }
     let macroExpansion = XMLElement(name: "MacroExpansion")
     macroExpansion.addChild(primaryTargetBuildableReference.toXML())
     return macroExpansion
@@ -407,9 +447,11 @@ final class XcodeScheme {
       "scriptText": script
     ])
 
-    let envBuildable = XMLElement(name: "EnvironmentBuildable")
-    envBuildable.addChild(primaryTargetBuildableReference.toXML())
-    actionContent.addChild(envBuildable)
+    if let primaryTargetBuildableReference = primaryTargetBuildableReference {
+      let envBuildable = XMLElement(name: "EnvironmentBuildable")
+      envBuildable.addChild(primaryTargetBuildableReference.toXML())
+      actionContent.addChild(envBuildable)
+    }
     executionAction.setAttributesWith(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
 
     executionAction.addChild(actionContent)
@@ -426,10 +468,11 @@ final class XcodeScheme {
       "title": "Run Script",
       "scriptText": script
     ])
-
-    let envBuildable = XMLElement(name: "EnvironmentBuildable")
-    envBuildable.addChild(primaryTargetBuildableReference.toXML())
-    actionContent.addChild(envBuildable)
+    if let primaryTargetBuildableReference = primaryTargetBuildableReference {
+      let envBuildable = XMLElement(name: "EnvironmentBuildable")
+      envBuildable.addChild(primaryTargetBuildableReference.toXML())
+      actionContent.addChild(envBuildable)
+    }
     executionAction.setAttributesWith(["ActionType": "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction"])
     executionAction.addChild(actionContent)
     element.addChild(executionAction)

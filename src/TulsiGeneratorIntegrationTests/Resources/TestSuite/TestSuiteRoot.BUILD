@@ -27,6 +27,7 @@ load(
 test_suite(
     name = "explicit_XCTests",
     tests = [
+        "//TestSuite/One:LogicTest",
         "//TestSuite/One:XCTest",
         "//TestSuite/Three:XCTest",
         "//TestSuite/Two:XCTest",

@@ -512,11 +512,13 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: false)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 18)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 23)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir)/One:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
+    checker.assertThat("//\(testDir)/One:LogicTest")
+        .exists()
     checker.assertThat("//\(testDir)/Two:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
     checker.assertThat("//\(testDir)/Three:XCTest")
@@ -529,17 +531,19 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions,
                                                                            useAspectForTestSuites: true)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 19)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 24)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):explicit_XCTests")
-      .hasType("test_suite")
+        .hasType("test_suite")
     checker.assertThat("//\(testDir)/One:XCTest")
-      .hasTestHost("//\(testDir):TestApplication")
+        .hasTestHost("//\(testDir):TestApplication")
+    checker.assertThat("//\(testDir)/One:LogicTest")
+        .exists()
     checker.assertThat("//\(testDir)/Two:XCTest")
-      .hasTestHost("//\(testDir):TestApplication")
+        .hasTestHost("//\(testDir):TestApplication")
     checker.assertThat("//\(testDir)/Three:XCTest")
-      .hasTestHost("//\(testDir):TestApplication")
+        .hasTestHost("//\(testDir):TestApplication")
 
 
   }
@@ -565,7 +569,7 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):TestSuiteXCTest")
-      .hasTestHost("//\(testDir):TestApplication")
+        .hasTestHost("//\(testDir):TestApplication")
   }
 }
 
