@@ -19,7 +19,8 @@ private func main() {
   // Parse the commandline parameters to see if the app should operate in headless mode or not.
   let commandlineParser = TulsiCommandlineParser()
 
-  let consoleLogger = EventLogger(verboseLevel: commandlineParser.arguments.verboseLevel)
+  let consoleLogger = EventLogger(verboseLevel: commandlineParser.arguments.verboseLevel,
+                                  logToFile: commandlineParser.arguments.logToFile)
   consoleLogger.startLogging()
 
   if !commandlineParser.commandlineSentinalFound {

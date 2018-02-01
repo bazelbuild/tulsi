@@ -42,6 +42,7 @@ class TulsiCommandlineParser {
     let buildStartupOptions: String?
     let buildOptions: String?
     let buildTargets: [String]?
+    let logToFile: Bool
 
     init() {
       bazel = nil
@@ -56,6 +57,7 @@ class TulsiCommandlineParser {
       buildStartupOptions = nil
       buildOptions = nil
       buildTargets = nil
+      logToFile = false
     }
 
     init(dict: [String: Any]) {
@@ -87,6 +89,7 @@ class TulsiCommandlineParser {
       buildStartupOptions = dict[TulsiCommandlineParser.ParamBuildStartupOptions] as? String
       buildOptions = dict[TulsiCommandlineParser.ParamBuildOptions] as? String
       buildTargets = dict[TulsiCommandlineParser.ParamBuildTargetLong] as? [String]
+      logToFile = dict[TulsiCommandlineParser.ParamLogToFile] as? Bool == true
     }
   }
 
@@ -121,6 +124,8 @@ class TulsiCommandlineParser {
   static let ParamBuildOptions = "--build-options"
   static let ParamBuildTargetShort = "-t"
   static let ParamBuildTargetLong = "--target"
+
+  static let ParamLogToFile = "--log-to-file"
 
   let arguments: Arguments
   let commandlineSentinalFound: Bool
@@ -254,6 +259,9 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBuildTargetLong, append: true)
           i += 1
 
+      case TulsiCommandlineParser.ParamLogToFile:
+        parsedArguments[TulsiCommandlineParser.ParamLogToFile] = true as AnyObject?
+
         default:
           print("Ignoring unknown option \"\(arg)\"")
       }
@@ -302,6 +310,8 @@ class TulsiCommandlineParser {
         "    Overrides \(ParamQuietLong) if both are present. ",
         "  \(ParamQuietLong): Hide all debug info messages (warning: may also hide some error details).",
         "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project.",
+        "  \(ParamLogToFile): Enable logging to ~/Library/Application Support/Tulsi/*.txt.",
+        "       Ignores specified verbosity; everything will be logged to file.",
         ""
     ]
     print(usage.joined(separator: "\n") + "\n")
