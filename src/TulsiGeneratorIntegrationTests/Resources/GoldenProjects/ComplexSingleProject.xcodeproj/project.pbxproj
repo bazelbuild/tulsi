@@ -912,6 +912,7 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -930,6 +931,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -983,6 +985,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -1088,6 +1091,7 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1106,6 +1110,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -1160,6 +1165,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -1272,6 +1278,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1298,6 +1305,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1364,6 +1372,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1390,6 +1399,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1416,6 +1426,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
@@ -1483,6 +1494,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;

@@ -335,6 +335,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -372,6 +373,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": rule2TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -447,6 +449,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -487,6 +490,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
           "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
@@ -559,6 +563,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         ]
       let expectedTarget = TargetDefinition(
@@ -598,6 +603,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         "TULSI_MUST_USE_DSYM": "NO",
         ]
@@ -674,6 +680,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "macosx",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         ]
       let expectedTarget = TargetDefinition(
@@ -714,6 +721,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "macosx",
         "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/Contents/MacOS/\(rule1TargetName)",
         "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
@@ -790,6 +798,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "macosx",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         ]
       let expectedTarget = TargetDefinition(
@@ -829,6 +838,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "macosx",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
@@ -895,6 +905,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "macosx",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
@@ -963,6 +974,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "macosx",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
@@ -1038,6 +1050,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": rule1TargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1079,6 +1092,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "SDKROOT": "iphoneos",
           "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(rule1TargetName).app/\(rule1TargetName)",
           "TULSI_BUILD_PATH": testRuleBuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
           "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
@@ -1165,6 +1179,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "SDKROOT": "iphoneos",
       "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
       "TULSI_BUILD_PATH": testRulePackage,
+      "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
       "TULSI_MUST_USE_DSYM": "NO",
       "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
@@ -1250,6 +1265,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "SDKROOT": "iphoneos",
       "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(testHostTargetName).app/\(testHostTargetName)",
       "TULSI_BUILD_PATH": testRulePackage,
+      "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
       "TULSI_MUST_USE_DSYM": "NO",
       "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
@@ -1330,6 +1346,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": rule1TargetName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": rule1BuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         ]
       let expectedTarget = TargetDefinition(
@@ -1370,6 +1387,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": testRuleBuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
         "TULSI_TEST_RUNNER_ONLY": "YES",
         ]
@@ -1492,6 +1510,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": testRuleTargetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": testRuleBuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       var testRunnerExpectedBuildSettings = expectedBuildSettings
@@ -1560,6 +1579,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": "test-test1-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule1BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1597,6 +1617,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": "test-test2-SameName",
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": rule2BuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1660,6 +1681,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "PRODUCT_NAME": targetName,
           "SDKROOT": "iphoneos",
           "TULSI_BUILD_PATH": buildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1722,6 +1744,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": bundleName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": buildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1811,6 +1834,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "SDKROOT": "iphoneos",
           "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
           "TULSI_BUILD_PATH": appBuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1850,6 +1874,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "SDKROOT": "watchos",
           "WATCHOS_DEPLOYMENT_TARGET": "2.0",
           "TULSI_BUILD_PATH": watchAppBuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1889,6 +1914,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           "SDKROOT": "watchos",
           "WATCHOS_DEPLOYMENT_TARGET": "2.0",
           "TULSI_BUILD_PATH": watchExtBuildPath,
+          "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
           "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -1975,6 +2001,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "macosx",
         "MACOSX_DEPLOYMENT_TARGET": "10.12",
         "TULSI_BUILD_PATH": appBuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -2014,6 +2041,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "macosx",
         "MACOSX_DEPLOYMENT_TARGET": "10.12",
         "TULSI_BUILD_PATH": macAppExtBuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -2053,6 +2081,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "macosx",
         "MACOSX_DEPLOYMENT_TARGET": "10.12",
         "TULSI_BUILD_PATH": macCLIAppBuildPath,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "NO",
       ]
       let expectedTarget = TargetDefinition(
@@ -2538,6 +2567,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_NAME": targetName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": package,
+        "TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK": "NO",
         "TULSI_MUST_USE_DSYM": "YES",
     ]
     let expectedTarget = TargetDefinition(

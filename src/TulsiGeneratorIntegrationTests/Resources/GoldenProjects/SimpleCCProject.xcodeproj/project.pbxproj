@@ -281,6 +281,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -347,6 +348,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -412,6 +414,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -478,6 +481,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
+				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = NO;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;

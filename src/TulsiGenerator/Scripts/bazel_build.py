@@ -486,6 +486,8 @@ class BazelBuildBridge(object):
 
   BUILD_EVENTS_FILE = 'build_events.json'
 
+  SPOTLIGHT_CHECK_ENVVAR = 'TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK'
+
   def __init__(self):
     self.verbose = 0
     self.build_path = None
@@ -499,6 +501,9 @@ class BazelBuildBridge(object):
     # an empty string.
     if not self.xcode_action:
       self.xcode_action = 'build'
+
+    self.build_without_spotlight = os.environ.get(
+        BazelBuildBridge.SPOTLIGHT_CHECK_ENVVAR, 'NO') == 'YES'
 
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
@@ -596,6 +601,11 @@ class BazelBuildBridge(object):
     if self.xcode_action != 'build':
       sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
+
+    if not self.build_without_spotlight:
+      spotlight_status = self._CheckSpotlightStatus()
+      if spotlight_status:
+        return spotlight_status
 
     parser = _OptionsParser(self.sdk_version,
                             self.platform_name,
@@ -1805,6 +1815,53 @@ class BazelBuildBridge(object):
       _PrintXcodeError(
           'Linking Tulsi Workspace to %s failed.' % tulsi_workspace)
       return -1
+
+  def _PrintSpotlightDisabledMessaging(self):
+    """Prints errors to the console indicating that Spotlight is required."""
+    spotlight_required_msg = ('Spotlight is needed to find debugging info '
+                              'for Bazel-built sources.')
+    spotlight_enable_msg = ('Please enable Spotlight with `sudo mdutil -i on /`'
+                            ' in the Terminal.')
+    spotlight_check_disable_msg = ('If you need to disable this check and '
+                                   'proceed with a compromised debugging '
+                                   'experience set %s to YES.' %
+                                   BazelBuildBridge.SPOTLIGHT_CHECK_ENVVAR)
+    _PrintXcodeError(spotlight_required_msg)
+    _PrintXcodeError(spotlight_enable_msg)
+    _PrintXcodeWarning(spotlight_check_disable_msg)
+
+  def _CheckSpotlightStatus(self):
+    """Check if Spotlight has been enabled on root, error if it hasn't been.
+
+    Returns:
+      Int: 0 if Spotlight reports that indexing is enabled on the root dir.
+           -1 if Spotlight indexing was not found to be enabled on the root
+           dir. The return code if the mdutil query on the root dir failed
+           to execute properly.
+    """
+    sys.stdout.write('Checking Spotlight status on the startup disk.\n')
+    sys.stdout.flush()
+    returncode, output = self._RunSubprocess([
+        'mdutil',
+        '-s',
+        '/'
+    ])
+    sys.stdout.flush()
+    output_single_line = output.replace('\n', '').replace('\t', ' ')
+    if returncode != 0:
+      _PrintXcodeError('Could not verify status of Spotlight on the startup '
+                       'disk.')
+      _PrintXcodeError('mdutil exited with %s: "%s".' % (returncode,
+                                                         output_single_line))
+      self._PrintSpotlightDisabledMessaging()
+      return returncode
+    if 'Indexing enabled' not in output:
+      _PrintXcodeError('Spotlight has been turned off on the startup disk.')
+      _PrintXcodeError('Status returned from mdutil was "%s".' %
+                       output_single_line)
+      self._PrintSpotlightDisabledMessaging()
+      return -1
+    return 0
 
   @staticmethod
   def _SplitPathComponents(path):
