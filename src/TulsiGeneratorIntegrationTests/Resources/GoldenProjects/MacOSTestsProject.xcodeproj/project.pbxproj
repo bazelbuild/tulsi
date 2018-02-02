@@ -529,7 +529,6 @@
 				SDKROOT = macosx;
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -670,7 +669,6 @@
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -837,7 +835,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -986,7 +983,6 @@
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = MacOSTestsProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

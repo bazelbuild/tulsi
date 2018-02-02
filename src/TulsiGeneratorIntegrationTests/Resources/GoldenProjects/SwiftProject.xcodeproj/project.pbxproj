@@ -338,7 +338,6 @@
 				SWIFT_VERSION = 4;
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -436,7 +435,6 @@
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -538,7 +536,6 @@
 				SWIFT_VERSION = 4;
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -607,7 +604,6 @@
 				TULSI_ALL_DSYM = YES;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
-				TULSI_PATCHLESS_DSYMS = YES;
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
