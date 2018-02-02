@@ -509,8 +509,6 @@ class BazelBuildBridge(object):
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
-    self.use_patchless_dsyms = os.environ.get('TULSI_PATCHLESS_DSYMS',
-                                              'NO') == 'YES'
     self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
 
     # Target architecture.  Must be defined for correct setting of
@@ -702,7 +700,7 @@ class BazelBuildBridge(object):
         for path in dsym_paths:
           # Starting with Xcode 9.x, a plist based solution exists for dSYM
           # bundles that works with Swift as well as (Obj-)C(++).
-          if self.xcode_version_major >= 900 and self.use_patchless_dsyms:
+          if self.xcode_version_major >= 900:
             timer = Timer('Adding remappings as plists to dSYM',
                           'plist_dsym').Start()
             exit_code = self._PlistdSYMPaths(path)
@@ -711,10 +709,6 @@ class BazelBuildBridge(object):
               _PrintXcodeError('Remapping dSYMs process returned %i, please '
                                'report a Tulsi bug and attach a full Xcode '
                                'build log.' % exit_code)
-              _PrintXcodeWarning('After filing the bug, change '
-                                 'TULSI_PATCHLESS_DSYMS in your Xcode '
-                                 'project\'s User-Defined Build Settings from '
-                                 'YES to NO.')
               return exit_code
           else:
             timer = Timer('Patching DSYM source file paths',

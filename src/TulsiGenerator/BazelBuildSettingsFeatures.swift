@@ -17,6 +17,4 @@ let bazelBuildSettingsFeatures = [
   "TULSI_DEBUG_PREFIX_MAP",
   // Export dSYMs to allow us to establish source maps that can handle multiple potential paths.
   "TULSI_ALL_DSYM",
-  // TODO(b/71515804): Remove if no issues are found in replacing post_processor with this.
-  "TULSI_PATCHLESS_DSYMS",
 ]
