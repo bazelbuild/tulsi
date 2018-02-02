@@ -1846,7 +1846,6 @@ class BazelBuildBridge(object):
         '-s',
         '/'
     ])
-    sys.stdout.flush()
     output_single_line = output.replace('\n', '').replace('\t', ' ')
     if returncode != 0:
       _PrintXcodeError('Could not verify status of Spotlight on the startup '
