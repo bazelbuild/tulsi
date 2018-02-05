@@ -115,6 +115,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     panel.prompt = NSLocalizedString("ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt",
                                      comment: "Label for the button used to confirm the selected output folder for the generated Xcode project which will also start generating immediately.")
     panel.canChooseDirectories = true
+    panel.canCreateDirectories = true
     panel.canChooseFiles = false
     panel.beginSheetModal(for: view.window!) {
       let url: URL?
