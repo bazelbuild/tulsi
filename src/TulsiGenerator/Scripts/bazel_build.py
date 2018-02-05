@@ -1454,14 +1454,17 @@ class BazelBuildBridge(object):
           '\tExtracting source paths for ' + self.full_product_name,
           'extracting_source_paths').Start()
 
-      source_map = self._ExtractExecrootSourceMap()
+      execroot = self._ExtractExecroot()
       timer.End()
 
-      if not source_map:
-        _PrintXcodeWarning('Extracted 0 source paths from %r. File-based '
+      if not execroot:
+        _PrintXcodeWarning('Could not find the execroot from %r. File-based '
                            'breakpoints may not work. Please report as a bug.' %
                            self.full_product_name)
         return 0
+
+      source_map = (self._NormalizePath(execroot),
+                    self._NormalizePath(self.workspace_root))
 
       out.write('# This maps Bazel\'s execution root to that used by %r.\n' %
                 os.path.basename(self.project_file_path))
@@ -1767,24 +1770,29 @@ class BazelBuildBridge(object):
                      of Tulsi debugging as strings ($1).
     """
     source_maps = set()
+
+    # All paths route to the "workspace root" for sources visible from Xcode.
+    sm_wsroot = self._NormalizePath(self.workspace_root)
+
     # If the user has specified any additional mappings, add them first.
     if self.extra_remap_path:
-      source_maps.add((self._NormalizePath(self.extra_remap_path),
-                       self._NormalizePath(self.workspace_root)))
-    execroot_map = self._ExtractExecrootSourceMap()
-    if execroot_map:
-      source_maps.add(execroot_map)
+      source_maps.add((self._NormalizePath(self.extra_remap_path), sm_wsroot))
+
+    # Add a redirection for the Bazel execution root, the path where sources
+    # are referenced by Bazel.
+    execroot = self._ExtractExecroot()
+    if execroot:
+      source_maps.add((self._NormalizePath(execroot), sm_wsroot))
+
     return source_maps
 
-  def _ExtractExecrootSourceMap(self):
-    """Extracts the execution root as a tuple with the WORKSPACE path.
+  def _ExtractExecroot(self):
+    """Finds the execution root from BAZEL_EXECUTION_ROOT or bazel info.
 
     Returns:
       None: if an error occurred.
-      (str, str): a tuple representing the execution root path to source files
-                  compiled by Bazel as strings ($0) associated with the paths
-                  to Xcode-visible sources used for the purposes of Tulsi
-                  debugging as strings ($1).
+      str: the "execution root", the path to the "root" of all source files
+           compiled by Bazel as a string.
     """
     # If we have a cached execution root, check that it exists.
     if os.path.exists(BAZEL_EXECUTION_ROOT):
@@ -1793,10 +1801,7 @@ class BazelBuildBridge(object):
     else:
       # Query Bazel directly for the execution root.
       execroot = self._ExtractBazelInfoExecrootPaths()
-    if execroot:
-      return (self._NormalizePath(execroot),
-              self._NormalizePath(self.workspace_root))
-    return None
+    return execroot
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""
