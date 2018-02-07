@@ -1853,7 +1853,8 @@ class BazelBuildBridge(object):
                                                          output_single_line))
       self._PrintSpotlightDisabledMessaging()
       return returncode
-    if 'Indexing enabled' not in output:
+    # Attempt to match on "Indexing enabled." and any possible variants.
+    if 'enabled' not in output:
       _PrintXcodeError('Spotlight has been turned off on the startup disk.')
       _PrintXcodeError('Status returned from mdutil was "%s".' %
                        output_single_line)
