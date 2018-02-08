@@ -50,6 +50,8 @@ XCODE_INJECTED_FRAMEWORKS = [
     'XCTest',
 ]
 
+_logger = tulsi_logging.Logger()
+
 
 def _PrintXcodeWarning(msg):
   sys.stdout.write(':: warning: %s\n' % msg)
@@ -108,7 +110,7 @@ class Timer(object):
   def End(self):
     end = time.time()
     seconds = end - self._start
-    tulsi_logging.Logger().log_action(self.action_name, self.action_id, seconds)
+    _logger.log_action(self.action_name, self.action_id, seconds)
 
 
 # Function to be called atexit to release the file lock on script termination.

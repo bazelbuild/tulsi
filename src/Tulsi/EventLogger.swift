@@ -80,7 +80,7 @@ final class EventLogger {
     let date = Date()
     let dateString = dateFormatter.string(from: date)
 
-    let logFileUrl = tulsiFolder.appendingPathComponent("log_\(dateString).txt")
+    let logFileUrl = tulsiFolder.appendingPathComponent("generate_log_\(dateString).txt")
     do {
       fileManager.createFile(atPath: logFileUrl.path, contents: nil, attributes: nil)
       try self.logFile = FileHandle(forWritingTo: logFileUrl)

@@ -14,11 +14,37 @@
 
 """Logging routines used by Tulsi scripts."""
 
+import logging
+import logging.handlers
+import os
+
 
 class Logger(object):
   """Tulsi specific logging."""
 
+  def __init__(self):
+    logging_dir = os.path.expanduser('~/Library/Application Support/Tulsi')
+    if not os.path.exists(logging_dir):
+      os.mkdir(logging_dir)
+
+    logfile = os.path.join(logging_dir, 'build_log.txt')
+
+    # Currently only creates a single logger called 'tulsi_logging'. If
+    # additional loggers are needed, consider adding a name attribute to the
+    # Logger.
+    self._logger = logging.getLogger('tulsi_logging')
+    self._logger.setLevel(logging.INFO)
+
+    file_handler = logging.handlers.RotatingFileHandler(logfile, backupCount=5)
+    file_handler.setLevel(logging.INFO)
+    self._logger.addHandler(file_handler)
+
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    self._logger.addHandler(console)
+
   def log_action(self, action_name, action_id, seconds):
     del action_id  # Unused by this logger.
-    # Prints to stdout for display in the Xcode log
-    print '<*> %s completed in %0.3f ms' % (action_name, seconds * 1000)
+    # Log to file and print to stdout for display in the Xcode log.
+    self._logger.info('<*> %s completed in %0.3f ms',
+                      action_name, seconds * 1000)
