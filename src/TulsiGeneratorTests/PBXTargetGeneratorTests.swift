@@ -218,7 +218,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
-                               + "$(TULSI_BWRS)/tulsi-includes/x/x",
+                               + "$(TULSI_BWRS)/_tulsi-includes/x/x",
         "ONLY_ACTIVE_ARCH": "YES",
         "PYTHONIOENCODING": "utf8",
         "TULSI_VERSION": testTulsiVersion,
@@ -268,7 +268,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "GCC_WARN_UNUSED_FUNCTION": "YES",
         "GCC_WARN_UNUSED_VARIABLE": "YES",
         "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
-                               + "$(TULSI_BWRS)/tulsi-includes/x/x",
+                               + "$(TULSI_BWRS)/_tulsi-includes/x/x",
         "SDKROOT": projectSDKROOT,
         "ONLY_ACTIVE_ARCH": "YES",
         "PYTHONIOENCODING": "utf8",

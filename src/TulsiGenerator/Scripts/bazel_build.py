@@ -999,8 +999,11 @@ class BazelBuildBridge(object):
     timer.End()
 
   def _InstallGeneratedHeaders(self, output_files):
-    """Installs Bazel-generated headers into tulsi-includes directory."""
-    tulsi_root = os.path.join(BAZEL_EXECUTION_ROOT, 'tulsi-includes')
+    """Installs Bazel-generated headers into _tulsi-includes directory."""
+
+    # The folder must begin with an underscore as otherwise Bazel will delete
+    # it whenever it builds. See tulsi_aspects.bzl for futher explanation.
+    tulsi_root = os.path.join(BAZEL_EXECUTION_ROOT, '_tulsi-includes')
 
     if os.path.exists(tulsi_root):
       shutil.rmtree(tulsi_root)

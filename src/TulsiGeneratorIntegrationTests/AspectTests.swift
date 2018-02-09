@@ -68,7 +68,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "APPLIB_ADDITIONAL_DEFINE",
                      "APPLIB_ANOTHER_DEFINE=2"])
         .hasIncludes(["tulsi_test/ApplicationLibrary/includes",
-                      "tulsi-includes/x/x/tulsi_test/ApplicationLibrary/includes"])
+                      "_tulsi-includes/x/x/tulsi_test/ApplicationLibrary/includes"])
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false,
                                "path": "tulsi_test/ApplicationLibrary/Base.lproj/One.storyboard",
@@ -426,7 +426,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:ApplicationLibrary")
       .hasSources(["tulsi_test/Library/srcs/main.m"])
       .hasIncludes(["tulsi_test/Library/includes/one/include",
-                    "tulsi-includes/x/x/tulsi_test/Library/includes/one/include"])
+                    "_tulsi-includes/x/x/tulsi_test/Library/includes/one/include"])
 
     checker.assertThat("//tulsi_test:WatchApplication")
       .dependsOn("//tulsi_test:WatchExtension")

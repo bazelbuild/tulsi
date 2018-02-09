@@ -23,7 +23,6 @@ set -eu
 
 readonly bazel_executable="$1"
 readonly bazel_bin_dir="$2"
-readonly tulsi_includes_dir="tulsi-includes"
 
 if [[ "${ACTION}" != "clean" ]]; then
   exit 0
