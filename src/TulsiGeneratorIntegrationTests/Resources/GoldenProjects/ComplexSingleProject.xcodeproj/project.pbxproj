@@ -11,7 +11,6 @@
 		E6AF4947151F1CC400000000 /* non_propagated.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28151F1CC400000000 /* non_propagated.m */; };
 		E6AF49471A41382100000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C281A41382100000000 /* src.mm */; };
 		E6AF49473148FC2600000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283148FC2600000000 /* src.mm */; };
-		E6AF4947520AA0DE00000000 /* output.m in outs */ = {isa = PBXBuildFile; fileRef = 43D68C28520AA0DE00000000 /* output.m */; };
 		E6AF49475D9EF01300000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28DC6A997500000000 /* NonARCFile.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6AF49476A36B02900000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C286A36B02900000000 /* src.mm */; };
 		E6AF494775C5141000000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2875C5141000000000 /* main.m */; };
@@ -78,57 +77,54 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C280828EFBF00000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "bazel-bin/tulsi_e2e_complex/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C280CF925C900000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localized.strings"; sourceTree = "<group>"; };
+		43D68C280F624C0C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; path = "tulsi-workspace/lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28151F1CC400000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = non_propagated.m; path = "tulsi-workspace/tulsi_e2e_complex/NonPropagatedLibrary/srcs/non_propagated.m"; sourceTree = "<group>"; };
-		43D68C2817E5C54500000000 /* PCHFile.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; name = PCHFile.pch; path = "bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C281A41382100000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C2829C9947000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ObjCBundle.bundle; path = "tulsi-workspace/tulsi_e2e_complex/ObjCBundle.bundle"; sourceTree = "<group>"; };
 		43D68C283148FC2600000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/srcs/src.mm"; sourceTree = "<group>"; };
+		43D68C2831D4876E00000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; path = "tulsi-workspace/lib_idx_SubLibrary_19588DB9_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283591DFD900000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv1.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
-		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2840BBFB5200000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = "tulsi-workspace/Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28442EC9D700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C2845AE2B9000000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_complex/Library/xib.xib"; sourceTree = "<group>"; };
-		43D68C28520AA0DE00000000 /* output.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; name = output.m; path = "bazel-genfiles/tulsi_e2e_complex/SrcGenerator/outs/output.m"; sourceTree = "<group>"; };
+		43D68C28500D65D400000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; path = "tulsi-workspace/lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2852C6516600000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
-		43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; path = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2858F5ABDF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_complex/Application/Info.plist"; sourceTree = "<group>"; };
-		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C285EBBC35700000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C286266EC1F00000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28627DA73600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = file2.file; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file2.file"; sourceTree = "<group>"; };
-		43D68C2864E4F83800000000 /* Two.storyboard */ = {isa = PBXFileReference; explicitFileType = file.storyboard; name = Two.storyboard; path = "bazel-genfiles/tulsi_e2e_complex/StoryboardGenerator/outs/Two.storyboard"; sourceTree = "<group>"; };
 		43D68C286A36B02900000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDifferentDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C286E7B37CF00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = NonLocalized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/NonLocalized.strings"; sourceTree = "<group>"; };
 		43D68C2875C5141000000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_complex/Application/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C2879357B7500000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnotherPCHFile.pch; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch"; sourceTree = "<group>"; };
 		43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = sub_library_with_identical_defines.m; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithIdenticalDefines/srcs/sub_library_with_identical_defines.m"; sourceTree = "<group>"; };
+		43D68C287C44782900000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; path = "tulsi-workspace/lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C287C841B0C00000000 /* ComplexSingle.bzl */ = {isa = PBXFileReference; lastKnownFileType = com.google.bazel.skylark; name = ComplexSingle.bzl; path = tulsi_e2e_complex/ComplexSingle.bzl; sourceTree = "<group>"; };
 		43D68C2885A048FD00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_complex/Application/entitlements.entitlements"; sourceTree = "<group>"; };
+		43D68C288788BCE600000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min8.0.a; path = "tulsi-workspace/lib_idx_Library_20EC2F4A_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C288970786C00000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src1.m"; sourceTree = "<group>"; };
 		43D68C288E876E6400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_complex/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
+		43D68C28937235E300000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_complex/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28958553E300000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src5.mm; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/src5.mm"; sourceTree = "<group>"; };
+		43D68C289AE39C4A00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = "tulsi-workspace/TodayExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289B31F4AA00000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src2.m"; sourceTree = "<group>"; };
-		43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min8.0.a; path = lib_idx_Library_20EC2F4A_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A6D7A7EC00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_complex/BUILD; sourceTree = "<group>"; };
 		43D68C28A7AABE7100000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = EN.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/EN.strings"; sourceTree = "<group>"; };
-		43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28AB2790F000000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src3.m"; sourceTree = "<group>"; };
+		43D68C28AE6E0F8C00000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = "tulsi-workspace/XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B112D95100000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; name = structured_resources.file2; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file2"; sourceTree = "<group>"; };
 		43D68C28B72F496D00000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = test.framework; path = "tulsi-workspace/tulsi_e2e_complex/ObjCFramework/test.framework"; sourceTree = "<group>"; };
-		43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28BAE52D2E00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28BD12D84F00000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; name = structured_resources.file1; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file1"; sourceTree = "<group>"; };
 		43D68C28CF36936300000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
-		43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; path = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv2.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28DC6A997500000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NonARCFile.mm; path = "tulsi-workspace/tulsi_e2e_complex/Application/non_arc_srcs/NonARCFile.mm"; sourceTree = "<group>"; };
+		43D68C28E53936CF00000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a; path = "tulsi-workspace/lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28ED583D0500000000 /* today_extension_library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = today_extension_library.m; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/srcs/today_extension_library.m"; sourceTree = "<group>"; };
 		43D68C28EEE1AA8400000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; name = file1; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file1"; sourceTree = "<group>"; };
-		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28F643652200000000 /* defaultTestSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = defaultTestSource.m; path = "tulsi-workspace/tulsi_e2e_complex/XCTest/srcs/defaultTestSource.m"; sourceTree = "<group>"; };
-		43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a; path = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FE8BFD3900000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,28 +137,12 @@
 			name = objc;
 			sourceTree = "<group>";
 		};
-		966FB6DE0675459E00000000 /* outs */ = {
+		966FB6DE07201E0200000000 /* _tulsi-includes */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2817E5C54500000000 /* PCHFile.pch */,
+				966FB6DE88DDC84A00000000 /* x */,
 			);
-			name = outs;
-			sourceTree = "<group>";
-		};
-		966FB6DE0675459E00000001 /* outs */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28520AA0DE00000000 /* output.m */,
-			);
-			name = outs;
-			sourceTree = "<group>";
-		};
-		966FB6DE0675459E00000002 /* outs */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C2864E4F83800000000 /* Two.storyboard */,
-			);
-			name = outs;
+			name = "_tulsi-includes";
 			sourceTree = "<group>";
 		};
 		966FB6DE0F90C7ED00000000 /* TodayExtension */ = {
@@ -211,26 +191,18 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28F49055A600000000 /* Application.app */,
-				43D68C283A3B027E00000000 /* TodayExtension.appex */,
-				43D68C285E266A6000000000 /* XCTest.xctest */,
-				966FB6DE2CEC8E5C00000000 /* bazel-bin */,
-				43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */,
-				43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */,
-				43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */,
-				43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */,
-				43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */,
-				43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */,
+				43D68C2840BBFB5200000000 /* Application.app */,
+				43D68C289AE39C4A00000000 /* TodayExtension.appex */,
+				43D68C28AE6E0F8C00000000 /* XCTest.xctest */,
+				966FB6DE07201E0200000000 /* _tulsi-includes */,
+				43D68C287C44782900000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */,
+				43D68C288788BCE600000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */,
+				43D68C28500D65D400000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */,
+				43D68C28E53936CF00000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */,
+				43D68C2831D4876E00000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */,
+				43D68C280F624C0C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		966FB6DE2CEC8E5C00000000 /* bazel-bin */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
-			);
-			name = "bazel-bin";
 			sourceTree = "<group>";
 		};
 		966FB6DE36005C3A00000000 /* NonPropagatedLibrary */ = {
@@ -264,22 +236,6 @@
 				966FB6DE5B9D018E00000007 /* srcs */,
 			);
 			name = SubLibraryWithIdenticalDefines;
-			sourceTree = "<group>";
-		};
-		966FB6DE4DC850B700000000 /* bazel-genfiles */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
-			);
-			name = "bazel-genfiles";
-			sourceTree = "<group>";
-		};
-		966FB6DE529F18AF00000000 /* PCHGenerator */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE0675459E00000000 /* outs */,
-			);
-			name = PCHGenerator;
 			sourceTree = "<group>";
 		};
 		966FB6DE56C029FB00000000 /* Base.lproj */ = {
@@ -376,21 +332,12 @@
 			name = srcs;
 			sourceTree = "<group>";
 		};
-		966FB6DE65EA9DC200000000 /* StoryboardGenerator */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE0675459E00000002 /* outs */,
-			);
-			name = StoryboardGenerator;
-			sourceTree = "<group>";
-		};
 		966FB6DE6C1A2E9100000000 /* mainGroup */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE4DC850B700000000 /* bazel-genfiles */,
 				966FB6DEA22704D700000000 /* tools */,
-				966FB6DE7DA6F9D500000002 /* tulsi_e2e_complex */,
+				966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */,
 			);
 			name = mainGroup;
 			path = ..;
@@ -424,22 +371,12 @@
 		966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C280828EFBF00000000 /* Application-MergedInfo.plist */,
+				43D68C28937235E300000000 /* Application-MergedInfo.plist */,
 			);
 			name = tulsi_e2e_complex;
 			sourceTree = "<group>";
 		};
 		966FB6DE7DA6F9D500000001 /* tulsi_e2e_complex */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE529F18AF00000000 /* PCHGenerator */,
-				966FB6DEA04342FA00000000 /* SrcGenerator */,
-				966FB6DE65EA9DC200000000 /* StoryboardGenerator */,
-			);
-			name = tulsi_e2e_complex;
-			sourceTree = "<group>";
-		};
-		966FB6DE7DA6F9D500000002 /* tulsi_e2e_complex */ = {
 			isa = PBXGroup;
 			children = (
 				966FB6DEB58A255E00000000 /* Application */,
@@ -459,6 +396,22 @@
 				966FB6DE77973FA000000000 /* XCTest */,
 			);
 			name = tulsi_e2e_complex;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000000 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000001 /* x */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000001 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE7DA6F9D500000000 /* tulsi_e2e_complex */,
+			);
+			name = x;
 			sourceTree = "<group>";
 		};
 		966FB6DE9336EC7600000000 /* memleaks */ = {
@@ -493,14 +446,6 @@
 				43D68C28FE8BFD3900000000 /* HdrsHeader.h */,
 			);
 			name = hdrs;
-			sourceTree = "<group>";
-		};
-		966FB6DEA04342FA00000000 /* SrcGenerator */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE0675459E00000001 /* outs */,
-			);
-			name = SrcGenerator;
 			sourceTree = "<group>";
 		};
 		966FB6DEA22704D700000000 /* tools */ = {
@@ -569,7 +514,7 @@
 			);
 			name = TodayExtension;
 			productName = TodayExtension;
-			productReference = 43D68C283A3B027E00000000 /* TodayExtension.appex */;
+			productReference = 43D68C289AE39C4A00000000 /* TodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		3D31C5E6202AA80600000000 /* _idx_Library_20EC2F4A_ios_min8.0 */ = {
@@ -588,7 +533,7 @@
 			);
 			name = _idx_Library_20EC2F4A_ios_min8.0;
 			productName = _idx_Library_20EC2F4A_ios_min8.0;
-			productReference = 43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */;
+			productReference = 43D68C288788BCE600000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min8.0 */ = {
@@ -604,7 +549,7 @@
 			);
 			name = _idx_SubLibrary_19588DB9_ios_min8.0;
 			productName = _idx_SubLibrary_19588DB9_ios_min8.0;
-			productReference = 43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */;
+			productReference = 43D68C2831D4876E00000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
@@ -620,7 +565,7 @@
 			);
 			name = Application;
 			productName = Application;
-			productReference = 43D68C28F49055A600000000 /* Application.app */;
+			productReference = 43D68C2840BBFB5200000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3D31C5E68C6469FA00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0 */ = {
@@ -636,7 +581,7 @@
 			);
 			name = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
 			productName = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
-			productReference = 43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */;
+			productReference = 43D68C280F624C0C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min8.0 */ = {
@@ -655,7 +600,7 @@
 			);
 			name = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
 			productName = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
-			productReference = 43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */;
+			productReference = 43D68C287C44782900000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0 */ = {
@@ -671,7 +616,7 @@
 			);
 			name = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
 			productName = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
-			productReference = 43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */;
+			productReference = 43D68C28500D65D400000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
@@ -689,7 +634,7 @@
 			);
 			name = XCTest;
 			productName = XCTest;
-			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
+			productReference = 43D68C28AE6E0F8C00000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0 */ = {
@@ -705,7 +650,7 @@
 			);
 			name = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
 			productName = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
-			productReference = 43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */;
+			productReference = 43D68C28E53936CF00000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -810,7 +755,6 @@
 			buildActionMask = 0;
 			files = (
 				E6AF494775C5141000000000 /* main.m in srcs */,
-				E6AF4947520AA0DE00000000 /* output.m in outs */,
 				E6AF49475D9EF01300000000 /* NonARCFile.mm in non_arc_srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1021,7 +965,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1200,7 +1144,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = x86_64;
-				GCC_PREFIX_HEADER = "$(TULSI_WR)/bazel-genfiles/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
+				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

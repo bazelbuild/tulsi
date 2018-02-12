@@ -25,40 +25,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework; path = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework; path = _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework; path = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C280F383DA200000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework; path = "tulsi-workspace/_idx_SwiftLibrary_EA7FC891_ios_min8.0.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2840BBFB5200000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = "tulsi-workspace/Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28804B7D5400000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_swift/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C2897AEEFA100000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = "<group>"; };
 		43D68C28A81C321400000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
+		43D68C28AA7DBEF600000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework; path = "tulsi-workspace/_idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28ADF10C6300000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
 		43D68C28BF9D04A000000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = "<group>"; };
 		43D68C28DA373E9A00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
 		43D68C28E006042300000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = "<group>"; };
-		43D68C28E9B61AB000000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "bazel-bin/tulsi_e2e_swift/Application-MergedInfo.plist"; sourceTree = "<group>"; };
-		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28F61CF22100000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; };
 		43D68C28F7BC10E600000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = "<group>"; };
+		43D68C28FE249EEE00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework; path = "tulsi-workspace/_idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE07201E0200000000 /* _tulsi-includes */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000000 /* x */,
+			);
+			name = "_tulsi-includes";
+			sourceTree = "<group>";
+		};
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28F49055A600000000 /* Application.app */,
-				43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */,
-				43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */,
-				43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */,
-				966FB6DE2CEC8E5C00000000 /* bazel-bin */,
+				43D68C2840BBFB5200000000 /* Application.app */,
+				43D68C28FE249EEE00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */,
+				43D68C28AA7DBEF600000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */,
+				43D68C280F383DA200000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */,
+				966FB6DE07201E0200000000 /* _tulsi-includes */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		966FB6DE2CEC8E5C00000000 /* bazel-bin */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE9E30860600000000 /* tulsi_e2e_swift */,
-			);
-			name = "bazel-bin";
 			sourceTree = "<group>";
 		};
 		966FB6DE582F53CF00000000 /* SwiftLibrary */ = {
@@ -106,6 +106,22 @@
 			path = ..;
 			sourceTree = SOURCE_ROOT;
 		};
+		966FB6DE88DDC84A00000000 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000001 /* x */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000001 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE9E30860600000000 /* tulsi_e2e_swift */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
 		966FB6DE906B425B00000000 /* SwiftLibraryV4 */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,7 +141,7 @@
 		966FB6DE9E30860600000000 /* tulsi_e2e_swift */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28E9B61AB000000000 /* Application-MergedInfo.plist */,
+				43D68C28804B7D5400000000 /* Application-MergedInfo.plist */,
 			);
 			name = tulsi_e2e_swift;
 			sourceTree = "<group>";
@@ -175,7 +191,7 @@
 			);
 			name = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0;
 			productName = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0;
-			productReference = 43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */;
+			productReference = 43D68C28AA7DBEF600000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
@@ -191,7 +207,7 @@
 			);
 			name = Application;
 			productName = Application;
-			productReference = 43D68C28F49055A600000000 /* Application.app */;
+			productReference = 43D68C2840BBFB5200000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3D31C5E685D0530A00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0 */ = {
@@ -207,7 +223,7 @@
 			);
 			name = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0;
 			productName = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0;
-			productReference = 43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */;
+			productReference = 43D68C28FE249EEE00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		3D31C5E68D4F012A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0 */ = {
@@ -223,7 +239,7 @@
 			);
 			name = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
 			productName = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
-			productReference = 43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */;
+			productReference = 43D68C280F383DA200000000 /* _idx_SwiftLibrary_EA7FC891_ios_min8.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */

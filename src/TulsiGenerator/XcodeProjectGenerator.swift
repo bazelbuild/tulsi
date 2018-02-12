@@ -226,12 +226,6 @@ final class XcodeProjectGenerator {
     installStubExtensionPlistFiles(projectURL,
                                    rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType == .AppExtension },
                                    plistPaths: plistPaths)
-
-    let artifactFolderProfileToken = localizedMessageLogger.startProfiling("creating_artifact_folders",
-                                                                           context: config.projectName)
-    createGeneratedArtifactFolders(mainGroup, relativeTo: projectURL)
-    localizedMessageLogger.logProfilingEnd(artifactFolderProfileToken)
-
     return projectURL
   }
 
@@ -1016,31 +1010,6 @@ final class XcodeProjectGenerator {
     }
   }
 
-  private func createGeneratedArtifactFolders(_ mainGroup: PBXGroup, relativeTo path: URL) {
-    if suppressGeneratedArtifactFolderCreation { return }
-    let generatedArtifacts = mainGroup.allSources.filter() { !$0.isInputFile }
-
-    let generatedFolders = PathTrie()
-    for artifact in generatedArtifacts {
-      let url = path.appendingPathComponent(artifact.sourceRootRelativePath)
-      if let absoluteURL = (url as NSURL).deletingLastPathComponent?.standardizedFileURL {
-        generatedFolders.insert(absoluteURL)
-      }
-    }
-
-    var failedCreates = [String]()
-    for url in generatedFolders.leafPaths() {
-      if !createDirectory(url, failSilently: true) {
-        failedCreates.append(url.path)
-      }
-    }
-    if !failedCreates.isEmpty {
-      localizedMessageLogger.warning("CreatingGeneratedArtifactFoldersFailed",
-                                     comment: "Failed to create folders for generated artifacts %1$@. The generated Xcode project may need to be reloaded after the first build.",
-                                     context: config.projectName,
-                                     values: failedCreates.joined(separator: ", "))
-    }
-  }
 
   func logPendingMessages() {
     if workspaceInfoExtractor.hasQueuedInfoMessages() {

@@ -62,11 +62,11 @@ final class BazelXcodeProjectPatcher {
     }
 
     // Default to be relative to the bazel exec root if the FileReferencePatcher doesn't handle the
-    // patch AND the file is actually an input file (not a generated file).
+    // patch. This is for both source files as well as generated files (which always need to be
+    // relative to the bazel exec root).
     if !fileReferencePatcher.patchNonPresentFileReference(file: file,
                                                           url: url,
-                                                          workspaceRootURL: workspaceRootURL),
-       file.isInputFile {
+                                                          workspaceRootURL: workspaceRootURL) {
       file.path = resolvePathFromBazelExecRoot(file.path!)
     }
   }

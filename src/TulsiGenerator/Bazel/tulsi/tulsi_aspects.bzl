@@ -112,7 +112,7 @@ def _struct_omitting_none(**kwargs):
   return struct(**_dict_omitting_none(**kwargs))
 
 
-def _convert_outpath_to_symlink_path(path, use_tulsi_symlink=False):
+def _convert_outpath_to_symlink_path(path):
   """Converts full output paths to their tulsi-symlink equivalents.
 
   Bazel output paths are unstable, prone to change with architecture,
@@ -132,43 +132,30 @@ def _convert_outpath_to_symlink_path(path, use_tulsi_symlink=False):
   indexing and auto-completion for generated files would no longer work until
   the next successful build.
 
-  In short, when `use_tulsi_symlink` is `True`, this method will transform
+  In short, this method will transform
     bazel-out/ios-x86_64-min7.0/genfiles/foo
   to
     _tulsi-includes/x/x/foo
 
-  When `use_tulsi_symlink` is `False`, this method will transform
-    bazel-outbin/ios-x86_64-min7.0/genfiles/foo
-  to
-    bazel-genfiles/foo
-
-  This flag is currently enabled for generated headers, sources, Swift modules,
-  and module maps. Disabled for everything else to keep backwards compatibility.
-  TODO(tulsi-team): Phase out the older bazel symlink completely and remove
-  the flag.
+  This is currently enabled for everything although it will only affect
+  generated files.
 
   Args:
     path: path to transform
-    use_tulsi_symlink: whether to use the new tulsi symlink, or the older bazel
-      format.
 
   Returns:
     A string that is the original path modified according to the rules.
   """
-  # The path will be of the form:
-  # if use_tulsi_symlink:
-  #   _tulsi-includes/x/x/symlink[/.*]
-  # otherwise:
+  # Transform paths of the form:
   #   bazel-[whatever]/[platform-config]/symlink[/.*]
+  # to:
+  #   _tulsi-includes/x/x/symlink[/.*]
   first_dash = path.find('-')
   components = path.split('/')
   if (len(components) > 2 and
       first_dash >= 0 and
       first_dash < len(components[0])):
-    if use_tulsi_symlink:
-      return '_tulsi-includes/x/x/' + '/'.join(components[3:])
-    else:
-      return path[:first_dash + 1] + '/'.join(components[2:])
+    return '_tulsi-includes/x/x/' + '/'.join(components[3:])
   return path
 
 def _is_bazel_external_file(f):
@@ -176,7 +163,7 @@ def _is_bazel_external_file(f):
   return f.path.startswith('external/')
 
 
-def _file_metadata(f, use_tulsi_symlink=False):
+def _file_metadata(f):
   """Returns metadata about a given File."""
   if not f:
     return None
@@ -187,9 +174,7 @@ def _file_metadata(f, use_tulsi_symlink=False):
   out_path = f.path if _is_bazel_external_file(f) else f.short_path
   if not f.is_source:
     root_path = f.root.path
-    symlink_path = _convert_outpath_to_symlink_path(
-        root_path,
-        use_tulsi_symlink=use_tulsi_symlink)
+    symlink_path = _convert_outpath_to_symlink_path(root_path)
     if symlink_path == root_path:
       # The root path should always be bazel-out/... and thus is expected to be
       # updated.
@@ -235,9 +220,12 @@ def _collect_artifacts(obj, attr_path):
           for f in _get_opt_attr(src, 'files')]
 
 
-def _collect_files(obj, attr_path):
+def _collect_files(obj, attr_path, convert_to_metadata=True):
   """Returns a list of artifact_location's for the attr_path in obj."""
-  return [_file_metadata(f) for f in _collect_artifacts(obj, attr_path)]
+  if convert_to_metadata:
+    return [_file_metadata(f) for f in _collect_artifacts(obj, attr_path)]
+  else:
+    return _collect_artifacts(obj, attr_path)
 
 
 def _collect_first_file(obj, attr_path):
@@ -248,11 +236,12 @@ def _collect_first_file(obj, attr_path):
   return files[0]
 
 
-def _collect_supporting_files(rule_attr):
+def _collect_supporting_files(rule_attr, convert_to_metadata=True):
   """Extracts 'supporting' files from the given rule attributes."""
   all_files = []
   for attr in _SUPPORTING_FILE_ATTRIBUTES:
-    all_files += _collect_files(rule_attr, attr)
+    all_files += _collect_files(rule_attr, attr,
+                                convert_to_metadata=convert_to_metadata)
   return all_files
 
 
@@ -568,12 +557,12 @@ def _tulsi_sources_aspect(target, ctx):
     generated_non_arc_files = _extract_generated_sources(target)
 
   swift_transitive_modules = depset(
-      [_file_metadata(f, use_tulsi_symlink=True)
+      [_file_metadata(f)
        for f in _collect_swift_modules(target)])
 
   # Collect ObjC module maps dependencies for Swift targets.
   objc_module_maps = depset(
-      [_file_metadata(f, use_tulsi_symlink=True)
+      [_file_metadata(f)
        for f in _collect_module_maps(target)])
 
   # Collect the dependencies of this rule, dropping any .jar files (which may be
@@ -649,7 +638,7 @@ def _tulsi_sources_aspect(target, ctx):
   target_includes = []
   target_defines = []
   if objc_provider:
-    target_includes = [_convert_outpath_to_symlink_path(x, use_tulsi_symlink=True)
+    target_includes = [_convert_outpath_to_symlink_path(x)
                        for x in objc_provider.include]
     target_defines = objc_provider.define.to_list()
 
@@ -863,6 +852,8 @@ def _tulsi_outputs_aspect(target, ctx):
   all_files += (_collect_artifacts(rule, 'attr.srcs')
                 + _collect_artifacts(rule, 'attr.hdrs')
                 + _collect_artifacts(rule, 'attr.textual_hdrs'))
+  all_files += _collect_supporting_files(rule_attr, convert_to_metadata=False)
+  all_files += target.files
 
   tulsi_generated_files += depset(
       [x for x in all_files.to_list() if not x.is_source])
