@@ -35,8 +35,10 @@ class Logger(object):
     self._logger = logging.getLogger('tulsi_logging')
     self._logger.setLevel(logging.INFO)
 
-    file_handler = logging.handlers.RotatingFileHandler(logfile, backupCount=5)
+    file_handler = logging.handlers.RotatingFileHandler(logfile, backupCount=20)
     file_handler.setLevel(logging.INFO)
+    # Create a new log file for each build.
+    file_handler.doRollover()
     self._logger.addHandler(file_handler)
 
     console = logging.StreamHandler()
