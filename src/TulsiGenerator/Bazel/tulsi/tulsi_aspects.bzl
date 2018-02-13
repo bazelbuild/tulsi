@@ -466,6 +466,14 @@ def _extract_minimum_os_for_platform(ctx, platform_type_str):
   return str(min_os)
 
 
+def _extract_swift_language_version(ctx):
+  """Returns the Swift version of a swift_library rule."""
+
+  if ctx.rule.kind != 'swift_library':
+    return None
+  return _get_label_attr(ctx, 'rule.attr.swift_version') or "3.0"
+
+
 def _collect_swift_modules(target):
   """Returns a depset of Swift modules found on the given target."""
   swift_modules = depset()
@@ -612,9 +620,9 @@ def _tulsi_sources_aspect(target, ctx):
   bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
 
   # Build up any local transitive attributes and apply them.
-  swift = _get_opt_attr(target, 'swift')
-  if swift:
-    transitive_attributes['swift_language_version'] = getattr(swift, 'swift_version', None)
+  swift_language_version = _extract_swift_language_version(ctx)
+  if swift_language_version:
+    transitive_attributes['swift_language_version'] = swift_language_version
     transitive_attributes['has_swift_dependency'] = True
 
   # Collect Info.plist files from an extension to figure out its type.
