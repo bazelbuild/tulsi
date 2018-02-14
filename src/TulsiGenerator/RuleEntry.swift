@@ -131,27 +131,15 @@ public final class RuleEntry: RuleInfo {
   // searched recursively or not.
   public typealias IncludePath = (String, Bool)
 
-  /// Mapping of BUILD file type to Xcode Target type.
+  /// Mapping of BUILD file type to Xcode Target type for non-bundled types.
   static let BuildTypeToTargetType = [
-      "apple_ui_test": PBXTarget.ProductType.UIUnitTest,
-      "apple_unit_test": PBXTarget.ProductType.UnitTest,
       "cc_binary": PBXTarget.ProductType.Application,
       "cc_library": PBXTarget.ProductType.StaticLibrary,
-      "ios_application": PBXTarget.ProductType.Application,
-      "ios_extension": PBXTarget.ProductType.AppExtension,
-      "ios_framework": PBXTarget.ProductType.Framework,
-      "ios_legacy_test": PBXTarget.ProductType.Application,
-      "macos_application": PBXTarget.ProductType.Application,
-      "macos_bundle": PBXTarget.ProductType.Bundle,
+      // macos_command_line_application is not a bundled type in our rules as it does not contain
+      // any resources, so we must explicitly list it here.
       "macos_command_line_application": PBXTarget.ProductType.Tool,
-      "macos_extension": PBXTarget.ProductType.AppExtension,
-      "objc_binary": PBXTarget.ProductType.Application,
       "objc_library": PBXTarget.ProductType.StaticLibrary,
       "swift_library": PBXTarget.ProductType.StaticLibrary,
-      "tvos_application": PBXTarget.ProductType.Application,
-      "tvos_extension": PBXTarget.ProductType.TVAppExtension,
-      "watchos_application": PBXTarget.ProductType.Watch2App,
-      "watchos_extension": PBXTarget.ProductType.Watch2Extension,
   ]
 
   /// Keys for a RuleEntry's attributes map. Definitions may be found in the Bazel Build
@@ -260,6 +248,9 @@ public final class RuleEntry: RuleInfo {
   /// The bundle name associated with the target for this rule, if any.
   public let bundleName: String?
 
+  /// The product type for this rule (only for targets With AppleBundleInfo).
+  let productType: PBXTarget.ProductType?
+
   /// The CFBundleIdentifier of the watchOS extension target associated with this rule, if any.
   public let extensionBundleID: String?
 
@@ -301,6 +292,9 @@ public final class RuleEntry: RuleInfo {
   }
 
   private(set) lazy var pbxTargetType: PBXTarget.ProductType? = { [unowned self] in
+    if let productType = self.productType {
+      return productType
+    }
     return BuildTypeToTargetType[self.type]
   }()
 
@@ -326,6 +320,7 @@ public final class RuleEntry: RuleInfo {
        extensions: Set<BuildLabel>? = nil,
        bundleID: String? = nil,
        bundleName: String? = nil,
+       productType: PBXTarget.ProductType? = nil,
        extensionBundleID: String? = nil,
        platformType: String? = nil,
        osDeploymentTarget: String? = nil,
@@ -371,6 +366,7 @@ public final class RuleEntry: RuleInfo {
     }
     self.bundleID = bundleID
     self.bundleName = bundleName
+    self.productType = productType
     self.extensionBundleID = extensionBundleID
     var deploymentTarget: DeploymentTarget? = nil
     if let platform = parsedPlatformType,
@@ -408,6 +404,7 @@ public final class RuleEntry: RuleInfo {
                    extensions: Set<BuildLabel>? = nil,
                    bundleID: String? = nil,
                    bundleName: String? = nil,
+                   productType: PBXTarget.ProductType? = nil,
                    extensionBundleID: String? = nil,
                    platformType: String? = nil,
                    osDeploymentTarget: String? = nil,
@@ -432,6 +429,7 @@ public final class RuleEntry: RuleInfo {
               extensions: extensions,
               bundleID: bundleID,
               bundleName: bundleName,
+              productType: productType,
               extensionBundleID: extensionBundleID,
               platformType: platformType,
               osDeploymentTarget: osDeploymentTarget,

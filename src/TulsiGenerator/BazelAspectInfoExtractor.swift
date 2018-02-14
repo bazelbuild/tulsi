@@ -341,18 +341,33 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       }
       let bundleID = dict["bundle_id"] as? String
       let bundleName = dict["bundle_name"] as? String
+      let productType = dict["product_type"] as? String
+
       let platformType = dict["platform_type"] as? String
 
+      let targetProductType: PBXTarget.ProductType?
+
+      if let productTypeStr = productType {
+        // Better be a type that we support, otherwise it's an error on our end.
+        if let actualProductType = PBXTarget.ProductType(rawValue: productTypeStr) {
+          targetProductType = actualProductType
+        } else {
+          throw ExtractorError.parsingFailed("Unsupported product type: \(productTypeStr)")
+        }
+      } else {
+        targetProductType = nil
+      }
+
       var extensionType: String?
-      if ruleType == "ios_extension", let infoplistPath = dict["infoplist"] as? String {
-        // TODO(dmishe): This relies on the fact the Plist will be located next to the .tulsiinfo
-        // file for the same target. It would be better to get an absolute path to the plist from
-        // bazel.
+      if targetProductType?.isiOSAppExtension ?? false, let infoplistPath = dict["infoplist"] as? String {
+        // TODO(b/73349137): This relies on the fact the Plist will be located next to the
+        // .tulsiinfo file for the same target. It would be better to get an absolute path to the
+        // plist from bazel.
         let plistPath = URL(fileURLWithPath: filename)
-            .deletingLastPathComponent()
-            .appendingPathComponent(infoplistPath).path
+          .deletingLastPathComponent()
+          .appendingPathComponent(infoplistPath).path
         guard let info = NSDictionary(contentsOfFile: plistPath) else {
-          throw ExtractorError.parsingFailed("Unable to load ios_extension plist file: \(plistPath)")
+          throw ExtractorError.parsingFailed("Unable to load extension plist file: \(plistPath)")
         }
 
         guard let _extensionType = info.value(forKeyPath: "NSExtension.NSExtensionPointIdentifier") as? String else {
@@ -374,6 +389,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 extensions: extensions,
                                 bundleID: bundleID,
                                 bundleName: bundleName,
+                                productType: targetProductType,
                                 platformType: platformType,
                                 osDeploymentTarget: osDeploymentTarget,
                                 buildFilePath: buildFilePath,

@@ -160,7 +160,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateBazelCleanTargetAppliesToRulesAddedBeforeAndAfter() {
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("before", type: "ios_application")], ruleEntryMap: RuleEntryMap())
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("before", type: "ios_application", productType: .Application)], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -168,7 +168,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     targetGenerator.generateBazelCleanTarget("scriptPath")
 
     do {
-      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("after", type: "ios_application")], ruleEntryMap: RuleEntryMap())
+      try targetGenerator.generateBuildTargetsForRuleEntries([makeTestRuleEntry("after", type: "ios_application", productType: .Application)], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
       XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
     }
@@ -310,7 +310,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2TargetName = "ObjectiveCLibrary"
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
       makeTestRuleEntry(rule2BuildTarget, type: "objc_library"),
     ])
 
@@ -406,10 +406,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_unit_test",
+                                                          testProductType: .UnitTest,
                                                           testHostAttributeName: "test_host")
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithNoSources(_ testRuleType: String,
+                                                             testProductType: PBXTarget.ProductType,
                                                              testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -419,10 +421,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
                         attributes: rule2Attributes as [String: AnyObject],
+                        productType: testProductType,
                         platformType: "ios",
                         osDeploymentTarget: "8.0"),
     ])
@@ -533,10 +536,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
     let rule2Attributes = [testHostAttributeName: rule1BuildTarget]
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
                         attributes: rule2Attributes as [String: AnyObject],
+                        productType: .UIUnitTest,
                         platformType: "ios",
                         osDeploymentTarget: "8.0"),
       ])
@@ -648,11 +652,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget,
                         type: "macos_application",
+                        productType: .Application,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
                         attributes: rule2Attributes as [String: AnyObject],
+                        productType: .UnitTest,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       ])
@@ -766,11 +772,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget,
                         type: "macos_application",
+                        productType: .Application,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       makeTestRuleEntry(rule2BuildTarget,
                         type: testRuleType,
                         attributes: rule2Attributes as [String: AnyObject],
+                        productType: .UIUnitTest,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       ])
@@ -878,6 +886,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rules = Set([
       makeTestRuleEntry(rule1BuildTarget,
                         type: testRuleType,
+                        productType: .UnitTest,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       ])
@@ -947,6 +956,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       makeTestRuleEntry(rule1BuildTarget,
                         type: testRuleType,
                         sourceFiles: testSources,
+                        productType: .UnitTest,
                         platformType: "macos",
                         osDeploymentTarget: "10.11"),
       ])
@@ -1009,10 +1019,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_unit_test",
+                                                        testProductType: .UnitTest,
                                                         testHostAttributeName: "test_host")
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithSources(_ testRuleType: String,
+                                                           testProductType: PBXTarget.ProductType,
                                                            testHostAttributeName: String) {
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestHost"
@@ -1026,10 +1038,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
                                      sourceFiles: testSources,
+                                     productType: testProductType,
                                      platformType: "ios",
                                      osDeploymentTarget: "8.0")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
       testRule,
     ])
     do {
@@ -1142,11 +1155,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       type: "ios_test_bundle",
       attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-      type: "ios_application")
+      type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
       type: "\(testRuleType)",
       attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
                    "test_host": testHostRuleEntry.label.value as AnyObject],
+      productType: .UnitTest,
       platformType: "ios",
       osDeploymentTarget: "8.0")
 
@@ -1228,11 +1242,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                                 type: "ios_test_bundle",
                                                 attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
-                                              type: "ios_application")
+                                              type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
                                           type: "\(testRuleType)",
                                           attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
                                                        "test_host": testHostRuleEntry.label.value as AnyObject],
+                                          productType: .UnitTest,
                                           platformType: "ios",
                                           osDeploymentTarget: "8.0")
 
@@ -1309,6 +1324,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
     let testRuleType = "apple_ui_test"
+    let testProductType = PBXTarget.ProductType.UIUnitTest
     let testHostAttributeName = "test_host"
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -1322,10 +1338,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
                                      sourceFiles: testSources,
+                                     productType: testProductType,
                                      platformType: "ios",
                                      osDeploymentTarget: "8.0")
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
       testRule,
       ])
     do {
@@ -1423,16 +1440,16 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-        "apple_unit_test", testHostAttributeName: "test_host")
+      "apple_unit_test", testProductType: .UnitTest, testHostAttributeName: "test_host")
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUITest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-        "apple_ui_test", testHostAttributeName: "test_host")
+      "apple_ui_test", testProductType: .UIUnitTest, testHostAttributeName: "test_host")
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-      _ testRuleType: String, testHostAttributeName: String) {
+    _ testRuleType: String, testProductType: PBXTarget.ProductType, testHostAttributeName: String) {
     let hostTargetName = "TestHost"
     let host1Package = "test/package/1"
     let host2Package = "test/package/2"
@@ -1448,14 +1465,16 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let test1Rule = makeTestRuleEntry(test1Target,
                                       type: testRuleType,
                                       attributes: [testHostAttributeName: host1Target as AnyObject],
-                                      sourceFiles: testSources)
+                                      sourceFiles: testSources,
+                                      productType: testProductType)
     let test2Rule = makeTestRuleEntry(test2Target,
                                       type: testRuleType,
                                       attributes: [testHostAttributeName: host2Target as AnyObject],
-                                      sourceFiles: testSources)
+                                      sourceFiles: testSources,
+                                      productType: testProductType)
     let rules = Set([
-      makeTestRuleEntry(host1Target, type: "ios_application"),
-      makeTestRuleEntry(host2Target, type: "ios_application"),
+      makeTestRuleEntry(host1Target, type: "ios_application", productType: .Application),
+      makeTestRuleEntry(host2Target, type: "ios_application", productType: .Application),
       test1Rule,
       test2Rule,
     ])
@@ -1490,7 +1509,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRule = makeTestRuleEntry(testRuleBuildTarget,
                                      type: testRuleType,
                                      attributes: testRuleAttributes as [String: AnyObject],
-                                     sourceFiles: testSources)
+                                     sourceFiles: testSources,
+                                     productType: .Application)
     do {
       try targetGenerator.generateBuildTargetsForRuleEntries([testRule], ruleEntryMap: RuleEntryMap())
     } catch let e as NSError {
@@ -1554,8 +1574,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rule2BuildPath = "test/test2"
     let rule2BuildTarget = "\(rule2BuildPath):\(targetName)"
     let rules = Set([
-      makeTestRuleEntry(rule1BuildTarget, type: "ios_application"),
-      makeTestRuleEntry(rule2BuildTarget, type: "ios_application"),
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", productType: .Application),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application", productType: .Application),
     ])
 
     do {
@@ -1656,7 +1676,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rules = Set([
       makeTestRuleEntry(buildTarget,
                         type: "ios_application",
-                        bundleID: bundleID),
+                        bundleID: bundleID,
+                        productType: .Application),
     ])
 
     do {
@@ -1720,7 +1741,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let rules = Set([
       makeTestRuleEntry(buildTarget,
                         type: "ios_application",
-                        bundleName: bundleName),
+                        bundleName: bundleName,
+                        productType: .Application),
       ])
 
     do {
@@ -1795,18 +1817,21 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                         type: "ios_application",
                         extensions: Set([BuildLabel(watchAppBuildTarget)]),
                         bundleID: appBundleID,
+                        productType: .Application,
                         platformType: "ios",
                         osDeploymentTarget: "9.0"),
       makeTestRuleEntry(watchAppBuildTarget,
                         type: "watchos_application",
                         extensions: Set([BuildLabel(watchExtBuildTarget)]),
                         bundleID: watchAppBundleID,
+                        productType: .Watch2App,
                         extensionBundleID: watchExtBundleID,
                         platformType: "watchos",
                         osDeploymentTarget: "2.0"),
       makeTestRuleEntry(watchExtBuildTarget,
                         type: "watchos_extension",
                         bundleID: watchExtBundleID,
+                        productType: .Watch2Extension,
                         platformType: "watchos",
                         osDeploymentTarget: "2.0")
     ])
@@ -1964,16 +1989,19 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                         type: "macos_application",
                         extensions: Set([BuildLabel(macAppExtBuildTarget)]),
                         bundleID: appBundleID,
+                        productType: .Application,
                         platformType: "macos",
                         osDeploymentTarget: "10.12"),
       makeTestRuleEntry(macAppExtBuildTarget,
                         type: "macos_extension",
                         bundleID: macAppExtBundleID,
+                        productType: .AppExtension,
                         platformType: "macos",
                         osDeploymentTarget: "10.12"),
       makeTestRuleEntry(macCLIAppBuildTarget,
                         type: "macos_command_line_application",
                         bundleID: macCLIAppBundleID,
+                        productType: .Tool,
                         platformType: "macos",
                         osDeploymentTarget: "10.12")
       ])
@@ -2544,7 +2572,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let testRule = makeTestRuleEntry(target,
                                      type: targetType,
                                      attributes: ["has_swift_dependency": true as AnyObject],
-                                     dependencies: Set([BuildLabel(swiftTarget)]))
+                                     dependencies: Set([BuildLabel(swiftTarget)]),
+                                     productType: .Application)
     let swiftLibraryRule = makeTestRuleEntry(swiftTarget, type: "swift_library")
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRule])
 
@@ -2658,6 +2687,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  bundleName: String? = nil,
+                                 productType: PBXTarget.ProductType? = nil,
                                  extensionBundleID: String? = nil,
                                  platformType: String? = nil,
                                  osDeploymentTarget: String? = nil,
@@ -2672,6 +2702,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                              extensions: extensions,
                              bundleID: bundleID,
                              bundleName: bundleName,
+                             productType: productType,
                              extensionBundleID: extensionBundleID,
                              platformType: platformType,
                              osDeploymentTarget: osDeploymentTarget,
@@ -2694,6 +2725,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                  extensions: Set<BuildLabel>? = nil,
                                  bundleID: String? = nil,
                                  bundleName: String? = nil,
+                                 productType: PBXTarget.ProductType? = nil,
                                  extensionBundleID: String? = nil,
                                  platformType: String? = nil,
                                  osDeploymentTarget: String? = nil,
@@ -2710,6 +2742,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                      extensions: extensions,
                      bundleID: bundleID,
                      bundleName: bundleName,
+                     productType: productType,
                      extensionBundleID: extensionBundleID,
                      platformType: platformType,
                      osDeploymentTarget: osDeploymentTarget,

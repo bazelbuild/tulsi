@@ -521,9 +521,6 @@ def _tulsi_sources_aspect(target, ctx):
   target_kind = rule.kind
   rule_attr = _get_opt_attr(rule, 'attr')
   filter = _filter_for_rule(rule)
-  bundle_name = None
-  if AppleBundleInfo in target:
-    bundle_name = target[AppleBundleInfo].bundle_name
 
   tulsi_info_files = depset()
   transitive_attributes = dict()
@@ -617,20 +614,29 @@ def _tulsi_sources_aspect(target, ctx):
     if watch_app:
       extensions.append(watch_app)
 
-  bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
+  # Collect bundle related information.
+  if AppleBundleInfo in target:
+    apple_bundle_provider = target[AppleBundleInfo]
+
+    bundle_name = apple_bundle_provider.bundle_name
+    bundle_id = apple_bundle_provider.bundle_id
+    product_type = apple_bundle_provider.product_type
+
+    # We only need the infoplist from iOS extension targets.
+    infoplist = apple_bundle_provider.infoplist if IosExtensionBundleInfo in target else None
+  else:
+    bundle_name = None
+    # For macos_command_line_application, which does not have a AppleBundleInfo
+    # provider but does have a bundle_id attribute for use in the Info.plist.
+    bundle_id = _get_opt_attr(rule_attr, 'bundle_id')
+    product_type = None
+    infoplist = None
 
   # Build up any local transitive attributes and apply them.
   swift_language_version = _extract_swift_language_version(ctx)
   if swift_language_version:
     transitive_attributes['swift_language_version'] = swift_language_version
     transitive_attributes['has_swift_dependency'] = True
-
-  # Collect Info.plist files from an extension to figure out its type.
-  infoplist = None
-
-  # Only Skylark versions of ios_extension have the AppleBundleInfo provider.
-  if IosExtensionBundleInfo in target:
-    infoplist = target[AppleBundleInfo].infoplist
 
   all_attributes = attributes + inheritable_attributes + transitive_attributes
 
@@ -667,6 +673,7 @@ def _tulsi_sources_aspect(target, ctx):
       type=target_kind,
       infoplist=infoplist.basename if infoplist else None,
       platform_type=platform_type,
+      product_type=product_type,
   )
 
   # Create an action to write out this target's info.

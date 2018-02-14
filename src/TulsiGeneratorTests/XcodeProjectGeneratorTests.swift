@@ -89,20 +89,22 @@ class XcodeProjectGeneratorTests: XCTestCase {
                  attributes: [String: AnyObject] = [:],
                  weakDependencies: Set<BuildLabel>? = nil,
                  extensions: Set<BuildLabel>? = nil,
-                 extensionType: String? = nil) -> BuildLabel {
+                 extensionType: String? = nil,
+                 productType: PBXTarget.ProductType? = nil) -> BuildLabel {
       let label = BuildLabel(labelName)
       mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
                                                                            type: type,
                                                                            attributes: attributes,
                                                                            weakDependencies: weakDependencies,
                                                                            extensions: extensions,
+                                                                           productType: productType,
                                                                            extensionType: extensionType)
       return label
     }
 
-    let test1 = addRule("//test:ExtFoo", type: "ios_extension", extensionType: "com.apple.extension-foo")
-    let test2 = addRule("//test:ExtBar", type: "ios_extension", extensionType: "com.apple.extension-bar")
-    addRule("//test:Application", type: "ios_application", extensions: [test1, test2])
+    let test1 = addRule("//test:ExtFoo", type: "ios_extension", extensionType: "com.apple.extension-foo", productType: .AppExtension)
+    let test2 = addRule("//test:ExtBar", type: "ios_extension", extensionType: "com.apple.extension-bar", productType: .AppExtension)
+    addRule("//test:Application", type: "ios_application", extensions: [test1, test2], productType: .Application)
     prepareGenerator(mockExtractor.labelToRuleEntry)
 
     func assertPlist(withData data: Data, equalTo value: NSDictionary) {
@@ -163,31 +165,45 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testTestSuiteSchemeGenerationWithSkylarkUnitTest() {
-    checkTestSuiteSchemeGeneration("apple_unit_test", testHostAttributeName: "test_host")
+    checkTestSuiteSchemeGeneration("apple_unit_test",
+                                   testProductType: .UnitTest,
+                                   testHostAttributeName: "test_host")
   }
 
   func testTestSuiteSchemeGenerationWithSkylarkUITest() {
-    checkTestSuiteSchemeGeneration("apple_ui_test", testHostAttributeName: "test_host")
+    checkTestSuiteSchemeGeneration("apple_ui_test",
+                                   testProductType: .UIUnitTest,
+                                   testHostAttributeName: "test_host")
   }
 
-  func checkTestSuiteSchemeGeneration(_ testRuleType: String, testHostAttributeName: String) {
+  func checkTestSuiteSchemeGeneration(_ testRuleType: String,
+                                      testProductType: PBXTarget.ProductType,
+                                      testHostAttributeName: String) {
     @discardableResult
     func addRule(_ labelName: String,
                  type: String,
                  attributes: [String: AnyObject] = [:],
-                 weakDependencies: Set<BuildLabel>? = nil) -> BuildLabel {
+                 weakDependencies: Set<BuildLabel>? = nil,
+                 productType: PBXTarget.ProductType? = nil) -> BuildLabel {
       let label = BuildLabel(labelName)
       mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
                                                                              type: type,
                                                                              attributes: attributes,
-                                                                             weakDependencies: weakDependencies)
+                                                                             weakDependencies: weakDependencies,
+                                                                             productType: productType)
       return label
     }
 
-    let app = addRule("//test:Application", type: "ios_application")
-    let test1 = addRule("//test:TestOne", type: testRuleType, attributes: [testHostAttributeName: app.value as AnyObject])
-    let test2 = addRule("//test:TestTwo", type: testRuleType, attributes: [testHostAttributeName: app.value as AnyObject])
-    addRule("//test:UnusedTest", type: testRuleType)
+    let app = addRule("//test:Application", type: "ios_application", productType: .Application)
+    let test1 = addRule("//test:TestOne",
+                        type: testRuleType,
+                        attributes: [testHostAttributeName: app.value as AnyObject],
+                        productType: testProductType)
+    let test2 = addRule("//test:TestTwo",
+                        type: testRuleType,
+                        attributes: [testHostAttributeName: app.value as AnyObject],
+                        productType: testProductType)
+    addRule("//test:UnusedTest", type: testRuleType, productType: testProductType)
     addRule("//test:TestSuite", type: "test_suite", weakDependencies: Set([test1, test2]))
     prepareGenerator(mockExtractor.labelToRuleEntry)
 
@@ -234,7 +250,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
   private static func labelToRuleEntryMapForLabels(_ labels: [BuildLabel]) -> [BuildLabel: RuleEntry] {
     var ret = [BuildLabel: RuleEntry]()
     for label in labels {
-      ret[label] = makeRuleEntry(label, type: "ios_application")
+      ret[label] = makeRuleEntry(label, type: "ios_application", productType: .Application)
     }
     return ret
   }
@@ -252,6 +268,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     defines: [String]? = nil,
                                     includePaths: [RuleEntry.IncludePath]? = nil,
                                     extensions: Set<BuildLabel>? = nil,
+                                    productType: PBXTarget.ProductType? = nil,
                                     extensionType: String? = nil,
                                     platformType: String? = nil,
                                     osDeploymentTarget: String? = nil) -> RuleEntry {
@@ -265,6 +282,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      secondaryArtifacts: secondaryArtifacts,
                      weakDependencies: weakDependencies,
                      extensions: extensions,
+                     productType: productType,
                      platformType: platformType,
                      osDeploymentTarget: osDeploymentTarget,
                      buildFilePath: buildFilePath,

@@ -220,6 +220,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.LegacyTest.LegacyTests;
 				PRODUCT_NAME = LegacyTests;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_ios_legacy_test;
@@ -286,6 +287,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.LegacyTest.LegacyTests;
 				PRODUCT_NAME = LegacyTests;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_ios_legacy_test;
@@ -362,6 +364,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.LegacyTest.LegacyTests;
 				PRODUCT_NAME = LegacyTests;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -428,6 +431,7 @@
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.LegacyTest.LegacyTests;
 				PRODUCT_NAME = LegacyTests;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;

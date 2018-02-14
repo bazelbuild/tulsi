@@ -691,6 +691,9 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case Framework = "com.apple.product-type.framework"
     case StaticFramework = "com.apple.product-type.framework.static"
     case Application = "com.apple.product-type.application"
+    case MessagesApplication = "com.apple.product-type.application.messages"
+    case MessagesExtension = "com.apple.product-type.app-extension.messages"
+    case MessagesStickerPackExtension = "com.apple.product-type.app-extension.messages-sticker-pack"
     case UnitTest = "com.apple.product-type.bundle.unit-test"
     case UIUnitTest = "com.apple.product-type.bundle.ui-testing"
     case InAppPurchaseContent = "com.apple.product-type.in-app-purchase-content"
@@ -705,6 +708,12 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     /// Whether or not this ProductType denotes a watch application.
     var isWatchApp: Bool {
       return self == .Watch1App || self == .Watch2App
+    }
+
+    /// Whether or not this ProductType is an iOS app extension or variant.
+    var isiOSAppExtension: Bool {
+      return self == .AppExtension || self == .MessagesExtension
+          || self == .MessagesStickerPackExtension
     }
 
     /// Whether or not this ProductType denotes a test bundle.
@@ -749,6 +758,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
           fallthrough
         case .Watch2App:
           fallthrough
+        case .MessagesApplication:
+          fallthrough
         case .Application:
           return "wrapper.application"
 
@@ -765,6 +776,10 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .Watch2Extension:
           fallthrough
         case .TVAppExtension:
+          fallthrough
+        case .MessagesExtension:
+          fallthrough
+        case .MessagesStickerPackExtension:
           fallthrough
         case .AppExtension:
           return "wrapper.app-extension"
@@ -796,6 +811,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
 
         case .Watch2App:
           fallthrough
+        case .MessagesApplication:
+          fallthrough
         case .Application:
           return "\(name).app"
 
@@ -815,6 +832,10 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .Watch2Extension:
           fallthrough
         case .TVAppExtension:
+          fallthrough
+        case .MessagesExtension:
+          fallthrough
+        case .MessagesStickerPackExtension:
           fallthrough
         case .AppExtension:
           return "\(name).appex"

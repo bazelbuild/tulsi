@@ -224,7 +224,7 @@ final class XcodeProjectGenerator {
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
     installStubExtensionPlistFiles(projectURL,
-                                   rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType == .AppExtension },
+                                   rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType?.isiOSAppExtension ?? false },
                                    plistPaths: plistPaths)
     return projectURL
   }
@@ -581,6 +581,10 @@ final class XcodeProjectGenerator {
       let runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode
       let targetType = entry.pbxTargetType ?? .Application
       switch targetType {
+        case .MessagesExtension:
+          fallthrough
+        case .MessagesStickerPackExtension:
+          fallthrough
         case .AppExtension:
           appExtension = true
           launchStyle = .AppExtension

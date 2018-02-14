@@ -30,6 +30,10 @@ struct StubInfoPlistPaths {
     case .Watch1Extension, .Watch2Extension:
       return watchOSAppExStub
 
+    case .MessagesExtension:
+      fallthrough
+    case .MessagesStickerPackExtension:
+      fallthrough
     case .AppExtension:
       return stubProjectPath(forRuleEntry: entry)
 
