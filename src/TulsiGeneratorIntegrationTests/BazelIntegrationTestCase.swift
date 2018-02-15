@@ -101,6 +101,9 @@ class BazelIntegrationTestCase: XCTestCase {
     bazelBuildOptions.append("--tvos_minimum_os=10.0")
     bazelBuildOptions.append("--watchos_minimum_os=3.0")
 
+    // Explicitly set Xcode version to use.
+    bazelBuildOptions.append("--xcode_version=9.2")
+
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")
     }

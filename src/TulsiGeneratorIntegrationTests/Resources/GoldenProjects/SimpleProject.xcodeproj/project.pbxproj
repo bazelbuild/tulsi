@@ -296,7 +296,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583978C206500000000 /* Build configuration list for PBXNativeTarget "TargetApplication" */;
 			buildPhases = (
-				84B42271C2AAA7F100000000 /* ShellScript */,
+				84B422716CCCB08600000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -329,7 +329,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				84B42271AEB151D600000000 /* ShellScript */,
+				84B422713698E07C00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -378,7 +378,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				84B4227125BC261A00000000 /* ShellScript */,
+				84B42271FF8D61DF00000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -427,7 +427,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B4227125BC261A00000000 /* ShellScript */ = {
+		84B422713698E07C00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -438,10 +438,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271AEB151D600000000 /* ShellScript */ = {
+		84B422716CCCB08600000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -452,10 +452,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:TargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
-		84B42271C2AAA7F100000000 /* ShellScript */ = {
+		84B42271FF8D61DF00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -466,7 +466,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:TargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
