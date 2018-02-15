@@ -12,31 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// TODO(b/65199212): Move this back into TulsiParameter once Xcode 8.3 is available.
-/// Origin of a TulsiParameter, which has precedence:
-/// (high) explicitly provided (ie argument) <- options (ie config) <- project <- Fallback (low)
-public enum Source: Int {
-  /// Provided by an argument or flag. Highest precedence.
-  case explicitlyProvided
-
-  /// Provided by a TulsiOption.
-  case options
-
-  /// Provided by a Tulsi Project.
-  case project
-
-  /// default, back up value in cases where a value is needed. Lowest precedence.
-  case fallback
-
-  /// Returns true if self is higher priority than the other.
-  public func isHigherPriorityThan(_ other: Source) -> Bool {
-    return self.rawValue < other.rawValue;
-  }
-}
-
 /// Struct representing a value that is read in the following precedence:
 /// (high) explicitly provided (ie argument) <- options (ie config) <- project <- Fallback (low)
 public struct TulsiParameter<T> {
+
+  /// Origin of a TulsiParameter, which has precedence:
+  /// (high) explicitly provided (ie argument) <- options (ie config) <- project <- Fallback (low)
+  public enum Source: Int {
+    /// Provided by an argument or flag. Highest precedence.
+    case explicitlyProvided
+
+    /// Provided by a TulsiOption.
+    case options
+
+    /// Provided by a Tulsi Project.
+    case project
+
+    /// default, back up value in cases where a value is needed. Lowest precedence.
+    case fallback
+
+    /// Returns true if self is higher priority than the other.
+    public func isHigherPriorityThan(_ other: Source) -> Bool {
+      return self.rawValue < other.rawValue;
+    }
+  }
 
   public let value: T
   public let source: Source
