@@ -49,7 +49,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   @objc dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
                                                           argumentArray: [filteredFileTypes])
 
-  var selectedRuleInfoCount: Int = 0 {
+  @objc var selectedRuleInfoCount: Int = 0 {
     didSet {
       presentingWizardViewController?.setNextButtonEnabled(selectedRuleInfoCount > 0)
     }
