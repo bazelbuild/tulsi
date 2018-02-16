@@ -20,9 +20,9 @@ import TulsiGenerator
 class OptionsTargetNode: UISelectableOutlineViewNode {
 
   /// Tooltip to be displayed for this node.
-  var toolTip: String? = nil
+  @objc var toolTip: String? = nil
 
-  var boldFont: Bool {
+  @objc var boldFont: Bool {
     return !children.isEmpty
   }
 }
@@ -44,7 +44,7 @@ class OptionsTargetSelectorController: NSObject, NSOutlineViewDelegate {
                         comment: "Short header shown before the build targets in the options editor's target selector.")
 
   weak var view: NSOutlineView!
-  dynamic var nodes = [OptionsTargetNode]()
+  @objc dynamic var nodes = [OptionsTargetNode]()
 
   weak var delegate: OptionsTargetSelectorControllerDelegate?
   weak var model: OptionsEditorModelProtocol! = nil {

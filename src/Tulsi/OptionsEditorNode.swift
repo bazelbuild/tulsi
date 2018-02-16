@@ -62,7 +62,7 @@ class OptionsEditorNode: NSObject {
   }
 
   /// This node's children.
-  var children = [OptionsEditorNode]()
+  @objc var children = [OptionsEditorNode]()
 
   func editableForOptionLevel(_ level: OptionLevel) -> Bool {
     assertionFailure("Must be overridden by subclasses")

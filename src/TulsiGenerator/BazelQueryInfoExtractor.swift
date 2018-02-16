@@ -253,7 +253,7 @@ final class BazelQueryInfoExtractor: QueuedLogging {
   private func extractRuleInfosWithRuleInputsFromBazelXMLOutput(_ bazelOutput: Data) -> [RuleInfo: Set<BuildLabel>]? {
     do {
       var infos = [RuleInfo: Set<BuildLabel>]()
-      let doc = try XMLDocument(data: bazelOutput, options: 0)
+      let doc = try XMLDocument(data: bazelOutput, options: XMLNode.Options(rawValue: 0))
       let rules = try doc.nodes(forXPath: "/query/rule")
       for ruleNode in rules {
         guard let ruleElement = ruleNode as? XMLElement else {
@@ -320,7 +320,7 @@ final class BazelQueryInfoExtractor: QueuedLogging {
 
   private func extractSourceFileLabelsFromBazelXMLOutput(_ bazelOutput: Data) -> Set<BuildLabel>? {
     do {
-      let doc = try XMLDocument(data: bazelOutput, options: 0)
+      let doc = try XMLDocument(data: bazelOutput, options: XMLNode.Options(rawValue: 0))
       let fileLabels = try doc.nodes(forXPath: "/query/source-file/@name")
       var extractedLabels = Set<BuildLabel>()
       for labelNode in fileLabels {

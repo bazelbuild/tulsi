@@ -50,7 +50,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   weak var delegate: TulsiGeneratorConfigDocumentDelegate? = nil
 
   /// Whether or not the document is currently performing a long running operation.
-  dynamic var processing: Bool = false
+  @objc dynamic var processing: Bool = false
 
   // The number of tasks that need to complete before processing is finished. May only be mutated on
   // the main queue.
@@ -62,7 +62,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   // The folder into which the generated Xcode project will be written.
-  dynamic var outputFolderURL: URL? = nil
+  @objc dynamic var outputFolderURL: URL? = nil
 
   /// The set of all RuleInfo instances from which the user can select build targets.
   // Maps the given RuleInfo instances to UIRuleInfo's, preserving this config's selections if
@@ -89,7 +89,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// The UIRuleEntry instances that are acted on by the associated UI.
-  dynamic var uiRuleInfos = [UIRuleInfo]() {
+  @objc dynamic var uiRuleInfos = [UIRuleInfo]() {
     willSet {
       stopObservingRuleEntries()
 
@@ -112,7 +112,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   /// The number of selected items in ruleEntries.
-  dynamic var selectedRuleInfoCount: Int = 0 {
+  @objc dynamic var selectedRuleInfoCount: Int = 0 {
     didSet {
       updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
     }
@@ -176,7 +176,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                  additionalFilePaths: [String]? = nil,
                                                  bazelURL: URL? = nil,
                                                  name: String? = nil) throws -> TulsiGeneratorConfigDocument {
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     guard let doc = try documentController.makeUntitledDocument(ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
       throw TulsiError(errorMessage: "Document for type \(TulsiGeneratorConfigDocument.FileType) was not the expected type.")
     }
@@ -219,7 +219,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                   infoExtractor: TulsiProjectInfoExtractor,
                                                   messageLog: MessageLogProtocol?,
                                                   bazelURL: URL? = nil) throws -> TulsiGeneratorConfigDocument {
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     guard let doc = try documentController.makeDocument(withContentsOf: url,
                                                                          ofType: TulsiGeneratorConfigDocument.FileType) as? TulsiGeneratorConfigDocument else {
       throw TulsiError(errorMessage: "Document for type \(TulsiGeneratorConfigDocument.FileType) was not the expected type.")
@@ -278,7 +278,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   deinit {
-    unbind("projectRuleEntries")
+    NSObject.unbind(NSBindingName(rawValue: "projectRuleEntries"))
     stopObservingRuleEntries()
     assert(saveCompletionHandler == nil)
   }
@@ -296,8 +296,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   override func makeWindowControllers() {
-    let storyboard = NSStoryboard(name: "Main", bundle: nil)
-    let windowController = storyboard.instantiateController(withIdentifier: "TulsiGeneratorConfigDocumentWindow") as! NSWindowController
+    let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
+    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiGeneratorConfigDocumentWindow")) as! NSWindowController
     windowController.contentViewController?.representedObject = self
     // TODO(abaire): Consider supporting restoration of config subwindows.
     windowController.window?.isRestorable = false
@@ -337,7 +337,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   override func save(to url: URL,
                      ofType typeName: String,
-                     for saveOperation: NSSaveOperationType,
+                     for saveOperation: NSDocument.SaveOperationType,
                      completionHandler: @escaping (Error?) -> Void) {
     var writeError: NSError? = nil
     do {
@@ -408,7 +408,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
-  override class func autosavesInPlace() -> Bool {
+  override class var autosavesInPlace: Bool {
     // TODO(abaire): Enable autosave when undo behavior is implemented.
     return false
   }

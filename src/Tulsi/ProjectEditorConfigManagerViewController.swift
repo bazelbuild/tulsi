@@ -33,7 +33,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
 
-  dynamic var numBazelPackages: Int = 0 {
+  @objc dynamic var numBazelPackages: Int = 0 {
     didSet {
       let enableAddButton = numBazelPackages > 0
       addRemoveSegmentedControl.setEnabled(enableAddButton,
@@ -41,7 +41,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     }
   }
 
-  dynamic var numSelectedConfigs: Int = 0 {
+  @objc dynamic var numSelectedConfigs: Int = 0 {
     didSet {
       addRemoveSegmentedControl.setEnabled(numSelectedConfigs > 0,
                                            forSegment: SegmentedControlButtonIndex.remove.rawValue)
@@ -53,7 +53,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   override var representedObject: Any? {
     didSet {
       if let concreteRepresentedObject = representedObject {
-        bind("numBazelPackages",
+        bind(NSBindingName(rawValue: "numBazelPackages"),
              to: concreteRepresentedObject,
              withKeyPath: "bazelPackages.@count",
              options: nil)
@@ -62,15 +62,15 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   deinit {
-    unbind("numBazelPackages")
-    unbind("numSelectedConfigs")
+    NSObject.unbind(NSBindingName(rawValue: "numBazelPackages"))
+    NSObject.unbind(NSBindingName(rawValue: "numSelectedConfigs"))
   }
 
   override func loadView() {
     ValueTransformer.setValueTransformer(IsOneValueTransformer(),
                                            forName: NSValueTransformerName(rawValue: "IsOneValueTransformer"))
     super.loadView()
-    bind("numSelectedConfigs",
+    bind(NSBindingName(rawValue: "numSelectedConfigs"),
          to: configArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
@@ -110,7 +110,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       if let projectURL = projectURL {
         LogMessage.postInfo("Opening generated project in Xcode",
                             context: projectDocument.projectName)
-        NSWorkspace.shared().open(projectURL)
+        NSWorkspace.shared.open(projectURL)
       }
     }
   }
@@ -123,7 +123,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     editConfigNamed(configName)
   }
 
-  func document(_ doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutableRawPointer) {
+  @objc func document(_ doc:NSDocument, didSave:Bool, contextInfo: UnsafeMutableRawPointer) {
     if contextInfo == &ProjectEditorConfigManagerViewController.PostSaveContextAddConfig {
       if didSave {
         didClickAddConfig(nil)
@@ -142,7 +142,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     guard let bazelPackages = projectDocument.bazelPackages, !bazelPackages.isEmpty else {
       // This should be prevented by the UI, so spawn a bug message and beep.
       LogMessage.postInfo("Bug: Add config invoked on a project with no packages.")
-      NSBeep()
+      NSSound.beep()
       return
     }
 

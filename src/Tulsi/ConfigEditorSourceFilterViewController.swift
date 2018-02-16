@@ -20,30 +20,30 @@ final class SourcePathNode: UISelectableOutlineViewNode {
 
   /// Whether or not this specific node is set as recursive-enabled (rather than some child marking
   /// it as mixed state).
-  dynamic var explicitlyRecursive: Bool {
-    return recursive == NSOnState
+  @objc dynamic var explicitlyRecursive: Bool {
+    return recursive == NSControl.StateValue.on.rawValue
   }
 
   /// This node's recursive UI state (NSOnState/NSOffState/NSMixedState).
-  dynamic var recursive: Int {
+  @objc dynamic var recursive: Int {
     get {
-      guard let entry = entry as? UISourcePath else { return NSOffState }
-      if entry.recursive { return NSOnState }
+      guard let entry = entry as? UISourcePath else { return NSControl.StateValue.off.rawValue }
+      if entry.recursive { return NSControl.StateValue.on.rawValue }
 
       for child in children as! [SourcePathNode] {
-        if child.recursive != NSOffState {
-          return NSMixedState
+        if child.recursive != NSControl.StateValue.off.rawValue {
+          return NSControl.StateValue.mixed.rawValue
         }
       }
-      return NSOffState
+      return NSControl.StateValue.off.rawValue
     }
 
     set {
       // No work needs to be done for mixed state, as it does not affect the underlying values.
-      if newValue == NSMixedState { return }
+      if newValue == NSControl.StateValue.mixed.rawValue { return }
 
       guard let entry = entry as? UISourcePath else { return }
-      let enabled = newValue == NSOnState
+      let enabled = newValue == NSControl.StateValue.on.rawValue
       willChangeValue(forKey: "explicitlyRecursive")
       entry.recursive = enabled
       didChangeValue(forKey: "explicitlyRecursive")
@@ -62,11 +62,11 @@ final class SourcePathNode: UISelectableOutlineViewNode {
     }
   }
 
-  dynamic var hasRecursiveEnabledParent: Bool = false {
+  @objc dynamic var hasRecursiveEnabledParent: Bool = false {
     willSet {
       // If this node is recursive its children will still have a recursive parent and there's no
       // need to update them.
-      if recursive == NSOnState || newValue == hasRecursiveEnabledParent { return }
+      if recursive == NSControl.StateValue.on.rawValue || newValue == hasRecursiveEnabledParent { return }
       setChildrenHaveRecursiveParent(newValue)
     }
   }
@@ -74,8 +74,8 @@ final class SourcePathNode: UISelectableOutlineViewNode {
   // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
   func validateRecursive(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
     if let value = ioValue.pointee as? NSNumber {
-      if value.intValue == NSMixedState {
-        ioValue.pointee = NSNumber(value: NSOnState as Int)
+      if value.intValue == NSControl.StateValue.mixed.rawValue {
+        ioValue.pointee = NSNumber(value: NSControl.StateValue.on.rawValue as Int)
       }
     }
   }
@@ -88,7 +88,7 @@ final class SourcePathNode: UISelectableOutlineViewNode {
       // Children of a recursive-enabled node may not be recursive themselves (it's redundant and
       // potentially confusing).
       if newValue {
-        child.recursive = NSOffState
+        child.recursive = NSControl.StateValue.off.rawValue
       }
     }
   }
@@ -98,12 +98,12 @@ final class SourcePathNode: UISelectableOutlineViewNode {
 // Controller for the view allowing users to select a subset of the source files to include in the
 // generated Xcode project.
 final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubviewProtocol {
-  dynamic var sourceFilterContentArray: [SourcePathNode] = []
+  @objc dynamic var sourceFilterContentArray: [SourcePathNode] = []
   @IBOutlet weak var sourceFilterOutlineView: NSOutlineView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let sourceTargetColumn = sourceFilterOutlineView.tableColumn(withIdentifier: "sourceTargets")!
+    let sourceTargetColumn = sourceFilterOutlineView.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "sourceTargets"))!
     sourceFilterOutlineView.sortDescriptors = [sourceTargetColumn.sortDescriptorPrototype!]
   }
 
@@ -150,7 +150,7 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
         node = newNode
       }
       node.entry = sourcePaths[i]
-      if node.recursive == NSOnState {
+      if node.recursive == NSControl.StateValue.on.rawValue {
         recursiveNodes.append(node)
       }
     }

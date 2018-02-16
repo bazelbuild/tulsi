@@ -18,10 +18,10 @@ import TulsiGenerator
 
 /// Models a Tulsi generator action whose progress should be monitored.
 class ProgressItem: NSObject {
-  dynamic let label: String
-  dynamic let maxValue: Int
-  dynamic var value: Int
-  dynamic var indeterminate: Bool
+  @objc dynamic let label: String
+  @objc dynamic let maxValue: Int
+  @objc dynamic var value: Int
+  @objc dynamic var indeterminate: Bool
 
   init(notifier: AnyObject?, values: [AnyHashable: Any]) {
     let taskName = values[ProgressUpdatingTaskName] as! String
@@ -45,7 +45,7 @@ class ProgressItem: NSObject {
     NotificationCenter.default.removeObserver(self)
   }
 
-  func progressUpdate(_ notification: Notification) {
+  @objc func progressUpdate(_ notification: Notification) {
     indeterminate = false
     if let newValue = notification.userInfo?[ProgressUpdatingTaskProgressValue] as? Int {
       value = newValue
@@ -56,7 +56,7 @@ class ProgressItem: NSObject {
 
 /// Handles generation of an Xcode project and displaying progress.
 class XcodeProjectGenerationProgressViewController: NSViewController {
-  dynamic var progressItems = [ProgressItem]()
+  @objc dynamic var progressItems = [ProgressItem]()
 
   weak var outputFolderOpenPanel: NSOpenPanel? = nil
 
@@ -95,7 +95,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     }
   }
 
-  func progressUpdatingTaskDidStart(_ notification: Notification) {
+  @objc func progressUpdatingTaskDidStart(_ notification: Notification) {
     guard let values = notification.userInfo else {
       assertionFailure("Progress task notification received without parameters.")
       return
@@ -119,7 +119,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     panel.canChooseFiles = false
     panel.beginSheetModal(for: view.window!) {
       let url: URL?
-      if $0 == NSFileHandlingPanelOKButton {
+      if $0.rawValue == NSFileHandlingPanelOKButton {
         url = panel.url
       } else {
         url = nil

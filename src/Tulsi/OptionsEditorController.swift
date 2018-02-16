@@ -90,7 +90,7 @@ class TextTableCellView: NSTableCellView {
         backgroundColor.setFill()
       }
 
-      NSRectFill(dirtyRect)
+      dirtyRect.fill()
     }
     super.draw(dirtyRect)
   }
@@ -121,7 +121,7 @@ final class OptionsEditorTextField: NSTextField {
 
 /// View controller for the multiline popup editor displayed when a user double clicks an option.
 final class OptionsEditorPopoverViewController: NSViewController, NSTextFieldDelegate {
-  dynamic var value: String? = nil
+  @objc dynamic var value: String? = nil
 
   enum CloseReason {
     case cancel, accept
@@ -205,7 +205,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   // The table column used to display build target-specific build options.
   let targetValueColumn: NSTableColumn
 
-  dynamic var nodes = [OptionsEditorNode]()
+  @objc dynamic var nodes = [OptionsEditorNode]()
   weak var model: OptionsEditorModelProtocol? = nil {
     didSet {
       guard let model = model else { return }
@@ -221,9 +221,9 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   init(view: NSOutlineView, storyboard: NSStoryboard) {
     self.view = view
     self.storyboard = storyboard
-    defaultValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.defaultColumnIdentifier)!
-    projectValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.projectColumnIdentifier)!
-    targetValueColumn = view.tableColumn(withIdentifier: OptionsEditorController.targetColumnIdentifier)!
+    defaultValueColumn = view.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: OptionsEditorController.defaultColumnIdentifier))!
+    projectValueColumn = view.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: OptionsEditorController.projectColumnIdentifier))!
+    targetValueColumn = view.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: OptionsEditorController.targetColumnIdentifier))!
     super.init()
     self.view.delegate = self
   }
@@ -288,8 +288,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
     let clickedColumn = editor.tableColumns[editor.clickedColumn]
     let columnIdentifier = clickedColumn.identifier
-    guard let optionLevel = OptionsEditorNode.OptionLevel(rawValue: columnIdentifier) else {
-      assert(columnIdentifier == OptionsEditorController.settingColumnIdentifier,
+    guard let optionLevel = OptionsEditorNode.OptionLevel(rawValue: columnIdentifier.rawValue) else {
+      assert(columnIdentifier.rawValue == OptionsEditorController.settingColumnIdentifier,
              "Mismatch in storyboard column identifier and OptionLevel enum")
       return
     }
@@ -297,7 +297,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     let optionNode = optionNodeForItem(optionItem as AnyObject, outlineView: editor)
 
     // Verify that the column is editable.
-    if OptionsEditorController.bindingsControlledColumns.contains(columnIdentifier) ||
+    if OptionsEditorController.bindingsControlledColumns.contains(columnIdentifier.rawValue) ||
         !optionNode.editableForOptionLevel(optionLevel) {
       return
     }
@@ -309,7 +309,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
       popoverEditor = NSPopover()
       if popoverViewController == nil {
-        popoverViewController = storyboard.instantiateController(withIdentifier: "OptionsEditorPopover") as? OptionsEditorPopoverViewController
+        popoverViewController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "OptionsEditorPopover")) as? OptionsEditorPopoverViewController
       }
       popoverEditor.contentViewController = popoverViewController
       popoverViewController.optionItem = optionItem as AnyObject?
@@ -339,12 +339,12 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     if tableColumn == nil { return nil }
 
     let identifier = tableColumn!.identifier
-    if OptionsEditorController.bindingsControlledColumns.contains(identifier) {
-      return outlineView.make(withIdentifier: identifier, owner: self)
+    if OptionsEditorController.bindingsControlledColumns.contains(identifier.rawValue) {
+      return outlineView.makeView(withIdentifier: identifier, owner: self)
     }
 
     let optionNode = optionNodeForItem(item as AnyObject, outlineView: outlineView)
-    let optionLevel = OptionsEditorNode.OptionLevel(rawValue: identifier)!
+    let optionLevel = OptionsEditorNode.OptionLevel(rawValue: identifier.rawValue)!
     let (displayItem, inherited) = optionNode.displayItemForOptionLevel(optionLevel)
     let explicit = !inherited
     let highlighted = explicit && optionLevel == optionNode.mostSpecializedOptionLevel
@@ -353,7 +353,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     let view: NSView?
     switch optionNode.valueType {
       case .string:
-        view = outlineView.make(withIdentifier: OptionsEditorController.tableCellViewIdentifier,
+        view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: OptionsEditorController.tableCellViewIdentifier),
                                                   owner: self)
         if let tableCellView = view as? TextTableCellView {
           prepareTableCellView(tableCellView,
@@ -373,7 +373,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         else {
           identifier = OptionsEditorController.popUpButtonCellViewIdentifier
         }
-        view = outlineView.make(withIdentifier: identifier, owner: self)
+        view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: identifier), owner: self)
         if let tableCellView = view as? PopUpButtonTableCellView {
           preparePopUpButtonTableCellView(tableCellView,
                                           withMenuItems: optionNode.multiSelectItems,
@@ -406,7 +406,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
   // MARK: - NSPopoverDelegate
 
   func popoverDidClose(_ notification: Notification) {
-    if notification.userInfo?[NSPopoverCloseReasonKey] as? String != NSPopoverCloseReasonStandard {
+    if notification.userInfo?[NSPopover.closeReasonUserInfoKey] as? String != NSPopover.CloseReason.standard.rawValue {
       return
     }
 
@@ -431,7 +431,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     let node = optionNodeForItem(item! as AnyObject, outlineView: view)
     let columnIndex = view.column(for: control)
     let columnIdentifier = view.tableColumns[columnIndex].identifier
-    let level = OptionsEditorNode.OptionLevel(rawValue: columnIdentifier)!
+    let level = OptionsEditorNode.OptionLevel(rawValue: columnIdentifier.rawValue)!
     return (node, level)
   }
 
@@ -452,7 +452,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     }
 
     let attributedValue = NSMutableAttributedString(string: value)
-    attributedValue.setAttributes([NSFontAttributeName: fontForOption(explicit)],
+    attributedValue.setAttributes([NSAttributedStringKey.font: fontForOption(explicit)],
                                   range: NSRange(location: 0, length: attributedValue.length))
     textField.attributedStringValue = attributedValue
   }

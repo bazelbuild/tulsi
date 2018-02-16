@@ -92,7 +92,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                  extensionType: String? = nil,
                  productType: PBXTarget.ProductType? = nil) -> BuildLabel {
       let label = BuildLabel(labelName)
-      mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
+      mockExtractor.labelToRuleEntry[label] = Swift.type(of: self).makeRuleEntry(label,
                                                                            type: type,
                                                                            attributes: attributes,
                                                                            weakDependencies: weakDependencies,
@@ -186,7 +186,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                  weakDependencies: Set<BuildLabel>? = nil,
                  productType: PBXTarget.ProductType? = nil) -> BuildLabel {
       let label = BuildLabel(labelName)
-      mockExtractor.labelToRuleEntry[label] = type(of: self).makeRuleEntry(label,
+      mockExtractor.labelToRuleEntry[label] = Swift.type(of: self).makeRuleEntry(label,
                                                                              type: type,
                                                                              attributes: attributes,
                                                                              weakDependencies: weakDependencies,
@@ -363,7 +363,7 @@ class MockFileManager: FileManager {
 
   override func createDirectory(at url: URL,
                                      withIntermediateDirectories createIntermediates: Bool,
-                                     attributes: [String:Any]?) throws {
+                                     attributes: [FileAttributeKey:Any]?) throws {
     if allowedDirectoryCreates.contains(url.path) { return }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
@@ -372,7 +372,7 @@ class MockFileManager: FileManager {
 
   override func createDirectory(atPath path: String,
                                       withIntermediateDirectories createIntermediates: Bool,
-                                      attributes: [String:Any]?) throws {
+                                      attributes: [FileAttributeKey:Any]?) throws {
     if allowedDirectoryCreates.contains(path) { return }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
@@ -399,7 +399,7 @@ class MockFileManager: FileManager {
     return mockContent[path]
   }
 
-  override func createFile(atPath path: String, contents data: Data?, attributes attr: [String : Any]? = nil) -> Bool {
+  override func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey : Any]? = nil) -> Bool {
     if writeOperations.keys.contains(path) {
       fatalError("Attempting to overwrite an existing file at \(path)")
     }

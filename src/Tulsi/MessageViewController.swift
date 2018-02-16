@@ -22,7 +22,7 @@ final class MessageTableView: NSTableView {
     super.viewDidEndLiveResize()
 
     // Give the delegate a chance to handle the resize now that the live operation is completed.
-    NotificationCenter.default.post(name: NSNotification.Name.NSTableViewColumnDidResize,
+    NotificationCenter.default.post(name: NSTableView.columnDidResizeNotification,
                                                               object: self)
   }
 }
@@ -38,7 +38,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
   // Display heights of each row in the message table.
   var rowHeights = [Int: CGFloat]()
 
-  dynamic var messageCount: Int = 0 {
+  @objc dynamic var messageCount: Int = 0 {
     didSet {
       // Assume that a reduction in the message count means all cached heights are invalid.
       if messageCount < oldValue {
@@ -52,7 +52,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     ValueTransformer.setValueTransformer(MessageTypeToImageValueTransformer(),
                                            forName: NSValueTransformerName(rawValue: "MessageTypeToImageValueTransformer"))
     super.loadView()
-    bind("messageCount", to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
+    bind(NSBindingName(rawValue: "messageCount"), to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
   }
 
   @IBAction func copy(_ sender: AnyObject?) {
@@ -60,7 +60,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
       return
     }
 
-    let pasteboard = NSPasteboard.general()
+    let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
     pasteboard.writeObjects(selectedItems)
   }
@@ -103,7 +103,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     }
     // Disable animation.
     NSAnimationContext.beginGrouping()
-    NSAnimationContext.current().duration = 0
+    NSAnimationContext.current.duration = 0
     rowHeights.removeAll(keepingCapacity: true)
     let numRows = (messageArrayController.arrangedObjects as AnyObject).count!
     let allRowsIndex = IndexSet(integersIn: 0..<numRows)
@@ -153,11 +153,11 @@ final class MessageTypeToImageValueTransformer : ValueTransformer {
 
     switch messageType {
       case .info, .debug, .syslog:
-        return NSImage(named: "message_info")
+        return NSImage(named: NSImage.Name(rawValue: "message_info"))
       case .warning:
-        return NSImage(named: "message_warning")
+        return NSImage(named: NSImage.Name(rawValue: "message_warning"))
       case .error:
-        return NSImage(named: "message_error")
+        return NSImage(named: NSImage.Name(rawValue: "message_error"))
     }
   }
 }

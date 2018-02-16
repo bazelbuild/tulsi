@@ -39,7 +39,7 @@ protocol OptionsEditorModelProtocol: class {
   func parentOptionForOptionKey(_ key: TulsiOptionKey) -> TulsiOption?
 
   /// Notifies the receiver that a change has been made to an option.
-  func updateChangeCount(_ change: NSDocumentChangeType)
+  func updateChangeCount(_ change: NSDocument.ChangeType)
 }
 
 extension OptionsEditorModelProtocol {

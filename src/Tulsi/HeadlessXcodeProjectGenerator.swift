@@ -46,7 +46,7 @@ struct HeadlessXcodeProjectGenerator {
 
     let (projectURL, configURL, defaultOutputFolderURL) = try resolveConfigPath(configPath)
 
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     let doc: NSDocument
     do {
       doc = try documentController.makeDocument(withContentsOf: projectURL,
@@ -119,7 +119,7 @@ struct HeadlessXcodeProjectGenerator {
         print("Generated project at \(url.path)")
         if arguments.openXcodeOnSuccess {
           print("Opening generated project in Xcode")
-          NSWorkspace.shared().open(url)
+          NSWorkspace.shared.open(url)
         }
       case .failure:
         throw HeadlessModeError.generationFailed

@@ -53,7 +53,7 @@ final class TulsiProjectDocument: NSDocument,
   var project: TulsiProject! = nil
 
   /// Whether or not the document is currently performing a long running operation.
-  dynamic var processing: Bool = false
+  @objc dynamic var processing: Bool = false
 
   // The number of tasks that need to complete before processing is finished. May only be mutated on
   // the main queue.
@@ -65,7 +65,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// The display names of generator configs associated with this project.
-  dynamic var generatorConfigNames = [String]()
+  @objc dynamic var generatorConfigNames = [String]()
 
   /// Whether or not there are any opened generator config documents associated with this project.
   var hasChildConfigDocuments: Bool {
@@ -91,7 +91,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// The set of Bazel packages associated with this project.
-  dynamic var bazelPackages: [String]? {
+  @objc dynamic var bazelPackages: [String]? {
     set {
       project!.bazelPackages = newValue ?? [String]()
       updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
@@ -103,7 +103,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// Location of the bazel binary.
-  dynamic var bazelURL: URL? {
+  @objc dynamic var bazelURL: URL? {
     set {
       project.bazelURL = newValue
       if newValue != nil && infoExtractor != nil {
@@ -118,7 +118,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   /// Binding point for the directory containing the project's WORKSPACE file.
-  dynamic var workspaceRootURL: URL? {
+  @objc dynamic var workspaceRootURL: URL? {
     return project?.workspaceRootURL
   }
 
@@ -131,7 +131,7 @@ final class TulsiProjectDocument: NSDocument,
   private var logEventObserver: NSObjectProtocol! = nil
 
   /// Array of user-facing messages, generally output by the Tulsi generator.
-  dynamic var messages = [UIMessage]()
+  @objc dynamic var messages = [UIMessage]()
 
   lazy var bundleExtension: String = {
     TulsiProjectDocument.getTulsiBundleExtension()
@@ -205,14 +205,14 @@ final class TulsiProjectDocument: NSDocument,
 
   override func writeSafely(to url: URL,
                             ofType typeName: String,
-                            for saveOperation: NSSaveOperationType) throws {
+                            for saveOperation: NSDocument.SaveOperationType) throws {
     // Ensure that the project's URL is set to the location in which this document is being saved so
     // that relative paths can be set properly.
     project.projectBundleURL = url
     try super.writeSafely(to: url, ofType: typeName, for: saveOperation)
   }
 
-  override class func autosavesInPlace() -> Bool {
+  override class var autosavesInPlace: Bool {
     return true
   }
 
@@ -300,8 +300,8 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   override func makeWindowControllers() {
-    let storyboard = NSStoryboard(name: "Main", bundle: nil)
-    let windowController = storyboard.instantiateController(withIdentifier: "TulsiProjectDocumentWindow") as! NSWindowController
+    let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
+    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiProjectDocumentWindow")) as! NSWindowController
     windowController.contentViewController?.representedObject = self
     addWindowController(windowController)
   }
@@ -386,7 +386,7 @@ final class TulsiProjectDocument: NSDocument,
       throw DocumentError.noSuchConfig
     }
 
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     if let configDocument = documentController.document(for: configURL) as? TulsiGeneratorConfigDocument {
       return configDocument
     }
@@ -564,7 +564,7 @@ final class TulsiProjectDocument: NSDocument,
 
 /// Convenience class for displaying an error message with an optional detail accessory view.
 class ErrorAlertView: NSAlert {
-  dynamic var text = ""
+  @objc dynamic var text = ""
 
   static func displayModalError(_ message: String, details: String? = nil) {
     let alert = ErrorAlertView()
@@ -575,17 +575,19 @@ class ErrorAlertView: NSAlert {
     if let details = details {
       alert.text = details
 
-      var views: NSArray = []
-      Bundle.main.loadNibNamed("ErrorAlertDetailView",
+      var views: NSArray?
+      Bundle.main.loadNibNamed(NSNib.Name(rawValue: "ErrorAlertDetailView"),
                                          owner: alert,
                                          topLevelObjects: &views)
       // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
       // non-deterministic order.
-      views = views.filter() { $0 is NSView } as NSArray
-      if let accessoryView = views.firstObject as? NSScrollView {
-        alert.accessoryView = accessoryView
-      } else {
-        assertionFailure("Failed to load accessory view for error alert.")
+      if let views = views {
+        let viewsFound = views.filter() { $0 is NSView } as NSArray
+        if let accessoryView = viewsFound.firstObject as? NSScrollView {
+          alert.accessoryView = accessoryView
+        } else {
+          assertionFailure("Failed to load accessory view for error alert.")
+        }
       }
     }
     alert.runModal()

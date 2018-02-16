@@ -23,8 +23,8 @@ protocol MessageLogProtocol: class {
 
 /// Models a single user-facing message.
 final class UIMessage: NSObject, NSPasteboardWriting {
-  dynamic let text: String
-  dynamic let messagePriority: TulsiGenerator.LogMessagePriority
+  @objc dynamic let text: String
+  @objc dynamic let messagePriority: TulsiGenerator.LogMessagePriority
   let timestamp = Date()
 
   init(text: String, type: TulsiGenerator.LogMessagePriority) {
@@ -34,12 +34,12 @@ final class UIMessage: NSObject, NSPasteboardWriting {
 
   // MARK: - NSPasteboardWriting
 
-  func writableTypes(for pasteboard: NSPasteboard) -> [String] {
-    return [NSPasteboardTypeString]
+  func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
+    return [NSPasteboard.PasteboardType.string]
   }
 
-  func pasteboardPropertyList(forType type: String) -> Any? {
-    if type == NSPasteboardTypeString {
+  func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any? {
+    if type == NSPasteboard.PasteboardType.string {
       let timeString = DateFormatter.localizedString(from: timestamp,
                                                                dateStyle: .none,
                                                                timeStyle: .medium)

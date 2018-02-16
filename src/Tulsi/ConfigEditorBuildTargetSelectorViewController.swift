@@ -46,7 +46,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
 
   @IBOutlet weak var buildTargetTable: NSTableView!
 
-  dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
+  @objc dynamic let typeFilter: NSPredicate? = NSPredicate.init(format: "(SELF.type IN %@) OR (SELF.selected == TRUE)",
                                                           argumentArray: [filteredFileTypes])
 
   var selectedRuleInfoCount: Int = 0 {
@@ -57,9 +57,9 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
 
   override var representedObject: Any? {
     didSet {
-      unbind("selectedRuleInfoCount")
+      NSObject.unbind(NSBindingName(rawValue: "selectedRuleInfoCount"))
       guard let document = representedObject as? TulsiGeneratorConfigDocument else { return }
-      bind("selectedRuleInfoCount",
+      bind(NSBindingName(rawValue: "selectedRuleInfoCount"),
            to: document,
            withKeyPath: "selectedRuleInfoCount",
            options: nil)
@@ -67,14 +67,14 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   }
 
   deinit {
-    unbind("selectedRuleInfoCount")
+    NSObject.unbind(NSBindingName(rawValue: "selectedRuleInfoCount"))
   }
 
   override func loadView() {
     super.loadView()
 
-    let typeColumn = buildTargetTable.tableColumn(withIdentifier: "Type")!
-    let labelColumn = buildTargetTable.tableColumn(withIdentifier: "Label")!
+    let typeColumn = buildTargetTable.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "Type"))!
+    let labelColumn = buildTargetTable.tableColumn(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "Label"))!
     buildTargetTable.sortDescriptors = [typeColumn.sortDescriptorPrototype!,
                                         labelColumn.sortDescriptorPrototype!]
   }
@@ -88,6 +88,6 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   }
 
   func wizardSubviewDidDeactivate() {
-    unbind("selectedRuleInfoCount")
+    NSObject.unbind(NSBindingName(rawValue: "selectedRuleInfoCount"))
   }
 }

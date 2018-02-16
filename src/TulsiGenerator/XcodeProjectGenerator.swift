@@ -298,8 +298,8 @@ final class XcodeProjectGenerator {
       cachedDefaultSwiftVersion = XcodeProjectGenerator.DefaultSwiftVersion
       return XcodeProjectGenerator.DefaultSwiftVersion
     }
-    cachedDefaultSwiftVersion = stdout.substring(with: match.rangeAt(1))
-    return stdout.substring(with: match.rangeAt(1))
+    cachedDefaultSwiftVersion = stdout.substring(with: match.range(at: 1))
+    return stdout.substring(with: match.range(at: 1))
   }
 
   /// Encapsulates information about the results of a buildXcodeProjectWithMainGroup invocation.
@@ -712,7 +712,7 @@ final class XcodeProjectGenerator {
       let xmlDocument = scheme.toXML()
 
 
-      let data = xmlDocument.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
+      let data = xmlDocument.xmlData(options: XMLNode.Options(rawValue: XMLNode.Options.RawValue(Int(XMLNode.Options.nodePrettyPrint.rawValue))))
       try writeDataHandler(url, data)
     }
 
@@ -794,7 +794,7 @@ final class XcodeProjectGenerator {
       let xmlDocument = scheme.toXML()
 
 
-      let data = xmlDocument.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
+      let data = xmlDocument.xmlData(options: XMLNode.Options(rawValue: XMLNode.Options.RawValue(Int(XMLNode.Options.nodePrettyPrint.rawValue))))
       try writeDataHandler(url, data)
     }
 

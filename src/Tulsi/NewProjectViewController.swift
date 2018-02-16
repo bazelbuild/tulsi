@@ -29,8 +29,8 @@ final class NewProjectViewController: NSViewController {
     case cancel, create
   }
 
-  dynamic var projectName: String? = nil
-  dynamic var workspacePath: URL? = nil
+  @objc dynamic var projectName: String? = nil
+  @objc dynamic var workspacePath: URL? = nil
 
   weak var delegate: NewProjectViewControllerDelegate?
 
@@ -66,7 +66,7 @@ final class NewProjectViewController: NSViewController {
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
     panel.beginSheetModal(for: self.view.window!) { value in
-      if value == NSFileHandlingPanelOKButton {
+      if value.rawValue == NSFileHandlingPanelOKButton {
         self.workspacePath = panel.url
       }
     }

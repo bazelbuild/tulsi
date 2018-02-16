@@ -20,13 +20,13 @@ final class SplashScreenRecentDocumentViewController : NSViewController {
   @IBOutlet weak var path: NSTextField!
   var url: URL?
 
-  override var nibName: String? {
-    return "SplashScreenRecentDocumentView"
+  override var nibName: NSNib.Name? {
+    return NSNib.Name(rawValue: "SplashScreenRecentDocumentView")
   }
 
   override func viewDidLoad() {
     guard let url = url else { return }
-    icon.image =  NSWorkspace.shared().icon(forFile: url.path)
+    icon.image =  NSWorkspace.shared.icon(forFile: url.path)
     filename.stringValue = (url.lastPathComponent as NSString).deletingPathExtension
     path.stringValue = ((url.path as NSString).deletingLastPathComponent as NSString).abbreviatingWithTildeInPath
   }
@@ -37,17 +37,17 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
 
   @IBOutlet var recentDocumentsArrayController: NSArrayController!
   @IBOutlet weak var splashScreenImageView: NSImageView!
-  dynamic var applicationVersion: String = ""
-  dynamic var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
+  @objc dynamic var applicationVersion: String = ""
+  @objc dynamic var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
 
-  override var windowNibName: String? {
-    return "SplashScreenWindowController"
+  override var windowNibName: NSNib.Name? {
+    return NSNib.Name(rawValue: "SplashScreenWindowController")
   }
 
   override func windowDidLoad() {
     super.windowDidLoad()
 
-    splashScreenImageView.image = NSApplication.shared().applicationIconImage
+    splashScreenImageView.image = NSApplication.shared.applicationIconImage
 
     if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       applicationVersion = cfBundleVersion
@@ -57,7 +57,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   }
 
   @IBAction func createNewDocument(_ sender: NSButton) {
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     do {
       try documentController.openUntitledDocumentAndDisplay(true)
     } catch let e as NSError {
@@ -71,7 +71,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   @IBAction func didDoubleClickRecentDocument(_ sender: NSTableView) {
     let clickedRow = sender.clickedRow
     guard clickedRow >= 0 else { return }
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
     let viewController = recentDocumentViewControllers[clickedRow]
 
     guard let url = viewController.url  else { return }
@@ -92,7 +92,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
 
   private func getRecentDocumentViewControllers() -> [SplashScreenRecentDocumentViewController] {
     let projectExtension = TulsiProjectDocument.getTulsiBundleExtension()
-    let documentController = NSDocumentController.shared()
+    let documentController = NSDocumentController.shared
 
     var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
     var recentDocumentURLs = Set<URL>()

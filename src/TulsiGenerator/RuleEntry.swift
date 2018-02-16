@@ -28,7 +28,7 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   }
 
   public var debugDescription: String {
-    return "\(type(of: self))(\(label) \(type))"
+    return "\(Swift.type(of: self))(\(label) \(type))"
   }
 
   init(label: BuildLabel, type: String, linkedTargetLabels: Set<BuildLabel>) {
@@ -38,7 +38,7 @@ public class RuleInfo: Equatable, Hashable, CustomDebugStringConvertible {
   }
 
   func equals(_ other: RuleInfo) -> Bool {
-    guard type(of: self) == type(of: other) else {
+    guard Swift.type(of: self) == Swift.type(of: other) else {
       return false
     }
     return self.type == other.type && self.label == other.label
@@ -295,7 +295,7 @@ public final class RuleEntry: RuleInfo {
     if let productType = self.productType {
       return productType
     }
-    return BuildTypeToTargetType[self.type]
+    return RuleEntry.BuildTypeToTargetType[self.type]
   }()
 
   /// Returns the value to be used as the Xcode SDKROOT for the build target generated for this

@@ -34,28 +34,30 @@ class BazelSelectionPanel: FilteredOpenPanel {
     panel.prompt = NSLocalizedString("ProjectEditor_SelectBazelPathPrompt",
                                      comment: "Label for the button used to confirm the selected Bazel file in the Bazel selector sheet.")
 
-    var views: NSArray = []
-    Bundle.main.loadNibNamed("BazelOpenSheetAccessoryView",
+    var views: NSArray?
+    Bundle.main.loadNibNamed(NSNib.Name(rawValue: "BazelOpenSheetAccessoryView"),
                              owner: panel,
                              topLevelObjects: &views)
     // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
     // non-deterministic order.
-    views = views.filter() { $0 is NSView } as NSArray
-    if let accessoryView = views.firstObject as? NSView {
-      panel.accessoryView = accessoryView
-      if #available(OSX 10.11, *) {
-        panel.isAccessoryViewDisclosed = true
+    if let views = views {
+      let viewsFound = views.filter() { $0 is NSView } as NSArray
+      if let accessoryView = viewsFound.firstObject as? NSView {
+        panel.accessoryView = accessoryView
+        if #available(OSX 10.11, *) {
+          panel.isAccessoryViewDisclosed = true
+        }
+      } else {
+        assertionFailure("Failed to load accessory view for Bazel open sheet.")
       }
-    } else {
-      assertionFailure("Failed to load accessory view for Bazel open sheet.")
     }
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
     panel.directoryURL = document.bazelURL?.deletingLastPathComponent()
     panel.beginSheetModal(for: window) { value in
-      if value == NSFileHandlingPanelOKButton {
+      if value.rawValue == NSFileHandlingPanelOKButton {
         document.bazelURL = panel.url
-        if panel.bazelSelectorUseAsDefaultCheckbox.state == NSOnState {
+        if panel.bazelSelectorUseAsDefaultCheckbox.state == NSControl.StateValue.on {
           UserDefaults.standard.set(document.bazelURL!, forKey: BazelLocator.DefaultBazelURLKey)
         }
       }
@@ -64,7 +66,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
       // spawns new sheet modals.
       panel.orderOut(panel)
       if let completionHandler = completionHandler {
-        completionHandler(value == NSFileHandlingPanelOKButton ? panel.url : nil)
+        completionHandler(value.rawValue == NSFileHandlingPanelOKButton ? panel.url : nil)
       }
     }
     return panel

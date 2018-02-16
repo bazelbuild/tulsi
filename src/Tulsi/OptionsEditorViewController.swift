@@ -22,8 +22,8 @@ final class OptionsEditorViewController: NSViewController, NSSplitViewDelegate, 
   @IBOutlet weak var targetSelectorView: NSOutlineView!
   @IBOutlet weak var optionEditorView: NSOutlineView!
 
-  dynamic var targetSelectorController: OptionsTargetSelectorController? = nil
-  dynamic var editorController: OptionsEditorController? = nil
+  @objc dynamic var targetSelectorController: OptionsTargetSelectorController? = nil
+  @objc dynamic var editorController: OptionsEditorController? = nil
 
   override var representedObject: Any? {
     didSet {

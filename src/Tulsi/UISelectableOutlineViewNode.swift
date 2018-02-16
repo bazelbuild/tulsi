@@ -23,19 +23,19 @@ protocol Selectable: class {
 class UISelectableOutlineViewNode: NSObject {
 
   /// The display name for this node.
-  let name: String
+  @objc let name: String
 
   /// The object contained by this node (only valid for leaf nodes).
   var entry: Selectable? {
     didSet {
       if let entry = entry {
-        state = entry.selected ? NSOnState : NSOffState
+        state = entry.selected ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue
       }
     }
   }
 
   /// This node's children.
-  var children: [UISelectableOutlineViewNode] {
+  @objc var children: [UISelectableOutlineViewNode] {
     return _children
   }
   private var _children = [UISelectableOutlineViewNode]()
@@ -44,29 +44,29 @@ class UISelectableOutlineViewNode: NSObject {
   weak var parent: UISelectableOutlineViewNode?
 
   /// This node's checkbox state in the UI (NSOnState/NSOffState/NSMixedState)
-  dynamic var state: Int {
+  @objc dynamic var state: Int {
     get {
       if children.isEmpty {
-        return (entry?.selected ?? false) ? NSOnState : NSOffState
+        return (entry?.selected ?? false) ? NSControl.StateValue.on.rawValue : NSControl.StateValue.off.rawValue
       }
 
       var stateIsValid = false
-      var state = NSOffState
+      var state = NSControl.StateValue.off
       for node in children {
         if !stateIsValid {
-          state = node.state
+          state = NSControl.StateValue(rawValue: node.state)
           stateIsValid = true
           continue
         }
-        if state != node.state {
-          return NSMixedState
+        if state.rawValue != node.state {
+          return NSControl.StateValue.mixed.rawValue
         }
       }
-      return state
+      return state.rawValue
     }
 
     set {
-      let newSelectionState = (newValue == NSOnState)
+      let newSelectionState = (newValue == NSControl.StateValue.on.rawValue)
       let selected = entry?.selected
       if selected == newSelectionState {
         return
@@ -105,8 +105,8 @@ class UISelectableOutlineViewNode: NSObject {
   // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
   func validateState(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
     if let value = ioValue.pointee as? NSNumber {
-      if value.intValue == NSMixedState {
-        ioValue.pointee = NSNumber(value: NSOnState as Int)
+      if value.intValue == NSControl.StateValue.mixed.rawValue {
+        ioValue.pointee = NSNumber(value: NSControl.StateValue.on.rawValue as Int)
       }
     }
   }

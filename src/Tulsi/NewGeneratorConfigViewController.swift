@@ -32,7 +32,7 @@ final class NewGeneratorConfigViewController: NSViewController {
 
   weak var delegate: NewGeneratorConfigViewControllerDelegate?
 
-  dynamic var configName: String? = nil
+  @objc dynamic var configName: String? = nil
 
   @IBAction func didClickCancelButton(_ sender: NSButton) {
     delegate?.viewController(self, didCompleteWithReason: .cancel)

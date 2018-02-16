@@ -31,7 +31,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   var newProjectSheet: NewProjectViewController! = nil
   private var newProjectNeedsSaveAs = false
 
-  dynamic var numSelectedPackagePaths: Int = 0 {
+  @objc dynamic var numSelectedPackagePaths: Int = 0 {
     didSet {
       let enableRemoveButton = numSelectedPackagePaths > 0
       addRemoveSegmentedControl.setEnabled(enableRemoveButton,
@@ -40,14 +40,14 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   }
 
   deinit {
-    unbind("numSelectedPackagePaths")
+    NSObject.unbind(NSBindingName(rawValue: "numSelectedPackagePaths"))
   }
 
   override func loadView() {
     ValueTransformer.setValueTransformer(PackagePathValueTransformer(),
                                            forName: NSValueTransformerName(rawValue: "PackagePathValueTransformer"))
     super.loadView()
-    bind("numSelectedPackagePaths",
+    bind(NSBindingName(rawValue: "numSelectedPackagePaths"),
          to: packageArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
@@ -118,12 +118,12 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
                                      comment: "Label for the button used to confirm adding the selected BUILD file to the Tulsi project.")
     panel.canChooseDirectories = false
     panel.beginSheetModal(for: self.view.window!) { value in
-      if value == NSFileHandlingPanelOKButton {
+      if value.rawValue == NSFileHandlingPanelOKButton {
         guard let URL = panel.url else {
           return
         }
         if !document.addBUILDFileURL(URL) {
-          NSBeep()
+          NSSound.beep()
         }
       }
     }
@@ -140,7 +140,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
       alert.addButton(withTitle: NSLocalizedString("ProjectEditor_CloseOpenedConfigDocumentsButtonCancel",
                                                  comment: "Title for a button that will cancel an operation that requires that all opened TulsiGeneratorConfig documents be closed."))
       alert.beginSheetModal(for: self.view.window!) { value in
-        if value == NSAlertFirstButtonReturn {
+        if value == NSApplication.ModalResponse.alertFirstButtonReturn {
           document.closeChildConfigDocuments()
           self.didClickRemoveSelectedBUILDFiles(sender)
         }
@@ -166,7 +166,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     let document = representedObject as! TulsiProjectDocument
     let buildFile = package + "/BUILD"
     if let url = document.workspaceRootURL?.appendingPathComponent(buildFile) {
-      NSWorkspace.shared().open(url)
+      NSWorkspace.shared.open(url)
     }
   }
 

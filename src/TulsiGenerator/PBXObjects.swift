@@ -1092,7 +1092,7 @@ final class PBXProject: PBXObjectProtocol {
   var targetByName = [String: PBXTarget]()
 
   /// List of all targets.
-  var allTargets: LazyMapCollection<Dictionary<String, PBXTarget>, PBXTarget> {
+  var allTargets: Dictionary<String, PBXTarget>.Values {
     return targetByName.values
   }
 

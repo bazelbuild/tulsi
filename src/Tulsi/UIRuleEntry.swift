@@ -18,15 +18,15 @@ import TulsiGenerator
 /// Wraps a TulsiGenerator::RuleInfo with functionality to allow it to track selection and be
 /// accessed via bindings in the UI.
 class UIRuleInfo: NSObject, Selectable {
-  dynamic var targetName: String? {
+  @objc dynamic var targetName: String? {
     return ruleInfo.label.targetName
   }
 
-  dynamic var type: String {
+  @objc dynamic var type: String {
     return ruleInfo.type
   }
 
-  dynamic var selected: Bool = false {
+  @objc dynamic var selected: Bool = false {
     didSet {
       if !selected { return }
       let linkedInfos = linkedRuleInfos.allObjects as! [UIRuleInfo]
