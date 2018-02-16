@@ -22,7 +22,6 @@ load(
     ':tulsi_aspects_paths.bzl',
      'AppleBundleInfo',
      'IosExtensionBundleInfo',
-     'TULSI_CURRENT_XCODE_CONFIG',
 )
 
 # List of all of the attributes that can link from a Tulsi-supported rule to a
@@ -878,7 +877,8 @@ def _tulsi_outputs_aspect(target, ctx):
 tulsi_sources_aspect = aspect(
     implementation=_tulsi_sources_aspect,
     attrs = {
-        '_tulsi_xcode_config': attr.label(default=TULSI_CURRENT_XCODE_CONFIG) },
+        '_tulsi_xcode_config': attr.label(default=configuration_field(
+            fragment="apple", name="xcode_config_label")) },
     attr_aspects=_TULSI_COMPILE_DEPS,
     fragments=['apple', 'cpp', 'objc'],
 )
