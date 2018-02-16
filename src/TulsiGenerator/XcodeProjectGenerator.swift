@@ -712,7 +712,7 @@ final class XcodeProjectGenerator {
       let xmlDocument = scheme.toXML()
 
 
-      let data = xmlDocument.xmlData(options: XMLNode.Options(rawValue: XMLNode.Options.RawValue(Int(XMLNode.Options.nodePrettyPrint.rawValue))))
+      let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
       try writeDataHandler(url, data)
     }
 
@@ -794,7 +794,7 @@ final class XcodeProjectGenerator {
       let xmlDocument = scheme.toXML()
 
 
-      let data = xmlDocument.xmlData(options: XMLNode.Options(rawValue: XMLNode.Options.RawValue(Int(XMLNode.Options.nodePrettyPrint.rawValue))))
+      let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
       try writeDataHandler(url, data)
     }
 
