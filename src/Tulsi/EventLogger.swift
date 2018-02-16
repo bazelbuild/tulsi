@@ -21,7 +21,7 @@ final class EventLogger {
   private let verboseLevel: TulsiMessageLevel
   private var observer: NSObjectProtocol? = nil
 
-  private let logFile: FileHandle? = nil
+  private let logFile: FileHandle?
 
   init(verboseLevel: TulsiMessageLevel, logToFile: Bool=false) {
     self.verboseLevel = verboseLevel
@@ -57,7 +57,7 @@ final class EventLogger {
     let fileManager = FileManager.default
     guard let folder = fileManager.urls(for: .applicationSupportDirectory,
                                         in: .userDomainMask).first else {
-      return
+      return nil
     }
 
     let tulsiFolder = folder.appendingPathComponent(appName)
@@ -71,7 +71,7 @@ final class EventLogger {
                                         attributes: nil)
       } catch {
         print("failed to create logging folder at \"\(tulsiFolder)\".")
-        return
+        return nil
       }
     }
 
@@ -83,10 +83,10 @@ final class EventLogger {
     let logFileUrl = tulsiFolder.appendingPathComponent("generate_log_\(dateString).txt")
     do {
       fileManager.createFile(atPath: logFileUrl.path, contents: nil, attributes: nil)
-      try self.logFile = FileHandle(forWritingTo: logFileUrl)
+      return try FileHandle(forWritingTo: logFileUrl)
     } catch {
       print("error creating log file at \"\(logFileUrl.path)\".")
-      return
+      return nil
     }
   }
 
