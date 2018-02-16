@@ -387,8 +387,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947E1F52E9200000000 /* TestSuiteXCTest.m in TestSuite */,
 				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
+				E6AF4947E1F52E9200000000 /* TestSuiteXCTest.m in TestSuite */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,8 +405,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494728386DC200000000 /* tagged_xctest_1.m in Three */,
 				E6AF4947CFB68C6700000002 /* memleaks.m in memleaks */,
+				E6AF494728386DC200000000 /* tagged_xctest_1.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

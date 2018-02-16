@@ -21,6 +21,7 @@ project and pass it back to Tulsi.
 load(
     ':tulsi_aspects_paths.bzl',
      'AppleBundleInfo',
+     'AppleTestInfo',
      'IosExtensionBundleInfo',
 )
 
@@ -211,6 +212,10 @@ def _file_metadata_by_replacing_path(f, new_path, new_is_dir=None):
       root=root_path,
       is_dir=new_is_dir
   )
+
+def _depset_to_file_metadata_list(a_depset):
+  """"Converts a depset of files into a list of _file_metadata structs."""
+  return [_file_metadata(f) for f in a_depset.to_list()]
 
 
 def _collect_artifacts(obj, attr_path):
@@ -640,6 +645,19 @@ def _tulsi_sources_aspect(target, ctx):
     target_defines = objc_provider.define.to_list()
 
   platform_type = _get_platform_type(ctx)
+  non_arc_srcs = _collect_files(rule, 'attr.non_arc_srcs')
+
+  # Collect test information.
+  if AppleTestInfo in target:
+    provider = target[AppleTestInfo]
+    srcs = _depset_to_file_metadata_list(provider.sources)
+    non_arc_srcs = _depset_to_file_metadata_list(provider.non_arc_sources)
+    target_includes = [_convert_outpath_to_symlink_path(x) for x in provider.includes.to_list()]
+    swift_transitive_modules = _depset_to_file_metadata_list(provider.swift_modules)
+    objc_module_maps = _depset_to_file_metadata_list(provider.module_maps)
+  else:
+    swift_transitive_modules = swift_transitive_modules.to_list()
+    objc_module_maps = objc_module_maps.to_list()
 
   info = _struct_omitting_none(
       artifacts=artifacts,
@@ -656,11 +674,11 @@ def _tulsi_sources_aspect(target, ctx):
       includes=target_includes,
       os_deployment_target=_extract_minimum_os_for_platform(ctx, platform_type),
       label=str(target.label),
-      non_arc_srcs=_collect_files(rule, 'attr.non_arc_srcs'),
+      non_arc_srcs=non_arc_srcs,
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
       srcs=srcs,
-      swift_transitive_modules=swift_transitive_modules.to_list(),
-      objc_module_maps=list(objc_module_maps),
+      swift_transitive_modules=swift_transitive_modules,
+      objc_module_maps=objc_module_maps,
       type=target_kind,
       infoplist=infoplist.basename if infoplist else None,
       platform_type=platform_type,

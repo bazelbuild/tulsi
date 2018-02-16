@@ -22,7 +22,12 @@ load(
     _AppleBundleInfo='AppleBundleInfo',
     _IosExtensionBundleInfo='IosExtensionBundleInfo',
 )
+load(
+    '@build_bazel_rules_apple//apple/testing:apple_test_rules.bzl',
+    _AppleTestInfo='AppleTestInfo',
+)
 
 # Re-export providers.
 AppleBundleInfo = _AppleBundleInfo
+AppleTestInfo = _AppleTestInfo
 IosExtensionBundleInfo = _IosExtensionBundleInfo

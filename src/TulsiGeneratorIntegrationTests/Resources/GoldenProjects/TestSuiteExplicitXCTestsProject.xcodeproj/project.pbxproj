@@ -438,8 +438,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947D835DF2200000000 /* XCTest.m in One */,
 				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
+				E6AF4947D835DF2200000000 /* XCTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,8 +447,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF4947E8EE103A00000000 /* XCTest.m in Two */,
 				E6AF4947CFB68C6700000001 /* memleaks.m in memleaks */,
+				E6AF4947E8EE103A00000000 /* XCTest.m in Two */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,8 +456,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF494730D2727A00000000 /* XCTest.m in Three */,
 				E6AF4947CFB68C6700000002 /* memleaks.m in memleaks */,
+				E6AF494730D2727A00000000 /* XCTest.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,8 +465,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				E6AF49478021770E00000000 /* LogicTest.m in One */,
 				E6AF4947CFB68C6700000003 /* memleaks.m in memleaks */,
+				E6AF49478021770E00000000 /* LogicTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

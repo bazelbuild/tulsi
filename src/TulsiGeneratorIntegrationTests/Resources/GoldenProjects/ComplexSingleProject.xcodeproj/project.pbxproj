@@ -741,12 +741,12 @@
 			buildActionMask = 0;
 			files = (
 				E6AF4947CFB68C6700000000 /* memleaks.m in memleaks */,
+				E6AF4947F643652200000000 /* defaultTestSource.m in srcs */,
 				E6AF4947958553E300000000 /* src5.mm in srcs */,
 				E6AF49478970786C00000000 /* src1.m in srcs */,
 				E6AF49479B31F4AA00000000 /* src2.m in srcs */,
 				E6AF4947AB2790F000000000 /* src3.m in srcs */,
 				E6AF4947BAE52D2E00000000 /* src4.m in srcs */,
-				E6AF4947F643652200000000 /* defaultTestSource.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

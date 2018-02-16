@@ -537,10 +537,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         ref.isInputFile = target.targetType == .sourceFile
       }
 
-      if sourceFileInfos.isEmpty &&
+      // Indexer targets aren't needed:
+      // - if the target has no source files (there's nothing to index!)
+      // - if the target is a test bundle (we generate proper targets for these).
+      if (sourceFileInfos.isEmpty &&
           nonARCSourceFileInfos.isEmpty &&
           frameworkFileInfos.isEmpty &&
-          nonSourceVersionedFileInfos.isEmpty {
+          nonSourceVersionedFileInfos.isEmpty) || ruleEntry.pbxTargetType?.isTest ?? false {
         return (frameworkSearchPaths)
       }
 
@@ -1120,8 +1123,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func updateTestTargetBuildPhases(_ target: PBXNativeTarget,
                                            ruleEntry: RuleEntry,
                                            ruleEntryMap: RuleEntryMap) {
-    let (testSourceFileInfos, testNonArcSourceFileInfos, containsSwift) =
-      testSourceFiles(forRuleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
+    let testSourceFileInfos = ruleEntry.sourceFiles
+    let testNonArcSourceFileInfos = ruleEntry.nonARCSourceFiles
+    let containsSwift = ruleEntry.attributes[.has_swift_dependency] as? Bool ?? false
 
     // For the Swift dummy files phase to work, it has to be placed before the Compile Sources build
     // phase.
@@ -1244,15 +1248,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
     }
 
-    // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
-    // binary's build settings. If the chain is broken, just return the current testSettings.
-    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String,
-          let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
-          let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
-          let testBundleBinary = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleBinaryLabelString), depender: testBundle) else {
-      return testSettings
-    }
-
     let includes = NSMutableOrderedSet()
 
     // We don't use the defines at the moment but the function will add them anyway. We could try
@@ -1268,16 +1263,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
     addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
 
-    for dependency in testBundleBinary.dependencies {
-      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: dependency, depender: testBundleBinary) else {
-        continue
-      }
-      addIncludes(dependencyTarget, toSet: includes)
-      addLocalSettings(dependencyTarget, localDefines: &defines, localIncludes: includes, otherCFlags: NSMutableOrderedSet())
-      addSwiftIncludes(dependencyTarget, toSet: swiftIncludePaths)
-      addOtherSwiftFlags(dependencyTarget, toSet: otherSwiftFlags)
-    }
-
     let includesArr = includes.array as! [String]
     testSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includesArr.joined(separator: " ")
 
@@ -1290,42 +1275,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     return testSettings
-  }
-
-  // Returns a tuple containing the sources and non-ARC sources for a ruleEntry of a test rule (e.g.
-  // apple_unit_test) and a boolean indicating whether the test sources include Swift files.
-  private func testSourceFiles(forRuleEntry ruleEntry: RuleEntry,
-                               ruleEntryMap: RuleEntryMap) -> ([BazelFileInfo], [BazelFileInfo], Bool) {
-    // Check if the test target returns contains a test_bundle attribute get the test sources from.
-    guard let testBundleLabelString = ruleEntry.attributes[RuleEntry.Attribute.test_bundle] as? String else {
-      return (ruleEntry.sourceFiles, ruleEntry.nonARCSourceFiles, false)
-    }
-
-    // Traverse the apple_unit_test -> *_test_bundle -> apple_binary graph in order to get to the
-    // binary's direct dependencies. If at any point the expected graph is broken, just return empty
-    // sources.
-    guard let testBundle = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleLabelString), depender: ruleEntry),
-          let testBundleBinaryLabelString = testBundle.attributes[RuleEntry.Attribute.binary] as? String,
-          let testBundleBinary = ruleEntryMap.ruleEntry(buildLabel: BuildLabel(testBundleBinaryLabelString), depender: testBundle) else {
-      return ([], [], false)
-    }
-
-    var sourceFiles = [BazelFileInfo]()
-    var nonARCSourceFiles = [BazelFileInfo]()
-    var containsSwift = false
-
-    // Once we have the binary's direct dependencies, gather all the possible sources of those
-    // targets and return them.
-    for dependency in testBundleBinary.dependencies {
-      guard let dependencyTarget = ruleEntryMap.ruleEntry(buildLabel: dependency, depender: testBundleBinary) else {
-        continue
-      }
-      sourceFiles.append(contentsOf: dependencyTarget.sourceFiles)
-      nonARCSourceFiles.append(contentsOf: dependencyTarget.nonARCSourceFiles)
-      containsSwift = containsSwift || dependencyTarget.type == "swift_library"
-    }
-
-    return (sourceFiles, nonARCSourceFiles, containsSwift)
   }
 
   // Resolves a BuildLabel to an existing PBXTarget, handling target name collisions.
