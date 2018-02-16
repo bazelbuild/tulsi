@@ -188,7 +188,7 @@ class _OptionsParser(object):
   # The build configurations handled by this parser.
   KNOWN_CONFIGS = ['Debug', 'Release', 'Fastbuild']
 
-  def __init__(self, sdk_version, platform_name, arch, main_group_path):
+  def __init__(self, sdk_version, platform_name, arch):
     self.targets = []
     self.startup_options = collections.defaultdict(list)
     self.build_options = collections.defaultdict(
@@ -212,18 +212,6 @@ class _OptionsParser(object):
                 '--compilation_mode=fastbuild',
             ],
         })
-
-    # Options specific to debugger integration in Xcode.
-    xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
-    if xcode_version_major < 800:
-      xcode_lldb_options = [
-          '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
-          '--copt=-Xclang', '--copt=%s' % main_group_path,
-          '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
-          '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
-      ]
-      self.build_options['Debug'].extend(xcode_lldb_options)
-      self.build_options['Release'].extend(xcode_lldb_options)
 
     self.sdk_version = sdk_version
     self.platform_name = platform_name
@@ -509,8 +497,6 @@ class BazelBuildBridge(object):
 
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
-    self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
-                                               'NO') == 'YES'
     self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
     self.remap_dotted_paths = os.environ.get('TULSI_REMAP_DOTTED_PATHS',
                                              'NO') == 'YES'
@@ -554,6 +540,11 @@ class BazelBuildBridge(object):
     self.wrapper_suffix = os.environ.get('WRAPPER_SUFFIX', '')
     self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+
+    # Warn if the user is on an unsupported version of Xcode.
+    if self.xcode_version_major < 800:
+      _PrintXcodeWarning('Tulsi debugging is no longer supported for Xcode 7.')
+      _PrintXcodeWarning('Use Tulsi 0.4.185727384.20180214 for Xcode < 8.')
 
     # Path where Xcode expects the artifacts to be written to. This is not the
     # codesigning_path as device vs simulator builds have different signing
@@ -611,8 +602,7 @@ class BazelBuildBridge(object):
 
     parser = _OptionsParser(self.sdk_version,
                             self.platform_name,
-                            self.arch,
-                            self.main_group_path)
+                            self.arch)
     timer = Timer('Parsing options', 'parsing_options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -623,27 +613,6 @@ class BazelBuildBridge(object):
     self.verbose = parser.verbose
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
     self.bazel_executable = parser.bazel_executable
-
-    # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
-    #
-    # NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
-    # reused across multiple machines by a distributed build system, unless the
-    # absolute paths to files visible to Xcode match perfectly between all of
-    # those machines.
-    #
-    # For this reason, -fdebug-prefix-map is provided as a default for non-
-    # distributed purposes.
-    if self.use_debug_prefix_map:
-      # Add the debug source maps now that we have bazel_executable.
-      source_maps = self._ExtractTargetSourceMaps()
-
-      prefix_maps = []
-      for source_map in source_maps:
-        prefix_maps.append('--copt=-fdebug-prefix-map=%s=%s' %
-                           source_map)
-
-      # Extend our list of build options with maps just prior to building.
-      parser.build_options[_OptionsParser.ALL_CONFIGS].extend(prefix_maps)
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -741,7 +710,7 @@ class BazelBuildBridge(object):
     # correction applies to debug prefix maps as well.
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
-      clear_source_map = self.generate_dsym or self.use_debug_prefix_map
+      clear_source_map = self.generate_dsym
       exit_code = self._UpdateLLDBInit(clear_source_map)
       timer.End()
       if exit_code:
