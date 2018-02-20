@@ -512,8 +512,6 @@ class BazelBuildBridge(object):
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
     self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
-    self.remap_dotted_paths = os.environ.get('TULSI_REMAP_DOTTED_PATHS',
-                                             'NO') == 'YES'
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -1784,11 +1782,6 @@ class BazelBuildBridge(object):
     # If the user has specified any additional mappings, add them first.
     if self.extra_remap_path:
       source_maps.add((self._NormalizePath(self.extra_remap_path), sm_wsroot))
-
-    # Remap '.' to the workspace root if specified. Simulates a relative path
-    # for Xcode-driven LLDB sessions.
-    if self.remap_dotted_paths:
-      source_maps.add(('./', sm_wsroot))
 
     # Add a redirection for the Bazel execution root, the path where sources
     # are referenced by Bazel.
