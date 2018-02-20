@@ -1586,7 +1586,7 @@ class BazelBuildBridge(object):
         '-replace',
         'DBGVersion',
         '-string',
-        '"2"',
+        '2',
         remap_plist
     ])
     if returncode:
