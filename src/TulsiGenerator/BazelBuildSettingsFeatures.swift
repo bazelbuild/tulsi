@@ -13,6 +13,6 @@
 // limitations under the License.
 
 let bazelBuildSettingsFeatures = [
-  // Export dSYMs to allow us to establish source maps that can handle multiple potential paths.
-  "TULSI_ALL_DSYM",
+  // For non-distributed builds.
+  "TULSI_DEBUG_PREFIX_MAP",
 ]
