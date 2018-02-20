@@ -188,9 +188,18 @@ class _OptionsParser(object):
   # The build configurations handled by this parser.
   KNOWN_CONFIGS = ['Debug', 'Release', 'Fastbuild']
 
-  def __init__(self, sdk_version, platform_name, arch, main_group_path):
+  def __init__(self, sdk_version, platform_name, arch, main_group_path,
+               generate_dsym):
     self.targets = []
     self.startup_options = collections.defaultdict(list)
+    debug_options = [
+        '--compilation_mode=dbg',
+    ]
+    if generate_dsym:
+      # Avoid linking debug symbols in the binary, which will be in the
+      # dSYM bundle instead. Allows for faster incremental builds with
+      # dSYM bundles, and reduced duplication of debug info.
+      debug_options.append('--copt=-g0')
     self.build_options = collections.defaultdict(
         list,
         {
@@ -199,9 +208,7 @@ class _OptionsParser(object):
                 '--announce_rc',
             ],
 
-            'Debug': [
-                '--compilation_mode=dbg',
-            ],
+            'Debug': debug_options,
 
             'Release': [
                 '--compilation_mode=opt',
@@ -610,7 +617,8 @@ class BazelBuildBridge(object):
     parser = _OptionsParser(self.sdk_version,
                             self.platform_name,
                             self.arch,
-                            self.main_group_path)
+                            self.main_group_path,
+                            self.generate_dsym)
     timer = Timer('Parsing options', 'parsing_options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -1438,7 +1446,7 @@ class BazelBuildBridge(object):
       outfile.write('command source %s\n' % self._TULSI_LLDBINIT_EPILOGUE_FILE)
 
   def _UpdateLLDBInit(self, clear_source_map=False):
-    """Updates ~/.lldbinit-tulsi to enable debugging of Bazel binaries."""
+    """Updates ~/.lldbinit-tulsi for debugging of Bazel binaries."""
 
     # Apple Watch app binaries do not contain any sources.
     if self.product_type == 'com.apple.product-type.application.watchapp2':
