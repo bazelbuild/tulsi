@@ -761,6 +761,20 @@ class BazelBuildBridge(object):
       if exit_code:
         _PrintXcodeWarning('Patch LLVM covmap action failed with code %d' %
                            exit_code)
+
+    if self.generate_dsym:
+      # TODO(b/71705491): Find a means where LLDB and associated tooling can
+      # locate the dSYM bundle, accounting for Spotlight latency.
+      #
+      # On some builds, DebugSymbols.framework will be unable to find the
+      # dSYM bundle, which can be resolved through rebuilding... but that is
+      # a horrible solution that we can improve on.
+      #
+      # mdimport alone does not work, even though we have confirmed the
+      # indexing of dSYMs with mdfind on the com_apple_xcode_dsym_uuids
+      # attribute. Might rely on DBGShellCommands instead.
+      time.sleep(2)
+
     return 0
 
   def _BuildBazelCommand(self, options):
@@ -1595,64 +1609,43 @@ class BazelBuildBridge(object):
                    Tulsi debugging as strings ($1).
 
     Returns:
-      Int: the return code of plutil if a non-zero return code was found, or
-           "405", representing a failed copy action when creating the plist.
+      Bool: True if no error was found, or False, representing a failure to
+            write when creating the plist.
     """
 
-    # Create a UUID plist at (dsym_bundle_path)/Contents/Resources/ from
-    # the plist that was already generated within the dSYM bundle.
+    # Create a UUID plist at (dsym_bundle_path)/Contents/Resources/.
     remap_plist = os.path.join(dsym_bundle_path,
                                'Contents',
                                'Resources',
                                '%s.plist' % uuid)
-    main_plist = os.path.join(dsym_bundle_path,
-                              'Contents',
-                              'Info.plist')
+
+    # Via an XML plist, add the mappings from  _ExtractTargetSourceMaps().
     try:
-      shutil.copyfile(main_plist, remap_plist)
-    except IOError as e:
-      _PrintXcodeError('Failed to copy %s to %s, received error %s' %
-                       (main_plist, remap_plist, e))
-      return 405
+      with open(remap_plist, 'w') as out:
+        out.write('<?xml version="1.0" encoding="UTF-8"?>\n'
+                  '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" '
+                  '"http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n'
+                  '<plist version="1.0">\n'
+                  '<dict>\n'
+                  '<key>DBGSourcePathRemapping</key>\n'
+                  '<dict>\n')
 
-    # Via plutil, add the mappings from  _ExtractTargetSourceMaps(). Make
-    # sure that we also set DBGVersion to 2 via plutil.
-    returncode, output = self._RunSubprocess([
-        'xcrun',
-        'plutil',
-        '-replace',
-        'DBGVersion',
-        '-string',
-        '2',
-        remap_plist
-    ])
-    if returncode:
-      _PrintXcodeWarning('plutil returned %d while adding DBGVersion to %s: %s'
-                         % (returncode, remap_plist, output))
-      return returncode
+        # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
+        for source_map in source_maps:
+          out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
 
-    json_path_remappings = ''
+        # Make sure that we also set DBGVersion to 2 via plutil.
+        out.write('</dict>\n'
+                  '<key>DBGVersion</key>\n'
+                  '<string>2</string>\n'
+                  '</dict>\n'
+                  '</plist>\n')
+    except OSError as e:
+      _PrintXcodeError('Failed to write %s, received error %s' %
+                       (remap_plist, e))
+      return False
 
-    for source_map in source_maps:
-      json_path_remappings += '"%s" : "%s", ' % source_map
-
-    # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
-    returncode, output = self._RunSubprocess([
-        'xcrun',
-        'plutil',
-        '-replace',
-        'DBGSourcePathRemapping',
-        '-json',
-        '{ ' + json_path_remappings + ' }',
-        remap_plist
-    ])
-    if returncode:
-      _PrintXcodeWarning('plutil returned %d while adding '
-                         'DBGSourcePathRemapping to %s: %s'
-                         % (returncode, remap_plist, output))
-      return returncode
-
-    return 0
+    return True
 
   def _PlistdSYMPaths(self, dsym_bundle_path):
     """Adds Plists to a given dSYM bundle to redirect DWARF data."""
@@ -1684,9 +1677,8 @@ class BazelBuildBridge(object):
 
       # Create a plist per UUID, each indicating a binary slice to remap paths.
       for uuid in uuids_found:
-        returncode = self._CreateUUIDPlist(dsym_bundle_path, uuid, source_maps)
-        if returncode:
-          return returncode
+        if not self._CreateUUIDPlist(dsym_bundle_path, uuid, source_maps):
+          return 405
 
     # Update spotlight index with this updated dSYM bundle in case the binary's
     # UUID changed.
