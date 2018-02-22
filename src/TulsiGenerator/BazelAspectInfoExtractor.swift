@@ -189,6 +189,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
         "--tool_tag=tulsi:generator", // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
+        "--noexperimental_build_event_json_file_path_conversion",
     ])
     // Don't replace test_suites with their tests. This allows the Aspect to discover the structure
     // of the test_suite.
