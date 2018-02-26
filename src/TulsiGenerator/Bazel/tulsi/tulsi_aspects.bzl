@@ -97,6 +97,31 @@ _NON_ARC_SOURCE_GENERATING_RULES = [
     'objc_proto_library',
 ]
 
+# Whitelist of all extensions to include when scanning target.files for generated
+# files. This helps avoid but not prevent the following:
+#
+# _tulsi-include maps generated files from multiple configurations into one
+# directory for inclusion in the generated project. This can cause issues when
+# conflicting files are generated, e.g.
+#
+# library/subpath/foobar (an executable)
+# library/subpath/foobar/dependency/dep_lib.a
+#
+# Tulsi would fail trying to copy both of these as it would require `foobar` to
+# be both a file and directory. As a partial workaround, we only copy in files
+# that we believe to be 'source files' and thus unlikely to also be folders.
+_GENERATED_SOURCE_FILE_EXTENSIONS = [
+    'c',
+    'cc',
+    'cpp',
+    'h',
+    'hpp',
+    'm',
+    'mm',
+    'swift',
+    'swiftmodule',
+]
+
 def _dict_omitting_none(**kwargs):
   """Creates a dict from the args, dropping keys with None or [] values."""
   return {name: kwargs[name]
@@ -869,7 +894,9 @@ def _tulsi_outputs_aspect(target, ctx):
                 + _collect_artifacts(rule, 'attr.hdrs')
                 + _collect_artifacts(rule, 'attr.textual_hdrs'))
   all_files += _collect_supporting_files(rule_attr, convert_to_metadata=False)
-  all_files += target.files
+  source_files = [x for x in target.files.to_list()
+                  if x.extension.lower() in _GENERATED_SOURCE_FILE_EXTENSIONS]
+  all_files = depset(source_files, transitive=[all_files])
 
   tulsi_generated_files += depset(
       [x for x in all_files.to_list() if not x.is_source])
