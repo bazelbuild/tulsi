@@ -17,6 +17,7 @@
 import logging
 import logging.handlers
 import os
+import sys
 
 
 class Logger(object):
@@ -35,11 +36,20 @@ class Logger(object):
     self._logger = logging.getLogger('tulsi_logging')
     self._logger.setLevel(logging.INFO)
 
-    file_handler = logging.handlers.RotatingFileHandler(logfile, backupCount=20)
-    file_handler.setLevel(logging.INFO)
-    # Create a new log file for each build.
-    file_handler.doRollover()
-    self._logger.addHandler(file_handler)
+    try:
+      file_handler = logging.handlers.RotatingFileHandler(logfile,
+                                                          backupCount=20)
+      file_handler.setLevel(logging.INFO)
+      # Create a new log file for each build.
+      file_handler.doRollover()
+      self._logger.addHandler(file_handler)
+    except (IOError, OSError) as err:
+      filename = 'none'
+      if hasattr(err, 'filename'):
+        filename = err.filename
+      sys.stderr.write('Failed to set up logging to file: %s (%s).\n' %
+                       (os.strerror(err.errno), filename))
+      sys.stderr.flush()
 
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
