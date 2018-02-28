@@ -1143,7 +1143,7 @@ class BazelBuildBridge(object):
         if len(filename) < len(expected_bundle_subpath):
           continue
 
-        attributes = (item.external_attr >> 16) & 0777
+        attributes = (item.external_attr >> 16) & 0o777
         self._PrintVerbose('Extracting %s (%o)' % (filename, attributes),
                            level=1)
 
@@ -1688,7 +1688,7 @@ class BazelBuildBridge(object):
     binaries = [os.path.join(dwarf_subpath, b)
                 for b in os.listdir(dwarf_subpath)]
     for binary_path in binaries:
-      os.chmod(binary_path, 0755)
+      os.chmod(binary_path, 0o755)
 
     args = [self.post_processor_binary, '-d']
     if self.verbose > 1:
