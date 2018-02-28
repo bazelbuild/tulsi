@@ -271,7 +271,7 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
-    addBoolOption(.UseAspectForTestSuites, .Generic, false)
+    addBoolOption(.UseAspectForTestSuites, .Generic, true)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
