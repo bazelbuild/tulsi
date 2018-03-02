@@ -527,9 +527,6 @@ class BazelBuildBridge(object):
 
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
-    # Whether or not code coverage information should be generated.
-    self.code_coverage_enabled = (
-        os.environ.get('CLANG_COVERAGE_MAPPING') == 'YES')
     # Path where Xcode expects generated sources to be placed.
     self.derived_sources_folder_path = os.environ.get('DERIVED_SOURCES_DIR')
     # Full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
@@ -750,14 +747,6 @@ class BazelBuildBridge(object):
         _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
                            exit_code)
 
-    if self.code_coverage_enabled:
-      timer = Timer('Patching LLVM covmap', 'patching_llvm_covmap').Start()
-      exit_code = self._PatchLLVMCovmapPaths()
-      timer.End()
-      if exit_code:
-        _PrintXcodeWarning('Patch LLVM covmap action failed with code %d' %
-                           exit_code)
-
     if self.generate_dsym:
       # TODO(b/71705491): Find a means where LLDB and associated tooling can
       # locate the dSYM bundle, accounting for Spotlight latency.
@@ -809,12 +798,6 @@ class BazelBuildBridge(object):
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
         '--tool_tag=tulsi:bazel_build'])
-
-    if self.code_coverage_enabled:
-      self._PrintVerbose('Enabling code coverage information.')
-      bazel_command.extend([
-          '--collect_code_coverage',
-          '--experimental_use_llvm_covmap'])
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')
@@ -1495,34 +1478,6 @@ class BazelBuildBridge(object):
 
       out.write('settings set target.source-map "%s" "%s"\n' % source_map)
       self._LinkTulsiLLDBInitEpilogue(out)
-
-    return 0
-
-  def _PatchLLVMCovmapPaths(self):
-    """Invokes post_processor to fix source paths in LLVM coverage maps."""
-    if not os.path.isfile(self.binary_path):
-      return 0
-
-    self._PrintVerbose('Patching %r -> %r' % (BAZEL_EXECUTION_ROOT,
-                                              self.workspace_root), 1)
-    args = [
-        self.post_processor_binary,
-        '-c',
-    ]
-    if self.verbose > 1:
-      args.append('-v')
-    args.extend([
-        self.binary_path,
-        BAZEL_EXECUTION_ROOT,
-        self.workspace_root
-    ])
-    returncode, output = self._RunSubprocess(args)
-    if returncode:
-      _PrintXcodeWarning('Coverage map patching failed on binary %r (%d). Code '
-                         'coverage will probably fail.' %
-                         (self.binary_path, returncode))
-      _PrintXcodeWarning('Output: %s' % output or '<no output>')
-      return 0
 
     return 0
 
