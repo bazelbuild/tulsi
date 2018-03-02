@@ -50,7 +50,7 @@ XCODE_INJECTED_FRAMEWORKS = [
     'XCTest',
 ]
 
-_logger = tulsi_logging.Logger()
+_logger = None
 
 
 def _PrintXcodeWarning(msg):
@@ -98,7 +98,12 @@ class Timer(object):
 
     Returns:
       A Timer instance.
+
+    Raises:
+      RuntimeError: if Timer is created without initializing _logger.
     """
+    if _logger is None:
+      raise RuntimeError('Attempted to create Timer without a logger.')
     self.action_name = action_name
     self.action_id = action_id
     self._start = None
@@ -124,9 +129,9 @@ def _LockFileAcquire(lock_path):
   Args:
     lock_path: Path to the lock file.
   """
+  # TODO(b/74119354): Add lockfile timer back and lazily instantiate logger.
   sys.stdout.write('Queuing Tulsi build...\n')
   sys.stdout.flush()
-  locktimer = Timer('Acquiring %s' % lock_path, 'tulsi_build_lock').Start()
   # TODO(b/69414272): See if we can improve this for multiple WORKSPACEs.
   lockfile = open(lock_path, 'w')
   # Register "fclose(...)" as early as possible, before acquiring lock.
@@ -140,7 +145,6 @@ def _LockFileAcquire(lock_path):
         raise
       else:
         time.sleep(0.1)
-  locktimer.End()
 
 
 class CodesignBundleAttributes(object):
@@ -1886,6 +1890,7 @@ class BazelBuildBridge(object):
 
 if __name__ == '__main__':
   _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
+  _logger = tulsi_logging.Logger()
   _timer = Timer('Everything', 'complete_build').Start()
   signal.signal(signal.SIGINT, _InterruptHandler)
   _exit_code = BazelBuildBridge().Run(sys.argv)
