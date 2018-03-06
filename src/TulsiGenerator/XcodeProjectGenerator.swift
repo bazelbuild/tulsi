@@ -648,33 +648,23 @@ final class XcodeProjectGenerator {
       let filename = target.name + ".xcscheme"
 
       let url = xcschemesURL.appendingPathComponent(filename)
-      let appExtension: Bool
-      let extensionType: String?
-      let launchStyle: XcodeScheme.LaunchStyle
-      let runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode
       let targetType = entry.pbxTargetType ?? .Application
-      switch targetType {
-        case .MessagesExtension:
-          fallthrough
-        case .MessagesStickerPackExtension:
-          fallthrough
-        case .AppExtension:
-          appExtension = true
-          launchStyle = .AppExtension
-          runnableDebuggingMode = .Default
-          extensionType = entry.extensionType
 
-        case .Watch1App, .Watch2App:
-          appExtension = false
-          extensionType = nil
-          launchStyle = .Normal
-          runnableDebuggingMode = .Remote
+      var appExtension: Bool = false
+      var extensionType: String? = nil
+      var launchStyle: XcodeScheme.LaunchStyle? = .Normal
+      var runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode = .Default
 
-        default:
-          appExtension = false
-          launchStyle = .Normal
-          runnableDebuggingMode = .Default
-          extensionType = nil
+      if targetType.isiOSAppExtension {
+        appExtension = true
+        launchStyle = .AppExtension
+        extensionType = entry.extensionType
+      } else if targetType.isWatchApp {
+        runnableDebuggingMode = .Remote
+      } else if targetType.isLibrary {
+        launchStyle = nil
+      } else if targetType.isTest {
+        launchStyle = nil
       }
 
       var additionalBuildTargets = target.buildActionDependencies.map() {
@@ -767,6 +757,32 @@ final class XcodeProjectGenerator {
       return (validTests, suiteHostTarget)
     }
 
+    func installSchemesForIndexerTargets() throws {
+      let indexerTargets = info.indexerTargets.values
+      guard !indexerTargets.isEmpty else { return }
+
+      let filename = "_idx_Scheme.xcscheme"
+      let url = xcschemesURL.appendingPathComponent(filename)
+
+      let additionalBuildTargets = indexerTargets.map() {
+        ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
+      }
+
+      let scheme = XcodeScheme(target: nil,
+                               project: info.project,
+                               projectBundleName: projectBundleName,
+                               launchStyle: nil,
+                               additionalBuildTargets: additionalBuildTargets,
+                               preActionScripts: [:],
+                               postActionScripts: [:],
+                               localizedMessageLogger: localizedMessageLogger)
+      let xmlDocument = scheme.toXML()
+
+      let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
+      try writeDataHandler(url, data)
+    }
+    try installSchemesForIndexerTargets()
+
     func installSchemeForTestSuite(_ suite: RuleEntry, named suiteName: String) throws {
       let (validTests, extractedHostTarget) = extractTestTargets(suite)
       guard !validTests.isEmpty else {
@@ -785,6 +801,7 @@ final class XcodeProjectGenerator {
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
+                               launchStyle: .Normal,
                                explicitTests: Array(validTests),
                                commandlineArguments: commandlineArguments(for: suite),
                                environmentVariables: environmentVariables(for: suite),

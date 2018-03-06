@@ -721,6 +721,11 @@ class PBXTarget: PBXObjectProtocol, Hashable {
       return self == .UnitTest || self == .UIUnitTest
     }
 
+    /// Whether or not this ProductTypes denotes a library target.
+    var isLibrary: Bool {
+      return self == .StaticLibrary || self == .DynamicLibrary
+    }
+
     /// Returns the extension type associated with this watch app type (or nil if this ProductType
     /// is not a WatchApp type).
     var watchAppExtensionType: ProductType? {

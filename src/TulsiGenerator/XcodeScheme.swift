@@ -48,7 +48,7 @@ final class XcodeScheme {
   let archiveActionBuildConfig: String
   let appExtension: Bool
   let extensionType: String?
-  let launchStyle: LaunchStyle
+  let launchStyle: LaunchStyle?
   let runnableDebuggingMode: RunnableDebuggingMode
   let explicitTests: [PBXTarget]?
   // List of additional targets and their project bundle names that should be built along with the
@@ -71,7 +71,7 @@ final class XcodeScheme {
        archiveActionBuildConfig: String = "Release",
        appExtension: Bool = false,
        extensionType: String? = nil,
-       launchStyle: LaunchStyle = .Normal,
+       launchStyle: LaunchStyle? = nil,
        runnableDebuggingMode: RunnableDebuggingMode = .Default,
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil,
@@ -267,7 +267,7 @@ final class XcodeScheme {
         "debugServiceExtension": "internal",
         "allowLocationSimulation": "YES",
     ]
-    if launchStyle == .AppExtension {
+    if let launchStyle = launchStyle, launchStyle == .AppExtension {
       attributes["selectedDebuggerIdentifier"] = ""
       attributes["selectedLauncherIdentifier"] = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       attributes["launchAutomaticallySubstyle"] = launchStyle.rawValue
@@ -284,7 +284,12 @@ final class XcodeScheme {
     if let postActionScript = postActionScripts[XcodeActionType.LaunchAction] {
         element.addChild(postActionElement(postActionScript))
     }
-    if launchStyle != .AppExtension {
+
+    if launchStyle == nil {
+      if let reference = macroReference() {
+        element.addChild(reference)
+      }
+    } else if launchStyle != .AppExtension {
       if let runnable = buildableProductRunnable(runnableDebuggingMode) {
         element.addChild(runnable)
       }
@@ -316,13 +321,20 @@ final class XcodeScheme {
     element.setAttributesWith(attributes)
     let childRunnableDebuggingMode: RunnableDebuggingMode
 
-    if launchStyle != .AppExtension {
-      childRunnableDebuggingMode = runnableDebuggingMode
+    if let launchStyle = launchStyle {
+      if launchStyle != .AppExtension {
+        childRunnableDebuggingMode = runnableDebuggingMode
+      } else {
+        childRunnableDebuggingMode = .Default
+      }
+      if let runnable = buildableProductRunnable(childRunnableDebuggingMode) {
+        element.addChild(runnable)
+      }
     } else {
-      childRunnableDebuggingMode = .Default
-    }
-    if let runnable = buildableProductRunnable(childRunnableDebuggingMode) {
-      element.addChild(runnable)
+      // Not launchable, just use a macro reference.
+      if let runnable = macroReference() {
+        element.addChild(runnable)
+      }
     }
 
     return element

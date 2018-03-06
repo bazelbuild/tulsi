@@ -2910,12 +2910,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
                                      line: UInt = #line) {
     var expectedBuildSettings = [
-        "ARCHS": "x86_64",
         "HEADER_SEARCH_PATHS": "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ",
         "PRODUCT_NAME": indexerTargetName,
-        "SDKROOT": "iphonesimulator",
+        "SDKROOT": "iphoneos",
         "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
-        "VALID_ARCHS": "x86_64",
     ]
     if pchFile != nil {
       expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile!.path!)"

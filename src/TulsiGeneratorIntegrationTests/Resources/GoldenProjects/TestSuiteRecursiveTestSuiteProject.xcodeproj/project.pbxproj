@@ -556,13 +556,11 @@
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_345F39DA_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -688,13 +686,11 @@
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_345F39DA_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

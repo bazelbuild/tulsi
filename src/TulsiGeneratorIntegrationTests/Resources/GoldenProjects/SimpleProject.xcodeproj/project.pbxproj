@@ -622,43 +622,37 @@
 		44936BD67EED3C4D00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_BB2F88FA_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_TestLibrary_92E29781_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -758,43 +752,37 @@
 		44936BD6A3D45CE900000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_BB2F88FA_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_1A8360DD_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_TestLibrary_92E29781_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

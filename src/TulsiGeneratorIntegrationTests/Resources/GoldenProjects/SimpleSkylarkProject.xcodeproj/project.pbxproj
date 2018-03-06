@@ -846,70 +846,60 @@
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_JavaLibrary_C16E964B_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B_ios_min8.0;
-				SDKROOT = iphonesimulator;
+				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
-				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D0000000A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -1050,70 +1040,60 @@
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_JavaLibrary_C16E964B_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_generated_protos/ObjcProtos $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_22D3B3D5_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/App/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DBINARY_ADDITIONAL_DEFINE -DBINARY_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_MainLibrary_E33E600C_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_XCTestCodeSwift_2FB5517B_ios_min8.0;
-				SDKROOT = iphonesimulator;
+				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
-				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE90000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_WR)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_WR)/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_WR)/third_party/protobuf/objectivec $(TULSI_WR)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/_j2objc/JavaLibrary $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/Classes $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/libcore/luni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/android/platform/libcore/ojluni/src/main/native $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul/apple_apsl $(TULSI_BWRS)/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/java_src/j2objc/jre_emul $(TULSI_BWRS)/third_party/protobuf/objectivec $(TULSI_BWRS)/_tulsi-includes/x/x/third_party/protobuf/objectivec $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_XCUITestCode_XCTestCode_1D881332_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

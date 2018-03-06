@@ -936,86 +936,74 @@
 		44936BD67EED3C4D00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DA=BINARY_DEFINE -DLIBRARY SECOND DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY SECOND DEFINE=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		44936BD67EED3C4D00000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -1115,86 +1103,74 @@
 		44936BD6A3D45CE900000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DA=BINARY_DEFINE -DLIBRARY SECOND DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY SECOND DEFINE=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
 				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		44936BD6A3D45CE900000009 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
 				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
-				SDKROOT = iphonesimulator;
-				VALID_ARCHS = x86_64;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

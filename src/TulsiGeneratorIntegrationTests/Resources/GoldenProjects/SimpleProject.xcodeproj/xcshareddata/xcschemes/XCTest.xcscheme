@@ -78,14 +78,14 @@
                 </ActionContent>
             </ExecutionAction>
         </PostActions>
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="XCTest.xctest" BlueprintName="XCTest" BuildableIdentifier="primary"></BuildableReference>
-        </BuildableProductRunnable>
+        </MacroExpansion>
     </LaunchAction>
     <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E6EF2E7F4000000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="XCTest.xctest" BlueprintName="XCTest" BuildableIdentifier="primary"></BuildableReference>
-        </BuildableProductRunnable>
+        </MacroExpansion>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
     <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>

@@ -24,14 +24,14 @@
         <EnvironmentVariables>
             <EnvironmentVariable key="projectKey" value="projectValue" isEnabled="YES"></EnvironmentVariable>
         </EnvironmentVariables>
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
-        </BuildableProductRunnable>
+        </MacroExpansion>
     </LaunchAction>
     <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
-        <BuildableProductRunnable runnableDebuggingMode="0">
+        <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
-        </BuildableProductRunnable>
+        </MacroExpansion>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
     <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>

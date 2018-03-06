@@ -407,13 +407,11 @@
 		44936BD67EED3C4D00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -509,13 +507,11 @@
 		44936BD6A3D45CE900000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = x86_64;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
