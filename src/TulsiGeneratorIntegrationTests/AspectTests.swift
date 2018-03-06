@@ -468,7 +468,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:SwiftLibrary")
         .hasSources(["tulsi_test/SwiftLibrary/srcs/a.swift",
                      "tulsi_test/SwiftLibrary/srcs/b.swift"])
-        .hasAttribute(.swift_language_version, value: "3")
+        .hasAttribute(.has_swift_dependency, value: true)
 
     checker.assertThat("//tulsi_test:SwiftLibraryV3")
         .hasSources(["tulsi_test/SwiftLibraryV3/srcs/a.swift",
