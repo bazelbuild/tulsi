@@ -99,6 +99,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
+        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "8.0"))
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_bundle")
 
@@ -335,6 +336,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
+        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "8.0"))
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_bundle")
 
@@ -722,6 +724,17 @@ private class InfoChecker {
       XCTAssertEqual(hostLabelString,
                      targetLabel,
                      "\(ruleEntry) expected to have a test_host of \(targetLabel)",
+                     line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has the given Deployment Target.
+    @discardableResult
+    func hasDeploymentTarget(_ deploymentTarget: DeploymentTarget, line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      XCTAssertEqual(ruleEntry.deploymentTarget,
+                     deploymentTarget,
+                     "\(ruleEntry) expected to have a DeploymentTarget of \(deploymentTarget)",
                      line: line)
       return self
     }

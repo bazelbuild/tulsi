@@ -851,7 +851,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosappTests;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
@@ -1017,7 +1017,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosappTests;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
@@ -1185,7 +1185,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1305,7 +1305,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";

@@ -469,6 +469,18 @@ def _extract_generated_sources(target):
 
   return file_metadatas
 
+
+def _get_deployment_info(target, ctx):
+  """Returns (platform_type, minimum_os_version) for the given target."""
+  platform_type = _get_platform_type(ctx)
+
+  if AppleBundleInfo in target:
+    apple_bundle_provider = target[AppleBundleInfo]
+    minimum_os_version = apple_bundle_provider.minimum_os_version
+    return (platform_type, minimum_os_version)
+  return (platform_type, _minimum_os_for_platform(ctx, platform_type))
+
+
 def _get_platform_type(ctx):
   """Return the current apple_common.platform_type as a string."""
   current_platform = (_get_opt_attr(ctx, 'rule.attr.platform_type')
@@ -478,7 +490,7 @@ def _get_platform_type(ctx):
     current_platform = str(apple_frag.single_arch_platform.platform_type)
   return current_platform
 
-def _extract_minimum_os_for_platform(ctx, platform_type_str):
+def _minimum_os_for_platform(ctx, platform_type_str):
   """Extracts the minimum OS version for the given apple_common.platform."""
   min_os = _get_opt_attr(ctx, 'rule.attr.minimum_os_version')
   if min_os:
@@ -669,7 +681,7 @@ def _tulsi_sources_aspect(target, ctx):
                        for x in objc_provider.include]
     target_defines = objc_provider.define.to_list()
 
-  platform_type = _get_platform_type(ctx)
+  platform_type, os_deployment_target = _get_deployment_info(target, ctx)
   non_arc_srcs = _collect_files(rule, 'attr.non_arc_srcs')
 
   # Collect test information.
@@ -697,7 +709,7 @@ def _tulsi_sources_aspect(target, ctx):
       generated_files=generated_files,
       generated_non_arc_files=generated_non_arc_files,
       includes=target_includes,
-      os_deployment_target=_extract_minimum_os_for_platform(ctx, platform_type),
+      os_deployment_target=os_deployment_target,
       label=str(target.label),
       non_arc_srcs=non_arc_srcs,
       secondary_product_artifacts=_collect_secondary_artifacts(target, ctx),
