@@ -50,7 +50,10 @@ swift_library(
         "SwiftLibraryV3/srcs/a.swift",
         "SwiftLibraryV3/srcs/b.swift",
     ],
-    swift_version = 3,
+    copts = [
+        "-swift-version",
+        "3",
+    ],
 )
 
 swift_library(
@@ -59,7 +62,10 @@ swift_library(
         "SwiftLibraryV4/srcs/a.swift",
         "SwiftLibraryV4/srcs/b.swift",
     ],
-    swift_version = 4,
+    copts = [
+        "-swift-version",
+        "4",
+    ],
 )
 
 swift_library(
