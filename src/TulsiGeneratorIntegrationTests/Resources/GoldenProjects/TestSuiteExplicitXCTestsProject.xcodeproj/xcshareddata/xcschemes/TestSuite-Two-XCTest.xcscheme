@@ -17,7 +17,7 @@
             <BuildableReference BlueprintIdentifier="3D31C5E67C4CFB5800000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableName="TestSuite-Two-XCTest.xctest" BlueprintName="TestSuite-Two-XCTest" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
+    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="__TulsiTestRunner_Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
         <EnvironmentVariables></EnvironmentVariables>
         <MacroExpansion>
             <BuildableReference BlueprintIdentifier="3D31C5E67C4CFB5800000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableName="TestSuite-Two-XCTest.xctest" BlueprintName="TestSuite-Two-XCTest" BuildableIdentifier="primary"></BuildableReference>
