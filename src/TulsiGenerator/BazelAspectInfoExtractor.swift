@@ -171,6 +171,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       progressNotifier.start()
     }
 
+    let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
+
     var arguments = startupOptions
     arguments.append(contentsOf: [
         "build",
@@ -187,7 +189,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--aspects",
         "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
-        "--tool_tag=tulsi:generator", // Add a tag for tracking.
+        "--tool_tag=tulsi_v\(tulsiVersion):generator", // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
         "--noexperimental_build_event_json_file_path_conversion",
     ])

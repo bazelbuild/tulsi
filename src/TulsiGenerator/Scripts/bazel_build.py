@@ -508,6 +508,8 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
+    self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
+
     self.build_without_spotlight = os.environ.get(
         BazelBuildBridge.SPOTLIGHT_CHECK_ENVVAR, 'NO') == 'YES'
 
@@ -797,7 +799,7 @@ class BazelBuildBridge(object):
         '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
-        '--tool_tag=tulsi:bazel_build'])
+        '--tool_tag=tulsi_v%s:bazel_build' % self.tulsi_version])
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')
