@@ -247,7 +247,6 @@ class _OptionsParser(object):
         '--config=%s_%s' % (config_platform, arch))
 
     self.verbose = 0
-    self.install_generated_artifacts = False
     self.bazel_bin_path = 'bazel-bin'
     self.bazel_executable = None
 
@@ -358,10 +357,7 @@ class _OptionsParser(object):
       arg = args[0]
       args = args[1:]
 
-      if arg == '--install_generated_artifacts':
-        self.install_generated_artifacts = True
-
-      elif arg.startswith('--bazel_startup_options'):
+      if arg.startswith('--bazel_startup_options'):
         config = self._ParseConfigFilter(arg)
         args, items, terminated = self._ParseDoubleDashDelimitedItems(args)
         if not terminated:
@@ -680,58 +676,59 @@ class BazelBuildBridge(object):
     if exit_code:
       return exit_code
 
-    if parser.install_generated_artifacts:
-      timer = Timer('Installing artifacts', 'installing_artifacts').Start()
-      exit_code = self._InstallArtifact(outputs)
-      timer.End()
+    exit_code, outputs_data = self._ExtractAspectOutputsData(outputs)
+    if exit_code:
+      return exit_code
+
+    timer = Timer('Installing artifacts', 'installing_artifacts').Start()
+    exit_code = self._InstallArtifact(outputs_data)
+    timer.End()
+    if exit_code:
+      return exit_code
+
+    timer = Timer('Installing generated headers',
+                  'installing_generated_headers').Start()
+    exit_code = self._InstallGeneratedHeaders(outputs_data)
+    timer.End()
+    if exit_code:
+      return exit_code
+
+    exit_code, dsym_paths = self._InstallDSYMBundles(
+        self.built_products_dir, outputs_data)
+    if exit_code:
+      return exit_code
+
+    if dsym_paths:
+      for path in dsym_paths:
+        # Starting with Xcode 9.x, a plist based solution exists for dSYM
+        # bundles that works with Swift as well as (Obj-)C(++).
+        if self.xcode_version_major >= 900:
+          timer = Timer('Adding remappings as plists to dSYM',
+                        'plist_dsym').Start()
+          exit_code = self._PlistdSYMPaths(path)
+          timer.End()
+          if exit_code:
+            _PrintXcodeError('Remapping dSYMs process returned %i, please '
+                             'report a Tulsi bug and attach a full Xcode '
+                             'build log.' % exit_code)
+            return exit_code
+        else:
+          timer = Timer('Patching DSYM source file paths',
+                        'patching_dsym').Start()
+          exit_code = self._PatchdSYMPaths(path)
+          timer.End()
+          if exit_code:
+            return exit_code
+
+    # Starting with Xcode 7.3, XCTests inject several supporting frameworks
+    # into the test host that need to be signed with the same identity as
+    # the host itself.
+    if (self.is_test and self.xcode_version_minor >= 730 and
+        not self.platform_name.startswith('macos') and
+        self.codesigning_allowed):
+      exit_code = self._ResignTestArtifacts()
       if exit_code:
         return exit_code
-
-      timer = Timer('Installing generated headers',
-                    'installing_generated_headers').Start()
-      exit_code = self._InstallGeneratedHeaders(outputs)
-      timer.End()
-      if exit_code:
-        return exit_code
-
-      if self.generate_dsym:
-        timer = Timer('Installing DSYM bundles', 'installing_dsym').Start()
-        exit_code, dsym_paths = self._InstallDSYMBundles(
-            self.built_products_dir, outputs)
-        timer.End()
-        if exit_code:
-          return exit_code
-
-        for path in dsym_paths:
-          # Starting with Xcode 9.x, a plist based solution exists for dSYM
-          # bundles that works with Swift as well as (Obj-)C(++).
-          if self.xcode_version_major >= 900:
-            timer = Timer('Adding remappings as plists to dSYM',
-                          'plist_dsym').Start()
-            exit_code = self._PlistdSYMPaths(path)
-            timer.End()
-            if exit_code:
-              _PrintXcodeError('Remapping dSYMs process returned %i, please '
-                               'report a Tulsi bug and attach a full Xcode '
-                               'build log.' % exit_code)
-              return exit_code
-          else:
-            timer = Timer('Patching DSYM source file paths',
-                          'patching_dsym').Start()
-            exit_code = self._PatchdSYMPaths(path)
-            timer.End()
-            if exit_code:
-              return exit_code
-
-      # Starting with Xcode 7.3, XCTests inject several supporting frameworks
-      # into the test host that need to be signed with the same identity as
-      # the host itself.
-      if (self.is_test and self.xcode_version_minor >= 730 and
-          not self.platform_name.startswith('macos') and
-          self.codesigning_allowed):
-        exit_code = self._ResignTestArtifacts()
-        if exit_code:
-          return exit_code
 
     # Starting with Xcode 8, .lldbinit files are honored during Xcode debugging
     # sessions. This allows use of the target.source-map field to remap the
@@ -742,14 +739,14 @@ class BazelBuildBridge(object):
     # correction applies to debug prefix maps as well.
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
-      clear_source_map = self.generate_dsym or self.use_debug_prefix_map
+      clear_source_map = dsym_paths or self.use_debug_prefix_map
       exit_code = self._UpdateLLDBInit(clear_source_map)
       timer.End()
       if exit_code:
         _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
                            exit_code)
 
-    if self.generate_dsym:
+    if dsym_paths:
       # TODO(b/71705491): Find a means where LLDB and associated tooling can
       # locate the dSYM bundle, accounting for Spotlight latency.
       #
@@ -908,7 +905,34 @@ class BazelBuildBridge(object):
         return 1, output_locations
       return process.returncode, output_locations
 
-  def _InstallArtifact(self, outputs):
+  def _ExtractAspectOutputsData(self, output_files):
+    """Converts aspect output from paths to json to a list of dictionaries.
+
+    Args:
+      output_files: A list of strings to files representing Bazel aspect output
+                    in UTF-8 JSON format.
+
+    Returns:
+      return_code, [dict]: A tuple with a return code as its first argument and
+                           for its second argument, a list of dictionaries for
+                           each output_file that could be interpreted as valid
+                           JSON, representing the returned Bazel aspect
+                           information.
+      return_code, None: If an error occurred while converting the list of
+                         files into JSON.
+    """
+    outputs_data = []
+    for output_file in output_files:
+      try:
+        output_data = json.load(open(output_file))
+      except (ValueError, IOError) as e:
+        _PrintXcodeError('Failed to load output map ""%s". '
+                         '%s' % (output_file, e))
+        return 600, None
+      outputs_data.append(output_data)
+    return 0, outputs_data
+
+  def _InstallArtifact(self, outputs_data):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
     xcode_artifact_path = self.artifact_output_path
 
@@ -927,20 +951,19 @@ class BazelBuildBridge(object):
                          '%s' % (xcode_artifact_path, e))
         return 600
 
-    try:
-      output_data = json.load(open(outputs[0]))
-    except (ValueError, IOError) as e:
-      _PrintXcodeError('Failed to load output map ""%s". '
-                       '%s' % (outputs[0], e))
+    if not outputs_data:
+      _PrintXcodeError('Failed to load top level output file.')
       return 600
 
-    if 'artifacts' not in output_data:
+    primary_output_data = outputs_data[0]
+
+    if 'artifacts' not in primary_output_data:
       _PrintXcodeError(
           'Failed to find an output artifact for target %s in output map %r' %
-          (xcode_artifact_path, output_data))
+          (xcode_artifact_path, primary_output_data))
       return 601
 
-    primary_artifact = output_data['artifacts'][0]
+    primary_artifact = primary_output_data['artifacts'][0]
 
     # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
     # modified by the user and, more importantly, may have been modified by
@@ -952,7 +975,7 @@ class BazelBuildBridge(object):
         os.path.basename(primary_artifact))[0]
 
     if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
-      bundle_name = output_data.get('bundle_name')
+      bundle_name = primary_output_data.get('bundle_name')
       exit_code = self._UnpackTarget(primary_artifact,
                                      xcode_artifact_path,
                                      bundle_name)
@@ -971,7 +994,7 @@ class BazelBuildBridge(object):
                        xcode_artifact_path)
 
     # No return code check as this is not an essential operation.
-    self._InstallEmbeddedBundlesIfNecessary(output_data)
+    self._InstallEmbeddedBundlesIfNecessary(primary_output_data)
 
     return 0
 
@@ -1002,7 +1025,7 @@ class BazelBuildBridge(object):
 
     timer.End()
 
-  def _InstallGeneratedHeaders(self, output_files):
+  def _InstallGeneratedHeaders(self, outputs_data):
     """Installs Bazel-generated headers into _tulsi-includes directory."""
 
     # The folder must begin with an underscore as otherwise Bazel will delete
@@ -1014,8 +1037,7 @@ class BazelBuildBridge(object):
     else:
       os.mkdir(tulsi_root)
 
-    for f in output_files:
-      data = json.load(open(f))
+    for data in outputs_data:
       if 'generated_sources' not in data:
         continue
 
@@ -1174,25 +1196,28 @@ class BazelBuildBridge(object):
 
     return 0
 
-  def _InstallDSYMBundles(self, output_dir, aspect_outputs):
+  def _InstallDSYMBundles(self, output_dir, outputs_data):
     """Copies any generated dSYM bundles to the given directory."""
-    target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME')
-    if not target_dsym:  # If Xcode is not expecting a dSYM output, skip.
+    # Indicates that our aspect reports a dSYM was generated for this build.
+    has_dsym = outputs_data[0]['has_dsym']
+
+    if not has_dsym:
       return 0, None
 
-    dsym_to_process = set([(self.build_path, target_dsym)])
+    # Start the timer now that we know we have dSYM bundles to install.
+    timer = Timer('Installing DSYM bundles', 'installing_dsym').Start()
+
+    # Declares the Xcode-generated name of our main target's dSYM.
+    # This environment variable is always set, for any possible Xcode output
+    # that could generate a dSYM bundle.
+    target_dsym = os.environ.get('DWARF_DSYM_FILE_NAME')
+    if target_dsym:
+      dsym_to_process = set([(self.build_path, target_dsym)])
 
     # Collect additional dSYM bundles generated by the dependencies of this
     # build such as extensions or frameworks.
     child_dsyms = set()
-    for path in aspect_outputs:
-      try:
-        data = json.load(open(path))
-      except (ValueError, IOError) as e:
-        _PrintXcodeWarning('Failed to load output map ""%s".'
-                           '%s' % (path, e))
-        break
-
+    for data in outputs_data:
       for bundle_info in data.get('embedded_bundles', []):
         if not bundle_info['has_dsym']:
           continue
@@ -1219,6 +1244,7 @@ class BazelBuildBridge(object):
       else:
         dsyms_found.append(path)
 
+    timer.End()
     return 0, dsyms_found
 
   def _ResignBundle(self, bundle_path, signing_identity, entitlements=None):

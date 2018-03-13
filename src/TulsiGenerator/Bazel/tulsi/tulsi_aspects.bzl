@@ -913,11 +913,17 @@ def _tulsi_outputs_aspect(target, ctx):
   tulsi_generated_files += depset(
       [x for x in all_files.to_list() if not x.is_source])
 
+  has_dsym = False
+  if hasattr(ctx.fragments, 'objc'):
+    if apple_common.AppleDebugOutputs in target:
+      has_dsym = ctx.fragments.objc.generate_dsym
+
   info = _struct_omitting_none(
       artifacts=artifacts,
       generated_sources=[(x.path, x.short_path) for x in tulsi_generated_files],
       bundle_name=bundle_name,
-      embedded_bundles=embedded_bundles.to_list())
+      embedded_bundles=embedded_bundles.to_list(),
+      has_dsym=has_dsym)
 
   output = ctx.new_file(target.label.name + '.tulsiouts')
   ctx.file_action(output, info.to_json())
@@ -927,7 +933,7 @@ def _tulsi_outputs_aspect(target, ctx):
           'tulsi-outputs': [output],
       },
       tulsi_generated_files=tulsi_generated_files,
-      transitive_embedded_bundles=embedded_bundles,
+      transitive_embedded_bundles=embedded_bundles
   )
 
 

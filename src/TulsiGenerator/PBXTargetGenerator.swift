@@ -1547,7 +1547,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
     let shellScript = "set -e\n" +
         "\(changeDirectoryAction)\n" +
-        "exec \(commandLine) --install_generated_artifacts"
+        "exec \(commandLine)"
 
     let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
     buildPhase.showEnvVarsInLog = true
