@@ -36,6 +36,7 @@ import textwrap
 import time
 import zipfile
 
+from apfs_clone_copy import CopyOnWrite
 import bazel_build_events
 import bazel_options
 from execroot_path import BAZEL_EXECUTION_ROOT
@@ -504,6 +505,7 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
+    self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
@@ -1073,7 +1075,12 @@ class BazelBuildBridge(object):
     """Copies the given bundle to the given expected output path."""
     self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
     try:
-      shutil.copytree(full_source_path, output_path)
+      if self.apfs_clone:
+        CopyOnWrite(full_source_path, output_path, True)
+      else:
+        if os.path.exists(output_path):
+          shutil.rmtree(output_path)
+        shutil.copytree(full_source_path, output_path)
     except OSError as e:
       _PrintXcodeError('Copy failed. %s' % e)
       return 650
@@ -1091,7 +1098,10 @@ class BazelBuildBridge(object):
                          '%s' % (output_path_dir, e))
         return 650
     try:
-      shutil.copy(full_source_path, output_path)
+      if self.apfs_clone:
+        CopyOnWrite(full_source_path, output_path)
+      else:
+        shutil.copy2(full_source_path, output_path)
     except OSError as e:
       _PrintXcodeError('Copy failed. %s' % e)
       return 650

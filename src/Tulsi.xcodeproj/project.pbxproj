@@ -143,6 +143,7 @@
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
 		E107EFD7200B135600257E2F /* BuildScriptOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E107EFD6200B135500257E2F /* BuildScriptOption.swift */; };
 		E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = E1D770EA20523E790026802A /* bazel_cache_reader */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E135A781205880720082E4D0 /* apfs_clone_copy.py in Resources */ = {isa = PBXBuildFile; fileRef = E135A780205880720082E4D0 /* apfs_clone_copy.py */; };
 		E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */; };
 		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
 		E1C0186D2051B65D000580CC /* clean_symbol_cache.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C018692051B65B000580CC /* clean_symbol_cache.py */; };
@@ -373,6 +374,7 @@
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
 		E107EFD6200B135500257E2F /* BuildScriptOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildScriptOption.swift; sourceTree = "<group>"; };
 		E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects_paths.bzl; path = tulsi/tulsi_aspects_paths.bzl; sourceTree = "<group>"; };
+		E135A780205880720082E4D0 /* apfs_clone_copy.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = apfs_clone_copy.py; sourceTree = "<group>"; };
 		E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildSettingsFeatures.swift; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
 		E1C018692051B65B000580CC /* clean_symbol_cache.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = clean_symbol_cache.py; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 		3DAC27671C3AD2510040F42C /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				E135A780205880720082E4D0 /* apfs_clone_copy.py */,
 				54EF32091F3E0804009E9C7F /* bazel_build_events.py */,
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
 				D33C204E1EC108CC00867450 /* tulsi_logging.py */,
@@ -905,6 +908,7 @@
 				3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */,
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
+				E135A781205880720082E4D0 /* apfs_clone_copy.py in Resources */,
 				3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */,
 				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
 				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,

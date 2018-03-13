@@ -15,4 +15,5 @@
 let bazelBuildSettingsFeatures = [
   // For non-distributed builds.
   "TULSI_DEBUG_PREFIX_MAP",
+  "TULSI_APFS_CLONE",
 ]
