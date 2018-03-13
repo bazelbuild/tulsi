@@ -69,6 +69,8 @@ final class XcodeProjectGenerator {
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   private static let BuildScript = "bazel_build.py"
   private static let CleanScript = "bazel_clean.sh"
+  private static let ShellCommandsUtil = "bazel_cache_reader"
+  private static let ShellCommandsCleanScript = "clean_symbol_cache"
   private static let WorkspaceFile = "WORKSPACE"
   private static let PostProcessorUtil = "post_processor"
   private static let IOSUIRunnerEntitlements = "iOSXCTRunner.entitlements"
@@ -78,6 +80,7 @@ final class XcodeProjectGenerator {
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
   private static let CachedExecutionRootFilename = "execroot_path.py"
   private static let DefaultSwiftVersion = "4"
+  private static let SupportScriptsPath = "Library/Application Support/Tulsi/Scripts/"
 
   /// Rules which should not be generated at the top level.
   private static let LibraryRulesForTopLevelWarning =
@@ -115,6 +118,11 @@ final class XcodeProjectGenerator {
   var suppressGeneratedArtifactFolderCreation = false
 
   var cachedDefaultSwiftVersion: String?
+
+  /// Computed property to determine if DBGShellCommands is actively caching dSYM for this project.
+  var disableDBGShellCommandsCaching: Bool {
+    return config.options[.DisableDBGShellCommandsCaching].commonValueAsBool ?? true
+  }
 
   init(workspaceRootURL: URL,
        config: TulsiGeneratorConfig,
@@ -503,6 +511,12 @@ final class XcodeProjectGenerator {
         buildSettings[featureFlag] = "YES"
       }
 
+      if (self.disableDBGShellCommandsCaching) {
+        buildSettings["TULSI_UPDATE_DSYM_CACHE"] = "NO"
+      } else {
+        buildSettings["TULSI_UPDATE_DSYM_CACHE"] = "YES"
+      }
+
       for buildScriptOption in buildScriptOptions {
         buildSettings[buildScriptOption.identifier.rawValue] = buildScriptOption.arguments
       }
@@ -522,6 +536,21 @@ final class XcodeProjectGenerator {
     }
     profileAction("patching_external_repository_references") {
       referencePatcher.patchExternalRepositoryReferences(xcodeProject)
+    }
+    profileAction("updating_dbgshellcommands") {
+      do {
+        try updateShellCommands()
+      } catch {
+        self.localizedMessageLogger.warning("UpdatingDBGShellCommandsFailed",
+                                            comment: LocalizedMessageLogger.bugWorthyComment("Failed to update the script to find cached dSYM bundles via DBGShellCommands."),
+                                            context: self.config.projectName,
+                                            values: "\(error)")
+      }
+    }
+    if (!self.disableDBGShellCommandsCaching) {
+      profileAction("cleaning_cached_dsym_paths") {
+        cleanCachedDsymPaths()
+      }
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
@@ -869,6 +898,201 @@ final class XcodeProjectGenerator {
                                    context: config.projectName)
       return
     }
+  }
+
+  /// Copy the bazel_cache_reader to a subfolder in the user's Library, return the absolute path.
+  private func installShellCommands(atURL supportScriptsAbsoluteURL: URL) throws -> String {
+
+    // Create all intermediate directories if they aren't present.
+    var isDir = ObjCBool(false)
+    if !fileManager.fileExists(atPath: supportScriptsAbsoluteURL.path, isDirectory: &isDir) {
+      try fileManager.createDirectory(atPath: supportScriptsAbsoluteURL.path,
+                                      withIntermediateDirectories: true,
+                                      attributes: nil)
+    }
+
+    // Find bazel_cache_reader in Tulsi.app's Utilities folder.
+    let bundle = Bundle(for: type(of: self))
+    let symbolCacheSourceURL = bundle.url(forResource: XcodeProjectGenerator.ShellCommandsUtil,
+                                          withExtension: "",
+                                          subdirectory: "Utilities")!
+
+    // Copy bazel_cache_reader to ~/Library/Application Support/Tulsi/Scripts
+    installFiles([(symbolCacheSourceURL, XcodeProjectGenerator.ShellCommandsUtil)],
+                 toDirectory: supportScriptsAbsoluteURL)
+
+    // Return the absolute path to ~/Library/Application Support/Tulsi/Scripts/bazel_cache_reader.
+    let shellCommandsURL =
+        supportScriptsAbsoluteURL.appendingPathComponent(XcodeProjectGenerator.ShellCommandsUtil)
+
+    return shellCommandsURL.path
+  }
+
+  /// Update the global user defaults to reference bazel_cache_reader
+  private func updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: String) {
+
+    // Check that bazel_cache_reader exists at the given path. If not, do nothing.
+    var isDir = ObjCBool(false)
+    guard fileManager.fileExists(atPath: shellCommandsPath, isDirectory: &isDir) else {
+      return
+    }
+
+    // Find if there is an existing entry for com.apple.DebugSymbols.
+    let dbgDefaults = UserDefaults.standard.persistentDomain(forName: "com.apple.DebugSymbols")
+
+    guard var currentDBGDefaults = dbgDefaults else {
+      // If no com.apple.DebugSymbols ever existed, create a new dictionary with our script for
+      // DBGShellCommands, and set DBGSpotlightPaths to an empty array to continue using Spotlight
+      // as a fallback for dSYM searches via LLDB and Instruments.
+      UserDefaults.standard.setPersistentDomain(["DBGShellCommands": [shellCommandsPath],
+                                                 "DBGSpotlightPaths": []],
+                                                forName: "com.apple.DebugSymbols")
+      return
+    }
+
+    // If there is one...
+    var newShellCommands : [String] = []
+
+    if let currentShellCommands = currentDBGDefaults["DBGShellCommands"] as? [String] {
+      // Check if shellCommandsPath is already in DBGShellCommands's array of Strings.
+      guard !currentShellCommands.contains(shellCommandsPath) else {
+        // Do nothing if it is.
+        return
+      }
+      // Copy all the current shell commands to the new DBGShellCommands array.
+      newShellCommands = currentShellCommands
+
+    } else if let currentShellCommand = currentDBGDefaults["DBGShellCommands"] as? String {
+      // Check that the single path at DBGShellCommands is not the same as shellCommandsPath.
+      if currentShellCommand != shellCommandsPath {
+        // Add it to our new DBGShellCommands array in progress if it's not.
+        newShellCommands.append(currentShellCommand)
+      }
+    }
+    // Add shellCommandsPath to the new DBGShellCommands array.
+    newShellCommands.append(shellCommandsPath)
+
+    // Replace DBGShellCommands in the existing com.apple.DebugSymbols defaults.
+    currentDBGDefaults["DBGShellCommands"] = newShellCommands
+    UserDefaults.standard.setPersistentDomain(currentDBGDefaults, forName: "com.apple.DebugSymbols")
+  }
+
+  /// Remove the bazel_cache_reader from a subfolder in ~/Library and in global user defaults.
+  private func removeShellCommands(atURL shellCommandsURL: URL) throws -> String? {
+
+    // If a file exists at ~/Library/Application Support/Tulsi/Scripts/bazel_cache_reader...
+    var isDir = ObjCBool(false)
+    guard fileManager.fileExists(atPath: shellCommandsURL.path, isDirectory: &isDir) else {
+      // Exit early if it doesn't.
+      return nil
+    }
+
+    // ...otherwise, remove it.
+    try fileManager.removeItem(at: shellCommandsURL)
+
+    // Return the path to the bazel_cache_reader after removal.
+    return shellCommandsURL.path
+  }
+
+  /// Update the global user defaults to reference bazel_cache_reader
+  private func removeUnusedShellCommandsFromGlobalUserDefaults(shellCommandsPath : String) {
+
+    // Check that bazel_cache_reader does not exist at the given path. If it does, do nothing.
+    var isDir = ObjCBool(false)
+    guard !fileManager.fileExists(atPath: shellCommandsPath, isDirectory: &isDir) else {
+      return
+    }
+
+    // Update DBGShellCommands such that the path to bazel_cache_reader isn't there anymore.
+    let dbgDefaults = UserDefaults.standard.persistentDomain(forName: "com.apple.DebugSymbols")
+
+    guard var currentDBGDefaults = dbgDefaults else {
+      return
+    }
+    if var shellCommands = currentDBGDefaults["DBGShellCommands"] as? [String] {
+
+      // Check if shellCommandsPath is already in DBGShellCommands's array of Strings.
+      guard let pathFound = shellCommands.index(of: shellCommandsPath) else {
+        return
+      }
+
+      // Remove it if it was.
+      shellCommands.remove(at: pathFound)
+
+      // Update with the modified com.apple.DebugSymbols global defaults.
+      currentDBGDefaults["DBGShellCommands"] = shellCommands
+
+    } else if let shellCommand = currentDBGDefaults["DBGShellCommands"] as? String {
+
+      // Cover the single value case, which (3/13) would only apply if the user manually set it.
+      if shellCommand == shellCommandsPath {
+        currentDBGDefaults.removeValue(forKey: "DBGShellCommands")
+      } else {
+        return
+      }
+
+    } else {
+      return
+    }
+
+    // Update com.apple.DebugSymbols if we need to update DBGShellCommands.
+    UserDefaults.standard.setPersistentDomain(currentDBGDefaults,
+                                              forName: "com.apple.DebugSymbols")
+  }
+
+  /// Install the latest bazel_cache_reader or remove it, as requested by config options.
+  private func updateShellCommands() throws {
+
+    // Construct a URL to ~/Library/Application Support/Tulsi/Scripts.
+    let supportScriptsAbsoluteURL = fileManager.homeDirectoryForCurrentUser.appendingPathComponent(
+      XcodeProjectGenerator.SupportScriptsPath, isDirectory: true)
+
+    // If the config disabled DBGShellCommands caching...
+    if (self.disableDBGShellCommandsCaching) {
+
+      // Create a URL to ~/Library/Application Support/Tulsi/Scripts/bazel_cache_reader.
+      let shellCommandsURL =
+        supportScriptsAbsoluteURL.appendingPathComponent(XcodeProjectGenerator.ShellCommandsUtil)
+
+      // Attempt to remove the app at that path.
+      if let shellCommandsAppPath = try removeShellCommands(atURL: shellCommandsURL) {
+
+        // If the delete was successful, remove its reference from global user defaults.
+        removeUnusedShellCommandsFromGlobalUserDefaults(shellCommandsPath: shellCommandsAppPath)
+      }
+    } else {
+
+      // If DBGShellCommands caching is enabled, install the latest version of the app to
+      // ~/Library/Application Support/Tulsi/Scripts/
+      let shellCommandsAppPath = try installShellCommands(atURL: supportScriptsAbsoluteURL)
+
+      // Add a reference to it in global user defaults.
+      updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: shellCommandsAppPath)
+    }
+  }
+
+  private func cleanCachedDsymPaths() {
+    // Execute the script to clean up missing dSYM bundles asynchronously.
+    let bundle = Bundle(for: type(of: self))
+    let cleanSymbolsSourceURL = bundle.url(forResource: XcodeProjectGenerator.ShellCommandsCleanScript, withExtension: "py")!
+
+    let process = ProcessRunner.createProcess(cleanSymbolsSourceURL.path,
+                                              arguments: [String]()) {
+      completionInfo in
+      if let stderr = NSString(data: completionInfo.stderr,
+                               encoding: String.Encoding.utf8.rawValue) {
+        guard !stderr.trimmingCharacters(in: .whitespaces).isEmpty else {
+          return
+        }
+        Thread.doOnMainQueue {
+          self.localizedMessageLogger.warning("CleanCachedDsymsFailed",
+                                              comment: LocalizedMessageLogger.bugWorthyComment("Failed to clean cached references to existing dSYM bundles."),
+                                              context: self.config.projectName,
+                                              values: stderr)
+        }
+      }
+    }
+    process.launch()
   }
 
   private func installTulsiScripts(_ projectURL: URL) {

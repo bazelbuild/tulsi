@@ -40,6 +40,7 @@ import bazel_build_events
 import bazel_options
 from execroot_path import BAZEL_EXECUTION_ROOT
 import tulsi_logging
+from update_symbol_cache import UpdateSymbolCache
 
 
 # List of frameworks that Xcode injects into test host targets that should be
@@ -488,8 +489,6 @@ class BazelBuildBridge(object):
 
   BUILD_EVENTS_FILE = 'build_events.json'
 
-  SPOTLIGHT_CHECK_ENVVAR = 'TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK'
-
   def __init__(self):
     self.verbose = 0
     self.build_path = None
@@ -505,15 +504,15 @@ class BazelBuildBridge(object):
       self.xcode_action = 'build'
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
-
-    self.build_without_spotlight = os.environ.get(
-        BazelBuildBridge.SPOTLIGHT_CHECK_ENVVAR, 'NO') == 'YES'
-
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
                                                'NO') == 'YES'
     self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
+    update_dsym_cache = os.environ.get('TULSI_UPDATE_DSYM_CACHE',
+                                       'NO') == 'YES'
+    if update_dsym_cache:
+      self.update_symbol_cache = UpdateSymbolCache()
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -600,11 +599,6 @@ class BazelBuildBridge(object):
     if self.xcode_action != 'build':
       sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
-
-    if not self.build_without_spotlight:
-      spotlight_status = self._CheckSpotlightStatus()
-      if spotlight_status:
-        return spotlight_status
 
     parser = _OptionsParser(self.sdk_version,
                             self.platform_name,
@@ -745,19 +739,6 @@ class BazelBuildBridge(object):
       if exit_code:
         _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
                            exit_code)
-
-    if dsym_paths:
-      # TODO(b/71705491): Find a means where LLDB and associated tooling can
-      # locate the dSYM bundle, accounting for Spotlight latency.
-      #
-      # On some builds, DebugSymbols.framework will be unable to find the
-      # dSYM bundle, which can be resolved through rebuilding... but that is
-      # a horrible solution that we can improve on.
-      #
-      # mdimport alone does not work, even though we have confirmed the
-      # indexing of dSYMs with mdfind on the com_apple_xcode_dsym_uuids
-      # attribute. Might rely on DBGShellCommands instead.
-      time.sleep(2)
 
     return 0
 
@@ -1535,17 +1516,18 @@ class BazelBuildBridge(object):
 
     return dsym_binaries
 
-  def _UUIDsForBinaryAtPath(self, source_binary_path):
-    """Returns exit code of dwarfdump along with every UUID found for a binary.
+  def _UUIDInfoForBinary(self, source_binary_path):
+    """Returns exit code of dwarfdump along with every UUID + arch found.
 
     Args:
       source_binary_path: absolute path to the binary file.
 
     Returns:
-      (Int, str[]): a tuple containing the return code of dwarfdump as its
-                    first element, and a list of strings representing each UUID
-                    found for each given binary slice found within the binary,
-                    if no error has occcured.
+      (Int, str[(str, str)]): a tuple containing the return code of dwarfdump
+                              as its first element, and a list of strings
+                              representing each UUID found for each given
+                              binary slice found within the binary with its
+                              given architecture, if no error has occcured.
     """
 
     returncode, output = self._RunSubprocess([
@@ -1567,22 +1549,27 @@ class BazelBuildBridge(object):
     for dwarfdump_output in output.split('\n'):
       if not dwarfdump_output:
         continue
-      found_output = re.match(r'^(?:UUID: )([^ ]+)', dwarfdump_output)
+      found_output = re.match(r'^(?:UUID: )([^ ]+) \(([^)]+)', dwarfdump_output)
       if not found_output:
         continue
       found_uuid = found_output.group(1)
-      if found_uuid:
-        uuids_found.append(found_uuid)
+      if not found_uuid:
+        continue
+      found_arch = found_output.group(2)
+      if not found_arch:
+        continue
+      uuids_found.append((found_uuid, found_arch))
 
     return (0, uuids_found)
 
-  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, source_maps):
+  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, arch, source_maps):
     """Creates a UUID.plist in a dSYM bundle to redirect sources.
 
     Args:
       dsym_bundle_path: absolute path to the dSYM bundle.
       uuid: string representing the UUID of the binary slice with paths to
             remap in the dSYM bundle.
+      arch: the architecture of the binary slice.
       source_maps: a set of tuples representing all absolute paths to source
                    files compiled by Bazel as strings ($0) associated with the
                    paths to Xcode-visible sources used for the purposes of
@@ -1625,6 +1612,16 @@ class BazelBuildBridge(object):
                        (remap_plist, e))
       return False
 
+    # Update the dSYM symbol cache with a reference to this dSYM bundle.
+    if self.update_symbol_cache:
+      err_msg = self.update_symbol_cache.UpdateUUID(uuid,
+                                                    dsym_bundle_path,
+                                                    arch)
+      if err_msg:
+        _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
+                           'to DBGShellCommands\' dSYM cache, but got error '
+                           '\"%s\".' % err_msg)
+
     return True
 
   def _PlistdSYMPaths(self, dsym_bundle_path):
@@ -1651,17 +1648,18 @@ class BazelBuildBridge(object):
     # Find the binary slice UUIDs with dwarfdump from each binary.
     for source_binary_path in dsym_binaries:
 
-      returncode, uuids_found = self._UUIDsForBinaryAtPath(source_binary_path)
+      returncode, uuid_info_found = self._UUIDInfoForBinary(source_binary_path)
       if returncode:
         return returncode
 
       # Create a plist per UUID, each indicating a binary slice to remap paths.
-      for uuid in uuids_found:
-        if not self._CreateUUIDPlist(dsym_bundle_path, uuid, source_maps):
+      for uuid, arch in uuid_info_found:
+        if not self._CreateUUIDPlist(dsym_bundle_path, uuid, arch, source_maps):
           return 405
 
     # Update spotlight index with this updated dSYM bundle in case the binary's
     # UUID changed.
+    # TODO(b/71705491): Remove if DBGShellCommands does not cause any issues.
     self._RunSubprocess(['mdimport', dsym_bundle_path])
 
     return 0
@@ -1799,53 +1797,6 @@ class BazelBuildBridge(object):
       _PrintXcodeError(
           'Linking Tulsi Workspace to %s failed.' % tulsi_workspace)
       return -1
-
-  def _PrintSpotlightDisabledMessaging(self):
-    """Prints errors to the console indicating that Spotlight is required."""
-    spotlight_required_msg = ('Spotlight is needed to find debugging info '
-                              'for Bazel-built sources.')
-    spotlight_enable_msg = ('Please enable Spotlight with `sudo mdutil -i on /`'
-                            ' in the Terminal.')
-    spotlight_check_disable_msg = ('If you need to disable this check and '
-                                   'proceed with a compromised debugging '
-                                   'experience set %s to YES.' %
-                                   BazelBuildBridge.SPOTLIGHT_CHECK_ENVVAR)
-    _PrintXcodeError(spotlight_required_msg)
-    _PrintXcodeError(spotlight_enable_msg)
-    _PrintXcodeWarning(spotlight_check_disable_msg)
-
-  def _CheckSpotlightStatus(self):
-    """Check if Spotlight has been enabled on root, error if it hasn't been.
-
-    Returns:
-      Int: 0 if Spotlight reports that indexing is enabled on the root dir.
-           -1 if Spotlight indexing was not found to be enabled on the root
-           dir. The return code if the mdutil query on the root dir failed
-           to execute properly.
-    """
-    sys.stdout.write('Checking Spotlight status on the startup disk.\n')
-    sys.stdout.flush()
-    returncode, output = self._RunSubprocess([
-        'mdutil',
-        '-s',
-        '/'
-    ])
-    output_single_line = output.replace('\n', '').replace('\t', ' ')
-    if returncode != 0:
-      _PrintXcodeError('Could not verify status of Spotlight on the startup '
-                       'disk.')
-      _PrintXcodeError('mdutil exited with %s: "%s".' % (returncode,
-                                                         output_single_line))
-      self._PrintSpotlightDisabledMessaging()
-      return returncode
-    # Attempt to match on "Indexing enabled." and any possible variants.
-    if 'enabled' not in output:
-      _PrintXcodeError('Spotlight has been turned off on the startup disk.')
-      _PrintXcodeError('Status returned from mdutil was "%s".' %
-                       output_single_line)
-      self._PrintSpotlightDisabledMessaging()
-      return -1
-    return 0
 
   @staticmethod
   def _SplitPathComponents(path):

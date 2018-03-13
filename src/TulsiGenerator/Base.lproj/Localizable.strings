@@ -44,6 +44,9 @@
 /* Error when parsing a Bazel Build Event for BEP when running Bazel. */
 "BazelParseBuildEventFailed" = "Failed to parse a Bazel Build Event. This may be a Tulsi bug, please report. Additional Context: %1$@";
 
+/* Warning when a failure occurred while cleaning dSYMs in the SQLite store used by the DBGShellCommands script. */
+"CleanCachedDsymsFailed" = "Failed to clean cache of dSYMs, clean script returned %1$@.";
+
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
 "CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
 
@@ -106,3 +109,6 @@
 
 /* Warning shown when generating an Xcode schema for target %1$@ which uses unsupported legacy ios_extension rule */
 "LegacyIOSExtensionNotSupported" = "iOS extension %1$@ is using legacy packaging rules which is not supported. Please migrate to the new rules.";
+
+/* Warning when updating the user's DBGShellCommands script in ~/Library/Application Support/Tulsi failed. */
+"UpdatingDBGShellCommandsFailed" = "Failed to update the DBGShellCommands script used to locate dSYM bundles: received error '%1$@'.";

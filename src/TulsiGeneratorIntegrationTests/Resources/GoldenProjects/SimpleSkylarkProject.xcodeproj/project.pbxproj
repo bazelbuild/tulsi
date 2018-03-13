@@ -419,7 +419,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583903428F900000000 /* Build configuration list for PBXNativeTarget "StickerExtension" */;
 			buildPhases = (
-				84B42271ABB9A2FC00000000 /* ShellScript */,
+				84B4227188CD951200000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -435,7 +435,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755837696EE3600000000 /* Build configuration list for PBXNativeTarget "XCUITest" */;
 			buildPhases = (
-				84B42271A35C025600000000 /* ShellScript */,
+				84B42271CEE7712000000000 /* ShellScript */,
 				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -453,7 +453,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583218595F600000000 /* Build configuration list for PBXNativeTarget "SkylarkApplication" */;
 			buildPhases = (
-				84B4227168EB510E00000000 /* ShellScript */,
+				84B42271CC32BF6800000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -469,7 +469,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583B2A6125600000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				84B42271D017AD0300000000 /* ShellScript */,
+				84B422715611829000000000 /* ShellScript */,
 				84B42271B548D02D00000000 /* ShellScript */,
 				605793E20000000000000001 /* Sources */,
 			);
@@ -488,7 +488,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755835CC0E52B00000000 /* Build configuration list for PBXNativeTarget "SkylarkTargetApplication" */;
 			buildPhases = (
-				84B42271381C4A4300000000 /* ShellScript */,
+				84B422717B92420A00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -542,7 +542,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271381C4A4300000000 /* ShellScript */ = {
+		84B422715611829000000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -553,10 +553,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
 			showEnvVarsInLog = 1;
 		};
-		84B4227168EB510E00000000 /* ShellScript */ = {
+		84B422717B92420A00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -567,10 +567,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkTargetApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
 			showEnvVarsInLog = 1;
 		};
-		84B42271A35C025600000000 /* ShellScript */ = {
+		84B4227188CD951200000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -581,21 +581,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCUITest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
-			showEnvVarsInLog = 1;
-		};
-		84B42271ABB9A2FC00000000 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:StickerExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:StickerExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
 			showEnvVarsInLog = 1;
 		};
 		84B42271B548D02D00000000 /* ShellScript */ = {
@@ -612,7 +598,7 @@
 			shellScript = "# Script to generate specific Swift files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nSUFFIXES=(swiftdoc swiftmodule)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  touch \"$OBJECT_FILE_DIR_normal/$ARCH/$SWIFT_OBJC_INTERFACE_HEADER_NAME\"\n  for SUFFIX in \"${SUFFIXES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$PRODUCT_MODULE_NAME.$SUFFIX\"\n  done\ndone\n";
 			showEnvVarsInLog = 1;
 		};
-		84B42271D017AD0300000000 /* ShellScript */ = {
+		84B42271CC32BF6800000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -623,7 +609,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null --  --install_generated_artifacts";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:SkylarkApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			showEnvVarsInLog = 1;
+		};
+		84B42271CEE7712000000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple_skylark:XCUITest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_options[Release] --define=TULSI_TEST=rel --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 --keep_going -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -725,7 +725,6 @@
 				SDKROOT = iphoneos;
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -744,7 +743,6 @@
 				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -766,7 +764,6 @@
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -799,9 +796,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.1;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
+				TULSI_UPDATE_DSYM_CACHE = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -820,7 +818,6 @@
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -838,7 +835,6 @@
 				PRODUCT_NAME = StickerExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = Debug;
@@ -918,7 +914,6 @@
 				SDKROOT = iphoneos;
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -937,7 +932,6 @@
 				PRODUCT_NAME = SkylarkApp;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -959,7 +953,6 @@
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple_skylark/XCTestCodeSwift/_objs";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -992,10 +985,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.1;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = SimpleSkylarkProject;
+				TULSI_UPDATE_DSYM_CACHE = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1014,7 +1008,6 @@
 				PRODUCT_NAME = SkylarkTargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -1032,7 +1025,6 @@
 				PRODUCT_NAME = StickerExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = Release;
@@ -1119,7 +1111,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1146,7 +1137,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1175,7 +1165,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1213,9 +1202,10 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.1;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleSkylarkProject;
+				TULSI_UPDATE_DSYM_CACHE = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1242,7 +1232,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1268,7 +1257,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = NO;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -1295,7 +1283,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_TARGET_NAME = SkylarkApplication;
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1322,7 +1309,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
@@ -1351,7 +1337,6 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkylarkApplication.app/SkylarkApplication";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_TEST_RUNNER_ONLY = YES;
 			};
@@ -1389,10 +1374,11 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.1;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = SimpleSkylarkProject;
+				TULSI_UPDATE_DSYM_CACHE = YES;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
 			};
@@ -1419,7 +1405,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;
@@ -1445,7 +1430,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple_skylark;
-				TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK = YES;
 				TULSI_MUST_USE_DSYM = YES;
 			};
 			name = __TulsiTestRunner_Release;

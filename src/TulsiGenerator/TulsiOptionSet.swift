@@ -44,7 +44,10 @@ public enum TulsiOptionKey: String {
       IncludeBuildSources,
 
       // Configures test_suite targets based using bazel aspects instead of bazel query.
-      UseAspectForTestSuites
+      UseAspectForTestSuites,
+
+      // Explicitly turns off all actions around caching paths for dSYM in a local SQLite database.
+      DisableDBGShellCommandsCaching
 
 
   // Options for build invocations.
@@ -272,6 +275,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addBoolOption(.UseAspectForTestSuites, .Generic, true)
+    addBoolOption(.DisableDBGShellCommandsCaching, .Generic, false)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])

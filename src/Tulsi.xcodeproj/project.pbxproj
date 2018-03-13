@@ -142,8 +142,12 @@
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
 		E107EFD7200B135600257E2F /* BuildScriptOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E107EFD6200B135500257E2F /* BuildScriptOption.swift */; };
+		E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = E1D770EA20523E790026802A /* bazel_cache_reader */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */; };
 		E19C1C571F5886A000D6E38A /* QueuedLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19C1C561F5886A000D6E38A /* QueuedLogging.swift */; };
+		E1C0186D2051B65D000580CC /* clean_symbol_cache.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C018692051B65B000580CC /* clean_symbol_cache.py */; };
+		E1C018702051B65D000580CC /* symbol_cache_schema.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C0186C2051B65C000580CC /* symbol_cache_schema.py */; };
+		E1C018722051B66C000580CC /* update_symbol_cache.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C018712051B66C000580CC /* update_symbol_cache.py */; };
 		E1C0EBDB1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */; };
 		E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
 /* End PBXBuildFile section */
@@ -184,6 +188,20 @@
 			remoteGlobalIDString = 3D9926621C29F0A20094E098;
 			remoteInfo = TulsiGenerator;
 		};
+		E11AFAAD205264C200C97875 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E1D770DA20523E770026802A;
+			remoteInfo = bazel_cache_reader;
+		};
+		E1D770E920523E790026802A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E1D770DB20523E770026802A;
+			remoteInfo = bazel_cache_reader;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -204,6 +222,7 @@
 			dstPath = Utilities;
 			dstSubfolderSpec = 7;
 			files = (
+				E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */,
 				3D648FB31D747B8100A3DBE2 /* post_processor in Copy Utilty resources */,
 			);
 			name = "Copy Utilty resources";
@@ -356,8 +375,12 @@
 		E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects_paths.bzl; path = tulsi/tulsi_aspects_paths.bzl; sourceTree = "<group>"; };
 		E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildSettingsFeatures.swift; sourceTree = "<group>"; };
 		E19C1C561F5886A000D6E38A /* QueuedLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuedLogging.swift; sourceTree = "<group>"; };
+		E1C018692051B65B000580CC /* clean_symbol_cache.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = clean_symbol_cache.py; sourceTree = "<group>"; };
+		E1C0186C2051B65C000580CC /* symbol_cache_schema.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = symbol_cache_schema.py; sourceTree = "<group>"; };
+		E1C018712051B66C000580CC /* update_symbol_cache.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = update_symbol_cache.py; sourceTree = "<group>"; };
 		E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeGeneratorInvalidPaths.swift; sourceTree = "<group>"; };
 		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
+		E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bazel_cache_reader.xcodeproj; path = tools/bazel_cache_reader/bazel_cache_reader.xcodeproj; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -533,6 +556,9 @@
 				D33C204E1EC108CC00867450 /* tulsi_logging.py */,
 				D3F78C671F391E9700AE0571 /* bazel_options.py */,
 				3D156AE11C1C8D9C00183439 /* bazel_clean.sh */,
+				E1C018692051B65B000580CC /* clean_symbol_cache.py */,
+				E1C0186C2051B65C000580CC /* symbol_cache_schema.py */,
+				E1C018712051B66C000580CC /* update_symbol_cache.py */,
 				3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */,
 			);
 			path = Scripts;
@@ -613,6 +639,7 @@
 		8B8F558E1BE3ECDC0095AF7F = {
 			isa = PBXGroup;
 			children = (
+				E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */,
 				3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */,
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
@@ -678,6 +705,14 @@
 			path = Tulsi;
 			sourceTree = "<group>";
 		};
+		E1D770E620523E780026802A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1D770EA20523E790026802A /* bazel_cache_reader */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F4469ECD1C5BCA3200BCFAA1 /* XcodeConfig */ = {
 			isa = PBXGroup;
 			children = (
@@ -713,6 +748,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E11AFAAE205264C200C97875 /* PBXTargetDependency */,
 				3D648FB11D747B7E00A3DBE2 /* PBXTargetDependency */,
 			);
 			name = TulsiGenerator;
@@ -816,6 +852,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = E1D770E620523E780026802A /* Products */;
+					ProjectRef = E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */;
+				},
+				{
 					ProductGroup = 3D256D161D7131B4007A3ED3 /* Products */;
 					ProjectRef = 3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */;
 				},
@@ -838,6 +878,13 @@
 			remoteRef = 3D256D191D7131B4007A3ED3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		E1D770EA20523E790026802A /* bazel_cache_reader */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = bazel_cache_reader;
+			remoteRef = E1D770E920523E790026802A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -846,6 +893,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D7A8EB51F67220400392DA3 /* macOSXCTRunner.entitlements in Resources */,
+				E1C018702051B65D000580CC /* symbol_cache_schema.py in Resources */,
+				E1C0186D2051B65D000580CC /* clean_symbol_cache.py in Resources */,
 				2D9DB34A1E5DECA40021EAF4 /* iOSXCTRunner.entitlements in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
 				D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */,
@@ -859,6 +908,7 @@
 				3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */,
 				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
 				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,
+				E1C018722051B66C000580CC /* update_symbol_cache.py in Resources */,
 				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1079,6 +1129,11 @@
 			isa = PBXTargetDependency;
 			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
 			targetProxy = 3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */;
+		};
+		E11AFAAE205264C200C97875 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = bazel_cache_reader;
+			targetProxy = E11AFAAD205264C200C97875 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -25,6 +25,9 @@
 "UseAspectForTestSuites" = "Expand test_suites via an aspect instead of bazel query.";
 "UseAspectForTestSuites_DESC" = "Requires a Bazel which supports --noexpand_test_suites";
 
+"DisableDBGShellCommandsCaching" = "Disable DBGShellCommands caching of dSYM bundles.";
+"DisableDBGShellCommandsCaching_DESC" = "Explicitly turns off all actions surrounding caching paths for dSYM bundles in a local SQLite database.";
+
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 

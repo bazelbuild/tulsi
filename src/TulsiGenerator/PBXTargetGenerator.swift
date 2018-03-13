@@ -1479,15 +1479,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let dSYMEnabled = entry.attributes[.has_swift_dependency] as? Bool ?? false
     buildSettings["TULSI_MUST_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
 
-    if ProcessInfo.processInfo.environment["TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK"] == "YES" {
-      // TODO(b/72865565): E2E test infra has Spotlight disabled. Remove when Spotlight is enabled.
-      buildSettings["TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK"] = "YES"
-    } else {
-      // Present an option to bypass the build script's check for Spotlight. Turning off Spotlight
-      // is not recommended as it leads to a severely poor debugging experience.
-      buildSettings["TULSI_BUILD_WITHOUT_SPOTLIGHT_AT_MY_OWN_RISK"] = "NO"
-    }
-
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually
     // compile anything).

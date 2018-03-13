@@ -292,11 +292,14 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry]) {
+    let options = TulsiOptionSet()
+    // To avoid creating ~/Library folders and changing UserDefaults during CI testing.
+    options.options[.DisableDBGShellCommandsCaching]?.projectValue = "YES"
     config = TulsiGeneratorConfig(projectName: XcodeProjectGeneratorTests.projectName,
                                   buildTargetLabels: Array(ruleEntries.keys),
                                   pathFilters: pathFilters,
                                   additionalFilePaths: additionalFilePaths,
-                                  options: TulsiOptionSet(),
+                                  options: options,
                                   bazelURL: bazelURL)
     let projectURL = URL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
     mockFileManager.allowedDirectoryCreates.insert(projectURL.path)
@@ -355,6 +358,7 @@ class MockFileManager: FileManager {
   var allowedDirectoryCreates = Set<String>()
   var copyOperations = [String: String]()
   var writeOperations = [String: Data]()
+  var removeOperations = [String]()
   var mockContent = [String: Data]()
 
   override func fileExists(atPath path: String) -> Bool {
@@ -380,11 +384,11 @@ class MockFileManager: FileManager {
   }
 
   override func removeItem(at URL: URL) throws {
-    throw NSError(domain: "MockFileManager: removeItem disallowed", code: 0, userInfo: nil)
+    removeOperations.append(URL.path)
   }
 
   override func removeItem(atPath path: String) throws {
-    throw NSError(domain: "MockFileManager: removeItem disallowed", code: 0, userInfo: nil)
+    removeOperations.append(path)
   }
 
   override func copyItem(at srcURL: URL, to dstURL: URL) throws {
