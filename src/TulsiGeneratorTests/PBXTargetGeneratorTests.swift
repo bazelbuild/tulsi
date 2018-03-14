@@ -2607,6 +2607,35 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     assertTarget(expectedTarget, inTargets: targets)
   }
 
+  func testSwiftTargetIndexerCompilerFlags() {
+    let package = "test/package"
+
+    let swiftTargetName = "SwiftTarget"
+    let swiftTargetBuildLabel = BuildLabel("\(package):\(swiftTargetName)")
+    let swiftTargetOpts = ["-I/include/foobar",  "-DCOMPILER_DEFINE"] as AnyObject
+
+    let swiftLibraryRule = makeTestRuleEntry(swiftTargetBuildLabel,
+                                             type: "swift_library",
+                                             attributes: ["swiftc_opts": swiftTargetOpts],
+                                             sourceFiles: sourceFileNames)
+
+    var proccessedEntries = [RuleEntry: (NSOrderedSet)]()
+    let indexerTargetName = String(format: "_idx_\(swiftTargetName)_%08X_ios_min9.0", swiftTargetBuildLabel.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(swiftLibraryRule,
+                                                ruleEntryMap: RuleEntryMap(),
+                                                pathFilters: pathFilters,
+                                                processedEntries: &proccessedEntries)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: sourceFileNames,
+                          swiftIncludePaths: "$(inherited) /include/foobar",
+                          otherSwiftFlags: "$(inherited) -DCOMPILER_DEFINE",
+                          inTargets: targets)
+  }
+
   // MARK: - Helper methods
 
   private func debugBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
@@ -2877,6 +2906,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      pchFile: PBXFileReference? = nil,
                                      bridgingHeader: String? = nil,
                                      swiftLanguageVersion: String? = nil,
+                                     swiftIncludePaths: String? = nil,
+                                     otherSwiftFlags: String? = nil,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
                                      line: UInt = #line) {
     var expectedBuildSettings = [
@@ -2885,14 +2916,20 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
     ]
-    if pchFile != nil {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile!.path!)"
+    if let pchFile = pchFile {
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile.path!)"
     }
-    if bridgingHeader != nil {
-        expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader!
+    if let bridgingHeader = bridgingHeader {
+      expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader
     }
     if let swiftLanguageVersion = swiftLanguageVersion {
       expectedBuildSettings["SWIFT_VERSION"] = swiftLanguageVersion
+    }
+    if let swiftIncludePaths = swiftIncludePaths {
+      expectedBuildSettings["SWIFT_INCLUDE_PATHS"] = swiftIncludePaths
+    }
+    if let otherSwiftFlags = otherSwiftFlags {
+      expectedBuildSettings["OTHER_SWIFT_FLAGS"] = otherSwiftFlags
     }
 
     var expectedBuildPhases = [BuildPhaseDefinition]()

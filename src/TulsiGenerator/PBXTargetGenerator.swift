@@ -550,7 +550,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       var localPreprocessorDefines = defines
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
       let otherCFlags = NSMutableOrderedSet()
-      addLocalSettings(ruleEntry, localDefines: &localPreprocessorDefines, localIncludes: localIncludes, otherCFlags: otherCFlags)
+      let swiftIncludePaths = NSMutableOrderedSet()
+      let otherSwiftFlags = NSMutableOrderedSet()
+      addLocalSettings(ruleEntry, localDefines: &localPreprocessorDefines, localIncludes: localIncludes,
+                       otherCFlags: otherCFlags, swiftIncludePaths: swiftIncludePaths, otherSwiftFlags: otherSwiftFlags)
+
+      addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
+      addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
 
       let pchFile = BazelFileInfo(info: ruleEntry.attributes[.pch])
       if let pchFile = pchFile, includeFileInProject(pchFile) {
@@ -591,12 +597,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         // retrieved via the aspect (which should resolve the Bazel tool path correctly).
         var resolvedIncludes = localIncludes.array as! [String]
         resolvedIncludes.append("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
-
-        let swiftIncludePaths = NSMutableOrderedSet()
-        addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
-
-        let otherSwiftFlags = NSMutableOrderedSet()
-        addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
 
         let deploymentTarget: DeploymentTarget
         if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
@@ -1202,7 +1202,22 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func addLocalSettings(_ ruleEntry: RuleEntry,
                                 localDefines: inout Set<String>,
                                 localIncludes: NSMutableOrderedSet,
-                                otherCFlags: NSMutableOrderedSet) {
+                                otherCFlags: NSMutableOrderedSet,
+                                swiftIncludePaths: NSMutableOrderedSet,
+                                otherSwiftFlags: NSMutableOrderedSet) {
+    if let swiftc_opts = ruleEntry.attributes[.swiftc_opts] as? [String], !swiftc_opts.isEmpty {
+      for opt in swiftc_opts {
+        if opt.hasPrefix("-I") {
+          var path = opt.substring(from: opt.index(opt.startIndex, offsetBy: 2))
+          if !path.hasPrefix("/") {
+            path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
+          }
+          swiftIncludePaths.add(path)
+        } else {
+          otherSwiftFlags.add(opt)
+        }
+      }
+    }
     guard let copts = ruleEntry.attributes[.copts] as? [String], !copts.isEmpty else {
       return
     }
@@ -1255,7 +1270,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
     addIncludes(ruleEntry, toSet: includes)
-    addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes, otherCFlags: NSMutableOrderedSet())
+    addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes,
+                     otherCFlags: NSMutableOrderedSet(), swiftIncludePaths: NSMutableOrderedSet(),
+                     otherSwiftFlags: NSMutableOrderedSet())
     addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
     addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
 

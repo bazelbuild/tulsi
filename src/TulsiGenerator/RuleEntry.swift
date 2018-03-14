@@ -159,6 +159,7 @@ public final class RuleEntry: RuleInfo {
     case pch
     case swift_language_version
     case swift_toolchain
+    case swiftc_opts
     // Contains various files that are used as part of the build process but need no special
     // handling in the generated Xcode project. For example, asset_catalog, storyboard, and xibs
     // attributes all end up as supporting_files.
