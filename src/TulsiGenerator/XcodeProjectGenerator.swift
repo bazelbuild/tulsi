@@ -237,6 +237,7 @@ final class XcodeProjectGenerator {
     installStubExtensionPlistFiles(projectURL,
                                    rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType?.isiOSAppExtension ?? false },
                                    plistPaths: plistPaths)
+    linkTulsiWorkspace()
     return projectURL
   }
 
@@ -597,6 +598,57 @@ final class XcodeProjectGenerator {
                                                              useAspectForTestSuitesOption: config.options[.UseAspectForTestSuites])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
+    }
+  }
+
+  // Links tulsi-workspace to the current Bazel execution root. This may be overwritten during
+  // builds, but is useful to include in project generation for users who have local_repository
+  // references.
+  private func linkTulsiWorkspace() {
+    // Don't create the tulsi-workspace symlink for tests.
+    guard !self.redactWorkspaceSymlink else { return }
+
+    let path = workspaceRootURL.appendingPathComponent(PBXTargetGenerator.TulsiWorkspacePath,
+                                                       isDirectory: false).path
+    let bazelExecRoot = self.workspaceInfoExtractor.bazelExecutionRoot;
+
+    // See if tulsi-includes is already present.
+    if let attributes = try? fileManager.attributesOfItem(atPath: path) {
+      // If tulsi-includes is already a symlink, we only need to change it if it points to the wrong
+      // Bazel exec root.
+      if attributes[FileAttributeKey.type] as? FileAttributeType == FileAttributeType.typeSymbolicLink {
+        do {
+          let oldBazelExecRoot = try self.fileManager.destinationOfSymbolicLink(atPath: path)
+          guard oldBazelExecRoot != bazelExecRoot else { return }
+        } catch {
+          self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
+                                              comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
+                                              context: config.projectName,
+                                              values: path, "Unable to read old symlink. Was it modified?")
+          return
+        }
+      }
+
+      // The symlink exists but points to the wrong path or is a different file type. Remove it.
+      do {
+        try fileManager.removeItem(atPath: path)
+      } catch {
+        self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
+                                            comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
+                                            context: config.projectName,
+                                            values: path, "Unable to remove the old tulsi-workspace symlink. Trying removing it and try again.")
+        return
+      }
+    }
+
+    // Symlink tulsi-workspace ->  Bazel exec root.
+    do {
+      try self.fileManager.createSymbolicLink(atPath: path, withDestinationPath: bazelExecRoot)
+    } catch {
+      self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
+                                          comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
+                                          context: config.projectName,
+                                          values: path, "Creating symlink failed. Is it already present?")
     }
   }
 

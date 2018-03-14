@@ -112,3 +112,6 @@
 
 /* Warning when updating the user's DBGShellCommands script in ~/Library/Application Support/Tulsi failed. */
 "UpdatingDBGShellCommandsFailed" = "Failed to update the DBGShellCommands script used to locate dSYM bundles: received error '%1$@'.";
+
+/* Warning shown when failing to update the tulsi-workspace symlink to the Bazel execution root. tulsi-workspace path is in %1$@, additional error context in %2$@. */
+"UpdatingTulsiWorkspaceSymlinkFailed" = "Failed to update the %1$@ symlink to the Bazel execution root. Additional context: %2$@";

@@ -345,6 +345,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       tulsiVersion: testTulsiVersion,
                                       fileManager: mockFileManager,
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
+    generator.redactWorkspaceSymlink = true
     generator.writeDataHandler = { (url, _) in
       self.writtenFiles.insert(url.path)
     }

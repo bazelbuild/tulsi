@@ -46,8 +46,13 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
   }()
 
   public lazy var asFileName: String? = { [unowned self] in
-    guard let package = self.packageName, let target = self.targetName else {
+    guard var package = self.packageName, let target = self.targetName else {
       return nil
+    }
+    // Fix for external and local_repository, which may be referenced by Bazel via
+    // @repository//subpath while we internally refer to them via external/repository/subpath.
+    if package.starts(with: "@") {
+      package = "external/" + package.suffix(from: package.index(package.startIndex, offsetBy: 1))
     }
     return "\(package)/\(target)"
   }()
