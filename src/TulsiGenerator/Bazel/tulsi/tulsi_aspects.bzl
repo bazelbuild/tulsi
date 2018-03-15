@@ -919,8 +919,9 @@ def _tulsi_outputs_aspect(target, ctx):
 
   has_dsym = False
   if hasattr(ctx.fragments, 'objc'):
-    if apple_common.AppleDebugOutputs in target:
-      has_dsym = ctx.fragments.objc.generate_dsym
+    # Check the fragment directly, as macos_command_line_application does not
+    # propagate apple_common.AppleDebugOutputs.
+    has_dsym = ctx.fragments.objc.generate_dsym
 
   info = _struct_omitting_none(
       artifacts=artifacts,
