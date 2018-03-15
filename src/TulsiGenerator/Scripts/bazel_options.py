@@ -35,8 +35,6 @@ class BazelOptions(object):
     if self.xcode_env.get('ENABLE_ADDRESS_SANITIZER') == 'YES':
       flags.extend([
           '--features=asan',
-          '--define=apple_bundle_clang_rt=1',
-          '--define=apple_swift_sanitize=address',
       ])
 
     return flags
