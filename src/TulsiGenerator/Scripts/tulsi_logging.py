@@ -55,6 +55,9 @@ class Logger(object):
     console.setLevel(logging.INFO)
     self._logger.addHandler(console)
 
+  def log_bazel_message(self, message):
+    self._logger.info(message)
+
   def log_action(self, action_name, action_id, seconds):
     del action_id  # Unused by this logger.
     # Log to file and print to stdout for display in the Xcode log.

@@ -827,9 +827,7 @@ class BazelBuildBridge(object):
 
     def HandleOutput(output):
       for line in output.splitlines():
-        line = patch_xcode_parsable_line(line) + '\n'
-        sys.stdout.write(line)
-        sys.stdout.flush()
+        _logger.log_bazel_message(patch_xcode_parsable_line(line))
 
     def WatcherUpdate(watcher):
       """Processes any new events in the given watcher.
