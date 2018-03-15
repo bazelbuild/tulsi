@@ -785,7 +785,7 @@ class BazelBuildBridge(object):
       bazel_command.append('--apple_generate_dsym')
 
     bazel_command.append(
-        '--define=bazel_rules_apple.propagate_embedded_extra_outputs=1')
+        '--define=apple.propagate_embedded_extra_outputs=1')
 
     bazel_command.extend(options.targets)
 
