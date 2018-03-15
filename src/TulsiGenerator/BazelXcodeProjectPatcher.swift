@@ -44,6 +44,9 @@ final class BazelXcodeProjectPatcher {
     // We only want to modify the path if the current path doesn't point to a valid file.
     guard !fileManager.fileExists(atPath: url.path) else { return }
 
+    // Don't patch anything that isn't group relative.
+    guard file.sourceTree == .Group else { return }
+
     // Remove .xcassets that are not present. Unfortunately, Xcode's handling of .xcassets has
     // quite a number of issues with Tulsi and readonly files.
     //

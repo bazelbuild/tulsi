@@ -1086,6 +1086,8 @@ final class PBXTargetDependency: PBXObjectProtocol {
 final class PBXProject: PBXObjectProtocol {
   // Name of the group in which target file references are stored.
   static let ProductsGroupName = "Products"
+  // Name of the group inside ProductsGroupName to store indexer target file references.
+  static let IndexerProductsGroupName = "Indexer"
 
   var globalID: String = ""
   let name: String
@@ -1141,14 +1143,19 @@ final class PBXProject: PBXObjectProtocol {
 
   func createNativeTarget(_ name: String,
                           deploymentTarget: DeploymentTarget?,
-                          targetType: PBXTarget.ProductType) -> PBXNativeTarget {
+                          targetType: PBXTarget.ProductType,
+                          isIndexerTarget: Bool = false) -> PBXNativeTarget {
     let value = PBXNativeTarget(name: name,
                                 deploymentTarget: deploymentTarget,
                                 productType: targetType)
     targetByName[name] = value
 
-    let productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
+    var productsGroup = mainGroup.getOrCreateChildGroupByName(PBXProject.ProductsGroupName,
                                                               path: nil)
+    if isIndexerTarget {
+      productsGroup = productsGroup.getOrCreateChildGroupByName(PBXProject.IndexerProductsGroupName,
+                                                                path: nil)
+    }
     let productName = targetType.productName(name)
     let productReference = productsGroup.getOrCreateFileReferenceBySourceTree(.BuiltProductsDir,
                                                                               path: productName)

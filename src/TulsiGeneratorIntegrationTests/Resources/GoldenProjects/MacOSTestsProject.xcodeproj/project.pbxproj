@@ -34,29 +34,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C2810C8DA6C00000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = MyMacOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C281B1E0BED00000000 /* UnitTestsNoHost.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UnitTestsNoHost.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UnitTestsNoHost.m"; sourceTree = "<group>"; };
 		43D68C282511224F00000000 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TodayViewController.m; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/ExtSources/TodayViewController.m"; sourceTree = "<group>"; };
 		43D68C2834A5AC2900000000 /* TodayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TodayViewController.xib; path = "tulsi-workspace/tulsi_e2e_mac/Resources/extensions/today/TodayViewController.xib"; sourceTree = "<group>"; };
 		43D68C283646FFE900000000 /* MyTodayExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyTodayExtension-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Info.plist"; sourceTree = "<group>"; };
 		43D68C283C553F8E00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_mac/src/main.m"; sourceTree = "<group>"; };
+		43D68C283E3D735200000000 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UITests.xctest; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2859BF633C00000000 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.h"; sourceTree = "<group>"; };
 		43D68C2859FC82CA00000000 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.m"; sourceTree = "<group>"; };
-		43D68C285EA2C3D800000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = "tulsi-workspace/MyMacOSApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2867EA07A300000000 /* UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UITests.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UITests.m"; sourceTree = "<group>"; };
 		43D68C286BE5C4F400000000 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TodayViewController.h; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/TodayViewController.h"; sourceTree = "<group>"; };
+		43D68C2870F6EB5A00000000 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UnitTests.xctest; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2876BC0BC700000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
-		43D68C28772B9C7E00000000 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UITests.xctest; path = "tulsi-workspace/UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C289089AFFC00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a; path = "tulsi-workspace/lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C289199386500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
-		43D68C28B1A85B8400000000 /* UnitTestsNoHost.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UnitTestsNoHost.xctest; path = "tulsi-workspace/UnitTestsNoHost.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28C3A472F400000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a; path = "tulsi-workspace/lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A14CEB9800000000 /* UnitTestsNoHost.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UnitTestsNoHost.xctest; path = UnitTestsNoHost.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28C47949AB00000000 /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UnitTests.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UnitTests.m"; sourceTree = "<group>"; };
 		43D68C28CBE52D2300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
-		43D68C28D2EA8F7E00000000 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UnitTests.xctest; path = "tulsi-workspace/UnitTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28DE68C70F00000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
+		43D68C28E22D54F800000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a; path = lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a; path = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE0562C2F700000000 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */,
+				43D68C28E22D54F800000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */,
+			);
+			name = Indexer;
+			sourceTree = "<group>";
+		};
 		966FB6DE05FFEC7B00000000 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,12 +94,11 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C285EA2C3D800000000 /* MyMacOSApp.app */,
-				43D68C28772B9C7E00000000 /* UITests.xctest */,
-				43D68C28D2EA8F7E00000000 /* UnitTests.xctest */,
-				43D68C28B1A85B8400000000 /* UnitTestsNoHost.xctest */,
-				43D68C289089AFFC00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */,
-				43D68C28C3A472F400000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */,
+				966FB6DE0562C2F700000000 /* Indexer */,
+				43D68C2810C8DA6C00000000 /* MyMacOSApp.app */,
+				43D68C283E3D735200000000 /* UITests.xctest */,
+				43D68C2870F6EB5A00000000 /* UnitTests.xctest */,
+				43D68C28A14CEB9800000000 /* UnitTestsNoHost.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -200,7 +208,7 @@
 			);
 			name = UnitTests;
 			productName = UnitTests;
-			productReference = 43D68C28D2EA8F7E00000000 /* UnitTests.xctest */;
+			productReference = 43D68C2870F6EB5A00000000 /* UnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E6211D1A7800000000 /* UnitTestsNoHost */ = {
@@ -217,7 +225,7 @@
 			);
 			name = UnitTestsNoHost;
 			productName = UnitTestsNoHost;
-			productReference = 43D68C28B1A85B8400000000 /* UnitTestsNoHost.xctest */;
+			productReference = 43D68C28A14CEB9800000000 /* UnitTestsNoHost.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3D31C5E63AACEB6600000000 /* _idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10 */ = {
@@ -233,7 +241,7 @@
 			);
 			name = _idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10;
 			productName = _idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10;
-			productReference = 43D68C28C3A472F400000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */;
+			productReference = 43D68C28E22D54F800000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E660313F3200000000 /* UITests */ = {
@@ -251,7 +259,7 @@
 			);
 			name = UITests;
 			productName = UITests;
-			productReference = 43D68C28772B9C7E00000000 /* UITests.xctest */;
+			productReference = 43D68C283E3D735200000000 /* UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		3D31C5E6F27F76B800000000 /* _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12 */ = {
@@ -267,7 +275,7 @@
 			);
 			name = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
 			productName = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
-			productReference = 43D68C289089AFFC00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */;
+			productReference = 43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6F53E4F0A00000000 /* MyMacOSApp */ = {
@@ -283,7 +291,7 @@
 			);
 			name = MyMacOSApp;
 			productName = MyMacOSApp;
-			productReference = 43D68C285EA2C3D800000000 /* MyMacOSApp.app */;
+			productReference = 43D68C2810C8DA6C00000000 /* MyMacOSApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

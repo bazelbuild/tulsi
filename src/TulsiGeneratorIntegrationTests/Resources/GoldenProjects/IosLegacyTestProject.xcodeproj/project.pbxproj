@@ -21,12 +21,20 @@
 
 /* Begin PBXFileReference section */
 		43D68C281D04D2FA00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ios_legacy_test/BUILD; sourceTree = "<group>"; };
+		43D68C2825268D4600000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a; path = lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2844CBC58E00000000 /* LegacyTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = LegacyTests.app; path = LegacyTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2865653B6900000000 /* LegacyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LegacyTests.m; path = "tulsi-workspace/tulsi_e2e_ios_legacy_test/LegacyTests/LegacyTests.m"; sourceTree = "<group>"; };
-		43D68C288C718B3A00000000 /* LegacyTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = LegacyTests.app; path = "tulsi-workspace/LegacyTests.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28BECEAE7200000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a; path = "tulsi-workspace/lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE0562C2F700000000 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2825268D4600000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */,
+			);
+			name = Indexer;
+			sourceTree = "<group>";
+		};
 		966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */ = {
 			isa = PBXGroup;
 			children = (
@@ -39,8 +47,8 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C288C718B3A00000000 /* LegacyTests.app */,
-				43D68C28BECEAE7200000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */,
+				966FB6DE0562C2F700000000 /* Indexer */,
+				43D68C2844CBC58E00000000 /* LegacyTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,7 +104,7 @@
 			);
 			name = _idx_LegacyTestsLib_A268D14B_ios_min8.0;
 			productName = _idx_LegacyTestsLib_A268D14B_ios_min8.0;
-			productReference = 43D68C28BECEAE7200000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */;
+			productReference = 43D68C2825268D4600000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6F6EB9AA400000000 /* LegacyTests */ = {
@@ -112,7 +120,7 @@
 			);
 			name = LegacyTests;
 			productName = LegacyTests;
-			productReference = 43D68C288C718B3A00000000 /* LegacyTests.app */;
+			productReference = 43D68C2844CBC58E00000000 /* LegacyTests.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

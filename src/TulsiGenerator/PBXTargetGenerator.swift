@@ -642,7 +642,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     func generateIndexer(_ name: String,
                          indexerType: PBXTarget.ProductType,
                          data: IndexerData) {
-      let indexingTarget = project.createNativeTarget(name, deploymentTarget: nil, targetType: indexerType)
+      let indexingTarget = project.createNativeTarget(name,
+                                                      deploymentTarget: nil,
+                                                      targetType: indexerType,
+                                                      isIndexerTarget: true)
       indexingTarget.buildPhases.append(data.buildPhase)
       addConfigsForIndexingTarget(indexingTarget, data: data)
 

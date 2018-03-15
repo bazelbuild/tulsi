@@ -23,25 +23,33 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C2812A383BA00000000 /* MyTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = MyTodayExtension.appex; path = "tulsi-workspace/MyTodayExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2810C8DA6C00000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = MyMacOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C281E9E743E00000000 /* MyCommandLineApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; name = MyCommandLineApp; path = MyCommandLineApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C282511224F00000000 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TodayViewController.m; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/ExtSources/TodayViewController.m"; sourceTree = "<group>"; };
 		43D68C2834A5AC2900000000 /* TodayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TodayViewController.xib; path = "tulsi-workspace/tulsi_e2e_mac/Resources/extensions/today/TodayViewController.xib"; sourceTree = "<group>"; };
 		43D68C283646FFE900000000 /* MyTodayExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyTodayExtension-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Info.plist"; sourceTree = "<group>"; };
 		43D68C283C553F8E00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_mac/src/main.m"; sourceTree = "<group>"; };
 		43D68C2859BF633C00000000 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.h"; sourceTree = "<group>"; };
 		43D68C2859FC82CA00000000 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.m"; sourceTree = "<group>"; };
-		43D68C285EA2C3D800000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = "tulsi-workspace/MyMacOSApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C285F49BD9400000000 /* MyCommandLineApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; name = MyCommandLineApp; path = "tulsi-workspace/MyCommandLineApp"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C286BE5C4F400000000 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TodayViewController.h; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/TodayViewController.h"; sourceTree = "<group>"; };
 		43D68C2876BC0BC700000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C289199386500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
+		43D68C28936F558E00000000 /* MyTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = MyTodayExtension.appex; path = MyTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CBE52D2300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
-		43D68C28D588B98800000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; path = "tulsi-workspace/lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28DE68C70F00000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
 		43D68C28F1794D7D00000000 /* MyCommandLineApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyCommandLineApp-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyCommandLineApp-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		966FB6DE0562C2F700000000 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */,
+			);
+			name = Indexer;
+			sourceTree = "<group>";
+		};
 		966FB6DE05FFEC7B00000000 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -70,10 +78,10 @@
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C285F49BD9400000000 /* MyCommandLineApp */,
-				43D68C285EA2C3D800000000 /* MyMacOSApp.app */,
-				43D68C2812A383BA00000000 /* MyTodayExtension.appex */,
-				43D68C28D588B98800000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */,
+				966FB6DE0562C2F700000000 /* Indexer */,
+				43D68C281E9E743E00000000 /* MyCommandLineApp */,
+				43D68C2810C8DA6C00000000 /* MyMacOSApp.app */,
+				43D68C28936F558E00000000 /* MyTodayExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,7 +179,7 @@
 			);
 			name = MyCommandLineApp;
 			productName = MyCommandLineApp;
-			productReference = 43D68C285F49BD9400000000 /* MyCommandLineApp */;
+			productReference = 43D68C281E9E743E00000000 /* MyCommandLineApp */;
 			productType = "com.apple.product-type.tool";
 		};
 		3D31C5E665954B6A00000000 /* MyTodayExtension */ = {
@@ -187,7 +195,7 @@
 			);
 			name = MyTodayExtension;
 			productName = MyTodayExtension;
-			productReference = 43D68C2812A383BA00000000 /* MyTodayExtension.appex */;
+			productReference = 43D68C28936F558E00000000 /* MyTodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		3D31C5E6F53E4F0A00000000 /* MyMacOSApp */ = {
@@ -203,7 +211,7 @@
 			);
 			name = MyMacOSApp;
 			productName = MyMacOSApp;
-			productReference = 43D68C285EA2C3D800000000 /* MyMacOSApp.app */;
+			productReference = 43D68C2810C8DA6C00000000 /* MyMacOSApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3D31C5E6F77D1C0800000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12 */ = {
@@ -219,7 +227,7 @@
 			);
 			name = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
 			productName = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
-			productReference = 43D68C28D588B98800000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */;
+			productReference = 43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */

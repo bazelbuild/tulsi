@@ -25,11 +25,11 @@
 		43D68C280B4C210700000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; };
 		43D68C2836E2B24400000000 /* src2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src2.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src2.c"; sourceTree = "<group>"; };
 		43D68C2840C4A2B300000000 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = "tulsi-workspace/tulsi_e2e_ccsimple/Binary/srcs/main.cc"; sourceTree = "<group>"; };
-		43D68C2878DA00BA00000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = "tulsi-workspace/ccBinary.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a; path = lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28B55D3E0600000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = "<group>"; };
+		43D68C28BEB0070E00000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = ccBinary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D27C3EF200000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C28ED21EAD400000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
-		43D68C28F186CBE100000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a; path = "tulsi-workspace/lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -43,11 +43,19 @@
 			name = tulsi_e2e_ccsimple;
 			sourceTree = "<group>";
 		};
+		966FB6DE0562C2F700000000 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */,
+			);
+			name = Indexer;
+			sourceTree = "<group>";
+		};
 		966FB6DE2BD1037D00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2878DA00BA00000000 /* ccBinary.app */,
-				43D68C28F186CBE100000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */,
+				966FB6DE0562C2F700000000 /* Indexer */,
+				43D68C28BEB0070E00000000 /* ccBinary.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,7 +146,7 @@
 			);
 			name = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
 			productName = _idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0;
-			productReference = 43D68C28F186CBE100000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */;
+			productReference = 43D68C287BD278C400000000 /* lib_idx_ccLibrary_ccBinary_F372BDE7_ios_min7.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E689384A2400000000 /* ccBinary */ = {
@@ -154,7 +162,7 @@
 			);
 			name = ccBinary;
 			productName = ccBinary;
-			productReference = 43D68C2878DA00BA00000000 /* ccBinary.app */;
+			productReference = 43D68C28BEB0070E00000000 /* ccBinary.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
