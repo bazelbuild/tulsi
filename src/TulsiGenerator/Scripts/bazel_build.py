@@ -504,8 +504,18 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
+    self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
+    self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
-    self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
+
+    self.use_post_processor = self.xcode_version_major < 900
+
+    if self.use_post_processor:
+      self.apfs_clone = False
+    else:
+      self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
+
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
@@ -550,8 +560,6 @@ class BazelBuildBridge(object):
     # single file targets (like static libraries).
     self.wrapper_name = os.environ.get('WRAPPER_NAME')
     self.wrapper_suffix = os.environ.get('WRAPPER_SUFFIX', '')
-    self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
-    self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
 
     # Path where Xcode expects the artifacts to be written to. This is not the
     # codesigning_path as device vs simulator builds have different signing
@@ -698,7 +706,7 @@ class BazelBuildBridge(object):
       for path in dsym_paths:
         # Starting with Xcode 9.x, a plist based solution exists for dSYM
         # bundles that works with Swift as well as (Obj-)C(++).
-        if self.xcode_version_major >= 900:
+        if not self.use_post_processor:
           timer = Timer('Adding remappings as plists to dSYM',
                         'plist_dsym').Start()
           exit_code = self._PlistdSYMPaths(path)

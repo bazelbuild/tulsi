@@ -67,6 +67,8 @@ def CopyOnWrite(source, dest, tree=False):
   if tree:
     # Copy recursively if indicated.
     cmd.append('-R')
+    # Follow symlinks, emulating shutil.copytree defaults.
+    cmd.append('-L')
   # Preserve all possible file attributes and permissions (copystat/copy2).
   cmd.extend(['-p', source, dest])
   try:
