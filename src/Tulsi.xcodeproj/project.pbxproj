@@ -113,7 +113,6 @@
 		3DE7F4171CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */; };
 		3DEC9EDD1CF3421600769251 /* TulsiProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */; };
 		3DF313B41C3488BE00A34C14 /* UISelectableOutlineViewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */; };
-		3DF313B71C34898500A34C14 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DF313B91C34898500A34C14 /* Localizable.strings */; };
 		3DFB7C4B1C81F78000376760 /* command_line_splitter.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */; };
 		3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */; };
 		3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */; };
@@ -335,7 +334,6 @@
 		3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformDependentEndToEndGenerationTests.swift; sourceTree = "<group>"; };
 		3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProcessRunner.swift; sourceTree = "<group>"; };
 		3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISelectableOutlineViewNode.swift; sourceTree = "<group>"; };
-		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryInfoExtractor.swift; sourceTree = "<group>"; };
 		3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
@@ -628,7 +626,6 @@
 				3D167E291C5B1FA700DD485C /* Credits.html */,
 				3D3DDD161CCA7BCF00E21FA4 /* ErrorAlertDetailView.xib */,
 				8B8F55A31BE3ECDC0095AF7F /* Info.plist */,
-				3DF313B91C34898500A34C14 /* Localizable.strings */,
 				8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */,
 				3D387BAF1C7500B500544AE0 /* NewGeneratorConfigViewController.xib */,
 				3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */,
@@ -947,7 +944,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B8F559F1BE3ECDC0095AF7F /* Assets.xcassets in Resources */,
-				3DF313B71C34898500A34C14 /* Localizable.strings in Resources */,
 				3D8B37ED1C4F100F0090F3AD /* BazelOpenSheetAccessoryView.xib in Resources */,
 				3D387BB41C75354C00544AE0 /* XcodeProjectGenerationProgressViewController.xib in Resources */,
 				3D7CED5D1CC171E60073204D /* SplashScreenWindowController.xib in Resources */,
@@ -1212,14 +1208,6 @@
 				3DC5CE0F1CFF3BAC00688AD6 /* Base */,
 			);
 			name = NewProjectViewController.xib;
-			sourceTree = "<group>";
-		};
-		3DF313B91C34898500A34C14 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3DF313B81C34898500A34C14 /* Base */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */ = {
