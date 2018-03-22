@@ -1,0 +1,150 @@
+/*
+  Strings for the Tulsi application.
+*/
+
+/* Error when the Aspect returns multiple RuleEntries for a given target. The target label is in %1$@, the rule type is in %2$@. */
+"AmbiguousBuildTarget" = "Multiple configurations found for target %1$@. Is this %2$@ being built at the root level? Or do you have a root-level library somewhere that depends on this target?";
+
+/* Message to show at the top of the Tulsi project save as panel, explaining what to do. */
+"Document_SelectTulsiProjectOutputFolderMessage" = "Select a location to save this Tulsi project.";
+
+/* General error when project does not have a valid Bazel workspace. */
+"Error_BadWorkspace" = "Project does not contain a valid Bazel workspace. Start a new project or ensure that a WORKSPACE file exists.";
+
+/* Error when project does not have a valid Bazel WORKSPACE file at %1$@. */
+"Error_NoWORKSPACEFile" = "Project does not contain a valid Bazel workspace. Start a new project or ensure that a WORKSPACE file exists at \"%1$@\".";
+
+/* Error when a TulsiGeneratorConfig named %1$@ could not be deleted. */
+"Error_ConfigDeleteFailed" = "Failed to remove Tulsi generator config '%1$@'.";
+
+/* Error when a TulsiGeneratorConfig failed to be reloaded. */
+"Error_ConfigLoadFailed" = "Failed to reload Tulsi generator config.";
+
+/* Error when a TulsiGeneratorConfig failed to save. Details are provided as %1$@. */
+"Error_ConfigSaveFailed" = "Failed to save Tulsi generator config. Debug info: %1$@";
+
+/* A general, critical failure without a more fitting descriptive message. */
+"Error_GeneralCriticalFailure" = "An unexpected error occurred.";
+
+/* A general, critical failure during project generation. */
+"Error_GeneralProjectGenerationFailure" = "Failed to create Xcode project.";
+
+/* Error for a generation attempt without a valid target output folder even though one should exist. */
+"Error_NoOutputFolder" = "No output folder selected. This is likely a Tulsi bug, please report.";
+
+/* Error when unable to find the Bazel executable. */
+"Error_ResolveBazelPathFailure" = "Unable to locate your Bazel executable.";
+
+/* Message to show at the top of WORKSPACE file selector sheet, explaining what to do. */
+"NewProject_SetProjectWorkspaceMessage" = "Select the location of the Bazel \"WORKSPACE\" file for this project.";
+
+/* Label for the button used to confirm the selected WORKSPACE. */
+"NewProject_SetProjectWorkspacePrompt" = "Select";
+
+/* Message to show at the top of tulsiproj open panel, explaining what to do. */
+"OpenProject_OpenProjectPanelMessage" = "Choose a Tulsi project to open.";
+
+/* Short header shown before the project in the options editor's target selector. */
+"OptionsTarget_ProjectSectionTitle" = "PROJECT";
+
+/* Short header shown before the build targets in the options editor's target selector. */
+"OptionsTarget_TargetSectionTitle" = "TARGETS";
+
+/* String to show in the options editor's 'default' column when there is no default value. */
+"OptionsEditor_NoDefault" = "<none>";
+
+/* String to show in the option editor for group nodes when there are multiple per-config values. */
+"OptionsEditor_MultipleValues" = "<Multiple values>";
+
+/* Value to show when a boolean option is 'true'. This should match Xcode's localization. */
+"OptionsEditor_TrueValue" = "Yes";
+
+/* Value to show when a boolean option is 'false'. This should match Xcode's localization. */
+"OptionsEditor_FalseValue" = "No";
+
+/* Title for the options editor column used to edit per-config values. */
+"OptionsEditor_ColumnTitle_Config" = "Config";
+
+/* Title for the options editor column used to display the built-in default values. */
+"OptionsEditor_ColumnTitle_Default" = "Default";
+
+/* Title for the options editor column used to edit per-tulsiproj values. */
+"OptionsEditor_ColumnTitle_Project" = "Project";
+
+/* Label for the button used to confirm adding the selected BUILD file to the Tulsi project. */
+"ProjectEditor_AddBUILDFilePrompt" = "Add";
+
+/* Title for a button that will cancel an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsButtonCancel" = "Cancel";
+
+/* Title for a button that will proceed with an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsButtonOK" = "OK";
+
+/* Message asking the user if they want to continue with an operation that requires that all opened TulsiGeneratorConfig documents be closed. */
+"ProjectEditor_CloseOpenedConfigDocumentsMessage" = "All open configuration editors will be closed. Continue?";
+
+/* Message to show at the top of the Bazel selector sheet, explaining what to do. */
+"ProjectEditor_SelectBazelPathMessage" = "Select the bazel binary to use.";
+
+/* Label for the button used to confirm the selected Bazel file in the Bazel selector sheet. */
+"ProjectEditor_SelectBazelPathPrompt" = "Select";
+
+/* Title for open panel through which the user should select where to generate the Xcode project. */
+"ProjectGeneration_SelectProjectOutputFolderTitle" = "Project output folder";
+
+/* Message to show at the top of the Xcode output folder sheet, explaining what to do. */
+"ProjectGeneration_SelectProjectOutputFolderMessage" = "Select the folder into which the Xcode project should be generated.";
+
+/* Label for the button used to confirm the selected output folder for the generated Xcode project. */
+"ProjectGeneration_SelectProjectOutputFolderAndGeneratePrompt" = "Generate";
+
+/* Error message for when the user tried to generate an Xcode project from an incomplete config. */
+"TulsiError_ConfigNotGenerateable" = "Generator config is not fully populated and cannot generate an Xcode project.";
+
+/* Error message for when a generator config fails to load for an unspecified reason. */
+"TulsiError_ConfigNotLoadable" = "Generator config could not be loaded from the given location.";
+
+/* Error message for when a generator config fails to save because it is missing critical information. */
+"TulsiError_ConfigNotSaveable" = "Generator config is not fully populated and cannot be saved.";
+
+/* A generic exception was thrown, additional debug data is in %1$@. */
+"TulsiError_General" = "Error: '%1$@'";
+
+/* A non-critical failure to restore some Bazel labels when loading a document. Details are provided as %1$@. */
+"Warning_LabelResolutionFailed" = "Failed to reload some Bazel targets. The loaded project may be incorrect. Debug info: %1$@";
+
+/* Label for action button to be used to go to the final page in the project wizard. */
+"Wizard_SaveConfig" = "Save";
+
+/* Label for action button to be used to go to the next page in the project wizard. */
+"Wizard_Next" = "Next";
+
+
+/* Strings mapping progress item notification names to user-friendly names */
+
+/* Sent when the Tulsi generator is gathering source/settings for Xcode indexer targets. */
+"gatheringIndexerSources" = "Gathering sources for Xcode indexers";
+
+/* Sent when creating Xcode build targets. */
+"generatingBuildTargets" = "Generating build targets";
+
+/* Sent when creating Xcode indexer targets. */
+"generatingIndexerTargets" = "Generating indexer libraries";
+
+/* Sent when the Tulsi generator is copying the build scripts into the output Xcode project. */
+"installingScripts" = "Installing build scripts";
+
+/* Sent when the Tulsi generator is copying the build utilities into the output Xcode project. */
+"installingUtilities" = "Installing build utilities";
+
+/* Sent when the Tulsi generator is copying the generator config into the output Xcode project. */
+"installingGeneratorConfig" = "Installing generator config";
+
+/* Sent when starting to serialize the Xcode project. */
+"serializingXcodeProject" = "Creating Xcode project";
+
+/* Sent when extracting source files from a Bazel project. */
+"sourceFileExtraction" = "Extracting source files";
+
+/* Sent when the Tulsi generator is extracting workspace information. */
+"workspaceInfoExtraction" = "Retrieving workspace info";
