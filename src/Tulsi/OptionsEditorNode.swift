@@ -25,12 +25,12 @@ class OptionsEditorNode: NSObject {
     case Default = "DefaultValue"
   }
 
-  var name: String {
+  @objc var name: String {
     assertionFailure("Must be overridden by subclasses")
     return "<ERROR>"
   }
 
-  var toolTip: String {
+  @objc var toolTip: String {
     assertionFailure("Must be overridden by subclasses")
     return ""
   }
@@ -57,7 +57,7 @@ class OptionsEditorNode: NSObject {
   }
 
   /// The value to display in the "default" column.
-  var defaultValueDisplayItem: String {
+  @objc var defaultValueDisplayItem: String {
     return ""
   }
 
@@ -104,12 +104,12 @@ class OptionsEditorNode: NSObject {
 class OptionsEditorGroupNode: OptionsEditorNode {
   let key: TulsiOptionKeyGroup
 
-  override var name: String {
+  @objc override var name: String {
     return displayName
   }
   let displayName: String
 
-  override var toolTip: String {
+  @objc override var toolTip: String {
     return toolTipValue
   }
   let toolTipValue: String
@@ -205,11 +205,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
   // The UIRuleEntry selected in the target picker or nil if the BUILD file is selected.
   let target: UIRuleInfo?
 
-  override var name: String {
+  @objc override var name: String {
     return option.displayName
   }
 
-  override var toolTip: String {
+  @objc override var toolTip: String {
     return option.userDescription
   }
 
