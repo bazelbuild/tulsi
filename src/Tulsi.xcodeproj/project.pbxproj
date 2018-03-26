@@ -121,6 +121,7 @@
 		541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 541CAE391F2A571900FE5771 /* Mac.BUILD */; };
 		5429EA8B1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */; };
 		5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */; };
+		5442049C2064156D00EBF343 /* install_genfiles.py in Resources */ = {isa = PBXBuildFile; fileRef = 5442049B2064156D00EBF343 /* install_genfiles.py */; };
 		546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */; };
 		546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */; };
 		547C3C021F1949740055BAED /* Watch.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 547C3C001F1949110055BAED /* Watch.BUILD */; };
@@ -345,6 +346,7 @@
 		541CAE391F2A571900FE5771 /* Mac.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Mac.BUILD; path = Resources/Mac.BUILD; sourceTree = "<group>"; };
 		5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelPBXReferencePatcher.swift; sourceTree = "<group>"; };
 		5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelXcodeProjectPatcher.swift; sourceTree = "<group>"; };
+		5442049B2064156D00EBF343 /* install_genfiles.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = install_genfiles.py; sourceTree = "<group>"; };
 		546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellEscapingTests.swift; sourceTree = "<group>"; };
 		547C3C001F1949110055BAED /* Watch.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Watch.BUILD; path = Resources/Watch.BUILD; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 		3DAC27671C3AD2510040F42C /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				5442049B2064156D00EBF343 /* install_genfiles.py */,
 				E135A780205880720082E4D0 /* apfs_clone_copy.py */,
 				54EF32091F3E0804009E9C7F /* bazel_build_events.py */,
 				3D329D0D1C4831EF00DFBD0F /* bazel_build.py */,
@@ -912,6 +915,7 @@
 				3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */,
 				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
 				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,
+				5442049C2064156D00EBF343 /* install_genfiles.py in Resources */,
 				E1C018722051B66C000580CC /* update_symbol_cache.py in Resources */,
 				3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */,
 			);

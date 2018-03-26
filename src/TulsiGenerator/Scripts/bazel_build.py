@@ -684,18 +684,24 @@ class BazelBuildBridge(object):
     if exit_code:
       return exit_code
 
+    # We expect artifact installation to take longer than header installation,
+    # so we spawn the genfiles installation subprocess first, spawn and wait on
+    # artifact installation, and then finally wait on genfiles installation
+    # (which is hopefully already done). Note that this makes the timer for
+    # genfiles installation inaccurate (it will always be longer than the
+    # artifact installation timer).
+    genfiles_timer = Timer('Installing generated headers',
+                           'installing_generated_headers').Start()
+    genfiles_process = self._StartInstallingGeneratedHeaders(outputs)
+
     timer = Timer('Installing artifacts', 'installing_artifacts').Start()
     exit_code = self._InstallArtifact(outputs_data)
     timer.End()
     if exit_code:
       return exit_code
 
-    timer = Timer('Installing generated headers',
-                  'installing_generated_headers').Start()
-    exit_code = self._InstallGeneratedHeaders(outputs_data)
-    timer.End()
-    if exit_code:
-      return exit_code
+    genfiles_process.wait()
+    genfiles_timer.End()
 
     exit_code, dsym_paths = self._InstallDSYMBundles(
         self.built_products_dir, outputs_data)
@@ -1054,50 +1060,21 @@ class BazelBuildBridge(object):
 
     timer.End()
 
-  def _InstallGeneratedHeaders(self, outputs_data):
-    """Installs Bazel-generated headers into _tulsi-includes directory."""
+  def _StartInstallingGeneratedHeaders(self, outputs):
+    """Invokes install_genfiles.py to install generated Bazel files."""
 
-    # The folder must begin with an underscore as otherwise Bazel will delete
-    # it whenever it builds. See tulsi_aspects.bzl for futher explanation.
-    tulsi_root = os.path.join(BAZEL_EXECUTION_ROOT, '_tulsi-includes')
+    # Resolve the path to the install_genfiles.py script.
+    # It should be in the same directory as this script.
+    path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                        'install_genfiles.py')
 
-    if os.path.exists(tulsi_root):
-      shutil.rmtree(tulsi_root)
-    else:
-      os.mkdir(tulsi_root)
+    args = [path, BAZEL_EXECUTION_ROOT]
+    args.extend(outputs)
 
-    for data in outputs_data:
-      if 'generated_sources' not in data:
-        continue
-
-      for gs in data['generated_sources']:
-        real_path, link_path = gs
-        src = os.path.join(BAZEL_EXECUTION_ROOT, real_path)
-
-        # Bazel outputs are not guaranteed to be created if nothing references
-        # them. This check skips the processing if an output was declared
-        # but not created.
-        if not os.path.exists(src):
-          continue
-
-        # The /x/x/ part is here to match the number of directory components
-        # between tulsi root and bazel root. See tulsi_aspects.bzl for futher
-        # explanation.
-        dst = os.path.join(tulsi_root, 'x/x/', link_path)
-        self._PrintVerbose('Symlinking %s to %s' % (src, dst), 2)
-
-        dst_dir = os.path.split(dst)[0]
-        if not os.path.exists(dst_dir):
-          os.makedirs(dst_dir)
-
-        # It's important to use lexists() here in case dst is a broken symlink
-        # (in which case exists() would return False). For example, older
-        # versions of this script did not check if src existed and could create
-        # a symlink to an invalid path.
-        if os.path.lexists(dst):
-          os.unlink(dst)
-
-        os.symlink(src, dst)
+    self._PrintVerbose('Spawning subprocess install_genfiles.py to copy '
+                       'generated files in the background...')
+    process = subprocess.Popen(args)
+    return process
 
   def _InstallBundle(self, source_path, output_path):
     """Copies the bundle at source_path to output_path."""
