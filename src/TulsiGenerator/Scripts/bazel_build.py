@@ -925,67 +925,107 @@ class BazelBuildBridge(object):
     """Installs Bazel-generated artifacts into the Xcode output directory."""
     xcode_artifact_path = self.artifact_output_path
 
-    if os.path.isdir(xcode_artifact_path):
-      try:
-        shutil.rmtree(xcode_artifact_path)
-      except OSError as e:
-        _PrintXcodeError('Failed to remove stale output directory ""%s". '
-                         '%s' % (xcode_artifact_path, e))
-        return 600
-    elif os.path.isfile(xcode_artifact_path):
-      try:
-        os.remove(xcode_artifact_path)
-      except OSError as e:
-        _PrintXcodeError('Failed to remove stale output file ""%s". '
-                         '%s' % (xcode_artifact_path, e))
-        return 600
-
     if not outputs_data:
       _PrintXcodeError('Failed to load top level output file.')
       return 600
 
     primary_output_data = outputs_data[0]
 
-    if 'artifacts' not in primary_output_data:
+    if 'artifact' not in primary_output_data:
       _PrintXcodeError(
           'Failed to find an output artifact for target %s in output map %r' %
           (xcode_artifact_path, primary_output_data))
       return 601
 
-    primary_artifact = primary_output_data['artifacts'][0]
+    primary_artifact = primary_output_data['artifact']
+    artifact_archive_root = primary_output_data.get('archive_root')
+    bundle_name = primary_output_data['bundle_name']
 
     # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
     # modified by the user and, more importantly, may have been modified by
     # Tulsi to disambiguate multiple targets with the same name.
-    # To work around this, the product name is determined by dropping any
-    # extension from the primary artifact.
-    # TODO(abaire): Consider passing this value to the script explicitly.
-    self.bazel_product_name = os.path.splitext(
-        os.path.basename(primary_artifact))[0]
+    self.bazel_product_name = bundle_name
 
-    if primary_artifact.endswith('.ipa') or primary_artifact.endswith('.zip'):
-      bundle_name = primary_output_data.get('bundle_name')
-      exit_code = self._UnpackTarget(primary_artifact,
-                                     xcode_artifact_path,
-                                     bundle_name)
+    # We need to handle IPAs (from {ios, tvos}_application) differently from
+    # ZIPs (from the other bundled rules) because they output slightly different
+    # directory structures.
+    is_ipa = primary_artifact.endswith('.ipa')
+    is_zip = primary_artifact.endswith('.zip')
+
+    if is_ipa or is_zip:
+      expected_bundle_name = bundle_name + self.wrapper_suffix
+
+      # The directory structure within the IPA is then determined based on
+      # Bazel's package and/or product type.
+      if is_ipa:
+        bundle_subpath = os.path.join('Payload', expected_bundle_name)
+      else:
+        # If the artifact is a ZIP, assume that the bundle is the top-level
+        # directory (this is the way in which Skylark rules package artifacts
+        # that are not standalone IPAs).
+        bundle_subpath = expected_bundle_name
+
+      # Prefer to copy over files from the archive root instead of unzipping the
+      # ipa/zip in order to help preserve timestamps. Note that the archive root
+      # is only present for local builds; for remote builds we must extract from
+      # the zip file.
+      if self._IsValidArtifactArchiveRoot(artifact_archive_root, bundle_name):
+        source_location = os.path.join(artifact_archive_root, bundle_subpath)
+        exit_code = self._RsyncBundle(os.path.basename(primary_artifact),
+                                      source_location,
+                                      xcode_artifact_path)
+      else:
+        exit_code = self._UnpackTarget(primary_artifact,
+                                       xcode_artifact_path,
+                                       bundle_subpath)
       if exit_code:
         return exit_code
 
     elif os.path.isfile(primary_artifact):
+      # Remove the old artifact before copying.
+      if os.path.isfile(xcode_artifact_path):
+        try:
+          os.remove(xcode_artifact_path)
+        except OSError as e:
+          _PrintXcodeError('Failed to remove stale output file ""%s". '
+                           '%s' % (xcode_artifact_path, e))
+          return 600
       exit_code = self._CopyFile(os.path.basename(primary_artifact),
                                  primary_artifact,
                                  xcode_artifact_path)
       if exit_code:
         return exit_code
     else:
-      self._CopyBundle(os.path.basename(primary_artifact),
-                       primary_artifact,
-                       xcode_artifact_path)
+      self._InstallBundle(primary_artifact,
+                          xcode_artifact_path)
 
     # No return code check as this is not an essential operation.
     self._InstallEmbeddedBundlesIfNecessary(primary_output_data)
 
     return 0
+
+  def _IsValidArtifactArchiveRoot(self, archive_root, bundle_name):
+    """Returns true if the archive root is valid for use."""
+    if not archive_root or not os.path.isdir(archive_root):
+      return False
+
+    # The archive root will not be updated for any remote builds, but will be
+    # valid for local builds. We detect this by using an implementation detail
+    # of the rules_apple bundler: archives will always be transformed from
+    # <name>.unprocessed.zip (locally or remotely) to <name>.archive-root.
+    #
+    # Thus if the mod time on the archive root is not greater than the mod
+    # time on the on the zip, the archive root is not valid. Remote builds
+    # will end up copying the <name>.unprocessed.zip but not the
+    # <name>.archive-root, making this a valid temporary solution.
+    #
+    # In the future, it would be better to have this handled by the rules;
+    # until then this should suffice as a work around to improve build times.
+    unprocessed_zip = os.path.join(os.path.dirname(archive_root),
+                                   '%s.unprocessed.zip' % bundle_name)
+    if not os.path.isfile(unprocessed_zip):
+      return False
+    return os.path.getmtime(archive_root) > os.path.getmtime(unprocessed_zip)
 
   def _InstallEmbeddedBundlesIfNecessary(self, output_data):
     """Install embedded bundles next to the current target's output."""
@@ -1010,7 +1050,7 @@ class BazelBuildBridge(object):
       # is enough to make Instruments work.
       source_path = os.path.join(bundle_info['archive_root'], name)
       output_path = os.path.join(self.built_products_dir, name)
-      self._InstallBundle(source_path, output_path)
+      self._RsyncBundle(name, source_path, output_path)
 
     timer.End()
 
@@ -1077,6 +1117,31 @@ class BazelBuildBridge(object):
                                  output_path)
     return exit_code, output_path
 
+  def _RsyncBundle(self, source_path, full_source_path, output_path):
+    """Rsyncs the given bundle to the given expected output path."""
+    self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
+
+    # rsync behavior changes based on presence of a trailing slash.
+    if not full_source_path.endswith('/'):
+      full_source_path += '/'
+
+    try:
+      # Use -c to check differences by checksum, -v for verbose,
+      # and --delete to delete stale files.
+      # The rest of the flags are the same as -a but without preserving
+      # timestamps, which is done intentionally so the timestamp will
+      # only change when the file is changed.
+      subprocess.check_output(['rsync',
+                               '-vcrlpgoD',
+                               '--delete',
+                               full_source_path,
+                               output_path],
+                              stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+      _PrintXcodeError('Rsync failed. %s' % e)
+      return 650
+    return 0
+
   def _CopyBundle(self, source_path, full_source_path, output_path):
     """Copies the given bundle to the given expected output path."""
     self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
@@ -1100,7 +1165,7 @@ class BazelBuildBridge(object):
       try:
         os.makedirs(output_path_dir)
       except OSError as e:
-        _PrintXcodeError('Failed to create output directory ""%s". '
+        _PrintXcodeError('Failed to create output directory "%s". '
                          '%s' % (output_path_dir, e))
         return 650
     try:
@@ -1113,7 +1178,7 @@ class BazelBuildBridge(object):
       return 650
     return 0
 
-  def _UnpackTarget(self, bundle_path, output_path, bundle_name):
+  def _UnpackTarget(self, bundle_path, output_path, bundle_subpath):
     """Unpacks generated bundle into the given expected output path."""
     self._PrintVerbose('Unpacking %s to %s' % (bundle_path, output_path))
 
@@ -1121,22 +1186,18 @@ class BazelBuildBridge(object):
       _PrintXcodeError('Generated bundle not found at "%s"' % bundle_path)
       return 670
 
-    # We need to handle IPAs (from the native rules) differently from ZIPs
-    # (from the Skylark rules) because they output slightly different directory
-    # structures.
+    if os.path.isdir(output_path):
+      try:
+        shutil.rmtree(output_path)
+      except OSError as e:
+        _PrintXcodeError('Failed to remove stale output directory ""%s". '
+                         '%s' % (output_path, e))
+        return 600
+
+    # We need to handle IPAs (from {ios, tvos}_application) differently from
+    # ZIPs (from the other bundled rules) because they output slightly different
+    # directory structures.
     is_ipa = bundle_path.endswith('.ipa')
-
-    expected_bundle_name = bundle_name + self.wrapper_suffix
-
-    # The directory structure within the IPA is then determined based on Bazel's
-    # package and/or product type.
-    if is_ipa:
-      expected_bundle_subpath = os.path.join('Payload', expected_bundle_name)
-    else:
-      # If the artifact is a ZIP, assume that the bundle is the top-level
-      # directory (this is the way in which Skylark rules package artifacts
-      # that are not standalone IPAs).
-      expected_bundle_subpath = expected_bundle_name
 
     with zipfile.ZipFile(bundle_path, 'r') as zf:
       for item in zf.infolist():
@@ -1148,18 +1209,18 @@ class BazelBuildBridge(object):
         if basedir.endswith('Support') or basedir.endswith('Support2'):
           continue
 
-        if len(filename) < len(expected_bundle_subpath):
+        if len(filename) < len(bundle_subpath):
           continue
 
         attributes = (item.external_attr >> 16) & 0o777
         self._PrintVerbose('Extracting %s (%o)' % (filename, attributes),
                            level=1)
 
-        if not filename.startswith(expected_bundle_subpath):
+        if not filename.startswith(bundle_subpath):
           # TODO(abaire): Make an error if Bazel modifies this behavior.
           _PrintXcodeWarning('Mismatched extraction path. Bundle content '
                              'at "%s" expected to have subpath of "%s"' %
-                             (filename, expected_bundle_subpath))
+                             (filename, bundle_subpath))
 
         dir_components = self._SplitPathComponents(filename)
 

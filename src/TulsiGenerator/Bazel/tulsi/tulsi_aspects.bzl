@@ -71,15 +71,6 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     'xibs',
 ]
 
-# List of rules with implicit <label>.ipa IPA outputs.
-# TODO(b/33050780): This is only used for the native rules and will be removed
-# in the future
-_IPA_GENERATING_RULES = [
-    'ios_application',
-    'ios_extension',
-    'tvos_application',
-]
-
 # List of rules that generate MergedInfo.plist files as part of the build.
 _MERGEDINFOPLIST_GENERATING_RULES = [
     'ios_application',
@@ -875,25 +866,18 @@ def _tulsi_outputs_aspect(target, ctx):
       if hasattr(dep, 'transitive_embedded_bundles'):
         embedded_bundles += dep.transitive_embedded_bundles
 
+  artifact = None
   bundle_name = None
+  archive_root = None
+  bundle_dir = None
   if AppleBundleInfo in target:
-    bundle_name = target[AppleBundleInfo].bundle_name
-    artifacts = [target[AppleBundleInfo].archive.path]
-  else:  # TODO(b/33050780): Remove this branch when native rules are deleted.
-    ipa_output_name = None
-    if target_kind in _IPA_GENERATING_RULES:
-      ipa_output_name = target.label.name
+    bundle_info = target[AppleBundleInfo]
 
-    artifacts = [x.path for x in target.files]
-    if ipa_output_name:
-      # Some targets produce more than one IPA or ZIP (e.g. ios_unit_test will
-      # generate two IPAs for the test and host bundles), we want to filter only
-      # exact matches to label name.
-      output_ipa = '/%s.ipa' % ipa_output_name
-      output_zip = '/%s.zip' % ipa_output_name
+    artifact = bundle_info.archive.path
+    archive_root = bundle_info.archive_root
 
-      artifacts = [x for x in artifacts if x.endswith(output_ipa)
-                   or x.endswith(output_zip)]
+    bundle_name = bundle_info.bundle_name
+    bundle_dir = bundle_info.bundle_dir
 
   # Collect generated files for bazel_build.py to copy under Tulsi root.
   all_files = depset()
@@ -924,7 +908,9 @@ def _tulsi_outputs_aspect(target, ctx):
     has_dsym = ctx.fragments.objc.generate_dsym
 
   info = _struct_omitting_none(
-      artifacts=artifacts,
+      artifact=artifact,
+      bundle_dir=bundle_dir,
+      archive_root=archive_root,
       generated_sources=[(x.path, x.short_path) for x in tulsi_generated_files],
       bundle_name=bundle_name,
       embedded_bundles=embedded_bundles.to_list(),
