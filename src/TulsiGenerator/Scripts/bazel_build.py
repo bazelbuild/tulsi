@@ -516,6 +516,8 @@ class BazelBuildBridge(object):
     else:
       self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
 
+    self.preserve_tulsi_includes = os.environ.get(
+        'TULSI_PRESERVE_TULSI_INCLUDES', 'YES') == 'YES'
     self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
                           os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
     self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
@@ -1068,7 +1070,7 @@ class BazelBuildBridge(object):
     path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         'install_genfiles.py')
 
-    args = [path, BAZEL_EXECUTION_ROOT]
+    args = [path, BAZEL_EXECUTION_ROOT, str(self.preserve_tulsi_includes)]
     args.extend(outputs)
 
     self._PrintVerbose('Spawning subprocess install_genfiles.py to copy '

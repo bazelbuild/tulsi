@@ -24,21 +24,23 @@ import sys
 class Installer(object):
   """Symlinks generated files into _tulsi-includes."""
 
-  def __init__(self, bazel_exec_root):
+  def __init__(self, bazel_exec_root, preserve_tulsi_includes):
     """Initializes the installer with the proper Bazel paths."""
 
     self.bazel_exec_root = bazel_exec_root
+    self.preserve_tulsi_includes = preserve_tulsi_includes
     # The folder must begin with an underscore as otherwise Bazel will delete
     # it whenever it builds. See tulsi_aspects.bzl for futher explanation.
     self.tulsi_root = os.path.join(bazel_exec_root, '_tulsi-includes')
 
   def PrepareTulsiIncludes(self):
-    """Sets up tulsi includes to be an empty directory."""
+    """Creates tulsi includes, possibly removing the old folder."""
 
     tulsi_root = self.tulsi_root
-    if os.path.exists(tulsi_root):
+    if not self.preserve_tulsi_includes and os.path.exists(tulsi_root):
       shutil.rmtree(tulsi_root)
-    os.mkdir(tulsi_root)
+    if not os.path.exists(tulsi_root):
+      os.mkdir(tulsi_root)
 
   def InstallForTulsiouts(self, tulsiouts):
     """Creates tulsi includes and symlinks generated sources."""
@@ -90,9 +92,10 @@ class Installer(object):
 
 
 if __name__ == '__main__':
-  if len(sys.argv) <= 1:
-    sys.stderr.write('usage: %s <bazel exec root> <.tulsiouts JSON files>\n'
-                     % sys.argv[0])
+  if len(sys.argv) <= 2:
+    sys.stderr.write('usage: %s <bazel exec root> <preserve tulsi includes?> '
+                     '<.tulsiouts JSON files>\n' % sys.argv[0])
     exit(1)
 
-  Installer(sys.argv[1]).InstallForTulsiouts(sys.argv[2:])
+  preserve = sys.argv[2] == 'True'
+  Installer(sys.argv[1], preserve).InstallForTulsiouts(sys.argv[3:])
