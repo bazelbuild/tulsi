@@ -124,6 +124,11 @@ final class XcodeProjectGenerator {
     return config.options[.DisableDBGShellCommandsCaching].commonValueAsBool ?? true
   }
 
+  /// Computed property to determine if all debugging info should be normalized, if possible.
+  var disableNormalizedDebugPrefixMap: Bool {
+    return config.options[.DisableNormalizedDebugPrefixMap].commonValueAsBool ?? true
+  }
+
   init(workspaceRootURL: URL,
        config: TulsiGeneratorConfig,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -180,8 +185,7 @@ final class XcodeProjectGenerator {
 
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
-  func generateXcodeProjectInFolder(_ outputFolderURL: URL,
-                                    buildScriptOptions: [BuildScriptOption] = []) throws -> URL {
+  func generateXcodeProjectInFolder(_ outputFolderURL: URL) throws -> URL {
     let generateProfilingToken = localizedMessageLogger.startProfiling("generating_project",
                                                                        context: config.projectName)
     defer { localizedMessageLogger.logProfilingEnd(generateProfilingToken) }
@@ -199,8 +203,7 @@ final class XcodeProjectGenerator {
       watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
     let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup,
-                                                         stubInfoPlistPaths: plistPaths,
-                                                         buildScriptOptions: buildScriptOptions)
+                                                         stubInfoPlistPaths: plistPaths)
 
     let serializingProgressNotifier = ProgressNotifier(name: SerializingXcodeProject,
                                                        maxValue: 1,
@@ -359,8 +362,7 @@ final class XcodeProjectGenerator {
 
   // Generates a PBXProject and a returns it along with a set of build, test and indexer targets.
   private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup,
-                                              stubInfoPlistPaths: StubInfoPlistPaths,
-                                              buildScriptOptions: [BuildScriptOption] = []) throws -> GeneratedProjectInfo {
+                                              stubInfoPlistPaths: StubInfoPlistPaths) throws -> GeneratedProjectInfo {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
 
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool, enabled {
@@ -518,8 +520,10 @@ final class XcodeProjectGenerator {
         buildSettings["TULSI_UPDATE_DSYM_CACHE"] = "YES"
       }
 
-      for buildScriptOption in buildScriptOptions {
-        buildSettings[buildScriptOption.identifier.rawValue] = buildScriptOption.arguments
+      if (self.disableNormalizedDebugPrefixMap) {
+        buildSettings["TULSI_NORMALIZED_DEBUG_INFO"] = "NO"
+      } else {
+        buildSettings["TULSI_NORMALIZED_DEBUG_INFO"] = "YES"
       }
 
       buildSettings["TULSI_PROJECT"] = config.projectName

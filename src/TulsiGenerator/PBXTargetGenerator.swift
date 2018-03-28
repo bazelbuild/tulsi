@@ -1494,10 +1494,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]"] = "1,4"
     }
 
-    // Control generation of DSYM, necessary for debugging Swift in Xcode 8 and for taking advantage
-    // of multiple source mappings per breakpoint, as introduced by DBGVersion 2 in Xcode 9.
-    let dSYMEnabled = entry.attributes[.has_swift_dependency] as? Bool ?? false
-    buildSettings["TULSI_MUST_USE_DSYM"] = dSYMEnabled ? "YES" : "NO"
+    // Tell our build script when a Swift dependency has been found. This could be discovered
+    // through the aspect instead, but we keep this information here for the sake of our debug info
+    // remapping story (for now).
+    let swiftDependency = entry.attributes[.has_swift_dependency] as? Bool ?? false
+    buildSettings["TULSI_SWIFT_DEPENDENCY"] = swiftDependency ? "YES" : "NO"
 
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually

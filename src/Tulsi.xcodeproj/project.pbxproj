@@ -142,7 +142,6 @@
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
-		E107EFD7200B135600257E2F /* BuildScriptOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E107EFD6200B135500257E2F /* BuildScriptOption.swift */; };
 		E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = E1D770EA20523E790026802A /* bazel_cache_reader */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E135A781205880720082E4D0 /* apfs_clone_copy.py in Resources */ = {isa = PBXBuildFile; fileRef = E135A780205880720082E4D0 /* apfs_clone_copy.py */; };
 		E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */; };
@@ -374,7 +373,6 @@
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
-		E107EFD6200B135500257E2F /* BuildScriptOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildScriptOption.swift; sourceTree = "<group>"; };
 		E132B8B51F86FA3400DF7F9A /* tulsi_aspects_paths.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects_paths.bzl; path = tulsi/tulsi_aspects_paths.bzl; sourceTree = "<group>"; };
 		E135A780205880720082E4D0 /* apfs_clone_copy.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = apfs_clone_copy.py; sourceTree = "<group>"; };
 		E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildSettingsFeatures.swift; sourceTree = "<group>"; };
@@ -508,7 +506,6 @@
 				2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */,
 				E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */,
 				54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */,
-				E107EFD6200B135500257E2F /* BuildScriptOption.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1026,7 +1023,6 @@
 				5416093C1F5854090016769C /* BazelBuildEvents.swift in Sources */,
 				3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */,
 				3D9926971C29FB180094E098 /* TulsiProjectInfoExtractor.swift in Sources */,
-				E107EFD7200B135600257E2F /* BuildScriptOption.swift in Sources */,
 				5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */,
 				546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */,
 				3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */,

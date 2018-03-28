@@ -37,7 +37,6 @@ class TulsiCommandlineParser {
     let workspaceRootOverride: String?
     let verboseLevel: TulsiMessageLevel
     let openXcodeOnSuccess: Bool
-    let extraRemapPath: String?
     let additionalPathFilters: Set<String>
     let buildStartupOptions: String?
     let buildOptions: String?
@@ -52,7 +51,6 @@ class TulsiCommandlineParser {
       workspaceRootOverride = nil
       verboseLevel = .Info
       openXcodeOnSuccess = true
-      extraRemapPath = nil
       additionalPathFilters = Set()
       buildStartupOptions = nil
       buildOptions = nil
@@ -84,7 +82,6 @@ class TulsiCommandlineParser {
 
       workspaceRootOverride = standardizedPath(TulsiCommandlineParser.ParamWorkspaceRootLong)
       openXcodeOnSuccess = !(dict[TulsiCommandlineParser.ParamNoOpenXcode] as? Bool == true)
-      extraRemapPath = dict[TulsiCommandlineParser.ParamExtraRemapPath] as? String
       additionalPathFilters = dict[TulsiCommandlineParser.ParamAdditionalPathFilters] as? Set<String> ?? Set()
       buildStartupOptions = dict[TulsiCommandlineParser.ParamBuildStartupOptions] as? String
       buildOptions = dict[TulsiCommandlineParser.ParamBuildOptions] as? String
@@ -116,7 +113,6 @@ class TulsiCommandlineParser {
   static let ParamGeneratorConfigShort = "-c"
   static let ParamGeneratorConfigLong = "--genconfig"
   static let ParamNoOpenXcode = "--no-open-xcode"
-  static let ParamExtraRemapPath = "--extra-remap-path"
 
   // Tulsi project creation mode:
   static let ParamCreateTulsiProj = "--create-tulsiproj"
@@ -235,10 +231,6 @@ class TulsiCommandlineParser {
         case TulsiCommandlineParser.ParamNoOpenXcode:
           parsedArguments[TulsiCommandlineParser.ParamNoOpenXcode] = true as AnyObject?
 
-        case TulsiCommandlineParser.ParamExtraRemapPath:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamExtraRemapPath)
-          i += 1
-
         // Tulsiproj creation:
 
         case TulsiCommandlineParser.ParamCreateTulsiProj:
@@ -292,7 +284,6 @@ class TulsiCommandlineParser {
         "      is equivalent to ",
         "        \"MyProject.tulsiproj:MyProject\"",
         "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
-        "  \(ParamExtraRemapPath): Add one additional full path to remap to your project's execution root.",
         "",
         "  \(ParamCreateTulsiProj) <tulsiproj_bundle_name>:",
         "    Generates a Tulsi project suitable for building the given Bazel target.",

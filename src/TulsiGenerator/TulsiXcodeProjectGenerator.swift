@@ -85,12 +85,10 @@ public final class TulsiXcodeProjectGenerator {
   /// Generates an Xcode project bundle in the given folder.
   /// NOTE: This may be a long running operation.
   public func generateXcodeProjectInFolder(
-    _ outputFolderURL: URL,
-    buildScriptOptions: [BuildScriptOption] = []) throws -> URL {
+    _ outputFolderURL: URL) throws -> URL {
     do {
       return try xcodeProjectGenerator.generateXcodeProjectInFolder(
-        outputFolderURL,
-        buildScriptOptions: buildScriptOptions)
+        outputFolderURL)
     } catch let e {
       LogMessage.postError("Project generation failed.")
       xcodeProjectGenerator.logPendingMessages()

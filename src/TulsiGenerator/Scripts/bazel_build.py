@@ -508,6 +508,8 @@ class BazelBuildBridge(object):
     self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
+    self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
+                                           'NO') == 'YES'
 
     self.use_post_processor = self.xcode_version_major < 900
 
@@ -518,11 +520,33 @@ class BazelBuildBridge(object):
 
     self.preserve_tulsi_includes = os.environ.get(
         'TULSI_PRESERVE_TULSI_INCLUDES', 'YES') == 'YES'
-    self.generate_dsym = (os.environ.get('TULSI_ALL_DSYM', 'NO') == 'YES' or
-                          os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES')
-    self.use_debug_prefix_map = os.environ.get('TULSI_DEBUG_PREFIX_MAP',
-                                               'NO') == 'YES'
-    self.extra_remap_path = os.environ.get('TULSI_EXTRA_REMAP_PATH', '')
+
+    # TODO(b/69857078): Remove this when wrapped_clang is updated.
+    self.direct_debug_prefix_map = os.environ.get('TULSI_DIRECT_DBG_PREFIX_MAP',
+                                                  'NO') == 'YES'
+
+    if (self.swift_dependency or
+        self.use_post_processor or
+        self.direct_debug_prefix_map):
+      # Disable the normalized debug prefix map as swiftc doesn't support it.
+      #
+      # In addition, post_processor cannot patch a smaller string to a longer
+      # path, rendering the normalized prefix map strategy for monotonic outputs
+      # not viable for dSYMs prior to Xcode 9.
+      #
+      # Finally, use of the direct_debug_prefix_map preempts the usage of the
+      # normalized debug prefix map.
+      self.normalized_prefix_map = False
+    else:
+      self.normalized_prefix_map = os.environ.get('TULSI_NORMALIZED_DEBUG_INFO',
+                                                  'NO') == 'YES'
+
+    if self.use_post_processor and self.swift_dependency:
+      # Always export (and patch) dSYMs for Xcode < 9 to allow Swift debugging.
+      self.generate_dsym = True
+    else:
+      self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
+
     update_dsym_cache = os.environ.get('TULSI_UPDATE_DSYM_CACHE',
                                        'NO') == 'YES'
     if update_dsym_cache:
@@ -627,7 +651,8 @@ class BazelBuildBridge(object):
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
     self.bazel_executable = parser.bazel_executable
 
-    # Use -fdebug-prefix-map to have debug symbols match Xcode-visible sources.
+    # Until wrapped_clang is updated, use -fdebug-prefix-map to have debug
+    # symbols match Xcode-visible sources.
     #
     # NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
     # reused across multiple machines by a distributed build system, unless the
@@ -636,17 +661,11 @@ class BazelBuildBridge(object):
     #
     # For this reason, -fdebug-prefix-map is provided as a default for non-
     # distributed purposes.
-    if self.use_debug_prefix_map:
-      # Add the debug source maps now that we have bazel_executable.
-      source_maps = self._ExtractTargetSourceMaps()
-
-      prefix_maps = []
-      for source_map in source_maps:
-        prefix_maps.append('--copt=-fdebug-prefix-map=%s=%s' %
-                           source_map)
-
-      # Extend our list of build options with maps just prior to building.
-      parser.build_options[_OptionsParser.ALL_CONFIGS].extend(prefix_maps)
+    if self.direct_debug_prefix_map:
+      source_map = self._ExtractTargetSourceMap(False)
+      if source_map:
+        prefix_map = '--copt=-fdebug-prefix-map=%s=%s' % source_map
+        parser.build_options[_OptionsParser.ALL_CONFIGS].append(prefix_map)
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -710,7 +729,11 @@ class BazelBuildBridge(object):
     if exit_code:
       return exit_code
 
-    if dsym_paths:
+    if not dsym_paths:
+      # Clean any bundles from a previous build that can interfere with
+      # debugging in LLDB.
+      self._CleanExistingDSYMs()
+    else:
       for path in dsym_paths:
         # Starting with Xcode 9.x, a plist based solution exists for dSYM
         # bundles that works with Swift as well as (Obj-)C(++).
@@ -751,7 +774,7 @@ class BazelBuildBridge(object):
     # correction applies to debug prefix maps as well.
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
-      clear_source_map = dsym_paths or self.use_debug_prefix_map
+      clear_source_map = dsym_paths or self.direct_debug_prefix_map
       exit_code = self._UpdateLLDBInit(clear_source_map)
       timer.End()
       if exit_code:
@@ -799,6 +822,19 @@ class BazelBuildBridge(object):
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')
+
+    # A normalized path for -fdebug-prefix-map exists for keeping all debug
+    # information as built by Clang consistent for the sake of caching within
+    # a distributed build system.
+    #
+    # This is handled through a wrapped_clang feature flag via the CROSSTOOL.
+    #
+    # The use of this flag does not affect any sources built by swiftc. At
+    # present time, all Swift compiled sources will be built with uncacheable,
+    # absolute paths, as the Swift compiler does not present an easy means of
+    # similarly normalizing all debug information.
+    if self.normalized_prefix_map:
+      bazel_command.append('--features=debug_prefix_map_pwd_is_dot')
 
     bazel_command.append(
         '--define=apple.propagate_embedded_extra_outputs=1')
@@ -1505,7 +1541,7 @@ class BazelBuildBridge(object):
       outfile.write('command source %s\n' % self._TULSI_LLDBINIT_EPILOGUE_FILE)
 
   def _UpdateLLDBInit(self, clear_source_map=False):
-    """Updates ~/.lldbinit-tulsi to enable debugging of Bazel binaries."""
+    """Updates ~/.lldbinit-tulsiproj to enable debugging of Bazel binaries."""
 
     # Apple Watch app binaries do not contain any sources.
     if self.product_type == 'com.apple.product-type.application.watchapp2':
@@ -1522,24 +1558,22 @@ class BazelBuildBridge(object):
         self._LinkTulsiLLDBInitEpilogue(out)
         return 0
 
-      timer = Timer(
-          '\tExtracting source paths for ' + self.full_product_name,
-          'extracting_source_paths').Start()
-
-      execroot = self._ExtractExecroot()
-      timer.End()
-
-      if not execroot:
-        _PrintXcodeWarning('Could not find the execroot from %r. File-based '
-                           'breakpoints may not work. Please report as a bug.' %
-                           self.full_product_name)
-        return 0
-
-      source_map = (self._NormalizePath(execroot),
-                    self._NormalizePath(self.workspace_root))
-
-      out.write('# This maps Bazel\'s execution root to that used by %r.\n' %
-                os.path.basename(self.project_file_path))
+      if self.normalized_prefix_map:
+        source_map = ('./', self._NormalizePath(self.workspace_root))
+        out.write('# This maps the normalized root to that used by '
+                  '%r.\n' % os.path.basename(self.project_file_path))
+      else:
+        # NOTE: settings target.source-map is different from
+        # DBGSourcePathRemapping; the former is an LLDB target-level
+        # remapping API that rewrites breakpoints, the latter is an LLDB
+        # module-level remapping API that changes DWARF debug info in memory.
+        #
+        # If we had multiple remappings, it would not make sense for the
+        # two APIs to share the same mappings. They have very different
+        # side-effects in how they individually handle debug information.
+        source_map = self._ExtractTargetSourceMap()
+        out.write('# This maps Bazel\'s execution root to that used by '
+                  '%r.\n' % os.path.basename(self.project_file_path))
 
       out.write('settings set target.source-map "%s" "%s"\n' % source_map)
       self._LinkTulsiLLDBInitEpilogue(out)
@@ -1618,7 +1652,7 @@ class BazelBuildBridge(object):
 
     return (0, uuids_found)
 
-  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, arch, source_maps):
+  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, arch, source_map):
     """Creates a UUID.plist in a dSYM bundle to redirect sources.
 
     Args:
@@ -1626,7 +1660,7 @@ class BazelBuildBridge(object):
       uuid: string representing the UUID of the binary slice with paths to
             remap in the dSYM bundle.
       arch: the architecture of the binary slice.
-      source_maps: a set of tuples representing all absolute paths to source
+      source_map: a single tuple representing all absolute paths to source
                    files compiled by Bazel as strings ($0) associated with the
                    paths to Xcode-visible sources used for the purposes of
                    Tulsi debugging as strings ($1).
@@ -1642,7 +1676,7 @@ class BazelBuildBridge(object):
                                'Resources',
                                '%s.plist' % uuid)
 
-    # Via an XML plist, add the mappings from  _ExtractTargetSourceMaps().
+    # Via an XML plist, add the mappings from  _ExtractTargetSourceMap().
     try:
       with open(remap_plist, 'w') as out:
         out.write('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1653,9 +1687,8 @@ class BazelBuildBridge(object):
                   '<key>DBGSourcePathRemapping</key>\n'
                   '<dict>\n')
 
-        # Add each mapping as a DBGSourcePathRemapping to the UUID plist here.
-        for source_map in source_maps:
-          out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
+        # Add the mapping as a DBGSourcePathRemapping to the UUID plist here.
+        out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
 
         # Make sure that we also set DBGVersion to 2 via plutil.
         out.write('</dict>\n'
@@ -1680,13 +1713,27 @@ class BazelBuildBridge(object):
 
     return True
 
+  def _CleanExistingDSYMs(self):
+    """Clean dSYM bundles that were left over from a previous build."""
+
+    output_dir = self.built_products_dir
+    output_dir_list = os.listdir(output_dir)
+    for item in output_dir_list:
+      if item.endswith('.dSYM'):
+        shutil.rmtree(os.path.join(output_dir, item))
+
   def _PlistdSYMPaths(self, dsym_bundle_path):
     """Adds Plists to a given dSYM bundle to redirect DWARF data."""
 
-    # Retrieve all paths that we are expected to remap.
-    source_maps = self._ExtractTargetSourceMaps()
+    # Retrieve the paths that we are expected to remap.
+    if self.normalized_prefix_map:
+      # Take the normalized path and map that to Xcode-visible sources.
+      source_map = ('./', self._NormalizePath(self.workspace_root))
+    else:
+      # Use a direct path from the execroot to Xcode-visible sources.
+      source_map = self._ExtractTargetSourceMap()
 
-    if not source_maps:
+    if not source_map:
       _PrintXcodeWarning('Extracted 0 source paths. File-based breakpoints '
                          'may not work. Please report as a bug.')
       return 410
@@ -1710,7 +1757,11 @@ class BazelBuildBridge(object):
 
       # Create a plist per UUID, each indicating a binary slice to remap paths.
       for uuid, arch in uuid_info_found:
-        if not self._CreateUUIDPlist(dsym_bundle_path, uuid, arch, source_maps):
+        plist_created = self._CreateUUIDPlist(dsym_bundle_path,
+                                              uuid,
+                                              arch,
+                                              source_map)
+        if not plist_created:
           return 405
 
     # Update spotlight index with this updated dSYM bundle in case the binary's
@@ -1798,32 +1849,35 @@ class BazelBuildBridge(object):
     """
     return os.path.normpath(path) + os.sep
 
-  def _ExtractTargetSourceMaps(self):
-    """Extracts all source paths as tuples associated with the WORKSPACE path.
+  def _ExtractTargetSourceMap(self, normalize=True):
+    """Extracts the source path as a tuple associated with the WORKSPACE path.
+
+    Args:
+      normalize: Defines if all paths should be normalized. Preferred for APIs
+                 like DBGSourcePathRemapping and target.source-map but won't
+                 work for the purposes of -fdebug-prefix-map.
 
     Returns:
-      set(): if an error occurred.
-      set(str, str): a set of tuples representing all absolute paths to source
-                     files compiled by Bazel as strings ($0) associated with
-                     the paths to Xcode-visible sources used for the purposes
-                     of Tulsi debugging as strings ($1).
+      None: if an error occurred.
+      (str, str): a single tuple representing all absolute paths to source
+                  files compiled by Bazel as strings ($0) associated with
+                  the paths to Xcode-visible sources used for the purposes
+                  of Tulsi debugging as strings ($1).
     """
-    source_maps = set()
-
     # All paths route to the "workspace root" for sources visible from Xcode.
-    sm_wsroot = self._NormalizePath(self.workspace_root)
-
-    # If the user has specified any additional mappings, add them first.
-    if self.extra_remap_path:
-      source_maps.add((self._NormalizePath(self.extra_remap_path), sm_wsroot))
+    sm_destpath = self.workspace_root
+    if normalize:
+      sm_destpath = self._NormalizePath(sm_destpath)
 
     # Add a redirection for the Bazel execution root, the path where sources
     # are referenced by Bazel.
-    execroot = self._ExtractExecroot()
-    if execroot:
-      source_maps.add((self._NormalizePath(execroot), sm_wsroot))
+    sm_execroot = self._ExtractExecroot()
+    if sm_execroot:
+      if normalize:
+        sm_execroot = self._NormalizePath(sm_execroot)
+      return (sm_execroot, sm_destpath)
 
-    return source_maps
+    return None
 
   def _ExtractExecroot(self):
     """Finds the execution root from BAZEL_EXECUTION_ROOT or bazel info.

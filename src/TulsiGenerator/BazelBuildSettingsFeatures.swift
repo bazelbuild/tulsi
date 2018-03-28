@@ -14,7 +14,9 @@
 
 let bazelBuildSettingsFeatures = [
   // For non-distributed builds.
-  "TULSI_DEBUG_PREFIX_MAP",
+  // TODO(b/69857078): Replace with normalized debug info when wrapped_clang
+  // is updated.
+  "TULSI_DIRECT_DBG_PREFIX_MAP",
   "TULSI_APFS_CLONE",
   "TULSI_PRESERVE_TULSI_INCLUDES",
 ]

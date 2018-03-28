@@ -47,7 +47,10 @@ public enum TulsiOptionKey: String {
       UseAspectForTestSuites,
 
       // Explicitly turns off all actions around caching paths for dSYM in a local SQLite database.
-      DisableDBGShellCommandsCaching
+      DisableDBGShellCommandsCaching,
+
+      // Remove the normalized -fdebug-prefix-map and fall back on the old behavior for debug info.
+      DisableNormalizedDebugPrefixMap
 
 
   // Options for build invocations.
@@ -276,6 +279,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addBoolOption(.UseAspectForTestSuites, .Generic, true)
     addBoolOption(.DisableDBGShellCommandsCaching, .Generic, false)
+    addBoolOption(.DisableNormalizedDebugPrefixMap, .Generic, false)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
