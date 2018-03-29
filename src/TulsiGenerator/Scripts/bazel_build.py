@@ -511,12 +511,7 @@ class BazelBuildBridge(object):
     self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
                                            'NO') == 'YES'
 
-    self.use_post_processor = self.xcode_version_major < 900
-
-    if self.use_post_processor:
-      self.apfs_clone = False
-    else:
-      self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
+    self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
 
     self.preserve_tulsi_includes = os.environ.get(
         'TULSI_PRESERVE_TULSI_INCLUDES', 'YES') == 'YES'
@@ -526,26 +521,17 @@ class BazelBuildBridge(object):
                                                   'NO') == 'YES'
 
     if (self.swift_dependency or
-        self.use_post_processor or
         self.direct_debug_prefix_map):
       # Disable the normalized debug prefix map as swiftc doesn't support it.
       #
-      # In addition, post_processor cannot patch a smaller string to a longer
-      # path, rendering the normalized prefix map strategy for monotonic outputs
-      # not viable for dSYMs prior to Xcode 9.
-      #
-      # Finally, use of the direct_debug_prefix_map preempts the usage of the
-      # normalized debug prefix map.
+      # In addition, use of the direct_debug_prefix_map preempts the usage of
+      # the normalized debug prefix map.
       self.normalized_prefix_map = False
     else:
       self.normalized_prefix_map = os.environ.get('TULSI_NORMALIZED_DEBUG_INFO',
                                                   'NO') == 'YES'
 
-    if self.use_post_processor and self.swift_dependency:
-      # Always export (and patch) dSYMs for Xcode < 9 to allow Swift debugging.
-      self.generate_dsym = True
-    else:
-      self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
+    self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
 
     update_dsym_cache = os.environ.get('TULSI_UPDATE_DSYM_CACHE',
                                        'NO') == 'YES'
@@ -613,10 +599,6 @@ class BazelBuildBridge(object):
     else:
       self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
 
-    self.post_processor_binary = os.path.join(self.project_file_path,
-                                              '.tulsi',
-                                              'Utils',
-                                              'post_processor')
     if self.codesigning_allowed:
       platform_prefix = 'iOS'
       if self.platform_name.startswith('macos'):
@@ -735,25 +717,20 @@ class BazelBuildBridge(object):
       self._CleanExistingDSYMs()
     else:
       for path in dsym_paths:
-        # Starting with Xcode 9.x, a plist based solution exists for dSYM
+        # Starting with Xcode 9.x, a plist based remapping exists for dSYM
         # bundles that works with Swift as well as (Obj-)C(++).
-        if not self.use_post_processor:
-          timer = Timer('Adding remappings as plists to dSYM',
-                        'plist_dsym').Start()
-          exit_code = self._PlistdSYMPaths(path)
-          timer.End()
-          if exit_code:
-            _PrintXcodeError('Remapping dSYMs process returned %i, please '
-                             'report a Tulsi bug and attach a full Xcode '
-                             'build log.' % exit_code)
-            return exit_code
-        else:
-          timer = Timer('Patching DSYM source file paths',
-                        'patching_dsym').Start()
-          exit_code = self._PatchdSYMPaths(path)
-          timer.End()
-          if exit_code:
-            return exit_code
+        #
+        # This solution also works for Xcode 7.x and 8.x for (Obj-)C(++) but
+        # not for Swift.
+        timer = Timer('Adding remappings as plists to dSYM',
+                      'plist_dsym').Start()
+        exit_code = self._PlistdSYMPaths(path)
+        timer.End()
+        if exit_code:
+          _PrintXcodeError('Remapping dSYMs process returned %i, please '
+                           'report a Tulsi bug and attach a full Xcode '
+                           'build log.' % exit_code)
+          return exit_code
 
     # Starting with Xcode 7.3, XCTests inject several supporting frameworks
     # into the test host that need to be signed with the same identity as
@@ -768,10 +745,9 @@ class BazelBuildBridge(object):
     # Starting with Xcode 8, .lldbinit files are honored during Xcode debugging
     # sessions. This allows use of the target.source-map field to remap the
     # debug symbol paths encoded in the binary to the paths expected by Xcode.
-    # In cases where a dSYM bundle was produced, the post_processor will have
-    # already corrected the paths and use of target.source-map is redundant (and
-    # appears to trigger actual problems in Xcode 8.1 betas). The redundant path
-    # correction applies to debug prefix maps as well.
+    #
+    # This will not work with dSYM bundles, or a direct -fdebug-prefix-map from
+    # the Bazel-built locations to Xcode-visible sources.
     if self.xcode_version_major >= 800:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
       clear_source_map = dsym_paths or self.direct_debug_prefix_map
@@ -1768,35 +1744,6 @@ class BazelBuildBridge(object):
     # UUID changed.
     # TODO(b/71705491): Remove if DBGShellCommands does not cause any issues.
     self._RunSubprocess(['mdimport', dsym_bundle_path])
-
-    return 0
-
-  def _PatchdSYMPaths(self, dsym_bundle_path):
-    """Invokes post_processor to fix source paths in dSYM DWARF data."""
-    dwarf_subpath = os.path.join(dsym_bundle_path,
-                                 'Contents',
-                                 'Resources',
-                                 'DWARF')
-    binaries = [os.path.join(dwarf_subpath, b)
-                for b in os.listdir(dwarf_subpath)]
-    for binary_path in binaries:
-      os.chmod(binary_path, 0o755)
-
-    args = [self.post_processor_binary, '-d']
-    if self.verbose > 1:
-      args.append('-v')
-    args.extend(binaries)
-    args.extend([BAZEL_EXECUTION_ROOT, self.workspace_root])
-
-    self._PrintVerbose('Patching %r -> %r' % (BAZEL_EXECUTION_ROOT,
-                                              self.workspace_root), 1)
-    returncode, output = self._RunSubprocess(args)
-    if returncode:
-      _PrintXcodeWarning('DWARF path patching failed on dSYM %r (%d). '
-                         'Breakpoints and other debugging actions will '
-                         'probably fail.' % (dsym_bundle_path, returncode))
-      _PrintXcodeWarning('Output: %s' % output or '<no output>')
-      return 0
 
     return 0
 

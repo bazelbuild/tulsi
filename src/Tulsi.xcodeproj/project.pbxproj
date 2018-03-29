@@ -36,7 +36,6 @@
 		3D51A80C1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */; };
 		3D53323F1D243BE400951579 /* EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D53323B1D2425E600951579 /* EventLogger.swift */; };
 		3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */; };
-		3D648FB31D747B8100A3DBE2 /* post_processor in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = 3D256D1A1D7131B4007A3ED3 /* post_processor */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */; };
 		3D7B77431C8F2DD3004786EF /* UISourcePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77421C8F2DD3004786EF /* UISourcePath.swift */; };
 		3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */; };
@@ -154,20 +153,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3D256D191D7131B4007A3ED3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3DC2E3C51D635C0A00DCF7D3;
-			remoteInfo = post_processor;
-		};
-		3D648FB01D747B7E00A3DBE2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 3DC2E3C41D635C0A00DCF7D3;
-			remoteInfo = post_processor;
-		};
 		3D99266E1C29F0A30094E098 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B8F558F1BE3ECDC0095AF7F /* Project object */;
@@ -224,7 +209,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */,
-				3D648FB31D747B8100A3DBE2 /* post_processor in Copy Utilty resources */,
 			);
 			name = "Copy Utilty resources";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,7 +297,6 @@
 		3DB1FC2A1C32DCBC0080198C /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
 		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = post_processor.xcodeproj; path = tools/post_processor/post_processor.xcodeproj; sourceTree = "<group>"; };
 		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
 		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
@@ -421,14 +404,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D256D161D7131B4007A3ED3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3D256D1A1D7131B4007A3ED3 /* post_processor */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		3D5A1B561D1B3432006FC2A6 /* GeneratedProjectResources */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,7 +618,6 @@
 			isa = PBXGroup;
 			children = (
 				E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */,
-				3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */,
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
 				3D9926641C29F0A20094E098 /* TulsiGenerator */,
@@ -752,7 +726,6 @@
 			);
 			dependencies = (
 				E11AFAAE205264C200C97875 /* PBXTargetDependency */,
-				3D648FB11D747B7E00A3DBE2 /* PBXTargetDependency */,
 			);
 			name = TulsiGenerator;
 			productName = TulsiGenerator;
@@ -858,10 +831,6 @@
 					ProductGroup = E1D770E620523E780026802A /* Products */;
 					ProjectRef = E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */;
 				},
-				{
-					ProductGroup = 3D256D161D7131B4007A3ED3 /* Products */;
-					ProjectRef = 3DBA776A1D6CAF5E00BD5B7C /* post_processor.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -874,13 +843,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3D256D1A1D7131B4007A3ED3 /* post_processor */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = post_processor;
-			remoteRef = 3D256D191D7131B4007A3ED3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		E1D770EA20523E790026802A /* bazel_cache_reader */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -1114,11 +1076,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3D648FB11D747B7E00A3DBE2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = post_processor;
-			targetProxy = 3D648FB01D747B7E00A3DBE2 /* PBXContainerItemProxy */;
-		};
 		3D99266F1C29F0A30094E098 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;

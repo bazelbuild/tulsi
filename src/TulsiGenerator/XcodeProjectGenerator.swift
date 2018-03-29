@@ -31,13 +31,12 @@ final class XcodeProjectGenerator {
     case invalidXcodeProjectPath(path: String, reason: String)
   }
 
-  /// Encapsulates the source paths of various resources (scripts, utilities, etc...) that will be
-  /// copied into the generated Xcode project.
+  /// Encapsulates the source paths of various resources (scripts, etc...) that will be copied into
+  /// the generated Xcode project.
   struct ResourceSourcePathURLs {
     let buildScript: URL  // The script to run on "build" actions.
     let cleanScript: URL  // The script to run on "clean" actions.
     let extraBuildScripts: [URL] // Any additional scripts to install into the project bundle.
-    let postProcessor: URL  // Binary post processor utility.
     let iOSUIRunnerEntitlements: URL  // Entitlements file template for iOS UI Test runner apps.
     let macOSUIRunnerEntitlements: URL  // Entitlements file template for macOS UI Test runner apps.
     let stubInfoPlist: URL  // Stub Info.plist (needed for Xcode 8).
@@ -72,7 +71,6 @@ final class XcodeProjectGenerator {
   private static let ShellCommandsUtil = "bazel_cache_reader"
   private static let ShellCommandsCleanScript = "clean_symbol_cache"
   private static let WorkspaceFile = "WORKSPACE"
-  private static let PostProcessorUtil = "post_processor"
   private static let IOSUIRunnerEntitlements = "iOSXCTRunner.entitlements"
   private static let MacOSUIRunnerEntitlements = "macOSXCTRunner.entitlements"
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
@@ -234,7 +232,6 @@ final class XcodeProjectGenerator {
                                           projectBundleName: projectBundleName)
     installTulsiScripts(projectURL)
     installTulsiBazelPackage(projectURL)
-    installUtilities(projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
     installStubExtensionPlistFiles(projectURL,
@@ -1192,21 +1189,6 @@ final class XcodeProjectGenerator {
       installFiles(resourceURLs.tulsiPackageFiles.map { ($0, $0.lastPathComponent) },
                    toDirectory: bazelPackageURL)
 
-      localizedMessageLogger.logProfilingEnd(profilingToken)
-    }
-  }
-
-  private func installUtilities(_ projectURL: URL) {
-    let utilDirectoryURL = projectURL.appendingPathComponent(XcodeProjectGenerator.UtilDirectorySubpath,
-                                                                  isDirectory: true)
-    if createDirectory(utilDirectoryURL) {
-      let profilingToken = localizedMessageLogger.startProfiling("installing_utilities",
-                                                                 context: config.projectName)
-      let progressNotifier = ProgressNotifier(name: InstallingUtilities, maxValue: 1)
-      defer { progressNotifier.incrementValue() }
-      localizedMessageLogger.infoMessage("Installing utilities")
-      installFiles([(resourceURLs.postProcessor, XcodeProjectGenerator.PostProcessorUtil)],
-                   toDirectory: utilDirectoryURL)
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
   }
