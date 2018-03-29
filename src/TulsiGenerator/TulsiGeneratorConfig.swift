@@ -73,9 +73,9 @@ public class TulsiGeneratorConfig {
   static let PathFiltersKey = "sourceFilters"
   static let AdditionalFilePathsKey = "additionalFilePaths"
 
-  /// Returns a copy of the given filename sanitized by replacing path separators.
+  /// Returns a copy of the given filename sanitized by replacing path separators and spaces.
   public static func sanitizeFilename(_ filename: String) -> String {
-    return filename.replacingOccurrences(of: "/", with: "_")
+    return filename.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_")
   }
 
   // Tries to resolve a URL to the Bazel exectuable via:
