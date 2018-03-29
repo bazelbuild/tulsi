@@ -397,7 +397,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       let sourcePath: UISourcePath
       if sourceFilter.hasSuffix("/...") {
         let targetIndex = sourceFilter.index(sourceFilter.endIndex, offsetBy: -4)
-        let path = sourceFilter.substring(to: targetIndex)
+        let path = String(sourceFilter[..<targetIndex])
         sourcePath = UISourcePath(path: path, selected: false, recursive: true)
       } else {
         sourcePath = UISourcePath(path: sourceFilter, selected: true, recursive: false)

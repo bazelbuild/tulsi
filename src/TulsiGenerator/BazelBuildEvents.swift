@@ -27,7 +27,8 @@ class BazelBuildEvent {
         guard let uri = fileDict["uri"] as? String else { continue }
         // File URIs have a 'file://' prefix, so remove if present.
         if uri.hasPrefix("file://") {
-          files.append(uri.substring(from: uri.index(uri.startIndex, offsetBy: 7)))
+          let index = uri.index(uri.startIndex, offsetBy: 7)
+          files.append(String(uri[index...]))
         }
       }
     }

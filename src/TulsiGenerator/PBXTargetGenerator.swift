@@ -379,7 +379,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // outputFolder to workspaceRoot
     if workspaceRoot.hasPrefix(slashTerminatedOutputFolder) {
       let index = workspaceRoot.index(workspaceRoot.startIndex, offsetBy: slashTerminatedOutputFolder.count)
-      let relativePath = workspaceRoot.substring(from: index)
+      let relativePath = String(workspaceRoot[index...])
       return PBXGroup(name: "mainGroup",
                       path: relativePath,
                       sourceTree: .SourceRoot,
@@ -390,7 +390,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // workspaceRoot from outputFolder.
     if outputFolder.hasPrefix(slashTerminatedWorkspaceRoot) {
       let index = outputFolder.index(outputFolder.startIndex, offsetBy: slashTerminatedWorkspaceRoot.count + 1)
-      let pathToWalkBackUp = outputFolder.substring(from: index) as NSString
+      let pathToWalkBackUp = String(outputFolder[index...]) as NSString
       let numberOfDirectoriesToWalk = pathToWalkBackUp.pathComponents.count
       let relativePath = [String](repeating: "..", count: numberOfDirectoriesToWalk).joined(separator: "/")
       return PBXGroup(name: "mainGroup",
@@ -849,7 +849,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// given set of pathFilters.
   private func pathFilterFunc(_ pathFilters: Set<String>) -> (String) -> Bool {
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
-      $0.substring(to: $0.index($0.endIndex, offsetBy: -3))
+      let index = $0.index($0.endIndex, offsetBy: -3)
+      return String($0[..<index])
     })
 
     func includePath(_ path: String) -> Bool {
@@ -1211,7 +1212,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     if let swiftc_opts = ruleEntry.attributes[.swiftc_opts] as? [String], !swiftc_opts.isEmpty {
       for opt in swiftc_opts {
         if opt.hasPrefix("-I") {
-          var path = opt.substring(from: opt.index(opt.startIndex, offsetBy: 2))
+          let index = opt.index(opt.startIndex, offsetBy: 2)
+          var path = String(opt[index...])
           if !path.hasPrefix("/") {
             path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
           }
@@ -1228,9 +1230,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
       //     encyclopedia.
       if opt.hasPrefix("-D") {
-        localDefines.insert(opt.substring(from: opt.index(opt.startIndex, offsetBy: 2)))
+        let index = opt.index(opt.startIndex, offsetBy: 2)
+        localDefines.insert(String(opt[index...]))
       } else if opt.hasPrefix("-I") {
-        var path = opt.substring(from: opt.index(opt.startIndex, offsetBy: 2))
+        let index = opt.index(opt.startIndex, offsetBy: 2)
+        var path = String(opt[index...])
         if !path.hasPrefix("/") {
           path = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
         }
@@ -1420,7 +1424,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let normalizedTargetName: String
     if targetName.count > MaxIndexerNameLength {
       let endIndex = targetName.index(targetName.startIndex, offsetBy: MaxIndexerNameLength - 4)
-      normalizedTargetName = targetName.substring(to: endIndex) + "_etc"
+      normalizedTargetName = String(targetName[..<endIndex]) + "_etc"
     } else {
       normalizedTargetName = targetName
     }

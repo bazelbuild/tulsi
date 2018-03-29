@@ -204,7 +204,7 @@ struct HeadlessTulsiProjectCreator {
     var buildFiles = Set<String>()
     for target in targets {
       guard let range = target.range(of: ":"), !range.isEmpty else { continue }
-      let package = target.substring(to: range.lowerBound)
+      let package = String(target[..<range.lowerBound])
       buildFiles.insert(package)
     }
     return buildFiles

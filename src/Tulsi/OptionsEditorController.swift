@@ -505,6 +505,6 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     // Reload everything in the mutable middle columns. The values in the "setting" and "default"
     // columns never change.
     let columnRange = NSRange(location: 1, length: view.numberOfColumns - 2)
-    view.reloadData(forRowIndexes: indexes as IndexSet, columnIndexes: IndexSet(integersIn: columnRange.toRange()!))
+    view.reloadData(forRowIndexes: indexes as IndexSet, columnIndexes: IndexSet(integersIn: Range(columnRange)!))
   }
 }
