@@ -24,14 +24,17 @@ import sys
 class Installer(object):
   """Symlinks generated files into _tulsi-includes."""
 
-  def __init__(self, bazel_exec_root, preserve_tulsi_includes):
+  def __init__(self, bazel_exec_root, preserve_tulsi_includes=True,
+               output_root=None):
     """Initializes the installer with the proper Bazel paths."""
 
     self.bazel_exec_root = bazel_exec_root
     self.preserve_tulsi_includes = preserve_tulsi_includes
     # The folder must begin with an underscore as otherwise Bazel will delete
     # it whenever it builds. See tulsi_aspects.bzl for futher explanation.
-    self.tulsi_root = os.path.join(bazel_exec_root, '_tulsi-includes')
+    if not output_root:
+      output_root = bazel_exec_root
+    self.tulsi_root = os.path.join(output_root, '_tulsi-includes')
 
   def PrepareTulsiIncludes(self):
     """Creates tulsi includes, possibly removing the old folder."""
