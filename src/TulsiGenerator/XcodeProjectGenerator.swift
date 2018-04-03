@@ -70,6 +70,7 @@ final class XcodeProjectGenerator {
   private static let CleanScript = "bazel_clean.sh"
   private static let ShellCommandsUtil = "bazel_cache_reader"
   private static let ShellCommandsCleanScript = "clean_symbol_cache"
+  private static let LLDBInitBootstrapScript = "bootstrap_lldbinit"
   private static let WorkspaceFile = "WORKSPACE"
   private static let IOSUIRunnerEntitlements = "iOSXCTRunner.entitlements"
   private static let MacOSUIRunnerEntitlements = "macOSXCTRunner.entitlements"
@@ -553,6 +554,9 @@ final class XcodeProjectGenerator {
       profileAction("cleaning_cached_dsym_paths") {
         cleanCachedDsymPaths()
       }
+    }
+    profileAction("bootstrapping_lldbinit") {
+      bootstrapLLDBInit()
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
@@ -1124,28 +1128,46 @@ final class XcodeProjectGenerator {
     }
   }
 
-  private func cleanCachedDsymPaths() {
-    // Execute the script to clean up missing dSYM bundles asynchronously.
+  private func executePythonProcess(_ scriptFileName: String, onError: @escaping (Int32, String) -> Void) {
     let bundle = Bundle(for: type(of: self))
-    let cleanSymbolsSourceURL = bundle.url(forResource: XcodeProjectGenerator.ShellCommandsCleanScript, withExtension: "py")!
+    let cleanSymbolsSourceURL = bundle.url(forResource: scriptFileName, withExtension: "py")!
 
     let process = ProcessRunner.createProcess(cleanSymbolsSourceURL.path,
                                               arguments: [String]()) {
       completionInfo in
-      if let stderr = NSString(data: completionInfo.stderr,
-                               encoding: String.Encoding.utf8.rawValue) {
-        guard !stderr.trimmingCharacters(in: .whitespaces).isEmpty else {
-          return
-        }
-        Thread.doOnMainQueue {
-          self.localizedMessageLogger.warning("CleanCachedDsymsFailed",
-                                              comment: LocalizedMessageLogger.bugWorthyComment("Failed to clean cached references to existing dSYM bundles."),
-                                              context: self.config.projectName,
-                                              values: stderr)
+      if completionInfo.terminationStatus != 0 {
+        if let stderr = NSString(data: completionInfo.stderr,
+                                 encoding: String.Encoding.utf8.rawValue) {
+          guard !stderr.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+          }
+          onError(completionInfo.terminationStatus, stderr as String)
         }
       }
     }
     process.launch()
+  }
+
+  private func cleanCachedDsymPaths() {
+    // Execute the script to clean up missing dSYM bundles asynchronously.
+    self.executePythonProcess(XcodeProjectGenerator.ShellCommandsCleanScript) { (returncode, stderr) in
+      self.localizedMessageLogger.warning("CleanCachedDsymsFailed",
+                                          comment: LocalizedMessageLogger.bugWorthyComment("Failed to clean cached references to existing dSYM bundles."),
+                                          context: self.config.projectName,
+                                          values: returncode, stderr)
+    }
+  }
+
+  private func bootstrapLLDBInit() {
+    // Execute the script to bootstrap LLDBInit for path remapping. This needs to be read by Xcode
+    // before Xcode.app launches so that its instance of LLDB can find the file where we do the path
+    // remappings when dSYM bundles aren't present, which is ~/.lldbinit-tulsiproj.
+    self.executePythonProcess(XcodeProjectGenerator.LLDBInitBootstrapScript) { (returncode, stderr) in
+      self.localizedMessageLogger.warning("BootstrapLLDBInitFailed",
+                                          comment: LocalizedMessageLogger.bugWorthyComment("Failed to bootstrap LLDBInit for debug symbol remapping."),
+                                          context: self.config.projectName,
+                                          values: returncode, stderr)
+    }
   }
 
   private func installTulsiScripts(_ projectURL: URL) {
