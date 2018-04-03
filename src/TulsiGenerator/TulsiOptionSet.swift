@@ -200,7 +200,6 @@ public class TulsiOptionSet: Equatable {
   func commonBuildSettings() -> [String: String] {
     // These values come from AppleToolchain.java in Bazel
     // https://github.com/bazelbuild/bazel/blob/master/src/main/java/com/google/devtools/build/lib/rules/apple/AppleToolchain.java
-    // TODO(abaire): Expose for user modification.
     var buildSettings = [
         "GCC_WARN_64_TO_32_BIT_CONVERSION": "YES",
         "CLANG_WARN_BOOL_CONVERSION": "YES",

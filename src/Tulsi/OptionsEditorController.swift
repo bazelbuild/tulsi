@@ -364,8 +364,6 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         }
 
       case .bool:
-        // TODO(abaire): Track down why NSPopUpButton ignores mutation to attributedTitle and remove
-        //               the boldPopUpButtonCell here and from the storyboard.
         let identifier: String
         if explicit {
           identifier = OptionsEditorController.boldPopUpButtonCellViewIdentifier

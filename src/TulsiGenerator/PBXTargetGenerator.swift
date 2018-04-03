@@ -141,7 +141,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Release builds.
   // NOTE: This value needs to be kept in sync with the bazel_build script.
   static let runTestTargetBuildConfigPrefix = "__TulsiTestRunner_"
-  // TODO(abaire): Remove when Swift supports static stored properties in protocols.
   static func getRunTestTargetBuildConfigPrefix() -> String {
     return runTestTargetBuildConfigPrefix
   }
@@ -589,7 +588,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
-        // TODO(abaire): Extract STL path via the aspect once it is exposed to Skylark.
         // Bazel appends a built-in tools/cpp/gcc3 path in CppHelper.java but that path is not
         // exposed to Skylark. For now Tulsi hardcodes it here to allow proper indexer behavior.
         // NOTE: this requires tools/cpp/gcc3 to be available from the workspace root, which may
@@ -1227,8 +1225,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       return
     }
     for opt in copts {
-      // TODO(abaire): Add support for shell tokenization as advertised in the Bazel build
-      //     encyclopedia.
       if opt.hasPrefix("-D") {
         let index = opt.index(opt.startIndex, offsetBy: 2)
         localDefines.insert(String(opt[index...]))
@@ -1369,8 +1365,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       config.buildSettings = buildSettings
 
       // Insert any defines that are injected by Bazel's ObjcConfiguration.
-      // TODO(abaire): Grab these in the aspect instead of hardcoding them here.
-      //               Note that doing this would also require per-config aspect passes.
       if configName == "Debug" {
         addPreprocessorDefine("DEBUG=1", toConfig: config)
       } else if configName == "Release" {

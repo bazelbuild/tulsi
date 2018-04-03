@@ -201,7 +201,6 @@ def _file_metadata(f):
   else:
     root_execution_path_fragment = None
 
-  # TODO(abaire): Remove once Skylark File objects can reference directories.
   # At the moment (Oct. 2016), Bazel disallows most files without extensions.
   # As a temporary hack, Tulsi treats File instances pointing at extension-less
   # paths as directories. This is extremely fragile and must be replaced with

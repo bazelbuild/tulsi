@@ -102,7 +102,6 @@ class UISelectableOutlineViewNode: NSObject {
     child.parent = self
   }
 
-  // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
   @objc func validateState(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
     if let value = ioValue.pointee as? NSNumber {
       if value.intValue == NSControl.StateValue.mixed.rawValue {

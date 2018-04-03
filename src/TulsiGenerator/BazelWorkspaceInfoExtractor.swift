@@ -17,7 +17,6 @@ import Foundation
 
 // Concrete extractor that utilizes Bazel query (http://bazel.build/docs/query.html) and aspects to
 // extract information from a workspace.
-// TODO(abaire): Add link to aspect documentation when it becomes available.
 final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   var bazelURL: URL {
     get { return queryExtractor.bazelURL as URL }
@@ -83,7 +82,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
 
-    // TODO(abaire): Support per-target and per-config options during aspect lookups.
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
     let useAspectForTestSuites = useAspectForTestSuitesOption.commonValueAsBool ?? true

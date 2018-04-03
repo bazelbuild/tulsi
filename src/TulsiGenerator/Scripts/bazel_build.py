@@ -1209,7 +1209,6 @@ class BazelBuildBridge(object):
                            level=1)
 
         if not filename.startswith(bundle_subpath):
-          # TODO(abaire): Make an error if Bazel modifies this behavior.
           _PrintXcodeWarning('Mismatched extraction path. Bundle content '
                              'at "%s" expected to have subpath of "%s"' %
                              (filename, bundle_subpath))

@@ -96,7 +96,6 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   }
 
   @IBAction func doGenerate(_ sender: AnyObject?) {
-    // TODO(abaire): Make it clear to the user that only the first selection is generated.
     guard let configName = configArrayController.selectedObjects.first as? String else { return }
     guard requireValidBazel({ self.doGenerate(sender) }) else { return }
 

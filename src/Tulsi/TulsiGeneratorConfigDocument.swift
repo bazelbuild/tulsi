@@ -114,7 +114,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   /// The number of selected items in ruleEntries.
   @objc dynamic var selectedRuleInfoCount: Int = 0 {
     didSet {
-      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)
     }
   }
 
@@ -128,7 +128,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // The display name for this config.
   var configName: String? = nil {
     didSet {
-      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)
     }
   }
 
@@ -297,7 +297,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
     let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiGeneratorConfigDocumentWindow")) as! NSWindowController
     windowController.contentViewController?.representedObject = self
-    // TODO(abaire): Consider supporting restoration of config subwindows.
     windowController.window?.isRestorable = false
     addWindowController(windowController)
   }
@@ -407,7 +406,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   override class var autosavesInPlace: Bool {
-    // TODO(abaire): Enable autosave when undo behavior is implemented.
     return false
   }
 

@@ -235,7 +235,6 @@ final class PBXFileReference: PBXReference, Hashable {
       try serializer.addField("lastKnownFileType", uti)
     } else if let uti = explicitFileType {
       try serializer.addField("explicitFileType", uti)
-      // TODO(abaire): set includeInIndex to 0 for output files?
     }
   }
 }
@@ -922,7 +921,6 @@ class PBXTarget: PBXObjectProtocol, Hashable {
 }
 
 func == (lhs: PBXTarget, rhs: PBXTarget) -> Bool {
-  // TODO(abaire): check that PBXProjects match- name is only unique with project scope.
   return lhs.name == rhs.name
 }
 
@@ -1317,8 +1315,7 @@ final class PBXProject: PBXObjectProtocol {
       // Check to see if this component is actually a bundle that should be treated as a file
       // reference by Xcode (e.g., .xcassets bundles) instead of as a PBXGroup.
       let currentComponent = components[i]
-      // TODO(abaire): Look into proper support for localization bundles. This will naively create
-      //               a bundle grouping rather than including the per-locale strings.
+      // This will naively create a bundle grouping rather than including the per-locale strings.
       if let ext = currentComponent.pbPathExtension, let uti = DirExtensionToUTI[ext] {
         let partialPath = components[0...i].joined(separator: "/")
         let fileRef = group.getOrCreateFileReferenceBySourceTree(.Group, path: partialPath)

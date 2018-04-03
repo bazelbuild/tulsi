@@ -20,6 +20,6 @@ import XCTest
 // contains some platform-dependent components (e.g., dependency paths).
 class PlatformDependentEndToEndGenerationTests: EndToEndIntegrationTestCase {
   func test_PlatformDependentProject() {
-    // TODO(abaire): Implement.
+    // Not implemented.
   }
 }

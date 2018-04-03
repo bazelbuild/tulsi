@@ -206,7 +206,6 @@ public final class RuleEntry: RuleInfo {
   public let swiftLanguageVersion: String?
 
   /// The swift toolchain argument used by this target.
-  // TODO(abaire): It is hoped that this may be removed when support for Swift 2.3 is dropped.
   public let swiftToolchain: String?
 
   /// List containing the transitive swiftmodules on which this rule depends.

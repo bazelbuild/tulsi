@@ -44,9 +44,6 @@ final class TulsiProjectDocument: NSDocument,
   /// Override to prevent rule entries from being extracted immediately during loading of project
   /// documents. This is only useful if the Bazel binary is expected to be set after the project
   /// document is loaded but before any other actions.
-  // TODO(abaire): Refactor project loading to make this unnecessary.
-  // Ideally the project document should be loaded in a sparse form and rules should be updated on
-  // demand later.
   static var suppressRuleEntryUpdateOnLoad = false
 
   /// The project model.
@@ -94,7 +91,7 @@ final class TulsiProjectDocument: NSDocument,
   @objc dynamic var bazelPackages: [String]? {
     set {
       project!.bazelPackages = newValue ?? [String]()
-      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)
       updateRuleEntries()
     }
     get {
@@ -109,7 +106,7 @@ final class TulsiProjectDocument: NSDocument,
       if newValue != nil && infoExtractor != nil {
         infoExtractor.bazelURL = newValue!
       }
-      updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+      updateChangeCount(.changeDone)
       updateRuleEntries()
     }
     get {
@@ -194,7 +191,7 @@ final class TulsiProjectDocument: NSDocument,
     project = TulsiProject(projectName: projectName,
                            projectBundleURL: tempProjectBundleURL,
                            workspaceRootURL: workspaceRootURL)
-    updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+    updateChangeCount(.changeDone)
 
     LogMessage.postSyslog("Create project: \(projectName)")
 
@@ -431,7 +428,6 @@ final class TulsiProjectDocument: NSDocument,
 
       // Unsupported actions.
       case .some(#selector(TulsiProjectDocument.duplicate(_:))):
-        // TODO(abaire): Consider implementing and allowing project duplication.
         return false
 
       default:
@@ -493,7 +489,6 @@ final class TulsiProjectDocument: NSDocument,
       case .Error:
         messages.append(UIMessage(text: fullMessage, type: .error))
         if TulsiProjectDocument.showAlertsOnErrors {
-          // TODO(abaire): Implement better error handling, allowing recovery of a good state.
           ErrorAlertView.displayModalError(item.message, details: item.details)
         }
 
@@ -547,7 +542,6 @@ final class TulsiProjectDocument: NSDocument,
       return
     }
 
-    // TODO(abaire): Cancel any outstanding update operations.
     processingTaskStarted()
     infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL, project: project)
 

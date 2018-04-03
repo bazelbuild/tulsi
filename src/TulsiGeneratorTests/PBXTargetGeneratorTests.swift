@@ -2853,7 +2853,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
       let script = scriptBuildPhase.shellScript
 
-      // TODO(abaire): Consider doing deeper validation of the script.
       XCTAssert(script.contains(bazelURL.path),
                 "Build script does not contain \(bazelURL.path)",
                 line: line)

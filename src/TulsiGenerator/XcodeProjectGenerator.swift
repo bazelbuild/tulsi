@@ -96,7 +96,6 @@ final class XcodeProjectGenerator {
   private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
 
   /// Exposed for testing. Simply writes the given NSData to the given NSURL.
-  /// TODO(dmishe): Use fileManager instance to perform writes, and remove this block.
   var writeDataHandler: (URL, Data) throws -> Void = { (outputFileURL: URL, data: Data) in
     try data.write(to: outputFileURL, options: NSData.WritingOptions.atomic)
   }
@@ -390,9 +389,7 @@ final class XcodeProjectGenerator {
     let ruleEntryMap = try loadRuleEntryMap()
     var expandedTargetLabels = Set<BuildLabel>()
     var testSuiteRules = [BuildLabel: RuleEntry]()
-    // Ideally this should use a generic SequenceType, but Swift 2.2 sometimes crashes in this case.
-    // TODO(abaire): Go back to using a generic here when support for Swift 2.2 is removed.
-    func expandTargetLabels(_ labels: Set<BuildLabel>) {
+    func expandTargetLabels<T: Sequence>(_ labels: T) where T.Iterator.Element == BuildLabel {
       for label in labels {
         // Effectively we will only be using the last RuleEntry in the case of duplicates.
         // We could log about duplicates here, but this would only lead to duplicate logging.
@@ -413,8 +410,7 @@ final class XcodeProjectGenerator {
         }
       }
     }
-    let buildTargetLabels = Set(config.buildTargetLabels)
-    expandTargetLabels(buildTargetLabels)
+    expandTargetLabels(config.buildTargetLabels)
 
     var targetRules = Set<RuleEntry>()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
@@ -1418,7 +1414,6 @@ final class XcodeProjectGenerator {
       var ret = [URL]()
       for n in root.children.values {
         for path in n.leafPaths() {
-          // TODO(dmishe): Swicth to an appropriate URL method.
           guard let url = NSURL.fileURL(withPathComponents: path) else {
             continue
           }

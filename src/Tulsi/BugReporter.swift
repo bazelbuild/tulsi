@@ -18,6 +18,6 @@ import Cocoa
 /// Provides functionality to file a bug report based on message data.
 class BugReporter {
   static func fileBugReport() {
-    // TODO(abaire): Implement.
+    // Not implemented.
   }
 }

@@ -71,7 +71,6 @@ final class SourcePathNode: UISelectableOutlineViewNode {
     }
   }
 
-  // TODO(abaire): Use a custom control to override nextState: such that it's never set to mixed via user interaction.
   @objc func validateRecursive(_ ioValue: AutoreleasingUnsafeMutablePointer<AnyObject?>) throws {
     if let value = ioValue.pointee as? NSNumber {
       if value.intValue == NSControl.StateValue.mixed.rawValue {
@@ -116,8 +115,7 @@ final class ConfigEditorSourceFilterViewController: NSViewController, WizardSubv
     sourceFilterContentArray = []
     document.updateSourcePaths(populateOutlineView)
 
-    // TODO(abaire): Set when toggling selection instead.
-    document.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+    document.updateChangeCount(.changeDone)
   }
 
   // MARK: - Private methods

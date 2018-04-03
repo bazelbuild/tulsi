@@ -132,7 +132,6 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     _pageController(pageController, prepareViewController: viewController, withObject: object! as AnyObject)
   }
 
-  // TODO(abaire): Roll into the function body above when Swift 2.2 is dropped.
   private func _pageController(_ pageController: NSPageController,
                                prepareViewController viewController: NSViewController,
                                withObject object: AnyObject) {

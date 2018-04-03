@@ -280,11 +280,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
           return
         }
         option.targetValues![targetLabel] = value
-        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)
 
       case .Project:
         option.projectValue = value
-        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)
 
       default:
         assertionFailure("Editor node accessed via unknown subscript \(level)")
@@ -304,11 +304,11 @@ class OptionsEditorStringNode: OptionsEditorNode {
 
       case .Target:
         _ = option.targetValues?.removeValue(forKey: target!.fullLabel)
-        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)
 
       case .Project:
         option.projectValue = nil
-        model?.updateChangeCount(.changeDone)  // TODO(abaire): Implement undo functionality.
+        model?.updateChangeCount(.changeDone)
     }
   }
 
