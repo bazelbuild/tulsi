@@ -17,7 +17,7 @@
             <BuildableReference BlueprintIdentifier="3D31C5E6BECFDF8000000000" ReferencedContainer="container:SimpleSkylarkProject.xcodeproj" BuildableName="XCUITest.xctest" BlueprintName="XCUITest" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="__TulsiTestRunner_Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
+    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
         <CommandLineArguments>
             <CommandLineArgument argument="--project-flag" isEnabled="YES"></CommandLineArgument>
         </CommandLineArguments>

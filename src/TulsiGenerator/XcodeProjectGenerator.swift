@@ -734,7 +734,6 @@ final class XcodeProjectGenerator {
 
       var appExtension: Bool = false
       var extensionType: String? = nil
-      var launchActionBuildConfig: String = "Debug"
       var launchStyle: XcodeScheme.LaunchStyle? = .Normal
       var runnableDebuggingMode: XcodeScheme.RunnableDebuggingMode = .Default
 
@@ -747,10 +746,8 @@ final class XcodeProjectGenerator {
       } else if targetType.isLibrary {
         launchStyle = nil
       } else if targetType.isTest {
-        // Test targets should be Buildable but not Runnable. Since Xcode will use the build config
-        // from the LaunchAction, we need to use the test build config for the LaunchAction.
+        // Test targets should be Buildable but not Runnable.
         launchStyle = nil
-        launchActionBuildConfig = runTestTargetBuildConfigPrefix + "Debug"
       }
 
       var additionalBuildTargets = target.buildActionDependencies.map() {
@@ -774,7 +771,6 @@ final class XcodeProjectGenerator {
                                project: info.project,
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
-                               launchActionBuildConfig: launchActionBuildConfig,
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                appExtension: appExtension,
                                extensionType: extensionType,
