@@ -44,11 +44,8 @@
 /* Error when parsing a Bazel Build Event for BEP when running Bazel. */
 "BazelParseBuildEventFailed" = "Failed to parse a Bazel Build Event. This may be a Tulsi bug, please report. Additional Context: %1$@";
 
-/* Warning when a failure occurred while attempting to bootstrap the user's LLDBInit file. */
-"BootstrapLLDBInitFailed" = "Failed to bootstrap LLDBInit file, bootstrapping script returned error code %1$d, %2$@.";
-
 /* Warning when a failure occurred while cleaning dSYMs in the SQLite store used by the DBGShellCommands script. */
-"CleanCachedDsymsFailed" = "Failed to clean cache of dSYMs, clean script returned error code %1$d, %2$@.";
+"CleanCachedDsymsFailed" = "Failed to clean cache of dSYMs, clean script returned %1$@.";
 
 /* Failed to copy an important file resource, the resulting project will most likely be broken. A bug should be reported. */
 "CopyingResourceFailed" = "Failed to copy project resource '%1$@' to '%2$@'. The generated project will probably malfunction, please report. Error: %3$@";
