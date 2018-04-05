@@ -394,7 +394,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3.modulemaps/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3/_objs";
@@ -407,7 +407,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4.modulemaps/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4";
 				PRODUCT_NAME = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4/_objs";
@@ -420,7 +420,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary.modulemaps/module.modulemap";
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";
@@ -491,7 +490,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3.modulemaps/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_56AA3A57_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV3/_objs";
@@ -504,7 +503,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4.modulemaps/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4";
 				PRODUCT_NAME = _idx_SwiftLibraryV4_56AA3A59_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibraryV4/_objs";
@@ -517,7 +516,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary.modulemaps $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary.modulemaps/module.modulemap";
 				PRODUCT_NAME = _idx_SwiftLibrary_EA7FC891_ios_min8.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_swift/SwiftLibrary/_objs";

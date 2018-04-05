@@ -1169,6 +1169,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       includes.addObjects(from: bazelWorkspaceRootedPaths)
     }
 
+    // TODO(b/77518149): Once Xcode supports indexing with multiple -fmodule-map-file arguments,
+    // remove this in favor of "-Xcc -fmodule-map-file=<>" below.
+    //
     // Include the ObjC modules in HEADER_SEARCH_PATHS in order to fix issues regarding
     // explicitly passing them via -fmodule-map-file: Xcode 8 seems to ignore the
     // -fmodule-map-file flag when using SourceKit for CMD+click and Xcode 9 seems to only
@@ -1191,13 +1194,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Returns other swift compiler flags for the given target based on the RuleEntry.
   private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toSet swiftFlags: NSMutableOrderedSet) {
-    // Load module maps explicitly instead of letting Clang discover them on search paths. This
-    // is needed to avoid a case where Clang may load the same header both in modular and
-    // non-modular contexts, leading to duplicate definitions in the same file.
-    // See llvm.org/bugs/show_bug.cgi?id=19501
-    swiftFlags.addObjects(from: ruleEntry.objCModuleMaps.map() {
-      "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
-    })
+    // TODO(b/77518149): Once Xcode supports indexing with multiple -fmodule-map-file arguments, use
+    // "-Xcc -fmodule-map-file=<>" here instead of including paths in the includes above.
   }
 
   /// Reads the RuleEntry's copts and puts the arguments into the correct set.
