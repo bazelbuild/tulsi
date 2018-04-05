@@ -1169,8 +1169,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       includes.addObjects(from: bazelWorkspaceRootedPaths)
     }
 
-    // TODO(b/77518149): Once Xcode supports indexing with multiple -fmodule-map-file arguments,
-    // remove this in favor of "-Xcc -fmodule-map-file=<>" below.
+    // TODO(rdar://36107040): Once Xcode supports indexing with multiple -fmodule-map-file
+    // arguments, remove this in favor of "-Xcc -fmodule-map-file=<>" below.
     //
     // Include the ObjC modules in HEADER_SEARCH_PATHS in order to fix issues regarding
     // explicitly passing them via -fmodule-map-file: Xcode 8 seems to ignore the
@@ -1194,8 +1194,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Returns other swift compiler flags for the given target based on the RuleEntry.
   private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toSet swiftFlags: NSMutableOrderedSet) {
-    // TODO(b/77518149): Once Xcode supports indexing with multiple -fmodule-map-file arguments, use
-    // "-Xcc -fmodule-map-file=<>" here instead of including paths in the includes above.
+    // TODO(rdar://36107040): Once Xcode supports indexing with multiple -fmodule-map-file
+    // arguments, use "-Xcc -fmodule-map-file=<>" here instead of including paths in the includes
+    // above.
   }
 
   /// Reads the RuleEntry's copts and puts the arguments into the correct set.
