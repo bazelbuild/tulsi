@@ -5,31 +5,31 @@ title: Walkthrough
 
 # Background
 
-This brief walkthrough explores setting up a new Tulsi project for a
-team building a hypothetical app called Albahaca which uses computer vision to
+This brief walkthrough explores setting up a new Tulsi project for a team
+building a hypothetical app called Albahaca which uses computer vision to
 identify garden herbs.
 
 The app team is roughly divided into two groups:
 
-1. An infrastructure team, working on the computer vision portion of the app
-1. A UI team, responsible for the application's user interface
+1.  An infrastructure team, working on the computer vision portion of the app
+1.  A UI team, responsible for the application's user interface
 
 The team just finished switching over to build their app with
 [Bazel](https://bazel.build) and have an `ios_application` rule called
-`//albahaca:Application` under the `albahaca` folder, an `objc_binary` rule
-called `AppBinary` in the `albahaca/App` folder and an `objc_library` named
+`//albahaca:Application` under the `albahaca` folder, an `objc_library` rule
+called `AppLibrary` in the `albahaca/App` folder and an `objc_library` named
 `Vision` in the `albahaca/Vision` folder.
 
 Kay, the team's tech lead, is about to use Tulsi to allow her teammates to use
-Xcode for development. She has read the
-[getting started](/docs/gettingstarted.html) documentation and, since she's
-decided to use the command-line to generate Xcode projects, knows that she
-has to accomplish four steps:
+Xcode for development. She has read the [getting
+started](/docs/gettingstarted.html) documentation and, since she's decided to
+use the command-line to generate Xcode projects, knows that she has to
+accomplish four steps:
 
-1. Creating a Tulsi project
-1. Creating Tulsi generator configs
-1. Writing up a helper script that her team may use to generate Xcode projects
-1. Checking everything into source control
+1.  Creating a Tulsi project
+1.  Creating Tulsi generator configs
+1.  Writing up a helper script that her team may use to generate Xcode projects
+1.  Checking everything into source control
 
 # Creating a Tulsi project
 
@@ -51,12 +51,12 @@ Finally, she is ready to add configs for her team, so she switches to the
 
 Kay has decided to create three configs for her team.
 
-1. One that includes all of the sources and targets and can be used to build and
-   debug issues that cut across the UI and infrastructure layers
-1. Another for her UI team that omits the computer vision sources to reduce the
-   amount of time Xcode spends indexing files
-1. A final one for her infrastructure team that leaves out the UI sources for
-   the same reason
+1.  One that includes all of the sources and targets and can be used to build
+    and debug issues that cut across the UI and infrastructure layers
+1.  Another for her UI team that omits the computer vision sources to reduce the
+    amount of time Xcode spends indexing files
+1.  A final one for her infrastructure team that leaves out the UI sources for
+    the same reason
 
 She starts off by clicking the "+" button on the "Configs" segment, saving her
 Tulsi project as _Albahaca_ in the `albahaca` directory when asked.
@@ -86,8 +86,8 @@ her team is more comfortable with something scriptable. She decides to write a
 simple wrapper for the
 [generate_xcodeproj.sh](https://github.com/bazelbuild/tulsi/blob/master/src/tools/generate_xcodeproj.sh)
 script in the Tulsi tools folder. She knows that the team has the
-`generate_xcodeproj.sh` script in their shared `/tools/Tulsi` mount and Bazel
-in `/tools/Bazel` so it'll be safe to refer to them there.
+`generate_xcodeproj.sh` script in their shared `/tools/Tulsi` mount and Bazel in
+`/tools/Bazel` so it'll be safe to refer to them there.
 
 ```
 #!/bin/bash -eu
