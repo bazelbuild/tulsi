@@ -1456,10 +1456,6 @@ class BazelBuildBridge(object):
   def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates ~/.lldbinit-tulsiproj to enable debugging of Bazel binaries."""
 
-    # Apple Watch app binaries do not contain any sources.
-    if self.product_type == 'com.apple.product-type.application.watchapp2':
-      return 0
-
     # Make sure a reference to ~/.lldbinit-tulsiproj exists in ~/.lldbinit or
     # ~/.lldbinit-Xcode. Priority is given to ~/.lldbinit-Xcode if it exists,
     # otherwise the bootstrapping will be written to ~/.lldbinit.
