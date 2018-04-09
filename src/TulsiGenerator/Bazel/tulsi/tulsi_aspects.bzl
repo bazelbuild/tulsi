@@ -877,6 +877,17 @@ def _tulsi_outputs_aspect(target, ctx):
 
     bundle_name = bundle_info.bundle_name
     bundle_dir = bundle_info.bundle_dir
+  elif target_kind == 'macos_command_line_application':
+    # Special support for macos_command_line_application which does not have an
+    # AppleBundleInfo provider.
+
+    # Both the dSYM binary and executable binary don't have an extension, so
+    # pick the first extension-less file not in a DWARF folder.
+    artifacts = [x.path for x in target.files.to_list()
+                 if x.extension == ''
+                 and 'Contents/Resources/DWARF' not in x.path]
+    if len(artifacts) > 0:
+      artifact = artifacts[0]
 
   # Collect generated files for bazel_build.py to copy under Tulsi root.
   all_files = depset()

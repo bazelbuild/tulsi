@@ -942,7 +942,7 @@ class BazelBuildBridge(object):
 
     primary_artifact = primary_output_data['artifact']
     artifact_archive_root = primary_output_data.get('archive_root')
-    bundle_name = primary_output_data['bundle_name']
+    bundle_name = primary_output_data.get('bundle_name')
 
     # The PRODUCT_NAME used by the Xcode project is not trustable as it may be
     # modified by the user and, more importantly, may have been modified by
