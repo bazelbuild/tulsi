@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Bridge between Xcode and Bazel for the "build" action.
-
-NOTE: This script must be executed in the same directory as the Xcode project's
-main group in order to generate correct debug symbols.
-"""
+"""Bridge between Xcode and Bazel for the "build" action."""
 
 import atexit
 import collections
@@ -195,7 +191,7 @@ class _OptionsParser(object):
   # The build configurations handled by this parser.
   KNOWN_CONFIGS = ['Debug', 'Release', 'Fastbuild']
 
-  def __init__(self, sdk_version, platform_name, arch, main_group_path):
+  def __init__(self, sdk_version, platform_name, arch):
     self.targets = []
     self.startup_options = collections.defaultdict(list)
     self.build_options = collections.defaultdict(
@@ -219,18 +215,6 @@ class _OptionsParser(object):
                 '--compilation_mode=fastbuild',
             ],
         })
-
-    # Options specific to debugger integration in Xcode.
-    xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
-    if xcode_version_major < 800:
-      xcode_lldb_options = [
-          '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
-          '--copt=-Xclang', '--copt=%s' % main_group_path,
-          '--objccopt=-Xclang', '--objccopt=-fdebug-compilation-dir',
-          '--objccopt=-Xclang', '--objccopt=%s' % main_group_path,
-      ]
-      self.build_options['Debug'].extend(xcode_lldb_options)
-      self.build_options['Release'].extend(xcode_lldb_options)
 
     self.sdk_version = sdk_version
     self.platform_name = platform_name
@@ -505,8 +489,10 @@ class BazelBuildBridge(object):
     if not self.xcode_action:
       self.xcode_action = 'build'
 
-    self.xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
-    self.xcode_version_minor = int(os.environ['XCODE_VERSION_MINOR'])
+    if int(os.environ['XCODE_VERSION_MAJOR']) < 900:
+      xcode_build_version = os.environ['XCODE_PRODUCT_BUILD_VERSION']
+      _PrintXcodeWarning('Tulsi officially supports Xcode 9+. You are using an '
+                         'earlier Xcode, build %s.' % xcode_build_version)
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
     self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
@@ -610,7 +596,6 @@ class BazelBuildBridge(object):
                                                        'Resources',
                                                        entitlements_filename)
 
-    self.main_group_path = os.getcwd()
     self.bazel_executable = None
 
   def Run(self, args):
@@ -621,8 +606,7 @@ class BazelBuildBridge(object):
 
     parser = _OptionsParser(self.sdk_version,
                             self.platform_name,
-                            self.arch,
-                            self.main_group_path)
+                            self.arch)
     timer = Timer('Parsing options', 'parsing_options').Start()
     message, exit_code = parser.ParseOptions(args[1:])
     timer.End()
@@ -721,8 +705,8 @@ class BazelBuildBridge(object):
         # Starting with Xcode 9.x, a plist based remapping exists for dSYM
         # bundles that works with Swift as well as (Obj-)C(++).
         #
-        # This solution also works for Xcode 7.x and 8.x for (Obj-)C(++) but
-        # not for Swift.
+        # This solution also works for Xcode 8.x for (Obj-)C(++) but not
+        # for Swift.
         timer = Timer('Adding remappings as plists to dSYM',
                       'plist_dsym').Start()
         exit_code = self._PlistdSYMPaths(path)
@@ -736,8 +720,7 @@ class BazelBuildBridge(object):
     # Starting with Xcode 7.3, XCTests inject several supporting frameworks
     # into the test host that need to be signed with the same identity as
     # the host itself.
-    if (self.is_test and self.xcode_version_minor >= 730 and
-        not self.platform_name.startswith('macos') and
+    if (self.is_test and not self.platform_name.startswith('macos') and
         self.codesigning_allowed):
       exit_code = self._ResignTestArtifacts()
       if exit_code:
@@ -749,14 +732,13 @@ class BazelBuildBridge(object):
     #
     # This will not work with dSYM bundles, or a direct -fdebug-prefix-map from
     # the Bazel-built locations to Xcode-visible sources.
-    if self.xcode_version_major >= 800:
-      timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
-      clear_source_map = dsym_paths or self.direct_debug_prefix_map
-      exit_code = self._UpdateLLDBInit(clear_source_map)
-      timer.End()
-      if exit_code:
-        _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
-                           exit_code)
+    timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
+    clear_source_map = dsym_paths or self.direct_debug_prefix_map
+    exit_code = self._UpdateLLDBInit(clear_source_map)
+    timer.End()
+    if exit_code:
+      _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
+                         exit_code)
 
     return 0
 
@@ -825,10 +807,10 @@ class BazelBuildBridge(object):
 
   def _RunBazelAndPatchOutput(self, command):
     """Runs subprocess command, patching output as it's received."""
-    self._PrintVerbose('Running "%s", patching output for main group path at '
+    self._PrintVerbose('Running "%s", patching output for workspace root at '
                        '"%s" with project path at "%s".' %
                        (' '.join(command),
-                        self.main_group_path,
+                        self.workspace_root,
                         self.project_dir))
     # Xcode translates anything that looks like ""<path>:<line>:" that is not
     # followed by the word "warning" into an error. Bazel warnings and debug
@@ -843,14 +825,14 @@ class BazelBuildBridge(object):
       return output_line
 
     patch_xcode_parsable_line = PatchBazelWarningStatements
-    if self.main_group_path != self.project_dir:
+    if self.workspace_root != self.project_dir:
       # Match (likely) filename:line_number: lines.
       xcode_parsable_line_regex = re.compile(r'([^/][^:]+):\d+:')
 
       def PatchOutputLine(output_line):
         output_line = PatchBazelWarningStatements(output_line)
         if xcode_parsable_line_regex.match(output_line):
-          output_line = '%s/%s' % (self.main_group_path, output_line)
+          output_line = '%s/%s' % (self.workspace_root, output_line)
         return output_line
       patch_xcode_parsable_line = PatchOutputLine
 
