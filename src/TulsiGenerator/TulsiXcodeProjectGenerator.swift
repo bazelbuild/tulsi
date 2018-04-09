@@ -53,6 +53,7 @@ public final class TulsiXcodeProjectGenerator {
                             bundle.url(forResource: "bazel_options", withExtension: "py")!,
                             bundle.url(forResource: "apfs_clone_copy", withExtension: "py")!,
                             bundle.url(forResource: "bazel_build_events", withExtension: "py")!,
+                            bundle.url(forResource: "bootstrap_lldbinit", withExtension: "py")!,
                             bundle.url(forResource: "symbol_cache_schema", withExtension: "py")!,
                             bundle.url(forResource: "update_symbol_cache", withExtension: "py")!,
                             bundle.url(forResource: "install_genfiles", withExtension: "py")!],
