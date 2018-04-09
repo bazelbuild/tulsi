@@ -50,8 +50,11 @@ public enum TulsiOptionKey: String {
       DisableDBGShellCommandsCaching,
 
       // Remove the normalized -fdebug-prefix-map and fall back on the old behavior for debug info.
-      DisableNormalizedDebugPrefixMap
+      DisableNormalizedDebugPrefixMap,
 
+      // Include the following build options only during project generation; can override config
+      // from default (simulator) to device.
+      BazelBuildOptionsProjectGenerationOnly
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -279,6 +282,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.UseAspectForTestSuites, .Generic, true)
     addBoolOption(.DisableDBGShellCommandsCaching, .Generic, false)
     addBoolOption(.DisableNormalizedDebugPrefixMap, .Generic, false)
+    addStringOption(.BazelBuildOptionsProjectGenerationOnly, .Generic)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])

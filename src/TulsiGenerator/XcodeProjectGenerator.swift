@@ -596,7 +596,8 @@ final class XcodeProjectGenerator {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
-                                                             useAspectForTestSuitesOption: config.options[.UseAspectForTestSuites])
+                                                             useAspectForTestSuitesOption: config.options[.UseAspectForTestSuites],
+                                                             projectGenBuildOptions: config.options[.BazelBuildOptionsProjectGenerationOnly])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
     }

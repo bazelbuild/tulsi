@@ -69,7 +69,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            useAspectForTestSuitesOption: TulsiOption) throws -> RuleEntryMap {
+                            useAspectForTestSuitesOption: TulsiOption,
+                            projectGenBuildOptions: TulsiOption) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
     }
@@ -85,13 +86,15 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
     let useAspectForTestSuites = useAspectForTestSuitesOption.commonValueAsBool ?? true
+    let projectGenerationOptions = splitOptionString(projectGenBuildOptions.commonValue)
 
     do {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
-                                                        useAspectForTestSuites: useAspectForTestSuites)
+                                                        useAspectForTestSuites: useAspectForTestSuites,
+                                                        projectGenerationOptions: projectGenerationOptions)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")

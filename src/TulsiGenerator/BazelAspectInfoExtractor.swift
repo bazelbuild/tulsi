@@ -68,14 +68,16 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
-                                   useAspectForTestSuites: Bool = true) throws -> RuleEntryMap {
+                                   useAspectForTestSuites: Bool = true,
+                                   projectGenerationOptions: [String] = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
-                                          useAspectForTestSuites: useAspectForTestSuites)
+                                          useAspectForTestSuites: useAspectForTestSuites,
+                                          projectGenerationOptions: projectGenerationOptions)
   }
 
   // MARK: - Private methods
@@ -83,7 +85,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
                                           startupOptions: [String],
                                           buildOptions: [String],
-                                          useAspectForTestSuites: Bool) throws -> RuleEntryMap {
+                                          useAspectForTestSuites: Bool,
+                                          projectGenerationOptions: [String]) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
     let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
@@ -102,6 +105,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
                                                useAspectForTestSuites: useAspectForTestSuites,
+                                               projectGenerationOptions: projectGenerationOptions,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
        defer { semaphore.signal() }
@@ -158,6 +162,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
                                             useAspectForTestSuites: Bool = true,
+                                            projectGenerationOptions: [String] = [],
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
 
@@ -198,6 +203,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     if useAspectForTestSuites {
       arguments.append("--noexpand_test_suites")
     }
+    arguments.append(contentsOf: projectGenerationOptions)
     arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)
 

@@ -453,10 +453,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
         let useAspectForTestSuitesOption = optionSet[.UseAspectForTestSuites]
+        let projectGenBuildOptions = optionSet[.BazelBuildOptionsProjectGenerationOnly]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
-                                                                   useAspectForTestSuitesOption: useAspectForTestSuitesOption)
+                                                                   useAspectForTestSuitesOption: useAspectForTestSuitesOption,
+                                                                   projectGenBuildOptions: projectGenBuildOptions)
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
         return
@@ -779,7 +781,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
                                                               startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
                                                               buildOptions: optionSet![.BazelBuildOptionsDebug],
-                                                              useAspectForTestSuitesOption: optionSet![.UseAspectForTestSuites])
+                                                              useAspectForTestSuitesOption: optionSet![.UseAspectForTestSuites],
+                                                              projectGenBuildOptions: optionSet![.BazelBuildOptionsProjectGenerationOnly])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {

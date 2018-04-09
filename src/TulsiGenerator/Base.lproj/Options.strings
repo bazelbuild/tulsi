@@ -14,6 +14,9 @@
 "BazelBuildOptionsFastbuild" = "Fastbuild";
 "BazelBuildOptionsRelease" = "Release";
 
+"BazelBuildOptionsProjectGenerationOnly" = "'build' options ONLY for project generation";
+"BazelBuildOptionsProjectGenerationOnly_DESC" = "You can override the --config used for the aspect here (i.e. to --config=ios_arm64).";
+
 "BazelBuildStartupOptions" = "'build' startup options";
 "BazelBuildStartupOptions_DESC" = "Startup options for bazel 'build' invocations.";
 "BazelBuildStartupOptionsDebug" = "Debug";
