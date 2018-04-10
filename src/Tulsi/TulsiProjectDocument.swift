@@ -341,7 +341,7 @@ final class TulsiProjectDocument: NSDocument,
         childConfigDocuments.remove(doc)
         doc.close()
       }
-      if let url = urlForConfigNamed(name) {
+      if let url = urlForConfigNamed(name, sanitized: false) {
         let errorInfo: String?
         do {
           try fileManager.removeItem(at: url)
@@ -362,9 +362,10 @@ final class TulsiProjectDocument: NSDocument,
     generatorConfigNames = configNames.sorted()
   }
 
-  func urlForConfigNamed(_ name: String) -> URL? {
+  func urlForConfigNamed(_ name: String, sanitized: Bool = true) -> URL? {
      return TulsiGeneratorConfigDocument.urlForConfigNamed(name,
-                                                           inFolderURL: generatorConfigFolderURL)
+                                                           inFolderURL: generatorConfigFolderURL,
+                                                           sanitized: sanitized)
   }
 
   /// Asynchronously loads a previously created config with the given name, invoking the given
@@ -379,7 +380,7 @@ final class TulsiProjectDocument: NSDocument,
   /// Sparsely loads a previously created config with the given name. The returned document may have
   /// unresolved label references.
   func loadSparseConfigDocumentNamed(_ name: String) throws -> TulsiGeneratorConfigDocument {
-    guard let configURL = urlForConfigNamed(name) else {
+    guard let configURL = urlForConfigNamed(name, sanitized: false) else {
       throw DocumentError.noSuchConfig
     }
 

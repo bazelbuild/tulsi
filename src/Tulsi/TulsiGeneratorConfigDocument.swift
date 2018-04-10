@@ -232,8 +232,16 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     return doc
   }
 
-  static func urlForConfigNamed(_ name: String, inFolderURL folderURL: URL?) -> URL? {
-    let filename = TulsiGeneratorConfig.sanitizeFilename("\(name).\(TulsiGeneratorConfig.FileExtension)")
+  static func urlForConfigNamed(_ name: String,
+                                inFolderURL folderURL: URL?,
+                                sanitized: Bool = true) -> URL? {
+    let expectedFilename = "\(name).\(TulsiGeneratorConfig.FileExtension)"
+    let filename: String
+    if sanitized {
+      filename = TulsiGeneratorConfig.sanitizeFilename(expectedFilename)
+    } else {
+      filename = expectedFilename
+    }
     return folderURL?.appendingPathComponent(filename)
   }
 
