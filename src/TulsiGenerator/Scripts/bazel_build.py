@@ -518,7 +518,13 @@ class BazelBuildBridge(object):
       self.normalized_prefix_map = os.environ.get('TULSI_NORMALIZED_DEBUG_INFO',
                                                   'NO') == 'YES'
 
-    self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
+    if self.swift_dependency:
+      # Always generate dSYMs for projects with Swift dependencies, as dSYMs are
+      # still required to expr or print variables within Bazel-built Swift
+      # modules in LLDB.
+      self.generate_dsym = True
+    else:
+      self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
 
     update_dsym_cache = os.environ.get('TULSI_UPDATE_DSYM_CACHE',
                                        'NO') == 'YES'
