@@ -29,7 +29,10 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    launch_images = ["Binary_Assets_LaunchImage"],
+    launch_images = [
+        "assets.xcassets/images.launchimage/Contents.json",
+        "assets.xcassets/images.launchimage/image.png",
+    ],
     launch_storyboard = "Application/Launch.storyboard",
     minimum_os_version = "8.0",
     deps = [":ApplicationLibrary"],
@@ -44,7 +47,10 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    launch_images = ["Binary_Assets_LaunchImage"],
+    launch_images = [
+        "assets.xcassets/images.launchimage/Contents.json",
+        "assets.xcassets/images.launchimage/image.png",
+    ],
     launch_storyboard = "Application/Launch.storyboard",
     minimum_os_version = "8.0",
     deps = [":ApplicationLibrary"],
