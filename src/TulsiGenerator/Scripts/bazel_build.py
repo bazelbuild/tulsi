@@ -795,8 +795,9 @@ class BazelBuildBridge(object):
     if self.normalized_prefix_map:
       bazel_command.append('--features=debug_prefix_map_pwd_is_dot')
 
-    bazel_command.append(
-        '--define=apple.propagate_embedded_extra_outputs=1')
+    bazel_command.extend([
+        '--define=apple.add_debugger_entitlement=1',
+        '--define=apple.propagate_embedded_extra_outputs=1'])
 
     bazel_command.extend(options.targets)
 
