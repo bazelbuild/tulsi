@@ -1665,11 +1665,6 @@ class BazelBuildBridge(object):
         if not plist_created:
           return 405
 
-    # Update spotlight index with this updated dSYM bundle in case the binary's
-    # UUID changed.
-    # TODO(b/71705491): Remove if DBGShellCommands does not cause any issues.
-    self._RunSubprocess(['mdimport', dsym_bundle_path])
-
     return 0
 
   def _ExtractBazelInfoExecrootPaths(self):
