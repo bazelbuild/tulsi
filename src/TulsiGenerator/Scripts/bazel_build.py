@@ -1591,7 +1591,7 @@ class BazelBuildBridge(object):
         # Add the mapping as a DBGSourcePathRemapping to the UUID plist here.
         out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
 
-        # Make sure that we also set DBGVersion to 2 via plutil.
+        # Make sure that we also set DBGVersion to 2.
         out.write('</dict>\n'
                   '<key>DBGVersion</key>\n'
                   '<string>2</string>\n'
