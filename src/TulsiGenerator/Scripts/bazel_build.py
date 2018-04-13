@@ -1435,31 +1435,6 @@ class BazelBuildBridge(object):
     self.codesign_attributes[signed_bundle] = bundle_attributes
     return bundle_attributes.Get(attribute)
 
-  # File for custom lldbinit changes.
-  # WARNING: This file will override any dSYM based source remappings AND
-  # ~/.lldbinit-tulsiproj remappings. Use of this file is strongly discouraged.
-  _TULSI_LLDBINIT_EPILOGUE_FILE = (
-      os.path.expanduser('~/.lldbinit-tulsiproj-epilogue'))
-
-  def _LinkTulsiLLDBInitEpilogue(self, outfile):
-    """Adds a reference to ~/.lldbinit-tulsi-epilogue if it exists.
-
-    This file can be used to append more LLDB commands right after
-    ~/.lldbinit-tulsiproj is loaded.
-
-    Use of this file is strongly discouraged; it will override any other
-    changes made by ~/.lldbinit, ~/.lldbinit-tulsiproj and dSYM bundle path
-    mappings.
-
-    Args:
-      outfile: a file-type object, expected to be ~/.lldbinit-tulsiproj.
-
-    Returns:
-      None
-    """
-    if os.path.isfile(self._TULSI_LLDBINIT_EPILOGUE_FILE):
-      outfile.write('command source %s\n' % self._TULSI_LLDBINIT_EPILOGUE_FILE)
-
   def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates ~/.lldbinit-tulsiproj to enable debugging of Bazel binaries."""
 
@@ -1474,7 +1449,6 @@ class BazelBuildBridge(object):
 
       if clear_source_map:
         out.write('settings clear target.source-map\n')
-        self._LinkTulsiLLDBInitEpilogue(out)
         return 0
 
       if self.normalized_prefix_map:
@@ -1495,7 +1469,6 @@ class BazelBuildBridge(object):
                   '%r.\n' % os.path.basename(self.project_file_path))
 
       out.write('settings set target.source-map "%s" "%s"\n' % source_map)
-      self._LinkTulsiLLDBInitEpilogue(out)
 
     return 0
 
