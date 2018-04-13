@@ -58,8 +58,15 @@ class Logger(object):
   def log_bazel_message(self, message):
     self._logger.info(message)
 
-  def log_action(self, action_name, action_id, seconds):
+  def log_action(self, action_name, action_id, seconds, start=None, end=None):
+    """Logs the start, duration, and end of an action."""
     del action_id  # Unused by this logger.
+    if start:
+      self._logger.info('<**> %s start: %f', action_name, start)
+
     # Log to file and print to stdout for display in the Xcode log.
     self._logger.info('<*> %s completed in %0.3f ms',
                       action_name, seconds * 1000)
+
+    if end:
+      self._logger.info('<**> %s end: %f', action_name, end)

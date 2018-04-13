@@ -111,10 +111,14 @@ class Timer(object):
     self._start = time.time()
     return self
 
-  def End(self):
+  def End(self, log_absolute_times=False):
     end = time.time()
     seconds = end - self._start
-    _logger.log_action(self.action_name, self.action_id, seconds)
+    if log_absolute_times:
+      _logger.log_action(self.action_name, self.action_id, seconds,
+                         self._start, end)
+    else:
+      _logger.log_action(self.action_name, self.action_id, seconds)
 
 
 # Function to be called atexit to release the file lock on script termination.
@@ -662,6 +666,9 @@ class BazelBuildBridge(object):
       _PrintXcodeError('Bazel build failed.')
       return exit_code
 
+    post_bazel_timer = Timer('Total Tulsi Post-Bazel time', 'total_post_bazel')
+    post_bazel_timer.Start()
+
     if not os.path.exists(BAZEL_EXECUTION_ROOT):
       _PrintXcodeError('No Bazel execution root was found at %s. Debugging '
                        'experience will be compromised. Please report a Tulsi '
@@ -745,6 +752,8 @@ class BazelBuildBridge(object):
     if exit_code:
       _PrintXcodeWarning('Updating .lldbinit action failed with code %d' %
                          exit_code)
+
+    post_bazel_timer.End(log_absolute_times=True)
 
     return 0
 
