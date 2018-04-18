@@ -23,7 +23,41 @@ public struct BazelLocator {
   public static let DefaultBazelURLKey = "defaultBazelURL"
 
   static var bazelURL: URL? {
-    return UserDefaults.standard.url(forKey: BazelLocator.DefaultBazelURLKey)
+    if let bazelURL = UserDefaults.standard.url(forKey: BazelLocator.DefaultBazelURLKey) {
+      return bazelURL
+    }
+
+    // If no default set, check for bazel on the user's PATH.
+
+    let semaphore = DispatchSemaphore(value: 0)
+    var completionInfo: ProcessRunner.CompletionInfo?
+    let task = TulsiProcessRunner.createProcess("/bin/bash",
+                                                arguments: ["-l", "-c", "which bazel"]) {
+                                                  processCompletionInfo in
+                                                  defer { semaphore.signal() }
+                                                  completionInfo = processCompletionInfo
+    }
+    task.launch()
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+
+    guard let info = completionInfo else {
+      return nil
+    }
+    guard info.terminationStatus == 0 else {
+      return nil
+    }
+
+    guard let stdout = String(data: info.stdout, encoding: String.Encoding.utf8) else {
+      return nil
+    }
+    let bazelURL = URL(fileURLWithPath: stdout.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
+                       isDirectory: false)
+    guard FileManager.default.fileExists(atPath: bazelURL.path) else {
+      return nil
+    }
+
+    UserDefaults.standard.set(bazelURL, forKey: BazelLocator.DefaultBazelURLKey)
+    return bazelURL
   }
 
   // MARK: - Private methods
