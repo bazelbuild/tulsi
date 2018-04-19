@@ -23,6 +23,7 @@ load(
      'AppleBundleInfo',
      'AppleTestInfo',
      'IosExtensionBundleInfo',
+     'SwiftInfo',
 )
 
 # List of all of the attributes that can link from a Tulsi-supported rule to a
@@ -508,7 +509,7 @@ def _collect_swift_modules(target):
 def _collect_module_maps(target):
   """Returns a depset of Clang module maps found on the given target."""
   maps = depset()
-  if hasattr(target, 'swift'):
+  if SwiftInfo in target:
     for module_maps in _getattr_as_list(target, 'objc.module_map'):
       maps += module_maps
   return maps
@@ -519,7 +520,7 @@ def _collect_swift_header(target):
   headers = depset()
   # swift_* targets put the generated header into their objc provider HEADER
   # field.
-  if hasattr(target, 'swift') and hasattr(target, 'objc'):
+  if SwiftInfo in target and hasattr(target, 'objc'):
     headers += target.objc.header
   return headers
 
@@ -660,9 +661,8 @@ def _tulsi_sources_aspect(target, ctx):
     infoplist = None
 
   # Build up any local transitive attributes and apply them.
-  swift = _get_opt_attr(target, 'swift')
-  if swift:
-    transitive_attributes['swift_language_version'] = getattr(swift, 'swift_version', None)
+  if SwiftInfo in target:
+    transitive_attributes['swift_language_version'] = target[SwiftInfo].swift_version
     transitive_attributes['has_swift_dependency'] = True
 
   all_attributes = attributes + inheritable_attributes + transitive_attributes

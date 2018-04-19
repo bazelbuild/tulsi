@@ -21,6 +21,7 @@ load(
     '@build_bazel_rules_apple//apple:providers.bzl',
     _AppleBundleInfo='AppleBundleInfo',
     _IosExtensionBundleInfo='IosExtensionBundleInfo',
+    _SwiftInfo='SwiftInfo',
 )
 load(
     '@build_bazel_rules_apple//apple/testing:apple_test_rules.bzl',
@@ -31,3 +32,4 @@ load(
 AppleBundleInfo = _AppleBundleInfo
 AppleTestInfo = _AppleTestInfo
 IosExtensionBundleInfo = _IosExtensionBundleInfo
+SwiftInfo = _SwiftInfo
