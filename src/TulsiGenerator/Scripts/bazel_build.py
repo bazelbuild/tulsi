@@ -502,8 +502,6 @@ class BazelBuildBridge(object):
     self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
                                            'NO') == 'YES'
 
-    self.apfs_clone = os.environ.get('TULSI_APFS_CLONE', 'NO') == 'YES'
-
     self.preserve_tulsi_includes = os.environ.get(
         'TULSI_PRESERVE_TULSI_INCLUDES', 'YES') == 'YES'
 
@@ -1136,12 +1134,7 @@ class BazelBuildBridge(object):
     """Copies the given bundle to the given expected output path."""
     self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
     try:
-      if self.apfs_clone:
-        CopyOnWrite(full_source_path, output_path, True)
-      else:
-        if os.path.exists(output_path):
-          shutil.rmtree(output_path)
-        shutil.copytree(full_source_path, output_path)
+      CopyOnWrite(full_source_path, output_path, tree=True)
     except OSError as e:
       _PrintXcodeError('Copy failed. %s' % e)
       return 650
@@ -1159,10 +1152,7 @@ class BazelBuildBridge(object):
                          '%s' % (output_path_dir, e))
         return 650
     try:
-      if self.apfs_clone:
-        CopyOnWrite(full_source_path, output_path)
-      else:
-        shutil.copy2(full_source_path, output_path)
+      CopyOnWrite(full_source_path, output_path)
     except OSError as e:
       _PrintXcodeError('Copy failed. %s' % e)
       return 650
