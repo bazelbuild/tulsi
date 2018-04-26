@@ -54,7 +54,10 @@ public enum TulsiOptionKey: String {
 
       // Include the following build options only during project generation; can override config
       // from default (simulator) to device.
-      BazelBuildOptionsProjectGenerationOnly
+      BazelBuildOptionsProjectGenerationOnly,
+
+      // Improve auto-completion for include/import statements.
+      ImprovedImportAutocompletionFix
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -289,6 +292,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BazelBuildStartupOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
     addBoolOption(.IncludeBuildSources, .Generic, false)
+    addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])

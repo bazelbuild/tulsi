@@ -2633,6 +2633,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                           sourceFileNames: sourceFileNames,
                           swiftIncludePaths: "$(inherited) /include/foobar",
                           otherSwiftFlags: "$(inherited) -DCOMPILER_DEFINE",
+                          isSwift: true,
                           inTargets: targets)
   }
 
@@ -2907,6 +2908,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      swiftLanguageVersion: String? = nil,
                                      swiftIncludePaths: String? = nil,
                                      otherSwiftFlags: String? = nil,
+                                     isSwift: Bool = false,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
                                      line: UInt = #line) {
     var expectedBuildSettings = [
@@ -2915,6 +2917,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
     ]
+    if !isSwift {
+      expectedBuildSettings["USER_HEADER_SEARCH_PATHS"] = "$(TULSI_WR)"
+    }
     if let pchFile = pchFile {
       expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile.path!)"
     }

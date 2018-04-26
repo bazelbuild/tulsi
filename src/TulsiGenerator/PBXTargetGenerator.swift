@@ -420,6 +420,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return DeploymentTarget(platform: .ios, osVersion: "9.0")
   }
 
+  /// Computed property to determine if USER_HEADER_SEARCH_PATHS should be set for Objective-C
+  /// targets.
+  var improvedImportAutocompletionFix: Bool {
+    return options[.ImprovedImportAutocompletionFix].commonValueAsBool ?? true
+  }
+
   init(bazelURL: URL,
        bazelBinPath: String,
        project: PBXProject,
@@ -1065,6 +1071,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     if !data.otherSwiftFlags.isEmpty {
       buildSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + data.otherSwiftFlags.joined(separator: " ")
+    }
+
+    // Set USER_HEADER_SEARCH_PATHS for non-Swift (meaning static library) indexer targets if the
+    // improved include/import setting is enabled.
+    if self.improvedImportAutocompletionFix, let nativeTarget = target as? PBXNativeTarget,
+       nativeTarget.productType == .StaticLibrary {
+      buildSettings["USER_HEADER_SEARCH_PATHS"] = "$(\(PBXTargetGenerator.WorkspaceRootVarName))"
     }
 
     // Default the SDKROOT to the proper device SDK.
