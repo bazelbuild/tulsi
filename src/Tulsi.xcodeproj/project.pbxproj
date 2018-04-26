@@ -229,7 +229,6 @@
 		3D084A031C73CEEF005F5ABA /* ProjectEditorConfigManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorConfigManagerViewController.swift; sourceTree = "<group>"; };
 		3D0C9C171C5A87AF00417963 /* OptionsEditorNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorNode.swift; sourceTree = "<group>"; };
 		3D156AE11C1C8D9C00183439 /* bazel_clean.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = bazel_clean.sh; sourceTree = "<group>"; };
-		3D167E281C5B1FA700DD485C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Credits.html; sourceTree = "<group>"; };
 		3D1F2E251CF760420008CE83 /* BazelLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelLocator.swift; sourceTree = "<group>"; };
 		3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeScheme.swift; sourceTree = "<group>"; };
 		3D25E09F1CF49F5E00959453 /* EndToEndIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndToEndIntegrationTestCase.swift; sourceTree = "<group>"; };
@@ -261,7 +260,6 @@
 		3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubWatchOS2InfoPlist.plist; path = GeneratedProjectResources/StubWatchOS2InfoPlist.plist; sourceTree = "<group>"; };
 		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
-		3D9485421C3193F00026CE41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Options.strings; sourceTree = "<group>"; };
 		3D9677C11D467EAE00799275 /* ComplexSingle.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.bzl; path = Resources/ComplexSingle.bzl; sourceTree = "<group>"; };
 		3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.BUILD; path = Resources/ComplexSingle.BUILD; sourceTree = "<group>"; };
 		3D9926631C29F0A20094E098 /* TulsiGenerator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TulsiGenerator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,7 +297,6 @@
 		3DB8F6C01CA9E0FC0045B0CF /* aspect.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = aspect.BUILD; path = tulsi/aspect.BUILD; sourceTree = "<group>"; };
 		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
-		3DBEFACE1C2A1F7200119556 /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
 		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
 		3DC5CE0F1CFF3BAC00688AD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NewProjectViewController.xib; sourceTree = "<group>"; };
@@ -319,7 +316,6 @@
 		3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformDependentEndToEndGenerationTests.swift; sourceTree = "<group>"; };
 		3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProcessRunner.swift; sourceTree = "<group>"; };
 		3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISelectableOutlineViewNode.swift; sourceTree = "<group>"; };
-		3DF313B81C34898500A34C14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryInfoExtractor.swift; sourceTree = "<group>"; };
 		3DFAB53C1C1778640090CC6F /* BazelWorkspaceInfoExtractorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractorProtocol.swift; sourceTree = "<group>"; };
 		3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = command_line_splitter.sh; sourceTree = "<group>"; };
@@ -347,6 +343,10 @@
 		8B8F55A31BE3ECDC0095AF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXProjSerializerTests.swift; sourceTree = "<group>"; };
 		8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorBuildTargetSelectorViewController.swift; sourceTree = "<group>"; };
+		8BBC041D2092311000A4826E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8BBC041E2092312000A4826E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/Credits.html; sourceTree = "<group>"; };
+		8BBC0423209235EC00A4826E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8BBC0424209235F500A4826E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Options.strings; sourceTree = "<group>"; };
 		8BC3D1041CF3643800D6D10E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Tulsi/Base.lproj/SplashScreenRecentDocumentView.xib; sourceTree = "<group>"; };
 		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
@@ -1106,7 +1106,7 @@
 		3D167E291C5B1FA700DD485C /* Credits.html */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3D167E281C5B1FA700DD485C /* Base */,
+				8BBC041E2092312000A4826E /* en */,
 			);
 			name = Credits.html;
 			sourceTree = "<group>";
@@ -1154,7 +1154,7 @@
 		3D9485431C3193F00026CE41 /* Options.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3D9485421C3193F00026CE41 /* Base */,
+				8BBC0424209235F500A4826E /* en */,
 			);
 			name = Options.strings;
 			sourceTree = "<group>";
@@ -1162,7 +1162,7 @@
 		3DBEFACF1C2A1F7200119556 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3DBEFACE1C2A1F7200119556 /* Base */,
+				8BBC0423209235EC00A4826E /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1178,7 +1178,7 @@
 		3DF313B91C34898500A34C14 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3DF313B81C34898500A34C14 /* Base */,
+				8BBC041D2092311000A4826E /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
