@@ -19,8 +19,10 @@ import XCTest
 class PBXObjectsTests: XCTestCase {
   enum ExpectedStructure {
     case fileReference(String)
+    case fileReferenceWithName(String, path: String)
     case group(String, contents: [ExpectedStructure])
     case groupWithName(String, path: String, contents: [ExpectedStructure])
+    case variantGroup(String, contents: [ExpectedStructure])
   }
 
   var project: PBXProject! = nil
@@ -236,6 +238,22 @@ class PBXObjectsTests: XCTestCase {
     assertProjectStructure(expectedStructure, forGroup: project.mainGroup)
   }
 
+  func testVariantGroupHandling() {
+    let paths = [
+      "Base.lproj/Localizable.strings",
+      "en.lproj/Localizable.strings",
+    ]
+    let expectedStructure: [ExpectedStructure] = [
+        .variantGroup("Localizable.strings", contents: [
+            .fileReferenceWithName("Base", path: "Base.lproj/Localizable.strings"),
+            .fileReferenceWithName("en", path: "en.lproj/Localizable.strings"),
+        ]),
+    ]
+
+    project.getOrCreateGroupsAndFileReferencesForPaths(paths)
+    assertProjectStructure(expectedStructure, forGroup: project.mainGroup)
+  }
+
   // MARK: - Helper methods
 
   func assertProjectStructure(_ expectedStructure: [ExpectedStructure],
@@ -251,6 +269,9 @@ class PBXObjectsTests: XCTestCase {
         case .fileReference(let name):
           assertGroup(group, containsSourceTree: .Group, path: name, line: line)
 
+        case .fileReferenceWithName(let name, let path):
+          assertGroup(group, containsSourceTree: .Group, path: path, name: name, line: line)
+
         case .group(let name, let grandChildren):
           let childGroup = assertGroup(group, containsGroupWithName: name, line: line)
           assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
@@ -258,6 +279,10 @@ class PBXObjectsTests: XCTestCase {
         case .groupWithName(let name, let path, let grandChildren):
           let childGroup = assertGroup(group, containsGroupWithName: name, path: path, line: line)
           assertProjectStructure(grandChildren, forGroup: childGroup, line: line)
+
+        case .variantGroup(let name, let grandChildren):
+          let childVariantGroup = assertGroup(group, containsVariantGroupWithName: name, line: line)
+          assertProjectStructure(grandChildren, forGroup: childVariantGroup, line: line)
       }
     }
   }
@@ -266,12 +291,16 @@ class PBXObjectsTests: XCTestCase {
   func assertGroup(_ group: PBXGroup,
                    containsSourceTree sourceTree: SourceTree,
                    path: String,
+                   name: String? = nil,
                    line: UInt = #line) -> PBXFileReference {
     let sourceTreePath = SourceTreePath(sourceTree: sourceTree, path: path)
     let fileRef = group.fileReferencesBySourceTreePath[sourceTreePath]
     XCTAssertNotNil(fileRef,
                     "Failed to find expected PBXFileReference '\(path)' in group '\(group.name)",
                     line: line)
+    if let name = name {
+      XCTAssertEqual(name, fileRef!.name)
+    }
     return fileRef!
   }
 
@@ -289,6 +318,16 @@ class PBXObjectsTests: XCTestCase {
     } else {
       XCTAssertNil(child!.path, "Expected child \(child!) to have a nil path")
     }
+    return child!
+  }
+
+  func assertGroup(_ group: PBXGroup,
+                   containsVariantGroupWithName name: String,
+                   line: UInt = #line) -> PBXGroup {
+    let child = group.childVariantGroupsByName[name]
+    XCTAssertNotNil(child,
+                    "Failed to find child variant group '\(name)' in group '\(group.name)'",
+                    line: line)
     return child!
   }
 }

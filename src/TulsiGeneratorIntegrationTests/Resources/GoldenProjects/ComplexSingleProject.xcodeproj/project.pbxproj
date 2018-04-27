@@ -77,28 +77,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C280CF925C900000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28151F1CC400000000 /* non_propagated.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = non_propagated.m; path = "tulsi-workspace/tulsi_e2e_complex/NonPropagatedLibrary/srcs/non_propagated.m"; sourceTree = "<group>"; };
 		43D68C281A41382100000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C2829C9947000000000 /* ObjCBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ObjCBundle.bundle; path = "tulsi-workspace/tulsi_e2e_complex/ObjCBundle.bundle"; sourceTree = "<group>"; };
 		43D68C283148FC2600000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C283591DFD900000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv1.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C283CFBA10800000000 /* es */ = {isa = PBXFileReference; lastKnownFileType = text; name = es; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28442EC9D700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C2845AE2B9000000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_complex/Library/xib.xib"; sourceTree = "<group>"; };
-		43D68C2852C6516600000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
+		43D68C284C9C3B6600000000 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; path = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2858F5ABDF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_complex/Application/Info.plist"; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C285EBBC35700000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
-		43D68C286266EC1F00000000 /* Localized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28627DA73600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = file2.file; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file2.file"; sourceTree = "<group>"; };
+		43D68C2866D7C08500000000 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/EN.strings"; sourceTree = "<group>"; };
 		43D68C286A36B02900000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDifferentDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C286E7B37CF00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = NonLocalized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/NonLocalized.strings"; sourceTree = "<group>"; };
 		43D68C2875C5141000000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_complex/Application/srcs/main.m"; sourceTree = "<group>"; };
 		43D68C2879357B7500000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnotherPCHFile.pch; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch"; sourceTree = "<group>"; };
 		43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = sub_library_with_identical_defines.m; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithIdenticalDefines/srcs/sub_library_with_identical_defines.m"; sourceTree = "<group>"; };
 		43D68C287C841B0C00000000 /* ComplexSingle.bzl */ = {isa = PBXFileReference; lastKnownFileType = com.google.bazel.skylark; name = ComplexSingle.bzl; path = tulsi_e2e_complex/ComplexSingle.bzl; sourceTree = "<group>"; };
+		43D68C287DE8B05600000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C2885A048FD00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_complex/Application/entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C288970786C00000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src1.m"; sourceTree = "<group>"; };
 		43D68C288E876E6400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_complex/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
@@ -106,8 +106,8 @@
 		43D68C28958553E300000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src5.mm; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/src5.mm"; sourceTree = "<group>"; };
 		43D68C289B31F4AA00000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src2.m"; sourceTree = "<group>"; };
 		43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min8.0.a; path = lib_idx_Library_20EC2F4A_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A47D8A1F00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28A6D7A7EC00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_complex/BUILD; sourceTree = "<group>"; };
-		43D68C28A7AABE7100000000 /* EN.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = EN.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/EN.strings"; sourceTree = "<group>"; };
 		43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28AB2790F000000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src3.m"; sourceTree = "<group>"; };
 		43D68C28B112D95100000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; name = structured_resources.file2; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file2"; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28BAE52D2E00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28BD12D84F00000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; name = structured_resources.file1; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file1"; sourceTree = "<group>"; };
-		43D68C28CF36936300000000 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		43D68C28C01A0B2500000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; path = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv2.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
@@ -174,14 +174,6 @@
 				966FB6DE5B9D018E00000002 /* srcs */,
 			);
 			name = LibrarySources;
-			sourceTree = "<group>";
-		};
-		966FB6DE1B25EA1400000000 /* es.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C2852C6516600000000 /* Localized.strings */,
-			);
-			name = es.lproj;
 			sourceTree = "<group>";
 		};
 		966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */ = {
@@ -244,16 +236,6 @@
 				966FB6DE5B9D018E00000007 /* srcs */,
 			);
 			name = SubLibraryWithIdenticalDefines;
-			sourceTree = "<group>";
-		};
-		966FB6DE56C029FB00000000 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28CF36936300000000 /* Localizable.strings */,
-				43D68C280CF925C900000000 /* Localized.strings */,
-				43D68C285EBBC35700000000 /* One.storyboard */,
-			);
-			name = Base.lproj;
 			sourceTree = "<group>";
 		};
 		966FB6DE5B9D018E00000000 /* srcs */ = {
@@ -350,15 +332,6 @@
 			name = mainGroup;
 			path = ..;
 			sourceTree = SOURCE_ROOT;
-		};
-		966FB6DE6C52CF1100000000 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28A7AABE7100000000 /* EN.strings */,
-				43D68C286266EC1F00000000 /* Localized.strings */,
-			);
-			name = en.lproj;
-			sourceTree = "<group>";
 		};
 		966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */ = {
 			isa = PBXGroup;
@@ -475,12 +448,13 @@
 		966FB6DEB58A255E00000000 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE56C029FB00000000 /* Base.lproj */,
+				8CBD86FAC9A4DAF400000000 /* EN.strings */,
 				43D68C2858F5ABDF00000000 /* Info.plist */,
+				8CBD86FA1EA8A08C00000000 /* Localizable.strings */,
+				8CBD86FA9E9C8DC100000000 /* Localized.strings */,
 				43D68C286E7B37CF00000000 /* NonLocalized.strings */,
-				966FB6DE6C52CF1100000000 /* en.lproj */,
+				8CBD86FAC9CA518600000000 /* One.storyboard */,
 				43D68C2885A048FD00000000 /* entitlements.entitlements */,
-				966FB6DE1B25EA1400000000 /* es.lproj */,
 				966FB6DEAA96F52700000000 /* non_arc_srcs */,
 				966FB6DE5B9D018E00000000 /* srcs */,
 				43D68C28BD12D84F00000000 /* structured_resources.file1 */,
@@ -816,6 +790,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8CBD86FA1EA8A08C00000000 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C28C01A0B2500000000 /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		8CBD86FA9E9C8DC100000000 /* Localized.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C287DE8B05600000000 /* Base */,
+				43D68C284C9C3B6600000000 /* en */,
+				43D68C283CFBA10800000000 /* es */,
+			);
+			name = Localized.strings;
+			sourceTree = "<group>";
+		};
+		8CBD86FAC9A4DAF400000000 /* EN.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C2866D7C08500000000 /* en */,
+			);
+			name = EN.strings;
+			sourceTree = "<group>";
+		};
+		8CBD86FAC9CA518600000000 /* One.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C28A47D8A1F00000000 /* Base */,
+			);
+			name = One.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin PBXTargetDependency section */
 		4DAD0B42202AA80700000000 /* PBXTargetDependency */ = {

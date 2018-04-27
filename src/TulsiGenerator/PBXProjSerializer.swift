@@ -234,6 +234,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       try encodeSerializedPBXObjectArray("PBXProject", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXShellScriptBuildPhase", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXSourcesBuildPhase", into: data, indented: indent)
+      try encodeSerializedPBXObjectArray("PBXVariantGroup", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXTargetDependency", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("XCBuildConfiguration", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("XCConfigurationList", into: data, indented: indent)

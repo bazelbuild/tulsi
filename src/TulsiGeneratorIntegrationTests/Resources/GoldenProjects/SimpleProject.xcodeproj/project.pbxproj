@@ -44,6 +44,7 @@
 		43D68C280BFD6EFC00000000 /* TargetApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TargetApplication.app; path = TargetApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28130596E000000000 /* TargetApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TargetApplication-MergedInfo.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/TargetApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C2819E313D100000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src1.mm; path = "tulsi-workspace/tulsi_e2e_simple/XCTest/srcs/src1.mm"; sourceTree = "<group>"; };
+		43D68C28326496CA00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28376F90AC00000000 /* lib_idx_ApplicationLibrary_BB2F88FA_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_BB2F88FA_ios_min8.0.a; path = lib_idx_ApplicationLibrary_BB2F88FA_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283892747200000000 /* Application-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-MergedInfo.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/Application-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C2841E053A700000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		43D68C28D3EF7BE200000000 /* lib_idx_Library_1A8360DD_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_1A8360DD_ios_min8.0.a; path = lib_idx_Library_1A8360DD_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28D69C1D8C00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_simple/Application/entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C28D98253B200000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_simple/Application/Info.plist"; sourceTree = "<group>"; };
-		43D68C28ECA2D00200000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28ED1C8B9400000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28EFB26B8400000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,14 +114,6 @@
 				43D68C2805AAC31600000000 /* TextualHdrsHeader.h */,
 			);
 			name = textual_hdrs;
-			sourceTree = "<group>";
-		};
-		966FB6DE56C029FB00000000 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28ECA2D00200000000 /* One.storyboard */,
-			);
-			name = Base.lproj;
 			sourceTree = "<group>";
 		};
 		966FB6DE5B9D018E00000000 /* srcs */ = {
@@ -274,7 +266,7 @@
 		966FB6DEC4D81E7A00000000 /* ApplicationLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE56C029FB00000000 /* Base.lproj */,
+				8CBD86FAC9CA518600000000 /* One.storyboard */,
 				966FB6DE5B9D018E00000000 /* srcs */,
 			);
 			name = ApplicationLibrary;
@@ -518,6 +510,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8CBD86FAC9CA518600000000 /* One.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C28326496CA00000000 /* Base */,
+			);
+			name = One.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin PBXTargetDependency section */
 		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {

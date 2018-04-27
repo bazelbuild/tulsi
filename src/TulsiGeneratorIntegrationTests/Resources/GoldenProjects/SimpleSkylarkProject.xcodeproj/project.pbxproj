@@ -75,12 +75,12 @@
 		43D68C28A669C03500000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/xibs/xib.xib"; sourceTree = "<group>"; };
 		43D68C28A96EB07300000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple_skylark/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
 		43D68C28AB52552000000000 /* XCUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCUITest.xctest; path = XCUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28B88954B500000000 /* One.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = One.storyboard; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28B9C699F600000000 /* SkylarkApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = SkylarkApplication.app; path = SkylarkApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
 		43D68C28D035C16900000000 /* XCTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = XCTests.mm; path = "tulsi-workspace/tulsi_e2e_simple_skylark/XCTest/srcs/XCTests.mm"; sourceTree = "<group>"; };
 		43D68C28F44F077B00000000 /* file.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; name = file.java; path = "tulsi-workspace/tulsi_e2e_simple_skylark/file.java"; sourceTree = "<group>"; };
 		43D68C28FB7A74E700000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_simple_skylark/BUILD; sourceTree = "<group>"; };
+		43D68C28FE4B1B7D00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_simple_skylark/App/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28FEECDEEC00000000 /* lib_idx_MainLibrary_E33E600C_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MainLibrary_E33E600C_ios_min8.0.a; path = lib_idx_MainLibrary_E33E600C_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -133,14 +133,6 @@
 				43D68C28395860BE00000000 /* TextualHdrsHeader.h */,
 			);
 			name = textual_hdrs;
-			sourceTree = "<group>";
-		};
-		966FB6DE56C029FB00000000 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C28B88954B500000000 /* One.storyboard */,
-			);
-			name = Base.lproj;
 			sourceTree = "<group>";
 		};
 		966FB6DE5B9D018E00000000 /* srcs */ = {
@@ -238,7 +230,7 @@
 		966FB6DE957F116500000000 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE56C029FB00000000 /* Base.lproj */,
+				8CBD86FAC9CA518600000000 /* One.storyboard */,
 				966FB6DE5B9D018E00000000 /* srcs */,
 			);
 			name = App;
@@ -701,6 +693,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8CBD86FAC9CA518600000000 /* One.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43D68C28FE4B1B7D00000000 /* Base */,
+			);
+			name = One.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin PBXTargetDependency section */
 		4DAD0B4216CDD44F00000000 /* PBXTargetDependency */ = {

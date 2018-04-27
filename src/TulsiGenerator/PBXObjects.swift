@@ -320,15 +320,24 @@ class PBXGroup: PBXReference, Hashable {
     return value
   }
 
-  func getOrCreateFileReferenceBySourceTree(_ sourceTree: SourceTree, path: String) -> PBXFileReference {
-    return getOrCreateFileReferenceBySourceTreePath(SourceTreePath(sourceTree:sourceTree, path:path))
+  func getOrCreateFileReferenceBySourceTree(
+    _ sourceTree: SourceTree,
+    path: String,
+    name: String? = nil
+  ) -> PBXFileReference {
+    let sourceTreePath = SourceTreePath(sourceTree: sourceTree, path: path)
+    return getOrCreateFileReferenceBySourceTreePath(sourceTreePath, name: name)
   }
 
-  func getOrCreateFileReferenceBySourceTreePath(_ sourceTreePath: SourceTreePath) -> PBXFileReference {
+  func getOrCreateFileReferenceBySourceTreePath(
+    _ sourceTreePath: SourceTreePath,
+    name: String? = nil
+  ) -> PBXFileReference {
     if let value = fileReferencesBySourceTreePath[sourceTreePath] {
       return value
     }
-    let value = PBXFileReference(name: sourceTreePath.path.pbPathLastComponent,
+    let name = name ?? sourceTreePath.path.pbPathLastComponent
+    let value = PBXFileReference(name: name,
                                  sourceTreePath: sourceTreePath,
                                  parent:self)
     fileReferencesBySourceTreePath[sourceTreePath] = value
@@ -1303,8 +1312,10 @@ final class PBXProject: PBXObjectProtocol {
     try serializer.addField("knownRegions", ["en"])
   }
 
-  func createGroupsAndFileReferenceForPath(_ path: String,
-                                           underGroup parent: PBXGroup) -> (Set<PBXGroup>, PBXFileReference) {
+  func createGroupsAndFileReferenceForPath(
+    _ path: String,
+    underGroup parent: PBXGroup
+  ) -> (Set<PBXGroup>, PBXFileReference) {
     var group = parent
     var accessedGroups = Set<PBXGroup>()
 
@@ -1315,6 +1326,24 @@ final class PBXProject: PBXObjectProtocol {
       // Check to see if this component is actually a bundle that should be treated as a file
       // reference by Xcode (e.g., .xcassets bundles) instead of as a PBXGroup.
       let currentComponent = components[i]
+
+      // Support per-locale files (lprojs), which are represented in PBXVariantGroups.
+      if currentComponent.pbPathExtension == "lproj" {
+        let lprojName = currentComponent.replacingOccurrences(of: ".lproj", with: "")
+        let name = components[i + 1] // Assume it's the next (and last).
+
+        let variantGroup = group.getOrCreateChildVariantGroupByName(name)
+        accessedGroups.insert(variantGroup)
+
+        let fileRef = variantGroup.getOrCreateFileReferenceBySourceTree(.Group,
+                                                                        path: path,
+                                                                        name: lprojName)
+        if let ext = name.pbPathExtension, let uti = DirExtensionToUTI[ext] {
+          fileRef.fileTypeOverride = uti
+        }
+        return (accessedGroups, fileRef)
+      }
+
       // This will naively create a bundle grouping rather than including the per-locale strings.
       if let ext = currentComponent.pbPathExtension, let uti = DirExtensionToUTI[ext] {
         let partialPath = components[0...i].joined(separator: "/")
