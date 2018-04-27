@@ -141,7 +141,7 @@
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
 		D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */ = {isa = PBXBuildFile; fileRef = D33C204E1EC108CC00867450 /* tulsi_logging.py */; };
 		D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */ = {isa = PBXBuildFile; fileRef = D3F78C671F391E9700AE0571 /* bazel_options.py */; };
-		E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */ = {isa = PBXBuildFile; fileRef = E1D770EA20523E790026802A /* bazel_cache_reader */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utility resources */ = {isa = PBXBuildFile; fileRef = E1D770EA20523E790026802A /* bazel_cache_reader */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E135A781205880720082E4D0 /* apfs_clone_copy.py in Resources */ = {isa = PBXBuildFile; fileRef = E135A780205880720082E4D0 /* apfs_clone_copy.py */; };
 		E1542A0E206ED51900D3D339 /* bootstrap_lldbinit.py in Resources */ = {isa = PBXBuildFile; fileRef = E1542A0D206ED51900D3D339 /* bootstrap_lldbinit.py */; };
 		E155E20C1FCE47DA002B16BB /* BazelBuildSettingsFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */; };
@@ -203,15 +203,15 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3DBA77761D6CB3EF00BD5B7C /* Copy Utilty resources */ = {
+		3DBA77761D6CB3EF00BD5B7C /* Copy Utility resources */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = Utilities;
+			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utilty resources */,
+				E11AFAB02052655500C97875 /* bazel_cache_reader in Copy Utility resources */,
 			);
-			name = "Copy Utilty resources";
+			name = "Copy Utility resources";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -723,7 +723,7 @@
 				3D9926601C29F0A20094E098 /* Headers */,
 				3D9926611C29F0A20094E098 /* Resources */,
 				3DB8F6C71CA9E3440045B0CF /* Copy Tulsi aspect bundle resources */,
-				3DBA77761D6CB3EF00BD5B7C /* Copy Utilty resources */,
+				3DBA77761D6CB3EF00BD5B7C /* Copy Utility resources */,
 			);
 			buildRules = (
 			);
