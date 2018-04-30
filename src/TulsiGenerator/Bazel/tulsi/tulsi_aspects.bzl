@@ -19,11 +19,11 @@ project and pass it back to Tulsi.
 """
 
 load(
-    ':tulsi_aspects_paths.bzl',
-     'AppleBundleInfo',
-     'AppleTestInfo',
-     'IosExtensionBundleInfo',
-     'SwiftInfo',
+    ":tulsi_aspects_paths.bzl",
+    "AppleBundleInfo",
+    "AppleTestInfo",
+    "IosExtensionBundleInfo",
+    "SwiftInfo",
 )
 
 # List of all of the attributes that can link from a Tulsi-supported rule to a
@@ -32,20 +32,20 @@ load(
 # objc_binary rule which in turn might have objc_library's in its "deps"
 # attribute.
 _TULSI_COMPILE_DEPS = [
-    'binary',
-    'bundles',
-    'deps',
-    'extension',
-    'extensions',
-    'frameworks',
-    'settings_bundle',
-    'non_propagated_deps',
-    'tests',  # for test_suite when the --noexpand_test_suites flag is used.
-    '_implicit_tests',  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
-    'test_bundle',
-    'test_host',
-    'watch_application',
-    'xctest_app',
+    "binary",
+    "bundles",
+    "deps",
+    "extension",
+    "extensions",
+    "frameworks",
+    "settings_bundle",
+    "non_propagated_deps",
+    "tests",  # for test_suite when the --noexpand_test_suites flag is used.
+    "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
+    "test_bundle",
+    "test_host",
+    "watch_application",
+    "xctest_app",
 ]
 
 # These are attributes that contain bundles but should not be considered as
@@ -53,40 +53,40 @@ _TULSI_COMPILE_DEPS = [
 # to be test hosts in bazel semantics, but in reality, Xcode treats the test
 # bundles as an embedded bundle of the app.
 _TULSI_NON_EMBEDDEDABLE_ATTRS = [
-    'test_host',
-    'xctest_app',
+    "test_host",
+    "xctest_app",
 ]
 
 # List of all attributes whose contents should resolve to "support" files; files
 # that are used by Bazel to build but do not need special handling in the
 # generated Xcode project. For example, Info.plist and entitlements files.
 _SUPPORTING_FILE_ATTRIBUTES = [
-    'app_icons',
-    'entitlements',
-    'infoplist',
-    'infoplists',
-    'resources',
-    'strings',
-    'structured_resources',
-    'storyboards',
-    'xibs',
+    "app_icons",
+    "entitlements",
+    "infoplist",
+    "infoplists",
+    "resources",
+    "strings",
+    "structured_resources",
+    "storyboards",
+    "xibs",
 ]
 
 # List of rules that generate MergedInfo.plist files as part of the build.
 _MERGEDINFOPLIST_GENERATING_RULES = [
-    'ios_application',
-    'tvos_application',
+    "ios_application",
+    "tvos_application",
 ]
 
 # List of rules whose outputs should be treated as generated sources.
 _SOURCE_GENERATING_RULES = [
-    'j2objc_library',
+    "j2objc_library",
 ]
 
 # List of rules whose outputs should be treated as generated sources that do not
 # use ARC.
 _NON_ARC_SOURCE_GENERATING_RULES = [
-    'objc_proto_library',
+    "objc_proto_library",
 ]
 
 # Whitelist of all extensions to include when scanning target.files for generated
@@ -103,15 +103,15 @@ _NON_ARC_SOURCE_GENERATING_RULES = [
 # be both a file and directory. As a partial workaround, we only copy in files
 # that we believe to be 'source files' and thus unlikely to also be folders.
 _GENERATED_SOURCE_FILE_EXTENSIONS = [
-    'c',
-    'cc',
-    'cpp',
-    'h',
-    'hpp',
-    'm',
-    'mm',
-    'swift',
-    'swiftmodule',
+    "c",
+    "cc",
+    "cpp",
+    "h",
+    "hpp",
+    "m",
+    "mm",
+    "swift",
+    "swiftmodule",
 ]
 
 def _dict_omitting_none(**kwargs):
@@ -123,11 +123,9 @@ def _dict_omitting_none(**kwargs):
           if kwargs[name] != None and kwargs[name] != []
          }
 
-
 def _struct_omitting_none(**kwargs):
   """Creates a struct from the args, dropping keys with None or [] values."""
   return struct(**_dict_omitting_none(**kwargs))
-
 
 def _convert_outpath_to_symlink_path(path):
   """Converts full output paths to their tulsi-symlink equivalents.
@@ -179,7 +177,6 @@ def _is_bazel_external_file(f):
   """Returns True if the given file is a Bazel external file."""
   return f.path.startswith('external/')
 
-
 def _file_metadata(f):
   """Returns metadata about a given File."""
   if not f:
@@ -215,7 +212,6 @@ def _file_metadata(f):
       is_dir=is_dir
   )
 
-
 def _file_metadata_by_replacing_path(f, new_path, new_is_dir=None):
   """Returns a copy of the f _file_metadata struct with the given path."""
   root_path = _get_opt_attr(f, 'rootPath')
@@ -233,12 +229,10 @@ def _depset_to_file_metadata_list(a_depset):
   """"Converts a depset of files into a list of _file_metadata structs."""
   return [_file_metadata(f) for f in a_depset.to_list()]
 
-
 def _collect_artifacts(obj, attr_path):
   """Returns a list of Artifact objects for the attr_path in obj."""
   return [f for src in _getattr_as_list(obj, attr_path)
           for f in _get_opt_attr(src, 'files')]
-
 
 def _collect_files(obj, attr_path, convert_to_metadata=True):
   """Returns a list of artifact_location's for the attr_path in obj."""
@@ -247,14 +241,12 @@ def _collect_files(obj, attr_path, convert_to_metadata=True):
   else:
     return _collect_artifacts(obj, attr_path)
 
-
 def _collect_first_file(obj, attr_path):
   """Returns a the first artifact_location for the attr_path in obj."""
   files = _collect_files(obj, attr_path)
   if not files:
     return None
   return files[0]
-
 
 def _collect_supporting_files(rule_attr, convert_to_metadata=True):
   """Extracts 'supporting' files from the given rule attributes."""
@@ -263,7 +255,6 @@ def _collect_supporting_files(rule_attr, convert_to_metadata=True):
     all_files += _collect_files(rule_attr, attr,
                                 convert_to_metadata=convert_to_metadata)
   return all_files
-
 
 def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
   """Extracts subpaths with the given bundle_ext for the given attributes."""
@@ -291,7 +282,6 @@ def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
       bundles.append(_file_metadata_by_replacing_path(f, path, False))
   return bundles
 
-
 def _collect_asset_catalogs(rule_attr):
   """Extracts xcassets directories from the given rule attributes."""
   attrs = ['app_asset_catalogs', 'asset_catalogs']
@@ -300,20 +290,17 @@ def _collect_asset_catalogs(rule_attr):
 
   return bundles
 
-
 def _collect_bundle_imports(rule_attr):
   """Extracts bundle directories from the given rule attributes."""
   return _collect_bundle_paths(rule_attr,
                                ['bundle_imports', 'settings_bundle'],
                                '.bundle')
 
-
 def _collect_framework_imports(rule_attr):
   """Extracts framework directories from the given rule attributes."""
   return _collect_bundle_paths(rule_attr,
                                ['framework_imports'],
                                '.framework')
-
 
 def _collect_xcdatamodeld_files(obj, attr_path):
   """Returns artifact_location's for xcdatamodeld's for attr_path in obj."""
@@ -337,7 +324,6 @@ def _collect_xcdatamodeld_files(obj, attr_path):
     datamodelds.append(_file_metadata_by_replacing_path(f, path, False))
   return datamodelds
 
-
 def _collect_dependency_labels(rule, filter, attr_list):
   """Collects Bazel labels for a list of dependency attributes.
 
@@ -356,7 +342,6 @@ def _collect_dependency_labels(rule, filter, attr_list):
           for dep in _filter_deps(filter, _getattr_as_list(attr, attribute))]
   return [dep.label for dep in deps if hasattr(dep, 'label')]
 
-
 def _get_opt_attr(obj, attr_path):
   """Returns the value at attr_path on the given object if it is set."""
   attr_path = attr_path.split('.')
@@ -366,12 +351,10 @@ def _get_opt_attr(obj, attr_path):
     obj = getattr(obj, a)
   return obj
 
-
 def _get_label_attr(obj, attr_path):
   """Returns the value at attr_path as a label string if it is set."""
   label = _get_opt_attr(obj, attr_path)
   return str(label) if label else None
-
 
 def _getattr_as_list(obj, attr_path):
   """Returns the value at attr_path as a list.
@@ -396,7 +379,6 @@ def _getattr_as_list(obj, attr_path):
     return val
   return [val]
 
-
 def _extract_defines_from_option_list(lst):
   """Extracts preprocessor defines from a list of -D strings."""
   defines = []
@@ -404,7 +386,6 @@ def _extract_defines_from_option_list(lst):
     if item.startswith('-D'):
       defines.append(item[2:])
   return defines
-
 
 def _extract_compiler_defines(ctx):
   """Extracts preprocessor defines from compiler fragments."""
@@ -431,7 +412,6 @@ def _extract_compiler_defines(ctx):
 
   return defines
 
-
 def _collect_secondary_artifacts(target, ctx):
   """Returns a list of file metadatas for implicit outputs of 'rule'."""
   artifacts = []
@@ -448,7 +428,6 @@ def _collect_secondary_artifacts(target, ctx):
 
   return artifacts
 
-
 def _extract_generated_sources(target):
   """Returns (source_metadatas, includes) generated by the given target."""
   file_metadatas = []
@@ -460,7 +439,6 @@ def _extract_generated_sources(target):
 
   return file_metadatas
 
-
 def _get_deployment_info(target, ctx):
   """Returns (platform_type, minimum_os_version) for the given target."""
   platform_type = _get_platform_type(ctx)
@@ -470,7 +448,6 @@ def _get_deployment_info(target, ctx):
     minimum_os_version = apple_bundle_provider.minimum_os_version
     return (platform_type, minimum_os_version)
   return (platform_type, _minimum_os_for_platform(ctx, platform_type))
-
 
 def _get_platform_type(ctx):
   """Return the current apple_common.platform_type as a string."""
@@ -497,14 +474,12 @@ def _minimum_os_for_platform(ctx, platform_type_str):
   # Convert the DottedVersion to a string suitable for inclusion in a struct.
   return str(min_os)
 
-
 def _collect_swift_modules(target):
   """Returns a depset of Swift modules found on the given target."""
   swift_modules = depset()
   for modules in _getattr_as_list(target, 'swift.transitive_modules'):
     swift_modules += modules
   return swift_modules
-
 
 def _collect_module_maps(target):
   """Returns a depset of Clang module maps found on the given target."""
@@ -524,7 +499,6 @@ def _collect_swift_header(target):
     headers += target.objc.header
   return headers
 
-
 def _target_filtering_info(ctx):
   """Returns filtering information for test rules."""
   rule = ctx.rule
@@ -537,7 +511,6 @@ def _target_filtering_info(ctx):
     return struct(tags=tags + size)
   else:
     return None
-
 
 def _tulsi_sources_aspect(target, ctx):
   """Extracts information from a given rule, emitting it as a JSON struct."""
@@ -746,7 +719,6 @@ def _tulsi_sources_aspect(target, ctx):
       filtering_info=_target_filtering_info(ctx),
   )
 
-
 def _collect_bundle_info(target):
   """Returns Apple bundle info for the given target, None if not a bundle."""
   if AppleBundleInfo in target:
@@ -759,7 +731,6 @@ def _collect_bundle_info(target):
         has_dsym=has_dsym)]
 
   return None
-
 
 # Due to b/71744111 we have to manually re-create tag filtering for test_suite
 # rules.
@@ -794,7 +765,6 @@ def _tags_conform_to_filter(tags, filter):
   # All filters have been satisfied.
   return True
 
-
 def _filter_for_rule(rule):
   """Returns a filter for test_suite rules and None for other rules."""
   if rule.kind != 'test_suite':
@@ -820,7 +790,6 @@ def _filter_for_rule(rule):
       required_tags=required_tags,
   )
 
-
 def _filter_deps(filter, deps):
   """Filters dep targets based on tags."""
   if not filter:
@@ -835,7 +804,6 @@ def _filter_deps(filter, deps):
     if not info or _tags_conform_to_filter(info.tags, filter):
       kept_deps.append(dep)
   return kept_deps
-
 
 def _tulsi_outputs_aspect(target, ctx):
   """Collects outputs of each build invocation."""
@@ -937,21 +905,30 @@ def _tulsi_outputs_aspect(target, ctx):
       transitive_embedded_bundles=embedded_bundles
   )
 
-
 tulsi_sources_aspect = aspect(
-    implementation=_tulsi_sources_aspect,
+    attr_aspects = _TULSI_COMPILE_DEPS,
     attrs = {
-        '_tulsi_xcode_config': attr.label(default=configuration_field(
-            fragment="apple", name="xcode_config_label")) },
-    attr_aspects=_TULSI_COMPILE_DEPS,
-    fragments=['apple', 'cpp', 'objc'],
+        "_tulsi_xcode_config": attr.label(default = configuration_field(
+            name = "xcode_config_label",
+            fragment = "apple",
+        )),
+    },
+    fragments = [
+        "apple",
+        "cpp",
+        "objc",
+    ],
+    implementation = _tulsi_sources_aspect,
 )
-
 
 # This aspect does not propagate past the top-level target because we only need
 # the top target outputs.
 tulsi_outputs_aspect = aspect(
-    implementation=_tulsi_outputs_aspect,
-    attr_aspects=_TULSI_COMPILE_DEPS,
-    fragments=['apple', 'cpp', 'objc'],
+    attr_aspects = _TULSI_COMPILE_DEPS,
+    fragments = [
+        "apple",
+        "cpp",
+        "objc",
+    ],
+    implementation = _tulsi_outputs_aspect,
 )
