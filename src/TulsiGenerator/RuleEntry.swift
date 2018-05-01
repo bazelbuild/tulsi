@@ -155,6 +155,7 @@ public final class RuleEntry: RuleInfo {
     case datamodels
     case enable_modules
     case has_swift_dependency
+    case has_swift_info
     case launch_storyboard
     case pch
     case swift_language_version

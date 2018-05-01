@@ -2616,7 +2616,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let swiftLibraryRule = makeTestRuleEntry(swiftTargetBuildLabel,
                                              type: "swift_library",
-                                             attributes: ["swiftc_opts": swiftTargetOpts],
+                                             attributes: ["swiftc_opts": swiftTargetOpts,
+                                                          "has_swift_info": true as AnyObject],
                                              sourceFiles: sourceFileNames)
 
     var proccessedEntries = [RuleEntry: (NSOrderedSet)]()

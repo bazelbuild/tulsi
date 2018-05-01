@@ -466,21 +466,27 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:SwiftLibrary")
         .dependsOn("//tulsi_test:SwiftLibraryV3")
         .dependsOn("//tulsi_test:SwiftLibraryV4")
+        .hasAttribute(.has_swift_dependency, value: true)
 
     checker.assertThat("//tulsi_test:SwiftLibrary")
         .hasSources(["tulsi_test/SwiftLibrary/srcs/a.swift",
                      "tulsi_test/SwiftLibrary/srcs/b.swift"])
         .hasAttribute(.has_swift_dependency, value: true)
+        .hasAttribute(.has_swift_info, value: true)
 
     checker.assertThat("//tulsi_test:SwiftLibraryV3")
         .hasSources(["tulsi_test/SwiftLibraryV3/srcs/a.swift",
                      "tulsi_test/SwiftLibraryV3/srcs/b.swift"])
         .hasAttribute(.swift_language_version, value: "3")
+        .hasAttribute(.has_swift_dependency, value: true)
+        .hasAttribute(.has_swift_info, value: true)
 
     checker.assertThat("//tulsi_test:SwiftLibraryV4")
         .hasSources(["tulsi_test/SwiftLibraryV4/srcs/a.swift",
                      "tulsi_test/SwiftLibraryV4/srcs/b.swift"])
         .hasAttribute(.swift_language_version, value: "4")
+        .hasAttribute(.has_swift_dependency, value: true)
+        .hasAttribute(.has_swift_info, value: true)
   }
 
 }

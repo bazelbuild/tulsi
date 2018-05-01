@@ -573,14 +573,14 @@ def _tulsi_sources_aspect(target, ctx):
                       _collect_bundle_imports(rule_attr))
 
   copts_attr = _get_opt_attr(rule_attr, 'copts')
-  is_swift = target_kind == 'swift_library'
+  is_swift_library = target_kind == 'swift_library'
 
   # Keys for attribute and inheritable_attributes keys must be kept in sync
   # with defines in Tulsi's RuleEntry.
   attributes = _dict_omitting_none(
       binary=_get_label_attr(binary_rule, 'label'),
-      copts=None if is_swift else copts_attr,
-      swiftc_opts=copts_attr if is_swift else None,
+      copts=None if is_swift_library else copts_attr,
+      swiftc_opts=copts_attr if is_swift_library else None,
       datamodels=_collect_xcdatamodeld_files(rule_attr, 'datamodels'),
       supporting_files=supporting_files,
       xctest_app=_get_label_attr(rule_attr, 'xctest_app.label'),
@@ -633,8 +633,9 @@ def _tulsi_sources_aspect(target, ctx):
     product_type = None
     infoplist = None
 
-  # Build up any local transitive attributes and apply them.
+  # Collect Swift related attributes.
   if SwiftInfo in target:
+    attributes['has_swift_info'] = True
     transitive_attributes['swift_language_version'] = target[SwiftInfo].swift_version
     transitive_attributes['has_swift_dependency'] = True
 

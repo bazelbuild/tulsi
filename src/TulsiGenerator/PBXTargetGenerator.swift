@@ -626,7 +626,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       pchFile: pchFile,
                                       bridgingHeader: bridgingHeader,
                                       enableModules: enableModules)
-        if (ruleEntry.type == "swift_library") {
+        let isSwiftRule = ruleEntry.attributes[.has_swift_info] as? Bool ?? false
+        if (isSwiftRule) {
           frameworkIndexers[indexerData.indexerName] = indexerData
         } else {
           staticIndexers[indexerData.indexerName] = indexerData
