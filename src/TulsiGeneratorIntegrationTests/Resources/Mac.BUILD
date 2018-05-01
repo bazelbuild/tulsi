@@ -15,14 +15,14 @@
 # MacOS mock BUILD file for testing.
 
 load(
-    "//tools/build_defs/apple:macos.bzl",
+    "@build_bazel_rules_apple//apple:macos.bzl",
     "macos_application",
     "macos_command_line_application",
     "macos_extension",
     "macos_unit_test",
     "macos_ui_test",
 )
-load("//tools/build_defs/apple:versioning.bzl", "apple_bundle_version")
+load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
 
 macos_application(
     name = "MyMacOSApp",

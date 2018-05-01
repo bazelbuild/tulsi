@@ -22,7 +22,7 @@ config_setting(
 )
 
 load(
-    "//tools/build_defs/apple:ios.bzl",
+    "@build_bazel_rules_apple//apple:ios.bzl",
     "apple_product_type",
     "ios_application",
     "ios_extension",
@@ -30,7 +30,7 @@ load(
     "ios_ui_test",
 )
 load(
-    "//tools/build_defs/apple:tvos.bzl",
+    "@build_bazel_rules_apple//apple:tvos.bzl",
     "tvos_application",
     "tvos_extension",
 )

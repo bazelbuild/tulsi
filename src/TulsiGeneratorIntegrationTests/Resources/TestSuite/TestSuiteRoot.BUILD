@@ -19,7 +19,7 @@ package(
 )
 
 load(
-    "//tools/build_defs/apple:ios.bzl",
+    "@build_bazel_rules_apple//apple:ios.bzl",
     "ios_application",
     "ios_unit_test",
 )

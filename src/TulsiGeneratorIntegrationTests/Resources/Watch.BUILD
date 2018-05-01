@@ -15,10 +15,10 @@
 # WatchOS mock BUILD file for aspect testing.
 
 load(
-    "//tools/build_defs/apple:ios.bzl",
+    "@build_bazel_rules_apple//apple:ios.bzl",
     "ios_application",
 )
-load("//tools/build_defs/apple:watchos.bzl", "watchos_application", "watchos_extension")
+load("@build_bazel_rules_apple//apple:watchos.bzl", "watchos_application", "watchos_extension")
 
 ios_application(
     name = "Application",

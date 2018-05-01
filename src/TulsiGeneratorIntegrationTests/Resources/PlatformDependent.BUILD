@@ -15,7 +15,7 @@
 # Mock BUILD file for aspect testing.
 
 load(
-    "//tools/build_defs/apple:ios.bzl",
+    "@build_bazel_rules_apple//apple:ios.bzl",
     "apple_product_type",
     "ios_application",
     "ios_extension",
@@ -23,7 +23,7 @@ load(
     "ios_ui_test",
     "ios_legacy_test",
 )
-load("//tools/build_defs/apple:swift.bzl", "swift_library")
+load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
 
 ios_application(
     name = "SkylarkApplication",

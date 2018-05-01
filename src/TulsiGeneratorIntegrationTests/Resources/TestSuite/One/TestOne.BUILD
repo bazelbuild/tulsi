@@ -14,7 +14,7 @@
 
 # Simple mock test.
 
-load("//tools/build_defs/apple:ios.bzl", "ios_unit_test")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 
 test_suite(
     name = "explicit_XCTests",

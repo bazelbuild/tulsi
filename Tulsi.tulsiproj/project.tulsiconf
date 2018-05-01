@@ -1,0 +1,12 @@
+{
+  "configDefaults" : {
+    "optionSet" : {
+
+    }
+  },
+  "projectName" : "Tulsi",
+  "packages" : [
+    ""
+  ],
+  "workspaceRoot" : ".."
+}
