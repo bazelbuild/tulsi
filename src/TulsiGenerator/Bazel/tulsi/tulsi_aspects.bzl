@@ -477,8 +477,10 @@ def _minimum_os_for_platform(ctx, platform_type_str):
 def _collect_swift_modules(target):
   """Returns a depset of Swift modules found on the given target."""
   swift_modules = depset()
-  for modules in _getattr_as_list(target, 'swift.transitive_modules'):
-    swift_modules += modules
+  if SwiftInfo in target:
+    swift_info = target[SwiftInfo]
+    for modules in _getattr_as_list(swift_info, 'transitive_modules'):
+      swift_modules += modules
   return swift_modules
 
 def _collect_module_maps(target):
