@@ -1062,14 +1062,89 @@ class BazelBuildBridge(object):
                   'installing_embedded_bundles').Start()
 
     for bundle_info in output_data['embedded_bundles']:
-      name = bundle_info['bundle_full_name']
+      bundle_name = bundle_info['bundle_name']
+      bundle_extension = bundle_info['bundle_extension']
+      full_name = bundle_name + bundle_extension
+      output_path = os.path.join(self.built_products_dir, full_name)
       # TODO(b/68936732): See if copying just the binary (not the whole bundle)
       # is enough to make Instruments work.
-      source_path = os.path.join(bundle_info['archive_root'], name)
-      output_path = os.path.join(self.built_products_dir, name)
-      self._RsyncBundle(name, source_path, output_path)
+      if self._IsValidArtifactArchiveRoot(bundle_info['archive_root'],
+                                          bundle_name):
+        source_path = os.path.join(bundle_info['archive_root'], full_name)
+        self._RsyncBundle(full_name, source_path, output_path)
+      else:
+        # Try to find the embedded bundle within the installed main bundle.
+        bundle_path = self._FindEmbeddedBundleInMain(bundle_name,
+                                                     bundle_extension)
+        if bundle_path:
+          self._RsyncBundle(full_name, bundle_path, output_path)
+        else:
+          _PrintXcodeWarning('Could not find bundle %s in main bundle. ' %
+                             (bundle_name + bundle_extension) +
+                             'Device-level Instruments debugging will be '
+                             'disabled for this bundle. Please report a '
+                             'Tulsi bug and attach a full Xcode build log.')
 
     timer.End()
+
+  # Maps extensions to anticipated subfolders.
+  _EMBEDDED_BUNDLE_PATHS = {
+      '.appex': 'PlugIns',
+      '.framework': 'Frameworks'
+  }
+
+  def _FindEmbeddedBundleInMain(self, bundle_name, bundle_extension):
+    """Retrieves the first embedded bundle found within our main bundle."""
+    main_bundle = os.environ.get('EXECUTABLE_FOLDER_PATH')
+
+    if not main_bundle:
+      return None
+
+    main_bundle_path = os.path.join(self.built_products_dir,
+                                    main_bundle)
+
+    return self._FindEmbeddedBundle(bundle_name,
+                                    bundle_extension,
+                                    main_bundle_path)
+
+  def _FindEmbeddedBundle(self, bundle_name, bundle_extension, bundle_path):
+    """Retrieves the first embedded bundle found within this bundle path."""
+    embedded_subfolder = self._EMBEDDED_BUNDLE_PATHS[bundle_extension]
+
+    if not embedded_subfolder:
+      return None
+
+    projected_bundle_path = os.path.join(bundle_path,
+                                         embedded_subfolder,
+                                         bundle_name + bundle_extension)
+
+    if os.path.isdir(projected_bundle_path):
+      return projected_bundle_path
+
+    # For frameworks not in the main app bundle, and possibly other executable
+    # bundle content in the future, we recurse through every .appex in PlugIns
+    # to find those frameworks.
+    #
+    # This won't support frameworks that could potentially have the same name
+    # but are different between the app and extensions, but we intentionally
+    # choose not to handle that case. Xcode build system only supports
+    # uniquely named frameworks, and we shouldn't confuse the dynamic loader
+    # with frameworks that have the same image names but different content.
+    appex_root_path = os.path.join(bundle_path, 'PlugIns')
+    if not os.path.isdir(appex_root_path):
+      return None
+
+    # Find each directory within appex_root_path and attempt to find a bundle.
+    # If one can't be found, return None.
+    appex_dirs = os.listdir(appex_root_path)
+    for appex_dir in appex_dirs:
+      appex_path = os.path.join(appex_root_path, appex_dir)
+      path = self._FindEmbeddedBundle(bundle_name,
+                                      bundle_extension,
+                                      appex_path)
+      if path:
+        return path
+    return None
 
   def _StartInstallingGeneratedHeaders(self, outputs):
     """Invokes install_genfiles.py to install generated Bazel files."""
@@ -1262,7 +1337,9 @@ class BazelBuildBridge(object):
         # app/extension/df bundles. Currently hinges on implementation of the
         # build rules.
         dsym_path = os.path.dirname(bundle_info['archive_root'])
-        dsym_filename = '%s.dSYM' % bundle_info['bundle_full_name']
+        bundle_full_name = (bundle_info['bundle_name'] +
+                            bundle_info['bundle_extension'])
+        dsym_filename = '%s.dSYM' % bundle_full_name
         child_dsyms.add((dsym_path, dsym_filename))
     dsym_to_process.update(child_dsyms)
 

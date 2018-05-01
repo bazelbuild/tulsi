@@ -723,11 +723,11 @@ def _collect_bundle_info(target):
   """Returns Apple bundle info for the given target, None if not a bundle."""
   if AppleBundleInfo in target:
     apple_bundle = target[AppleBundleInfo]
-    bundle_full_name = apple_bundle.bundle_name + apple_bundle.bundle_extension
     has_dsym = (apple_common.AppleDebugOutputs in target)
     return [struct(
         archive_root=apple_bundle.archive_root,
-        bundle_full_name=bundle_full_name,
+        bundle_name=apple_bundle.bundle_name,
+        bundle_extension=apple_bundle.bundle_extension,
         has_dsym=has_dsym)]
 
   return None
