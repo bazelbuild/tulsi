@@ -661,6 +661,25 @@ final class XcodeProjectGenerator {
     let xcschemesURL = projectURL.appendingPathComponent("xcshareddata/xcschemes")
     guard createDirectory(xcschemesURL) else { return }
 
+    let userSchemeSubpath = "xcuserdata/\(usernameFetcher()).xcuserdatad/xcschemes"
+    let userSchemesURL = projectURL.appendingPathComponent(userSchemeSubpath)
+    guard createDirectory(userSchemesURL) else { return }
+
+    func updateManagementDictionary(
+      _ dictionary: inout [String: Any],
+      schemeName: String,
+      shared: Bool = true,
+      visible: Bool = true
+    ) {
+      guard var schemeUserState = dictionary["SchemeUserState"] as? [String: Any] else {
+        return
+      }
+      let actualizedName = shared ? "\(schemeName)_^#shared#^_" : schemeName
+      let schemeDict: [String: Any] = ["isShown": visible]
+      schemeUserState[actualizedName] = schemeDict
+      dictionary["SchemeUserState"] = schemeUserState
+    }
+
     func targetForLabel(_ label: BuildLabel) -> PBXTarget? {
       if let pbxTarget = info.project.targetByName[label.targetName!] {
         return pbxTarget
@@ -712,6 +731,10 @@ final class XcodeProjectGenerator {
         extensionHosts[extensionLabel] = entry
       }
     }
+
+    var schemeManagementDict = [String: Any]()
+    schemeManagementDict["SchemeUserState"] = [String: Any]()
+    schemeManagementDict["SuppressBuildableAutocreation"] = [String: Any]()
 
     let runTestTargetBuildConfigPrefix = pbxTargetGeneratorType.getRunTestTargetBuildConfigPrefix()
     for entry in info.buildRuleEntries {
@@ -788,6 +811,7 @@ final class XcodeProjectGenerator {
 
       let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
       try writeDataHandler(url, data)
+      updateManagementDictionary(&schemeManagementDict, schemeName: filename)
     }
 
     func extractTestTargets(_ testSuite: RuleEntry) -> (Set<PBXTarget>, PBXTarget?) {
@@ -864,6 +888,7 @@ final class XcodeProjectGenerator {
 
       let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
       try writeDataHandler(url, data)
+      updateManagementDictionary(&schemeManagementDict, schemeName: filename, visible: false)
     }
     try installSchemesForIndexerTargets()
 
@@ -897,6 +922,7 @@ final class XcodeProjectGenerator {
 
       let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
       try writeDataHandler(url, data)
+      updateManagementDictionary(&schemeManagementDict, schemeName: filename)
     }
 
     var testSuiteSchemes = [String: [RuleEntry]]()
@@ -919,6 +945,9 @@ final class XcodeProjectGenerator {
         try installSchemeForTestSuite(suite, named: suiteName)
       }
     }
+
+    let schemeManagementURL = userSchemesURL.appendingPathComponent("xcschememanagement.plist")
+    guard savePlist(schemeManagementDict, url: schemeManagementURL) else { return }
   }
 
   /// Create a file that contains the execution root for the workspace of the generated project.
@@ -1309,28 +1338,37 @@ final class XcodeProjectGenerator {
       let plistName = plistPaths.plistFilename(forRuleEntry: entry)
       let targetURL = URL(string: plistName, relativeTo: targetDirectoryURL)!
 
-      let data: Data
-      do {
-        data = try PropertyListSerialization.data(fromPropertyList: plistTemplate, format: .xml, options: 0)
-      } catch let e {
-        localizedMessageLogger.error("SerializingPlistFailed",
-                                     comment: LocalizedMessageLogger.bugWorthyComment("Failed to serialize a plist template"),
-                                     context: config.projectName,
-                                     values: e.localizedDescription)
-        return
-      }
-
-      guard fileManager.createFile(atPath: targetURL.path, contents: data, attributes: nil) else {
-        localizedMessageLogger.error("WritingPlistFailed",
-                                     comment: LocalizedMessageLogger.bugWorthyComment("Failed to write a plist template"),
-                                     context: config.projectName,
-                                     values: targetURL.path)
+      guard savePlist(plistTemplate, url: targetURL) else {
         return
       }
     }
 
 
     localizedMessageLogger.logProfilingEnd(profilingToken)
+  }
+
+  private func savePlist(_ plist: Any, url: URL) -> Bool {
+    let data: Data
+    do {
+      data = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+    } catch let e {
+      let comment = LocalizedMessageLogger.bugWorthyComment("Failed to serialize a plist")
+      localizedMessageLogger.error("SerializingPlistFailed",
+                                   comment: comment,
+                                   context: config.projectName,
+                                   values: e.localizedDescription)
+      return false
+    }
+
+    guard fileManager.createFile(atPath: url.path, contents: data, attributes: nil) else {
+      let comment = LocalizedMessageLogger.bugWorthyComment("Failed to write a plist")
+      localizedMessageLogger.error("WritingPlistFailed",
+                                   comment: comment,
+                                   context: config.projectName,
+                                   values: url.path)
+      return false
+    }
+    return true
   }
 
   private func createDirectory(_ resourceDirectoryURL: URL, failSilently: Bool = false) -> Bool {

@@ -76,6 +76,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/project.xcworkspace/xcuserdata/USER.xcuserdatad/WorkspaceSettings.xcsettings"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-path-to-target-target.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-MainTarget.xcscheme"))
+
+      let xcp = "\(xcodeProjectPath)/xcuserdata/USER.xcuserdatad/xcschemes/xcschememanagement.plist"
+      XCTAssert(mockFileManager.writeOperations.keys.contains(xcp))
     } catch let e {
       XCTFail("Unexpected exception \(e)")
     }
@@ -314,6 +317,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
     let xcschemes = projectURL.appendingPathComponent("xcshareddata/xcschemes")
     mockFileManager.allowedDirectoryCreates.insert(xcschemes.path)
+
+    let userXcschemes = projectURL.appendingPathComponent("xcuserdata/USER.xcuserdatad/xcschemes")
+    mockFileManager.allowedDirectoryCreates.insert(userXcschemes.path)
 
     let scripts = projectURL.appendingPathComponent(".tulsi/Scripts")
     mockFileManager.allowedDirectoryCreates.insert(scripts.path)
