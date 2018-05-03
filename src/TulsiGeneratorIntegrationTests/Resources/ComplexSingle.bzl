@@ -15,5 +15,5 @@
 """Mock Skylark file for testing."""
 
 def test_macro():
-  """A do-nothing macro for use in Tulsi tests."""
-  pass
+    """A do-nothing macro for use in Tulsi tests."""
+    pass

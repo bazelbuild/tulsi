@@ -28,14 +28,14 @@ TULSI_VERSIONINFO_ABOUT = "%s %s\n © %s The Tulsi Authors." % (
 )
 
 def fill_info_plist_impl(ctx):
-  ctx.actions.expand_template(
-      template = ctx.file.template,
-      output = ctx.outputs.out,
-      substitutions = {
-          "$(TULSI_VERSIONINFO_ABOUT)": TULSI_VERSIONINFO_ABOUT,
-          "$(PRODUCT_MODULE_NAME)": TULSI_PRODUCT_NAME,
-      },
-  )
+    ctx.actions.expand_template(
+        template = ctx.file.template,
+        output = ctx.outputs.out,
+        substitutions = {
+            "$(TULSI_VERSIONINFO_ABOUT)": TULSI_VERSIONINFO_ABOUT,
+            "$(PRODUCT_MODULE_NAME)": TULSI_PRODUCT_NAME,
+        },
+    )
 
 fill_info_plist = rule(
     attrs = {
