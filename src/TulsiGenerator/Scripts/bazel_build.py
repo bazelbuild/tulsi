@@ -1109,7 +1109,7 @@ class BazelBuildBridge(object):
 
   def _FindEmbeddedBundle(self, bundle_name, bundle_extension, bundle_path):
     """Retrieves the first embedded bundle found within this bundle path."""
-    embedded_subfolder = self._EMBEDDED_BUNDLE_PATHS[bundle_extension]
+    embedded_subfolder = self._EMBEDDED_BUNDLE_PATHS.get(bundle_extension)
 
     if not embedded_subfolder:
       return None
