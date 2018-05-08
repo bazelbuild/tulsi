@@ -33,6 +33,7 @@ import zipfile
 
 from apfs_clone_copy import CopyOnWrite
 import bazel_build_events
+from bazel_build_flags import bazel_build_flags
 import bazel_options
 from bootstrap_lldbinit import BootstrapLLDBInit
 from bootstrap_lldbinit import TULSI_LLDBINIT_FILE
@@ -234,8 +235,8 @@ class _OptionsParser(object):
     else:
       self._WarnUnknownPlatform()
       config_platform = 'ios'
-    self.build_options[_OptionsParser.ALL_CONFIGS].append(
-        '--config=%s_%s' % (config_platform, arch))
+    self.build_options[_OptionsParser.ALL_CONFIGS].extend(
+        bazel_build_flags(config_platform, arch))
 
     self.verbose = 0
     self.bazel_bin_path = 'bazel-bin'
@@ -534,7 +535,7 @@ class BazelBuildBridge(object):
       self.update_symbol_cache = UpdateSymbolCache()
 
     # Target architecture.  Must be defined for correct setting of
-    # the --config flag
+    # the --cpu flag
     self.arch = os.environ.get('CURRENT_ARCH')
     if not self.arch:
       _PrintXcodeError('Tulsi requires env variable CURRENT_ARCH to be '
