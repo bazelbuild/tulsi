@@ -76,12 +76,6 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     "xibs",
 ]
 
-# List of rules that generate MergedInfo.plist files as part of the build.
-_MERGEDINFOPLIST_GENERATING_RULES = [
-    "ios_application",
-    "tvos_application",
-]
-
 # List of rules whose outputs should be treated as generated sources.
 _SOURCE_GENERATING_RULES = [
     "j2objc_library",
@@ -420,18 +414,13 @@ def _extract_compiler_defines(ctx):
     return defines
 
 def _collect_secondary_artifacts(target, ctx):
-    """Returns a list of file metadatas for implicit outputs of 'rule'."""
+    """Returns a list of file metadatas for implicit outputs of 'target'."""
     artifacts = []
-    rule = ctx.rule
-    if rule.kind in _MERGEDINFOPLIST_GENERATING_RULES:
-        bin_dir = _convert_outpath_to_symlink_path(ctx.bin_dir.path)
-        package = target.label.package
-        basename = target.label.name
-        artifacts.append(_struct_omitting_none(
-            path = "%s/%s-MergedInfo.plist" % (package, basename),
-            src = False,
-            root = bin_dir,
-        ))
+    if AppleBundleInfo in target:
+        infoplist = target[AppleBundleInfo].infoplist
+
+        if infoplist:
+            artifacts.append(_file_metadata(infoplist))
 
     return artifacts
 
@@ -850,11 +839,13 @@ def _tulsi_outputs_aspect(target, ctx):
     bundle_name = None
     archive_root = None
     bundle_dir = None
+    infoplist = None
     if AppleBundleInfo in target:
         bundle_info = target[AppleBundleInfo]
 
         artifact = bundle_info.archive.path
         archive_root = bundle_info.archive_root
+        infoplist = bundle_info.infoplist
 
         bundle_name = bundle_info.bundle_name
         bundle_dir = bundle_info.bundle_dir
@@ -885,6 +876,8 @@ def _tulsi_outputs_aspect(target, ctx):
                   _collect_artifacts(rule, "attr.textual_hdrs"))
     all_files += _collect_supporting_files(rule_attr, convert_to_metadata = False)
     source_files = [x for x in target.files.to_list() if x.extension.lower() in _GENERATED_SOURCE_FILE_EXTENSIONS]
+    if infoplist:
+        source_files.append(infoplist)
     all_files = depset(source_files, transitive = [all_files])
 
     tulsi_generated_files += depset(

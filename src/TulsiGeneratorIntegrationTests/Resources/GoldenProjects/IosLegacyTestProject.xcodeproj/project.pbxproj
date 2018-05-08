@@ -20,6 +20,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43D68C280AA8982400000000 /* LegacyTests.legacy_app-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "LegacyTests.legacy_app-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_ios_legacy_test/LegacyTests.legacy_app-Info-binary.plist"; sourceTree = "<group>"; };
 		43D68C281D04D2FA00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ios_legacy_test/BUILD; sourceTree = "<group>"; };
 		43D68C2825268D4600000000 /* lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a; path = lib_idx_LegacyTestsLib_A268D14B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2844CBC58E00000000 /* LegacyTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = LegacyTests.app; path = LegacyTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,7 +36,23 @@
 			name = Indexer;
 			sourceTree = "<group>";
 		};
+		966FB6DE07201E0200000000 /* _tulsi-includes */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000000 /* x */,
+			);
+			name = "_tulsi-includes";
+			sourceTree = "<group>";
+		};
 		966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C280AA8982400000000 /* LegacyTests.legacy_app-Info-binary.plist */,
+			);
+			name = tulsi_e2e_ios_legacy_test;
+			sourceTree = "<group>";
+		};
+		966FB6DE10DDA96300000001 /* tulsi_e2e_ios_legacy_test */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C281D04D2FA00000000 /* BUILD */,
@@ -49,6 +66,7 @@
 			children = (
 				966FB6DE0562C2F700000000 /* Indexer */,
 				43D68C2844CBC58E00000000 /* LegacyTests.app */,
+				966FB6DE07201E0200000000 /* _tulsi-includes */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -57,7 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */,
+				966FB6DE10DDA96300000001 /* tulsi_e2e_ios_legacy_test */,
 			);
 			name = mainGroup;
 			path = ..;
@@ -69,6 +87,22 @@
 				43D68C2865653B6900000000 /* LegacyTests.m */,
 			);
 			name = LegacyTests;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000000 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000001 /* x */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000001 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE10DDA96300000000 /* tulsi_e2e_ios_legacy_test */,
+			);
+			name = x;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

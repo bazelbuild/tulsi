@@ -45,9 +45,12 @@
 		43D68C285A2F8B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2864939ADF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/TestSuite/Info.plist"; sourceTree = "<group>"; };
 		43D68C28672DE3E800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = tagged_xctest_1.xctest; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28791AEFD000000000 /* TestSuiteXCTest_test_bundle-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestSuiteXCTest_test_bundle-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/TestSuite/TestSuiteXCTest_test_bundle-Info-binary.plist"; sourceTree = "<group>"; };
+		43D68C289496024B00000000 /* tagged_xctest_2_test_bundle-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "tagged_xctest_2_test_bundle-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/TestSuite/Three/tagged_xctest_2_test_bundle-Info-binary.plist"; sourceTree = "<group>"; };
+		43D68C28A4CA799E00000000 /* TestApplication-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/TestSuite/TestApplication-Info-binary.plist"; sourceTree = "<group>"; };
 		43D68C28A6179FCA00000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = TestSuiteXCTest.xctest; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28AAA2624700000000 /* tagged_xctest_1_test_bundle-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "tagged_xctest_1_test_bundle-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/TestSuite/Three/tagged_xctest_1_test_bundle-Info-binary.plist"; sourceTree = "<group>"; };
 		43D68C28CFB68C6700000000 /* memleaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = memleaks.m; path = tools/objc/memleaks/memleaks.m; sourceTree = "<group>"; };
-		43D68C28DEBA0EC500000000 /* TestApplication-MergedInfo.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TestApplication-MergedInfo.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/TestSuite/TestApplication-MergedInfo.plist"; sourceTree = "<group>"; };
 		43D68C28E1F52E9200000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteXCTest.m; path = "tulsi-workspace/TestSuite/TestSuite/TestSuiteXCTest.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +80,15 @@
 			sourceTree = "<group>";
 		};
 		966FB6DE2008A7BC00000000 /* Three */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28AAA2624700000000 /* tagged_xctest_1_test_bundle-Info-binary.plist */,
+				43D68C289496024B00000000 /* tagged_xctest_2_test_bundle-Info-binary.plist */,
+			);
+			name = Three;
+			sourceTree = "<group>";
+		};
+		966FB6DE2008A7BC00000001 /* Three */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C280514D6D800000000 /* BUILD */,
@@ -145,7 +157,9 @@
 		966FB6DE97D5C89200000000 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28DEBA0EC500000000 /* TestApplication-MergedInfo.plist */,
+				43D68C28A4CA799E00000000 /* TestApplication-Info-binary.plist */,
+				43D68C28791AEFD000000000 /* TestSuiteXCTest_test_bundle-Info-binary.plist */,
+				966FB6DE2008A7BC00000000 /* Three */,
 			);
 			name = TestSuite;
 			sourceTree = "<group>";
@@ -157,7 +171,7 @@
 				43D68C28588752AD00000000 /* BUILD */,
 				43D68C2864939ADF00000000 /* Info.plist */,
 				966FB6DE97D5C89200000002 /* TestSuite */,
-				966FB6DE2008A7BC00000000 /* Three */,
+				966FB6DE2008A7BC00000001 /* Three */,
 			);
 			name = TestSuite;
 			sourceTree = "<group>";
