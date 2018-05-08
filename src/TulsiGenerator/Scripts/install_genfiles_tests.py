@@ -21,7 +21,7 @@ import install_genfiles
 
 DOES_EXIST_DATA = {
     'generated_sources': [
-        ('third_party/tulsi/src/TulsiGenerator/Scripts/install_genfiles.py',
+        ('src/TulsiGenerator/Scripts/install_genfiles.py',
          'install_genfiles.py'),
     ],
 }
