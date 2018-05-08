@@ -127,6 +127,7 @@
 		54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */; };
 		54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
+		774F6E9720A2400E00572B76 /* bazel_build_flags.py in Resources */ = {isa = PBXBuildFile; fileRef = 774F6E9620A2400E00572B76 /* bazel_build_flags.py */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */; };
 		8B29E2D01BF9386200680E11 /* TulsiProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */; };
 		8B8F559B1BE3ECDC0095AF7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F559A1BE3ECDC0095AF7F /* AppDelegate.swift */; };
@@ -332,6 +333,7 @@
 		54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiParameter.swift; sourceTree = "<group>"; };
 		54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEntryMap.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
+		774F6E9620A2400E00572B76 /* bazel_build_flags.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = bazel_build_flags.py; path = TulsiGenerator/Scripts/bazel_build_flags.py; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceFilterViewController.swift; sourceTree = "<group>"; };
 		8B29E2CF1BF9386200680E11 /* TulsiProjectDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectDocument.swift; sourceTree = "<group>"; };
 		8B8F1B111BF6BDD50008013B /* BuildLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildLabel.swift; sourceTree = "<group>"; };
@@ -620,6 +622,7 @@
 		8B8F558E1BE3ECDC0095AF7F = {
 			isa = PBXGroup;
 			children = (
+				774F6E9620A2400E00572B76 /* bazel_build_flags.py */,
 				E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */,
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
@@ -865,6 +868,7 @@
 				E1C0186D2051B65D000580CC /* clean_symbol_cache.py in Resources */,
 				2D9DB34A1E5DECA40021EAF4 /* iOSXCTRunner.entitlements in Resources */,
 				3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */,
+				774F6E9720A2400E00572B76 /* bazel_build_flags.py in Resources */,
 				D33C204F1EC108CC00867450 /* tulsi_logging.py in Resources */,
 				54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */,
 				D3F78C681F391E9700AE0571 /* bazel_options.py in Resources */,
