@@ -40,6 +40,7 @@ _TULSI_COMPILE_DEPS = [
     "frameworks",
     "settings_bundle",
     "non_propagated_deps",
+    "srcs",  # To propagate down onto rules which generate source files.
     "tests",  # for test_suite when the --noexpand_test_suites flag is used.
     "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
     "test_bundle",
@@ -340,7 +341,7 @@ def _collect_dependency_labels(rule, filter, attr_list):
     A list of the Bazel labels of dependencies of the given rule.
   """
     attr = rule.attr
-    deps = [dep for attribute in attr_list for dep in _filter_deps(filter, _getattr_as_list(attr, attribute))]
+    deps = [dep for attribute in attr_list for dep in _filter_deps(filter, _getattr_as_list(attr, attribute)) if hasattr(dep, "tulsi_info_files")]
     return [dep.label for dep in deps if hasattr(dep, "label")]
 
 def _get_opt_attr(obj, attr_path):

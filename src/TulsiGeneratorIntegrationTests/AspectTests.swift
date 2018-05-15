@@ -330,7 +330,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 26)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 28)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -340,6 +340,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_bundle")
 
+    checker.assertThat("//tulsi_test:ApplicationLibrary")
+        .dependsOn("//tulsi_test:CoreDataResources")
+        .dependsOn("//tulsi_test:Library")
+        .dependsOn("//tulsi_test:ObjCFramework")
+        .dependsOn("//tulsi_test:SrcGenerator")
+
     checker.assertThat("//tulsi_test:XCTest_test_bundle")
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_binary")
@@ -347,6 +353,19 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:XCTest_test_binary")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:TestLibrary")
+
+    checker.assertThat("//tulsi_test:Library")
+        .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",
+                     "tulsi_test/LibrarySources/srcs/src2.m",
+                     "tulsi_test/LibrarySources/srcs/src3.m",
+                     "tulsi_test/LibrarySources/srcs/src4.m",
+                     "tulsi_test/Library/srcs/src5.mm",
+                     "tulsi_test/Library/srcs/SrcsHeader.h",
+                     "tulsi_test/Library/hdrs/HdrsHeader.h"])
+        .dependsOn("//tulsi_test:LibrarySources")
+
+    checker.assertThat("//tulsi_test:SrcGenerator")
+        .hasSources(["tulsi_test/SrcGenerator/srcs/input.m"])
   }
 
   func testPlatformDependent() throws {

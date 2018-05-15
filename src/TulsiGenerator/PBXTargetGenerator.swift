@@ -543,12 +543,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       // Indexer targets aren't needed:
+      // - if the target is a filegroup (we generate an indexer for what references the filegroup).
       // - if the target has no source files (there's nothing to index!)
       // - if the target is a test bundle (we generate proper targets for these).
       if (sourceFileInfos.isEmpty &&
           nonARCSourceFileInfos.isEmpty &&
           frameworkFileInfos.isEmpty &&
-          nonSourceVersionedFileInfos.isEmpty) || ruleEntry.pbxTargetType?.isTest ?? false {
+          nonSourceVersionedFileInfos.isEmpty)
+        || ruleEntry.pbxTargetType?.isTest ?? false || ruleEntry.type == "filegroup" {
         return (frameworkSearchPaths)
       }
 

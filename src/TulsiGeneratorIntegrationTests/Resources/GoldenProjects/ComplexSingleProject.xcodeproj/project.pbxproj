@@ -13,6 +13,7 @@
 		E6AF49473148FC2600000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C283148FC2600000000 /* src.mm */; };
 		E6AF49475D9EF01300000000 /* NonARCFile.mm in non_arc_srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28DC6A997500000000 /* NonARCFile.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6AF49476A36B02900000000 /* src.mm in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C286A36B02900000000 /* src.mm */; };
+		E6AF4947716A3B7000000000 /* input.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C28716A3B7000000000 /* input.m */; };
 		E6AF494775C5141000000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2875C5141000000000 /* main.m */; };
 		E6AF49477C31BCDA00000000 /* sub_library_with_identical_defines.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */; };
 		E6AF49478970786C00000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C288970786C00000000 /* src1.m */; };
@@ -56,11 +57,11 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3D31C5E66B144ABC00000000;
 		};
-		819366728C6469FB00000000 /* PBXContainerItemProxy */ = {
+		81936672CAE2872300000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E7BD0EAD324880400000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D31C5E68C6469FA00000000;
+			remoteGlobalIDString = 3D31C5E6CAE2872200000000;
 		};
 		81936672E3993AD700000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -97,7 +98,9 @@
 		43D68C2866D7C08500000000 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/EN.strings"; sourceTree = "<group>"; };
 		43D68C286A36B02900000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithDifferentDefines/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C286E7B37CF00000000 /* NonLocalized.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = NonLocalized.strings; path = "tulsi-workspace/tulsi_e2e_complex/Application/NonLocalized.strings"; sourceTree = "<group>"; };
+		43D68C28716A3B7000000000 /* input.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = input.m; path = "tulsi-workspace/tulsi_e2e_complex/SrcGenerator/srcs/input.m"; sourceTree = "<group>"; };
 		43D68C2875C5141000000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_complex/Application/srcs/main.m"; sourceTree = "<group>"; };
+		43D68C2876CB9B2C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2879357B7500000000 /* AnotherPCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnotherPCHFile.pch; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch"; sourceTree = "<group>"; };
 		43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = sub_library_with_identical_defines.m; path = "tulsi-workspace/tulsi_e2e_complex/SubLibraryWithIdenticalDefines/srcs/sub_library_with_identical_defines.m"; sourceTree = "<group>"; };
 		43D68C287C841B0C00000000 /* ComplexSingle.bzl */ = {isa = PBXFileReference; lastKnownFileType = com.google.bazel.skylark; name = ComplexSingle.bzl; path = tulsi_e2e_complex/ComplexSingle.bzl; sourceTree = "<group>"; };
@@ -110,7 +113,6 @@
 		43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min8.0.a; path = lib_idx_Library_20EC2F4A_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A47D8A1F00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28A6D7A7EC00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_complex/BUILD; sourceTree = "<group>"; };
-		43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28AB2790F000000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src3.m"; sourceTree = "<group>"; };
 		43D68C28B112D95100000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; name = structured_resources.file2; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file2"; sourceTree = "<group>"; };
 		43D68C28B72F496D00000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = test.framework; path = "tulsi-workspace/tulsi_e2e_complex/ObjCFramework/test.framework"; sourceTree = "<group>"; };
@@ -139,7 +141,7 @@
 				43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */,
 				43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */,
 				43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */,
-				43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */,
+				43D68C2876CB9B2C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0.a */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -165,7 +167,7 @@
 			children = (
 				43D68C288E876E6400000000 /* Plist1.plist */,
 				966FB6DE268F6DC500000000 /* resources */,
-				966FB6DE5B9D018E00000008 /* srcs */,
+				966FB6DE5B9D018E00000009 /* srcs */,
 			);
 			name = TodayExtension;
 			sourceTree = "<group>";
@@ -181,7 +183,7 @@
 		966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000005 /* srcs */,
+				966FB6DE5B9D018E00000006 /* srcs */,
 			);
 			name = SubLibraryWithDefines;
 			sourceTree = "<group>";
@@ -227,7 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				966FB6DE97917B0F00000000 /* pch */,
-				966FB6DE5B9D018E00000004 /* srcs */,
+				966FB6DE5B9D018E00000005 /* srcs */,
 			);
 			name = SubLibrary;
 			sourceTree = "<group>";
@@ -235,7 +237,7 @@
 		966FB6DE4467252500000000 /* SubLibraryWithIdenticalDefines */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000007 /* srcs */,
+				966FB6DE5B9D018E00000008 /* srcs */,
 			);
 			name = SubLibraryWithIdenticalDefines;
 			sourceTree = "<group>";
@@ -279,7 +281,7 @@
 		966FB6DE5B9D018E00000004 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C283148FC2600000000 /* src.mm */,
+				43D68C28716A3B7000000000 /* input.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -287,7 +289,7 @@
 		966FB6DE5B9D018E00000005 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C281A41382100000000 /* src.mm */,
+				43D68C283148FC2600000000 /* src.mm */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -295,7 +297,7 @@
 		966FB6DE5B9D018E00000006 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C286A36B02900000000 /* src.mm */,
+				43D68C281A41382100000000 /* src.mm */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -303,7 +305,7 @@
 		966FB6DE5B9D018E00000007 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */,
+				43D68C286A36B02900000000 /* src.mm */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -311,12 +313,20 @@
 		966FB6DE5B9D018E00000008 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28ED583D0500000000 /* today_extension_library.m */,
+				43D68C287C31BCDA00000000 /* sub_library_with_identical_defines.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
 		};
 		966FB6DE5B9D018E00000009 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28ED583D0500000000 /* today_extension_library.m */,
+			);
+			name = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DE5B9D018E0000000A /* srcs */ = {
 			isa = PBXGroup;
 			children = (
 				43D68C28F643652200000000 /* defaultTestSource.m */,
@@ -338,7 +348,7 @@
 		966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000006 /* srcs */,
+				966FB6DE5B9D018E00000007 /* srcs */,
 			);
 			name = SubLibraryWithDifferentDefines;
 			sourceTree = "<group>";
@@ -346,7 +356,7 @@
 		966FB6DE77973FA000000000 /* XCTest */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE5B9D018E00000009 /* srcs */,
+				966FB6DE5B9D018E0000000A /* srcs */,
 			);
 			name = XCTest;
 			sourceTree = "<group>";
@@ -372,6 +382,7 @@
 				966FB6DE36005C3A00000000 /* NonPropagatedLibrary */,
 				43D68C2829C9947000000000 /* ObjCBundle.bundle */,
 				966FB6DE3A88F93800000000 /* ObjCFramework */,
+				966FB6DEA04342FA00000000 /* SrcGenerator */,
 				966FB6DE3FFB782800000000 /* SubLibrary */,
 				966FB6DE1FF9DE4F00000000 /* SubLibraryWithDefines */,
 				966FB6DE6FB7342F00000000 /* SubLibraryWithDifferentDefines */,
@@ -431,6 +442,14 @@
 				43D68C28FE8BFD3900000000 /* HdrsHeader.h */,
 			);
 			name = hdrs;
+			sourceTree = "<group>";
+		};
+		966FB6DEA04342FA00000000 /* SrcGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE5B9D018E00000004 /* srcs */,
+			);
+			name = SrcGenerator;
 			sourceTree = "<group>";
 		};
 		966FB6DEA22704D700000000 /* tools */ = {
@@ -554,22 +573,6 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E68C6469FA00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583449EBAD300000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0" */;
-			buildPhases = (
-				605793E20000000000000002 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
-			productName = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
-			productReference = 43D68C28A85F1C2000000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min8.0 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583C8973FE700000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_30DD5A4B_ios_min8.0" */;
@@ -580,13 +583,30 @@
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-				4DAD0B428C6469FB00000000 /* PBXTargetDependency */,
-				4DAD0B428C6469FB00000000 /* PBXTargetDependency */,
+				4DAD0B42CAE2872300000000 /* PBXTargetDependency */,
+				4DAD0B42CAE2872300000000 /* PBXTargetDependency */,
+				4DAD0B42CAE2872300000000 /* PBXTargetDependency */,
 				4DAD0B42202AA80700000000 /* PBXTargetDependency */,
 			);
 			name = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
 			productName = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
 			productReference = 43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		3D31C5E6CAE2872200000000 /* _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE475583A856F29D00000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0" */;
+			buildPhases = (
+				605793E20000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0;
+			productName = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0;
+			productReference = 43D68C2876CB9B2C00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0 */ = {
@@ -671,7 +691,7 @@
 				3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0 */,
 				3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0 */,
 				3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min8.0 */,
-				3D31C5E68C6469FA00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0 */,
+				3D31C5E6CAE2872200000000 /* _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -752,6 +772,7 @@
 				E6AF4947ED583D0500000000 /* today_extension_library.m in srcs */,
 				E6AF494706F127E800000000 /* Test.xcdatamodeld in tulsi_e2e_complex */,
 				E6AF4947151F1CC400000000 /* non_propagated.m in srcs */,
+				E6AF4947716A3B7000000000 /* input.m in srcs */,
 				E6AF4947F643652200000001 /* defaultTestSource.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -849,9 +870,9 @@
 			isa = PBXTargetDependency;
 			targetProxy = 819366726B144ABD00000000 /* PBXContainerItemProxy */;
 		};
-		4DAD0B428C6469FB00000000 /* PBXTargetDependency */ = {
+		4DAD0B42CAE2872300000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 819366728C6469FB00000000 /* PBXContainerItemProxy */;
+			targetProxy = 81936672CAE2872300000000 /* PBXContainerItemProxy */;
 		};
 		4DAD0B42E3993AD700000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -976,7 +997,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
+				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1152,7 +1173,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0;
+				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1459,14 +1480,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE475583449EBAD300000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_TestLibrary_79AD2A0E_ios_min8.0" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000005 /* Debug */,
-				44936BD6A3D45CE900000005 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		DE4755836798DA7E00000000 /* Build configuration list for PBXProject "ComplexSingleProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1492,6 +1505,14 @@
 				44936BD6A3D45CE900000003 /* Release */,
 				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
 				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583A856F29D00000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_NonPropagatedLibrary_SrcGenerator_TestLibrary_15938B03_ios_min8.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000005 /* Debug */,
+				44936BD6A3D45CE900000005 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
