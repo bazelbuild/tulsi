@@ -603,9 +603,12 @@ def _tulsi_sources_aspect(target, ctx):
     if binary_attributes:
         inheritable_attributes = binary_attributes + inheritable_attributes
 
-    extensions = [str(t.label) for t in _getattr_as_list(rule_attr, "extensions")]
+        # Collect extensions for bundled targets.
+    extensions = []
+    if AppleBundleInfo in target:
+        extensions = [str(t.label) for t in _getattr_as_list(rule_attr, "extensions")]
 
-    # Tulsi considers WatchOS apps and extensions as an "extension"
+        # Tulsi considers WatchOS apps and extensions as an "extension"
     if target_kind == "watchos_application":
         watch_ext = _get_label_attr(rule_attr, "extension.label")
         extensions.append(watch_ext)
