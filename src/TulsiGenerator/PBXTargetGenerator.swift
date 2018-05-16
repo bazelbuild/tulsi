@@ -1210,9 +1210,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Returns other swift compiler flags for the given target based on the RuleEntry.
   private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toSet swiftFlags: NSMutableOrderedSet) {
-    // TODO(rdar://36107040): Once Xcode supports indexing with multiple -fmodule-map-file
-    // arguments, use "-Xcc -fmodule-map-file=<>" here instead of including paths in the includes
-    // above.
+    // Load module maps explicitly instead of letting Clang discover them on search paths. This
+    // is needed to avoid a case where Clang may load the same header both in modular and
+    // non-modular contexts, leading to duplicate definitions in the same file.
+    // See llvm.org/bugs/show_bug.cgi?id=19501
+    swiftFlags.addObjects(from: ruleEntry.objCModuleMaps.map() {
+      "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
+    })
   }
 
   /// Reads the RuleEntry's copts and puts the arguments into the correct set.

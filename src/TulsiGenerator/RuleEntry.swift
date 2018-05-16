@@ -381,7 +381,17 @@ public final class RuleEntry: RuleInfo {
     self.swiftLanguageVersion = swiftLanguageVersion
     self.swiftToolchain = swiftToolchain
     self.swiftTransitiveModules = swiftTransitiveModules
-    self.objCModuleMaps = objCModuleMaps
+
+    // Swift targets may have a generated Objective-C module map for their Swift generated header.
+    // Unfortunately, this breaks Xcode's indexing (it doesn't really make sense to ask SourceKit
+    // to index some source files in a module while at the same time giving it a compiled version
+    // of the same module), so we must exclude it.
+    if let labelFileName = label.asFileName {
+      let selfModuleMap = "\(labelFileName).modulemaps/module.modulemap"
+      self.objCModuleMaps = objCModuleMaps.filter { !$0.fullPath.contains(selfModuleMap) }
+    } else {
+      self.objCModuleMaps = objCModuleMaps
+    }
     self.extensionType = extensionType
 
     var linkedTargetLabels = Set<BuildLabel>()
