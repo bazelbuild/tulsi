@@ -33,8 +33,10 @@ class BazelOptions(object):
     """Returns a list of bazel flags for the current Xcode env configuration."""
     flags = []
     if self.xcode_env.get('ENABLE_ADDRESS_SANITIZER') == 'YES':
-      flags.extend([
-          '--features=asan',
-      ])
+      flags.append('--features=asan')
+    if self.xcode_env.get('ENABLE_THREAD_SANITIZER') == 'YES':
+      flags.append('--features=tsan')
+    if self.xcode_env.get('ENABLE_UNDEFINED_BEHAVIOR_SANITIZER') == 'YES':
+      flags.append('--features=ubsan')
 
     return flags
