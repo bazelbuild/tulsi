@@ -328,6 +328,18 @@ def _collect_xcdatamodeld_files(obj, attr_path):
         datamodelds.append(_file_metadata_by_replacing_path(f, path, False))
     return datamodelds
 
+def _collect_dependencies(rule_attr, attr_name):
+    """Collects Bazel targets for a dependency attr.
+
+  Args:
+    rule_attr: The Bazel rule.attr whose dependencies should be collected.
+    attr_name: attribute name to inspect for dependencies.
+
+  Returns:
+    A list of the Bazel target dependencies of the given rule.
+  """
+    return [dep for dep in _getattr_as_list(rule_attr, attr_name) if hasattr(dep, "tulsi_info_files")]
+
 def _collect_dependency_labels(rule, filter, attr_list):
     """Collects Bazel labels for a list of dependency attributes.
 
@@ -341,7 +353,10 @@ def _collect_dependency_labels(rule, filter, attr_list):
     A list of the Bazel labels of dependencies of the given rule.
   """
     attr = rule.attr
-    deps = [dep for attribute in attr_list for dep in _filter_deps(filter, _getattr_as_list(attr, attribute)) if hasattr(dep, "tulsi_info_files")]
+    deps = [dep for attribute in attr_list for dep in _filter_deps(
+        filter,
+        _collect_dependencies(attr, attribute),
+    )]
     return [dep.label for dep in deps if hasattr(dep, "label")]
 
 def _get_opt_attr(obj, attr_path):
@@ -522,7 +537,7 @@ def _tulsi_sources_aspect(target, ctx):
     tulsi_info_files = depset()
     transitive_attributes = dict()
     for attr_name in _TULSI_COMPILE_DEPS:
-        deps = _getattr_as_list(rule_attr, attr_name)
+        deps = _collect_dependencies(rule_attr, attr_name)
         for dep in _filter_deps(filter, deps):
             if hasattr(dep, "tulsi_info_files"):
                 tulsi_info_files += dep.tulsi_info_files
@@ -826,7 +841,7 @@ def _tulsi_outputs_aspect(target, ctx):
     embedded_bundles = depset()
 
     for attr_name in _TULSI_COMPILE_DEPS:
-        deps = _getattr_as_list(rule_attr, attr_name)
+        deps = _collect_dependencies(rule_attr, attr_name)
         for dep in deps:
             if hasattr(dep, "tulsi_generated_files"):
                 tulsi_generated_files += dep.tulsi_generated_files
