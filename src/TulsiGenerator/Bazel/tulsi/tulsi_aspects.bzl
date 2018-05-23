@@ -115,7 +115,11 @@ _GENERATED_SOURCE_FILE_EXTENSIONS = [
 
 def _dict_omitting_none(**kwargs):
     """Creates a dict from the args, dropping keys with None or [] values."""
-    return {name: kwargs[name] for name in kwargs if kwargs[name] != None and kwargs[name] != []}
+    return {
+        name: kwargs[name]
+        for name in kwargs
+        if kwargs[name] != None and kwargs[name] != []
+    }
 
 def _struct_omitting_none(**kwargs):
     """Creates a struct from the args, dropping keys with None or [] values."""
@@ -124,37 +128,37 @@ def _struct_omitting_none(**kwargs):
 def _convert_outpath_to_symlink_path(path):
     """Converts full output paths to their tulsi-symlink equivalents.
 
-  Bazel output paths are unstable, prone to change with architecture,
-  platform or flag changes. Therefore we can't rely on them to supply to Xcode.
-  Instead, we will root all outputs under a stable tulsi dir,
-  and the bazel_build.py script will link the artifacts into the correct
-  location under it.
+    Bazel output paths are unstable, prone to change with architecture,
+    platform or flag changes. Therefore we can't rely on them to supply to Xcode.
+    Instead, we will root all outputs under a stable tulsi dir,
+    and the bazel_build.py script will link the artifacts into the correct
+    location under it.
 
-  Tulsi root is located at WORKSPACE/bazel-exec-root-link/_tulsi-includes/x/x/.
-  The two "x" directories are stubs to match the number of path components, so
-  that relative paths work with the new location. Some Bazel outputs, like
-  module maps, use relative paths to reference other files in the build.
+    Tulsi root is located at WORKSPACE/bazel-exec-root-link/_tulsi-includes/x/x/.
+    The two "x" directories are stubs to match the number of path components, so
+    that relative paths work with the new location. Some Bazel outputs, like
+    module maps, use relative paths to reference other files in the build.
 
-  The leading underscore in _tulsi-includes is present as Bazel will clear
-  all directories that don't start with '.', '_', or 'bazel-' when it builds.
-  Otherwise, upon a build failure, _tulsi-includes would be removed and
-  indexing and auto-completion for generated files would no longer work until
-  the next successful build.
+    The leading underscore in _tulsi-includes is present as Bazel will clear
+    all directories that don't start with '.', '_', or 'bazel-' when it builds.
+    Otherwise, upon a build failure, _tulsi-includes would be removed and
+    indexing and auto-completion for generated files would no longer work until
+    the next successful build.
 
-  In short, this method will transform
-    bazel-out/ios-x86_64-min7.0/genfiles/foo
-  to
-    _tulsi-includes/x/x/foo
+    In short, this method will transform
+      bazel-out/ios-x86_64-min7.0/genfiles/foo
+    to
+      _tulsi-includes/x/x/foo
 
-  This is currently enabled for everything although it will only affect
-  generated files.
+    This is currently enabled for everything although it will only affect
+    generated files.
 
-  Args:
-    path: path to transform
+    Args:
+      path: path to transform
 
-  Returns:
-    A string that is the original path modified according to the rules.
-  """
+    Returns:
+      A string that is the original path modified according to the rules.
+    """
 
     # Transform paths of the form:
     #   bazel-[whatever]/[platform-config]/symlink[/.*]
@@ -165,7 +169,7 @@ def _convert_outpath_to_symlink_path(path):
     if (len(components) > 2 and
         first_dash >= 0 and
         first_dash < len(components[0])):
-        return ("_tulsi-includes/x/x/" + "/".join(components[3:]))
+        return "_tulsi-includes/x/x/" + "/".join(components[3:])
     return path
 
 def _is_bazel_external_file(f):
@@ -177,10 +181,9 @@ def _file_metadata(f):
     if not f:
         return None
 
-        # Special case handling for Bazel external files which have a path that starts
-        # with 'external/' but their short_path and root.path have no mention of being
-        # external.
-
+    # Special case handling for Bazel external files which have a path that starts
+    # with 'external/' but their short_path and root.path have no mention of being
+    # external.
     out_path = f.path if _is_bazel_external_file(f) else f.short_path
     if not f.is_source:
         root_path = f.root.path
@@ -188,18 +191,17 @@ def _file_metadata(f):
         if symlink_path == root_path:
             # The root path should always be bazel-out/... and thus is expected to be
             # updated.
-            print("Unexpected root path \"%s\". Please report." % root_path)
+            print('Unexpected root path "%s". Please report.' % root_path)
             root_execution_path_fragment = root_path
         else:
             root_execution_path_fragment = symlink_path
     else:
         root_execution_path_fragment = None
 
-        # At the moment (Oct. 2016), Bazel disallows most files without extensions.
-        # As a temporary hack, Tulsi treats File instances pointing at extension-less
-        # paths as directories. This is extremely fragile and must be replaced with
-        # logic properly homed in Bazel.
-
+    # At the moment (Oct. 2016), Bazel disallows most files without extensions.
+    # As a temporary hack, Tulsi treats File instances pointing at extension-less
+    # paths as directories. This is extremely fragile and must be replaced with
+    # logic properly homed in Bazel.
     is_dir = (f.basename.find(".") == -1)
 
     return _struct_omitting_none(
@@ -228,7 +230,11 @@ def _depset_to_file_metadata_list(a_depset):
 
 def _collect_artifacts(obj, attr_path):
     """Returns a list of Artifact objects for the attr_path in obj."""
-    return [f for src in _getattr_as_list(obj, attr_path) for f in _get_opt_attr(src, "files")]
+    return [
+        f
+        for src in _getattr_as_list(obj, attr_path)
+        for f in _get_opt_attr(src, "files")
+    ]
 
 def _collect_files(obj, attr_path, convert_to_metadata = True):
     """Returns a list of artifact_location's for the attr_path in obj."""
@@ -331,32 +337,40 @@ def _collect_xcdatamodeld_files(obj, attr_path):
 def _collect_dependencies(rule_attr, attr_name):
     """Collects Bazel targets for a dependency attr.
 
-  Args:
-    rule_attr: The Bazel rule.attr whose dependencies should be collected.
-    attr_name: attribute name to inspect for dependencies.
+    Args:
+      rule_attr: The Bazel rule.attr whose dependencies should be collected.
+      attr_name: attribute name to inspect for dependencies.
 
-  Returns:
-    A list of the Bazel target dependencies of the given rule.
-  """
-    return [dep for dep in _getattr_as_list(rule_attr, attr_name) if hasattr(dep, "tulsi_info_files")]
+    Returns:
+      A list of the Bazel target dependencies of the given rule.
+    """
+    return [
+        dep
+        for dep in _getattr_as_list(rule_attr, attr_name)
+        if hasattr(dep, "tulsi_info_files")
+    ]
 
 def _collect_dependency_labels(rule, filter, attr_list):
     """Collects Bazel labels for a list of dependency attributes.
 
-  Args:
-    rule: The Bazel rule whose dependencies should be collected.
-    filter: Filter to apply when gathering dependencies.
-    attr_list: List of attribute names potentially containing Bazel labels for
-        dependencies of the given rule.
+    Args:
+      rule: The Bazel rule whose dependencies should be collected.
+      filter: Filter to apply when gathering dependencies.
+      attr_list: List of attribute names potentially containing Bazel labels for
+          dependencies of the given rule.
 
-  Returns:
-    A list of the Bazel labels of dependencies of the given rule.
-  """
+    Returns:
+      A list of the Bazel labels of dependencies of the given rule.
+    """
     attr = rule.attr
-    deps = [dep for attribute in attr_list for dep in _filter_deps(
-        filter,
-        _collect_dependencies(attr, attribute),
-    )]
+    deps = [
+        dep
+        for attribute in attr_list
+        for dep in _filter_deps(
+            filter,
+            _collect_dependencies(attr, attribute),
+        )
+    ]
     return [dep.label for dep in deps if hasattr(dep, "label")]
 
 def _get_opt_attr(obj, attr_path):
@@ -376,18 +390,18 @@ def _get_label_attr(obj, attr_path):
 def _getattr_as_list(obj, attr_path):
     """Returns the value at attr_path as a list.
 
-  This handles normalization of attributes containing a single value for use in
-  methods expecting a list of values.
+    This handles normalization of attributes containing a single value for use in
+    methods expecting a list of values.
 
-  Args:
-    obj: The struct whose attributes should be parsed.
-    attr_path: Dotted path of attributes whose value should be returned in
-        list form.
+    Args:
+      obj: The struct whose attributes should be parsed.
+      attr_path: Dotted path of attributes whose value should be returned in
+          list form.
 
-  Returns:
-    A list of values for obj at attr_path or [] if the struct has
-    no such attribute.
-  """
+    Returns:
+      A list of values for obj at attr_path or [] if the struct has
+      no such attribute.
+    """
     val = _get_opt_attr(obj, attr_path)
     if not val:
         return []
@@ -482,7 +496,7 @@ def _minimum_os_for_platform(ctx, platform_type_str):
     if not min_os:
         return None
 
-        # Convert the DottedVersion to a string suitable for inclusion in a struct.
+    # Convert the DottedVersion to a string suitable for inclusion in a struct.
     return str(min_os)
 
 def _collect_swift_modules(target):
@@ -502,8 +516,7 @@ def _collect_module_maps(target):
             maps += module_maps
     return maps
 
-    # TODO(b/64490743): Add these files to the Xcode project.
-
+# TODO(b/64490743): Add these files to the Xcode project.
 def _collect_swift_header(target):
     """Returns a depset of Swift generated headers found on the given target."""
     headers = depset()
@@ -547,7 +560,11 @@ def _tulsi_sources_aspect(target, ctx):
     artifacts = _get_opt_attr(target, "files")
     if artifacts:
         # Ignore any generated Xcode projects as they are not useful to Tulsi.
-        artifacts = [_file_metadata(f) for f in artifacts if not f.short_path.endswith("project.pbxproj")]
+        artifacts = [
+            _file_metadata(f)
+            for f in artifacts
+            if not f.short_path.endswith("project.pbxproj")
+        ]
     else:
         # artifacts may be an empty set type, in which case it must be explicitly
         # set to None to allow Skylark's serialization to work.
@@ -564,12 +581,18 @@ def _tulsi_sources_aspect(target, ctx):
         generated_non_arc_files = _extract_generated_sources(target)
 
     swift_transitive_modules = depset(
-        [_file_metadata(f) for f in _collect_swift_modules(target)],
+        [
+            _file_metadata(f)
+            for f in _collect_swift_modules(target)
+        ],
     )
 
     # Collect ObjC module maps dependencies for Swift targets.
     objc_module_maps = depset(
-        [_file_metadata(f) for f in _collect_module_maps(target)],
+        [
+            _file_metadata(f)
+            for f in _collect_module_maps(target)
+        ],
     )
 
     # Collect the dependencies of this rule, dropping any .jar files (which may be
@@ -618,12 +641,12 @@ def _tulsi_sources_aspect(target, ctx):
     if binary_attributes:
         inheritable_attributes = binary_attributes + inheritable_attributes
 
-        # Collect extensions for bundled targets.
+    # Collect extensions for bundled targets.
     extensions = []
     if AppleBundleInfo in target:
         extensions = [str(t.label) for t in _getattr_as_list(rule_attr, "extensions")]
 
-        # Tulsi considers WatchOS apps and extensions as an "extension"
+    # Tulsi considers WatchOS apps and extensions as an "extension"
     if target_kind == "watchos_application":
         watch_ext = _get_label_attr(rule_attr, "extension.label")
         extensions.append(watch_ext)
@@ -632,7 +655,7 @@ def _tulsi_sources_aspect(target, ctx):
         if watch_app:
             extensions.append(watch_app)
 
-            # Collect bundle related information.
+    # Collect bundle related information.
     if AppleBundleInfo in target:
         apple_bundle_provider = target[AppleBundleInfo]
 
@@ -651,7 +674,7 @@ def _tulsi_sources_aspect(target, ctx):
         product_type = None
         infoplist = None
 
-        # Collect Swift related attributes.
+    # Collect Swift related attributes.
     if SwiftInfo in target:
         attributes["has_swift_info"] = True
         transitive_attributes["swift_language_version"] = target[SwiftInfo].swift_version
@@ -663,7 +686,10 @@ def _tulsi_sources_aspect(target, ctx):
     target_includes = []
     target_defines = []
     if objc_provider:
-        target_includes = [_convert_outpath_to_symlink_path(x) for x in objc_provider.include]
+        target_includes = [
+            _convert_outpath_to_symlink_path(x)
+            for x in objc_provider.include
+        ]
         target_defines = objc_provider.define.to_list()
 
     platform_type, os_deployment_target = _get_deployment_info(target, ctx)
@@ -751,38 +777,37 @@ def _collect_bundle_info(target):
 
     return None
 
-    # Due to b/71744111 we have to manually re-create tag filtering for test_suite
-    # rules.
-
+# Due to b/71744111 we have to manually re-create tag filtering for test_suite
+# rules.
 def _tags_conform_to_filter(tags, filter):
     """Mirrors Bazel tag filtering for test_suites.
 
-  This makes sure that the target has all of the required tags and none of
-  the excluded tags before we include them within a test_suite.
+    This makes sure that the target has all of the required tags and none of
+    the excluded tags before we include them within a test_suite.
 
-  For more information on filtering inside Bazel, see
-  com.google.devtools.build.lib.packages.TestTargetUtils.java.
+    For more information on filtering inside Bazel, see
+    com.google.devtools.build.lib.packages.TestTargetUtils.java.
 
-  Args:
-    tags: all of the tags for the test target
-    filter: a struct containing excluded_tags and required_tags
+    Args:
+      tags: all of the tags for the test target
+      filter: a struct containing excluded_tags and required_tags
 
-  Returns:
-    True if this target passes the filter and False otherwise.
+    Returns:
+      True if this target passes the filter and False otherwise.
 
-  """
+    """
 
     # None of the excluded tags can be present.
     for exclude in filter.excluded_tags:
         if exclude in tags:
             return False
 
-            # All of the required tags must be present.
+    # All of the required tags must be present.
     for required in filter.required_tags:
         if required not in tags:
             return False
 
-            # All filters have been satisfied.
+    # All filters have been satisfied.
     return True
 
 def _filter_for_rule(rule):
@@ -846,7 +871,7 @@ def _tulsi_outputs_aspect(target, ctx):
             if hasattr(dep, "tulsi_generated_files"):
                 tulsi_generated_files += dep.tulsi_generated_files
 
-                # Retrieve the bundle info for embeddable attributes.
+            # Retrieve the bundle info for embeddable attributes.
             if attr_name not in _TULSI_NON_EMBEDDEDABLE_ATTRS:
                 dep_bundle_info = _collect_bundle_info(dep)
                 if dep_bundle_info:
@@ -874,12 +899,16 @@ def _tulsi_outputs_aspect(target, ctx):
 
         # Both the dSYM binary and executable binary don't have an extension, so
         # pick the first extension-less file not in a DWARF folder.
-        artifacts = [x.path for x in target.files.to_list() if x.extension == "" and
-                                                               "Contents/Resources/DWARF" not in x.path]
+        artifacts = [
+            x.path
+            for x in target.files.to_list()
+            if x.extension == "" and
+               "Contents/Resources/DWARF" not in x.path
+        ]
         if len(artifacts) > 0:
             artifact = artifacts[0]
 
-            # Collect generated files for bazel_build.py to copy under Tulsi root.
+    # Collect generated files for bazel_build.py to copy under Tulsi root.
     all_files = depset()
     if target_kind in _SOURCE_GENERATING_RULES + _NON_ARC_SOURCE_GENERATING_RULES:
         objc_provider = _get_opt_attr(target, "objc")
@@ -894,7 +923,11 @@ def _tulsi_outputs_aspect(target, ctx):
                   _collect_artifacts(rule, "attr.hdrs") +
                   _collect_artifacts(rule, "attr.textual_hdrs"))
     all_files += _collect_supporting_files(rule_attr, convert_to_metadata = False)
-    source_files = [x for x in target.files.to_list() if x.extension.lower() in _GENERATED_SOURCE_FILE_EXTENSIONS]
+    source_files = [
+        x
+        for x in target.files.to_list()
+        if x.extension.lower() in _GENERATED_SOURCE_FILE_EXTENSIONS
+    ]
     if infoplist:
         source_files.append(infoplist)
     all_files = depset(source_files, transitive = [all_files])
