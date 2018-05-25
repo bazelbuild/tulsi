@@ -330,7 +330,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 28)
+    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 27)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 

@@ -118,6 +118,8 @@ def _dict_omitting_none(**kwargs):
     return {
         name: kwargs[name]
         for name in kwargs
+        # Skylark doesn't support "is"; comparison is explicit for correctness.
+        # pylint: disable=g-equals-none,g-explicit-bool-comparison
         if kwargs[name] != None and kwargs[name] != []
     }
 

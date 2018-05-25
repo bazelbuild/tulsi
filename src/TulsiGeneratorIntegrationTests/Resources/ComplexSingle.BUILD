@@ -84,9 +84,6 @@ objc_library(
     non_arc_srcs = [
         "Application/non_arc_srcs/NonARCFile.mm",
     ],
-    non_propagated_deps = [
-        ":NonPropagatedLibrary",
-    ],
     storyboards = [
         "Application/Base.lproj/One.storyboard",
         ":StoryboardGenerator",
@@ -222,13 +219,6 @@ ios_unit_test(
     deps = [
         ":Library",
         ":TestLibrary",
-    ],
-)
-
-objc_library(
-    name = "NonPropagatedLibrary",
-    srcs = [
-        "NonPropagatedLibrary/srcs/non_propagated.m",
     ],
 )
 
