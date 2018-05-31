@@ -349,7 +349,8 @@ def _collect_dependencies(rule_attr, attr_name):
     return [
         dep
         for dep in _getattr_as_list(rule_attr, attr_name)
-        if hasattr(dep, "tulsi_info_files")
+        if hasattr(dep, "tulsi_info_files") or
+           hasattr(dep, "tulsi_generated_files")
     ]
 
 def _collect_dependency_labels(rule, filter, attr_list):
