@@ -534,35 +534,19 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
                      fromResourceDirectory: "TestSuite/Three")
   }
 
-  func testTestSuite_ExplicitXCTests_Query() throws {
+  func testTestSuite_ExplicitXCTests() throws {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
                                                                            startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions,
-                                                                           useAspectForTestSuites: false)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 23)
-    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-
-    checker.assertThat("//\(testDir)/One:XCTest")
-        .hasTestHost("//\(testDir):TestApplication")
-    checker.assertThat("//\(testDir)/One:LogicTest")
-        .exists()
-    checker.assertThat("//\(testDir)/Two:XCTest")
-        .hasTestHost("//\(testDir):TestApplication")
-    checker.assertThat("//\(testDir)/Three:XCTest")
-        .hasTestHost("//\(testDir):TestApplication")
-
-  }
-
-  func testTestSuite_ExplicitXCTests_Aspect() throws {
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions,
-                                                                           useAspectForTestSuites: true)
+                                                                           buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 24)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):explicit_XCTests")
         .hasType("test_suite")
+        .dependsOn("//\(testDir)/One:XCTest")
+        .dependsOn("//\(testDir)/One:LogicTest")
+        .dependsOn("//\(testDir)/Two:XCTest")
+        .dependsOn("//\(testDir)/Three:XCTest")
     checker.assertThat("//\(testDir)/One:XCTest")
         .hasTestHost("//\(testDir):TestApplication")
     checker.assertThat("//\(testDir)/One:LogicTest")
@@ -575,26 +559,16 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
 
   }
 
-  func testTestSuite_TaggedTests_Query() throws {
+  func testTestSuite_TaggedTests() throws {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
                                                                            startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions,
-                                                                           useAspectForTestSuites: false)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 10)
-    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-
-    checker.assertThat("//\(testDir):TestSuiteXCTest")
-        .hasTestHost("//\(testDir):TestApplication")
-  }
-
-  func testTestSuite_TaggedTests_Aspect() throws {
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions,
-                                                                           useAspectForTestSuites: true)
+                                                                           buildOptions: bazelBuildOptions)
     XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 11)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
+    checker.assertThat("//\(testDir):local_tagged_tests")
+        .hasType("test_suite")
+        .dependsOn("//\(testDir):TestSuiteXCTest")
     checker.assertThat("//\(testDir):TestSuiteXCTest")
         .hasTestHost("//\(testDir):TestApplication")
   }

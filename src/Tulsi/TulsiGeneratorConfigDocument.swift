@@ -460,12 +460,10 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       do {
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
-        let useAspectForTestSuitesOption = optionSet[.UseAspectForTestSuites]
         let projectGenBuildOptions = optionSet[.BazelBuildOptionsProjectGenerationOnly]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
-                                                                   useAspectForTestSuitesOption: useAspectForTestSuitesOption,
                                                                    projectGenBuildOptions: projectGenBuildOptions)
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
@@ -789,7 +787,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
                                                               startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
                                                               buildOptions: optionSet![.BazelBuildOptionsDebug],
-                                                              useAspectForTestSuitesOption: optionSet![.UseAspectForTestSuites],
                                                               projectGenBuildOptions: optionSet![.BazelBuildOptionsProjectGenerationOnly])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()

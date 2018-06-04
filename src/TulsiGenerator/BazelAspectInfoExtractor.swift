@@ -68,7 +68,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
-                                   useAspectForTestSuites: Bool = true,
                                    projectGenerationOptions: [String] = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
@@ -76,7 +75,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
-                                          useAspectForTestSuites: useAspectForTestSuites,
                                           projectGenerationOptions: projectGenerationOptions)
   }
 
@@ -85,7 +83,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
                                           startupOptions: [String],
                                           buildOptions: [String],
-                                          useAspectForTestSuites: Bool,
                                           projectGenerationOptions: [String]) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
@@ -104,7 +101,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                aspect: "tulsi_sources_aspect",
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
-                                               useAspectForTestSuites: useAspectForTestSuites,
                                                projectGenerationOptions: projectGenerationOptions,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
@@ -161,7 +157,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             aspect: String,
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
-                                            useAspectForTestSuites: Bool = true,
                                             projectGenerationOptions: [String] = [],
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
@@ -197,12 +192,10 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--tool_tag=tulsi_v\(tulsiVersion):generator", // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
         "--noexperimental_build_event_json_file_path_conversion",
+        // Don't replace test_suites with their tests. This allows the Aspect to discover the
+        // structure of test_suites instead of just the tests they resolve to.
+        "--noexpand_test_suites",
     ])
-    // Don't replace test_suites with their tests. This allows the Aspect to discover the structure
-    // of the test_suite.
-    if useAspectForTestSuites {
-      arguments.append("--noexpand_test_suites")
-    }
     arguments.append(contentsOf: projectGenerationOptions)
     arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)

@@ -1629,7 +1629,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       }
 
       // Emit a filtered option (--optionName[configName]) for each config.
-      for (optionKey, value) in configValues {
+      // Note that we sort the keys to make sure the ordering is stable even when adding/removing
+      // other keys.
+      for (optionKey, value) in configValues.sorted(by: { $0.0.rawValue < $1.0.rawValue }) {
         guard let concreteValue = value else { continue }
         let rawName = optionKey.rawValue
         var configKey: String?

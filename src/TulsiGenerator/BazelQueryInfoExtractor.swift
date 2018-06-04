@@ -68,39 +68,6 @@ final class BazelQueryInfoExtractor: QueuedLogging {
     return infos
   }
 
-  /// Extracts a map of RuleInfo to considered expansions for the given test_suite targets.
-  // The information provided represents the full possible set of tests for each test_suite; the
-  // actual expansion by Bazel may not include all of the returned labels and will be done
-  // recursively such that a test_suite whose expansion contains another test_suite would expand to
-  // the contents of the included suite.
-  func extractTestSuiteRules(_ testSuiteLabels: [BuildLabel]) -> [RuleInfo: Set<BuildLabel>] {
-    if testSuiteLabels.isEmpty { return [:] }
-    let profilingStart = localizedMessageLogger.startProfiling("expand_test_suite_rules",
-                                                               message: "Expanding \(testSuiteLabels.count) test suites")
-
-    var infos = [RuleInfo: Set<BuildLabel>]()
-    let labelDeps = testSuiteLabels.map {"deps(\($0.value))"}
-    let joinedLabelDeps = labelDeps.joined(separator: "+")
-    let query = "kind(\"test_suite rule\",\(joinedLabelDeps))"
-    do {
-      let (_, data, _, debugInfo) = try self.bazelSynchronousQueryProcess(query,
-                                                                          outputKind: "xml",
-                                                                          additionalArguments: ["--keep_going"],
-                                                                          loggingIdentifier: "bazel_query_expand_test_suite_rules")
-      if let entries = self.extractRuleInfosWithRuleInputsFromBazelXMLOutput(data) {
-        infos = entries
-      }
-      // Note that this query is expected to return a non-zero exit code on occasion, so messages
-      // should be handled as [Info]s, not errors.
-      self.queuedInfoMessages.append(debugInfo)
-      localizedMessageLogger.logProfilingEnd(profilingStart)
-    } catch {
-      // The error has already been displayed to the user.
-      return [:]
-    }
-    return infos
-  }
-
   /// Extracts all of the transitive BUILD and skylark (.bzl) files used by the given targets.
   func extractBuildfiles<T: Collection>(_ targets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
     if targets.isEmpty { return Set() }

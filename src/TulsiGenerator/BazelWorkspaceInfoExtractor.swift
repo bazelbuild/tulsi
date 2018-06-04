@@ -44,8 +44,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   // Cache of all RuleEntry instances loaded for the associated project.
   private var ruleEntryCache = RuleEntryMap()
-  // The set of labels for which a test_suite query has been run (to prevent duplicate queries).
-  private var attemptedTestSuiteLabels = Set<BuildLabel>()
 
   init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
 
@@ -69,7 +67,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            useAspectForTestSuitesOption: TulsiOption,
                             projectGenBuildOptions: TulsiOption) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
@@ -85,7 +82,6 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
-    let useAspectForTestSuites = useAspectForTestSuitesOption.commonValueAsBool ?? true
     let projectGenerationOptions = splitOptionString(projectGenBuildOptions.commonValue)
 
     do {
@@ -93,27 +89,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
-                                                        useAspectForTestSuites: useAspectForTestSuites,
                                                         projectGenerationOptions: projectGenerationOptions)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")
-    }
-
-    // If we use fetch the test_suites from the Aspect, no further work is needed.
-    guard !useAspectForTestSuites else {
-      return ruleEntryCache
-    }
-
-    // Because certain label types are expanded by Bazel prior to aspect invocation (most notably
-    // test_suite rules), an additional pass is attempted if any of the requested labels are still
-    // missing after the aspect run.
-    let remainingMissingLabels = missingLabels.filter() {
-      return isLabelMissing($0) && !attemptedTestSuiteLabels.contains($0)
-    }
-    if !remainingMissingLabels.isEmpty {
-      extractTestSuiteRules(remainingMissingLabels)
-      attemptedTestSuiteLabels.forEach() { attemptedTestSuiteLabels.insert($0) }
     }
 
     return ruleEntryCache
@@ -130,17 +109,5 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func hasQueuedInfoMessages() -> Bool {
     return aspectExtractor.hasQueuedInfoMessages || queryExtractor.hasQueuedInfoMessages
-  }
-
-  // MARK: - Private methods
-
-  private func extractTestSuiteRules(_ labels: [BuildLabel]) {
-    let testSuiteDependencies = queryExtractor.extractTestSuiteRules(labels)
-    for (ruleInfo, possibleExpansions) in testSuiteDependencies {
-      ruleEntryCache.insert(ruleEntry: RuleEntry(label: ruleInfo.label,
-                                                 type: ruleInfo.type,
-                                                 attributes: [:],
-                                                 weakDependencies: possibleExpansions))
-    }
   }
 }

@@ -43,9 +43,6 @@ public enum TulsiOptionKey: String {
       // Include all .bzl files related to the build in the generated Xcodeproj.
       IncludeBuildSources,
 
-      // Configures test_suite targets based using bazel aspects instead of bazel query.
-      UseAspectForTestSuites,
-
       // Explicitly turns off all actions around caching paths for dSYM in a local SQLite database.
       DisableDBGShellCommandsCaching,
 
@@ -282,7 +279,6 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
-    addBoolOption(.UseAspectForTestSuites, .Generic, true)
     addBoolOption(.DisableDBGShellCommandsCaching, .Generic, false)
     addBoolOption(.DisableNormalizedDebugPrefixMap, .Generic, false)
     addStringOption(.BazelBuildOptionsProjectGenerationOnly, .Generic)
