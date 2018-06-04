@@ -22,7 +22,7 @@ public final class TulsiXcodeProjectGenerator {
     /// General Xcode project creation failure with associated debug info.
     case serializationFailed(String)
     /// The project config included an entry with the associated unsupported type.
-    case unsupportedTargetType(String)
+    case unsupportedTargetType(String, String)
   }
 
   public static let ScriptDirectorySubpath = XcodeProjectGenerator.ScriptDirectorySubpath
@@ -92,8 +92,9 @@ public final class TulsiXcodeProjectGenerator {
       LogMessage.postError("Project generation failed.")
       xcodeProjectGenerator.logPendingMessages()
       switch e {
-      case PBXTargetGenerator.ProjectSerializationError.unsupportedTargetType(let targetType):
-        throw GeneratorError.unsupportedTargetType(targetType)
+      case PBXTargetGenerator.ProjectSerializationError.unsupportedTargetType(let targetType,
+                                                                              let label):
+        throw GeneratorError.unsupportedTargetType(targetType, label)
       case PBXTargetGenerator.ProjectSerializationError.generalFailure(let info):
         throw GeneratorError.serializationFailed(info)
       case XcodeProjectGenerator.ProjectGeneratorError.serializationFailed(let info):

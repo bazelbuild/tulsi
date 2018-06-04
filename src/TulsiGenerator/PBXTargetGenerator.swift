@@ -121,7 +121,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   enum ProjectSerializationError: Error {
     case buildFileIsNotContainedByProjectRoot
     case generalFailure(String)
-    case unsupportedTargetType(String)
+    case unsupportedTargetType(String, String)
   }
 
   /// Names of Xcode build configurations to generate.
@@ -1473,7 +1473,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                              named name: String,
                                              ruleEntryMap: RuleEntryMap) throws -> (PBXNativeTarget) {
     guard let pbxTargetType = entry.pbxTargetType else {
-      throw ProjectSerializationError.unsupportedTargetType(entry.type)
+      throw ProjectSerializationError.unsupportedTargetType(entry.type, entry.label.value)
     }
     let target = project.createNativeTarget(name,
                                             deploymentTarget: entry.deploymentTarget,

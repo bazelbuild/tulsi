@@ -269,8 +269,9 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       let timeTaken = String(format: "%.4fs", Date().timeIntervalSince(startTime))
       LogMessage.postSyslog("Generate[OK]: \(timeTaken)", context: config.projectName)
       return .success(url)
-    } catch TulsiXcodeProjectGenerator.GeneratorError.unsupportedTargetType(let targetType) {
-      errorInfo = "Unsupported target type: \(targetType)"
+    } catch TulsiXcodeProjectGenerator.GeneratorError.unsupportedTargetType(let targetType,
+                                                                            let label) {
+      errorInfo = "Unsupported target type: \(targetType) (target \(label))"
     } catch TulsiXcodeProjectGenerator.GeneratorError.serializationFailed(let details) {
       errorInfo = "General failure: \(details)"
     } catch _ {
