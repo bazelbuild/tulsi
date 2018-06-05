@@ -536,9 +536,9 @@ class BazelBuildBridge(object):
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag
-    self.arch = os.environ.get('CURRENT_ARCH')
+    self.arch = os.environ.get('ARCHS')
     if not self.arch:
-      _PrintXcodeError('Tulsi requires env variable CURRENT_ARCH to be '
+      _PrintXcodeError('Tulsi requires env variable ARCHS to be '
                        'set.  Please file a bug against Tulsi.')
       sys.exit(1)
 
