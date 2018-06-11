@@ -39,7 +39,6 @@ _TULSI_COMPILE_DEPS = [
     "extensions",
     "frameworks",
     "settings_bundle",
-    "non_propagated_deps",
     "srcs",  # To propagate down onto rules which generate source files.
     "tests",  # for test_suite when the --noexpand_test_suites flag is used.
     "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
