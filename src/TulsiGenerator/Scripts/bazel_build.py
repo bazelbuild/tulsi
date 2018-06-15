@@ -524,10 +524,7 @@ class BazelBuildBridge(object):
     else:
       self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
 
-    update_dsym_cache = os.environ.get('TULSI_UPDATE_DSYM_CACHE',
-                                       'NO') == 'YES'
-    if update_dsym_cache:
-      self.update_symbol_cache = UpdateSymbolCache()
+    self.update_symbol_cache = UpdateSymbolCache()
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag. Note that Xcode will set multiple values in
@@ -1668,14 +1665,13 @@ class BazelBuildBridge(object):
       return False
 
     # Update the dSYM symbol cache with a reference to this dSYM bundle.
-    if self.update_symbol_cache:
-      err_msg = self.update_symbol_cache.UpdateUUID(uuid,
-                                                    dsym_bundle_path,
-                                                    arch)
-      if err_msg:
-        _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
-                           'to DBGShellCommands\' dSYM cache, but got error '
-                           '\"%s\".' % err_msg)
+    err_msg = self.update_symbol_cache.UpdateUUID(uuid,
+                                                  dsym_bundle_path,
+                                                  arch)
+    if err_msg:
+      _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
+                         'to DBGShellCommands\' dSYM cache, but got error '
+                         '\"%s\".' % err_msg)
 
     return True
 
