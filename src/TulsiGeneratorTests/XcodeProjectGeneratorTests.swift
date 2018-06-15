@@ -77,6 +77,14 @@ class XcodeProjectGeneratorTests: XCTestCase {
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-path-to-target-target.xcscheme"))
       XCTAssert(writtenFiles.contains("\(xcodeProjectPath)/xcshareddata/xcschemes/test-MainTarget.xcscheme"))
 
+      let supportScriptsURL = mockFileManager.homeDirectoryForCurrentUser.appendingPathComponent(
+          "Library/Application Support/Tulsi/Scripts", isDirectory: true)
+      XCTAssert(mockFileManager.directoryOperations.contains(supportScriptsURL.path))
+
+      let cacheReaderURL = supportScriptsURL.appendingPathComponent("bazel_cache_reader",
+                                                                    isDirectory: false)
+      XCTAssert(mockFileManager.copyOperations.keys.contains(cacheReaderURL.path))
+
       let xcp = "\(xcodeProjectPath)/xcuserdata/USER.xcuserdatad/xcschemes/xcschememanagement.plist"
       XCTAssert(mockFileManager.writeOperations.keys.contains(xcp))
     } catch let e {
@@ -296,7 +304,6 @@ class XcodeProjectGeneratorTests: XCTestCase {
   private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry]) {
     let options = TulsiOptionSet()
     // To avoid creating ~/Library folders and changing UserDefaults during CI testing.
-    options.options[.DisableDBGShellCommandsCaching]?.projectValue = "YES"
     config = TulsiGeneratorConfig(projectName: XcodeProjectGeneratorTests.projectName,
                                   buildTargetLabels: Array(ruleEntries.keys),
                                   pathFilters: pathFilters,
@@ -308,6 +315,10 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
     let tulsiworkspace = projectURL.appendingPathComponent("tulsi-workspace")
     mockFileManager.allowedDirectoryCreates.insert(tulsiworkspace.path)
+
+    let bazelCacheReaderURL = mockFileManager.homeDirectoryForCurrentUser.appendingPathComponent(
+        "Library/Application Support/Tulsi/Scripts", isDirectory: true)
+    mockFileManager.allowedDirectoryCreates.insert(bazelCacheReaderURL.path)
 
     let xcshareddata = projectURL.appendingPathComponent("project.xcworkspace/xcshareddata")
     mockFileManager.allowedDirectoryCreates.insert(xcshareddata.path)
@@ -351,6 +362,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       fileManager: mockFileManager,
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
     generator.redactWorkspaceSymlink = true
+    generator.suppressModifyingUserDefaults = true
     generator.writeDataHandler = { (url, _) in
       self.writtenFiles.insert(url.path)
     }
@@ -362,10 +374,15 @@ class XcodeProjectGeneratorTests: XCTestCase {
 class MockFileManager: FileManager {
   var filesThatExist = Set<String>()
   var allowedDirectoryCreates = Set<String>()
+  var directoryOperations = [String]()
   var copyOperations = [String: String]()
   var writeOperations = [String: Data]()
   var removeOperations = [String]()
   var mockContent = [String: Data]()
+
+  override open var homeDirectoryForCurrentUser: URL {
+    return URL(fileURLWithPath: "/Users/__MOCK_USER__", isDirectory: true)
+  }
 
   override func fileExists(atPath path: String) -> Bool {
     return filesThatExist.contains(path)
@@ -374,7 +391,10 @@ class MockFileManager: FileManager {
   override func createDirectory(at url: URL,
                                      withIntermediateDirectories createIntermediates: Bool,
                                      attributes: [FileAttributeKey:Any]?) throws {
-    if allowedDirectoryCreates.contains(url.path) { return }
+    guard !allowedDirectoryCreates.contains(url.path) else {
+      directoryOperations.append(url.path)
+      return
+    }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
                   userInfo: nil)
@@ -383,7 +403,10 @@ class MockFileManager: FileManager {
   override func createDirectory(atPath path: String,
                                       withIntermediateDirectories createIntermediates: Bool,
                                       attributes: [FileAttributeKey:Any]?) throws {
-    if allowedDirectoryCreates.contains(path) { return }
+    guard !allowedDirectoryCreates.contains(path) else {
+      directoryOperations.append(path)
+      return
+    }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
                   code: 0,
                   userInfo: nil)

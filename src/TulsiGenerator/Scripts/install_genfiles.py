@@ -95,10 +95,9 @@ class Installer(object):
 
 
 if __name__ == '__main__':
-  if len(sys.argv) <= 2:
-    sys.stderr.write('usage: %s <bazel exec root> <preserve tulsi includes?> '
+  if len(sys.argv) < 3:
+    sys.stderr.write('usage: %s <bazel exec root> '
                      '<.tulsiouts JSON files>\n' % sys.argv[0])
     exit(1)
 
-  preserve = sys.argv[2] == 'True'
-  Installer(sys.argv[1], preserve).InstallForTulsiouts(sys.argv[3:])
+  Installer(sys.argv[1]).InstallForTulsiouts(sys.argv[2:])

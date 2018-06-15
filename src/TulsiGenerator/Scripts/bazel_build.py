@@ -503,23 +503,18 @@ class BazelBuildBridge(object):
     self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
                                            'NO') == 'YES'
 
-    self.preserve_tulsi_includes = os.environ.get(
-        'TULSI_PRESERVE_TULSI_INCLUDES', 'YES') == 'YES'
-
     # TODO(b/69857078): Remove this when wrapped_clang is updated.
     self.direct_debug_prefix_map = os.environ.get('TULSI_DIRECT_DBG_PREFIX_MAP',
                                                   'NO') == 'YES'
 
-    if (self.swift_dependency or
-        self.direct_debug_prefix_map):
+    if self.swift_dependency or self.direct_debug_prefix_map:
       # Disable the normalized debug prefix map as swiftc doesn't support it.
       #
       # In addition, use of the direct_debug_prefix_map preempts the usage of
       # the normalized debug prefix map.
       self.normalized_prefix_map = False
     else:
-      self.normalized_prefix_map = os.environ.get('TULSI_NORMALIZED_DEBUG_INFO',
-                                                  'NO') == 'YES'
+      self.normalized_prefix_map = True
 
     if self.swift_dependency:
       # Always generate dSYMs for projects with Swift dependencies, as dSYMs are
@@ -1157,7 +1152,7 @@ class BazelBuildBridge(object):
     path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         'install_genfiles.py')
 
-    args = [path, BAZEL_EXECUTION_ROOT, str(self.preserve_tulsi_includes)]
+    args = [path, BAZEL_EXECUTION_ROOT]
     args.extend(outputs)
 
     self._PrintVerbose('Spawning subprocess install_genfiles.py to copy '

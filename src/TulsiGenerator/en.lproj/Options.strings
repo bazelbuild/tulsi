@@ -25,12 +25,6 @@
 
 "BazelContinueBuildingAfterError" = "Continue building after error";
 
-"DisableDBGShellCommandsCaching" = "Disable DBGShellCommands caching of dSYM bundles.";
-"DisableDBGShellCommandsCaching_DESC" = "Explicitly turns off all actions surrounding caching paths for dSYM bundles in a local SQLite database.";
-
-"DisableNormalizedDebugPrefixMap" = "Disable debug info normalization.";
-"DisableNormalizedDebugPrefixMap_DESC" = "Disable normalization of all debug information to a common root, in this case the root of '.'. Projects with Swift sources cannot normalize debug information, regardless of this setting.";
-
 "ImprovedImportAutocompletionFix" = "Improve #include/#import auto-completion through the use of USER_HEADER_SEARCH_PATHS";
 
 "CommandlineArguments" = "Commandline arguments";

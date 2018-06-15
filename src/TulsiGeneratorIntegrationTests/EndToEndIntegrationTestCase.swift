@@ -117,6 +117,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     // Output directory generation is suppressed in order to prevent having to whitelist diffs of
     // empty directories.
     projectGenerator.xcodeProjectGenerator.suppressGeneratedArtifactFolderCreation = true
+    // Don't modify any user defaults.
+    projectGenerator.xcodeProjectGenerator.suppressModifyingUserDefaults = true
     // The username is forced to a known value.
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     // The workspace symlink is forced to a known value.

@@ -43,12 +43,6 @@ public enum TulsiOptionKey: String {
       // Include all .bzl files related to the build in the generated Xcodeproj.
       IncludeBuildSources,
 
-      // Explicitly turns off all actions around caching paths for dSYM in a local SQLite database.
-      DisableDBGShellCommandsCaching,
-
-      // Remove the normalized -fdebug-prefix-map and fall back on the old behavior for debug info.
-      DisableNormalizedDebugPrefixMap,
-
       // Include the following build options only during project generation; can override config
       // from default (simulator) to device.
       BazelBuildOptionsProjectGenerationOnly,
@@ -279,8 +273,6 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
-    addBoolOption(.DisableDBGShellCommandsCaching, .Generic, false)
-    addBoolOption(.DisableNormalizedDebugPrefixMap, .Generic, false)
     addStringOption(.BazelBuildOptionsProjectGenerationOnly, .Generic)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
