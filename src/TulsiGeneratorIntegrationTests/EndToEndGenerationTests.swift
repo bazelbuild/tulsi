@@ -171,6 +171,29 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     validateDiff(diffLines)
   }
 
+  func test_LegacySwiftProject() throws {
+    let testDir = "tulsi_e2e_legacy_swift"
+    installBUILDFile("LegacySwift", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: [])]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "LegacySwiftProject"
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "blaze-bin/...",
+                                                            "blaze-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output")
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
   func test_SwiftProject() throws {
     let testDir = "tulsi_e2e_swift"
     installBUILDFile("Swift", intoSubdirectory: testDir)

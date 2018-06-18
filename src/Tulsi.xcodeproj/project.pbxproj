@@ -136,6 +136,7 @@
 		8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */; };
 		8B8F55C81BE4100A0095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */; };
 		8BC3D1051CF3643800D6D10E /* SplashScreenRecentDocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BC3D1031CF3643800D6D10E /* SplashScreenRecentDocumentView.xib */; };
+		AAA82AD420D80CF1000E86D9 /* LegacySwift.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */; };
 		AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */; };
 		AB18C7AE39198BE26CB112C0 /* HeadlessModeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */; };
 		AB18CB663B4A10F9BA45D02F /* TulsiCommandlineParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */; };
@@ -352,6 +353,7 @@
 		8BC3D1041CF3643800D6D10E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Tulsi/Base.lproj/SplashScreenRecentDocumentView.xib; sourceTree = "<group>"; };
 		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
+		AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LegacySwift.BUILD; path = Resources/LegacySwift.BUILD; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
 		AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiCommandlineParser.swift; sourceTree = "<group>"; };
 		AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessModeError.swift; sourceTree = "<group>"; };
@@ -574,6 +576,7 @@
 				3D7B77C61C9098A4004786EF /* GoldenProjects */,
 				3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */,
 				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
+				AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */,
 				3D062FA11DA6C76900E79AD4 /* Swift.BUILD */,
 				3DAE206B1CF497D800C2C0D0 /* test.WORKSPACE */,
 				3DC463B71CA2DAAB00DD8A42 /* TestSuite */,
@@ -908,6 +911,7 @@
 				E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */,
 				3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */,
 				547C3C021F1949740055BAED /* Watch.BUILD in Resources */,
+				AAA82AD420D80CF1000E86D9 /* LegacySwift.BUILD in Resources */,
 				541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */,
 				3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */,
 			);
