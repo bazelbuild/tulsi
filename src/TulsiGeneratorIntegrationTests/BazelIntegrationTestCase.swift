@@ -363,7 +363,7 @@ class BazelIntegrationTestCase: XCTestCase {
     var observer: NSObjectProtocol? = nil
 
     init() {
-      super.init(bundle: nil)
+      super.init(bundle: Bundle(for: TulsiXcodeProjectGenerator.self))
     }
 
     deinit {
@@ -389,26 +389,14 @@ class BazelIntegrationTestCase: XCTestCase {
       }
     }
 
-    override func warning(_ key: String,
-                          comment: String,
-                          details: String?,
-                          context: String?,
-                          values: CVarArg...) {
-      LogMessage.postWarning("\(key) - \(values)")
-    }
-
-    override func error(_ key: String,
-                        comment: String,
-                        details: String?,
-                        context: String?,
-                        values: CVarArg...) {
-      LogMessage.postError("> Critical error logged: \(key) - \(values)")
-    }
-
     fileprivate func handleMessage(_ item: LogMessage) {
       switch item.level {
         case .Error:
-          print("> Critical error logged: \(item.message)\nDetails:\n\(String(describing: item.details))")
+          if let details = item.details {
+            print("> Critical error logged: \(item.message)\nDetails:\n\(details)")
+          } else {
+            print("> Critical error logged: \(item.message)")
+          }
         case .Warning:
           print("> W: \(item.message)")
         case .Info:
