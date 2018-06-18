@@ -21,11 +21,15 @@ load(
     "@build_bazel_rules_apple//apple:providers.bzl",
     _AppleBundleInfo = "AppleBundleInfo",
     _IosExtensionBundleInfo = "IosExtensionBundleInfo",
-    _SwiftInfo = "SwiftInfo",
+    _LegacySwiftInfo = "SwiftInfo",
 )
 load(
     "@build_bazel_rules_apple//apple/testing:apple_test_rules.bzl",
     _AppleTestInfo = "AppleTestInfo",
+)
+load(
+    "@build_bazel_rules_swift//swift:swift.bzl",
+    _SwiftInfo = "SwiftInfo",
 )
 
 # Re-export providers.
@@ -34,5 +38,7 @@ AppleBundleInfo = _AppleBundleInfo
 AppleTestInfo = _AppleTestInfo
 
 IosExtensionBundleInfo = _IosExtensionBundleInfo
+
+LegacySwiftInfo = _LegacySwiftInfo
 
 SwiftInfo = _SwiftInfo

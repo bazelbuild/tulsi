@@ -23,6 +23,7 @@ load(
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
+    "LegacySwiftInfo",
     "SwiftInfo",
 )
 
@@ -506,6 +507,10 @@ def _collect_swift_modules(target):
     swift_modules = depset()
     if SwiftInfo in target:
         swift_info = target[SwiftInfo]
+        for modules in _getattr_as_list(swift_info, "transitive_swiftmodules"):
+            swift_modules += modules
+    elif LegacySwiftInfo in target:
+        swift_info = target[LegacySwiftInfo]
         for modules in _getattr_as_list(swift_info, "transitive_modules"):
             swift_modules += modules
     return swift_modules
@@ -513,8 +518,9 @@ def _collect_swift_modules(target):
 def _collect_module_maps(target):
     """Returns a depset of Clang module maps found on the given target."""
     maps = depset()
-    if SwiftInfo in target:
-        for module_maps in _getattr_as_list(target, "objc.module_map"):
+    if LegacySwiftInfo in target or SwiftInfo in target:
+        objc = target[apple_common.Objc]
+        for module_maps in _getattr_as_list(objc, "module_map"):
             maps += module_maps
     return maps
 
@@ -525,8 +531,9 @@ def _collect_swift_header(target):
 
     # swift_* targets put the generated header into their objc provider HEADER
     # field.
-    if SwiftInfo in target and hasattr(target, "objc"):
-        headers += target.objc.header
+    if ((LegacySwiftInfo in target or SwiftInfo in target) and
+        apple_common.Objc in target):
+        headers += target[apple_common.Objc].header
     return headers
 
 def _target_filtering_info(ctx):
@@ -677,9 +684,15 @@ def _tulsi_sources_aspect(target, ctx):
         infoplist = None
 
     # Collect Swift related attributes.
+    swift_info = None
     if SwiftInfo in target:
+        swift_info = target[SwiftInfo]
+    elif LegacySwiftInfo in target:
+        swift_info = target[LegacySwiftInfo]
+
+    if swift_info:
         attributes["has_swift_info"] = True
-        transitive_attributes["swift_language_version"] = target[SwiftInfo].swift_version
+        transitive_attributes["swift_language_version"] = swift_info.swift_version
         transitive_attributes["has_swift_dependency"] = True
 
     all_attributes = attributes + inheritable_attributes + transitive_attributes
