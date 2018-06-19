@@ -74,13 +74,13 @@ class BazelIntegrationTestCase: XCTestCase {
       installWorkspaceFile()
     }
 
-    // Prevent any custom --blazerc startup option to be specified. It should always be /dev/null.
+    // Prevent any custom --bazelrc startup option to be specified. It should always be /dev/null.
     for startupOption in bazelStartupOptions {
-      if (startupOption.hasPrefix("--blazerc") && startupOption != "--blazerc=/dev/null") {
-        fatalError("testBazelStartupOptions includes custom blazerc, which is not allowed '\(startupOption)'")
+      if (startupOption.hasPrefix("--bazelrc") && startupOption != "--bazelrc=/dev/null") {
+        fatalError("testBazelStartupOptions includes custom bazelrc, which is not allowed '\(startupOption)'")
       }
     }
-    bazelStartupOptions.append("--blazerc=/dev/null")
+    bazelStartupOptions.append("--bazelrc=/dev/null")
 
     // Prevent any custom --*_minimum_os build option to be specified for tests, as this will
     // effectively remove the reproduceability of the generated projects.

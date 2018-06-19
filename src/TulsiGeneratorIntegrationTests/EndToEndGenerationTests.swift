@@ -111,8 +111,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
       _ = try generateProjectNamed("BrokenSourceBuildProject",
                                    buildTargets: buildTargets,
                                    pathFilters: ["\(testDir)/...",
-                                                 "blaze-bin/...",
-                                                 "blaze-genfiles/..."],
+                                                 "bazel-bin/...",
+                                                 "bazel-genfiles/..."],
                                    outputDir: "tulsi_e2e_output")
     } catch Error.projectGenerationFailure(let info) {
       // Expected failure on malformed BUILD file.
@@ -161,8 +161,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output",
                                               options: projectOptions)
@@ -185,8 +185,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
@@ -208,8 +208,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
@@ -231,8 +231,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
@@ -254,8 +254,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed("SkylarkBundlingProject",
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/\(testDir)/...",
-                                                            "blaze-genfiles/\(testDir)/..."],
+                                                            "bazel-bin/\(testDir)/...",
+                                                            "bazel-genfiles/\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
@@ -281,8 +281,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
@@ -314,8 +314,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let projectURL = try generateProjectNamed(projectName,
                                               buildTargets: buildTargets,
                                               pathFilters: ["\(testDir)/...",
-                                                            "blaze-bin/...",
-                                                            "blaze-genfiles/..."],
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 

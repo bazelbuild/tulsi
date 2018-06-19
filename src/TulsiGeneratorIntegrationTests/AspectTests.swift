@@ -170,7 +170,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .dependsOn("//tulsi_test:NonPropagatedLibrary")
         .dependsOn("//tulsi_test:ObjCBundle")
         .hasSources(["tulsi_test/Application/srcs/main.m",
-                     "blaze-genfiles/tulsi_test/SrcGenerator/outs/output.m"
+                     "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Application/non_arc_srcs/NonARCFile.mm"])
         .hasDefines(["SubLibraryWithDefines=1",
@@ -210,7 +210,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                "src": true],
                               ["is_dir": false,
                                "path": "tulsi_test/StoryboardGenerator/outs/Two.storyboard",
-                               "root": "blaze-genfiles",
+                               "root": "bazel-genfiles",
                                "src": false],
                               ["is_dir": false,
                                "path": "tulsi_test/Application/AssetsOne.xcassets",
@@ -251,7 +251,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "LIBRARY_VALUE_WITH_SPACES=Value with spaces",])
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
-                                    "root": "blaze-genfiles",
+                                    "root": "bazel-genfiles",
                                     "src": false] as NSDictionary)
         .hasAttribute(.supporting_files,
                       value: [["is_dir": false, "path": "tulsi_test/Library/xib.xib", "src": true]] as NSArray)
