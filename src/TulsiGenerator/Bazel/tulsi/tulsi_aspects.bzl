@@ -518,7 +518,8 @@ def _collect_swift_modules(target):
 def _collect_module_maps(target):
     """Returns a depset of Clang module maps found on the given target."""
     maps = depset()
-    if LegacySwiftInfo in target or SwiftInfo in target:
+    if ((LegacySwiftInfo in target or SwiftInfo in target) and
+        apple_common.Objc in target):
         objc = target[apple_common.Objc]
         for module_maps in _getattr_as_list(objc, "module_map"):
             maps += module_maps
