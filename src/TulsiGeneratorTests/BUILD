@@ -1,6 +1,6 @@
 licenses(["notice"])  # Apache 2.0
 
-load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 swift_library(
@@ -12,5 +12,6 @@ swift_library(
 
 macos_unit_test(
     name = "TulsiGeneratorTests",
+    minimum_os_version = "10.13",
     deps = [":TulsiGeneratorTestsLib"],
 )

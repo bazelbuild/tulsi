@@ -13,7 +13,6 @@
 		2DD7C6C41F6887DB00163B92 /* DeploymentTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */; };
 		3D029B581C6421B400779E8E /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029B571C6421B400779E8E /* ProcessRunner.swift */; };
 		3D029C7E1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */; };
-		3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3D062FA11DA6C76900E79AD4 /* Swift.BUILD */; };
 		3D0849F11C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */; };
 		3D0849FC1C73AE77005F5ABA /* ProjectEditorTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */; };
 		3D084A021C73C902005F5ABA /* OptionsEditorModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D084A011C73C902005F5ABA /* OptionsEditorModelProtocol.swift */; };
@@ -23,7 +22,6 @@
 		3D167E271C5B1FA700DD485C /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 3D167E291C5B1FA700DD485C /* Credits.html */; };
 		3D1F2E261CF760420008CE83 /* BazelLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1F2E251CF760420008CE83 /* BazelLocator.swift */; };
 		3D250B7F1C5DCE120091C7A5 /* XcodeScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */; };
-		3D25E0A01CF49F5E00959453 /* EndToEndIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D25E09F1CF49F5E00959453 /* EndToEndIntegrationTestCase.swift */; };
 		3D329D0E1C4831EF00DFBD0F /* bazel_build.py in Resources */ = {isa = PBXBuildFile; fileRef = 3D329D0D1C4831EF00DFBD0F /* bazel_build.py */; };
 		3D387BAB1C7500A100544AE0 /* NewGeneratorConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D387BA91C7500A100544AE0 /* NewGeneratorConfigViewController.swift */; };
 		3D387BAD1C7500B500544AE0 /* NewGeneratorConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D387BAF1C7500B500544AE0 /* NewGeneratorConfigViewController.xib */; };
@@ -38,8 +36,6 @@
 		3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D5A1B571D1B3485006FC2A6 /* StubInfoPlist.plist */; };
 		3D7B5EB11C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */; };
 		3D7B77431C8F2DD3004786EF /* UISourcePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77421C8F2DD3004786EF /* UISourcePath.swift */; };
-		3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */; };
-		3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */ = {isa = PBXBuildFile; fileRef = 3D7B77C61C9098A4004786EF /* GoldenProjects */; };
 		3D7CED5B1CC171CD0073204D /* SplashScreenWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */; };
 		3D7CED5D1CC171E60073204D /* SplashScreenWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D7CED5F1CC171E60073204D /* SplashScreenWindowController.xib */; };
 		3D800DE91C6C24C000F4D08C /* BugReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D800DE81C6C24C000F4D08C /* BugReporter.swift */; };
@@ -50,8 +46,6 @@
 		3D91B4DC1C78CE6B006ED85C /* TulsiDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */; };
 		3D94853E1C31924B0026CE41 /* TulsiOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */; };
 		3D9485411C3193F00026CE41 /* Options.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D9485431C3193F00026CE41 /* Options.strings */; };
-		3D9677C21D467EAE00799275 /* ComplexSingle.bzl in Resources */ = {isa = PBXBuildFile; fileRef = 3D9677C11D467EAE00799275 /* ComplexSingle.bzl */; };
-		3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */; };
 		3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3D9926781C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
 		3D9926791C29F0A30094E098 /* TulsiGenerator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -83,12 +77,7 @@
 		3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */; };
 		3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */; };
 		3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */; };
-		3DAA08861CF49316007BE8A2 /* PlatformDependent.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */; };
-		3DAE206C1CF497D800C2C0D0 /* test.WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DAE206B1CF497D800C2C0D0 /* test.WORKSPACE */; };
 		3DAEE45E1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAEE45D1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift */; };
-		3DAEE4681C85EB6100BA1C67 /* TulsiGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9926631C29F0A20094E098 /* TulsiGenerator.framework */; };
-		3DAEE46F1C85ECEC00BA1C67 /* AspectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAEE46E1C85ECEC00BA1C67 /* AspectTests.swift */; };
-		3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 3DAEE4701C8600B800BA1C67 /* Simple.BUILD */; };
 		3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */; };
 		3DB1FBFC1C31DDCB0080198C /* ProjectEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */; };
 		3DB1FC1B1C3235E30080198C /* UIMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1FC1A1C3235E30080198C /* UIMessage.swift */; };
@@ -96,9 +85,7 @@
 		3DBCB5201CCA94E7000801A5 /* BazelErrorExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */; };
 		3DBEFACD1C2A1F7200119556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DBEFACF1C2A1F7200119556 /* Localizable.strings */; };
 		3DBEFAED1C2A3E5900119556 /* MockLocalizedMessageLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */; };
-		3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */ = {isa = PBXBuildFile; fileRef = 3DC463B71CA2DAAB00DD8A42 /* TestSuite */; };
 		3DC5CE0E1CFF3BAC00688AD6 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5CE101CFF3BAC00688AD6 /* NewProjectViewController.xib */; };
-		3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */; };
 		3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */; };
 		3DCF74B61C34699100521F1F /* OptionsEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */; };
 		3DCFE5D51C80A64600D7F31B /* WORKSPACE in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE5D21C80A64600D7F31B /* WORKSPACE */; };
@@ -109,7 +96,6 @@
 		3DD0EB0E1C40AEC7005C0469 /* OptionsEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0D1C40AEC7005C0469 /* OptionsEditorController.swift */; };
 		3DD0EB101C40AED8005C0469 /* OptionsTargetSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD0EB0F1C40AED8005C0469 /* OptionsTargetSelectorController.swift */; };
 		3DDA83921C7BB1F100CA7BB5 /* BazelSelectionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */; };
-		3DE7F4171CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */; };
 		3DEC9EDD1CF3421600769251 /* TulsiProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */; };
 		3DF313B41C3488BE00A34C14 /* UISelectableOutlineViewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */; };
 		3DF313B71C34898500A34C14 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DF313B91C34898500A34C14 /* Localizable.strings */; };
@@ -117,13 +103,11 @@
 		3DFB7C4D1C835EC000376760 /* CommandLineSplitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */; };
 		3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */; };
 		5416093C1F5854090016769C /* BazelBuildEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5416093B1F5854090016769C /* BazelBuildEvents.swift */; };
-		541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 541CAE391F2A571900FE5771 /* Mac.BUILD */; };
 		5429EA8B1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */; };
 		5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */; };
 		5442049C2064156D00EBF343 /* install_genfiles.py in Resources */ = {isa = PBXBuildFile; fileRef = 5442049B2064156D00EBF343 /* install_genfiles.py */; };
 		546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */; };
 		546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */; };
-		547C3C021F1949740055BAED /* Watch.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = 547C3C001F1949110055BAED /* Watch.BUILD */; };
 		54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */; };
 		54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
@@ -136,8 +120,6 @@
 		8B8F55A21BE3ECDC0095AF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8F55A01BE3ECDC0095AF7F /* Main.storyboard */; };
 		8B8F55C81BE4100A0095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8F55C71BE410090095AF7F /* ConfigEditorBuildTargetSelectorViewController.swift */; };
 		8BC3D1051CF3643800D6D10E /* SplashScreenRecentDocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BC3D1031CF3643800D6D10E /* SplashScreenRecentDocumentView.xib */; };
-		AAA82AD420D80CF1000E86D9 /* LegacySwift.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */; };
-		AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */; };
 		AB18C7AE39198BE26CB112C0 /* HeadlessModeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */; };
 		AB18CB663B4A10F9BA45D02F /* TulsiCommandlineParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */; };
 		AB18CC4A7B1A308E23A1CE6F /* HeadlessTulsiProjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */; };
@@ -152,7 +134,6 @@
 		E1C018702051B65D000580CC /* symbol_cache_schema.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C0186C2051B65C000580CC /* symbol_cache_schema.py */; };
 		E1C018722051B66C000580CC /* update_symbol_cache.py in Resources */ = {isa = PBXBuildFile; fileRef = E1C018712051B66C000580CC /* update_symbol_cache.py */; };
 		E1C0EBDB1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */; };
-		E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */ = {isa = PBXBuildFile; fileRef = E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,13 +145,6 @@
 			remoteInfo = TulsiGenerator;
 		};
 		3D9926761C29F0A30094E098 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B8F558F1BE3ECDC0095AF7F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3D9926621C29F0A20094E098;
-			remoteInfo = TulsiGenerator;
-		};
-		3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B8F558F1BE3ECDC0095AF7F /* Project object */;
 			proxyType = 1;
@@ -224,7 +198,6 @@
 		2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeploymentTarget.swift; sourceTree = "<group>"; };
 		3D029B571C6421B400779E8E /* ProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		3D029C7C1C650DD100779E8E /* ProjectEditorPackageManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorPackageManagerViewController.swift; sourceTree = "<group>"; };
-		3D062FA11DA6C76900E79AD4 /* Swift.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Swift.BUILD; path = Resources/Swift.BUILD; sourceTree = "<group>"; };
 		3D0849F01C739D75005F5ABA /* TulsiGeneratorConfigDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigDocument.swift; sourceTree = "<group>"; };
 		3D0849FB1C73AE77005F5ABA /* ProjectEditorTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorTabViewController.swift; sourceTree = "<group>"; };
 		3D084A011C73C902005F5ABA /* OptionsEditorModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorModelProtocol.swift; sourceTree = "<group>"; };
@@ -233,7 +206,6 @@
 		3D156AE11C1C8D9C00183439 /* bazel_clean.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = bazel_clean.sh; sourceTree = "<group>"; };
 		3D1F2E251CF760420008CE83 /* BazelLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelLocator.swift; sourceTree = "<group>"; };
 		3D250B7E1C5DCE120091C7A5 /* XcodeScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeScheme.swift; sourceTree = "<group>"; };
-		3D25E09F1CF49F5E00959453 /* EndToEndIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndToEndIntegrationTestCase.swift; sourceTree = "<group>"; };
 		3D329D0D1C4831EF00DFBD0F /* bazel_build.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build.py; sourceTree = "<group>"; };
 		3D387BA91C7500A100544AE0 /* NewGeneratorConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGeneratorConfigViewController.swift; sourceTree = "<group>"; };
 		3D387BAE1C7500B500544AE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NewGeneratorConfigViewController.xib; sourceTree = "<group>"; };
@@ -251,8 +223,6 @@
 		3D7830051C17918D00AF67A4 /* PBXTargetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXTargetGenerator.swift; sourceTree = "<group>"; };
 		3D7B5EB01C8B7415004786EF /* BazelWorkspaceInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspaceInfoExtractor.swift; sourceTree = "<group>"; };
 		3D7B77421C8F2DD3004786EF /* UISourcePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISourcePath.swift; sourceTree = "<group>"; };
-		3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndToEndGenerationTests.swift; sourceTree = "<group>"; };
-		3D7B77C61C9098A4004786EF /* GoldenProjects */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GoldenProjects; path = Resources/GoldenProjects; sourceTree = "<group>"; };
 		3D7CED591CC171CD0073204D /* SplashScreenWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenWindowController.swift; sourceTree = "<group>"; };
 		3D7CED5E1CC171E60073204D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SplashScreenWindowController.xib; sourceTree = "<group>"; };
 		3D800DE81C6C24C000F4D08C /* BugReporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReporter.swift; sourceTree = "<group>"; };
@@ -262,8 +232,6 @@
 		3D903A791D775AE800B034E9 /* StubWatchOS2InfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubWatchOS2InfoPlist.plist; path = GeneratedProjectResources/StubWatchOS2InfoPlist.plist; sourceTree = "<group>"; };
 		3D91B4DB1C78CE6B006ED85C /* TulsiDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiDocumentController.swift; sourceTree = "<group>"; };
 		3D94853D1C31924B0026CE41 /* TulsiOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiOptionSet.swift; sourceTree = "<group>"; };
-		3D9677C11D467EAE00799275 /* ComplexSingle.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.bzl; path = Resources/ComplexSingle.bzl; sourceTree = "<group>"; };
-		3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ComplexSingle.BUILD; path = Resources/ComplexSingle.BUILD; sourceTree = "<group>"; };
 		3D9926631C29F0A20094E098 /* TulsiGenerator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TulsiGenerator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9926671C29F0A20094E098 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TulsiGeneratorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -285,13 +253,7 @@
 		3DA65B5F1C6930210055448E /* NSURLExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtensionsTests.swift; sourceTree = "<group>"; };
 		3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiGeneratorConfigTests.swift; sourceTree = "<group>"; };
 		3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProjectTests.swift; sourceTree = "<group>"; };
-		3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PlatformDependent.BUILD; path = Resources/PlatformDependent.BUILD; sourceTree = "<group>"; };
-		3DAE206B1CF497D800C2C0D0 /* test.WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.WORKSPACE; sourceTree = "<group>"; };
 		3DAEE45D1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelWorkspacePathInfoFetcher.swift; sourceTree = "<group>"; };
-		3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TulsiGeneratorIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DAEE4671C85EB6100BA1C67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3DAEE46E1C85ECEC00BA1C67 /* AspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AspectTests.swift; sourceTree = "<group>"; };
-		3DAEE4701C8600B800BA1C67 /* Simple.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Simple.BUILD; path = Resources/Simple.BUILD; sourceTree = "<group>"; };
 		3DAFE8AD1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = StubIOSAppExtensionInfoPlist.plist; path = GeneratedProjectResources/StubIOSAppExtensionInfoPlist.plist; sourceTree = "<group>"; };
 		3DB1FBFB1C31DDCB0080198C /* ProjectEditorSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectEditorSplitViewController.swift; sourceTree = "<group>"; };
 		3DB1FC1A1C3235E30080198C /* UIMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMessage.swift; sourceTree = "<group>"; };
@@ -300,9 +262,7 @@
 		3DB8F6C11CA9E0FC0045B0CF /* tulsi_aspects.bzl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tulsi_aspects.bzl; path = tulsi/tulsi_aspects.bzl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		3DBCB51F1CCA94E7000801A5 /* BazelErrorExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelErrorExtractor.swift; sourceTree = "<group>"; };
 		3DBEFAEC1C2A3E5900119556 /* MockLocalizedMessageLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLocalizedMessageLogger.swift; sourceTree = "<group>"; };
-		3DC463B71CA2DAAB00DD8A42 /* TestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSuite; path = Resources/TestSuite; sourceTree = "<group>"; };
 		3DC5CE0F1CFF3BAC00688AD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/NewProjectViewController.xib; sourceTree = "<group>"; };
-		3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryTests.swift; sourceTree = "<group>"; };
 		3DCD08101D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = StubWatchOS2AppExtensionInfoPlist.plist; path = GeneratedProjectResources/StubWatchOS2AppExtensionInfoPlist.plist; sourceTree = "<group>"; };
 		3DCF74B51C34699100521F1F /* OptionsEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsEditorViewController.swift; sourceTree = "<group>"; };
 		3DCFE5D21C80A64600D7F31B /* WORKSPACE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WORKSPACE; sourceTree = "<group>"; };
@@ -315,7 +275,6 @@
 		3DD0EB0F1C40AED8005C0469 /* OptionsTargetSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsTargetSelectorController.swift; sourceTree = "<group>"; };
 		3DDA83911C7BB1F100CA7BB5 /* BazelSelectionPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelSelectionPanel.swift; sourceTree = "<group>"; };
 		3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjectsTests.swift; sourceTree = "<group>"; };
-		3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformDependentEndToEndGenerationTests.swift; sourceTree = "<group>"; };
 		3DEC9EDC1CF3421600769251 /* TulsiProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiProcessRunner.swift; sourceTree = "<group>"; };
 		3DF313B31C3488BE00A34C14 /* UISelectableOutlineViewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISelectableOutlineViewNode.swift; sourceTree = "<group>"; };
 		3DFAB53A1C17764A0090CC6F /* BazelQueryInfoExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelQueryInfoExtractor.swift; sourceTree = "<group>"; };
@@ -324,13 +283,11 @@
 		3DFB7C4C1C835EC000376760 /* CommandLineSplitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitter.swift; sourceTree = "<group>"; };
 		3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineSplitterTests.swift; sourceTree = "<group>"; };
 		5416093B1F5854090016769C /* BazelBuildEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelBuildEvents.swift; sourceTree = "<group>"; };
-		541CAE391F2A571900FE5771 /* Mac.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Mac.BUILD; path = Resources/Mac.BUILD; sourceTree = "<group>"; };
 		5429EA8A1F38C4DB00A78405 /* BazelPBXReferencePatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelPBXReferencePatcher.swift; sourceTree = "<group>"; };
 		5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelXcodeProjectPatcher.swift; sourceTree = "<group>"; };
 		5442049B2064156D00EBF343 /* install_genfiles.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = install_genfiles.py; sourceTree = "<group>"; };
 		546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellEscapingTests.swift; sourceTree = "<group>"; };
-		547C3C001F1949110055BAED /* Watch.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Watch.BUILD; path = Resources/Watch.BUILD; sourceTree = "<group>"; };
 		54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiParameter.swift; sourceTree = "<group>"; };
 		54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEntryMap.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
@@ -353,11 +310,9 @@
 		8BC3D1041CF3643800D6D10E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Tulsi/Base.lproj/SplashScreenRecentDocumentView.xib; sourceTree = "<group>"; };
 		8BFC8F441BE7CF140066E8BA /* PBXObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXObjects.swift; sourceTree = "<group>"; };
 		8BFC8F461BE7CFC70066E8BA /* GIDGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIDGenerator.swift; sourceTree = "<group>"; };
-		AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LegacySwift.BUILD; path = Resources/LegacySwift.BUILD; sourceTree = "<group>"; };
 		AB18C05C3361CD7B83A8DADF /* PBXProjSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBXProjSerializer.swift; sourceTree = "<group>"; };
 		AB18C4E9FB80370FC40B500A /* TulsiCommandlineParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TulsiCommandlineParser.swift; sourceTree = "<group>"; };
 		AB18C78A05BFF81B82FFE890 /* HeadlessModeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessModeError.swift; sourceTree = "<group>"; };
-		AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BazelIntegrationTestCase.swift; sourceTree = "<group>"; };
 		AB18CFC29644CD1B3B860056 /* HeadlessTulsiProjectCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadlessTulsiProjectCreator.swift; sourceTree = "<group>"; };
 		D33C204E1EC108CC00867450 /* tulsi_logging.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tulsi_logging.py; sourceTree = "<group>"; };
 		D3F78C671F391E9700AE0571 /* bazel_options.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_options.py; sourceTree = "<group>"; };
@@ -370,7 +325,6 @@
 		E1C0186C2051B65C000580CC /* symbol_cache_schema.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = symbol_cache_schema.py; sourceTree = "<group>"; };
 		E1C018712051B66C000580CC /* update_symbol_cache.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = update_symbol_cache.py; sourceTree = "<group>"; };
 		E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeGeneratorInvalidPaths.swift; sourceTree = "<group>"; };
-		E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleBad.BUILD; path = Resources/SimpleBad.BUILD; sourceTree = "<group>"; };
 		E1D770E520523E780026802A /* bazel_cache_reader.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = bazel_cache_reader.xcodeproj; path = tools/bazel_cache_reader/bazel_cache_reader.xcodeproj; sourceTree = "<group>"; };
 		F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TulsiVersion.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -388,14 +342,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D99266D1C29F0A30094E098 /* TulsiGenerator.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3DAEE4601C85EB6100BA1C67 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3DAEE4681C85EB6100BA1C67 /* TulsiGenerator.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,41 +495,6 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		3DAEE4641C85EB6100BA1C67 /* TulsiGeneratorBazelIntegrationTests */ = {
-			isa = PBXGroup;
-			children = (
-				3DAEE46E1C85ECEC00BA1C67 /* AspectTests.swift */,
-				AB18C7D45D34ACB3B8BC1805 /* BazelIntegrationTestCase.swift */,
-				3D7B77B61C907B0A004786EF /* EndToEndGenerationTests.swift */,
-				3D25E09F1CF49F5E00959453 /* EndToEndIntegrationTestCase.swift */,
-				3DAEE4671C85EB6100BA1C67 /* Info.plist */,
-				3DE7F4161CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift */,
-				3DCA3ADB1CB8166100A0BCA2 /* QueryTests.swift */,
-				3DAEE4721C8600BE00BA1C67 /* Resources */,
-			);
-			name = TulsiGeneratorBazelIntegrationTests;
-			path = TulsiGeneratorIntegrationTests;
-			sourceTree = "<group>";
-		};
-		3DAEE4721C8600BE00BA1C67 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E1D27C281F57781A000B9B13 /* SimpleBad.BUILD */,
-				541CAE391F2A571900FE5771 /* Mac.BUILD */,
-				547C3C001F1949110055BAED /* Watch.BUILD */,
-				3D9817681C8A0DBD005BF3E0 /* ComplexSingle.BUILD */,
-				3D9677C11D467EAE00799275 /* ComplexSingle.bzl */,
-				3D7B77C61C9098A4004786EF /* GoldenProjects */,
-				3DAA08841CF48F9D007BE8A2 /* PlatformDependent.BUILD */,
-				3DAEE4701C8600B800BA1C67 /* Simple.BUILD */,
-				AAA82AD220D80CE5000E86D9 /* LegacySwift.BUILD */,
-				3D062FA11DA6C76900E79AD4 /* Swift.BUILD */,
-				3DAE206B1CF497D800C2C0D0 /* test.WORKSPACE */,
-				3DC463B71CA2DAAB00DD8A42 /* TestSuite */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		3DB8F6C41CA9E1060045B0CF /* tulsi */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,7 +541,6 @@
 				8B8F55981BE3ECDC0095AF7F /* Products */,
 				8B8F55991BE3ECDC0095AF7F /* Tulsi */,
 				3D9926641C29F0A20094E098 /* TulsiGenerator */,
-				3DAEE4641C85EB6100BA1C67 /* TulsiGeneratorBazelIntegrationTests */,
 				3D9926721C29F0A30094E098 /* TulsiGeneratorTests */,
 				F4469ECD1C5BCA3200BCFAA1 /* XcodeConfig */,
 			);
@@ -642,7 +552,6 @@
 				8B8F55971BE3ECDC0095AF7F /* Tulsi.app */,
 				3D9926631C29F0A20094E098 /* TulsiGenerator.framework */,
 				3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */,
-				3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -759,24 +668,6 @@
 			productReference = 3D99266C1C29F0A20094E098 /* TulsiGeneratorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3DAEE4621C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3DAEE46D1C85EB6100BA1C67 /* Build configuration list for PBXNativeTarget "TulsiGeneratorIntegrationTests" */;
-			buildPhases = (
-				3DAEE45F1C85EB6100BA1C67 /* Sources */,
-				3DAEE4601C85EB6100BA1C67 /* Frameworks */,
-				3DAEE4611C85EB6100BA1C67 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3DAEE46A1C85EB6100BA1C67 /* PBXTargetDependency */,
-			);
-			name = TulsiGeneratorIntegrationTests;
-			productName = TulsiGeneratorIntegrationTests;
-			productReference = 3DAEE4631C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		8B8F55961BE3ECDC0095AF7F /* Tulsi */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B8F55BC1BE3ECDC0095AF7F /* Build configuration list for PBXNativeTarget "Tulsi" */;
@@ -814,10 +705,6 @@
 						CreatedOnToolsVersion = 7.2;
 						LastSwiftMigration = 0920;
 					};
-					3DAEE4621C85EB6100BA1C67 = {
-						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 0830;
-					};
 					8B8F55961BE3ECDC0095AF7F = {
 						CreatedOnToolsVersion = 7.1;
 						LastSwiftMigration = 0920;
@@ -846,7 +733,6 @@
 				8B8F55961BE3ECDC0095AF7F /* Tulsi */,
 				3D9926621C29F0A20094E098 /* TulsiGenerator */,
 				3D99266B1C29F0A20094E098 /* TulsiGeneratorTests */,
-				3DAEE4621C85EB6100BA1C67 /* TulsiGeneratorIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -895,25 +781,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3DAEE4611C85EB6100BA1C67 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3DAEE4711C8600B800BA1C67 /* Simple.BUILD in Resources */,
-				3D9677C21D467EAE00799275 /* ComplexSingle.bzl in Resources */,
-				3DAE206C1CF497D800C2C0D0 /* test.WORKSPACE in Resources */,
-				3DAA08861CF49316007BE8A2 /* PlatformDependent.BUILD in Resources */,
-				3D98176A1C8A0E20005BF3E0 /* ComplexSingle.BUILD in Resources */,
-				3DC463B91CA2DAAF00DD8A42 /* TestSuite in Resources */,
-				E1D27C2A1F57782D000B9B13 /* SimpleBad.BUILD in Resources */,
-				3D062FA31DA6C77500E79AD4 /* Swift.BUILD in Resources */,
-				547C3C021F1949740055BAED /* Watch.BUILD in Resources */,
-				AAA82AD420D80CF1000E86D9 /* LegacySwift.BUILD in Resources */,
-				541CAE3B1F2A571D00FE5771 /* Mac.BUILD in Resources */,
-				3D7B77C71C9098A4004786EF /* GoldenProjects in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1029,19 +896,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3DAEE45F1C85EB6100BA1C67 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3DCA3ADC1CB8166100A0BCA2 /* QueryTests.swift in Sources */,
-				3DE7F4171CF48ECB002C3498 /* PlatformDependentEndToEndGenerationTests.swift in Sources */,
-				3D7B77B71C907B0A004786EF /* EndToEndGenerationTests.swift in Sources */,
-				3DAEE46F1C85ECEC00BA1C67 /* AspectTests.swift in Sources */,
-				AB18C31C78E730FECC1552EF /* BazelIntegrationTestCase.swift in Sources */,
-				3D25E0A01CF49F5E00959453 /* EndToEndIntegrationTestCase.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8B8F55931BE3ECDC0095AF7F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1097,11 +951,6 @@
 			isa = PBXTargetDependency;
 			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
 			targetProxy = 3D9926761C29F0A30094E098 /* PBXContainerItemProxy */;
-		};
-		3DAEE46A1C85EB6100BA1C67 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3D9926621C29F0A20094E098 /* TulsiGenerator */;
-			targetProxy = 3DAEE4691C85EB6100BA1C67 /* PBXContainerItemProxy */;
 		};
 		E11AFAAE205264C200C97875 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1271,32 +1120,6 @@
 			};
 			name = Release;
 		};
-		3DAEE46B1C85EB6100BA1C67 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INFOPLIST_FILE = TulsiGeneratorIntegrationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TulsiGeneratorIntegrationTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		3DAEE46C1C85EB6100BA1C67 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INFOPLIST_FILE = TulsiGeneratorIntegrationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.Tulsi.TulsiGeneratorIntegrationTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		8B8F55BA1BE3ECDC0095AF7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4469ECE1C5BCA5900BCFAA1 /* TulsiVersion.xcconfig */;
@@ -1453,15 +1276,6 @@
 			buildConfigurations = (
 				3D99267C1C29F0A30094E098 /* Debug */,
 				3D99267D1C29F0A30094E098 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3DAEE46D1C85EB6100BA1C67 /* Build configuration list for PBXNativeTarget "TulsiGeneratorIntegrationTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3DAEE46B1C85EB6100BA1C67 /* Debug */,
-				3DAEE46C1C85EB6100BA1C67 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

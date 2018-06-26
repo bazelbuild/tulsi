@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import XCTest
+@testable import BazelIntegrationTestCase
+@testable import EndToEndIntegrationTestCase
 @testable import TulsiGenerator
 
 

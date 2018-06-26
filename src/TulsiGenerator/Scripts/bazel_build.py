@@ -542,6 +542,8 @@ class BazelBuildBridge(object):
     self.derived_sources_folder_path = os.environ.get('DERIVED_SOURCES_DIR')
     # Full name of the target artifact (e.g., "MyApp.app" or "Test.xctest").
     self.full_product_name = os.environ['FULL_PRODUCT_NAME']
+    # Whether to generate runfiles for this target.
+    self.gen_runfiles = os.environ.get('GENERATE_RUNFILES')
     # Target SDK version.
     self.sdk_version = os.environ.get('SDK_VERSION')
     # TEST_HOST for unit tests.
@@ -782,10 +784,14 @@ class BazelBuildBridge(object):
         '--build_event_json_file=%s' % self.build_events_file_path,
         '--noexperimental_build_event_json_file_path_conversion',
         '--bes_outerr_buffer_size=0',  # Don't buffer Bazel output at all.
-        '--output_groups=tulsi-outputs,default',
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
         '--override_repository=tulsi=%s' % tulsi_package_dir,
         '--tool_tag=tulsi_v%s:bazel_build' % self.tulsi_version])
+
+    if self.is_test and self.gen_runfiles:
+      bazel_command.append('--output_groups=+tulsi-outputs')
+    else:
+      bazel_command.append('--output_groups=tulsi-outputs,default')
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')

@@ -89,3 +89,12 @@ apple_genrule(
         "hdiutil create -srcfolder $(@D)/dmg_root -volname Tulsi $@",
     ]),
 )
+
+filegroup(
+    name = "for_bazel_tests",
+    testonly = 1,
+    srcs = [
+        "WORKSPACE",
+        "@build_bazel_rules_apple//:for_bazel_tests",
+    ],
+)

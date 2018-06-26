@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+@testable import BazelIntegrationTestCase
 @testable import TulsiGenerator
 
 
@@ -38,7 +39,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: buildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 11)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -144,7 +144,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 26)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -330,7 +329,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 27)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -368,72 +366,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasSources(["tulsi_test/SrcGenerator/srcs/input.m"])
   }
 
-  func testPlatformDependent() throws {
-    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
-
-    // iOS extension's Info.plist if triggered to build by the Tulsi aspect, so we need to create
-    // the actual file. In addition, it pulls in all asset catalogs defined on the extension, so
-    // create those too.
-    makePlistFileNamed("Ext-Info.plist",
-                       withContent: ["NSExtension": ["NSExtensionPointIdentifier": "com.apple.extension-foo"],
-                                     "CFBundleVersion": "1.0",
-                                     "CFBundleShortVersionString": "1.0"],
-                       inSubdirectory: "tulsi_test")
-    makeFileNamed("asset.png", inSubdirectory: "tulsi_test/Stickers.xcstickers")
-
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:SkylarkApplication")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 14)
-    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-
-    checker.assertThat("//tulsi_test:SkylarkApplication")
-        .dependsOn("//tulsi_test:SkylarkApplication.apple_binary")
-
-    checker.assertThat("//tulsi_test:SkylarkApplication.apple_binary")
-        .dependsOn("//tulsi_test:MainLibrary")
-
-    checker.assertThat("//tulsi_test:MainLibrary")
-        .hasSources(["tulsi_test/App/srcs/main.m"])
-
-    checker.assertThat("//tulsi_test:J2ObjCLibrary")
-        .exists()
-
-    checker.assertThat("//tulsi_test:ObjcProtos")
-        .containsNonARCSources(["_tulsi-includes/x/x/tulsi_test/_generated_protos/ObjcProtos/tulsi_test/ProtoFile.pbobjc.h"])
-
-    checker.assertThat("//tulsi_test:Protos")
-        .hasSources(["tulsi_test/ProtoFile.proto"])
-
-    checker.assertThat("//tulsi_test:JavaLibrary")
-        .hasSources(["tulsi_test/file.java"])
-  }
-
-  func testPlatformDependentXCTestWithNoTestHost() throws {
-    installBUILDFile("PlatformDependent", intoSubdirectory: "tulsi_test")
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTestWithNoTestHost")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: bazelBuildOptions)
-    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
-    checker.assertThat("//tulsi_test:XCTestWithNoTestHost")
-        .doesNotHaveTestHost()
-        .dependsOn("//tulsi_test:XCTestWithNoTestHost_test_bundle")
-
-    checker.assertThat("//tulsi_test:XCTestWithNoTestHost_test_bundle")
-        .dependsOn("//tulsi_test:XCTestWithNoTestHost_test_binary")
-
-    checker.assertThat("//tulsi_test:XCTestWithNoTestHost_test_binary")
-        .dependsOn("//tulsi_test:XCTestCode")
-        .dependsOn("//tulsi_test:XCTestCodeSwift")
-  }
-
   func testWatch() throws {
     installBUILDFile("Watch", intoSubdirectory: "tulsi_test")
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    // TODO(b/65252498): Enable when the bug is fixed.
-    // XCTAssertEqual(ruleEntries.allRuleEntries.count, 13)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -471,7 +408,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         try aspectInfoExtractor.extractRuleEntriesForLabels(labels,
                                                             startupOptions: bazelStartupOptions,
                                                             buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 8)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -538,7 +474,6 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):explicit_XCTests")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 24)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):explicit_XCTests")
@@ -563,7 +498,6 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
     let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//\(testDir):local_tagged_tests")],
                                                                            startupOptions: bazelStartupOptions,
                                                                            buildOptions: bazelBuildOptions)
-    XCTAssertEqual(ruleEntryMap.allRuleEntries.count, 11)
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//\(testDir):local_tagged_tests")
@@ -575,7 +509,7 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
 }
 
 
-private class InfoChecker {
+class InfoChecker {
   let ruleEntryMap: RuleEntryMap
 
   init(ruleEntryMap: RuleEntryMap) {

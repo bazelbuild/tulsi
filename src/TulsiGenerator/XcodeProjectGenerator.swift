@@ -501,6 +501,10 @@ final class XcodeProjectGenerator {
         buildSettings[featureFlag] = "YES"
       }
 
+      if let genRunfiles = config.options[.GenerateRunfiles].commonValueAsBool, genRunfiles {
+        buildSettings["GENERATE_RUNFILES"] = "YES"
+      }
+
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
@@ -773,6 +777,14 @@ final class XcodeProjectGenerator {
         additionalBuildTargets.append(hostTargetTuple)
       }
 
+      var schemeEnvVars = environmentVariables(for: entry)
+      if let genRunfiles = config.options[.GenerateRunfiles].commonValueAsBool,
+         let productType = entry.productType,
+          genRunfiles && (productType == .UnitTest || productType == .UIUnitTest) {
+        let bazelBinPath = "$(TULSI_WR)/\(workspaceInfoExtractor.bazelBinPath)"
+        schemeEnvVars["TEST_SRCDIR"] = "\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles"
+      }
+
       let scheme = XcodeScheme(target: target,
                                project: info.project,
                                projectBundleName: projectBundleName,
@@ -784,7 +796,7 @@ final class XcodeProjectGenerator {
                                runnableDebuggingMode: runnableDebuggingMode,
                                additionalBuildTargets: additionalBuildTargets,
                                commandlineArguments: commandlineArguments(for: entry),
-                               environmentVariables: environmentVariables(for: entry),
+                               environmentVariables: schemeEnvVars,
                                preActionScripts:preActionScripts(for: entry),
                                postActionScripts:postActionScripts(for: entry),
                                localizedMessageLogger: localizedMessageLogger)

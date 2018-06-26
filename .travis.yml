@@ -1,0 +1,13 @@
+os: osx
+language: swift
+osx_image: xcode9.2
+
+before_install:
+  - brew update
+  - brew install bazel
+
+script:
+  - bazel version
+  - bazel build //:tulsi --cpu=darwin_x86_64 --apple_platform_type=macos
+  - bazel test //src/TulsiGeneratorTests/... --cpu=darwin_x86_64 --apple_platform_type=macos
+  - bazel test //src/TulsiGeneratorIntegrationTests/... --cpu=darwin_x86_64 --apple_platform_type=macos

@@ -22,7 +22,7 @@ public struct BazelLocator {
   /// workspace.
   public static let DefaultBazelURLKey = "defaultBazelURL"
 
-  static var bazelURL: URL? {
+  public static var bazelURL: URL? {
     if let bazelURL = UserDefaults.standard.url(forKey: BazelLocator.DefaultBazelURLKey) {
       return bazelURL
     }

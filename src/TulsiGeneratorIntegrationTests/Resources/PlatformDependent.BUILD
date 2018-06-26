@@ -21,7 +21,6 @@ load(
     "ios_extension",
     "ios_unit_test",
     "ios_ui_test",
-    "ios_legacy_test",
 )
 load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
 
@@ -195,7 +194,7 @@ objc_library(
     ],
 )
 
-ios_legacy_test(
+ios_unit_test(
     name = "LegacyTests",
     minimum_os_version = "8.0",
     deps = [

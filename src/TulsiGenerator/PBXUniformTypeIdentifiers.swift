@@ -35,6 +35,7 @@ let FileExtensionToUTI = [
   "bin": "archive.macbinary",
   "bmp": "image.bmp",
   "bundle": "wrapper.plug-in",
+  "bzl": "com.google.bazel.skylark",
   "c": "sourcecode.c.c",
   "c++": "sourcecode.cpp.cpp",
   "cc": "sourcecode.cpp.cpp",

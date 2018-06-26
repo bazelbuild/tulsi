@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+@testable import BazelIntegrationTestCase
 @testable import TulsiGenerator
 
 
@@ -31,7 +32,6 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("Simple", intoSubdirectory: "tulsi_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_test"])
 
-    XCTAssertEqual(infos.count, 16)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_test:Application")
@@ -80,7 +80,6 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     installBUILDFile("ComplexSingle", intoSubdirectory: "tulsi_complex_test")
     let infos = infoExtractor.extractTargetRulesFromPackages(["tulsi_complex_test"])
 
-    XCTAssertEqual(infos.count, 36)
     let checker = InfoChecker(ruleInfos: infos)
 
     checker.assertThat("//tulsi_complex_test:Application")

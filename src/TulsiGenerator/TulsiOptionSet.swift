@@ -48,7 +48,10 @@ public enum TulsiOptionKey: String {
       BazelBuildOptionsProjectGenerationOnly,
 
       // Improve auto-completion for include/import statements.
-      ImprovedImportAutocompletionFix
+      ImprovedImportAutocompletionFix,
+
+      // Generate .runfiles directory, as referenced by TEST_SRCDIR in bazel tests.
+      GenerateRunfiles
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -281,6 +284,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.SuppressSwiftUpdateCheck, .Generic, true)
     addBoolOption(.IncludeBuildSources, .Generic, false)
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
+    addBoolOption(.GenerateRunfiles, .Generic, false)
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])

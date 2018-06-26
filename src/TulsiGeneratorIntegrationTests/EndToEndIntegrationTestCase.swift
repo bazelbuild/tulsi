@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+@testable import BazelIntegrationTestCase
 @testable import TulsiGenerator
 
 
@@ -40,9 +41,11 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                            file: StaticString = #file,
                            line: UInt = #line) -> [String] {
     let bundle = Bundle(for: type(of: self))
-    guard let goldenProjectURL = bundle.url(forResource: resourceName,
-                                                       withExtension: "xcodeproj",
-                                                       subdirectory: "GoldenProjects") else {
+    let goldenProjectURL = workspaceRootURL.appendingPathComponent(fakeBazelWorkspace
+                                                                       .resourcesPathBase,
+                                                                   isDirectory: true)
+        .appendingPathComponent("GoldenProjects/\(resourceName).xcodeproj", isDirectory: true)
+    guard FileManager.default.fileExists(atPath: goldenProjectURL.path) else {
       assertionFailure("Missing required test resource file \(resourceName).xcodeproj")
       XCTFail("Missing required test resource file \(resourceName).xcodeproj",
               file: file,
@@ -53,7 +56,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     var diffOutput = [String]()
     let semaphore = DispatchSemaphore(value: 0)
     let process = ProcessRunner.createProcess("/usr/bin/diff",
-                                              arguments: ["-rq",
+                                              arguments: ["-r",
                                                           // For the sake of simplicity in
                                                           // maintaining the golden data, copied
                                                           // Tulsi artifacts are assumed to have
@@ -76,6 +79,21 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
 
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     return diffOutput
+  }
+
+  final func copyOutput(source: URL, outputDir: String) throws {
+    if testUndeclaredOutputsDir != nil {
+      guard let testOutputURL = makeTestSubdirectory(outputDir,
+                                                     rootDirectory: testUndeclaredOutputsDir,
+                                                     cleanupOnTeardown: false) else {
+        throw Error.testSubdirectoryNotCreated
+      }
+      let testOutputProjURL = testOutputURL.appendingPathComponent(source.lastPathComponent)
+      if FileManager.default.fileExists(atPath: testOutputProjURL.path) {
+        try FileManager.default.removeItem(at: testOutputProjURL)
+      }
+      try FileManager.default.copyItem(at: source, to: testOutputProjURL)
+    }
   }
 
   final func generateProjectNamed(_ projectName: String,
@@ -103,7 +121,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                       options: options,
                                       bazelURL: bazelURLParam)
 
-    guard let outputFolderURL = makeTestSubdirectory(outputDir) else {
+    guard let outputFolderURL = makeXcodeProjPath(outputDir) else {
       throw Error.testSubdirectoryNotCreated
     }
 
@@ -125,7 +143,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     projectGenerator.xcodeProjectGenerator.redactWorkspaceSymlink = true
     let errorInfo: String
     do {
-      return try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
+      let generatedProjURL = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)
+      try copyOutput(source: generatedProjURL, outputDir: outputDir)
+      return generatedProjURL
     } catch TulsiXcodeProjectGenerator.GeneratorError.unsupportedTargetType(let targetType) {
       errorInfo = "Unsupported target type: \(targetType)"
     } catch TulsiXcodeProjectGenerator.GeneratorError.serializationFailed(let details) {

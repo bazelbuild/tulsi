@@ -14,14 +14,10 @@
 
 import XCTest
 @testable import BazelIntegrationTestCase
-@testable import EndToEndIntegrationTestCase
 @testable import TulsiGenerator
 
 
-// End to end tests that generate xcodeproj bundles and validate them against golden versions but
-// contains some platform-dependent components (e.g., dependency paths).
-class PlatformDependentEndToEndGenerationTests: EndToEndIntegrationTestCase {
-  func test_PlatformDependentProject() {
-    // Not implemented.
-  }
+// Tests for the tulsi_sources_aspect aspect.
+class PlatformDependentAspectTests: BazelIntegrationTestCase {
+    // not implemented.
 }

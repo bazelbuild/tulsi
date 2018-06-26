@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import XCTest
 @testable import TulsiGenerator
 
-
 /// Base class for test cases utilizing an external Bazel instance.
-/// Command line options:
-///   -test_bazel: (Required) Path to the Bazel binary to use for testing.
-///   -testBazelStartupOptions <string>: Options to be passed to Bazel before the "build" command.
-///   -testBazelBuildOptions <string>: Options to be passed to Bazel after the "build" command.
-///   -keep_test_output (0 or 1): Retain the test's temporary workspace directory rather than
-///       cleaning it up after the test completes.
-///   -use_hosted_workspace <path>: Path to a Bazel workspace inside which the test files will be
-///       executed. A WORKSPACE file must be present in the given directory.
 class BazelIntegrationTestCase: XCTestCase {
 
   var bazelURL: URL! = nil
   var bazelStartupOptions = [String]()
   var bazelBuildOptions = [String]()
+  var runfilesURL: URL! = nil
+  var fakeBazelWorkspace: BazelFakeWorkspace! = nil
   var workspaceRootURL: URL! = nil
+  var testUndeclaredOutputsDir: URL? = nil
   var workspaceInfoFetcher: BazelWorkspacePathInfoFetcher! = nil
   var localizedMessageLogger: DirectLocalizedMessageLogger! = nil
 
@@ -39,40 +34,27 @@ class BazelIntegrationTestCase: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    let userDefaults = UserDefaults.standard
-    guard let bazelPath = userDefaults.string(forKey: "test_bazel") else {
-      XCTFail("This test must be launched with test_bazel set to a path to Bazel " +
-                  "(e.g., via -test_bazel as a command-line argument)")
+    guard let test_srcdir = ProcessInfo.processInfo.environment["TEST_SRCDIR"] else {
+      XCTFail("This test must be run as a bazel test and/or must define $TEST_SRCDIR.")
       return
     }
-    bazelURL = URL(fileURLWithPath: bazelPath)
+    runfilesURL = URL(fileURLWithPath: test_srcdir)
 
-    let commandLineSplitter = CommandLineSplitter()
-    if let startupOptions = userDefaults.string(forKey: "testBazelStartupOptions") {
-      guard let splitOptions = commandLineSplitter.splitCommandLine(startupOptions) else {
-        XCTFail("Failed to split bazelStartupOptions '\(startupOptions)'")
-        return
-      }
-      bazelStartupOptions = splitOptions
-    }
-    if let buildOptions = userDefaults.string(forKey: "testBazelBuildOptions") {
-      guard let splitOptions = commandLineSplitter.splitCommandLine(buildOptions) else {
-        XCTFail("Failed to split bazelBuildOptions '\(buildOptions)'")
-        return
-      }
-      bazelBuildOptions = splitOptions
+    let tempdir = ProcessInfo.processInfo.environment["TEST_TMPDIR"] ?? NSTemporaryDirectory()
+    let tempdirURL = URL(fileURLWithPath: tempdir,
+                         isDirectory: true)
+    fakeBazelWorkspace = BazelFakeWorkspace(runfilesURL: runfilesURL,
+                                            tempDirURL: tempdirURL).setup()
+    pathsToCleanOnTeardown.formUnion(fakeBazelWorkspace.pathsToCleanOnTeardown)
+    workspaceRootURL = fakeBazelWorkspace.workspaceRootURL
+    bazelURL = fakeBazelWorkspace.bazelURL
+
+    if let testOutputPath = ProcessInfo.processInfo.environment["TEST_UNDECLARED_OUTPUTS_DIR"] {
+      testUndeclaredOutputsDir = URL(fileURLWithPath: testOutputPath, isDirectory: true)
     }
 
-    if let hostedWorkspaceDirectory = userDefaults.string(forKey: "use_hosted_workspace") {
-      workspaceRootURL = URL(fileURLWithPath: hostedWorkspaceDirectory,
-                                         isDirectory: true)
-    } else {
-      let globalTempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-      let dirName = "tulsi_\(UUID().uuidString)"
-      workspaceRootURL = globalTempDir.appendingPathComponent(dirName, isDirectory: true)
-
-      installWorkspaceFile()
-    }
+    // Source is being copied outside of the normal workspace, so status commands won't work.
+    bazelBuildOptions.append("--workspace_status_command=/usr/bin/true")
 
     // Prevent any custom --bazelrc startup option to be specified. It should always be /dev/null.
     for startupOption in bazelStartupOptions {
@@ -101,7 +83,8 @@ class BazelIntegrationTestCase: XCTestCase {
     bazelBuildOptions.append("--tvos_minimum_os=10.0")
     bazelBuildOptions.append("--watchos_minimum_os=3.0")
 
-    // Explicitly set Xcode version to use.
+    // Explicitly set Xcode version to use. Must use the same version or the golden files
+    // won't match.
     bazelBuildOptions.append("--xcode_version=9.2")
 
     guard let workspaceRootURL = workspaceRootURL else {
@@ -133,20 +116,19 @@ class BazelIntegrationTestCase: XCTestCase {
                         fromResourceDirectory resourceDirectory: String? = nil,
                         file: StaticString = #file,
                         line: UInt = #line) -> URL? {
-    let bundle = Bundle(for: type(of: self))
-    guard let buildFileURL = bundle.url(forResource: fileResourceName,
-                                                   withExtension: "BUILD",
-                                                   subdirectory: resourceDirectory) else {
-      XCTFail("Missing required test resource file \(fileResourceName).BUILD",
-              file: file,
-              line: line)
-      return nil
+    guard var resourceDirectoryURL = getWorkspaceDirectory(fakeBazelWorkspace.resourcesPathBase)
+        else { return nil }
+    if let resourceDirectory = resourceDirectory {
+      resourceDirectoryURL.appendPathComponent(resourceDirectory, isDirectory: true)
     }
+    let buildFileURL = resourceDirectoryURL.appendingPathComponent("\(fileResourceName).BUILD",
+                                                                   isDirectory: false)
 
     guard let directoryURL = getWorkspaceDirectory(subdirectory) else { return nil }
 
     @discardableResult
-    func copyFile(_ sourceFileURL: URL, toFileNamed targetName: String) -> URL? {
+    func copyFile(_ sourceFileURL: URL,
+                  toFileNamed targetName: String) -> URL? {
       let destinationURL = directoryURL.appendingPathComponent(targetName, isDirectory: false)
       do {
         let fileManager = FileManager.default
@@ -168,9 +150,8 @@ class BazelIntegrationTestCase: XCTestCase {
       return nil
     }
 
-    if let skylarkFileURL = bundle.url(forResource: fileResourceName,
-                                                     withExtension: "bzl",
-                                                     subdirectory: resourceDirectory) {
+    let skylarkFileURL = resourceDirectoryURL.appendingPathComponent("\(fileResourceName).bzl")
+    if FileManager.default.fileExists(atPath: skylarkFileURL.path) {
       copyFile(skylarkFileURL, toFileNamed: skylarkFileURL.lastPathComponent)
     }
 
@@ -264,50 +245,31 @@ class BazelIntegrationTestCase: XCTestCase {
 
   /// Creates a workspace-relative directory that will be cleaned up by the test on exit.
   func makeTestSubdirectory(_ subdirectory: String,
+                            rootDirectory: URL? = nil,
+                            cleanupOnTeardown: Bool = true,
                             file: StaticString = #file,
                             line: UInt = #line) -> URL? {
+    return getWorkspaceDirectory(subdirectory,
+                                 rootDirectory: rootDirectory,
+                                 cleanupOnTeardown: cleanupOnTeardown,
+                                 file: file,
+                                 line: line)
+  }
+
+  func makeXcodeProjPath(_ subdirectory: String,
+                        file: StaticString = #file,
+                        line: UInt = #line) -> URL? {
     return getWorkspaceDirectory(subdirectory, file: file, line: line)
   }
 
   // MARK: - Private methods
 
-  fileprivate func installWorkspaceFile() {
-    do {
-      try FileManager.default.createDirectory(at: workspaceRootURL,
-                                                              withIntermediateDirectories: true,
-                                                              attributes: nil)
-      pathsToCleanOnTeardown.insert(workspaceRootURL)
-
-      let bundle = Bundle(for: type(of: self))
-      guard let fileURL = bundle.url(forResource: "test",
-                                                withExtension: "WORKSPACE") else {
-        XCTFail("Missing required test.WORKSPACE file")
-        return
-      }
-
-
-      let destinationURL = workspaceRootURL.appendingPathComponent("WORKSPACE",
-                                                                        isDirectory: false)
-      do {
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: destinationURL.path) {
-          try fileManager.removeItem(at: destinationURL)
-        }
-        try fileManager.copyItem(at: fileURL, to: destinationURL)
-        pathsToCleanOnTeardown.insert(destinationURL)
-      } catch let e as NSError {
-        XCTFail("Failed to install WORKSPACE file '\(fileURL)' to '\(destinationURL)' for test. Error: \(e.localizedDescription)")
-        return
-      }
-    } catch let e as NSError {
-      XCTFail("Failed to create temp directory '\(workspaceRootURL!.path)' for test. Error: \(e.localizedDescription)")
-    }
-  }
-
   fileprivate func getWorkspaceDirectory(_ subdirectory: String? = nil,
-                                     file: StaticString = #file,
-                                     line: UInt = #line) -> URL? {
-    guard let tempDirectory = workspaceRootURL else {
+                                         rootDirectory: URL? = nil,
+                                         cleanupOnTeardown: Bool = true,
+                                         file: StaticString = #file,
+                                         line: UInt = #line) -> URL? {
+    guard let tempDirectory = rootDirectory ?? workspaceRootURL else {
       XCTFail("Cannot create test workspace directory, workspaceRootURL is nil",
               file: file,
               line: line)
@@ -316,11 +278,13 @@ class BazelIntegrationTestCase: XCTestCase {
 
     if let subdirectory = subdirectory, !subdirectory.isEmpty {
       let directoryURL = tempDirectory.appendingPathComponent(subdirectory, isDirectory: true)
-      pathsToCleanOnTeardown.insert(directoryURL)
+      if cleanupOnTeardown {
+        pathsToCleanOnTeardown.insert(directoryURL)
+      }
       do {
         try FileManager.default.createDirectory(at: directoryURL,
-                                                                withIntermediateDirectories: true,
-                                                                attributes: nil)
+                                                withIntermediateDirectories: true,
+                                                attributes: nil)
         return directoryURL
       } catch let e as NSError {
         XCTFail("Failed to create directory '\(directoryURL.path)'. Error: \(e.localizedDescription)",
@@ -334,14 +298,6 @@ class BazelIntegrationTestCase: XCTestCase {
   }
 
   fileprivate func cleanCreatedFiles() {
-    if UserDefaults.standard.bool(forKey: "keep_test_output") {
-      print("Retaining working files for test \(String(describing: name))")
-      for url in pathsToCleanOnTeardown.sorted(by: { $0.path < $1.path }) {
-        print("\t\(url)")
-      }
-      return
-    }
-
     let fileManager = FileManager.default
     // Sort such that deeper paths are removed before their parents.
     let sortedPaths = pathsToCleanOnTeardown.sorted(by: { $1.path < $0.path })

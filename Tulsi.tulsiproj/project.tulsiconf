@@ -1,12 +1,16 @@
 {
   "configDefaults" : {
     "optionSet" : {
-
+      "GenerateRunfiles" : {
+        "p" : "YES"
+      }
     }
   },
   "projectName" : "Tulsi",
   "packages" : [
-    ""
+    "",
+    "src/TulsiGeneratorIntegrationTests",
+    "src/TulsiGeneratorTests"
   ],
   "workspaceRoot" : ".."
 }

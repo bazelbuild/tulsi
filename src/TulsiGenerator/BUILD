@@ -2,7 +2,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 licenses(["notice"])  # Apache 2.0
 
-load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 
 exports_files(
     [

@@ -27,6 +27,8 @@
 
 "ImprovedImportAutocompletionFix" = "Improve #include/#import auto-completion through the use of USER_HEADER_SEARCH_PATHS";
 
+"GenerateRunfiles" = "Generate the runfiles directory used as TEST_SRCDIR";
+
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 
