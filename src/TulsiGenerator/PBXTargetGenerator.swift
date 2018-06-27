@@ -558,11 +558,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
       let otherCFlags = NSMutableOrderedSet()
       let swiftIncludePaths = NSMutableOrderedSet()
-      let otherSwiftFlags = NSMutableOrderedSet()
+      let otherSwiftFlags = NSMutableArray()
       addLocalSettings(ruleEntry, localDefines: &localPreprocessorDefines, localIncludes: localIncludes,
                        otherCFlags: otherCFlags, swiftIncludePaths: swiftIncludePaths, otherSwiftFlags: otherSwiftFlags)
 
-      addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
+      addOtherSwiftFlags(ruleEntry, toArray: otherSwiftFlags)
       addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
 
       let pchFile = BazelFileInfo(info: ruleEntry.attributes[.pch])
@@ -619,7 +619,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       resolvedDependencies: Set(resolvedDependecies),
                                       preprocessorDefines: localPreprocessorDefines,
                                       otherCFlags: otherCFlags.array as! [String],
-                                      otherSwiftFlags: otherSwiftFlags.array as! [String],
+                                      otherSwiftFlags: otherSwiftFlags as! [String],
                                       includes: resolvedIncludes,
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
                                       swiftIncludePaths: swiftIncludePaths.array as! [String],
@@ -1209,7 +1209,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Returns other swift compiler flags for the given target based on the RuleEntry.
-  private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toSet swiftFlags: NSMutableOrderedSet) {
+  private func addOtherSwiftFlags(_ ruleEntry: RuleEntry, toArray swiftFlags: NSMutableArray) {
     // Load module maps explicitly instead of letting Clang discover them on search paths. This
     // is needed to avoid a case where Clang may load the same header both in modular and
     // non-modular contexts, leading to duplicate definitions in the same file.
@@ -1225,7 +1225,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                 localIncludes: NSMutableOrderedSet,
                                 otherCFlags: NSMutableOrderedSet,
                                 swiftIncludePaths: NSMutableOrderedSet,
-                                otherSwiftFlags: NSMutableOrderedSet) {
+                                otherSwiftFlags: NSMutableArray) {
     if let swiftc_opts = ruleEntry.attributes[.swiftc_opts] as? [String], !swiftc_opts.isEmpty {
       for opt in swiftc_opts {
         if opt.hasPrefix("-I") {
@@ -1288,15 +1288,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // files from multiple targets.
     var defines = Set<String>()
     let swiftIncludePaths = NSMutableOrderedSet()
-    let otherSwiftFlags = NSMutableOrderedSet()
+    let otherSwiftFlags = NSMutableArray()
 
     includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
     addIncludes(ruleEntry, toSet: includes)
     addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes,
                      otherCFlags: NSMutableOrderedSet(), swiftIncludePaths: NSMutableOrderedSet(),
-                     otherSwiftFlags: NSMutableOrderedSet())
+                     otherSwiftFlags: NSMutableArray())
     addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
-    addOtherSwiftFlags(ruleEntry, toSet: otherSwiftFlags)
+    addOtherSwiftFlags(ruleEntry, toArray: otherSwiftFlags)
 
     let includesArr = includes.array as! [String]
     testSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includesArr.joined(separator: " ")
@@ -1305,7 +1305,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       testSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) " + swiftIncludes.joined(separator: " ")
     }
 
-    if let otherSwiftFlagsArr = otherSwiftFlags.array as? [String], !otherSwiftFlagsArr.isEmpty {
+    if let otherSwiftFlagsArr = otherSwiftFlags as? [String], !otherSwiftFlagsArr.isEmpty {
       testSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + otherSwiftFlagsArr.joined(separator: " ")
     }
 
