@@ -64,7 +64,7 @@ macos_application(
     bundle_id = "com.google.Tulsi",
     bundle_name = "Tulsi",
     infoplists = [":Info.plist"],
-    minimum_os_version = "10.13",
+    minimum_os_version = "10.12",
     strings = [":strings"],
     version = ":AppVersion",
     deps = [

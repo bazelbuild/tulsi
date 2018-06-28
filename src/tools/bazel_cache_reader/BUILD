@@ -14,6 +14,6 @@ objc_library(
 
 macos_command_line_application(
     name = "bazel_cache_reader",
-    minimum_os_version = "10.13",
+    minimum_os_version = "10.12",
     deps = [":bazel_cache_reader_lib"],
 )
