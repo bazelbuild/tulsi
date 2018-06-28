@@ -1,0 +1,684 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E6AF494771FF98DC00000000 /* src.m in srcs */ = {isa = PBXBuildFile; fileRef = 43D68C2871FF98DC00000000 /* src.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		819366726921D83500000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E7BD0EA531F212000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECCC95946921D83400000000;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		43D68C281108F5BC00000000 /* tvOSExtension-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "tvOSExtension-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSExtension-Info-binary.plist"; sourceTree = "<group>"; };
+		43D68C282103AF1200000000 /* tvOSExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = tvOSExtension.appex; path = tvOSExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C282F44A2FE00000000 /* tvOSApplication-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "tvOSApplication-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSApplication-Info-binary.plist"; sourceTree = "<group>"; };
+		43D68C2845BA43BC00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSApplication/Info.plist"; sourceTree = "<group>"; };
+		43D68C284B9C3F1D00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_tvos_project/BUILD; sourceTree = "<group>"; };
+		43D68C2858AD74E500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSExtension/Info.plist"; sourceTree = "<group>"; };
+		43D68C2871FF98DC00000000 /* src.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src.m; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSLibrary/srcs/src.m"; sourceTree = "<group>"; };
+		43D68C28BD354C7A00000000 /* lib_idx_tvOSLibrary_5CB253EB_tvos_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_tvOSLibrary_5CB253EB_tvos_min10.0.a; path = lib_idx_tvOSLibrary_5CB253EB_tvos_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F66BEF4600000000 /* tvOSApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = tvOSApplication.app; path = tvOSApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		966FB6DE01C9BA2E00000000 /* tvOSApplication */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2845BA43BC00000000 /* Info.plist */,
+			);
+			name = tvOSApplication;
+			sourceTree = "<group>";
+		};
+		966FB6DE0562C2F700000000 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C28BD354C7A00000000 /* lib_idx_tvOSLibrary_5CB253EB_tvos_min10.0.a */,
+			);
+			name = Indexer;
+			sourceTree = "<group>";
+		};
+		966FB6DE07201E0200000000 /* _tulsi-includes */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000000 /* x */,
+			);
+			name = "_tulsi-includes";
+			sourceTree = "<group>";
+		};
+		966FB6DE2533E34D00000000 /* tvOSLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE5B9D018E00000000 /* srcs */,
+			);
+			name = tvOSLibrary;
+			sourceTree = "<group>";
+		};
+		966FB6DE2BD1037D00000000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE0562C2F700000000 /* Indexer */,
+				966FB6DE07201E0200000000 /* _tulsi-includes */,
+				43D68C28F66BEF4600000000 /* tvOSApplication.app */,
+				43D68C282103AF1200000000 /* tvOSExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		966FB6DE5B9D018E00000000 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2871FF98DC00000000 /* src.m */,
+			);
+			name = srcs;
+			sourceTree = "<group>";
+		};
+		966FB6DE6C1A2E9100000000 /* mainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE2BD1037D00000000 /* Products */,
+				966FB6DE8B59490200000001 /* tulsi_e2e_tvos_project */,
+			);
+			name = mainGroup;
+			path = ..;
+			sourceTree = SOURCE_ROOT;
+		};
+		966FB6DE88DDC84A00000000 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE88DDC84A00000001 /* x */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		966FB6DE88DDC84A00000001 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				966FB6DE8B59490200000000 /* tulsi_e2e_tvos_project */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		966FB6DE8B59490200000000 /* tulsi_e2e_tvos_project */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C282F44A2FE00000000 /* tvOSApplication-Info-binary.plist */,
+				43D68C281108F5BC00000000 /* tvOSExtension-Info-binary.plist */,
+			);
+			name = tulsi_e2e_tvos_project;
+			sourceTree = "<group>";
+		};
+		966FB6DE8B59490200000001 /* tulsi_e2e_tvos_project */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C284B9C3F1D00000000 /* BUILD */,
+				966FB6DE01C9BA2E00000000 /* tvOSApplication */,
+				966FB6DEF634A87700000000 /* tvOSExtension */,
+				966FB6DE2533E34D00000000 /* tvOSLibrary */,
+			);
+			name = tulsi_e2e_tvos_project;
+			sourceTree = "<group>";
+		};
+		966FB6DEF634A87700000000 /* tvOSExtension */ = {
+			isa = PBXGroup;
+			children = (
+				43D68C2858AD74E500000000 /* Info.plist */,
+			);
+			name = tvOSExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
+			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			buildPhases = (
+			);
+			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
+			buildWorkingDirectory = "${SRCROOT}/..";
+			dependencies = (
+			);
+			name = _bazel_clean_;
+			passBuildSettingsInEnvironment = 1;
+			productName = _bazel_clean_;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		3D31C5E60393745C00000000 /* tvOSApplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755838DC51D6400000000 /* Build configuration list for PBXNativeTarget "tvOSApplication" */;
+			buildPhases = (
+				84B422717D9ED1D800000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = tvOSApplication;
+			productName = tvOSApplication;
+			productReference = 43D68C28F66BEF4600000000 /* tvOSApplication.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3D31C5E6EC6950EE00000000 /* tvOSExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558346438EAD00000000 /* Build configuration list for PBXNativeTarget "tvOSExtension" */;
+			buildPhases = (
+				84B42271309905A000000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = tvOSExtension;
+			productName = tvOSExtension;
+			productReference = 43D68C282103AF1200000000 /* tvOSExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		3D31C5E6F707CD6000000000 /* _idx_tvOSLibrary_5CB253EB_tvos_min10.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558389D06DA600000000 /* Build configuration list for PBXNativeTarget "_idx_tvOSLibrary_5CB253EB_tvos_min10.0" */;
+			buildPhases = (
+				605793E20000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_tvOSLibrary_5CB253EB_tvos_min10.0;
+			productName = _idx_tvOSLibrary_5CB253EB_tvos_min10.0;
+			productReference = 43D68C28BD354C7A00000000 /* lib_idx_tvOSLibrary_5CB253EB_tvos_min10.0.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E7BD0EA531F212000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0900;
+			};
+			buildConfigurationList = DE475583B6DDF65700000000 /* Build configuration list for PBXProject "SkylarkBundlingProject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 966FB6DE6C1A2E9100000000 /* mainGroup */;
+			targets = (
+				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				3D31C5E6F707CD6000000000 /* _idx_tvOSLibrary_5CB253EB_tvos_min10.0 */,
+				3D31C5E60393745C00000000 /* tvOSApplication */,
+				3D31C5E6EC6950EE00000000 /* tvOSExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		84B42271309905A000000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			showEnvVarsInLog = 1;
+		};
+		84B422717D9ED1D800000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			showEnvVarsInLog = 1;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		605793E20000000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				E6AF494771FF98DC00000000 /* src.m in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		44936BD67EED3C4D00000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
+				ONLY_ACTIVE_ARCH = YES;
+				PYTHONIOENCODING = utf8;
+				SDKROOT = appletvos;
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
+				TULSI_PROJECT = SkylarkBundlingProject;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/..";
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				PRODUCT_NAME = _idx_tvOSLibrary_5CB253EB_tvos_min10.0;
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSApplication";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSApplication;
+				PRODUCT_NAME = tvOSApplication;
+				SDKROOT = appletvos;
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		44936BD67EED3C4D00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSExtension";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_tvos_project-tvOSExtension.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSExtension;
+				PRODUCT_NAME = tvOSExtension;
+				SDKROOT = appletvos;
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		44936BD6A3D45CE900000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
+				ONLY_ACTIVE_ARCH = YES;
+				PYTHONIOENCODING = utf8;
+				SDKROOT = appletvos;
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_PROJECT = SkylarkBundlingProject;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/..";
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				PRODUCT_NAME = _idx_tvOSLibrary_5CB253EB_tvos_min10.0;
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSApplication";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSApplication;
+				PRODUCT_NAME = tvOSApplication;
+				SDKROOT = appletvos;
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		44936BD6A3D45CE900000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSExtension";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_tvos_project-tvOSExtension.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSExtension;
+				PRODUCT_NAME = tvOSExtension;
+				SDKROOT = appletvos;
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PYTHONIOENCODING = utf8;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
+				TULSI_PROJECT = SkylarkBundlingProject;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/..";
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000001 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSApplication";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSApplication;
+				PRODUCT_NAME = tvOSApplication;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSExtension";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_tvos_project-tvOSExtension.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSExtension;
+				PRODUCT_NAME = tvOSExtension;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = __TulsiTestRunner_Debug;
+		};
+		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PYTHONIOENCODING = utf8;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_PROJECT = SkylarkBundlingProject;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/..";
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSApplication";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSApplication;
+				PRODUCT_NAME = tvOSApplication;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_tvos_project:tvOSExtension";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_tvos_project-tvOSExtension.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = c.test.tvOSExtension;
+				PRODUCT_NAME = tvOSExtension;
+				SDKROOT = appletvos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
+				TULSI_MUST_USE_DSYM = YES;
+				TULSI_SWIFT_DEPENDENCY = NO;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DE47558346438EAD00000000 /* Build configuration list for PBXNativeTarget "tvOSExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD6A3D45CE900000003 /* Release */,
+				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE47558389D06DA600000000 /* Build configuration list for PBXNativeTarget "_idx_tvOSLibrary_5CB253EB_tvos_min10.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000001 /* Debug */,
+				44936BD6A3D45CE900000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE4755838DC51D6400000000 /* Build configuration list for PBXNativeTarget "tvOSApplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000002 /* Debug */,
+				44936BD6A3D45CE900000002 /* Release */,
+				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583B6DDF65700000000 /* Build configuration list for PBXProject "SkylarkBundlingProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000000 /* Debug */,
+				44936BD6A3D45CE900000000 /* Release */,
+				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
+				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7E7BD0EA531F212000000000 /* Project object */;
+}
