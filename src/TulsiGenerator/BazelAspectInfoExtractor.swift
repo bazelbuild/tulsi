@@ -324,7 +324,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       } else {
         includePaths = nil
       }
-      let defines = dict["defines"] as? [String]
+      let objcDefines = dict["objc_defines"] as? [String]
+      let swiftDefines = dict["swift_defines"] as? [String]
       let deps = dict["deps"] as? [String] ?? []
       let dependencyLabels = Set(deps.map({ BuildLabel($0) }))
       let frameworkImports = MakeBazelFileInfos("framework_imports")
@@ -395,7 +396,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 platformType: platformType,
                                 osDeploymentTarget: osDeploymentTarget,
                                 buildFilePath: buildFilePath,
-                                defines: defines,
+                                objcDefines: objcDefines,
+                                swiftDefines: swiftDefines,
                                 includePaths: includePaths,
                                 swiftLanguageVersion: swiftLanguageVersion,
                                 swiftToolchain: swiftToolchain,

@@ -275,7 +275,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                     secondaryArtifacts: [BazelFileInfo] = [],
                                     weakDependencies: Set<BuildLabel>? = nil,
                                     buildFilePath: String? = nil,
-                                    defines: [String]? = nil,
+                                    objcDefines: [String]? = nil,
+                                    swiftDefines: [String]? = nil,
                                     includePaths: [RuleEntry.IncludePath]? = nil,
                                     extensions: Set<BuildLabel>? = nil,
                                     productType: PBXTarget.ProductType? = nil,
@@ -296,7 +297,8 @@ class XcodeProjectGeneratorTests: XCTestCase {
                      platformType: platformType,
                      osDeploymentTarget: osDeploymentTarget,
                      buildFilePath: buildFilePath,
-                     defines: defines,
+                     objcDefines: objcDefines,
+                     swiftDefines: swiftDefines,
                      includePaths: includePaths,
                      extensionType: extensionType)
   }

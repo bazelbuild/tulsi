@@ -54,6 +54,9 @@ swift_library(
         "-swift-version",
         "3",
     ],
+    defines = [
+        "LIBRARY_DEFINE_V3",
+    ],
 )
 
 swift_library(
@@ -66,6 +69,9 @@ swift_library(
         "-swift-version",
         "4",
     ],
+    defines = [
+        "LIBRARY_DEFINE_V4",
+    ],
 )
 
 swift_library(
@@ -73,5 +79,18 @@ swift_library(
     srcs = [
         "SwiftLibrary/srcs/a.swift",
         "SwiftLibrary/srcs/b.swift",
+    ],
+    defines = [
+        "LIBRARY_DEFINE",
+    ],
+    deps = [
+        ":SubSwiftLibrary",
+    ],
+)
+
+swift_library(
+    name = "SubSwiftLibrary",
+    defines = [
+        "SUB_LIBRARY_DEFINE",
     ],
 )

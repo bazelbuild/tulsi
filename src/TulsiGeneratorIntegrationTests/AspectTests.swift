@@ -64,9 +64,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                            ["is_dir": false,
                                             "path": "tulsi_test/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel",
                                             "src": true], ] as NSArray)
-        .hasDefines(["LIBRARY_DEFINES_DEFINE=1",
-                     "APPLIB_ADDITIONAL_DEFINE",
-                     "APPLIB_ANOTHER_DEFINE=2"])
+        .hasObjcDefines(["LIBRARY_DEFINES_DEFINE=1",
+                         "APPLIB_ADDITIONAL_DEFINE",
+                         "APPLIB_ANOTHER_DEFINE=2"])
         .hasIncludes(["tulsi_test/ApplicationLibrary/includes",
                       "_tulsi-includes/x/x/tulsi_test/ApplicationLibrary/includes"])
         .hasAttribute(.supporting_files,
@@ -88,7 +88,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE",
                                       "-I/Library/absolute/include/path",
                                       "-Irelative/Library/include/path"] as NSArray)
-        .hasDefines(["LIBRARY_DEFINES_DEFINE=1"])
+        .hasObjcDefines(["LIBRARY_DEFINES_DEFINE=1"])
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/Library/pch/PCHFile.pch",
                                     "src": true] as NSDictionary)
@@ -172,13 +172,13 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "bazel-genfiles/tulsi_test/SrcGenerator/outs/output.m"
                     ])
         .hasNonARCSources(["tulsi_test/Application/non_arc_srcs/NonARCFile.mm"])
-        .hasDefines(["SubLibraryWithDefines=1",
-                     "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
-                     "SubLibraryWithDifferentDefines=1",
-                     "LIBRARY_DEFINES_DEFINE=1",
-                     "LIBRARY SECOND DEFINE=2",
-                     "LIBRARY_VALUE_WITH_SPACES=Value with spaces",
-                     "A=BINARY_DEFINE"])
+        .hasObjcDefines(["SubLibraryWithDefines=1",
+                         "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
+                         "SubLibraryWithDifferentDefines=1",
+                         "LIBRARY_DEFINES_DEFINE=1",
+                         "LIBRARY SECOND DEFINE=2",
+                         "LIBRARY_VALUE_WITH_SPACES=Value with spaces",
+                         "A=BINARY_DEFINE"])
         .hasIncludes(["tulsi_test/Application/includes/first/include",
                       "tulsi-includes/x/x/tulsi_test/Application/includes/first/include",
                       "tulsi_test/Application/includes/second/include",
@@ -242,12 +242,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                      "tulsi_test/Library/srcs/SrcsHeader.h",
                      "tulsi_test/Library/hdrs/HdrsHeader.h"])
         .hasAttribute(.copts, value: ["-DLIBRARY_COPT_DEFINE"] as NSArray)
-        .hasDefines(["SubLibraryWithDefines=1",
-                     "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
-                     "SubLibraryWithDifferentDefines=1",
-                     "LIBRARY_DEFINES_DEFINE=1",
-                     "LIBRARY SECOND DEFINE=2",
-                     "LIBRARY_VALUE_WITH_SPACES=Value with spaces",])
+        .hasObjcDefines(["SubLibraryWithDefines=1",
+                         "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines",
+                         "SubLibraryWithDifferentDefines=1",
+                         "LIBRARY_DEFINES_DEFINE=1",
+                         "LIBRARY SECOND DEFINE=2",
+                         "LIBRARY_VALUE_WITH_SPACES=Value with spaces",])
         .hasAttribute(.pch, value: ["is_dir": false,
                                     "path": "tulsi_test/PCHGenerator/outs/PCHFile.pch",
                                     "root": "bazel-genfiles",
@@ -268,8 +268,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-menable-no-infs",
                                       "-I/SubLibraryWithDefines/local/includes",
                                       "-Irelative/SubLibraryWithDefines/local/includes"] as NSArray)
-        .hasDefines(["SubLibraryWithDefines=1",
-                     "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines"])
+        .hasObjcDefines(["SubLibraryWithDefines=1",
+                         "SubLibraryWithDefines_DEFINE=SubLibraryWithDefines"])
 
     checker.assertThat("//tulsi_test:SubLibraryWithDifferentDefines")
         .hasSources(["tulsi_test/SubLibraryWithDifferentDefines/srcs/src.mm"])
@@ -279,7 +279,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                       "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'",
                                       "-D'SubLibraryWithDifferentDefines Define with spaces'",
                                       "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1"] as NSArray)
-        .hasDefines(["SubLibraryWithDifferentDefines=1"])
+        .hasObjcDefines(["SubLibraryWithDifferentDefines=1"])
         .hasIncludes(["tulsi_test/SubLibraryWithDifferentDefines/includes",
                       "tulsi-includes/x/x/tulsi_test/SubLibraryWithDifferentDefines/includes"])
 
@@ -426,8 +426,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:SwiftLibrary")
         .hasSources(["tulsi_test/SwiftLibrary/srcs/a.swift",
                      "tulsi_test/SwiftLibrary/srcs/b.swift"])
+        .dependsOn("//tulsi_test:SubSwiftLibrary")
         .hasAttribute(.has_swift_dependency, value: true)
         .hasAttribute(.has_swift_info, value: true)
+        .hasSwiftDefines(["SUB_LIBRARY_DEFINE",
+                          "LIBRARY_DEFINE"])
 
     checker.assertThat("//tulsi_test:SwiftLibraryV3")
         .hasSources(["tulsi_test/SwiftLibraryV3/srcs/a.swift",
@@ -435,6 +438,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.swift_language_version, value: "3")
         .hasAttribute(.has_swift_dependency, value: true)
         .hasAttribute(.has_swift_info, value: true)
+        .hasSwiftDefines(["LIBRARY_DEFINE_V3"])
 
     checker.assertThat("//tulsi_test:SwiftLibraryV4")
         .hasSources(["tulsi_test/SwiftLibraryV4/srcs/a.swift",
@@ -442,6 +446,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.swift_language_version, value: "4")
         .hasAttribute(.has_swift_dependency, value: true)
         .hasAttribute(.has_swift_info, value: true)
+        .hasSwiftDefines(["LIBRARY_DEFINE_V4"])
   }
 
 }
@@ -700,9 +705,21 @@ class InfoChecker {
 
     /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
     @discardableResult
-    func hasDefines(_ value: [String], line: UInt = #line) -> Context {
+    func hasObjcDefines(_ value: [String], line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
-      guard let defines = ruleEntry.defines else {
+      guard let defines = ruleEntry.objcDefines else {
+        XCTFail("\(ruleEntry) expected to have defines", line: line)
+        return self
+      }
+      XCTAssertEqual(defines, value, line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
+    @discardableResult
+    func hasSwiftDefines(_ value: [String], line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      guard let defines = ruleEntry.swiftDefines else {
         XCTFail("\(ruleEntry) expected to have defines", line: line)
         return self
       }

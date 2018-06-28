@@ -179,8 +179,11 @@ public final class RuleEntry: RuleInfo {
   /// Artifacts produced by Bazel when this rule is built.
   public let artifacts: [BazelFileInfo]
 
-  /// Defines to be applied to this rule by Bazel.
-  public let defines: [String]?
+  /// Objective-C defines to be applied to this rule by Bazel.
+  public let objcDefines: [String]?
+
+  /// Swift defines to be applied to this rule by Bazel.
+  public let swiftDefines: [String]?
 
   /// Source files associated with this rule.
   public let sourceFiles: [BazelFileInfo]
@@ -326,7 +329,8 @@ public final class RuleEntry: RuleInfo {
        platformType: String? = nil,
        osDeploymentTarget: String? = nil,
        buildFilePath: String? = nil,
-       defines: [String]? = nil,
+       objcDefines: [String]? = nil,
+       swiftDefines: [String]? = nil,
        includePaths: [IncludePath]? = nil,
        swiftLanguageVersion: String? = nil,
        swiftToolchain: String? = nil,
@@ -376,7 +380,8 @@ public final class RuleEntry: RuleInfo {
     }
     self.deploymentTarget = deploymentTarget
     self.buildFilePath = buildFilePath
-    self.defines = defines
+    self.objcDefines = objcDefines
+    self.swiftDefines = swiftDefines
     self.includePaths = includePaths
     self.swiftLanguageVersion = swiftLanguageVersion
     self.swiftToolchain = swiftToolchain
@@ -420,7 +425,8 @@ public final class RuleEntry: RuleInfo {
                    platformType: String? = nil,
                    osDeploymentTarget: String? = nil,
                    buildFilePath: String? = nil,
-                   defines: [String]? = nil,
+                   objcDefines: [String]? = nil,
+                   swiftDefines: [String]? = nil,
                    includePaths: [IncludePath]? = nil,
                    swiftLanguageVersion: String? = nil,
                    swiftToolchain: String? = nil,
@@ -445,7 +451,8 @@ public final class RuleEntry: RuleInfo {
               platformType: platformType,
               osDeploymentTarget: osDeploymentTarget,
               buildFilePath: buildFilePath,
-              defines: defines,
+              objcDefines: objcDefines,
+              swiftDefines: swiftDefines,
               includePaths: includePaths,
               swiftLanguageVersion: swiftLanguageVersion,
               swiftToolchain: swiftToolchain,

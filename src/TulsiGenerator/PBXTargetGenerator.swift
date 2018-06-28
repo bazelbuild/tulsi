@@ -511,7 +511,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         frameworkSearchPaths.union(inheritedFrameworkSearchPaths)
       }
       var defines = Set<String>()
-      if let ruleDefines = ruleEntry.defines {
+      if let ruleDefines = ruleEntry.objcDefines {
         defines.formUnion(ruleDefines)
       }
 
@@ -1217,6 +1217,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     swiftFlags.addObjects(from: ruleEntry.objCModuleMaps.map() {
       "-Xcc -fmodule-map-file=$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\($0.fullPath)"
     })
+
+    if let swiftDefines = ruleEntry.swiftDefines {
+      for flag in swiftDefines {
+        swiftFlags.add("-D\(flag)")
+      }
+    }
   }
 
   /// Reads the RuleEntry's copts and puts the arguments into the correct set.

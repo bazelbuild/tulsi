@@ -691,22 +691,26 @@ def _tulsi_sources_aspect(target, ctx):
     elif LegacySwiftInfo in target:
         swift_info = target[LegacySwiftInfo]
 
+    swift_defines = []
+
     if swift_info:
         attributes["has_swift_info"] = True
         transitive_attributes["swift_language_version"] = swift_info.swift_version
         transitive_attributes["has_swift_dependency"] = True
+        swift_defines = swift_info.transitive_defines.to_list()
 
     all_attributes = attributes + inheritable_attributes + transitive_attributes
 
     objc_provider = _get_opt_attr(target, "objc")
+    objc_defines = []
     target_includes = []
-    target_defines = []
+
     if objc_provider:
         target_includes = [
             _convert_outpath_to_symlink_path(x)
             for x in objc_provider.include
         ]
-        target_defines = objc_provider.define.to_list()
+        objc_defines = objc_provider.define.to_list()
 
     platform_type, os_deployment_target = _get_deployment_info(target, ctx)
     non_arc_srcs = _collect_files(rule, "attr.non_arc_srcs")
@@ -729,7 +733,8 @@ def _tulsi_sources_aspect(target, ctx):
         build_file = ctx.build_file_path,
         bundle_id = bundle_id,
         bundle_name = bundle_name,
-        defines = target_defines,
+        objc_defines = objc_defines,
+        swift_defines = swift_defines,
         deps = compile_deps,
         extensions = extensions,
         framework_imports = _collect_framework_imports(rule_attr),
