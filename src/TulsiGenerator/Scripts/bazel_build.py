@@ -684,7 +684,7 @@ class BazelBuildBridge(object):
     # Generated headers are installed on a thread since we are launching
     # a separate process to do so. This gives us clean timings.
     install_thread = threading.Thread(
-        target=self._StartInstallingGeneratedHeaders, args=(outputs,))
+        target=self._InstallGeneratedHeaders, args=(outputs,))
     install_thread.start()
     timer = Timer('Installing artifacts', 'installing_artifacts').Start()
     exit_code = self._InstallArtifact(outputs_data)
