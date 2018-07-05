@@ -494,8 +494,7 @@ def _minimum_os_for_platform(ctx, platform_type_str):
         return min_os
 
     platform_type = getattr(apple_common.platform_type, platform_type_str)
-    min_os = (ctx.attr._tulsi_xcode_config[apple_common.XcodeVersionConfig]
-        .minimum_os_for_platform_type(platform_type))
+    min_os = (ctx.attr._tulsi_xcode_config[apple_common.XcodeVersionConfig].minimum_os_for_platform_type(platform_type))
 
     if not min_os:
         return None
