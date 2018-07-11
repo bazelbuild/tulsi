@@ -85,6 +85,8 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSRequiresAquaSystemAppearance</key>
+	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
