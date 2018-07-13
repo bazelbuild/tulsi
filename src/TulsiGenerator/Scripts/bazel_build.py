@@ -28,6 +28,7 @@ import signal
 import subprocess
 import sys
 import textwrap
+import threading
 import time
 import zipfile
 
@@ -680,24 +681,17 @@ class BazelBuildBridge(object):
     if exit_code:
       return exit_code
 
-    # We expect artifact installation to take longer than header installation,
-    # so we spawn the genfiles installation subprocess first, spawn and wait on
-    # artifact installation, and then finally wait on genfiles installation
-    # (which is hopefully already done). Note that this makes the timer for
-    # genfiles installation inaccurate (it will always be longer than the
-    # artifact installation timer).
-    genfiles_timer = Timer('Installing generated headers',
-                           'installing_generated_headers').Start()
-    genfiles_process = self._StartInstallingGeneratedHeaders(outputs)
-
+    # Generated headers are installed on a thread since we are launching
+    # a separate process to do so. This gives us clean timings.
+    install_thread = threading.Thread(
+        target=self._InstallGeneratedHeaders, args=(outputs,))
+    install_thread.start()
     timer = Timer('Installing artifacts', 'installing_artifacts').Start()
     exit_code = self._InstallArtifact(outputs_data)
     timer.End()
+    install_thread.join()
     if exit_code:
       return exit_code
-
-    genfiles_process.wait()
-    genfiles_timer.End()
 
     exit_code, dsym_paths = self._InstallDSYMBundles(
         self.built_products_dir, outputs_data)
@@ -1147,9 +1141,10 @@ class BazelBuildBridge(object):
         return path
     return None
 
-  def _StartInstallingGeneratedHeaders(self, outputs):
+  def _InstallGeneratedHeaders(self, outputs):
     """Invokes install_genfiles.py to install generated Bazel files."""
-
+    genfiles_timer = Timer('Installing generated headers',
+                           'installing_generated_headers').Start()
     # Resolve the path to the install_genfiles.py script.
     # It should be in the same directory as this script.
     path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
@@ -1161,7 +1156,8 @@ class BazelBuildBridge(object):
     self._PrintVerbose('Spawning subprocess install_genfiles.py to copy '
                        'generated files in the background...')
     process = subprocess.Popen(args)
-    return process
+    process.wait()
+    genfiles_timer.End()
 
   def _InstallBundle(self, source_path, output_path):
     """Copies the bundle at source_path to output_path."""
