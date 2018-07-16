@@ -61,7 +61,7 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Returns a new PBXGroup instance appropriate for use as a top level project group.
   static func mainGroupForOutputFolder(_ outputFolderURL: URL, workspaceRootURL: URL) -> PBXGroup
 
-  init(bazelURL: URL,
+  init(bazelPath: String,
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
@@ -171,8 +171,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// workspace content.
   static let BazelWorkspaceSymlinkVarName = "TULSI_BWRS"
 
-  /// Location of the bazel binary.
-  let bazelURL: URL
+  /// Path to the Bazel executable.
+  let bazelPath: String
 
   /// Location of the bazel bin symlink, relative to the workspace root.
   let bazelBinPath: String
@@ -426,7 +426,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return options[.ImprovedImportAutocompletionFix].commonValueAsBool ?? true
   }
 
-  init(bazelURL: URL,
+  init(bazelPath: String,
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
@@ -437,7 +437,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        workspaceRootURL: URL,
        suppressCompilerDefines: Bool = false,
        redactWorkspaceSymlink: Bool = false) {
-    self.bazelURL = bazelURL
+    self.bazelPath = bazelPath
     self.bazelBinPath = bazelBinPath
     self.project = project
     self.buildScriptPath = buildScriptPath
@@ -697,7 +697,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String = "") {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
 
-    let bazelPath = bazelURL.path
     bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
                                                         deploymentTarget: nil,
                                                         buildToolPath: "\(scriptPath)",
@@ -781,11 +780,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
                                           ruleEntryMap: RuleEntryMap) throws {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
-    var testTargetLinkages = [(PBXNativeTarget, BuildLabel?, RuleEntry)]()
+
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
                                             maxValue: namedRuleEntries.count)
+
+    var testTargetLinkages = [(PBXNativeTarget, BuildLabel?, RuleEntry)]()
     var watchAppTargets = [String: (PBXNativeTarget, RuleEntry)]()
     var watchExtensionsByEntry = [RuleEntry: PBXNativeTarget]()
+
     for (name, entry) in namedRuleEntries {
       progressNotifier.incrementValue()
       let target = try createBuildTargetForRuleEntry(entry,
@@ -1394,11 +1396,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         addPreprocessorDefine("DEBUG=1", toConfig: config)
       } else if configName == "Release" {
         addPreprocessorDefine("NDEBUG=1", toConfig: config)
-
-        if !indexerSettingsOnly {
-          // Enable dSYM generation for release builds.
-          config.buildSettings["TULSI_MUST_USE_DSYM"] = "YES"
-        }
       }
     }
   }
@@ -1477,7 +1474,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Creates a PBXNativeTarget for the given rule entry, returning it.
   private func createBuildTargetForRuleEntry(_ entry: RuleEntry,
                                              named name: String,
-                                             ruleEntryMap: RuleEntryMap) throws -> (PBXNativeTarget) {
+                                             ruleEntryMap: RuleEntryMap)
+      throws -> (PBXNativeTarget) {
     guard let pbxTargetType = entry.pbxTargetType else {
       throw ProjectSerializationError.unsupportedTargetType(entry.type, entry.label.value)
     }
@@ -1579,10 +1577,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return buildPhase
   }
 
-  private func createBuildPhaseForRuleEntry(_ entry: RuleEntry) -> PBXShellScriptBuildPhase? {
+  private func createBuildPhaseForRuleEntry(_ entry: RuleEntry)
+      -> PBXShellScriptBuildPhase? {
     let buildLabel = entry.label.value
-    let commandLine = buildScriptCommandlineForBuildLabels(buildLabel,
-                                                           withOptionsForTargetLabel: entry.label)
+    let commandLine = buildScriptCommandlineForBuildLabels(buildLabel)
     let workingDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     let changeDirectoryAction: String
     if workingDirectory.isEmpty {
@@ -1601,87 +1599,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Constructs a commandline string that will invoke the bazel build script to generate the given
-  /// buildLabels (a space-separated set of Bazel target labels) with user options set for the given
-  /// optionsTarget.
-  private func buildScriptCommandlineForBuildLabels(_ buildLabels: String,
-                                                    withOptionsForTargetLabel target: BuildLabel) -> String {
-    var commandLine = "\"\(buildScriptPath)\" " +
+  /// buildLabels (a space-separated set of Bazel target labels).
+  private func buildScriptCommandlineForBuildLabels(_ buildLabels: String) -> String {
+    return "\"\(buildScriptPath)\" " +
         "\(buildLabels) " +
-        "--bazel \"\(bazelURL.path)\" " +
+        "--bazel \"\(bazelPath)\" " +
         "--bazel_bin_path \"\(bazelBinPath)\" " +
         "--verbose "
-
-    func addPerConfigValuesForOptions(_ optionKeys: [TulsiOptionKey],
-                                      additionalFlags: String = "",
-                                      optionFlag: String) {
-      // Get the value for each config and test to see if they are all identical and may be
-      // collapsed.
-      var configValues = [TulsiOptionKey: String?]()
-      var firstValue: String? = nil
-      var valuesDiffer = false
-      for key in optionKeys {
-        let value = options[key, target.value]
-        if configValues.isEmpty {
-          firstValue = value
-        } else if value != firstValue {
-          valuesDiffer = true
-        }
-        configValues[key] = value
-      }
-
-      if !valuesDiffer {
-        // Return early if nothing was set.
-        guard let concreteValue = firstValue else { return }
-        commandLine += "\(optionFlag) \(concreteValue) "
-        if !additionalFlags.isEmpty {
-          commandLine += "\(additionalFlags) "
-        }
-        commandLine += "-- "
-
-        return
-      }
-
-      // Emit a filtered option (--optionName[configName]) for each config.
-      // Note that we sort the keys to make sure the ordering is stable even when adding/removing
-      // other keys.
-      for (optionKey, value) in configValues.sorted(by: { $0.0.rawValue < $1.0.rawValue }) {
-        guard let concreteValue = value else { continue }
-        let rawName = optionKey.rawValue
-        var configKey: String?
-        for key in PBXTargetGenerator.buildConfigNames {
-          if rawName.hasSuffix(key) {
-            configKey = key
-            break
-          }
-        }
-        if configKey == nil {
-          assertionFailure("Failed to map option key \(optionKey) to a build config.")
-          configKey = "Debug"
-        }
-        commandLine += "\(optionFlag)[\(configKey!)] \(concreteValue) "
-        commandLine += additionalFlags.isEmpty ? "-- " : "\(additionalFlags) -- "
-      }
-    }
-
-    let additionalFlags: String
-    if let shouldContinueBuildingAfterError = options[.BazelContinueBuildingAfterError].commonValueAsBool,
-        shouldContinueBuildingAfterError {
-      additionalFlags = "--keep_going"
-    } else {
-      additionalFlags = ""
-    }
-
-    addPerConfigValuesForOptions([.BazelBuildOptionsDebug,
-                                  .BazelBuildOptionsRelease,
-                                 ],
-                                 additionalFlags: additionalFlags,
-                                 optionFlag: "--bazel_options")
-
-    addPerConfigValuesForOptions([.BazelBuildStartupOptionsDebug,
-                                  .BazelBuildStartupOptionsRelease
-                                 ],
-                                 optionFlag: "--bazel_startup_options")
-
-    return commandLine
   }
 }

@@ -28,6 +28,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   var bazelURL: URL
   /// The location of the Bazel workspace to be examined.
   let workspaceRootURL: URL
+  /// Stores Tulsi-specific Bazel settings.
+  let bazelSettingsProvider: BazelSettingsProviderProtocol
 
   private let bundle: Bundle
   /// Absolute path to the workspace containing the Tulsi aspect bzl file.
@@ -42,9 +44,11 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
   init(bazelURL: URL,
        workspaceRootURL: URL,
+       bazelSettingsProvider: BazelSettingsProviderProtocol,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
+    self.bazelSettingsProvider = bazelSettingsProvider
     self.localizedMessageLogger = localizedMessageLogger
 
     let buildEventsFileName = "build_events_\(getpid()).json"
@@ -62,7 +66,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
-                                   projectGenerationOptions: [String] = []) throws -> RuleEntryMap {
+                                   projectGenerationOptions: [String] = [],
+                                   prioritizeSwift: Bool = false) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
@@ -70,7 +75,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
-                                          projectGenerationOptions: projectGenerationOptions)
+                                          projectGenerationOptions: projectGenerationOptions,
+                                          prioritizeSwift: prioritizeSwift)
   }
 
   // MARK: - Private methods
@@ -78,7 +84,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
                                           startupOptions: [String],
                                           buildOptions: [String],
-                                          projectGenerationOptions: [String]) throws -> RuleEntryMap {
+                                          projectGenerationOptions: [String],
+                                          prioritizeSwift: Bool) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
     let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
@@ -97,6 +104,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
                                                projectGenerationOptions: projectGenerationOptions,
+                                               prioritizeSwift: prioritizeSwift,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
        defer { semaphore.signal() }
@@ -153,6 +161,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
                                             projectGenerationOptions: [String] = [],
+                                            prioritizeSwift: Bool,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
 
@@ -168,19 +177,23 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
     let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
 
+    let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: prioritizeSwift).getFlags()
     var arguments = startupOptions
+    arguments.append(contentsOf: tulsiFlags.startup)
+    arguments.append("build")
     arguments.append(contentsOf: [
-        "build",
-        // The aspect is run in debug mode to match the default Xcode build configuration.
-        // This does indeed affect Bazel analysis caching.
-        "--compilation_mode=dbg",
-        "--symlink_prefix=/",  // Generate artifacts without overwriting the normal build symlinks.
         // The following flags control Bazel console output and should not affect Bazel analysis
         // caching.
         "--announce_rc",  // Print the RC files used by this operation.
         "--show_result=0",  // Don't bother printing the build results.
         "--noshow_loading_progress",  // Don't show Bazel's loading progress.
         "--noshow_progress",  // Don't show Bazel's build progress.
+        "--symlink_prefix=/",  // Generate artifacts without overwriting the normal build symlinks.
+    ])
+    arguments.append(contentsOf: projectGenerationOptions)
+    arguments.append(contentsOf: buildOptions)
+    arguments.append(contentsOf: tulsiFlags.build)
+    arguments.append(contentsOf: [
         // The following flags are used by Tulsi to identify itself and read build information from
         // Bazel. They should not affect Bazel analysis caching.
         "--tool_tag=tulsi_v\(tulsiVersion):generator",  // Add a tag for tracking.
@@ -191,20 +204,10 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--noexpand_test_suites",
         // The following flags WILL affect Bazel analysis caching.
         // Keep this consistent with bazel_build.py.
-        "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
-        "--override_repository=tulsi=\(aspectWorkspacePath)",
         "--aspects",
         "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
         "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
     ])
-    // Extra flags added by bazel_build.py.
-    arguments.append(contentsOf: [
-        "--features=debug_prefix_map_pwd_is_dot",
-        "--define=apple.add_debugger_entitlement=1",
-        "--define=apple.propagate_embedded_extra_outputs=1",
-    ])
-    arguments.append(contentsOf: projectGenerationOptions)
-    arguments.append(contentsOf: buildOptions)
     arguments.append(contentsOf: targets)
 
     let process = TulsiProcessRunner.createProcess(bazelURL.path,

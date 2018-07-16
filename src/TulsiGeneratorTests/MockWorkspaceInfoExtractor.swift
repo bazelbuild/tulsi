@@ -15,8 +15,31 @@
 import Foundation
 @testable import TulsiGenerator
 
+class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
+  func tulsiFlags(hasSwift: Bool) -> BazelFlagsSet {
+    return BazelFlagsSet()
+  }
+
+  func optionsBasedFlags(_ options: TulsiOptionSet) -> BazelFlagsSet {
+    return BazelFlagsSet()
+  }
+
+  func buildSettings(bazel: String, bazelExecRoot: String, options: TulsiOptionSet, buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
+    return BazelBuildSettings(bazel: bazel,
+                              bazelExecRoot: bazelExecRoot,
+                              swiftTargets: [],
+                              tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
+                              tulsiCacheSafeFlagSet: BazelFlagsSet(),
+                              tulsiSwiftFlagSet: BazelFlagsSet(),
+                              tulsiNonSwiftFlagSet: BazelFlagsSet(),
+                              projDefaultFlagSet: BazelFlagsSet(),
+                              projTargetFlagSets: [:])
+  }
+}
 
 class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
+
+  let bazelSettingsProvider: BazelSettingsProviderProtocol = MockBazelSettingsProvider()
 
   var labelToRuleEntry = [BuildLabel: RuleEntry]()
   /// The set of labels passed to ruleEntriesForLabels that could not be found in the
@@ -34,7 +57,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption) throws -> RuleEntryMap {
+                            projectGenBuildOptions: TulsiOption,
+                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)
     let ret = RuleEntryMap()
     for label in labels {

@@ -25,13 +25,18 @@ class BazelWorkspacePathInfoFetcher {
   private let bazelURL: URL
   /// The location of the Bazel workspace to be examined.
   private let workspaceRootURL: URL
+  /// Universal flags for all Bazel invocations.
+  private let bazelUniversalFlags: BazelFlags
+
   private let localizedMessageLogger: LocalizedMessageLogger
   private let semaphore: DispatchSemaphore
   private var fetchCompleted = false
 
-  init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
+  init(bazelURL: URL, workspaceRootURL: URL, bazelUniversalFlags: BazelFlags,
+       localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
+    self.bazelUniversalFlags = bazelUniversalFlags
     self.localizedMessageLogger = localizedMessageLogger
 
     semaphore = DispatchSemaphore(value: 0)
@@ -82,9 +87,13 @@ class BazelWorkspacePathInfoFetcher {
       fetchCompleted = true
       return
     }
+    var arguments = [String]()
+    arguments.append(contentsOf: bazelUniversalFlags.startup)
+    arguments.append("info")
+    arguments.append(contentsOf: bazelUniversalFlags.build)
 
     let process = TulsiProcessRunner.createProcess(bazelURL.path,
-                                                   arguments: ["info"],
+                                                   arguments: arguments,
                                                    messageLogger: localizedMessageLogger,
                                                    loggingIdentifier: "bazel_get_package_path" ) {
       completionInfo in

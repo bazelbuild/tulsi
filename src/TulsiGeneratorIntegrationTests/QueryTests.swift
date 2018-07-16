@@ -25,6 +25,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
     super.setUp()
     infoExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
                                             workspaceRootURL: workspaceRootURL!,
+                                            bazelUniversalFlags: bazelUniversalFlags,
                                             localizedMessageLogger: localizedMessageLogger)
   }
 
@@ -164,6 +165,7 @@ class QueryTests_BuildFilesExtraction: BazelIntegrationTestCase {
     super.setUp()
     infoExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
                                             workspaceRootURL: workspaceRootURL!,
+                                            bazelUniversalFlags: bazelUniversalFlags,
                                             localizedMessageLogger: localizedMessageLogger)
     installBUILDFile("ComplexSingle", intoSubdirectory: testDir)
   }

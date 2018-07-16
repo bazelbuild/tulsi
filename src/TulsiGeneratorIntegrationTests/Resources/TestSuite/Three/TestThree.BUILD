@@ -14,6 +14,10 @@
 
 # Simple mock test.
 
+package(
+    default_visibility = ["//TestSuite:__subpackages__"],
+)
+
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 
 test_suite(

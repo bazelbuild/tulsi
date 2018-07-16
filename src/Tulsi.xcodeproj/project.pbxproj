@@ -108,8 +108,14 @@
 		5442049C2064156D00EBF343 /* install_genfiles.py in Resources */ = {isa = PBXBuildFile; fileRef = 5442049B2064156D00EBF343 /* install_genfiles.py */; };
 		546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */; };
 		546AE0B11F75C0C800FE9562 /* ShellEscapingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */; };
+		54A7E04620CC596A00B3AF4C /* bazel_build_settings.py.template in Resources */ = {isa = PBXBuildFile; fileRef = 54A7E04520CC596A00B3AF4C /* bazel_build_settings.py.template */; };
+		54A7E04A20D04C5A00B3AF4C /* user_build.py in Resources */ = {isa = PBXBuildFile; fileRef = 54A7E04920D04C5A00B3AF4C /* user_build.py */; };
 		54BDD0181F4E0FD000AAC99A /* TulsiParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */; };
+		54CA33F320C735C200E32515 /* BazelBuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CA33F220C735C200E32515 /* BazelBuildSettings.swift */; };
+		54D17A5220D94C4B0028D377 /* PythonableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D17A5120D94C4B0028D377 /* PythonableTests.swift */; };
+		54D8453F20CB121D004F6CF2 /* BazelSettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8453E20CB121D004F6CF2 /* BazelSettingsProvider.swift */; };
 		54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */; };
+		54EC201820D1A8270050AF12 /* TulsiApplicationSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EC201720D1A8270050AF12 /* TulsiApplicationSupport.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
 		774F6E9720A2400E00572B76 /* bazel_build_flags.py in Resources */ = {isa = PBXBuildFile; fileRef = 774F6E9620A2400E00572B76 /* bazel_build_flags.py */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */; };
@@ -288,8 +294,14 @@
 		5442049B2064156D00EBF343 /* install_genfiles.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = install_genfiles.py; sourceTree = "<group>"; };
 		546AE0AE1F75BE1D00FE9562 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellEscapingTests.swift; sourceTree = "<group>"; };
+		54A7E04520CC596A00B3AF4C /* bazel_build_settings.py.template */ = {isa = PBXFileReference; explicitFileType = text.script.python; path = bazel_build_settings.py.template; sourceTree = "<group>"; };
+		54A7E04920D04C5A00B3AF4C /* user_build.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = user_build.py; sourceTree = "<group>"; };
 		54BDD0171F4E0FD000AAC99A /* TulsiParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiParameter.swift; sourceTree = "<group>"; };
+		54CA33F220C735C200E32515 /* BazelBuildSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BazelBuildSettings.swift; sourceTree = "<group>"; };
+		54D17A5120D94C4B0028D377 /* PythonableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonableTests.swift; sourceTree = "<group>"; };
+		54D8453E20CB121D004F6CF2 /* BazelSettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BazelSettingsProvider.swift; sourceTree = "<group>"; };
 		54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEntryMap.swift; sourceTree = "<group>"; };
+		54EC201720D1A8270050AF12 /* TulsiApplicationSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiApplicationSupport.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
 		774F6E9620A2400E00572B76 /* bazel_build_flags.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = bazel_build_flags.py; path = TulsiGenerator/Scripts/bazel_build_flags.py; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceFilterViewController.swift; sourceTree = "<group>"; };
@@ -409,11 +421,12 @@
 				3DE40AA41C17A2F60055E464 /* PBXObjectsTests.swift */,
 				8B8F55AC1BE3ECDC0095AF7F /* PBXProjSerializerTests.swift */,
 				3D4A123B1C1882F5006E592D /* PBXTargetGeneratorTests.swift */,
+				54D17A5120D94C4B0028D377 /* PythonableTests.swift */,
+				546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */,
 				3DA65B611C693B570055448E /* TulsiGeneratorConfigTests.swift */,
 				3D51A80B1C52CB6C00FE90A6 /* TulsiOptionSetTests.swift */,
 				3DA65B651C693B7E0055448E /* TulsiProjectTests.swift */,
 				3DA65B3D1C6849140055448E /* XcodeProjectGeneratorTests.swift */,
-				546AE0B01F75C0C800FE9562 /* ShellEscapingTests.swift */,
 			);
 			path = TulsiGeneratorTests;
 			sourceTree = "<group>";
@@ -433,6 +446,7 @@
 				2DD7C6C31F6887DB00163B92 /* DeploymentTarget.swift */,
 				E1C0EBDA1F70982300FA2054 /* XcodeGeneratorInvalidPaths.swift */,
 				54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */,
+				54CA33F220C735C200E32515 /* BazelBuildSettings.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -472,6 +486,8 @@
 				5429EA901F38F56200A78405 /* BazelXcodeProjectPatcher.swift */,
 				5416093B1F5854090016769C /* BazelBuildEvents.swift */,
 				E155E20B1FCE47D9002B16BB /* BazelBuildSettingsFeatures.swift */,
+				54D8453E20CB121D004F6CF2 /* BazelSettingsProvider.swift */,
+				54EC201720D1A8270050AF12 /* TulsiApplicationSupport.swift */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -491,6 +507,8 @@
 				E1C0186C2051B65C000580CC /* symbol_cache_schema.py */,
 				E1C018712051B66C000580CC /* update_symbol_cache.py */,
 				3DFB7C4A1C81F78000376760 /* command_line_splitter.sh */,
+				54A7E04520CC596A00B3AF4C /* bazel_build_settings.py.template */,
+				54A7E04920D04C5A00B3AF4C /* user_build.py */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -767,8 +785,10 @@
 				3D9485411C3193F00026CE41 /* Options.strings in Resources */,
 				3D5A1B581D1B3485006FC2A6 /* StubInfoPlist.plist in Resources */,
 				E135A781205880720082E4D0 /* apfs_clone_copy.py in Resources */,
+				54A7E04620CC596A00B3AF4C /* bazel_build_settings.py.template in Resources */,
 				3DAFE8AE1DF1F23D0055AF56 /* StubIOSAppExtensionInfoPlist.plist in Resources */,
 				3DCD08111D779576006ABE5B /* StubWatchOS2AppExtensionInfoPlist.plist in Resources */,
+				54A7E04A20D04C5A00B3AF4C /* user_build.py in Resources */,
 				3D903A7A1D775AE800B034E9 /* StubWatchOS2InfoPlist.plist in Resources */,
 				5442049C2064156D00EBF343 /* install_genfiles.py in Resources */,
 				E1C018722051B66C000580CC /* update_symbol_cache.py in Resources */,
@@ -846,6 +866,7 @@
 				3D99268C1C29F1100094E098 /* PBXUniformTypeIdentifiers.swift in Sources */,
 				3D1F2E261CF760420008CE83 /* BazelLocator.swift in Sources */,
 				3DAEE45E1C85128600BA1C67 /* BazelWorkspacePathInfoFetcher.swift in Sources */,
+				54EC201820D1A8270050AF12 /* TulsiApplicationSupport.swift in Sources */,
 				3DCFE5DE1C80B70700D7F31B /* BazelAspectInfoExtractor.swift in Sources */,
 				54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */,
 				3D51A8001C52C10A00FE90A6 /* TulsiOption.swift in Sources */,
@@ -864,6 +885,8 @@
 				5416093C1F5854090016769C /* BazelBuildEvents.swift in Sources */,
 				3D9926891C29F10B0094E098 /* BuildLabel.swift in Sources */,
 				3D9926971C29FB180094E098 /* TulsiProjectInfoExtractor.swift in Sources */,
+				54D8453F20CB121D004F6CF2 /* BazelSettingsProvider.swift in Sources */,
+				54CA33F320C735C200E32515 /* BazelBuildSettings.swift in Sources */,
 				5429EA911F38F56200A78405 /* BazelXcodeProjectPatcher.swift in Sources */,
 				546AE0AF1F75BE1D00FE9562 /* StringExtensions.swift in Sources */,
 				3DA65B461C68558A0055448E /* XcodeProjectGenerator.swift in Sources */,
@@ -889,6 +912,7 @@
 				3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */,
 				3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */,
 				3DA65B3E1C6849140055448E /* XcodeProjectGeneratorTests.swift in Sources */,
+				54D17A5220D94C4B0028D377 /* PythonableTests.swift in Sources */,
 				3DFB7C4F1C835EFB00376760 /* CommandLineSplitterTests.swift in Sources */,
 				3DA65B661C693B7E0055448E /* TulsiProjectTests.swift in Sources */,
 				3DA65B601C6930210055448E /* NSURLExtensionsTests.swift in Sources */,

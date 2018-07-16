@@ -36,6 +36,9 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return workspacePathInfoFetcher.getExecutionRoot()
   }
 
+  /// Bazel settings provider for all invocations.
+  let bazelSettingsProvider: BazelSettingsProviderProtocol
+
   /// Fetcher object from which a workspace's path info may be obtained.
   private let workspacePathInfoFetcher: BazelWorkspacePathInfoFetcher
 
@@ -46,15 +49,30 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   private var ruleEntryCache = RuleEntryMap()
 
   init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
+    let universalFlags: BazelFlags
+    if let applicationSupport = ApplicationSupport() {
+      let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
+      let aspectPath = try! applicationSupport.copyTulsiAspectFiles(tulsiVersion: tulsiVersion)
+      universalFlags = BazelFlags(build: ["--override_repository=tulsi=\(aspectPath)"])
+    } else {
+      let bundle = Bundle(for: type(of: self))
+      let bazelWorkspace =
+        bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()
+      universalFlags = BazelFlags(build: ["--override_repository=tulsi=\(bazelWorkspace.path)"])
+    }
 
+    bazelSettingsProvider = BazelSettingsProvider(universalFlags: universalFlags)
     workspacePathInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
                                                              workspaceRootURL: workspaceRootURL,
+                                                             bazelUniversalFlags: universalFlags,
                                                              localizedMessageLogger: localizedMessageLogger)
     aspectExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                workspaceRootURL: workspaceRootURL,
+                                               bazelSettingsProvider: bazelSettingsProvider,
                                                localizedMessageLogger: localizedMessageLogger)
     queryExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,
                                              workspaceRootURL: workspaceRootURL,
+                                             bazelUniversalFlags: universalFlags,
                                              localizedMessageLogger: localizedMessageLogger)
   }
 
@@ -67,7 +85,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption) throws -> RuleEntryMap {
+                            projectGenBuildOptions: TulsiOption,
+                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
     }
@@ -84,12 +103,15 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     let buildOptions = splitOptionString(buildOptions.commonValue)
     let projectGenerationOptions = splitOptionString(projectGenBuildOptions.commonValue)
 
+    let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool ?? false
+
     do {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
-                                                        projectGenerationOptions: projectGenerationOptions)
+                                                        projectGenerationOptions: projectGenerationOptions,
+                                                        prioritizeSwift: prioritizeSwift)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")

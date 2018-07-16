@@ -29,7 +29,8 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption) throws -> RuleEntryMap
+                            projectGenBuildOptions: TulsiOption,
+                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.
@@ -49,4 +50,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
 
   /// Absolute path to the Bazel execution root.
   var bazelExecutionRoot: String {get}
+
+  /// Bazel flag provider for all invocations.
+  var bazelSettingsProvider: BazelSettingsProviderProtocol {get}
 }

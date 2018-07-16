@@ -365,6 +365,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
                                       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
     generator.redactWorkspaceSymlink = true
     generator.suppressModifyingUserDefaults = true
+    generator.suppressGeneratingBuildSettings = true
     generator.writeDataHandler = { (url, _) in
       self.writtenFiles.insert(url.path)
     }
@@ -462,7 +463,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
                     parent: nil)
   }
 
-  required init(bazelURL: URL,
+  required init(bazelPath: String,
                 bazelBinPath: String,
                 project: PBXProject,
                 buildScriptPath: String,

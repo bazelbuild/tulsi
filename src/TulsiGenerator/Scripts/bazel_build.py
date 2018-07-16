@@ -16,7 +16,6 @@
 """Bridge between Xcode and Bazel for the "build" action."""
 
 import atexit
-import collections
 import errno
 import fcntl
 import io
@@ -35,10 +34,10 @@ import zipfile
 from apfs_clone_copy import CopyOnWrite
 import bazel_build_events
 from bazel_build_flags import bazel_build_flags
+import bazel_build_settings
 import bazel_options
 from bootstrap_lldbinit import BootstrapLLDBInit
 from bootstrap_lldbinit import TULSI_LLDBINIT_FILE
-from execroot_path import BAZEL_EXECUTION_ROOT
 import tulsi_logging
 from update_symbol_cache import UpdateSymbolCache
 
@@ -191,37 +190,16 @@ class CodesignBundleAttributes(object):
 class _OptionsParser(object):
   """Handles parsing script options."""
 
-  # Key for options that should be applied to all build configurations.
-  ALL_CONFIGS = '__all__'
+  # List of all supported Xcode configurations.
+  KNOWN_CONFIGS = ['Debug', 'Release']
 
-  # The build configurations handled by this parser.
-  KNOWN_CONFIGS = ['Debug', 'Release', 'Fastbuild']
-
-  def __init__(self, sdk_version, platform_name, arch):
+  def __init__(self, build_settings, sdk_version, platform_name, arch):
     self.targets = []
-    self.startup_options = collections.defaultdict(list)
-    self.build_options = collections.defaultdict(
-        list,
-        {
-            _OptionsParser.ALL_CONFIGS: [
-                '--verbose_failures',
-                '--announce_rc',
-                '--bes_outerr_buffer_size=0',  # Don't buffer Bazel output.
-            ],
-
-            'Debug': [
-                '--compilation_mode=dbg',
-            ],
-
-            'Release': [
-                '--compilation_mode=opt',
-                '--strip=always',
-            ],
-
-            'Fastbuild': [
-                '--compilation_mode=fastbuild',
-            ],
-        })
+    self.build_settings = build_settings
+    self.common_build_options = [
+        '--verbose_failures',
+        '--bes_outerr_buffer_size=0',  # Don't buffer Bazel output.
+    ]
 
     self.sdk_version = sdk_version
     self.platform_name = platform_name
@@ -237,8 +215,7 @@ class _OptionsParser(object):
     else:
       self._WarnUnknownPlatform()
       config_platform = 'ios'
-    self.build_options[_OptionsParser.ALL_CONFIGS].extend(
-        bazel_build_flags(config_platform, arch))
+    self.common_build_options.extend(bazel_build_flags(config_platform, arch))
 
     self.verbose = 0
     self.bazel_bin_path = 'bazel-bin'
@@ -255,28 +232,9 @@ class _OptionsParser(object):
             Increments the verbosity of the script by one level. This argument
             may be provided multiple times to enable additional output levels.
 
-        --bazel_startup_options <option1> [<option2> ...] --
-            Provides one or more Bazel startup options.
-
-        --bazel_options <option1> [<option2> ...] --
-            Provides one or more Bazel build options.
-
         --bazel_bin_path <path>
             Path at which Bazel-generated artifacts may be retrieved.
       """ % sys.argv[0])
-
-    usage += '\n' + textwrap.fill(
-        'Note that the --bazel_startup_options and --bazel_options options may '
-        'include an optional configuration specifier in brackets to limit '
-        'their contents to a given build configuration. Options provided with '
-        'no configuration filter will apply to all configurations in addition '
-        'to any configuration-specific options.', 120)
-
-    usage += '\n' + textwrap.fill(
-        'E.g., --bazel_options common --  --bazel_options[Release] release -- '
-        'would result in "bazel build common release" in the "Release" '
-        'configuration and "bazel build common" in all other configurations.',
-        120)
 
     return usage
 
@@ -292,35 +250,24 @@ class _OptionsParser(object):
 
     return self._ParseVariableOptions(args[bazel_executable_index + 2:])
 
-  def GetStartupOptions(self, config):
-    """Returns the full set of startup options for the given config."""
-    return self._GetOptions(self.startup_options, config)
+  def GetBaseFlagsForTargets(self, config):
+    is_debug = config == 'Debug'
+    return self.build_settings.flags_for_target(
+        self.targets[0],
+        is_debug)
 
-  def GetBuildOptions(self, config):
+  def GetBazelOptions(self, config):
     """Returns the full set of build options for the given config."""
-    options = self._GetOptions(self.build_options, config)
+    bazel, start_up, build = self.GetBaseFlagsForTargets(config)
+    all_build = []
+    all_build.extend(self.common_build_options)
+    all_build.extend(build)
 
     version_string = self._GetXcodeVersionString()
     if version_string and self._NeedsXcodeVersionFlag(version_string):
-      self._AddDefaultOption(options, '--xcode_version', version_string)
-    return options
+      all_build.append('--xcode_version=%s' % version_string)
 
-  @staticmethod
-  def _AddDefaultOption(option_list, option, default_value):
-    matching_options = [opt for opt in option_list if opt.startswith(option)]
-    if matching_options:
-      return option_list
-
-    option_list.append('%s=%s' % (option, default_value))
-    return option_list
-
-  @staticmethod
-  def _GetOptions(option_set, config):
-    """Returns a flattened list from options_set for the given config."""
-    options = list(option_set[_OptionsParser.ALL_CONFIGS])
-    if config != _OptionsParser.ALL_CONFIGS:
-      options.extend(option_set[config])
-    return options
+    return bazel, start_up, all_build
 
   def _WarnUnknownPlatform(self):
     sys.stdout.write('Warning: unknown platform "%s" will be treated as '
@@ -336,37 +283,7 @@ class _OptionsParser(object):
       arg = args[0]
       args = args[1:]
 
-      if arg.startswith('--bazel_startup_options'):
-        config = self._ParseConfigFilter(arg)
-        args, items, terminated = self._ParseDoubleDashDelimitedItems(args)
-        if not terminated:
-          return ('Missing "--" terminator while parsing %s' % arg, 2)
-        duplicates = self._FindDuplicateOptions(self.startup_options,
-                                                config,
-                                                items)
-        if duplicates:
-          return (
-              '%s items conflict with common options: %s' % (
-                  arg, ','.join(duplicates)),
-              2)
-        self.startup_options[config].extend(items)
-
-      elif arg.startswith('--bazel_options'):
-        config = self._ParseConfigFilter(arg)
-        args, items, terminated = self._ParseDoubleDashDelimitedItems(args)
-        if not terminated:
-          return ('Missing "--" terminator while parsing %s' % arg, 2)
-        duplicates = self._FindDuplicateOptions(self.build_options,
-                                                config,
-                                                items)
-        if duplicates:
-          return (
-              '%s items conflict with common options: %s' % (
-                  arg, ','.join(duplicates)),
-              2)
-        self.build_options[config].extend(items)
-
-      elif arg == '--bazel_bin_path':
+      if arg == '--bazel_bin_path':
         if not args:
           return ('Missing required parameter for %s' % arg, 2)
         self.bazel_bin_path = args[0]
@@ -383,65 +300,6 @@ class _OptionsParser(object):
           return ('Unknown option "%s"\n%s' % (arg, self._UsageMessage()), 1)
 
     return (None, 0)
-
-  @staticmethod
-  def _ParseConfigFilter(arg):
-    match = re.search(r'\[([^\]]+)\]', arg)
-    if not match:
-      return _OptionsParser.ALL_CONFIGS
-    return match.group(1)
-
-  @staticmethod
-  def _ConsumeArgumentForParam(param, args):
-    if not args:
-      return (None, 'Missing required parameter for "%s" option' % param)
-    val = args[0]
-    return (args[1:], val)
-
-  @staticmethod
-  def _ParseDoubleDashDelimitedItems(args):
-    """Consumes options until -- is found."""
-    options = []
-    terminator_found = False
-
-    opts = args
-    while opts:
-      opt = opts[0]
-      opts = opts[1:]
-      if opt == '--':
-        terminator_found = True
-        break
-      options.append(opt)
-
-    return opts, options, terminator_found
-
-  @staticmethod
-  def _FindDuplicateOptions(options_dict, config, new_options):
-    """Returns a list of options appearing in both given option lists."""
-
-    allowed_duplicates = [
-        '--copt',
-        '--config',
-        '--define',
-        '--objccopt',
-    ]
-
-    def ExtractOptionNames(opts):
-      names = set()
-      for opt in opts:
-        split_opt = opt.split('=', 1)
-        if split_opt[0] not in allowed_duplicates:
-          names.add(split_opt[0])
-      return names
-
-    current_set = ExtractOptionNames(options_dict[config])
-    new_set = ExtractOptionNames(new_options)
-    conflicts = current_set.intersection(new_set)
-
-    if config != _OptionsParser.ALL_CONFIGS:
-      current_set = ExtractOptionNames(options_dict[_OptionsParser.ALL_CONFIGS])
-      conflicts = conflicts.union(current_set.intersection(new_set))
-    return conflicts
 
   @staticmethod
   def _GetXcodeVersionString():
@@ -529,14 +387,6 @@ class BazelBuildBridge(object):
     else:
       self.normalized_prefix_map = True
 
-    if self.swift_dependency:
-      # Always generate dSYMs for projects with Swift dependencies, as dSYMs are
-      # still required to expr or print variables within Bazel-built Swift
-      # modules in LLDB.
-      self.generate_dsym = True
-    else:
-      self.generate_dsym = os.environ.get('TULSI_MUST_USE_DSYM', 'NO') == 'YES'
-
     self.update_symbol_cache = UpdateSymbolCache()
 
     # Target architecture.  Must be defined for correct setting of
@@ -622,7 +472,14 @@ class BazelBuildBridge(object):
       sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
 
-    parser = _OptionsParser(self.sdk_version,
+    build_settings = bazel_build_settings.BUILD_SETTINGS
+    if build_settings is None:
+      _PrintXcodeError('Unable to resolve build settings. '
+                       'Please report a Tulsi bug.')
+      return 1
+
+    parser = _OptionsParser(build_settings,
+                            self.sdk_version,
                             self.platform_name,
                             self.arch)
     timer = Timer('Parsing options', 'parsing_options').Start()
@@ -635,6 +492,7 @@ class BazelBuildBridge(object):
     self.verbose = parser.verbose
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
     self.bazel_executable = parser.bazel_executable
+    self.bazel_exec_root = build_settings.bazelExecRoot
 
     # Until wrapped_clang is updated, use -fdebug-prefix-map to have debug
     # symbols match Xcode-visible sources.
@@ -650,7 +508,7 @@ class BazelBuildBridge(object):
       source_map = self._ExtractTargetSourceMap(False)
       if source_map:
         prefix_map = '--copt=-fdebug-prefix-map=%s=%s' % source_map
-        parser.build_options[_OptionsParser.ALL_CONFIGS].append(prefix_map)
+        parser.common_build_options.append(prefix_map)
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -677,10 +535,10 @@ class BazelBuildBridge(object):
     post_bazel_timer = Timer('Total Tulsi Post-Bazel time', 'total_post_bazel')
     post_bazel_timer.Start()
 
-    if not os.path.exists(BAZEL_EXECUTION_ROOT):
+    if not os.path.exists(self.bazel_exec_root):
       _PrintXcodeError('No Bazel execution root was found at %s. Debugging '
                        'experience will be compromised. Please report a Tulsi '
-                       'bug.' % BAZEL_EXECUTION_ROOT)
+                       'bug.' % self.bazel_exec_root)
       return 404
 
     # This needs to run after `bazel build`, since it depends on the Bazel
@@ -760,8 +618,6 @@ class BazelBuildBridge(object):
 
   def _BuildBazelCommand(self, options):
     """Builds up a commandline string suitable for running Bazel."""
-    bazel_command = [options.bazel_executable]
-
     configuration = os.environ['CONFIGURATION']
     # Treat the special testrunner build config as a Debug compile.
     test_runner_config_prefix = '__TulsiTestRunner_'
@@ -777,14 +633,11 @@ class BazelBuildBridge(object):
       _PrintXcodeError('Unknown build configuration "%s"' % configuration)
       return (None, 1)
 
-    bazel_command.extend(options.GetStartupOptions(configuration))
+    bazel, start_up, build = options.GetBazelOptions(configuration)
+    bazel_command = [bazel]
+    bazel_command.extend(start_up)
     bazel_command.append('build')
-    bazel_command.extend(options.GetBuildOptions(configuration))
-
-    # Do not follow symlinks on __file__ in case this script is linked during
-    # development.
-    tulsi_package_dir = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
+    bazel_command.extend(build)
 
     bazel_command.extend([
         # The following flags are used by Tulsi to identify itself and read
@@ -800,15 +653,6 @@ class BazelBuildBridge(object):
     else:
       bazel_command.append('--output_groups=tulsi-outputs,default')
 
-    bazel_command.extend([
-        # The following flags WILL affect Bazel analysis caching.
-        # Keep this consistent with BazelAspectInfoExtractor.swift.
-        '--nocheck_visibility',  # Don't do package visibility enforcement.
-        '--override_repository=tulsi=%s' % tulsi_package_dir])
-
-    if self.generate_dsym:
-      bazel_command.append('--apple_generate_dsym')
-
     # A normalized path for -fdebug-prefix-map exists for keeping all debug
     # information as built by Clang consistent for the sake of caching within
     # a distributed build system.
@@ -821,10 +665,6 @@ class BazelBuildBridge(object):
     # similarly normalizing all debug information.
     if self.normalized_prefix_map:
       bazel_command.append('--features=debug_prefix_map_pwd_is_dot')
-
-    bazel_command.extend([
-        '--define=apple.add_debugger_entitlement=1',
-        '--define=apple.propagate_embedded_extra_outputs=1'])
 
     bazel_command.extend(options.targets)
 
@@ -1169,7 +1009,7 @@ class BazelBuildBridge(object):
     path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         'install_genfiles.py')
 
-    args = [path, BAZEL_EXECUTION_ROOT]
+    args = [path, self.bazel_exec_root]
     args.extend(outputs)
 
     self._PrintVerbose('Spawning subprocess install_genfiles.py to copy '
@@ -1749,44 +1589,6 @@ class BazelBuildBridge(object):
 
     return 0
 
-  def _ExtractBazelInfoExecrootPaths(self):
-    """Extracts the path to the execution root found in this WORKSPACE.
-
-    Returns:
-      None: if an error occurred.
-      str: a string representing the absolute path to the execution root found
-           for the current Bazel WORKSPACE.
-    """
-    if not self.bazel_executable:
-      _PrintXcodeWarning('Attempted to find the execution root, but the '
-                         'path to the Bazel executable was not provided.')
-      return None
-
-    timer = Timer('Finding Bazel execution root', 'bazel_execroot').Start()
-    returncode, output = self._RunSubprocess([
-        self.bazel_executable,
-        'info',
-        'execution_root',
-        '--noshow_loading_progress',
-        '--noshow_progress',
-    ])
-    timer.End()
-
-    if returncode:
-      _PrintXcodeWarning('%s returned %d while finding the execution root'
-                         % (self.bazel_executable, returncode))
-      return None
-
-    for line in output.splitlines():
-      # Filter out output that does not contain the /execroot path.
-      if '/execroot' not in line:
-        continue
-      # Return the path from the first /execroot found.
-      return line
-    _PrintXcodeWarning('%s did not return a recognized /execroot path.'
-                       % self.bazel_executable)
-    return None
-
   def _NormalizePath(self, path):
     """Returns paths with a common form, normalized with a trailing slash.
 
@@ -1820,30 +1622,10 @@ class BazelBuildBridge(object):
 
     # Add a redirection for the Bazel execution root, the path where sources
     # are referenced by Bazel.
-    sm_execroot = self._ExtractExecroot()
-    if sm_execroot:
-      if normalize:
-        sm_execroot = self._NormalizePath(sm_execroot)
-      return (sm_execroot, sm_destpath)
-
-    return None
-
-  def _ExtractExecroot(self):
-    """Finds the execution root from BAZEL_EXECUTION_ROOT or bazel info.
-
-    Returns:
-      None: if an error occurred.
-      str: the "execution root", the path to the "root" of all source files
-           compiled by Bazel as a string.
-    """
-    # If we have a cached execution root, check that it exists.
-    if os.path.exists(BAZEL_EXECUTION_ROOT):
-      # If so, use it.
-      execroot = BAZEL_EXECUTION_ROOT
-    else:
-      # Query Bazel directly for the execution root.
-      execroot = self._ExtractBazelInfoExecrootPaths()
-    return execroot
+    sm_execroot = self.bazel_exec_root
+    if normalize:
+      sm_execroot = self._NormalizePath(sm_execroot)
+    return (sm_execroot, sm_destpath)
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""
@@ -1851,7 +1633,7 @@ class BazelBuildBridge(object):
     if os.path.islink(tulsi_workspace):
       os.unlink(tulsi_workspace)
 
-    os.symlink(BAZEL_EXECUTION_ROOT, tulsi_workspace)
+    os.symlink(self.bazel_exec_root, tulsi_workspace)
     if not os.path.exists(tulsi_workspace):
       _PrintXcodeError(
           'Linking Tulsi Workspace to %s failed.' % tulsi_workspace)

@@ -24,6 +24,7 @@ class BazelIntegrationTestCase: XCTestCase {
   var bazelBuildOptions = [String]()
   var runfilesURL: URL! = nil
   var fakeBazelWorkspace: BazelFakeWorkspace! = nil
+  var bazelUniversalFlags = BazelFlags()
   var workspaceRootURL: URL! = nil
   var testUndeclaredOutputsDir: URL? = nil
   var workspaceInfoFetcher: BazelWorkspacePathInfoFetcher! = nil
@@ -91,10 +92,19 @@ class BazelIntegrationTestCase: XCTestCase {
       fatalError("Failed to find workspaceRootURL.")
     }
 
+    let bundle = Bundle(for: TulsiXcodeProjectGenerator.self)
+    let bazelWorkspace =
+      bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()
+
+    bazelUniversalFlags = BazelFlags(build: [
+        "--override_repository=tulsi=\(bazelWorkspace.path)"
+    ])
+
     localizedMessageLogger = DirectLocalizedMessageLogger()
     localizedMessageLogger.startLogging()
     workspaceInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
                                                          workspaceRootURL: workspaceRootURL,
+                                                         bazelUniversalFlags: bazelUniversalFlags,
                                                          localizedMessageLogger: localizedMessageLogger)
   }
 

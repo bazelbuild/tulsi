@@ -18,7 +18,7 @@ import XCTest
 // Note: Rather than test the serializer's output, we make use of the knowledge that
 // buildSerializerWithRuleEntries modifies a project directly.
 class PBXTargetGeneratorTests: XCTestCase {
-  let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
+  let bazelPath = "__BAZEL_BINARY_"
   let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let stubPlistPaths = StubInfoPlistPaths(resourcesDirectory: "${PROJECT_FILE_PATH}/.tulsi/Resources",
                                           defaultStub: "TestInfo.plist",
@@ -31,7 +31,7 @@ class PBXTargetGeneratorTests: XCTestCase {
   override func setUp() {
     super.setUp()
     project = PBXProject(name: "TestProject")
-    targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+    targetGenerator = PBXTargetGenerator(bazelPath: bazelPath,
                                          bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
@@ -100,7 +100,7 @@ class PBXTargetGeneratorTests: XCTestCase {
 
 
 class PBXTargetGeneratorTestsWithFiles: XCTestCase {
-  let bazelURL = URL(fileURLWithPath: "__BAZEL_BINARY_")
+  let bazelPath = "__BAZEL_BINARY_"
   let workspaceRootURL = URL(fileURLWithPath: "/workspaceRootURL", isDirectory: true)
   let sdkRoot = "sdkRoot"
   let stubPlistPaths = StubInfoPlistPaths(resourcesDirectory:"${PROJECT_ROOT}/asd",
@@ -128,7 +128,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     pchFile = project.mainGroup.getOrCreateFileReferenceBySourceTree(.Group, path: "pch.pch")
     let options = TulsiOptionSet()
     messageLogger = MockLocalizedMessageLogger()
-    targetGenerator = PBXTargetGenerator(bazelURL: bazelURL,
+    targetGenerator = PBXTargetGenerator(bazelPath: bazelPath,
                                          bazelBinPath: "bazel-bin",
                                          project: project,
                                          buildScriptPath: "",
@@ -153,8 +153,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     XCTAssertEqual(target.buildToolPath, scriptPath)
 
-    // The script should launch the test scriptPath with bazelURL's path as the only argument.
-    let expectedScriptArguments = "\"\(bazelURL.path)\" \"bazel-bin\""
+    // The script should launch the test scriptPath with bazelPath's path as the only argument.
+    let expectedScriptArguments = "\"\(bazelPath)\" \"bazel-bin\""
     XCTAssertEqual(target.buildArgumentsString, expectedScriptArguments)
   }
 
@@ -358,7 +358,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -395,7 +395,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -473,7 +473,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -515,7 +515,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -587,7 +587,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -628,7 +628,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -705,7 +705,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -747,7 +747,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -824,7 +824,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -865,7 +865,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -933,7 +933,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1003,7 +1003,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget),
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget),
           SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
         ]
       )
@@ -1080,7 +1080,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                               buildTarget: rule1BuildTarget),
           ]
       )
@@ -1124,7 +1124,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ],
           expectedBuildPhases: [
               SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                               buildTarget: testRuleBuildTarget)
           ]
       )
@@ -1212,7 +1212,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         ],
       expectedBuildPhases: [
         SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-        BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+        BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                              buildTarget: "\(testRulePackage):\(testRuleTargetName)")
       ]
     )
@@ -1300,7 +1300,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         ],
       expectedBuildPhases: [
         SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-        BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+        BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                              buildTarget: "\(testRulePackage):\(testRuleTargetName)"),
         SwiftDummyShellScriptBuildPhaseDefinition()
       ]
@@ -1380,7 +1380,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                           buildTarget: rule1BuildTarget),
           ]
       )
@@ -1423,7 +1423,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ],
         expectedBuildPhases: [
           SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                           buildTarget: testRuleBuildTarget)
         ]
       )
@@ -1551,7 +1551,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL,
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
                                                    buildTarget: testRuleBuildTarget),
           ]
       )
@@ -1614,7 +1614,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule1BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1651,7 +1651,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: rule2BuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1715,7 +1715,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: buildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1778,7 +1778,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
           ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: buildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: buildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1870,7 +1870,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: appBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1909,7 +1909,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-              BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: watchAppBuildTarget)
+              BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: watchAppBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1948,7 +1948,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
               ),
           ],
           expectedBuildPhases: [
-            BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: watchExtBuildTarget)
+            BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: watchExtBuildTarget)
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2037,7 +2037,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
         ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: appBuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: appBuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2076,7 +2076,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
         ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: macAppExtBuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: macAppExtBuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2115,7 +2115,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           ),
         ],
         expectedBuildPhases: [
-          BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: macCLIAppBuildTarget)
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: macCLIAppBuildTarget)
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2601,7 +2601,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             ),
         ],
         expectedBuildPhases: [
-            BazelShellScriptBuildPhaseDefinition(bazelURL: bazelURL, buildTarget: target)
+            BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: target)
         ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -2646,13 +2646,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     return newSettings
   }
 
-  private func releaseBuildSettingsFromSettings(_ settings: [String: String],
-                                                indexerSettingsOnly: Bool = false) -> [String: String] {
+  private func releaseBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
     var newSettings = settings
     newSettings["GCC_PREPROCESSOR_DEFINITIONS"] = "NDEBUG=1"
-    if !indexerSettingsOnly {
-      newSettings["TULSI_MUST_USE_DSYM"] = "YES"
-    }
     return newSettings
   }
 
@@ -2837,11 +2833,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   private class BazelShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
-    let bazelURL: URL
+    let bazelPath: String
     let buildTarget: String
 
-    init(bazelURL: URL, buildTarget: String) {
-      self.bazelURL = bazelURL
+    init(bazelPath: String, buildTarget: String) {
+      self.bazelPath = bazelPath
       self.buildTarget = buildTarget
       super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "BazelBuild")
     }
@@ -2855,8 +2851,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
       let script = scriptBuildPhase.shellScript
 
-      XCTAssert(script.contains(bazelURL.path),
-                "Build script does not contain \(bazelURL.path)",
+      XCTAssert(script.contains(bazelPath),
+                "Build script does not contain \(bazelPath)",
                 line: line)
       XCTAssert(script.contains(buildTarget),
                 "Build script does not contain build target \(buildTarget)",
@@ -2952,8 +2948,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
             ),
             BuildConfigurationDefinition(
               name: "Release",
-              expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings,
-                                                                      indexerSettingsOnly: true)
+              expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
             ),
         ],
         expectedBuildPhases: expectedBuildPhases

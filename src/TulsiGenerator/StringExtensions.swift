@@ -15,9 +15,13 @@
 import Foundation
 
 extension String {
-  // Escape the string for the shell by enclosing it in single quotes and replace single quotes
-  // with '\\'' which outputs '\''. See https://stackoverflow.com/a/1315213 for more information.
+  // Escape the string for the shell by enclosing it in single quotes if needed. When enclosing in
+  // single quotes, we must replace single quotes with '\\'' which outputs '\''.
+  // See https://stackoverflow.com/a/1315213 for more information.
   public var escapingForShell: String {
+    guard rangeOfCharacter(from: .whitespaces) != nil || contains("'") || contains("$") else {
+      return self
+    }
     let escapedString = replacingOccurrences(of: "'", with: "'\\''")
     return "'\(escapedString)'"
   }

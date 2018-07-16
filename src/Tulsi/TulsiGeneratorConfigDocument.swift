@@ -462,10 +462,12 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
         let projectGenBuildOptions = optionSet[.BazelBuildOptionsProjectGenerationOnly]
+        let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
-                                                                   projectGenBuildOptions: projectGenBuildOptions)
+                                                                   projectGenBuildOptions: projectGenBuildOptions,
+                                                                   prioritizeSwiftOption: prioritizeSwiftOption)
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
         return
@@ -788,7 +790,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
                                                               startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
                                                               buildOptions: optionSet![.BazelBuildOptionsDebug],
-                                                              projectGenBuildOptions: optionSet![.BazelBuildOptionsProjectGenerationOnly])
+                                                              projectGenBuildOptions: optionSet![.BazelBuildOptionsProjectGenerationOnly],
+                                                              prioritizeSwiftOption: optionSet![.ProjectPrioritizesSwift])
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {

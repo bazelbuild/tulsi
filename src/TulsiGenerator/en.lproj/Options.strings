@@ -29,6 +29,9 @@
 
 "GenerateRunfiles" = "Generate the runfiles directory used as TEST_SRCDIR";
 
+"ProjectPrioritizesSwift" = "Prioritize for Swift development instead of (Obj-)C(++)";
+"ProjectPrioritizesSwift_DESC" = "Tulsi uses this to try to improve Bazel caching; set this if you anticipate that most of your builds inside of the generated xcodeproj depend on Swift in some way. Setting this incorrectly won't break your builds but it will potentially make them slower.";
+
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";
 

@@ -18,7 +18,7 @@ import XCTest
 class ShellEscapingTests: XCTestCase {
 
   func testSurroundedBySingleQuotes() {
-    XCTAssertEqual("foobar".escapingForShell, "'foobar'")
+    XCTAssertEqual("foobar".escapingForShell, "foobar")
     XCTAssertEqual("this is a string".escapingForShell, "'this is a string'")
     XCTAssertEqual("$PWD".escapingForShell, "'$PWD'")
   }

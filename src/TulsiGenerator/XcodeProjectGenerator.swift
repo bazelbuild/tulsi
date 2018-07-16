@@ -67,6 +67,7 @@ final class XcodeProjectGenerator {
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   private static let BuildScript = "bazel_build.py"
+  private static let SettingsScript = "bazel_build_settings.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let ShellCommandsUtil = "bazel_cache_reader"
   private static let ShellCommandsCleanScript = "clean_symbol_cache"
@@ -113,6 +114,9 @@ final class XcodeProjectGenerator {
 
   /// Exposed for testing. Do not modify user defaults.
   var suppressModifyingUserDefaults = false
+
+  /// Exposed for testing. Do not generate the build settings python file.
+  var suppressGeneratingBuildSettings = false
 
   var cachedDefaultSwiftVersion: String?
 
@@ -218,8 +222,7 @@ final class XcodeProjectGenerator {
     try installXcodeSchemesForProjectInfo(projectInfo,
                                           projectURL: projectURL,
                                           projectBundleName: projectBundleName)
-    installTulsiScripts(projectURL)
-    installTulsiBazelPackage(projectURL)
+    installTulsiScriptsForProjectInfo(projectInfo, projectURL: projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
     installStubExtensionPlistFiles(projectURL,
@@ -357,8 +360,7 @@ final class XcodeProjectGenerator {
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
 
-
-    let generator = pbxTargetGeneratorType.init(bazelURL: config.bazelURL,
+    let generator = pbxTargetGeneratorType.init(bazelPath: config.bazelURL.path,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
@@ -505,7 +507,6 @@ final class XcodeProjectGenerator {
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
-
     try profileAction("generating_build_targets") {
       try generator.generateBuildTargetsForRuleEntries(targetRules,
                                                        ruleEntryMap: ruleEntryMap)
@@ -580,7 +581,8 @@ final class XcodeProjectGenerator {
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
-                                                             projectGenBuildOptions: config.options[.BazelBuildOptionsProjectGenerationOnly])
+                                                             projectGenBuildOptions: config.options[.BazelBuildOptionsProjectGenerationOnly],
+                                                             prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift])
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
     }
@@ -941,31 +943,61 @@ final class XcodeProjectGenerator {
     guard savePlist(schemeManagementDict, url: schemeManagementURL) else { return }
   }
 
-  /// Create a file that contains the execution root for the workspace of the generated project.
-  private func installCachedExecutionRoot(_ scriptDirectoryURL: URL) {
-    let executionRootFileURL = scriptDirectoryURL.appendingPathComponent(XcodeProjectGenerator.CachedExecutionRootFilename)
+  /// Create a file that contains Bazel build settings for the generated project.
+  private func generateBuildSettingsFile(_ buildRuleEntries: Set<RuleEntry>,
+                                         _ scriptDirectoryURL: URL) {
+    guard !suppressGeneratingBuildSettings else { return }
 
-    let execroot = workspaceInfoExtractor.bazelExecutionRoot.replacingOccurrences(of: "'",
-                                                                                  with: "")
+    let fileURL = scriptDirectoryURL.appendingPathComponent(XcodeProjectGenerator.SettingsScript)
 
-    // Entire script is one variable, directly referenced within bazel_build.py. If this is an empty
-    // string, the path will return False in an os.path.exists(...) call.
-    let script = "BAZEL_EXECUTION_ROOT = '\(execroot)'\n"
+    let bazelSettingsProvider = workspaceInfoExtractor.bazelSettingsProvider
+    let bazelExecRoot = workspaceInfoExtractor.bazelExecutionRoot
+    let bazelBuildSettings = bazelSettingsProvider.buildSettings(bazel: config.bazelURL.path,
+                                                                 bazelExecRoot: bazelExecRoot,
+                                                                 options: config.options,
+                                                                 buildRuleEntries: buildRuleEntries)
+
+    let bundle = Bundle(for: type(of: self))
+
+    guard let templateURL = bundle.url(forResource: XcodeProjectGenerator.SettingsScript,
+                                       withExtension: "template") else {
+      localizedMessageLogger.error("GeneratingBazelBuildSettingsFailed",
+                                   comment: "Error message for generating build settings failed. Internal error in %1$@.",
+                                   context: config.projectName,
+                                   values: "Resource not found: Unable to find the script to template.")
+      return
+    }
+
+    guard let scriptTemplateData = fileManager.contents(atPath: templateURL.path) else {
+      localizedMessageLogger.error("GeneratingBazelBuildSettingsFailed",
+                                   comment: "Error message for generating build settings failed. Internal error in %1$@.",
+                                   context: config.projectName,
+                                   values: "Resource not readable: Unable to read the script to template.")
+      return
+    }
+    guard let scriptTemplate = String.init(data: scriptTemplateData, encoding: .utf8) else {
+      localizedMessageLogger.error("GeneratingBazelBuildSettingsFailed",
+                                   comment: "Error message for generating build settings failed. Internal error in %1$@.",
+                                   context: config.projectName,
+                                   values: "Resource parsing failed: Unable to load as utf8.")
+      return
+    }
+    let script = scriptTemplate.replacingOccurrences(of: "# <template>",
+                                                     with: "BUILD_SETTINGS = \(bazelBuildSettings.toPython(""))")
 
     var errorInfo: String? = nil
     do {
-      try writeDataHandler(executionRootFileURL, script.data(using: .utf8)!)
+      try writeDataHandler(fileURL, script.data(using: .utf8)!)
     } catch let e as NSError {
       errorInfo = e.localizedDescription
     } catch {
       errorInfo = "Unexpected exception"
     }
     if let errorInfo = errorInfo {
-      // Return an error, as failing to create the file will leave us without a buildable project.
-      localizedMessageLogger.error("BazelExecutionRootCacheFailed",
-                                   comment: XcodeProjectGenerator.CachedExecutionRootFilename +
-                                            "could not be created. \(errorInfo)",
-                                   context: config.projectName)
+      localizedMessageLogger.error("GeneratingBazelBuildSettingsFailed",
+                                   comment: "Error message for generating build settings failed. Internal error in %1$@.",
+                                   context: config.projectName,
+                                   values: errorInfo)
       return
     }
   }
@@ -1103,8 +1135,8 @@ final class XcodeProjectGenerator {
     }
   }
 
-  private func installTulsiScripts(_ projectURL: URL) {
-
+  private func installTulsiScriptsForProjectInfo(_ projectInfo: GeneratedProjectInfo,
+                                                 projectURL: URL) {
     let scriptDirectoryURL = projectURL.appendingPathComponent(XcodeProjectGenerator.ScriptDirectorySubpath,
                                                                     isDirectory: true)
     if createDirectory(scriptDirectoryURL) {
@@ -1119,30 +1151,7 @@ final class XcodeProjectGenerator {
                    toDirectory: scriptDirectoryURL)
       installFiles(resourceURLs.extraBuildScripts.map { ($0, $0.lastPathComponent) },
                    toDirectory: scriptDirectoryURL)
-      installCachedExecutionRoot(scriptDirectoryURL)
-
-      localizedMessageLogger.logProfilingEnd(profilingToken)
-    }
-  }
-
-  private func installTulsiBazelPackage(_ projectURL: URL) {
-
-    let bazelWorkspaceURL = projectURL.appendingPathComponent(XcodeProjectGenerator.BazelDirectorySubpath,
-                                                              isDirectory: true)
-    let bazelPackageURL = bazelWorkspaceURL.appendingPathComponent(XcodeProjectGenerator.TulsiPackageName,
-                                                                   isDirectory: true)
-
-    if createDirectory(bazelPackageURL) {
-      let profilingToken = localizedMessageLogger.startProfiling("installing_package",
-                                                                 context: config.projectName)
-      let progressNotifier = ProgressNotifier(name: InstallingScripts, maxValue: 1)
-      defer { progressNotifier.incrementValue() }
-      localizedMessageLogger.infoMessage("Installing Bazel integration package")
-
-      installFiles([(resourceURLs.bazelWorkspaceFile, XcodeProjectGenerator.WorkspaceFile)],
-                   toDirectory: bazelWorkspaceURL)
-      installFiles(resourceURLs.tulsiPackageFiles.map { ($0, $0.lastPathComponent) },
-                   toDirectory: bazelPackageURL)
+      generateBuildSettingsFile(projectInfo.buildRuleEntries, scriptDirectoryURL)
 
       localizedMessageLogger.logProfilingEnd(profilingToken)
     }
@@ -1310,9 +1319,9 @@ final class XcodeProjectGenerator {
         // Only over-write if needed.
         if fileManager.fileExists(atPath: targetURL.path) {
           guard !fileManager.contentsEqual(atPath: sourceURL.path, andPath: targetURL.path) else {
-            print("Not overwriting \(targetURL.path) as its contents haven't changed.")
             continue;
           }
+          print("Overwriting \(targetURL.path) as its contents changed.")
           try fileManager.removeItem(at: targetURL)
         }
         try fileManager.copyItem(at: sourceURL, to: targetURL)

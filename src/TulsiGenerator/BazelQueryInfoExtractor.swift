@@ -28,15 +28,21 @@ final class BazelQueryInfoExtractor: QueuedLogging {
   var bazelURL: URL
   /// The location of the directory in which the workspace enclosing this BUILD file can be found.
   let workspaceRootURL: URL
+  /// Universal flags for all Bazel invocations.
+  private let bazelUniversalFlags: BazelFlags
 
   private let localizedMessageLogger: LocalizedMessageLogger
   private var queuedInfoMessages = [String]()
 
   private typealias CompletionHandler = (Process, Data, String?, String) -> Void
 
-  init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
+  init(bazelURL: URL,
+       workspaceRootURL: URL,
+       bazelUniversalFlags: BazelFlags,
+       localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
+    self.bazelUniversalFlags = bazelUniversalFlags
     self.localizedMessageLogger = localizedMessageLogger
   }
 
@@ -143,14 +149,18 @@ final class BazelQueryInfoExtractor: QueuedLogging {
 
     var arguments = [
         "--max_idle_secs=60",
-        "query",
+    ]
+    arguments.append(contentsOf: bazelUniversalFlags.startup)
+    arguments.append("query")
+    arguments.append(contentsOf: bazelUniversalFlags.build)
+    arguments.append(contentsOf: [
         "--announce_rc",  // Print the RC files used by this operation.
         "--noimplicit_deps",
         "--order_output=no",
         "--noshow_loading_progress",
         "--noshow_progress",
         query
-    ]
+    ])
     arguments.append(contentsOf: additionalArguments)
     if let kind = outputKind {
       arguments.append(contentsOf: ["--output", kind])
