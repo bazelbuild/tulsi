@@ -1515,15 +1515,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]"] = "1,4"
     }
 
-    // Tell our build script when a Swift dependency has been found. This could be discovered
-    // through the aspect instead, but we keep this information here for the sake of our debug info
-    // remapping story (for now).
-    //
-    // TODO(b/77916902): See if we can base this directly on if we have any Swift files indexed.
-    // The state of has_swift_dependency is currently computed through our aspect.
-    let swiftDependency = entry.attributes[.has_swift_dependency] as? Bool ?? false
-    buildSettings["TULSI_SWIFT_DEPENDENCY"] = swiftDependency ? "YES" : "NO"
-
     // bazel_build.py uses this to determine if it needs to pass the --xcode_version flag, as the
     // flag can have implications for caching even if the user's active Xcode version is the same
     // as the flag.

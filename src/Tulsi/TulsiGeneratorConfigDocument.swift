@@ -441,6 +441,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
+  private func enabledFeatures(options: TulsiOptionSet) -> Set<BazelSettingFeature> {
+    let workspaceRoot = infoExtractor.workspaceRootURL.path
+    let bazelExecroot = infoExtractor.bazelExecutionRoot
+    return BazelBuildSettingsFeatures.enabledFeatures(options: options,
+                                                      workspaceRoot: workspaceRoot,
+                                                      bazelExecRoot: bazelExecroot)
+  }
+
   // Regenerates the sourcePaths array based on the currently selected ruleEntries.
   func updateSourcePaths(_ callback: @escaping ([UISourcePath]) -> Void) {
     var sourcePathMap = [String: UISourcePath]()
@@ -467,7 +475,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
                                                                    projectGenBuildOptions: projectGenBuildOptions,
-                                                                   prioritizeSwiftOption: prioritizeSwiftOption)
+                                                                   prioritizeSwiftOption: prioritizeSwiftOption,
+                                                                   features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
         return
@@ -787,11 +796,13 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       return
     }
 
+    let options = optionSet!
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
-                                                              startupOptions: optionSet![.BazelBuildStartupOptionsDebug],
-                                                              buildOptions: optionSet![.BazelBuildOptionsDebug],
-                                                              projectGenBuildOptions: optionSet![.BazelBuildOptionsProjectGenerationOnly],
-                                                              prioritizeSwiftOption: optionSet![.ProjectPrioritizesSwift])
+                                                              startupOptions: options[.BazelBuildStartupOptionsDebug],
+                                                              buildOptions: options[.BazelBuildOptionsDebug],
+                                                              projectGenBuildOptions: options[.BazelBuildOptionsProjectGenerationOnly],
+                                                              prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
+                                                              features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
     for label in concreteBuildTargetLabels {

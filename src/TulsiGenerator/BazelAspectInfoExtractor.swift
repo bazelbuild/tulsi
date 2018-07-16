@@ -67,7 +67,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
                                    projectGenerationOptions: [String] = [],
-                                   prioritizeSwift: Bool = false) throws -> RuleEntryMap {
+                                   prioritizeSwift: Bool = false,
+                                   features: Set<BazelSettingFeature> = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
@@ -76,7 +77,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
                                           projectGenerationOptions: projectGenerationOptions,
-                                          prioritizeSwift: prioritizeSwift)
+                                          prioritizeSwift: prioritizeSwift,
+                                          features: features)
   }
 
   // MARK: - Private methods
@@ -85,7 +87,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           startupOptions: [String],
                                           buildOptions: [String],
                                           projectGenerationOptions: [String],
-                                          prioritizeSwift: Bool) throws -> RuleEntryMap {
+                                          prioritizeSwift: Bool,
+                                          features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
     let progressNotifier = ProgressNotifier(name: SourceFileExtraction,
@@ -105,6 +108,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                buildOptions: buildOptions,
                                                projectGenerationOptions: projectGenerationOptions,
                                                prioritizeSwift: prioritizeSwift,
+                                               features: features,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
        defer { semaphore.signal() }
@@ -162,6 +166,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             buildOptions: [String] = [],
                                             projectGenerationOptions: [String] = [],
                                             prioritizeSwift: Bool,
+                                            features: Set<BazelSettingFeature>,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
 
@@ -177,7 +182,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
     let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
 
-    let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: prioritizeSwift).getFlags()
+    let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: prioritizeSwift,
+                                                      features: features).getFlags()
     var arguments = startupOptions
     arguments.append(contentsOf: tulsiFlags.startup)
     arguments.append("build")

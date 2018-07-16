@@ -14,18 +14,100 @@
 
 import Foundation
 
+/// Bazel feature settings that map to Bazel flags (start up or build options). These flags may
+/// affect Bazel analysis/action caching and therefore should be kept consistent between all
+/// invocations from Tulsi.
+///
+/// If adding a flag that does not impact Bazel caching, it can be added directly to
+/// BazelSettingsProvider directly (either as a cacheableFlag or a configBasedFlag).
+public enum BazelSettingFeature: Hashable, Pythonable {
+
+  /// Feature flag to normalize paths present in debug information via a Clang flag for distributed
+  /// builds (e.g. multiple distinct paths).
+  /// - Mutually exclusive with DirectDebugPrefixMap feature
+  ///
+  /// The use of this flag does not affect any sources built by swiftc. At present time, all Swift
+  /// compiled sources will be built with uncacheable, absolute paths, as the Swift compiler does
+  /// not provide an easy means of similarly normalizing all debug information.
+  case DebugPathNormalization
+
+  /// Feature flag to normalize paths present in debug information via a Clang flag for local
+  /// builds.
+  /// - Mutually exclusive with DebugPathNormalization feature
+  ///
+  /// NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
+  /// reused across multiple machines by a distributed build system, unless the
+  /// absolute paths to files visible to Xcode match perfectly between all of
+  /// those machines.
+  ///
+  /// For this reason, -fdebug-prefix-map is provided as a default for non-distributed purposes.
+  case DirectDebugPrefixMap(String, String)
+
+  public var stringValue: String {
+    switch self {
+      case .DebugPathNormalization:
+        return "DebugPathNormalization"
+      case .DirectDebugPrefixMap:
+        return "DirectDebugPrefixMap"
+    }
+  }
+
+  public var hashValue: Int {
+    return stringValue.hashValue
+  }
+
+  public static func ==(lhs: BazelSettingFeature, rhs: BazelSettingFeature) -> Bool {
+    return lhs.stringValue == rhs.stringValue
+  }
+
+  public var supportsSwift: Bool {
+    switch self {
+      case .DebugPathNormalization:
+        return false
+      case .DirectDebugPrefixMap:
+        return true
+    }
+  }
+
+  public var supportsNonSwift: Bool {
+    switch self {
+      case .DebugPathNormalization:
+        return true
+      case .DirectDebugPrefixMap:
+        return true
+    }
+  }
+
+  /// Start up flags for this feature.
+  public var startupFlags: [String] {
+    return []
+  }
+
+  /// Build flags for this feature.
+  public var buildFlags: [String] {
+    switch self {
+      case .DebugPathNormalization: return ["--features=debug_prefix_map_pwd_is_dot"]
+      case .DirectDebugPrefixMap(let execRoot, let workspaceRoot): return [
+          String(format: "--copt=-fdebug-prefix-map=%@=%@", execRoot, workspaceRoot)
+      ]
+    }
+  }
+
+  func toPython(_ indentation: String) -> String {
+    return stringValue.toPython(indentation)
+  }
+}
+
 /// Defines an object that provides flags for Bazel invocations.
 protocol BazelSettingsProviderProtocol {
   /// All general-Tulsi flags, varying based on whether the project has Swift or not.
-  func tulsiFlags(hasSwift: Bool) -> BazelFlagsSet
-
-  /// Cache-able Bazel flags based off TulsiOptions, used to generate BazelBuildSettings.
-  func optionsBasedFlags(_ options: TulsiOptionSet) -> BazelFlagsSet
+  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet
 
   /// Bazel build settings, used during Xcode/user Bazel builds.
   func buildSettings(bazel: String,
                      bazelExecRoot: String,
                      options: TulsiOptionSet,
+                     features: Set<BazelSettingFeature>,
                      buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings
 }
 
@@ -57,11 +139,8 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
 
   /// Flags added by Tulsi for builds which do not contain Swift.
   /// - Enable dSYMs only for Release builds.
-  /// - Flag for remapping debug symbols.
   static let tulsiNonSwiftFlags = BazelFlagsSet(
-      release: BazelFlags(build: ["--apple_generate_dsym"]),
-      // TODO: Somehow support the open-source version of this which varies based on the exec-root.
-      common: BazelFlags(build: ["--features=debug_prefix_map_pwd_is_dot"]))
+      release: BazelFlags(build: ["--apple_generate_dsym"]))
 
   let universalFlags: BazelFlags
   let cacheableFlags: BazelFlagsSet
@@ -90,11 +169,40 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
     self.nonSwiftFlags = nonSwiftFlags
   }
 
-  func tulsiFlags(hasSwift: Bool) -> BazelFlagsSet {
-    let languageFlags = hasSwift ? swiftFlags : nonSwiftFlags
+  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet {
+    let languageFlags = (hasSwift ? swiftFlags : nonSwiftFlags) + featureFlags(features,
+                                                                               hasSwift: hasSwift)
     return BazelFlagsSet(common: universalFlags) + cacheableFlags + nonCacheableFlags + languageFlags
   }
 
+  /// Non-cacheable Bazel flags based off of BazelSettingFeatures for the project.
+  func featureFlags(_ features: Set<BazelSettingFeature>, hasSwift: Bool) -> BazelFlagsSet {
+    let validFeatures = features.filter { return hasSwift ? $0.supportsSwift : $0.supportsNonSwift }
+    let sortedFeatures = validFeatures.sorted { (a, b) -> Bool in
+      return a.stringValue > b.stringValue
+    }
+
+    let startupFlags = sortedFeatures.reduce(into: []) { (arr, feature) in
+      arr.append(contentsOf: feature.startupFlags)
+    }
+    let buildFlags = sortedFeatures.reduce(into: []) { (arr, feature) in
+      arr.append(contentsOf: feature.buildFlags)
+    }
+    return BazelFlagsSet(startupFlags: startupFlags, buildFlags: buildFlags)
+  }
+
+  /// Returns an array of the enabled features' names.
+  func featureNames(_ features: Set<BazelSettingFeature>, hasSwift: Bool) -> [String] {
+    let validFeatures = features.filter { return hasSwift ? $0.supportsSwift : $0.supportsNonSwift }
+    return validFeatures.sorted { (a, b) -> Bool in
+      return a.stringValue > b.stringValue
+    }.map { $0.stringValue }
+  }
+
+  /// Cache-able Bazel flags based off TulsiOptions, used to generate BazelBuildSettings. This
+  /// should only add flags that do not affect Bazel analysis/action caching; flags that are based
+  /// off of TulsiOptions but do affect Bazel caching should instead be added to as
+  /// BazelSettingFeatures.
   func optionsBasedFlags(_ options: TulsiOptionSet) -> BazelFlagsSet {
     var configBasedTulsiFlags = [String]()
     if let continueBuildingAfterError = options[.BazelContinueBuildingAfterError].commonValueAsBool,
@@ -107,6 +215,7 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
   func buildSettings(bazel: String,
                      bazelExecRoot: String,
                      options: TulsiOptionSet,
+                     features: Set<BazelSettingFeature>,
                      buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
     let projDefaultSettings = getProjDefaultSettings(options)
     var targetSettings = [String: BazelFlagsSet]()
@@ -130,13 +239,20 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
     }
     let swiftTargets = Set(swiftRuleEntries.map { $0.label.value })
 
+    let tulsiSwiftFlags = swiftFlags + featureFlags(features, hasSwift: true)
+    let tulsiNonSwiftFlagSet = nonSwiftFlags + featureFlags(features, hasSwift: false)
+    let swiftFeatures = featureNames(features, hasSwift: true)
+    let nonSwiftFeatures = featureNames(features, hasSwift: false)
+
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
                               swiftTargets: swiftTargets,
                               tulsiCacheAffectingFlagsSet: BazelFlagsSet(common: universalFlags) + nonCacheableFlags,
                               tulsiCacheSafeFlagSet: cacheableFlags + optionsBasedFlags(options),
-                              tulsiSwiftFlagSet: swiftFlags,
-                              tulsiNonSwiftFlagSet: nonSwiftFlags,
+                              tulsiSwiftFlagSet: tulsiSwiftFlags,
+                              tulsiNonSwiftFlagSet: tulsiNonSwiftFlagSet,
+                              swiftFeatures: swiftFeatures,
+                              nonSwiftFeatures: nonSwiftFeatures,
                               projDefaultFlagSet: projDefaultSettings,
                               projTargetFlagSets: targetSettings)
   }

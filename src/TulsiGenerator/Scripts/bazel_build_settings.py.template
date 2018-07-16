@@ -63,6 +63,7 @@ class BazelBuildSettings(object):
   def __init__(self, bazel, bazelExecRoot, swiftTargets,
                cacheAffecting, cacheSafe,
                swiftOnly, nonSwiftOnly,
+               swiftFeatures, nonSwiftFeatures,
                projDefault, projTargetMap):
     self.bazel = bazel
     self.bazelExecRoot = bazelExecRoot
@@ -71,10 +72,22 @@ class BazelBuildSettings(object):
     self.cacheSafe = cacheSafe
     self.swiftOnly = swiftOnly
     self.nonSwiftOnly = nonSwiftOnly
+    self.swiftFeatures = swiftFeatures
+    self.nonSwiftFeatures = nonSwiftFeatures
     self.projDefault = projDefault
     self.projTargetMap = projTargetMap
 
-  def flags_for_target(self, target, is_debug):
+  def features_for_target(self, target, is_swift_override=None):
+    """Returns an array of enabled features for the given target."""
+
+    target = _StandardizeTargetLabel(target)
+    is_swift = target in self.swiftTargets
+    if is_swift_override is not None:
+      is_swift = is_swift_override
+
+    return self.swiftFeatures if is_swift else self.nonSwiftFeatures
+
+  def flags_for_target(self, target, is_debug, is_swift_override=None):
     """Returns (bazel, startup flags, build flags) for the given target."""
 
     target = _StandardizeTargetLabel(target)
@@ -82,7 +95,10 @@ class BazelBuildSettings(object):
     if not target_flag_set:
       target_flag_set = self.projDefault
 
-    lang = self.swiftOnly if target in self.swiftTargets else self.nonSwiftOnly
+    is_swift = target in self.swiftTargets
+    if is_swift_override is not None:
+      is_swift = is_swift_override
+    lang = self.swiftOnly if is_swift else self.nonSwiftOnly
 
     cache_affecting = self.cacheAffecting.flags(is_debug)
     cache_safe = self.cacheSafe.flags(is_debug)

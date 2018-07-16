@@ -495,11 +495,6 @@ final class XcodeProjectGenerator {
         }
       }
 
-      // Update this project's build settings with the latest feature flags.
-      for featureFlag in bazelBuildSettingsFeatures {
-        buildSettings[featureFlag] = "YES"
-      }
-
       if let genRunfiles = config.options[.GenerateRunfiles].commonValueAsBool, genRunfiles {
         buildSettings["GENERATE_RUNFILES"] = "YES"
       }
@@ -578,11 +573,15 @@ final class XcodeProjectGenerator {
 
   private func loadRuleEntryMap() throws -> RuleEntryMap {
     do {
+      let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options,
+                                                                workspaceRoot: workspaceRootURL.path,
+                                                                bazelExecRoot: workspaceInfoExtractor.bazelExecutionRoot)
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
                                                              projectGenBuildOptions: config.options[.BazelBuildOptionsProjectGenerationOnly],
-                                                             prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift])
+                                                             prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift],
+                                                             features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)
     }
@@ -952,9 +951,13 @@ final class XcodeProjectGenerator {
 
     let bazelSettingsProvider = workspaceInfoExtractor.bazelSettingsProvider
     let bazelExecRoot = workspaceInfoExtractor.bazelExecutionRoot
+    let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options,
+                                                              workspaceRoot: workspaceRootURL.path,
+                                                              bazelExecRoot: bazelExecRoot)
     let bazelBuildSettings = bazelSettingsProvider.buildSettings(bazel: config.bazelURL.path,
                                                                  bazelExecRoot: bazelExecRoot,
                                                                  options: config.options,
+                                                                 features: features,
                                                                  buildRuleEntries: buildRuleEntries)
 
     let bundle = Bundle(for: type(of: self))

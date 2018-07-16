@@ -17,6 +17,7 @@
 
 
 import argparse
+import pipes
 import subprocess
 import sys
 from bazel_build_settings import BUILD_SETTINGS
@@ -34,10 +35,11 @@ def _BuildSettingsTargetForTargets(targets):
 
 
 def _CreateCommand(targets, build_settings, test, release,
-                   config, xcode_version):
+                   config, xcode_version, force_swift):
   """Creates a Bazel command for targets with the specified settings."""
   target = _BuildSettingsTargetForTargets(targets)
-  bazel, startup, flags = build_settings.flags_for_target(target, not release)
+  bazel, startup, flags = build_settings.flags_for_target(
+      target, not release, is_swift_override=force_swift)
   bazel_action = 'test' if test else 'build'
 
   command = [bazel]
@@ -51,6 +53,11 @@ def _CreateCommand(targets, build_settings, test, release,
   command.extend(targets)
 
   return command
+
+
+def _QuoteCommandForShell(cmd):
+  cmd = [pipes.quote(x) for x in cmd]
+  return ' '.join(cmd)
 
 
 def _InterruptSafeCall(cmd):
@@ -75,13 +82,20 @@ def main():
   parser.add_argument('--norun', dest='run', action='store_false', default=True)
   parser.add_argument('--config', help='Bazel --config flag.')
   parser.add_argument('--xcode_version', help='Bazel --xcode_version flag.')
+  parser.add_argument('--force_swift', dest='swift', action='store_true',
+                      default=None, help='Forcibly treat the given targets '
+                                         'as containing Swift.')
+  parser.add_argument('--force_noswift', dest='swift', action='store_false',
+                      default=None, help='Forcibly treat the given targets '
+                                         'as not containing Swift.')
   parser.add_argument('targets', nargs='+')
 
   args = parser.parse_args()
   command = _CreateCommand(args.targets, BUILD_SETTINGS, args.test,
-                           args.release, args.config, args.xcode_version)
+                           args.release, args.config, args.xcode_version,
+                           args.swift)
   if args.print_cmd:
-    print ' '.join(command)
+    print _QuoteCommandForShell(command)
 
   if args.run:
     return _InterruptSafeCall(command)

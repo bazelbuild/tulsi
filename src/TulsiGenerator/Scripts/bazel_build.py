@@ -21,6 +21,7 @@ import fcntl
 import io
 import json
 import os
+import pipes
 import re
 import shutil
 import signal
@@ -256,6 +257,10 @@ class _OptionsParser(object):
         self.targets[0],
         is_debug)
 
+  def GetEnabledFeatures(self):
+    """Returns a list of enabled Bazel features for the active target."""
+    return self.build_settings.features_for_target(self.targets[0])
+
   def GetBazelOptions(self, config):
     """Returns the full set of build options for the given config."""
     bazel, start_up, build = self.GetBaseFlagsForTargets(config)
@@ -351,7 +356,8 @@ class BazelBuildBridge(object):
 
   BUILD_EVENTS_FILE = 'build_events.json'
 
-  def __init__(self):
+  def __init__(self, build_settings):
+    self.build_settings = build_settings
     self.verbose = 0
     self.build_path = None
     self.bazel_bin_path = None
@@ -371,21 +377,10 @@ class BazelBuildBridge(object):
                          'earlier Xcode, build %s.' % xcode_build_version)
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
-    self.swift_dependency = os.environ.get('TULSI_SWIFT_DEPENDENCY',
-                                           'NO') == 'YES'
 
     # TODO(b/69857078): Remove this when wrapped_clang is updated.
-    self.direct_debug_prefix_map = os.environ.get('TULSI_DIRECT_DBG_PREFIX_MAP',
-                                                  'NO') == 'YES'
-
-    if self.swift_dependency or self.direct_debug_prefix_map:
-      # Disable the normalized debug prefix map as swiftc doesn't support it.
-      #
-      # In addition, use of the direct_debug_prefix_map preempts the usage of
-      # the normalized debug prefix map.
-      self.normalized_prefix_map = False
-    else:
-      self.normalized_prefix_map = True
+    self.direct_debug_prefix_map = False
+    self.normalized_prefix_map = False
 
     self.update_symbol_cache = UpdateSymbolCache()
 
@@ -472,13 +467,7 @@ class BazelBuildBridge(object):
       sys.stderr.write('Xcode action is %s, ignoring.' % self.xcode_action)
       return 0
 
-    build_settings = bazel_build_settings.BUILD_SETTINGS
-    if build_settings is None:
-      _PrintXcodeError('Unable to resolve build settings. '
-                       'Please report a Tulsi bug.')
-      return 1
-
-    parser = _OptionsParser(build_settings,
+    parser = _OptionsParser(self.build_settings,
                             self.sdk_version,
                             self.platform_name,
                             self.arch)
@@ -492,23 +481,12 @@ class BazelBuildBridge(object):
     self.verbose = parser.verbose
     self.bazel_bin_path = os.path.abspath(parser.bazel_bin_path)
     self.bazel_executable = parser.bazel_executable
-    self.bazel_exec_root = build_settings.bazelExecRoot
+    self.bazel_exec_root = self.build_settings.bazelExecRoot
 
-    # Until wrapped_clang is updated, use -fdebug-prefix-map to have debug
-    # symbols match Xcode-visible sources.
-    #
-    # NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
-    # reused across multiple machines by a distributed build system, unless the
-    # absolute paths to files visible to Xcode match perfectly between all of
-    # those machines.
-    #
-    # For this reason, -fdebug-prefix-map is provided as a default for non-
-    # distributed purposes.
-    if self.direct_debug_prefix_map:
-      source_map = self._ExtractTargetSourceMap(False)
-      if source_map:
-        prefix_map = '--copt=-fdebug-prefix-map=%s=%s' % source_map
-        parser.common_build_options.append(prefix_map)
+    # Update feature flags.
+    features = parser.GetEnabledFeatures()
+    self.direct_debug_prefix_map = 'DirectDebugPrefixMap' in features
+    self.normalized_prefix_map = 'DebugPathNormalization' in features
 
     self.build_path = os.path.join(self.bazel_bin_path,
                                    os.environ.get('TULSI_BUILD_PATH', ''))
@@ -653,19 +631,6 @@ class BazelBuildBridge(object):
     else:
       bazel_command.append('--output_groups=tulsi-outputs,default')
 
-    # A normalized path for -fdebug-prefix-map exists for keeping all debug
-    # information as built by Clang consistent for the sake of caching within
-    # a distributed build system.
-    #
-    # This is handled through a wrapped_clang feature flag via the CROSSTOOL.
-    #
-    # The use of this flag does not affect any sources built by swiftc. At
-    # present time, all Swift compiled sources will be built with uncacheable,
-    # absolute paths, as the Swift compiler does not present an easy means of
-    # similarly normalizing all debug information.
-    if self.normalized_prefix_map:
-      bazel_command.append('--features=debug_prefix_map_pwd_is_dot')
-
     bazel_command.extend(options.targets)
 
     extra_options = bazel_options.BazelOptions(os.environ)
@@ -677,7 +642,7 @@ class BazelBuildBridge(object):
     """Runs subprocess command, patching output as it's received."""
     self._PrintVerbose('Running "%s", patching output for workspace root at '
                        '"%s" with project path at "%s".' %
-                       (' '.join(command),
+                       (' '.join([pipes.quote(x) for x in command]),
                         self.workspace_root,
                         self.project_dir))
     # Xcode translates anything that looks like ""<path>:<line>:" that is not
@@ -1663,11 +1628,20 @@ class BazelBuildBridge(object):
       sys.stdout.flush()
 
 
+def main(argv):
+  build_settings = bazel_build_settings.BUILD_SETTINGS
+  if build_settings is None:
+    _PrintXcodeError('Unable to resolve build settings. '
+                     'Please report a Tulsi bug.')
+    return 1
+  return BazelBuildBridge(build_settings).Run(argv)
+
+
 if __name__ == '__main__':
   _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
   _logger = tulsi_logging.Logger()
   _timer = Timer('Everything', 'complete_build').Start()
   signal.signal(signal.SIGINT, _InterruptHandler)
-  _exit_code = BazelBuildBridge().Run(sys.argv)
+  _exit_code = main(sys.argv)
   _timer.End()
   sys.exit(_exit_code)

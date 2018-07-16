@@ -39,6 +39,9 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   /// Bazel settings provider for all invocations.
   let bazelSettingsProvider: BazelSettingsProviderProtocol
 
+  /// Bazel workspace root URL.
+  let workspaceRootURL: URL
+
   /// Fetcher object from which a workspace's path info may be obtained.
   private let workspacePathInfoFetcher: BazelWorkspacePathInfoFetcher
 
@@ -74,6 +77,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                              workspaceRootURL: workspaceRootURL,
                                              bazelUniversalFlags: universalFlags,
                                              localizedMessageLogger: localizedMessageLogger)
+    self.workspaceRootURL = workspaceRootURL
   }
 
   // MARK: - BazelWorkspaceInfoExtractorProtocol
@@ -86,7 +90,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             projectGenBuildOptions: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
+                            prioritizeSwiftOption: TulsiOption,
+                            features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
     }
@@ -111,7 +116,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
                                                         projectGenerationOptions: projectGenerationOptions,
-                                                        prioritizeSwift: prioritizeSwift)
+                                                        prioritizeSwift: prioritizeSwift,
+                                                        features: features)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {
       throw BazelWorkspaceInfoExtractorError.aspectExtractorFailed("Bazel aspects could not be built.")

@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let bazelBuildSettingsFeatures = [
-  // For non-distributed builds.
-  // TODO(b/69857078): Replace with normalized debug info when wrapped_clang
-  // is updated.
-  "TULSI_DIRECT_DBG_PREFIX_MAP",
-]
+public class BazelBuildSettingsFeatures {
+  public static func enabledFeatures(
+      options: TulsiOptionSet,
+      workspaceRoot: String,
+      bazelExecRoot: String
+  ) -> Set<BazelSettingFeature> {
+    return [.DirectDebugPrefixMap(bazelExecRoot, workspaceRoot)]
+  }
+}

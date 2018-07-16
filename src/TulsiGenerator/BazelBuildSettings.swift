@@ -185,6 +185,9 @@ class BazelBuildSettings: Pythonable {
   public let tulsiSwiftFlagSet: BazelFlagsSet
   public let tulsiNonSwiftFlagSet: BazelFlagsSet
 
+  public let swiftFeatures: [String]
+  public let nonSwiftFeatures: [String]
+
   /// Set of targets which depend (in some fashion) on Swift.
   public let swiftTargets: Set<String>
 
@@ -198,6 +201,8 @@ class BazelBuildSettings: Pythonable {
               tulsiCacheSafeFlagSet: BazelFlagsSet,
               tulsiSwiftFlagSet: BazelFlagsSet,
               tulsiNonSwiftFlagSet: BazelFlagsSet,
+              swiftFeatures: [String],
+              nonSwiftFeatures: [String],
               projDefaultFlagSet: BazelFlagsSet,
               projTargetFlagSets: [String: BazelFlagsSet]) {
     self.bazel = bazel
@@ -207,6 +212,8 @@ class BazelBuildSettings: Pythonable {
     self.tulsiCacheSafeFlagSet = tulsiCacheSafeFlagSet
     self.tulsiSwiftFlagSet = tulsiSwiftFlagSet
     self.tulsiNonSwiftFlagSet = tulsiNonSwiftFlagSet
+    self.swiftFeatures = swiftFeatures
+    self.nonSwiftFeatures = nonSwiftFeatures
     self.projDefaultFlagSet = projDefaultFlagSet
     self.projTargetFlagSets = projTargetFlagSets
   }
@@ -222,6 +229,8 @@ BazelBuildSettings(
 \(nestedIndentation)\(tulsiCacheSafeFlagSet.toPython(nestedIndentation)),
 \(nestedIndentation)\(tulsiSwiftFlagSet.toPython(nestedIndentation)),
 \(nestedIndentation)\(tulsiNonSwiftFlagSet.toPython(nestedIndentation)),
+\(nestedIndentation)\(swiftFeatures.toPython(nestedIndentation)),
+\(nestedIndentation)\(nonSwiftFeatures.toPython(nestedIndentation)),
 \(nestedIndentation)\(projDefaultFlagSet.toPython(nestedIndentation)),
 \(nestedIndentation)\(projTargetFlagSets.toPython(nestedIndentation)),
 \(indentation))

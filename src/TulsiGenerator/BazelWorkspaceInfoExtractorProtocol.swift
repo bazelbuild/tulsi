@@ -30,7 +30,8 @@ protocol BazelWorkspaceInfoExtractorProtocol {
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             projectGenBuildOptions: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap
+                            prioritizeSwiftOption: TulsiOption,
+                            features: Set<BazelSettingFeature>) throws -> RuleEntryMap
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
   /// BUILD targets.
@@ -50,6 +51,9 @@ protocol BazelWorkspaceInfoExtractorProtocol {
 
   /// Absolute path to the Bazel execution root.
   var bazelExecutionRoot: String {get}
+
+  /// The location of the Bazel workspace to be examined.
+  var workspaceRootURL: URL {get}
 
   /// Bazel flag provider for all invocations.
   var bazelSettingsProvider: BazelSettingsProviderProtocol {get}

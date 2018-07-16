@@ -29,6 +29,14 @@ public final class TulsiProjectInfoExtractor {
     set { workspaceInfoExtractor.bazelURL = newValue }
   }
 
+  public var bazelExecutionRoot: String {
+    return workspaceInfoExtractor.bazelExecutionRoot
+  }
+
+  public var workspaceRootURL: URL {
+    return workspaceInfoExtractor.workspaceRootURL
+  }
+
   public init(bazelURL: URL,
               project: TulsiProject) {
     self.project = project
@@ -48,25 +56,29 @@ public final class TulsiProjectInfoExtractor {
                                   startupOptions: TulsiOption,
                                   buildOptions: TulsiOption,
                                   projectGenBuildOptions: TulsiOption,
-                                  prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
+                                  prioritizeSwiftOption: TulsiOption,
+                                  features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
                                     buildOptions: buildOptions,
                                     projectGenBuildOptions: projectGenBuildOptions,
-                                    prioritizeSwiftOption: prioritizeSwiftOption)
+                                    prioritizeSwiftOption: prioritizeSwiftOption,
+                                    features: features)
   }
 
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
                                    buildOptions: TulsiOption,
                                    projectGenBuildOptions: TulsiOption,
-                                   prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
+                                   prioritizeSwiftOption: TulsiOption,
+                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
                                                              startupOptions: startupOptions,
                                                              buildOptions: buildOptions,
                                                              projectGenBuildOptions: projectGenBuildOptions,
-                                                             prioritizeSwiftOption: prioritizeSwiftOption)
+                                                             prioritizeSwiftOption: prioritizeSwiftOption,
+                                                             features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ExtractorError.ruleEntriesFailed(info)
     }

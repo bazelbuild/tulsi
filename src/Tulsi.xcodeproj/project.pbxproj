@@ -116,6 +116,7 @@
 		54D8453F20CB121D004F6CF2 /* BazelSettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8453E20CB121D004F6CF2 /* BazelSettingsProvider.swift */; };
 		54EA05C81F62E3A700472AB6 /* RuleEntryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */; };
 		54EC201820D1A8270050AF12 /* TulsiApplicationSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EC201720D1A8270050AF12 /* TulsiApplicationSupport.swift */; };
+		54EDD24520D9BC27001A1B35 /* BuildSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EDD24420D9BC26001A1B35 /* BuildSettingsTests.swift */; };
 		54EF320A1F3E0804009E9C7F /* bazel_build_events.py in Resources */ = {isa = PBXBuildFile; fileRef = 54EF32091F3E0804009E9C7F /* bazel_build_events.py */; };
 		774F6E9720A2400E00572B76 /* bazel_build_flags.py in Resources */ = {isa = PBXBuildFile; fileRef = 774F6E9620A2400E00572B76 /* bazel_build_flags.py */; };
 		8B0F78C81BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */; };
@@ -302,6 +303,7 @@
 		54D8453E20CB121D004F6CF2 /* BazelSettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BazelSettingsProvider.swift; sourceTree = "<group>"; };
 		54EA05C71F62E3A700472AB6 /* RuleEntryMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEntryMap.swift; sourceTree = "<group>"; };
 		54EC201720D1A8270050AF12 /* TulsiApplicationSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulsiApplicationSupport.swift; sourceTree = "<group>"; };
+		54EDD24420D9BC26001A1B35 /* BuildSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildSettingsTests.swift; sourceTree = "<group>"; };
 		54EF32091F3E0804009E9C7F /* bazel_build_events.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bazel_build_events.py; sourceTree = "<group>"; };
 		774F6E9620A2400E00572B76 /* bazel_build_flags.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = bazel_build_flags.py; path = TulsiGenerator/Scripts/bazel_build_flags.py; sourceTree = "<group>"; };
 		8B0F78C71BE5BC7E00357561 /* ConfigEditorSourceFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigEditorSourceFilterViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 			isa = PBXGroup;
 			children = (
 				3D9DAF541C23604100955CD5 /* BuildLabelTests.swift */,
+				54EDD24420D9BC26001A1B35 /* BuildSettingsTests.swift */,
 				3DFB7C4E1C835EFB00376760 /* CommandLineSplitterTests.swift */,
 				3D9926751C29F0A30094E098 /* Info.plist */,
 				3DA65B411C68539F0055448E /* Mocks */,
@@ -910,6 +913,7 @@
 				3D9926811C29F0CC0094E098 /* PBXTargetGeneratorTests.swift in Sources */,
 				3D9926821C29F0CC0094E098 /* BuildLabelTests.swift in Sources */,
 				3D9926841C29F0CC0094E098 /* PBXObjectsTests.swift in Sources */,
+				54EDD24520D9BC27001A1B35 /* BuildSettingsTests.swift in Sources */,
 				3DA65B621C693B570055448E /* TulsiGeneratorConfigTests.swift in Sources */,
 				3DA65B3E1C6849140055448E /* XcodeProjectGeneratorTests.swift in Sources */,
 				54D17A5220D94C4B0028D377 /* PythonableTests.swift in Sources */,

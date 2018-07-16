@@ -16,15 +16,15 @@ import Foundation
 @testable import TulsiGenerator
 
 class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
-  func tulsiFlags(hasSwift: Bool) -> BazelFlagsSet {
+  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet {
     return BazelFlagsSet()
   }
 
-  func optionsBasedFlags(_ options: TulsiOptionSet) -> BazelFlagsSet {
-    return BazelFlagsSet()
-  }
-
-  func buildSettings(bazel: String, bazelExecRoot: String, options: TulsiOptionSet, buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
+  func buildSettings(bazel: String,
+                     bazelExecRoot: String,
+                     options: TulsiOptionSet,
+                     features: Set<BazelSettingFeature>,
+                     buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
                               swiftTargets: [],
@@ -32,6 +32,8 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
                               tulsiCacheSafeFlagSet: BazelFlagsSet(),
                               tulsiSwiftFlagSet: BazelFlagsSet(),
                               tulsiNonSwiftFlagSet: BazelFlagsSet(),
+                              swiftFeatures: [],
+                              nonSwiftFeatures: [],
                               projDefaultFlagSet: BazelFlagsSet(),
                               projTargetFlagSets: [:])
   }
@@ -49,6 +51,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   var bazelURL = URL(fileURLWithPath: "")
   var bazelBinPath = "bazel-bin"
   var bazelExecutionRoot = "/private/var/tmp/_bazel_localhost/1234567890abcdef1234567890abcdef/execroot/workspace_dir"
+  var workspaceRootURL = URL(fileURLWithPath: "")
 
   func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {
     return []
@@ -58,7 +61,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             projectGenBuildOptions: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption) throws -> RuleEntryMap {
+                            prioritizeSwiftOption: TulsiOption,
+                            features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)
     let ret = RuleEntryMap()
     for label in labels {
