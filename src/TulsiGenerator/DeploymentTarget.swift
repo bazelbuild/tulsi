@@ -14,6 +14,74 @@
 
 import Foundation
 
+/// Valid CPU types (for rules_apple Bazel targets).
+public enum CPU: String {
+  case i386
+  case x86_64
+  case armv7
+  case armv7k
+  case arm64
+
+  public static let allCases: [CPU] = [.i386, .x86_64, .armv7, .armv7k, .arm64]
+
+  var isARM: Bool {
+    switch self {
+    case .i386: return false
+    case .x86_64: return false
+    case .armv7: return true
+    case .armv7k: return true
+    case .arm64: return true
+    }
+  }
+
+  var watchCPU: CPU {
+    return isARM ? .i386 : .armv7k
+  }
+}
+
+/// Represents a (PlatformType, AppleCPU) pair.
+public struct PlatformConfiguration {
+
+  public let platform: PlatformType
+  public let cpu: CPU
+
+  /// Default to iOS 64-bit simulator.
+  public static let defaultConfiguration = PlatformConfiguration(platform: .ios, cpu: .x86_64)
+
+  /// Returns all valid PlatformConfiguration identifiers.
+  public static var allValidConfigurations: [PlatformConfiguration] {
+    var platforms = [PlatformConfiguration]()
+    for platformType in PlatformType.allCases {
+      for cpu in platformType.validCPUs {
+        platforms.append(PlatformConfiguration(platform: platformType, cpu: cpu))
+      }
+    }
+    return platforms
+  }
+
+  public init(platform: PlatformType, cpu: CPU) {
+    self.platform = platform
+    self.cpu = cpu
+  }
+
+  /// Initialize based on an identifier; will only succeed if the identifier is present in
+  /// PlatformConfiguration.allPlatformCPUIdentifiers (which checks for combination validity).
+  public init?(identifier: String) {
+    for validConfiguration in PlatformConfiguration.allValidConfigurations {
+      if validConfiguration.identifier == identifier {
+        self.platform = validConfiguration.platform
+        self.cpu = validConfiguration.cpu
+        return
+      }
+    }
+    return nil
+  }
+
+  /// Human readable identifier for this (PlatformType, CPU) pair.
+  var identifier: String {
+    return "\(platform.bazelPlatform)_\(cpu.rawValue)"
+  }
+}
 
 /// Valid Apple Platform Types.
 /// See https://docs.bazel.build/versions/master/skylark/lib/apple_common.html#platform_type
@@ -22,6 +90,28 @@ public enum PlatformType: String {
   case macos
   case tvos
   case watchos
+
+  public static let allCases: [PlatformType] = [.ios, .macos, .tvos, .watchos]
+
+  var validCPUs: Set<CPU> {
+    switch self {
+    case .ios: return [.i386, .x86_64, .armv7, .arm64]
+    case .macos: return  [.x86_64]
+    case .tvos: return [.x86_64, .arm64]
+    case .watchos: return [.i386, .armv7k]
+    }
+  }
+
+  var bazelCPUPlatform: String {
+    switch self {
+    case .macos: return "darwin"
+    default: return bazelPlatform
+    }
+  }
+
+  var bazelPlatform: String {
+    return rawValue
+  }
 
   var buildSettingsDeploymentTarget: String {
     switch self {

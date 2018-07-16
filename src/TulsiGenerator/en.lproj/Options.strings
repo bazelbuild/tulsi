@@ -14,8 +14,11 @@
 "BazelBuildOptionsFastbuild" = "Fastbuild";
 "BazelBuildOptionsRelease" = "Release";
 
-"BazelBuildOptionsProjectGenerationOnly" = "'build' options ONLY for project generation";
-"BazelBuildOptionsProjectGenerationOnly_DESC" = "You can override the --config used for the aspect here (i.e. to --config=ios_arm64).";
+"ProjectGenerationCompilationMode" = "Bazel --compilation_mode for project generation";
+"ProjectGenerationCompilationMode_DESC" = "Modify this to opt if you frequently build Release builds in your generated project instead of Debug builds.";
+
+"ProjectGenerationPlatformConfiguration" = "Bazel Apple platform and cpu for project generation";
+"ProjectGenerationPlatformConfiguration_DESC" = "Modify this to the expected configuration for your project. Setting this incorrectly won't break your builds but it will potentially make them slower and may potentially alter the generated project if your project depends on Bazel `select`s.";
 
 "BazelBuildStartupOptions" = "'build' startup options";
 "BazelBuildStartupOptions_DESC" = "Startup options for bazel 'build' invocations.";

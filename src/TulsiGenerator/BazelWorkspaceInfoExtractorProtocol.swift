@@ -29,7 +29,8 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption,
+                            compilationModeOption: TulsiOption,
+                            platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap
 

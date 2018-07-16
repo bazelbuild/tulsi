@@ -469,12 +469,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       do {
         let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
         let buildOptions = optionSet[.BazelBuildOptionsDebug]
-        let projectGenBuildOptions = optionSet[.BazelBuildOptionsProjectGenerationOnly]
+        let compilationModeOption = optionSet[.ProjectGenerationCompilationMode]
+        let platformConfigOption = optionSet[.ProjectGenerationPlatformConfiguration]
         let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
-                                                                   projectGenBuildOptions: projectGenBuildOptions,
+                                                                   compilationModeOption: compilationModeOption,
+                                                                   platformConfigOption: platformConfigOption,
                                                                    prioritizeSwiftOption: prioritizeSwiftOption,
                                                                    features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
@@ -800,7 +802,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
                                                               startupOptions: options[.BazelBuildStartupOptionsDebug],
                                                               buildOptions: options[.BazelBuildOptionsDebug],
-                                                              projectGenBuildOptions: options[.BazelBuildOptionsProjectGenerationOnly],
+                                                              compilationModeOption: options[.ProjectGenerationCompilationMode],
+                                                              platformConfigOption: options[.ProjectGenerationPlatformConfiguration],
                                                               prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
                                                               features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()

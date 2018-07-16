@@ -244,8 +244,18 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
     let swiftFeatures = featureNames(features, hasSwift: true)
     let nonSwiftFeatures = featureNames(features, hasSwift: false)
 
+    let defaultConfig: PlatformConfiguration
+    if let identifier = options[.ProjectGenerationPlatformConfiguration].commonValue,
+       let parsedConfig = PlatformConfiguration(identifier: identifier) {
+      defaultConfig = parsedConfig
+    } else {
+      defaultConfig = PlatformConfiguration.defaultConfiguration
+    }
+
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
+                              defaultPlatformConfigIdentifier: defaultConfig.identifier,
+                              platformConfigurationFlags: nil,
                               swiftTargets: swiftTargets,
                               tulsiCacheAffectingFlagsSet: BazelFlagsSet(common: universalFlags) + nonCacheableFlags,
                               tulsiCacheSafeFlagSet: cacheableFlags + optionsBasedFlags(options),

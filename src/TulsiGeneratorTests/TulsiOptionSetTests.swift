@@ -64,8 +64,10 @@ class TulsiOptionSetTests: XCTestCase {
 
   func testValueSanitization() {
     let optionSet = TulsiOptionSet()
-    let optionKey = TulsiOptionKey.ALWAYS_SEARCH_USER_PATHS
-    optionSet[optionKey].projectValue = "invalid"
+    let boolOptionKey = TulsiOptionKey.ALWAYS_SEARCH_USER_PATHS
+    optionSet[boolOptionKey].projectValue = "invalid"
+    let compilationModeKey = TulsiOptionKey.ProjectGenerationCompilationMode
+    optionSet[compilationModeKey].projectValue = "also not valid."
 
     var dict = [String: AnyObject]()
     optionSet.saveAllOptionsIntoDictionary(&dict)
@@ -74,9 +76,12 @@ class TulsiOptionSetTests: XCTestCase {
     let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
 
     for (key, option) in optionSet.options {
-      if key == optionKey {
+      if key == boolOptionKey {
         XCTAssertNotEqual(deserializedSet[key], option)
         XCTAssertEqual(deserializedSet[key].projectValue, "NO")
+      } else if key == compilationModeKey {
+        XCTAssertNotEqual(deserializedSet[key], option)
+        XCTAssertEqual(deserializedSet[key].projectValue, "dbg")
       } else {
         XCTAssertEqual(deserializedSet[key], option)
       }

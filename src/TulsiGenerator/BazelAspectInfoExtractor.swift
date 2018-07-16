@@ -66,8 +66,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
-                                   projectGenerationOptions: [String] = [],
-                                   prioritizeSwift: Bool = false,
+                                   compilationMode: String? = nil,
+                                   platformConfig: String? = nil,
+                                   prioritizeSwift: Bool? = nil,
                                    features: Set<BazelSettingFeature> = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
@@ -76,7 +77,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
-                                          projectGenerationOptions: projectGenerationOptions,
+                                          compilationMode: compilationMode,
+                                          platformConfig: platformConfig,
                                           prioritizeSwift: prioritizeSwift,
                                           features: features)
   }
@@ -86,8 +88,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
                                           startupOptions: [String],
                                           buildOptions: [String],
-                                          projectGenerationOptions: [String],
-                                          prioritizeSwift: Bool,
+                                          compilationMode: String?,
+                                          platformConfig: String?,
+                                          prioritizeSwift: Bool?,
                                           features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
@@ -106,7 +109,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                aspect: "tulsi_sources_aspect",
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
-                                               projectGenerationOptions: projectGenerationOptions,
+                                               compilationMode: compilationMode,
+                                               platformConfig: platformConfig,
                                                prioritizeSwift: prioritizeSwift,
                                                features: features,
                                                progressNotifier: progressNotifier) {
@@ -164,8 +168,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             aspect: String,
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
-                                            projectGenerationOptions: [String] = [],
-                                            prioritizeSwift: Bool,
+                                            compilationMode: String?,
+                                            platformConfig: String?,
+                                            prioritizeSwift: Bool?,
                                             features: Set<BazelSettingFeature>,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
@@ -182,8 +187,19 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
     let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
 
-    let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: prioritizeSwift,
-                                                      features: features).getFlags()
+    let hasSwift = prioritizeSwift ?? false
+    let isDbg = (compilationMode ?? "dbg") == "dbg"
+
+    let config: PlatformConfiguration
+    if let identifier = platformConfig,
+       let parsedConfig = PlatformConfiguration(identifier: identifier) {
+      config = parsedConfig
+    } else {
+      config = PlatformConfiguration.defaultConfiguration
+    }
+
+    let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: hasSwift,
+                                                      features: features).getFlags(forDebug: isDbg)
     var arguments = startupOptions
     arguments.append(contentsOf: tulsiFlags.startup)
     arguments.append("build")
@@ -196,8 +212,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--noshow_progress",  // Don't show Bazel's build progress.
         "--symlink_prefix=/",  // Generate artifacts without overwriting the normal build symlinks.
     ])
-    arguments.append(contentsOf: projectGenerationOptions)
     arguments.append(contentsOf: buildOptions)
+    arguments.append(contentsOf: config.bazelFlags)
     arguments.append(contentsOf: tulsiFlags.build)
     arguments.append(contentsOf: [
         // The following flags are used by Tulsi to identify itself and read build information from

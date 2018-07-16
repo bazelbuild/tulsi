@@ -39,15 +39,13 @@ def _CreateCommand(targets, build_settings, test, release,
   """Creates a Bazel command for targets with the specified settings."""
   target = _BuildSettingsTargetForTargets(targets)
   bazel, startup, flags = build_settings.flags_for_target(
-      target, not release, is_swift_override=force_swift)
+      target, not release, config, is_swift_override=force_swift)
   bazel_action = 'test' if test else 'build'
 
   command = [bazel]
   command.extend(startup)
   command.append(bazel_action)
   command.extend(flags)
-  if config:
-    command.append('--config=%s' % config)
   if xcode_version:
     command.append('--xcode_version=%s' % xcode_version)
   command.extend(targets)
@@ -72,6 +70,11 @@ def main():
   if not BUILD_SETTINGS:
     _FatalError('Unable to fetch build settings. Please report a Tulsi bug.')
 
+  default_config = BUILD_SETTINGS.defaultPlatformConfigId
+  config_options = BUILD_SETTINGS.platformConfigFlags
+  config_help = (
+      'Bazel apple config (used for flags). Default: {}').format(default_config)
+
   parser = argparse.ArgumentParser(description='Invoke a Bazel build or test '
                                                'with the same flags as Tulsi.')
   parser.add_argument('--test', dest='test', action='store_true', default=False)
@@ -80,7 +83,8 @@ def main():
   parser.add_argument('--noprint_cmd', dest='print_cmd', action='store_false',
                       default=True)
   parser.add_argument('--norun', dest='run', action='store_false', default=True)
-  parser.add_argument('--config', help='Bazel --config flag.')
+  parser.add_argument('--config', help=config_help, default=default_config,
+                      choices=config_options)
   parser.add_argument('--xcode_version', help='Bazel --xcode_version flag.')
   parser.add_argument('--force_swift', dest='swift', action='store_true',
                       default=None, help='Forcibly treat the given targets '

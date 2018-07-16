@@ -26,10 +26,29 @@ extension Dictionary where Key == String, Value: Pythonable {
   func toPython(_ indentation: String) -> String {
     guard !isEmpty else { return "{}" }
 
+    let nestedIndentation = "\(indentation)\(PythonSettings.doubleIndent)"
     var script = "{\n"
     for (key, value) in self {
       script += """
-\(indentation)\(PythonSettings.doubleIndent)'\(key)': \(value.toPython("")),
+\(nestedIndentation)\(key.toPython(nestedIndentation)): \(value.toPython(nestedIndentation)),
+
+"""
+    }
+    script += "\(indentation)}"
+    return script
+  }
+}
+
+// TODO(tulsi-team): When we update to Swift 4.2, delete this in favor of conditional conformances.
+extension Dictionary where Key == String, Value == [String] {
+  func toPython(_ indentation: String) -> String {
+    guard !isEmpty else { return "{}" }
+
+    let nestedIndentation = "\(indentation)\(PythonSettings.doubleIndent)"
+    var script = "{\n"
+    for (key, value) in self {
+      script += """
+\(nestedIndentation)\(key.toPython(nestedIndentation)): \(value.toPython(nestedIndentation)),
 
 """
     }
@@ -179,6 +198,9 @@ class BazelBuildSettings: Pythonable {
   public let bazel: String
   public let bazelExecRoot: String
 
+  public let defaultPlatformConfigIdentifier: String
+  public let platformConfigurationFlags: [String: [String]]
+
   public let tulsiCacheAffectingFlagsSet: BazelFlagsSet
   public let tulsiCacheSafeFlagSet: BazelFlagsSet
 
@@ -194,8 +216,16 @@ class BazelBuildSettings: Pythonable {
   public let projDefaultFlagSet: BazelFlagsSet
   public let projTargetFlagSets: [String: BazelFlagsSet]
 
+  public static var platformConfigurationFlagsMap: [String: [String]] {
+    return PlatformConfiguration.allValidConfigurations.reduce(into: [String: [String]]()) { (dict, config) in
+      dict[config.identifier] = config.bazelFlags
+    }
+  }
+
   public init(bazel: String,
               bazelExecRoot: String,
+              defaultPlatformConfigIdentifier: String,
+              platformConfigurationFlags: [String: [String]]?,
               swiftTargets: Set<String>,
               tulsiCacheAffectingFlagsSet: BazelFlagsSet,
               tulsiCacheSafeFlagSet: BazelFlagsSet,
@@ -207,6 +237,8 @@ class BazelBuildSettings: Pythonable {
               projTargetFlagSets: [String: BazelFlagsSet]) {
     self.bazel = bazel
     self.bazelExecRoot = bazelExecRoot
+    self.defaultPlatformConfigIdentifier = defaultPlatformConfigIdentifier
+    self.platformConfigurationFlags = platformConfigurationFlags ?? BazelBuildSettings.platformConfigurationFlagsMap
     self.swiftTargets = swiftTargets
     self.tulsiCacheAffectingFlagsSet = tulsiCacheAffectingFlagsSet
     self.tulsiCacheSafeFlagSet = tulsiCacheSafeFlagSet
@@ -224,6 +256,8 @@ class BazelBuildSettings: Pythonable {
 BazelBuildSettings(
 \(nestedIndentation)\(bazel.toPython(nestedIndentation)),
 \(nestedIndentation)\(bazelExecRoot.toPython(nestedIndentation)),
+\(nestedIndentation)\(defaultPlatformConfigIdentifier.toPython(nestedIndentation)),
+\(nestedIndentation)\(platformConfigurationFlags.toPython(nestedIndentation)),
 \(nestedIndentation)\(swiftTargets.toPython(nestedIndentation)),
 \(nestedIndentation)\(tulsiCacheAffectingFlagsSet.toPython(nestedIndentation)),
 \(nestedIndentation)\(tulsiCacheSafeFlagSet.toPython(nestedIndentation)),

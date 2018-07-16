@@ -60,13 +60,17 @@ class BazelFlagsSet(object):
 class BazelBuildSettings(object):
   """Represents a Tulsi project's Bazel settings."""
 
-  def __init__(self, bazel, bazelExecRoot, swiftTargets,
+  def __init__(self, bazel, bazelExecRoot,
+               defaultPlatformConfigId, platformConfigFlags,
+               swiftTargets,
                cacheAffecting, cacheSafe,
                swiftOnly, nonSwiftOnly,
                swiftFeatures, nonSwiftFeatures,
                projDefault, projTargetMap):
     self.bazel = bazel
     self.bazelExecRoot = bazelExecRoot
+    self.defaultPlatformConfigId = defaultPlatformConfigId
+    self.platformConfigFlags = platformConfigFlags
     self.swiftTargets = swiftTargets
     self.cacheAffecting = cacheAffecting
     self.cacheSafe = cacheSafe
@@ -87,7 +91,8 @@ class BazelBuildSettings(object):
 
     return self.swiftFeatures if is_swift else self.nonSwiftFeatures
 
-  def flags_for_target(self, target, is_debug, is_swift_override=None):
+  def flags_for_target(self, target, is_debug,
+                       config, is_swift_override=None):
     """Returns (bazel, startup flags, build flags) for the given target."""
 
     target = _StandardizeTargetLabel(target)
@@ -100,6 +105,7 @@ class BazelBuildSettings(object):
       is_swift = is_swift_override
     lang = self.swiftOnly if is_swift else self.nonSwiftOnly
 
+    config_flags = self.platformConfigFlags[config]
     cache_affecting = self.cacheAffecting.flags(is_debug)
     cache_safe = self.cacheSafe.flags(is_debug)
     target = target_flag_set.flags(is_debug)
@@ -113,6 +119,7 @@ class BazelBuildSettings(object):
 
     buildFlags = []
     buildFlags.extend(target.build)
+    buildFlags.extend(config_flags)
     buildFlags.extend(cache_safe.build)
     buildFlags.extend(cache_affecting.build)
     buildFlags.extend(lang.build)

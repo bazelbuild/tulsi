@@ -43,9 +43,11 @@ public enum TulsiOptionKey: String {
       // Include all .bzl files related to the build in the generated Xcodeproj.
       IncludeBuildSources,
 
-      // Include the following build options only during project generation; can override config
-      // from default (simulator) to device.
-      BazelBuildOptionsProjectGenerationOnly,
+      // Compilation mode to use during project generation.
+      ProjectGenerationCompilationMode,
+
+      // Platform configuration to use during project generation.
+      ProjectGenerationPlatformConfiguration,
 
       // Improve auto-completion for include/import statements.
       ImprovedImportAutocompletionFix,
@@ -289,7 +291,6 @@ public class TulsiOptionSet: Equatable {
 
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
-    addStringOption(.BazelBuildOptionsProjectGenerationOnly, .Generic)
     addStringOption(.BazelBuildOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildOptionsRelease, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.BazelBuildStartupOptionsDebug, [.TargetSpecializable, .SupportsInheritKeyword])
@@ -299,6 +300,12 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
     addBoolOption(.GenerateRunfiles, .Generic, false)
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
+
+    let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
+    let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }
+    addStringEnumOption(.ProjectGenerationPlatformConfiguration, .Generic,
+                        defaultIdentifier, platformCPUIdentifiers)
+    addStringEnumOption(.ProjectGenerationCompilationMode, .Generic, "dbg", ["dbg", "opt"])
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])

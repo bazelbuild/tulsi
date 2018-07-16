@@ -34,7 +34,6 @@ import zipfile
 
 from apfs_clone_copy import CopyOnWrite
 import bazel_build_events
-from bazel_build_flags import bazel_build_flags
 import bazel_build_settings
 import bazel_options
 from bootstrap_lldbinit import BootstrapLLDBInit
@@ -210,13 +209,18 @@ class _OptionsParser(object):
     elif self.platform_name.startswith('iphone'):
       config_platform = 'ios'
     elif self.platform_name.startswith('macos'):
-      config_platform = 'darwin'
+      config_platform = 'macos'
     elif self.platform_name.startswith('appletv'):
       config_platform = 'tvos'
     else:
       self._WarnUnknownPlatform()
       config_platform = 'ios'
-    self.common_build_options.extend(bazel_build_flags(config_platform, arch))
+    self.bazel_build_config = '{}_{}'.format(config_platform, arch)
+    if self.bazel_build_config not in build_settings.platformConfigFlags:
+      _PrintXcodeError('Unknown active compilation target of "{}". '
+                       'Please report a Tulsi bug.'
+                       .format(self.bazel_build_config))
+      sys.exit(1)
 
     self.verbose = 0
     self.bazel_bin_path = 'bazel-bin'
@@ -255,7 +259,8 @@ class _OptionsParser(object):
     is_debug = config == 'Debug'
     return self.build_settings.flags_for_target(
         self.targets[0],
-        is_debug)
+        is_debug,
+        self.bazel_build_config)
 
   def GetEnabledFeatures(self):
     """Returns a list of enabled Bazel features for the active target."""

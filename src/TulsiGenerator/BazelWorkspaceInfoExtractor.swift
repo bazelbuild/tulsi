@@ -89,7 +89,8 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption,
+                            compilationModeOption: TulsiOption,
+                            platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
@@ -106,16 +107,17 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
     let startupOptions = splitOptionString(startupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
-    let projectGenerationOptions = splitOptionString(projectGenBuildOptions.commonValue)
-
-    let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool ?? false
+    let compilationMode = compilationModeOption.commonValue
+    let platformConfig = platformConfigOption.commonValue
+    let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool
 
     do {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
-                                                        projectGenerationOptions: projectGenerationOptions,
+                                                        compilationMode: compilationMode,
+                                                        platformConfig: platformConfig,
                                                         prioritizeSwift: prioritizeSwift,
                                                         features: features)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)

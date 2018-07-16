@@ -55,13 +55,15 @@ public final class TulsiProjectInfoExtractor {
   public func ruleEntriesForInfos(_ infos: [RuleInfo],
                                   startupOptions: TulsiOption,
                                   buildOptions: TulsiOption,
-                                  projectGenBuildOptions: TulsiOption,
+                                  compilationModeOption: TulsiOption,
+                                  platformConfigOption: TulsiOption,
                                   prioritizeSwiftOption: TulsiOption,
                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
                                     buildOptions: buildOptions,
-                                    projectGenBuildOptions: projectGenBuildOptions,
+                                    compilationModeOption: compilationModeOption,
+                                    platformConfigOption: platformConfigOption,
                                     prioritizeSwiftOption: prioritizeSwiftOption,
                                     features: features)
   }
@@ -69,14 +71,16 @@ public final class TulsiProjectInfoExtractor {
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
                                    buildOptions: TulsiOption,
-                                   projectGenBuildOptions: TulsiOption,
+                                   compilationModeOption: TulsiOption,
+                                   platformConfigOption: TulsiOption,
                                    prioritizeSwiftOption: TulsiOption,
                                    features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
                                                              startupOptions: startupOptions,
                                                              buildOptions: buildOptions,
-                                                             projectGenBuildOptions: projectGenBuildOptions,
+                                                             compilationModeOption: compilationModeOption,
+                                                             platformConfigOption: platformConfigOption,
                                                              prioritizeSwiftOption: prioritizeSwiftOption,
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {

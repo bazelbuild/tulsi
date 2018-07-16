@@ -27,6 +27,8 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
                      buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
+                              defaultPlatformConfigIdentifier: "",
+                              platformConfigurationFlags: nil,
                               swiftTargets: [],
                               tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
                               tulsiCacheSafeFlagSet: BazelFlagsSet(),
@@ -60,7 +62,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
                             buildOptions: TulsiOption,
-                            projectGenBuildOptions: TulsiOption,
+                            compilationModeOption: TulsiOption,
+                            platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)

@@ -114,6 +114,12 @@ BazelFlagsSet(
     func testBazelBuildSettingsPythonable() {
       let bazel = "/path/to/bazel"
       let bazelExecRoot = "__MOCK_EXEC_ROOT__"
+      let defaultIdentifier = "fake_config"
+      let platformConfigurationFlags = [
+        "fake_config": ["a", "b"],
+        "another_one": ["--x", "-c"],
+      ]
+
       let swiftTargets: Set<String> = [
           "//dir/swiftTarget:swiftTarget",
           "//dir/nested/depOnswift:depOnswift"
@@ -132,6 +138,8 @@ BazelFlagsSet(
       let nonSwiftFeatures = [BazelSettingFeature.DirectDebugPrefixMap("", "").stringValue]
       let settings = BazelBuildSettings(bazel: bazel,
                                         bazelExecRoot: bazelExecRoot,
+                                        defaultPlatformConfigIdentifier: defaultIdentifier,
+                                        platformConfigurationFlags: platformConfigurationFlags,
                                         swiftTargets: swiftTargets,
                                         tulsiCacheAffectingFlagsSet: cacheAffecting,
                                         tulsiCacheSafeFlagSet: cacheSafe,
@@ -145,6 +153,8 @@ BazelFlagsSet(
 BazelBuildSettings(
     '\(bazel)',
     '\(bazelExecRoot)',
+    '\(defaultIdentifier)',
+    \(platformConfigurationFlags.toPython("    ")),
     \(swiftTargets.toPython("    ")),
     \(cacheAffecting.toPython("    ")),
     \(cacheSafe.toPython("    ")),
