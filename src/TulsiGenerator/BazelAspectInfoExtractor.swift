@@ -24,12 +24,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     case parsingFailed(String)
   }
 
-  /// Prefix to be used by Bazel for the output of the Tulsi aspect.
-  private static let SymlinkPrefix = "tulsigen-"
-  /// Suffixes used by Bazel when creating output symlinks.
-  private static let BazelOutputSymlinks = [
-      "bin", "genfiles", "out", "testlogs"].map({ SymlinkPrefix + $0 })
-
   /// The location of the bazel binary.
   var bazelURL: URL
   /// The location of the Bazel workspace to be examined.
@@ -72,6 +66,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     guard !targets.isEmpty else {
       return RuleEntryMap()
     }
+
     return try extractRuleEntriesUsingBEP(targets,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
@@ -176,25 +171,37 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     var arguments = startupOptions
     arguments.append(contentsOf: [
         "build",
-        "-c",
-        "dbg",  // The aspect is run in debug mode to match the default Xcode build configuration.
-        "--symlink_prefix",  // Generate artifacts without overwriting the normal build symlinks.
-        BazelAspectInfoExtractor.SymlinkPrefix,
+        // The aspect is run in debug mode to match the default Xcode build configuration.
+        // This does indeed affect Bazel analysis caching.
+        "--compilation_mode=dbg",
+        "--symlink_prefix=/",  // Generate artifacts without overwriting the normal build symlinks.
+        // The following flags control Bazel console output and should not affect Bazel analysis
+        // caching.
         "--announce_rc",  // Print the RC files used by this operation.
-        "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
         "--show_result=0",  // Don't bother printing the build results.
         "--noshow_loading_progress",  // Don't show Bazel's loading progress.
         "--noshow_progress",  // Don't show Bazel's build progress.
-        "--override_repository=tulsi=\(aspectWorkspacePath)",
-        "--aspects",
-        "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
-        "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
-        "--tool_tag=tulsi_v\(tulsiVersion):generator", // Add a tag for tracking.
+        // The following flags are used by Tulsi to identify itself and read build information from
+        // Bazel. They should not affect Bazel analysis caching.
+        "--tool_tag=tulsi_v\(tulsiVersion):generator",  // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
         "--noexperimental_build_event_json_file_path_conversion",
         // Don't replace test_suites with their tests. This allows the Aspect to discover the
         // structure of test_suites instead of just the tests they resolve to.
         "--noexpand_test_suites",
+        // The following flags WILL affect Bazel analysis caching.
+        // Keep this consistent with bazel_build.py.
+        "--nocheck_visibility",  // Don't do package visibility enforcement during aspect runs.
+        "--override_repository=tulsi=\(aspectWorkspacePath)",
+        "--aspects",
+        "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
+        "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
+    ])
+    // Extra flags added by bazel_build.py.
+    arguments.append(contentsOf: [
+        "--features=debug_prefix_map_pwd_is_dot",
+        "--define=apple.add_debugger_entitlement=1",
+        "--define=apple.propagate_embedded_extra_outputs=1",
     ])
     arguments.append(contentsOf: projectGenerationOptions)
     arguments.append(contentsOf: buildOptions)
@@ -213,35 +220,10 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                completionInfo.commandlineString,
                                completionInfo.terminationStatus,
                                stderr)
-
-        self.removeGeneratedSymlinks()
         terminationHandler(completionInfo.process, debugInfo)
     }
 
     return process
-  }
-
-  private func removeGeneratedSymlinks() {
-    let fileManager = FileManager.default
-    for outputSymlink in BazelAspectInfoExtractor.BazelOutputSymlinks {
-
-      let symlinkURL = workspaceRootURL.appendingPathComponent(outputSymlink, isDirectory: true)
-      do {
-        let attributes = try fileManager.attributesOfItem(atPath: symlinkURL.path)
-        guard let type = attributes[FileAttributeKey.type] as? String, type == FileAttributeType.typeSymbolicLink.rawValue else {
-          continue
-        }
-      } catch {
-        // Any exceptions are expected to indicate that the file does not exist.
-        continue
-      }
-
-      do {
-        try fileManager.removeItem(at: symlinkURL)
-      } catch let e as NSError {
-        localizedMessageLogger.infoMessage("Failed to remove symlink at \(symlinkURL). \(e)")
-      }
-    }
   }
 
   /// Builds a list of RuleEntry instances using the data in the given set of .tulsiinfo files.
@@ -347,6 +329,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       let productType = dict["product_type"] as? String
 
       let platformType = dict["platform_type"] as? String
+      let xcodeVersion = dict["xcode_version"] as? String
 
       let targetProductType: PBXTarget.ProductType?
 
@@ -403,7 +386,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 objCModuleMaps: objCModuleMaps,
-                                extensionType: extensionType)
+                                extensionType: extensionType,
+                                xcodeVersion: xcodeVersion)
       progressNotifier?.incrementValue()
       return ruleEntry
     }

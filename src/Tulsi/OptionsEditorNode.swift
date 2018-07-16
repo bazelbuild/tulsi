@@ -345,6 +345,20 @@ class OptionsEditorStringNode: OptionsEditorNode {
   }
 }
 
+/// An editor node that provides multiple string options.
+class OptionsEditorConstrainedStringNode: OptionsEditorStringNode {
+
+  override var supportsMultilineEditor: Bool {
+    return false
+  }
+
+  override var multiSelectItems: [String] {
+    if case .stringEnum(let values) = valueType {
+      return values
+    }
+    return []
+  }
+}
 
 /// An editor node that provides multiple boolean options and maps between display strings and
 /// serialization strings.

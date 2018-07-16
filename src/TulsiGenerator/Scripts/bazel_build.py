@@ -206,6 +206,7 @@ class _OptionsParser(object):
             _OptionsParser.ALL_CONFIGS: [
                 '--verbose_failures',
                 '--announce_rc',
+                '--bes_outerr_buffer_size=0',  # Don't buffer Bazel output.
             ],
 
             'Debug': [
@@ -300,23 +301,8 @@ class _OptionsParser(object):
     options = self._GetOptions(self.build_options, config)
 
     version_string = self._GetXcodeVersionString()
-    if version_string:
+    if version_string and self._NeedsXcodeVersionFlag(version_string):
       self._AddDefaultOption(options, '--xcode_version', version_string)
-
-    if self.sdk_version:
-      if self.platform_name.startswith('watch'):
-        self._AddDefaultOption(options,
-                               '--watchos_sdk_version',
-                               self.sdk_version)
-      elif self.platform_name.startswith('iphone'):
-        self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
-      elif self.platform_name.startswith('macos'):
-        self._AddDefaultOption(options, '--macos_sdk_version', self.sdk_version)
-      elif self.platform_name.startswith('appletv'):
-        self._AddDefaultOption(options, '--tvos_sdk_version', self.sdk_version)
-      else:
-        self._WarnUnknownPlatform()
-        self._AddDefaultOption(options, '--ios_sdk_version', self.sdk_version)
     return options
 
   @staticmethod
@@ -474,6 +460,32 @@ class _OptionsParser(object):
     if fix_version:
       fix_version_string = '.%d' % fix_version
     return '%d.%d%s' % (major_version, minor_version, fix_version_string)
+
+  @staticmethod
+  def _NeedsXcodeVersionFlag(xcode_version):
+    """Returns True if the --xcode_version flag should be used for building.
+
+    The flag should be used if the active Xcode version was not the same one
+    used during project generation.
+
+    Note this a best-attempt only; this may not be accurate as Bazel itself
+    caches the active DEVELOPER_DIR path and the user may have changed their
+    installed Xcode version.
+
+    Args:
+      xcode_version: active Xcode version string.
+    """
+    tulsi_xcode_version = os.environ.get('TULSI_XCODE_VERSION')
+    if not tulsi_xcode_version:
+      return True
+
+    # xcode_version will be of the form Major.Minor(.Fix)? while
+    # TULSI_XCODE_VERSION will be of the form Major.Minor.Fix so we'll need to
+    # remove the trailing .0 if it exists.
+    if tulsi_xcode_version.endswith('.0'):
+      tulsi_xcode_version = tulsi_xcode_version[:-2]
+
+    return xcode_version != tulsi_xcode_version
 
 
 class BazelBuildBridge(object):
@@ -775,17 +787,24 @@ class BazelBuildBridge(object):
         os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
 
     bazel_command.extend([
+        # The following flags are used by Tulsi to identify itself and read
+        # build information from Bazel. They shold not affect Bazel anaylsis
+        # caching.
+        '--tool_tag=tulsi_v%s:bazel_build' % self.tulsi_version,
         '--build_event_json_file=%s' % self.build_events_file_path,
         '--noexperimental_build_event_json_file_path_conversion',
-        '--bes_outerr_buffer_size=0',  # Don't buffer Bazel output at all.
-        '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect',
-        '--override_repository=tulsi=%s' % tulsi_package_dir,
-        '--tool_tag=tulsi_v%s:bazel_build' % self.tulsi_version])
+        '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
     if self.is_test and self.gen_runfiles:
       bazel_command.append('--output_groups=+tulsi-outputs')
     else:
       bazel_command.append('--output_groups=tulsi-outputs,default')
+
+    bazel_command.extend([
+        # The following flags WILL affect Bazel analysis caching.
+        # Keep this consistent with BazelAspectInfoExtractor.swift.
+        '--nocheck_visibility',  # Don't do package visibility enforcement.
+        '--override_repository=tulsi=%s' % tulsi_package_dir])
 
     if self.generate_dsym:
       bazel_command.append('--apple_generate_dsym')

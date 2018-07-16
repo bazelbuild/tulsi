@@ -49,10 +49,8 @@ class TulsiOptionSetTests: XCTestCase {
 
   func testPerUserOptionsAreOmitted() {
     let optionSet = TulsiOptionSet()
-    var i = 0
     for (_, option) in optionSet.options {
-      option.projectValue = String(i)
-      i += 10
+      option.projectValue = option.defaultValue
     }
     var dict = [String: Any]()
     optionSet.saveShareableOptionsIntoDictionary(&dict)
@@ -61,6 +59,27 @@ class TulsiOptionSetTests: XCTestCase {
     let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
     for (key, option) in optionSet.options.filter({ !$1.optionType.contains(.PerUserOnly) }) {
       XCTAssertEqual(deserializedSet[key], option)
+    }
+  }
+
+  func testValueSanitization() {
+    let optionSet = TulsiOptionSet()
+    let optionKey = TulsiOptionKey.ALWAYS_SEARCH_USER_PATHS
+    optionSet[optionKey].projectValue = "invalid"
+
+    var dict = [String: AnyObject]()
+    optionSet.saveAllOptionsIntoDictionary(&dict)
+
+    let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
+    let deserializedSet = TulsiOptionSet(fromDictionary: optionsDict)
+
+    for (key, option) in optionSet.options {
+      if key == optionKey {
+        XCTAssertNotEqual(deserializedSet[key], option)
+        XCTAssertEqual(deserializedSet[key].projectValue, "NO")
+      } else {
+        XCTAssertEqual(deserializedSet[key], option)
+      }
     }
   }
 

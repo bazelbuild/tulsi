@@ -1526,6 +1526,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let swiftDependency = entry.attributes[.has_swift_dependency] as? Bool ?? false
     buildSettings["TULSI_SWIFT_DEPENDENCY"] = swiftDependency ? "YES" : "NO"
 
+    // bazel_build.py uses this to determine if it needs to pass the --xcode_version flag, as the
+    // flag can have implications for caching even if the user's active Xcode version is the same
+    // as the flag.
+    if let xcodeVersion = entry.xcodeVersion {
+      buildSettings["TULSI_XCODE_VERSION"] = xcodeVersion
+    }
+
     // Disable Xcode's attempts at generating dSYM bundles as it conflicts with the operation of the
     // special test runner build configurations (which have associated sources but don't actually
     // compile anything).

@@ -28,8 +28,18 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   public static let InheritKeyword = "$(inherited)"
 
   /// The valid value types for this option.
-  public enum ValueType {
+  public enum ValueType: Equatable {
     case bool, string
+    case stringEnum([String])
+
+    public static func ==(lhs: ValueType, rhs: ValueType) -> Bool {
+      switch (lhs, rhs) {
+        case (.bool, .bool): return true
+        case (.string, .string): return true
+        case (.stringEnum(let a), .stringEnum(let b)): return a == b
+        default: return false
+      }
+    }
   }
 
   /// How this option is intended to be used.
@@ -158,13 +168,19 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   }
 
   public func sanitizeValue(_ value: String?) -> String? {
-    if valueType == .bool {
-      if value != TulsiOption.BooleanTrueValue {
-        return TulsiOption.BooleanFalseValue
-      }
-      return value
+    switch (valueType) {
+      case .bool:
+        if value != TulsiOption.BooleanTrueValue {
+          return TulsiOption.BooleanFalseValue
+        }
+        return value
+      case .string:
+        return value?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+      case .stringEnum(let values):
+        guard let curValue = value else { return defaultValue }
+        guard values.contains(curValue) else { return defaultValue }
+        return curValue
     }
-    return value?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
   }
 
   // Generates a serialized form of this option's user-defined values or nil if the value is
@@ -184,13 +200,19 @@ public class TulsiOption: Equatable, CustomStringConvertible {
 
   func deserialize(_ serialized: PersistenceType) {
     if let value = serialized[TulsiOption.ProjectValueKey] as? String {
-      projectValue = value
+      projectValue = sanitizeValue(value)
     } else {
       projectValue = nil
     }
 
     if let values = serialized[TulsiOption.TargetValuesKey] as? [String: String] {
-      targetValues = values
+      var validValues = [String: String]()
+      for (key, value) in values {
+        if let sanitized = sanitizeValue(value) {
+          validValues[key] = sanitized
+        }
+      }
+      targetValues = validValues
     } else if optionType.contains(.TargetSpecializable) {
       self.targetValues = [String: String]()
     } else {

@@ -274,6 +274,16 @@ public class TulsiOptionSet: Equatable {
       addOption(optionKey, valueType: .string, optionType: optionType, defaultValue: defaultValue)
     }
 
+    func addStringEnumOption(_ optionKey: TulsiOptionKey,
+                             _ optionType: TulsiOption.OptionType,
+                             _ defaultValue: String,
+                             _ values: [String]) {
+      assert(values.contains(defaultValue), "Invalid enum for \(optionKey.rawValue): " +
+          "defaultValue of \"\(defaultValue)\" is not present in enum values: \(values).")
+      addOption(optionKey, valueType: .stringEnum(values),
+                optionType: optionType, defaultValue: defaultValue)
+    }
+
     addBoolOption(.ALWAYS_SEARCH_USER_PATHS, .BuildSetting, false)
     addBoolOption(.BazelContinueBuildingAfterError, .Generic, false)
     addStringOption(.BazelBuildOptionsProjectGenerationOnly, .Generic)

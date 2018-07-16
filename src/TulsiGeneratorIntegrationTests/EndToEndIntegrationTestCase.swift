@@ -132,9 +132,6 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     // Bazel built-in preprocessor defines are suppressed in order to prevent any
     // environment-dependent variables from mismatching the golden data.
     projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true
-    // Output directory generation is suppressed in order to prevent having to whitelist diffs of
-    // empty directories.
-    projectGenerator.xcodeProjectGenerator.suppressGeneratedArtifactFolderCreation = true
     // Don't modify any user defaults.
     projectGenerator.xcodeProjectGenerator.suppressModifyingUserDefaults = true
     // The username is forced to a known value.

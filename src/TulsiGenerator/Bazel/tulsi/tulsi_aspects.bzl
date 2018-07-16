@@ -478,6 +478,10 @@ def _get_deployment_info(target, ctx):
         return (platform_type, minimum_os_version)
     return (platform_type, _minimum_os_for_platform(ctx, platform_type))
 
+def _get_xcode_version(ctx):
+    """Returns the current Xcode version as a string."""
+    return str(ctx.attr._tulsi_xcode_config[apple_common.XcodeVersionConfig].xcode_version())
+
 def _get_platform_type(ctx):
     """Return the current apple_common.platform_type as a string."""
     current_platform = (_get_opt_attr(ctx, "rule.attr.platform_type") or
@@ -665,7 +669,11 @@ def _tulsi_sources_aspect(target, ctx):
         if watch_app:
             extensions.append(watch_app)
 
-    # Collect bundle related information.
+    # Record the Xcode version used for all targets, although it will only be used by bazel_build.py
+    # for targets that are buildable in the xcodeproj.
+    xcode_version = _get_xcode_version(ctx)
+
+    # Collect bundle related information and Xcode version only for runnable targets.
     if AppleBundleInfo in target:
         apple_bundle_provider = target[AppleBundleInfo]
 
@@ -677,12 +685,16 @@ def _tulsi_sources_aspect(target, ctx):
         infoplist = apple_bundle_provider.infoplist if IosExtensionBundleInfo in target else None
     else:
         bundle_name = None
-
-        # For macos_command_line_application, which does not have a AppleBundleInfo
-        # provider but does have a bundle_id attribute for use in the Info.plist.
-        bundle_id = _get_opt_attr(rule_attr, "bundle_id")
         product_type = None
         infoplist = None
+
+        # For macos_command_line_application, which does not have a
+        # AppleBundleInfo provider but does have a bundle_id attribute for use
+        # in the Info.plist.
+        if target_kind == "macos_command_line_application":
+            bundle_id = _get_opt_attr(rule_attr, "bundle_id")
+        else:
+            bundle_id = None
 
     # Collect Swift related attributes.
     swift_info = None
@@ -752,6 +764,7 @@ def _tulsi_sources_aspect(target, ctx):
         infoplist = infoplist.basename if infoplist else None,
         platform_type = platform_type,
         product_type = product_type,
+        xcode_version = xcode_version,
     )
 
     # Create an action to write out this target's info.

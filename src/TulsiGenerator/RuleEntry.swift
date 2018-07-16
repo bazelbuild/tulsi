@@ -261,6 +261,9 @@ public final class RuleEntry: RuleInfo {
   /// The NSExtensionPointIdentifier of the extension associated with this rule, if any.
   public let extensionType: String?
 
+  /// Xcode version used during the aspect run. Only set for bundled and runnable targets.
+  public let xcodeVersion: String?
+
   /// Returns the set of non-versioned artifacts that are not source files.
   public var normalNonSourceArtifacts: [BazelFileInfo] {
     var artifacts = [BazelFileInfo]()
@@ -336,7 +339,8 @@ public final class RuleEntry: RuleInfo {
        swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
-       extensionType: String? = nil) {
+       extensionType: String? = nil,
+       xcodeVersion: String? = nil) {
 
     var checkedAttributes = [Attribute: AnyObject]()
     for (key, value) in attributes {
@@ -386,6 +390,7 @@ public final class RuleEntry: RuleInfo {
     self.swiftLanguageVersion = swiftLanguageVersion
     self.swiftToolchain = swiftToolchain
     self.swiftTransitiveModules = swiftTransitiveModules
+    self.xcodeVersion = xcodeVersion
 
     // Swift targets may have a generated Objective-C module map for their Swift generated header.
     // Unfortunately, this breaks Xcode's indexing (it doesn't really make sense to ask SourceKit
@@ -432,7 +437,8 @@ public final class RuleEntry: RuleInfo {
                    swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],
-                   extensionType: String? = nil) {
+                   extensionType: String? = nil,
+                   xcodeVersion: String? = nil) {
     self.init(label: BuildLabel(label),
               type: type,
               attributes: attributes,
@@ -458,7 +464,8 @@ public final class RuleEntry: RuleInfo {
               swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
-              extensionType: extensionType)
+              extensionType: extensionType,
+              xcodeVersion: xcodeVersion)
   }
 
   // MARK: Private methods

@@ -249,7 +249,12 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         case .bool:
           newNode = OptionsEditorBooleanNode(key: key, option: option, model: model, target: target)
         case .string:
-          newNode = OptionsEditorStringNode(key: key, option: option, model: model, target: target)
+          fallthrough
+        case .stringEnum:
+          newNode = OptionsEditorConstrainedStringNode(key: key,
+                                                       option: option,
+                                                       model: model,
+                                                       target: target)
       }
 
       if let (group, displayName, description) = optionSet?.groupInfoForOptionKey(key) {
@@ -363,6 +368,8 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
                                editable: editable)
         }
 
+      case .stringEnum:
+        fallthrough
       case .bool:
         let identifier: String
         if explicit {
