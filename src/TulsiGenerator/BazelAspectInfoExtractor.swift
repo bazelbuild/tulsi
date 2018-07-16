@@ -199,6 +199,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     }
 
     let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: hasSwift,
+                                                      options: nil,
                                                       features: features).getFlags(forDebug: isDbg)
     var arguments = startupOptions
     arguments.append(contentsOf: tulsiFlags.startup)

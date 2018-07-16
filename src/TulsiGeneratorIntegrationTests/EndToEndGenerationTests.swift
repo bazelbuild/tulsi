@@ -123,6 +123,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
       return
     } catch Error.testSubdirectoryNotCreated {
       XCTFail("Failed to create output folder, aborting test.")
+    } catch Error.userBuildScriptInvocationFailure(let info) {
+      XCTFail("Failed to invoke user_build.py script. Context: \(info)")
     } catch let error {
       XCTFail("Unexpected failure: \(error)")
     }
@@ -169,6 +171,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               outputDir: "tulsi_e2e_output",
                                               options: projectOptions)
 
+    try validateBuildCommandForProject(projectURL, options: projectOptions, targets: [appLabel.value])
+
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
@@ -191,6 +195,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
+    try validateBuildCommandForProject(projectURL, swift: true, targets: [appLabel.value])
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -215,6 +220,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
+    try validateBuildCommandForProject(projectURL, swift: true, targets: [appLabel.value])
+
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
@@ -238,6 +245,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
+
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
@@ -260,6 +269,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "bazel-genfiles/\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
+
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: "SkylarkBundlingProject")
     validateDiff(diffLines)
@@ -287,6 +298,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                                             "bazel-genfiles/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
+
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
@@ -321,6 +334,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
 
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
+
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)
   }
@@ -340,6 +355,8 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                               pathFilters: ["\(testDir)/..."],
                                               additionalFilePaths: additionalFilePaths,
                                               outputDir: "tulsi_e2e_output")
+
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
 
     let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
     validateDiff(diffLines)

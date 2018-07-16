@@ -25,8 +25,12 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     case testSubdirectoryNotCreated
     /// The Xcode project could not be generated.
     case projectGenerationFailure(String)
+    /// Unable to execute user_build.py script.
+    case userBuildScriptInvocationFailure(String)
   }
 
+  let extraDebugFlags = ["--define=TULSI_TEST=dbg"]
+  let extraReleaseFlags = ["--define=TULSI_TEST=rel"]
   let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
@@ -96,6 +100,112 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     }
   }
 
+  final func validateBuildCommandForProject(_ projectURL: URL,
+                                            swift: Bool = false,
+                                            options: TulsiOptionSet = TulsiOptionSet(),
+                                            targets: [String]) throws {
+    let actualDebug = try userBuildCommandForProject(projectURL, release: false, targets: targets)
+    let actualRelease = try userBuildCommandForProject(projectURL, release: true, targets: targets)
+    let (debug, release) = expectedBuildCommands(swift: swift, options: options, targets: targets)
+
+    XCTAssertEqual(actualDebug, debug)
+    XCTAssertEqual(actualRelease, release)
+  }
+
+  final func expectedBuildCommands(swift: Bool,
+                                   options: TulsiOptionSet,
+                                   targets: [String]) -> (String, String) {
+    let provider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
+    let execRoot = workspaceInfoFetcher.getExecutionRoot()
+    let features = BazelBuildSettingsFeatures.enabledFeatures(options: options,
+                                                              workspaceRoot: workspaceRootURL.path,
+                                                              bazelExecRoot: execRoot)
+    let dbg = provider.tulsiFlags(hasSwift: swift, options: options, features: features).debug
+    let rel = provider.tulsiFlags(hasSwift: swift, options: options, features: features).release
+
+    let config: PlatformConfiguration
+    if let identifier = options[.ProjectGenerationPlatformConfiguration].commonValue,
+      let parsedConfig = PlatformConfiguration(identifier: identifier) {
+      config = parsedConfig
+    } else {
+      config = PlatformConfiguration.defaultConfiguration
+    }
+
+    func buildCommand(extraBuildFlags: [String], tulsiFlags: BazelFlags) -> String {
+      var args = [fakeBazelURL.path]
+      args.append(contentsOf: bazelStartupOptions)
+      args.append(contentsOf: tulsiFlags.startup)
+      args.append("build")
+      args.append(contentsOf: extraBuildFlags)
+      args.append(contentsOf: bazelBuildOptions)
+      args.append(contentsOf: config.bazelFlags)
+      args.append(contentsOf: tulsiFlags.build)
+      args.append(contentsOf: targets)
+
+      return args.map { $0.escapingForShell }.joined(separator: " ")
+    }
+
+    let debugCommand = buildCommand(extraBuildFlags: extraDebugFlags, tulsiFlags: dbg)
+    let releaseCommand = buildCommand(extraBuildFlags: extraReleaseFlags, tulsiFlags: rel)
+
+    return (debugCommand, releaseCommand)
+  }
+
+  final func userBuildCommandForProject(_ projectURL: URL,
+                                        release: Bool = false,
+                                        targets: [String],
+                                        file: StaticString = #file,
+                                        line: UInt = #line) throws -> String {
+    let expectedScriptURL = projectURL.appendingPathComponent(".tulsi/Scripts/user_build.py",
+                                                               isDirectory: false)
+    let fileManager = FileManager.default
+
+    guard fileManager.fileExists(atPath: expectedScriptURL.path) else {
+      throw Error.userBuildScriptInvocationFailure(
+          "user_build.py script not found: expected at path \(expectedScriptURL.path)")
+    }
+
+    var output = "<none>"
+    let semaphore = DispatchSemaphore(value: 0)
+    var args = [
+        "--norun",
+    ]
+    if release {
+      args.append("--release")
+    }
+    args.append(contentsOf: targets)
+
+    let process = ProcessRunner.createProcess(
+      expectedScriptURL.path,
+      arguments: args,
+      messageLogger: localizedMessageLogger
+    ) { completionInfo in
+        defer {
+          semaphore.signal()
+        }
+        let exitcode = completionInfo.terminationStatus
+        guard exitcode == 0 else {
+          let stderr =
+            String(data: completionInfo.stderr, encoding: .utf8) ?? "<no stderr>"
+          XCTFail("user_build.py returned \(exitcode). stderr: \(stderr)", file: file, line: line)
+          return
+        }
+        if let stdout = String(data: completionInfo.stdout, encoding: .utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
+            !stdout.isEmpty {
+          output = stdout
+        } else {
+          let stderr =
+              String(data: completionInfo.stderr, encoding: .utf8) ?? "<no stderr>"
+          XCTFail("user_build.py had no stdout. stderr: \(stderr)", file: file, line: line)
+        }
+    }
+    process.currentDirectoryPath = workspaceRootURL.path
+    process.launch()
+
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    return output
+  }
+
   final func generateProjectNamed(_ projectName: String,
                                   buildTargets: [RuleInfo],
                                   pathFilters: [String],
@@ -103,12 +213,13 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                   outputDir: String,
                                   options: TulsiOptionSet = TulsiOptionSet()) throws -> URL {
     if !bazelStartupOptions.isEmpty {
-      options[.BazelBuildStartupOptionsDebug].projectValue =
-          bazelStartupOptions.joined(separator: " ")
+      let startupFlags = bazelStartupOptions.joined(separator: " ")
+      options[.BazelBuildStartupOptionsDebug].projectValue = startupFlags
+      options[.BazelBuildStartupOptionsRelease].projectValue = startupFlags
     }
 
-    let debugBuildOptions = ["--define=TULSI_TEST=dbg"] + bazelBuildOptions
-    let releaseBuildOptions = ["--define=TULSI_TEST=rel"] + bazelBuildOptions
+    let debugBuildOptions = extraDebugFlags + bazelBuildOptions
+    let releaseBuildOptions = extraReleaseFlags + bazelBuildOptions
 
     options[.BazelBuildOptionsDebug].projectValue = debugBuildOptions.joined(separator: " ")
     options[.BazelBuildOptionsRelease].projectValue = releaseBuildOptions.joined(separator: " ")

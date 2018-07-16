@@ -101,7 +101,9 @@ public enum BazelSettingFeature: Hashable, Pythonable {
 /// Defines an object that provides flags for Bazel invocations.
 protocol BazelSettingsProviderProtocol {
   /// All general-Tulsi flags, varying based on whether the project has Swift or not.
-  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet
+  func tulsiFlags(hasSwift: Bool,
+                  options: TulsiOptionSet?,
+                  features: Set<BazelSettingFeature>) -> BazelFlagsSet
 
   /// Bazel build settings, used during Xcode/user Bazel builds.
   func buildSettings(bazel: String,
@@ -169,10 +171,19 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
     self.nonSwiftFlags = nonSwiftFlags
   }
 
-  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet {
+  func tulsiFlags(hasSwift: Bool,
+                  options: TulsiOptionSet?,
+                  features: Set<BazelSettingFeature>) -> BazelFlagsSet {
+    let optionFlags: BazelFlagsSet
+    if let options = options {
+      optionFlags = optionsBasedFlags(options)
+    } else {
+      optionFlags = BazelFlagsSet()
+    }
     let languageFlags = (hasSwift ? swiftFlags : nonSwiftFlags) + featureFlags(features,
                                                                                hasSwift: hasSwift)
-    return BazelFlagsSet(common: universalFlags) + cacheableFlags + nonCacheableFlags + languageFlags
+    return cacheableFlags + optionFlags + BazelFlagsSet(common: universalFlags) +
+      nonCacheableFlags + languageFlags
   }
 
   /// Non-cacheable Bazel flags based off of BazelSettingFeatures for the project.

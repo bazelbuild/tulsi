@@ -16,7 +16,10 @@ import Foundation
 @testable import TulsiGenerator
 
 class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
-  func tulsiFlags(hasSwift: Bool, features: Set<BazelSettingFeature>) -> BazelFlagsSet {
+
+  func tulsiFlags(hasSwift: Bool,
+                  options: TulsiOptionSet?,
+                  features: Set<BazelSettingFeature>) -> BazelFlagsSet {
     return BazelFlagsSet()
   }
 
