@@ -72,6 +72,14 @@ macos_application(
     ],
 )
 
+test_suite(
+    name = "tests",
+    tests = [
+        "//src/TulsiGeneratorIntegrationTests",
+        "//src/TulsiGeneratorTests",
+    ],
+)
+
 load("@build_bazel_rules_apple//apple:apple_genrule.bzl", "apple_genrule")
 
 apple_genrule(
