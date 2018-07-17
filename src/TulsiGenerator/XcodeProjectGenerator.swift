@@ -710,10 +710,15 @@ final class XcodeProjectGenerator {
     // requirements. This is necessary for watchOS2 targets (Xcode will spawn an error when
     // attempting to run the app without the scheme linkage, even though Bazel will create the
     // embedded host correctly) and does not harm other extensions.
-    var extensionHosts = [BuildLabel: RuleEntry]()
+    var extensionHosts = [BuildLabel: Set<RuleEntry>]()
     for entry in info.buildRuleEntries {
       for extensionLabel in entry.extensions {
-        extensionHosts[extensionLabel] = entry
+        if var entrySet = extensionHosts[extensionLabel] {
+          entrySet.insert(entry)
+          extensionHosts[extensionLabel] = entrySet
+        } else {
+          extensionHosts[extensionLabel] = Set([entry])
+        }
       }
     }
 
@@ -736,9 +741,6 @@ final class XcodeProjectGenerator {
         continue
       }
 
-      let filename = target.name + ".xcscheme"
-
-      let url = xcschemesURL.appendingPathComponent(filename)
       let targetType = entry.pbxTargetType ?? .Application
 
       var appExtension: Bool = false
@@ -759,23 +761,6 @@ final class XcodeProjectGenerator {
         launchStyle = nil
       }
 
-      var additionalBuildTargets = target.buildActionDependencies.map() {
-        ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
-      }
-      if let host = extensionHosts[entry.label] {
-        guard let hostTarget = targetForLabel(host.label) else {
-          localizedMessageLogger.warning("XCSchemeGenerationFailed",
-                                         comment: "Warning shown when generation of an Xcode scheme failed for build target %1$@",
-                                         details: "Extension host could not be resolved.",
-                                         context: config.projectName,
-                                         values: entry.label.value)
-          continue
-        }
-        let hostTargetTuple =
-            (hostTarget, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
-        additionalBuildTargets.append(hostTargetTuple)
-      }
-
       var schemeEnvVars = environmentVariables(for: entry)
       if let genRunfiles = config.options[.GenerateRunfiles].commonValueAsBool,
          let productType = entry.productType,
@@ -784,27 +769,61 @@ final class XcodeProjectGenerator {
         schemeEnvVars["TEST_SRCDIR"] = "\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles"
       }
 
-      let scheme = XcodeScheme(target: target,
-                               project: info.project,
-                               projectBundleName: projectBundleName,
-                               testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
-                               profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
-                               appExtension: appExtension,
-                               extensionType: extensionType,
-                               launchStyle: launchStyle,
-                               runnableDebuggingMode: runnableDebuggingMode,
-                               additionalBuildTargets: additionalBuildTargets,
-                               commandlineArguments: commandlineArguments(for: entry),
-                               environmentVariables: schemeEnvVars,
-                               preActionScripts:preActionScripts(for: entry),
-                               postActionScripts:postActionScripts(for: entry),
-                               localizedMessageLogger: localizedMessageLogger)
-      let xmlDocument = scheme.toXML()
+      var extensionHostsForEntry = extensionHosts[entry.label] ?? Set<RuleEntry>()
+      // If the target is an extension with more than one host, add the host names as a prefix to
+      // the filename (eg. HOSTNAME_TARGETNAME.xcscheme).
+      let addHostNameToFilename = extensionHostsForEntry.count > 1
 
+      // Creates a new target for every extension-host pair. If the target is not an extension then
+      // a single target will be created.
+      repeat {
+        var filename = String()
+        var additionalBuildTargets = target.buildActionDependencies.map() {
+          ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
+        }
 
-      let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
-      try writeDataHandler(url, data)
-      updateManagementDictionary(&schemeManagementDict, schemeName: filename)
+        if !extensionHostsForEntry.isEmpty {
+          let host = extensionHostsForEntry.removeFirst()
+          guard let hostTarget = targetForLabel(host.label) else {
+            localizedMessageLogger.warning("XCSchemeGenerationFailed",
+                                           comment: "Warning shown when generation of an Xcode scheme failed for build target %1$@",
+                                           details: "Extension host could not be resolved.",
+                                           context: config.projectName,
+                                           values: entry.label.value)
+            continue
+          }
+          let hostTargetTuple =
+            (hostTarget, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
+          additionalBuildTargets.append(hostTargetTuple)
+          if addHostNameToFilename {
+            filename += hostTarget.name + "_"
+          }
+        }
+
+        let scheme = XcodeScheme(target: target,
+                                 project: info.project,
+                                 projectBundleName: projectBundleName,
+                                 testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                                 profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
+                                 appExtension: appExtension,
+                                 extensionType: extensionType,
+                                 launchStyle: launchStyle,
+                                 runnableDebuggingMode: runnableDebuggingMode,
+                                 additionalBuildTargets: additionalBuildTargets,
+                                 commandlineArguments: commandlineArguments(for: entry),
+                                 environmentVariables: schemeEnvVars,
+                                 preActionScripts:preActionScripts(for: entry),
+                                 postActionScripts:postActionScripts(for: entry),
+                                 localizedMessageLogger: localizedMessageLogger)
+        let xmlDocument = scheme.toXML()
+
+        filename += target.name + ".xcscheme"
+        let url = xcschemesURL.appendingPathComponent(filename)
+
+        let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
+        try writeDataHandler(url, data)
+        updateManagementDictionary(&schemeManagementDict, schemeName: filename)
+      } while !extensionHostsForEntry.isEmpty
     }
 
     func extractTestTargets(_ testSuite: RuleEntry) -> (Set<PBXTarget>, PBXTarget?) {
