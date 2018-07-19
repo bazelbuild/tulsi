@@ -83,6 +83,39 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     validateDiff(diffLines)
   }
 
+  func test_MultiExtensionProject() throws {
+    let testDir = "tulsi_e2e_multi_extension"
+    installBUILDFile("MultiExtension", intoSubdirectory: testDir)
+
+    let appLabelOne = BuildLabel("//\(testDir):ApplicationOne")
+    let appLabelTwo = BuildLabel("//\(testDir):ApplicationTwo")
+    let buildTargets = [RuleInfo(label: appLabelOne,
+                                 type: "ios_application",
+                                 linkedTargetLabels: []),
+                        RuleInfo(label: appLabelTwo,
+                                 type: "ios_application",
+                                 linkedTargetLabels: [])]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    makePlistFileNamed("Plist1.plist",
+                       withContent: ["NSExtension": ["NSExtensionPointIdentifier": "com.apple.extension-foo"],
+                                     "CFBundleVersion": "1.0",
+                                     "CFBundleShortVersionString": "1.0"],
+                       inSubdirectory: "\(testDir)/TodayExtension")
+
+    let projectName = "MultiExtensionProject"
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                "bazel-bin/...",
+                                                "bazel-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output")
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
   func test_BrokenSourceBUILD() {
     let aspectLogExpectation = expectation(description:
       "Should see a statement that Bazel aspect info is being printed to our logs."
