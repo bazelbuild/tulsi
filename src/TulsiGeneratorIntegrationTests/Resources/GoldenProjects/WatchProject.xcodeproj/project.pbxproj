@@ -238,7 +238,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755834598A69000000000 /* Build configuration list for PBXNativeTarget "WatchApplication" */;
 			buildPhases = (
-				84B42271545DD03100000000 /* ShellScript */,
+				84B42271C676063700000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -255,7 +255,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE475583F843F89400000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				84B422717004956B00000000 /* ShellScript */,
+				84B42271993D0A3A00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -287,7 +287,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755830DB9CDD900000000 /* Build configuration list for PBXNativeTarget "WatchExtension" */;
 			buildPhases = (
-				84B42271A7D2E4F400000000 /* ShellScript */,
+				84B42271C83C673D00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -306,7 +306,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 			};
 			buildConfigurationList = DE475583E3BE2C3500000000 /* Build configuration list for PBXProject "WatchProject" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -328,7 +328,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271545DD03100000000 /* ShellScript */ = {
+		84B42271993D0A3A00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -339,10 +339,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:WatchApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		84B422717004956B00000000 /* ShellScript */ = {
+		84B42271C676063700000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -353,10 +353,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:WatchApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		84B42271A7D2E4F400000000 /* ShellScript */ = {
+		84B42271C83C673D00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -367,7 +367,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:WatchExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_watch:WatchExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -431,7 +431,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -451,7 +450,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 			};
 			name = Debug;
 		};
@@ -467,7 +466,7 @@
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
@@ -484,7 +483,7 @@
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
@@ -541,8 +540,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -562,8 +559,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 			};
 			name = Release;
 		};
@@ -579,8 +575,7 @@
 				PRODUCT_NAME = WatchApplication;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
@@ -597,8 +592,7 @@
 				PRODUCT_NAME = WatchExtension;
 				SDKROOT = watchos;
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
@@ -660,7 +654,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -688,7 +681,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -712,7 +705,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -737,7 +730,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -775,8 +768,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = WatchProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -804,8 +795,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -829,8 +819,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;
@@ -855,8 +844,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_watch;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = __TulsiTestRunner_Release;

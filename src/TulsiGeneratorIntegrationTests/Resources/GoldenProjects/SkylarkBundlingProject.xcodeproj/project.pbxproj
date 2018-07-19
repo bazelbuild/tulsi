@@ -161,7 +161,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE4755838DC51D6400000000 /* Build configuration list for PBXNativeTarget "tvOSApplication" */;
 			buildPhases = (
-				84B422717D9ED1D800000000 /* ShellScript */,
+				84B42271BE1F4EFC00000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -177,7 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558346438EAD00000000 /* Build configuration list for PBXNativeTarget "tvOSExtension" */;
 			buildPhases = (
-				84B42271309905A000000000 /* ShellScript */,
+				84B422717D0E518200000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -212,7 +212,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 			};
 			buildConfigurationList = DE475583B6DDF65700000000 /* Build configuration list for PBXProject "SkylarkBundlingProject" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -232,7 +232,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B42271309905A000000000 /* ShellScript */ = {
+		84B422717D0E518200000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -243,10 +243,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		84B422717D9ED1D800000000 /* ShellScript */ = {
+		84B42271BE1F4EFC00000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -257,7 +257,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose --bazel_options[Debug] --define=TULSI_TEST=dbg --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_options[Release] --define=TULSI_TEST=rel --workspace_status_command=/usr/bin/true --ios_minimum_os=7.0 --macos_minimum_os=10.10 --tvos_minimum_os=10.0 --watchos_minimum_os=3.0 --xcode_version=9.2 -- --bazel_startup_options[Debug] --bazelrc=/dev/null -- ";
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSApplication --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -309,7 +309,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = appletvos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
 				TULSI_PROJECT = SkylarkBundlingProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -341,7 +340,7 @@
 				PRODUCT_NAME = tvOSApplication;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
@@ -358,7 +357,7 @@
 				PRODUCT_NAME = tvOSExtension;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
@@ -391,8 +390,6 @@
 				PYTHONIOENCODING = utf8;
 				SDKROOT = appletvos;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = SkylarkBundlingProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -424,8 +421,7 @@
 				PRODUCT_NAME = tvOSApplication;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
@@ -442,8 +438,7 @@
 				PRODUCT_NAME = tvOSExtension;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
@@ -481,7 +476,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
 				TULSI_PROJECT = SkylarkBundlingProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -508,7 +502,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -533,7 +527,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -571,8 +565,6 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_DIRECT_DBG_PREFIX_MAP = YES;
-				TULSI_MUST_USE_DSYM = YES;
 				TULSI_PROJECT = SkylarkBundlingProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -599,8 +591,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Release;
@@ -625,8 +616,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_MUST_USE_DSYM = YES;
-				TULSI_SWIFT_DEPENDENCY = NO;
+				TULSI_XCODE_VERSION = 9.2.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Release;
