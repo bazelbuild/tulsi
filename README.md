@@ -32,3 +32,29 @@ may be used to. Notable differences:
         files in order to affect the build; changes made to compilation settings
         in the Xcode UI will only affect indexing. You may want to regenerate
         your project using Tulsi after modifying compilation flags.
+
+## Tulsi project and config settings
+
+Tulsi projects contain a few settings which control various behaviors during
+project generation and builds.
+
+*   Bazel `build` flags, customizable per compilation mode (`dbg` and `opt`)
+*   Bazel `build` startup flags, also customizable per compilation mode
+*   Generation platform configuration: Target platform and arch used during project
+    generation.
+    *   Can change from targeting iOS sim to iOS device or from iOS to macOS.
+        Setting this improperly shouldn't break your project although it may
+        potentially worsen generation and build performance.
+*   Generation compilation mode: Bazel compilation mode (`dbg` or `opt`, no
+    `fastbuild`) used during project generation.
+    *   Defaults to `dbg`, swap to `opt` if you normally build Release builds in
+        Xcode (i.e. profiling your app). Setting this improperly shouldn't break
+        your project although it may potentially worsen generation and build
+        performance.
+*   Prioritize Swift: set this to inform Tulsi that it should use Swift-specific
+    flags during project generation.
+    *   Defaults to `No`, swap to `Yes` if your project contains Swift (even
+        in its dependencies). Setting this improperly shouldn't break your
+        project although it may potentially worsen generation and build
+        performance.
+
