@@ -113,6 +113,13 @@ _GENERATED_SOURCE_FILE_EXTENSIONS = [
     "swiftmodule",
 ]
 
+TulsiOutputAspectInfo = provider(
+    fields = {
+        "transitive_generated_files": "Depset of tulsi generated files.",
+        "transitive_embedded_bundles": "Depset of all bundles embedded into this target.",
+    },
+)
+
 def _dict_omitting_none(**kwargs):
     """Creates a dict from the args, dropping keys with None or [] values."""
     return {
@@ -349,8 +356,8 @@ def _collect_dependencies(rule_attr, attr_name):
     return [
         dep
         for dep in _getattr_as_list(rule_attr, attr_name)
-        if hasattr(dep, "tulsi_info_files") or
-           hasattr(dep, "tulsi_generated_files")
+        if type(dep) == "Target" and
+           (hasattr(dep, "tulsi_info_files") or TulsiOutputAspectInfo in dep)
     ]
 
 def _collect_dependency_labels(rule, filter, attr_list):
@@ -891,7 +898,7 @@ def _tulsi_outputs_aspect(target, ctx):
     rule = ctx.rule
     target_kind = rule.kind
     rule_attr = _get_opt_attr(rule, "attr")
-    tulsi_generated_files = depset()
+    generated_files = depset()
 
     # A set of all bundles embedded into this target, including deps.
     # We intentionally do not collect info about _current_ target to exclude the
@@ -902,16 +909,15 @@ def _tulsi_outputs_aspect(target, ctx):
     for attr_name in _TULSI_COMPILE_DEPS:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in deps:
-            if hasattr(dep, "tulsi_generated_files"):
-                tulsi_generated_files += dep.tulsi_generated_files
+            if TulsiOutputAspectInfo in dep:
+                generated_files += dep[TulsiOutputAspectInfo].transitive_generated_files
+                embedded_bundles += dep[TulsiOutputAspectInfo].transitive_embedded_bundles
 
             # Retrieve the bundle info for embeddable attributes.
             if attr_name not in _TULSI_NON_EMBEDDEDABLE_ATTRS:
                 dep_bundle_info = _collect_bundle_info(dep)
                 if dep_bundle_info:
                     embedded_bundles += dep_bundle_info
-            if hasattr(dep, "transitive_embedded_bundles"):
-                embedded_bundles += dep.transitive_embedded_bundles
 
     artifact = None
     bundle_name = None
@@ -966,7 +972,7 @@ def _tulsi_outputs_aspect(target, ctx):
         source_files.append(infoplist)
     all_files = depset(source_files, transitive = [all_files])
 
-    tulsi_generated_files += depset(
+    generated_files += depset(
         [x for x in all_files.to_list() if not x.is_source],
     )
 
@@ -980,7 +986,7 @@ def _tulsi_outputs_aspect(target, ctx):
         artifact = artifact,
         bundle_dir = bundle_dir,
         archive_root = archive_root,
-        generated_sources = [(x.path, x.short_path) for x in tulsi_generated_files],
+        generated_sources = [(x.path, x.short_path) for x in generated_files],
         bundle_name = bundle_name,
         embedded_bundles = embedded_bundles.to_list(),
         has_dsym = has_dsym,
@@ -989,13 +995,13 @@ def _tulsi_outputs_aspect(target, ctx):
     output = ctx.new_file(target.label.name + ".tulsiouts")
     ctx.file_action(output, info.to_json())
 
-    return struct(
-        output_groups = {
-            "tulsi-outputs": [output],
-        },
-        tulsi_generated_files = tulsi_generated_files,
-        transitive_embedded_bundles = embedded_bundles,
-    )
+    return [
+        OutputGroupInfo(tulsi_outputs = [output]),
+        TulsiOutputAspectInfo(
+            transitive_generated_files = generated_files,
+            transitive_embedded_bundles = embedded_bundles,
+        ),
+    ]
 
 tulsi_sources_aspect = aspect(
     attr_aspects = _TULSI_COMPILE_DEPS,

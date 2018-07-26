@@ -632,9 +632,9 @@ class BazelBuildBridge(object):
         '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
     if self.is_test and self.gen_runfiles:
-      bazel_command.append('--output_groups=+tulsi-outputs')
+      bazel_command.append('--output_groups=+tulsi_outputs')
     else:
-      bazel_command.append('--output_groups=tulsi-outputs,default')
+      bazel_command.append('--output_groups=tulsi_outputs,default')
 
     bazel_command.extend(options.targets)
 
