@@ -113,6 +113,28 @@ _GENERATED_SOURCE_FILE_EXTENSIONS = [
     "swiftmodule",
 ]
 
+TulsiSourcesAspectInfo = provider(
+    fields = {
+        "transitive_info_files": """
+The file actions used to save this rule's info and that of all of its transitive dependencies as
+well as any Info plists required for extensions.
+""",
+        "inheritable_attributes": """
+The inheritable attributes of this rule, expressed as a dict instead of a struct to allow easy
+joining.
+""",
+        "transitive_attributes": """
+Transitive attributes that should be applied to every rule that depends on this rule.
+""",
+        "artifacts": """
+Artifacts from this rule.
+""",
+        "filtering_info": """
+Filtering information for this target. Only for test target, otherwise is None.
+""",
+    },
+)
+
 TulsiOutputAspectInfo = provider(
     fields = {
         "transitive_generated_files": "Depset of tulsi generated files.",
@@ -357,7 +379,7 @@ def _collect_dependencies(rule_attr, attr_name):
         dep
         for dep in _getattr_as_list(rule_attr, attr_name)
         if type(dep) == "Target" and
-           (hasattr(dep, "tulsi_info_files") or TulsiOutputAspectInfo in dep)
+           (TulsiSourcesAspectInfo in dep or TulsiOutputAspectInfo in dep)
     ]
 
 def _collect_dependency_labels(rule, filter, attr_list):
@@ -568,15 +590,14 @@ def _tulsi_sources_aspect(target, ctx):
     rule_attr = _get_opt_attr(rule, "attr")
     filter = _filter_for_rule(rule)
 
-    tulsi_info_files = depset()
+    transitive_info_files = depset()
     transitive_attributes = dict()
     for attr_name in _TULSI_COMPILE_DEPS:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in _filter_deps(filter, deps):
-            if hasattr(dep, "tulsi_info_files"):
-                tulsi_info_files += dep.tulsi_info_files
-            if hasattr(dep, "transitive_attributes"):
-                transitive_attributes += dep.transitive_attributes
+            if TulsiSourcesAspectInfo in dep:
+                transitive_info_files += dep[TulsiSourcesAspectInfo].transitive_info_files
+                transitive_attributes += dep[TulsiSourcesAspectInfo].transitive_attributes
 
     artifacts = _get_opt_attr(target, "files")
     if artifacts:
@@ -777,32 +798,23 @@ def _tulsi_sources_aspect(target, ctx):
     # Create an action to write out this target's info.
     output = ctx.new_file(target.label.name + ".tulsiinfo")
     ctx.file_action(output, info.to_json())
-    tulsi_info_files += depset([output])
+    transitive_info_files += depset([output])
 
     if infoplist:
-        tulsi_info_files += [infoplist]
+        transitive_info_files += [infoplist]
 
     artifacts_depset = depset(artifacts) if artifacts else depset()
 
-    return struct(
-        # Matches the --output_groups on the bazel commandline.
-        output_groups = {
-            "tulsi-info": tulsi_info_files,
-        },
-        # The file actions used to save this rule's info and that of all of its
-        # transitive dependencies.
-        tulsi_info_files = tulsi_info_files,
-        # The inheritable attributes of this rule, expressed as a dict instead of
-        # a struct to allow easy joining.
-        inheritable_attributes = inheritable_attributes,
-        # Transitive info that should be applied to every rule that depends on
-        # this rule.
-        transitive_attributes = transitive_attributes,
-        # Artifacts from this rule.
-        artifacts = artifacts_depset,
-        # Filtering information for this target.
-        filtering_info = _target_filtering_info(ctx),
-    )
+    return [
+        OutputGroupInfo(tulsi_info = transitive_info_files),
+        TulsiSourcesAspectInfo(
+            transitive_info_files = transitive_info_files,
+            inheritable_attributes = inheritable_attributes,
+            transitive_attributes = transitive_attributes,
+            artifacts = artifacts_depset,
+            filtering_info = _target_filtering_info(ctx),
+        ),
+    ]
 
 def _collect_bundle_info(target):
     """Returns Apple bundle info for the given target, None if not a bundle."""
@@ -883,7 +895,9 @@ def _filter_deps(filter, deps):
 
     kept_deps = []
     for dep in deps:
-        info = dep.filtering_info
+        info = None
+        if TulsiSourcesAspectInfo in dep:
+            info = dep[TulsiSourcesAspectInfo].filtering_info
 
         # Only attempt to filter targets that support filtering.
         # test_suites in a test_suite are not filtered, but their

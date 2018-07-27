@@ -229,7 +229,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         // Keep this consistent with bazel_build.py.
         "--aspects",
         "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
-        "--output_groups=tulsi-info,-_,-default",  // Build only the aspect artifacts.
+        "--output_groups=tulsi_info,-_,-default",  // Build only the aspect artifacts.
     ])
     arguments.append(contentsOf: targets)
 
