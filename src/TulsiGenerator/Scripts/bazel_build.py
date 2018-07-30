@@ -1446,7 +1446,7 @@ class BazelBuildBridge(object):
 
     return (0, uuids_found)
 
-  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, arch, source_map):
+  def _CreateUUIDPlist(self, dsym_bundle_path, uuid, arch, source_maps):
     """Creates a UUID.plist in a dSYM bundle to redirect sources.
 
     Args:
@@ -1454,10 +1454,10 @@ class BazelBuildBridge(object):
       uuid: string representing the UUID of the binary slice with paths to
             remap in the dSYM bundle.
       arch: the architecture of the binary slice.
-      source_map: a single tuple representing all absolute paths to source
-                   files compiled by Bazel as strings ($0) associated with the
-                   paths to Xcode-visible sources used for the purposes of
-                   Tulsi debugging as strings ($1).
+      source_maps:  list of tuples representing all absolute paths to source
+                    files compiled by Bazel as strings ($0) associated with the
+                    paths to Xcode-visible sources used for the purposes of
+                    Tulsi debugging as strings ($1).
 
     Returns:
       Bool: True if no error was found, or False, representing a failure to
@@ -1480,9 +1480,9 @@ class BazelBuildBridge(object):
                   '<dict>\n'
                   '<key>DBGSourcePathRemapping</key>\n'
                   '<dict>\n')
-
-        # Add the mapping as a DBGSourcePathRemapping to the UUID plist here.
-        out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
+        for source_map in source_maps:
+          # Add the mapping as a DBGSourcePathRemapping to the UUID plist here.
+          out.write('<key>%s</key>\n<string>%s</string>\n' % source_map)
 
         # Make sure that we also set DBGVersion to 2.
         out.write('</dict>\n'
@@ -1519,17 +1519,14 @@ class BazelBuildBridge(object):
     """Adds Plists to a given dSYM bundle to redirect DWARF data."""
 
     # Retrieve the paths that we are expected to remap.
+
+    # Always include a direct path from the execroot to Xcode-visible sources.
+    source_maps = [self._ExtractTargetSourceMap()]
+
+    # Remap relative paths from the workspace root.
     if self.normalized_prefix_map:
       # Take the normalized path and map that to Xcode-visible sources.
-      source_map = ('./', self._NormalizePath(self.workspace_root))
-    else:
-      # Use a direct path from the execroot to Xcode-visible sources.
-      source_map = self._ExtractTargetSourceMap()
-
-    if not source_map:
-      _PrintXcodeWarning('Extracted 0 source paths. File-based breakpoints '
-                         'may not work. Please report as a bug.')
-      return 410
+      source_maps.append(('./', self._NormalizePath(self.workspace_root)))
 
     # Find the binaries within the dSYM bundle. UUIDs will match that of the
     # binary it was based on.
@@ -1553,7 +1550,7 @@ class BazelBuildBridge(object):
         plist_created = self._CreateUUIDPlist(dsym_bundle_path,
                                               uuid,
                                               arch,
-                                              source_map)
+                                              source_maps)
         if not plist_created:
           return 405
 

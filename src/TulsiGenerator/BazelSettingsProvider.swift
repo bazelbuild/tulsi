@@ -43,6 +43,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   /// For this reason, -fdebug-prefix-map is provided as a default for non-distributed purposes.
   case DirectDebugPrefixMap(String, String)
 
+  /// TODO(b/111928007): Remove this and/or BazelSettingFeature once DebugPathNormalization is
+  /// supported by all builds.
   public var stringValue: String {
     switch self {
       case .DebugPathNormalization:
@@ -63,7 +65,9 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   public var supportsSwift: Bool {
     switch self {
       case .DebugPathNormalization:
-        return false
+        /// Technically this doesn't support swiftc, but we now support this feature for
+        /// Cxx compilation alongside swift compilation.
+        return true
       case .DirectDebugPrefixMap:
         return true
     }

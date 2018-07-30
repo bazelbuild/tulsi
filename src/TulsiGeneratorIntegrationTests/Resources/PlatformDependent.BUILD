@@ -180,7 +180,7 @@ ios_unit_test(
 ios_ui_test(
     name = "XCUITest",
     minimum_os_version = "8.0",
-    runner = "//tools/objc/sim_devices:default_runner",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":SkylarkApplication",
     deps = [
         ":XCUITestCode",
