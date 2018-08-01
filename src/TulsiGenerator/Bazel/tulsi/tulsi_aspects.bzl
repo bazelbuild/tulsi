@@ -294,7 +294,7 @@ def _collect_supporting_files(rule_attr, convert_to_metadata = True):
 
 def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
     """Extracts subpaths with the given bundle_ext for the given attributes."""
-    discovered_paths = depset()
+    discovered_paths = dict()
     bundles = []
     if not bundle_ext.endswith("/"):
         bundle_ext += "/"
@@ -312,7 +312,10 @@ def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
             full_path = str(root_path) + ":" + path
             if full_path in discovered_paths:
                 continue
-            discovered_paths += [full_path]
+
+            # Using the 'discovered_paths' as a set, we will only be checking for the existence of a
+            # key, the actual value does not matter so assign it 'None'.
+            discovered_paths[full_path] = None
 
             # Generally Xcode treats bundles as special files so they should not be
             # flagged as directories.
@@ -348,7 +351,7 @@ def _collect_xcdatamodeld_files(obj, attr_path):
     files = _collect_files(obj, attr_path)
     if not files:
         return []
-    discovered_paths = depset()
+    discovered_paths = dict()
     datamodelds = []
     for f in files:
         end = f.path.find(".xcdatamodel/")
@@ -361,7 +364,10 @@ def _collect_xcdatamodeld_files(obj, attr_path):
         full_path = str(root_path) + ":" + path
         if full_path in discovered_paths:
             continue
-        discovered_paths += [full_path]
+
+        # Using the 'discovered_paths' as a set, we will only be checking for the existence of a
+        # key, the actual value does not matter so assign it 'None'.
+        discovered_paths[full_path] = None
         datamodelds.append(_file_metadata_by_replacing_path(f, path, False))
     return datamodelds
 
@@ -491,8 +497,7 @@ def _extract_generated_sources(target):
     file_metadatas = []
     objc_provider = _get_opt_attr(target, "objc")
     if hasattr(objc_provider, "source") and hasattr(objc_provider, "header"):
-        all_files = depset(objc_provider.source)
-        all_files += objc_provider.header
+        all_files = depset(transitive = [objc_provider.source, objc_provider.header])
         file_metadatas = [_file_metadata(f) for f in all_files]
 
     return file_metadatas
@@ -537,38 +542,35 @@ def _minimum_os_for_platform(ctx, platform_type_str):
 
 def _collect_swift_modules(target):
     """Returns a depset of Swift modules found on the given target."""
-    swift_modules = depset()
     if SwiftInfo in target:
         swift_info = target[SwiftInfo]
-        for modules in _getattr_as_list(swift_info, "transitive_swiftmodules"):
-            swift_modules += modules
+        if hasattr(swift_info, "transitive_swiftmodules"):
+            return swift_info.transitive_swiftmodules
     elif LegacySwiftInfo in target:
         swift_info = target[LegacySwiftInfo]
-        for modules in _getattr_as_list(swift_info, "transitive_modules"):
-            swift_modules += modules
-    return swift_modules
+        if hasattr(swift_info, "transitive_modules"):
+            return swift_info.transitive_modules
+    return depset()
 
 def _collect_module_maps(target):
     """Returns a depset of Clang module maps found on the given target."""
-    maps = depset()
     if ((LegacySwiftInfo in target or SwiftInfo in target) and
         apple_common.Objc in target):
         objc = target[apple_common.Objc]
-        for module_maps in _getattr_as_list(objc, "module_map"):
-            maps += module_maps
-    return maps
+        if hasattr(objc, "module_map"):
+            return objc.module_map
+    return depset()
 
 # TODO(b/64490743): Add these files to the Xcode project.
 def _collect_swift_header(target):
     """Returns a depset of Swift generated headers found on the given target."""
-    headers = depset()
 
     # swift_* targets put the generated header into their objc provider HEADER
     # field.
     if ((LegacySwiftInfo in target or SwiftInfo in target) and
         apple_common.Objc in target):
-        headers += target[apple_common.Objc].header
-    return headers
+        return target[apple_common.Objc].header
+    return depset()
 
 def _target_filtering_info(ctx):
     """Returns filtering information for test rules."""
@@ -590,13 +592,13 @@ def _tulsi_sources_aspect(target, ctx):
     rule_attr = _get_opt_attr(rule, "attr")
     filter = _filter_for_rule(rule)
 
-    transitive_info_files = depset()
+    transitive_info_files = []
     transitive_attributes = dict()
     for attr_name in _TULSI_COMPILE_DEPS:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in _filter_deps(filter, deps):
             if TulsiSourcesAspectInfo in dep:
-                transitive_info_files += dep[TulsiSourcesAspectInfo].transitive_info_files
+                transitive_info_files.append(dep[TulsiSourcesAspectInfo].transitive_info_files)
                 transitive_attributes += dep[TulsiSourcesAspectInfo].transitive_attributes
 
     artifacts = _get_opt_attr(target, "files")
@@ -798,17 +800,18 @@ def _tulsi_sources_aspect(target, ctx):
     # Create an action to write out this target's info.
     output = ctx.new_file(target.label.name + ".tulsiinfo")
     ctx.file_action(output, info.to_json())
-    transitive_info_files += depset([output])
+    output_files = [output]
 
     if infoplist:
-        transitive_info_files += [infoplist]
+        output_files.append(infoplist)
 
+    info_files = depset(output_files, transitive = transitive_info_files)
     artifacts_depset = depset(artifacts) if artifacts else depset()
 
     return [
-        OutputGroupInfo(tulsi_info = transitive_info_files),
+        OutputGroupInfo(tulsi_info = info_files),
         TulsiSourcesAspectInfo(
-            transitive_info_files = transitive_info_files,
+            transitive_info_files = info_files,
             inheritable_attributes = inheritable_attributes,
             transitive_attributes = transitive_attributes,
             artifacts = artifacts_depset,
@@ -821,12 +824,12 @@ def _collect_bundle_info(target):
     if AppleBundleInfo in target:
         apple_bundle = target[AppleBundleInfo]
         has_dsym = (apple_common.AppleDebugOutputs in target)
-        return [struct(
+        return struct(
             archive_root = apple_bundle.archive_root,
             bundle_name = apple_bundle.bundle_name,
             bundle_extension = apple_bundle.bundle_extension,
             has_dsym = has_dsym,
-        )]
+        )
 
     return None
 
@@ -912,26 +915,31 @@ def _tulsi_outputs_aspect(target, ctx):
     rule = ctx.rule
     target_kind = rule.kind
     rule_attr = _get_opt_attr(rule, "attr")
-    generated_files = depset()
+    transitive_generated_files = []
 
-    # A set of all bundles embedded into this target, including deps.
+    # A collective list of bundle infos that has been gathered by each dependency of this target.
     # We intentionally do not collect info about _current_ target to exclude the
     # root target, which will be covered by other structs in this aspect, from the
-    # set.
-    embedded_bundles = depset()
+    # list.
+    transitive_embedded_bundles = []
+
+    # A list of bundle infos corresponding to the dependencies of this target.
+    direct_embedded_bundles = []
 
     for attr_name in _TULSI_COMPILE_DEPS:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in deps:
             if TulsiOutputAspectInfo in dep:
-                generated_files += dep[TulsiOutputAspectInfo].transitive_generated_files
-                embedded_bundles += dep[TulsiOutputAspectInfo].transitive_embedded_bundles
+                transitive_generated_files.append(dep[TulsiOutputAspectInfo].transitive_generated_files)
+                transitive_embedded_bundles.append(dep[TulsiOutputAspectInfo].transitive_embedded_bundles)
 
             # Retrieve the bundle info for embeddable attributes.
             if attr_name not in _TULSI_NON_EMBEDDEDABLE_ATTRS:
                 dep_bundle_info = _collect_bundle_info(dep)
                 if dep_bundle_info:
-                    embedded_bundles += dep_bundle_info
+                    direct_embedded_bundles.append(dep_bundle_info)
+
+    embedded_bundles = depset(direct_embedded_bundles, transitive = transitive_embedded_bundles)
 
     artifact = None
     bundle_name = None
@@ -963,20 +971,17 @@ def _tulsi_outputs_aspect(target, ctx):
             artifact = artifacts[0]
 
     # Collect generated files for bazel_build.py to copy under Tulsi root.
-    all_files = depset()
+    all_files_depsets = []
     if target_kind in _SOURCE_GENERATING_RULES + _NON_ARC_SOURCE_GENERATING_RULES:
         objc_provider = _get_opt_attr(target, "objc")
         if hasattr(objc_provider, "source") and hasattr(objc_provider, "header"):
-            all_files += objc_provider.source
-            all_files += objc_provider.header
+            all_files_depsets.append(objc_provider.source)
+            all_files_depsets.append(objc_provider.header)
 
-    all_files += _collect_swift_header(target)
-    all_files += _collect_swift_modules(target)
-    all_files += _collect_module_maps(target)
-    all_files += (_collect_artifacts(rule, "attr.srcs") +
-                  _collect_artifacts(rule, "attr.hdrs") +
-                  _collect_artifacts(rule, "attr.textual_hdrs"))
-    all_files += _collect_supporting_files(rule_attr, convert_to_metadata = False)
+    all_files_depsets.append(_collect_swift_header(target))
+    all_files_depsets.append(_collect_swift_modules(target))
+    all_files_depsets.append(_collect_module_maps(target))
+
     source_files = [
         x
         for x in target.files.to_list()
@@ -984,10 +989,17 @@ def _tulsi_outputs_aspect(target, ctx):
     ]
     if infoplist:
         source_files.append(infoplist)
-    all_files = depset(source_files, transitive = [all_files])
 
-    generated_files += depset(
+    source_files.extend(_collect_artifacts(rule, "attr.srcs"))
+    source_files.extend(_collect_artifacts(rule, "attr.hdrs"))
+    source_files.extend(_collect_artifacts(rule, "attr.textual_hdrs"))
+    source_files.extend(_collect_supporting_files(rule_attr, convert_to_metadata = False))
+
+    all_files = depset(source_files, transitive = all_files_depsets)
+
+    generated_files = depset(
         [x for x in all_files.to_list() if not x.is_source],
+        transitive = transitive_generated_files,
     )
 
     has_dsym = False
