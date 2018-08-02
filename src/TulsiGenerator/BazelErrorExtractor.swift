@@ -25,14 +25,55 @@ struct BazelErrorExtractor {
   }
 
   static func firstErrorLinesFromString(_ output: String, maxErrors: Int = DefaultErrors) -> String? {
-    let errorLines = output.components(separatedBy: "\n").filter({ $0.hasPrefix("ERROR:") })
-    if errorLines.isEmpty {
-      return nil
+    func isNewLogMessage(_ line: String) -> Bool {
+      for newLogMessagePrefix in ["ERROR:", "INFO:", "WARNING:"] {
+        if line.hasPrefix(newLogMessagePrefix) {
+          return true
+        }
+      }
+      return false
     }
 
-    let numErrorLinesToShow = min(errorLines.count, maxErrors)
-    var errorSnippet = errorLines.prefix(numErrorLinesToShow).joined(separator: "\n")
-    if numErrorLinesToShow < errorLines.count {
+    var errorMessages = [String]()
+    var tracebackErrorMessages = Set<String>()
+    var activeTraceback = [String]()
+
+    for line in output.components(separatedBy: "\n") {
+      if !activeTraceback.isEmpty {
+        if isNewLogMessage(line) {
+          if !errorMessages.isEmpty {
+            let lastMessageIndex = errorMessages.count - 1
+            errorMessages[lastMessageIndex].append(activeTraceback.joined(separator: "\n"))
+            tracebackErrorMessages.insert(errorMessages[lastMessageIndex])
+          }
+          activeTraceback = []
+        } else {
+          activeTraceback.append(line)
+        }
+      } else if (line.hasPrefix("Traceback")) {
+        activeTraceback.append(line)
+      }
+
+      if (line.hasPrefix("ERROR:")) {
+        errorMessages.append(line)
+      }
+    }
+
+    if !activeTraceback.isEmpty && !errorMessages.isEmpty {
+      let lastMessageIndex = errorMessages.count - 1
+      errorMessages[lastMessageIndex].append(activeTraceback.joined(separator: "\n"))
+      tracebackErrorMessages.insert(errorMessages[lastMessageIndex])
+    }
+
+    // Display only up to 'maxErrors' number of errors to the user (including any
+    // associated traceback), but also check if any remaining errors include a traceback.
+    // Errors with a traceback should always be displayed regardless of how many errors are
+    // already being printed.
+    var errorSnippet = errorMessages.prefix(maxErrors).joined(separator: "\n")
+    tracebackErrorMessages.subtract(errorMessages.prefix(maxErrors))
+    errorSnippet.append(tracebackErrorMessages.joined(separator: "\n"))
+
+    if maxErrors < errorMessages.count {
       errorSnippet += "\n..."
     }
     return errorSnippet
