@@ -22,7 +22,10 @@ load(
     "ios_unit_test",
     "ios_ui_test",
 )
-load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
+load(
+    "@build_bazel_rules_apple//apple:swift.bzl",
+    "swift_library",
+)
 
 ios_application(
     name = "SkylarkApplication",
