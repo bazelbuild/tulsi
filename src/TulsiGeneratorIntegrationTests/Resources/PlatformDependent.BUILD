@@ -164,6 +164,7 @@ swift_library(
 ios_unit_test(
     name = "XCTest",
     minimum_os_version = "8.0",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":SkylarkApplication",
     deps = [
         ":XCTestCode",
@@ -174,6 +175,7 @@ ios_unit_test(
 ios_unit_test(
     name = "XCTestWithNoTestHost",
     minimum_os_version = "8.0",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     deps = [
         ":XCTestCode",
         ":XCTestCodeSwift",

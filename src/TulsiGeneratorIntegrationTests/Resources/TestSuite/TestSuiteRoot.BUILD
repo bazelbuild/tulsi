@@ -82,6 +82,7 @@ objc_library(
 
 ios_unit_test(
     name = "TestSuiteXCTest",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     tags = ["tagged"],
     test_host = ":TestApplication",
     deps = [":TestSuiteXCTestLib"],
@@ -89,6 +90,7 @@ ios_unit_test(
 
 ios_unit_test(
     name = "TestSuiteXCTestNotTagged",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":TestApplication",
     deps = [":TestSuiteXCTestNotTaggedLib"],
 )

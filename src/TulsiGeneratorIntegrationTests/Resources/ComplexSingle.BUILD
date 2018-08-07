@@ -215,6 +215,7 @@ objc_library(
 ios_unit_test(
     name = "XCTest",
     minimum_os_version = "8.0",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":Application",
     deps = [
         ":Library",

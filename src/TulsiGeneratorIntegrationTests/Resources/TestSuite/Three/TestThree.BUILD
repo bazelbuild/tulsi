@@ -45,12 +45,14 @@ objc_library(
 
 ios_unit_test(
     name = "XCTest",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = "//TestSuite:TestApplication",
     deps = [":XCTestLib"],
 )
 
 ios_unit_test(
     name = "tagged_xctest_1",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     tags = ["tagged"],
     test_host = "//TestSuite:TestApplication",
     deps = [":tagged_xctest_1_lib"],
@@ -58,6 +60,7 @@ ios_unit_test(
 
 ios_unit_test(
     name = "tagged_xctest_2",
+    runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     tags = ["tagged"],
     test_host = "//TestSuite:TestApplication",
     deps = [":tagged_xctest_2_lib"],
