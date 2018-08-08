@@ -129,6 +129,7 @@ final class TulsiProjectDocument: NSDocument,
 
   /// Array of user-facing messages, generally output by the Tulsi generator.
   @objc dynamic var messages = [UIMessage]()
+  var errors = [LogMessage]()
 
   lazy var bundleExtension: String = {
     TulsiProjectDocument.getTulsiBundleExtension()
@@ -148,6 +149,9 @@ final class TulsiProjectDocument: NSDocument,
                                                                                queue: OperationQueue.main) {
       [weak self] (notification: Notification) in
         guard let item = LogMessage(notification: notification) else {
+          if let showModal = notification.userInfo?["displayErrors"] as? Bool, showModal {
+            self?.displayErrorModal()
+          }
           return
         }
         self?.handleLogMessage(item)
@@ -478,6 +482,29 @@ final class TulsiProjectDocument: NSDocument,
 
   // MARK: - Private methods
 
+  // Idempotent function to gather all error messages that have been logged and create a single
+  // error modal to present to the user.
+  private func displayErrorModal() {
+    guard TulsiProjectDocument.showAlertsOnErrors else {
+      return
+    }
+
+    var errorMessages = [String]()
+    var details = [String]()
+
+    for error in errors {
+      errorMessages.append(error.message)
+      if let detail = error.details {
+        details.append(detail)
+      }
+    }
+    errors.removeAll()
+
+    if !errorMessages.isEmpty {
+      ErrorAlertView.displayModalError(errorMessages.joined(separator: "\n"), details: details.joined(separator: "\n"))
+    }
+  }
+
   private func handleLogMessage(_ item: LogMessage) {
     let fullMessage: String
     if let details = item.details {
@@ -489,9 +516,7 @@ final class TulsiProjectDocument: NSDocument,
     switch item.level {
       case .Error:
         messages.append(UIMessage(text: fullMessage, type: .error))
-        if TulsiProjectDocument.showAlertsOnErrors {
-          ErrorAlertView.displayModalError(item.message, details: item.details)
-        }
+        errors.append(item)
 
       case .Warning:
         messages.append(UIMessage(text: fullMessage, type: .warning))
@@ -567,7 +592,7 @@ class ErrorAlertView: NSAlert {
         "and file a bug if appropriate."
     alert.alertStyle = .critical
 
-    if let details = details {
+    if let details = details, !details.isEmpty {
       alert.text = details
 
       var views: NSArray?

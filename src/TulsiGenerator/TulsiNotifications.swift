@@ -56,8 +56,17 @@ public struct LogMessage {
   public let details: String?
   public let context: String?
 
+  // Sends a notification to display any errors that have been logged with postError.
+  public static func displayPendingErrors() {
+    let userInfo = [ "displayErrors" : true ]
+    NotificationCenter.default.post(name: Notification.Name(rawValue: TulsiMessageNotification),
+                                    object: nil,
+                                    userInfo: userInfo)
+  }
+
   public static func postError(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Error, message: message, details: details, context: context)
+    displayPendingErrors()
   }
 
   public static func postWarning(_ message: String, details: String? = nil, context: String? = nil) {
