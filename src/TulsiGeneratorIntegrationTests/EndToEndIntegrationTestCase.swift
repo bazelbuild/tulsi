@@ -243,8 +243,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     // Bazel built-in preprocessor defines are suppressed in order to prevent any
     // environment-dependent variables from mismatching the golden data.
     projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true
-    // Don't modify any user defaults.
-    projectGenerator.xcodeProjectGenerator.suppressModifyingUserDefaults = true
+    // Don't update shell command utilities.
+    projectGenerator.xcodeProjectGenerator.suppressUpdatingShellCommands = true
     // The username is forced to a known value.
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     // The workspace symlink is forced to a known value.

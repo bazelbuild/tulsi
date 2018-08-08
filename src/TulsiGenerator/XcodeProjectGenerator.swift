@@ -112,6 +112,9 @@ final class XcodeProjectGenerator {
   /// write a stub value that will be the same regardless of the execution environment.
   var redactWorkspaceSymlink = false
 
+  /// Exposed for testing. Do not attempt to update/install files related to DBGShellCommands.
+  var suppressUpdatingShellCommands = false
+
   /// Exposed for testing. Do not modify user defaults.
   var suppressModifyingUserDefaults = false
 
@@ -1105,6 +1108,8 @@ final class XcodeProjectGenerator {
 
   /// Install the latest bazel_cache_reader.
   private func updateShellCommands() throws {
+    guard !suppressUpdatingShellCommands else { return }
+
     // Construct a URL to ~/Library/Application Support/Tulsi/Scripts.
     let supportScriptsAbsoluteURL = fileManager.homeDirectoryForCurrentUser.appendingPathComponent(
       XcodeProjectGenerator.SupportScriptsPath, isDirectory: true)
