@@ -64,9 +64,11 @@ public struct LogMessage {
                                     userInfo: userInfo)
   }
 
+  // Sends a notification to log an error and adds it to a list of errors that can be displayed
+  // through the UI. Note that the errors are only displayed through the UI when
+  // displayPendingErrors() is called.
   public static func postError(_ message: String, details: String? = nil, context: String? = nil) {
     postMessage(.Error, message: message, details: details, context: context)
-    displayPendingErrors()
   }
 
   public static func postWarning(_ message: String, details: String? = nil, context: String? = nil) {

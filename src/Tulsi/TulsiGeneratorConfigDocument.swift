@@ -588,6 +588,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                   comment: "A general, critical failure during project generation.")
       LogMessage.postError(msg, details: "Generator config is not fully populated.")
+      LogMessage.displayPendingErrors()
       return nil
     }
 
@@ -603,6 +604,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                     comment: "A general, critical failure during project generation.")
         LogMessage.postError(msg)
+        LogMessage.displayPendingErrors()
         return nil
     }
   }

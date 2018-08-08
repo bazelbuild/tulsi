@@ -144,6 +144,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       // This should never actually happen and indicates an unexpected path through the UI.
       LogMessage.postError(NSLocalizedString("Error_NoOutputFolder",
                                              comment: "Error for a generation attempt without a valid target output folder"))
+      LogMessage.displayPendingErrors()
       Thread.doOnMainQueue() {
         completionHandler(nil)
       }
@@ -185,6 +186,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     let msg = NSLocalizedString("Error_GeneralProjectGenerationFailure",
                                 comment: "A general, critical failure during project generation.")
     LogMessage.postError(msg, details: errorInfo)
+    LogMessage.displayPendingErrors()
     return nil
   }
 }

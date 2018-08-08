@@ -178,6 +178,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let msg = NSLocalizedString("Error_GeneralCriticalFailure",
                                 comment: "A general, critical failure without a more fitting descriptive message.")
     LogMessage.postError(msg, details: errorInfo, context: projectDocument.projectName)
+    LogMessage.displayPendingErrors()
   }
 
 
@@ -236,6 +237,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     let msg = NSLocalizedString("Error_ConfigLoadFailed",
                                 comment: "Error when a TulsiGeneratorConfig failed to be reloaded.")
     LogMessage.postError(msg, details: errorInfo)
+    LogMessage.displayPendingErrors()
   }
 }
 

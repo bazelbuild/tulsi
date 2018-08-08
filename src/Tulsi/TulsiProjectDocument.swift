@@ -292,6 +292,7 @@ final class TulsiProjectDocument: NSDocument,
       let fmt = NSLocalizedString("Error_NoWORKSPACEFile",
                                   comment: "Error when project does not have a valid Bazel WORKSPACE file at %1$@.")
       LogMessage.postError(String(format: fmt, workspaceFile.path))
+      LogMessage.displayPendingErrors()
       throw DocumentError.invalidWorkspace("Missing WORKSPACE file at \(workspaceFile.path)")
     }
 
@@ -359,6 +360,7 @@ final class TulsiProjectDocument: NSDocument,
           let fmt = NSLocalizedString("Error_ConfigDeleteFailed",
                                       comment: "Error when a TulsiGeneratorConfig named %1$@ could not be deleted.")
           LogMessage.postError(String(format: fmt, name), details: errorInfo)
+          LogMessage.displayPendingErrors()
         }
       }
     }
