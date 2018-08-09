@@ -38,7 +38,7 @@ ios_application(
 objc_library(
     name = "ApplicationLibrary",
     srcs = [
-        "//tools/objc:objc_dummy.m",
+        "//tools/objc:objc_dummy.mm",
     ],
     deps = [
         ":SwiftLibrary",

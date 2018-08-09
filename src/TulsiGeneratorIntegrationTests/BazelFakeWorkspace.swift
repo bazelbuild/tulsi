@@ -92,8 +92,8 @@ filegroup(
   func setup() -> BazelFakeWorkspace? {
     installWorkspaceFile()
     do {
-      try createDummyFile(path: "tools/objc/objc_dummy.m", content: "")
-      try addExportsFiles(buildFilePath: "tools/objc", exportedFile: "objc_dummy.m")
+      try createDummyFile(path: "tools/objc/objc_dummy.mm", content: "")
+      try addExportsFiles(buildFilePath: "tools/objc", exportedFile: "objc_dummy.mm")
     } catch let e as NSError {
       XCTFail("Failed to set up fake workspace. Error: \(e.localizedDescription)")
     }
