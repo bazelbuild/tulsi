@@ -32,6 +32,11 @@ may be used to. Notable differences:
         files in order to affect the build; changes made to compilation settings
         in the Xcode UI will only affect indexing. You may want to regenerate
         your project using Tulsi after modifying compilation flags.
+*   Tulsi will set some Tulsi-specific flags for `bazel` invocations, some of
+    which may affect Bazel caching. In order to maximize cache re-use when
+    building from the command line, try using the `user_build.py` script which
+    is located in the generated xcodeproj at
+    `<xcodeproj>/.tulsi/Scripts/user_build.py`.
 
 ## Tulsi project and config settings
 
