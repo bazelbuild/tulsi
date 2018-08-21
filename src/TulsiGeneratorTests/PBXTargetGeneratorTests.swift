@@ -199,6 +199,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CLANG_CXX_LANGUAGE_STANDARD": "compiler-default",
         "CLANG_ENABLE_OBJC_ARC": "YES",
         "CLANG_WARN_BOOL_CONVERSION": "YES",
         "CLANG_WARN_CONSTANT_CONVERSION": "YES",
@@ -249,6 +250,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
         "ALWAYS_SEARCH_USER_PATHS": "NO",
+        "CLANG_CXX_LANGUAGE_STANDARD": "compiler-default",
         "CLANG_ENABLE_OBJC_ARC": "YES",
         "CLANG_WARN_BOOL_CONVERSION": "YES",
         "CLANG_WARN_CONSTANT_CONVERSION": "YES",

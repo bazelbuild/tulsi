@@ -34,6 +34,8 @@
 
 "ProjectPrioritizesSwift" = "Prioritize for Swift development instead of (Obj-)C(++)";
 "ProjectPrioritizesSwift_DESC" = "Tulsi uses this to try to improve Bazel caching; set this if you anticipate that most of your builds inside of the generated xcodeproj depend on Swift in some way. Setting this incorrectly won't break your builds but it will potentially make them slower.";
+"CLANG_CXX_LANGUAGE_STANDARD" = "C++ language standard";
+"CLANG_CXX_LANGUAGE_STANDARD_DESC" = "Sets the C++ language standard project wide to prevent any false live issue errors involving certain C++ features.";
 
 "CommandlineArguments" = "Commandline arguments";
 "EnvironmentVariables" = "Environment variables";

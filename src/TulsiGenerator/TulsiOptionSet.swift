@@ -22,6 +22,10 @@ public enum TulsiOptionKey: String {
   case
       // Whether or not to search user header paths first when resolving angle bracket includes.
       ALWAYS_SEARCH_USER_PATHS,
+
+      // What C++ language standard to use for the project.
+      CLANG_CXX_LANGUAGE_STANDARD,
+
       // The path to the Bazel binary.
       BazelPath,
       // Whether or not to claim Swift code was created at the same version as Tulsi itself.
@@ -309,6 +313,10 @@ public class TulsiOptionSet: Equatable {
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
+
+    // List matches the available options for the 'C++ Language Dialect' setting in XCode 9.2.
+    let cppLanguageStandards = ["compiler-default", "c++98", "gnu++98", "c++0x", "gnu++0x", "c++14", "gnu++14", "c++17", "gnu++17"]
+    addStringEnumOption(.CLANG_CXX_LANGUAGE_STANDARD, .BuildSetting, "compiler-default",  cppLanguageStandards)
 
     addStringOption(.BuildActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.LaunchActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
