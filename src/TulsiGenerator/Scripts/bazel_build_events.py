@@ -106,6 +106,10 @@ class BazelBuildEventsWatcher(object):
     """
     self.file_reader = _FileLineReader(json_file)
     self.warning_handler = warning_handler
+    self._read_any_events = False
+
+  def has_read_events(self):
+    return self._read_any_events
 
   def check_for_new_events(self):
     """Checks the file for new BazelBuildEvents.
@@ -126,6 +130,7 @@ class BazelBuildEventsWatcher(object):
           handler('Could not decode BEP event "%s"\n' % line)
           handler('Received error of %s, "%s"\n' % (type(e), e))
         break
+      self._read_any_events = True
       build_event = BazelBuildEvent(build_event_dict)
       new_events.append(build_event)
     return new_events

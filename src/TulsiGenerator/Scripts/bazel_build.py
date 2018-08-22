@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # Copyright 2016 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +19,7 @@
 import atexit
 import errno
 import fcntl
+import inspect
 import io
 import json
 import os
@@ -53,6 +55,11 @@ XCODE_INJECTED_FRAMEWORKS = [
 _logger = None
 
 
+def _PrintUnbuffered(msg):
+  sys.stdout.write('%s\n' % msg)
+  sys.stdout.flush()
+
+
 def _PrintXcodeWarning(msg):
   sys.stdout.write(':: warning: %s\n' % msg)
   sys.stdout.flush()
@@ -61,6 +68,15 @@ def _PrintXcodeWarning(msg):
 def _PrintXcodeError(msg):
   sys.stderr.write(':: error: %s\n' % msg)
   sys.stderr.flush()
+
+
+def _Fatal(msg, fatal_frame=None):
+  """Print a fatal error pointing to the failure line inside the script."""
+  if not fatal_frame:
+    fatal_frame = inspect.currentframe().f_back
+  filename, line_number, _, _, _ = inspect.getframeinfo(fatal_frame)
+  _PrintUnbuffered('%s:%d: error: %s' % (os.path.abspath(filename),
+                                         line_number, msg))
 
 
 CLEANUP_BEP_FILE_AT_EXIT = False
@@ -82,7 +98,7 @@ def _BEPFileExitCleanup(bep_file_path):
 def _InterruptHandler(signum, frame):
   """Gracefully exit on SIGINT."""
   del signum, frame  # Unused.
-  sys.stdout.write('Caught interrupt signal. Exiting...\n')
+  _PrintUnbuffered('Caught interrupt signal. Exiting...')
   sys.exit(0)
 
 
@@ -134,8 +150,7 @@ def _LockFileAcquire(lock_path):
     lock_path: Path to the lock file.
   """
   # TODO(b/74119354): Add lockfile timer back and lazily instantiate logger.
-  sys.stdout.write('Queuing Tulsi build...\n')
-  sys.stdout.flush()
+  _PrintUnbuffered('Queuing Tulsi build...')
   # TODO(b/69414272): See if we can improve this for multiple WORKSPACEs.
   lockfile = open(lock_path, 'w')
   # Register "fclose(...)" as early as possible, before acquiring lock.
@@ -280,9 +295,8 @@ class _OptionsParser(object):
     return bazel, start_up, all_build
 
   def _WarnUnknownPlatform(self):
-    sys.stdout.write('Warning: unknown platform "%s" will be treated as '
-                     'iOS\n' % self.platform_name)
-    sys.stdout.flush()
+    _PrintUnbuffered('Warning: unknown platform "%s" will be treated as '
+                     'iOS' % self.platform_name)
 
   def _ParseVariableOptions(self, args):
     """Parses flag-based args, returning (message, exit_code)."""
@@ -317,9 +331,8 @@ class _OptionsParser(object):
     reported_version = os.environ['XCODE_VERSION_ACTUAL']
     match = re.match(r'(\d{2})(\d)(\d)$', reported_version)
     if not match:
-      sys.stdout.write('Warning: Failed to extract Xcode version from %s\n' % (
+      _PrintUnbuffered('Warning: Failed to extract Xcode version from %s' % (
           reported_version))
-      sys.stdout.flush()
       return None
     major_version = int(match.group(1))
     minor_version = int(match.group(2))
@@ -512,16 +525,18 @@ class BazelBuildBridge(object):
     exit_code, outputs = self._RunBazelAndPatchOutput(command)
     timer.End()
     if exit_code:
-      _PrintXcodeError('Bazel build failed.')
+      _Fatal('Bazel build failed with exit code %d. Please check the build '
+             'log in Report Navigator (⌘9) for more information.'
+             % exit_code)
       return exit_code
 
     post_bazel_timer = Timer('Total Tulsi Post-Bazel time', 'total_post_bazel')
     post_bazel_timer.Start()
 
     if not os.path.exists(self.bazel_exec_root):
-      _PrintXcodeError('No Bazel execution root was found at %s. Debugging '
-                       'experience will be compromised. Please report a Tulsi '
-                       'bug.' % self.bazel_exec_root)
+      _Fatal('No Bazel execution root was found at %r. Debugging experience '
+             'will be compromised. Please report a Tulsi bug.'
+             % self.bazel_exec_root)
       return 404
 
     # This needs to run after `bazel build`, since it depends on the Bazel
@@ -699,21 +714,32 @@ class BazelBuildBridge(object):
           new_outputs.extend(outputs)
       return new_outputs
 
+    def ReaderThread(file_handle, out_buffer):
+      out_buffer.append(file_handle.read())
+      file_handle.close()
+
     # Make sure the BEP JSON file exists and is empty. We do this to prevent
     # any sort of race between the watcher, bazel, and the old file contents.
     open(self.build_events_file_path, 'w').close()
 
-    # Start Bazel without any extra files open besides /dev/null, which is
-    # used to ignore the output.
-    with open(os.devnull, 'w') as devnull:
-      process = subprocess.Popen(command,
-                                 stdout=devnull,
-                                 stderr=subprocess.STDOUT)
+    # Capture the stderr and stdout from Bazel. We only display it if it we're
+    # unable to read any BEP events.
+    process = subprocess.Popen(command,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT,
+                               bufsize=1)
 
     # Register atexit function to clean up BEP file.
     atexit.register(_BEPFileExitCleanup, self.build_events_file_path)
     global CLEANUP_BEP_FILE_AT_EXIT
     CLEANUP_BEP_FILE_AT_EXIT = True
+
+    # Start capturing output from Bazel.
+    reader_buffer = []
+    reader_thread = threading.Thread(target=ReaderThread,
+                                     args=(process.stdout, reader_buffer))
+    reader_thread.daemon = True
+    reader_thread.start()
 
     with io.open(self.build_events_file_path, 'r', -1, 'utf-8', 'ignore'
                 ) as bep_file:
@@ -726,6 +752,12 @@ class BazelBuildBridge(object):
         process.poll()
 
       output_locations.extend(WatcherUpdate(watcher))
+
+      # If BEP JSON parsing failed, we should display the raw stdout and
+      # stderr from Bazel.
+      reader_thread.join()
+      if not watcher.has_read_events():
+        HandleOutput(reader_buffer[0])
 
       if process.returncode == 0 and not output_locations:
         CLEANUP_BEP_FILE_AT_EXIT = False
@@ -1626,15 +1658,13 @@ class BazelBuildBridge(object):
 
   def _PrintVerbose(self, msg, level=0):
     if self.verbose > level:
-      sys.stdout.write(msg + '\n')
-      sys.stdout.flush()
+      _PrintUnbuffered(msg)
 
 
 def main(argv):
   build_settings = bazel_build_settings.BUILD_SETTINGS
   if build_settings is None:
-    _PrintXcodeError('Unable to resolve build settings. '
-                     'Please report a Tulsi bug.')
+    _Fatal('Unable to resolve build settings. Please report a Tulsi bug.')
     return 1
   return BazelBuildBridge(build_settings).Run(argv)
 
