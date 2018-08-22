@@ -765,9 +765,11 @@ def _tulsi_sources_aspect(target, ctx):
         target_includes = [_convert_outpath_to_symlink_path(x) for x in provider.includes.to_list()]
         swift_transitive_modules = _depset_to_file_metadata_list(provider.swift_modules)
         objc_module_maps = _depset_to_file_metadata_list(provider.module_maps)
+        test_deps = provider.deps.to_list()
     else:
         swift_transitive_modules = swift_transitive_modules.to_list()
         objc_module_maps = objc_module_maps.to_list()
+        test_deps = None
 
     info = _struct_omitting_none(
         artifacts = artifacts,
@@ -778,6 +780,7 @@ def _tulsi_sources_aspect(target, ctx):
         objc_defines = objc_defines,
         swift_defines = swift_defines,
         deps = compile_deps,
+        test_deps = test_deps,
         extensions = extensions,
         framework_imports = _collect_framework_imports(rule_attr),
         generated_files = generated_files,

@@ -197,6 +197,9 @@ public final class RuleEntry: RuleInfo {
   /// Set of the labels that this rule depends on.
   public let dependencies: Set<BuildLabel>
 
+  /// Set of the labels that this test rule's binary depends on.
+  public let testDependencies: Set<BuildLabel>
+
   /// Set of ios_application extension labels that this rule utilizes.
   public let extensions: Set<BuildLabel>
 
@@ -321,6 +324,7 @@ public final class RuleEntry: RuleInfo {
        sourceFiles: [BazelFileInfo] = [],
        nonARCSourceFiles: [BazelFileInfo] = [],
        dependencies: Set<BuildLabel> = Set(),
+       testDependencies: Set<BuildLabel> = Set(),
        frameworkImports: [BazelFileInfo] = [],
        secondaryArtifacts: [BazelFileInfo] = [],
        weakDependencies: Set<BuildLabel>? = nil,
@@ -363,6 +367,7 @@ public final class RuleEntry: RuleInfo {
     self.sourceFiles = sourceFiles
     self.nonARCSourceFiles = nonARCSourceFiles
     self.dependencies = dependencies
+    self.testDependencies = testDependencies
     self.frameworkImports = frameworkImports
     self.secondaryArtifacts = secondaryArtifacts
     if let weakDependencies = weakDependencies {
@@ -396,9 +401,26 @@ public final class RuleEntry: RuleInfo {
     // Unfortunately, this breaks Xcode's indexing (it doesn't really make sense to ask SourceKit
     // to index some source files in a module while at the same time giving it a compiled version
     // of the same module), so we must exclude it.
-    if let labelFileName = label.asFileName {
-      let selfModuleMap = "\(labelFileName).modulemaps/module.modulemap"
-      self.objCModuleMaps = objCModuleMaps.filter { !$0.fullPath.contains(selfModuleMap) }
+    //
+    // We must do the same thing for tests, except that it may apply to multiple modules as we
+    // combine sources from potentially multiple targets into one test target.
+    let targetsToAvoid = testDependencies + [label]
+    let moduleMapsToAvoid = targetsToAvoid.flatMap { targetLabel in
+      if let fileName = targetLabel.asFileName {
+        return "\(fileName).modulemaps/module.modulemap"
+      }
+      return nil
+    }
+    if !moduleMapsToAvoid.isEmpty {
+      self.objCModuleMaps = objCModuleMaps.filter { moduleMapFileInfo in
+        let moduleMapPath = moduleMapFileInfo.fullPath
+        for mapToAvoid in moduleMapsToAvoid {
+          if moduleMapPath.hasSuffix(mapToAvoid) {
+            return false
+          }
+        }
+        return true
+      }
     } else {
       self.objCModuleMaps = objCModuleMaps
     }
@@ -419,6 +441,7 @@ public final class RuleEntry: RuleInfo {
                    sourceFiles: [BazelFileInfo] = [],
                    nonARCSourceFiles: [BazelFileInfo] = [],
                    dependencies: Set<BuildLabel> = Set(),
+                   testDependencies: Set<BuildLabel> = Set(),
                    frameworkImports: [BazelFileInfo] = [],
                    secondaryArtifacts: [BazelFileInfo] = [],
                    weakDependencies: Set<BuildLabel>? = nil,
@@ -446,6 +469,7 @@ public final class RuleEntry: RuleInfo {
               sourceFiles: sourceFiles,
               nonARCSourceFiles: nonARCSourceFiles,
               dependencies: dependencies,
+              testDependencies: testDependencies,
               frameworkImports: frameworkImports,
               secondaryArtifacts: secondaryArtifacts,
               weakDependencies: weakDependencies,
