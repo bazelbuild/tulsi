@@ -23,7 +23,6 @@ load(
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
-    "LegacySwiftInfo",
     "SwiftInfo",
 )
 
@@ -546,16 +545,11 @@ def _collect_swift_modules(target):
         swift_info = target[SwiftInfo]
         if hasattr(swift_info, "transitive_swiftmodules"):
             return swift_info.transitive_swiftmodules
-    elif LegacySwiftInfo in target:
-        swift_info = target[LegacySwiftInfo]
-        if hasattr(swift_info, "transitive_modules"):
-            return swift_info.transitive_modules
     return depset()
 
 def _collect_module_maps(target):
     """Returns a depset of Clang module maps found on the given target."""
-    if ((LegacySwiftInfo in target or SwiftInfo in target) and
-        apple_common.Objc in target):
+    if SwiftInfo in target and apple_common.Objc in target:
         objc = target[apple_common.Objc]
         if hasattr(objc, "module_map"):
             return objc.module_map
@@ -567,8 +561,7 @@ def _collect_swift_header(target):
 
     # swift_* targets put the generated header into their objc provider HEADER
     # field.
-    if ((LegacySwiftInfo in target or SwiftInfo in target) and
-        apple_common.Objc in target):
+    if SwiftInfo in target and apple_common.Objc in target:
         return target[apple_common.Objc].header
     return depset()
 
@@ -721,15 +714,10 @@ def _tulsi_sources_aspect(target, ctx):
             bundle_id = None
 
     # Collect Swift related attributes.
-    swift_info = None
-    if SwiftInfo in target:
-        swift_info = target[SwiftInfo]
-    elif LegacySwiftInfo in target:
-        swift_info = target[LegacySwiftInfo]
-
     swift_defines = []
 
-    if swift_info:
+    if SwiftInfo in target:
+        swift_info = target[SwiftInfo]
         attributes["has_swift_info"] = True
         transitive_attributes["swift_language_version"] = swift_info.swift_version
         transitive_attributes["has_swift_dependency"] = True
