@@ -264,7 +264,7 @@ def _collect_artifacts(obj, attr_path):
     return [
         f
         for src in _getattr_as_list(obj, attr_path)
-        for f in _get_opt_attr(src, "files")
+        for f in _get_opt_attr(src, "files").to_list()
     ]
 
 def _collect_files(obj, attr_path, convert_to_metadata = True):
@@ -498,7 +498,7 @@ def _extract_generated_sources(target):
     objc_provider = _get_opt_attr(target, "objc")
     if hasattr(objc_provider, "source") and hasattr(objc_provider, "header"):
         all_files = depset(transitive = [objc_provider.source, objc_provider.header])
-        file_metadatas = [_file_metadata(f) for f in all_files]
+        file_metadatas = _depset_to_file_metadata_list(all_files)
 
     return file_metadatas
 
@@ -606,7 +606,7 @@ def _tulsi_sources_aspect(target, ctx):
         # Ignore any generated Xcode projects as they are not useful to Tulsi.
         artifacts = [
             _file_metadata(f)
-            for f in artifacts
+            for f in artifacts.to_list()
             if not f.short_path.endswith("project.pbxproj")
         ]
     else:
@@ -625,18 +625,12 @@ def _tulsi_sources_aspect(target, ctx):
         generated_non_arc_files = _extract_generated_sources(target)
 
     swift_transitive_modules = depset(
-        [
-            _file_metadata(f)
-            for f in _collect_swift_modules(target)
-        ],
+        _depset_to_file_metadata_list(_collect_swift_modules(target)),
     )
 
     # Collect ObjC module maps dependencies for Swift targets.
     objc_module_maps = depset(
-        [
-            _file_metadata(f)
-            for f in _collect_module_maps(target)
-        ],
+        _depset_to_file_metadata_list(_collect_module_maps(target)),
     )
 
     # Collect the dependencies of this rule, dropping any .jar files (which may be
