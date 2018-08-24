@@ -86,6 +86,10 @@ class XcodeProjectGeneratorTests: XCTestCase {
       XCTAssert(mockFileManager.copyOperations.keys.contains(cacheReaderURL.path))
 
       let xcp = "\(xcodeProjectPath)/xcuserdata/USER.xcuserdatad/xcschemes/xcschememanagement.plist"
+      XCTAssert(!mockFileManager.attributesMap.isEmpty)
+      mockFileManager.attributesMap.forEach { (path, attrs) in
+        XCTAssertNotNil(attrs[.modificationDate])
+      }
       XCTAssert(mockFileManager.writeOperations.keys.contains(xcp))
     } catch let e {
       XCTFail("Unexpected exception \(e)")
@@ -382,6 +386,7 @@ class MockFileManager: FileManager {
   var writeOperations = [String: Data]()
   var removeOperations = [String]()
   var mockContent = [String: Data]()
+  var attributesMap = [String: [FileAttributeKey: Any]]()
 
   override open var homeDirectoryForCurrentUser: URL {
     return URL(fileURLWithPath: "/Users/__MOCK_USER__", isDirectory: true)
@@ -392,10 +397,13 @@ class MockFileManager: FileManager {
   }
 
   override func createDirectory(at url: URL,
-                                     withIntermediateDirectories createIntermediates: Bool,
-                                     attributes: [FileAttributeKey:Any]?) throws {
+                                withIntermediateDirectories createIntermediates: Bool,
+                                attributes: [FileAttributeKey: Any]?) throws {
     guard !allowedDirectoryCreates.contains(url.path) else {
       directoryOperations.append(url.path)
+      if let attributes = attributes {
+        self.setAttributes(attributes, path: url.path)
+      }
       return
     }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
@@ -404,10 +412,13 @@ class MockFileManager: FileManager {
   }
 
   override func createDirectory(atPath path: String,
-                                      withIntermediateDirectories createIntermediates: Bool,
-                                      attributes: [FileAttributeKey:Any]?) throws {
+                                withIntermediateDirectories createIntermediates: Bool,
+                                attributes: [FileAttributeKey: Any]?) throws {
     guard !allowedDirectoryCreates.contains(path) else {
       directoryOperations.append(path)
+      if let attributes = attributes {
+        self.setAttributes(attributes, path: path)
+      }
       return
     }
     throw NSError(domain: "MockFileManager: Directory creation disallowed",
@@ -440,7 +451,22 @@ class MockFileManager: FileManager {
       fatalError("Attempting to overwrite an existing file at \(path)")
     }
     writeOperations[path] = data
+    if let attr = attr {
+      self.setAttributes(attr, path: path)
+    }
     return true
+  }
+
+  fileprivate func setAttributes(_ attributes: [FileAttributeKey : Any], path: String) {
+    var currentAttributes = attributesMap[path] ?? [FileAttributeKey : Any]()
+    attributes.forEach { (k, v) in
+      currentAttributes[k] = v
+    }
+    attributesMap[path] = currentAttributes
+  }
+
+  override func setAttributes(_ attributes: [FileAttributeKey : Any], ofItemAtPath path: String) throws {
+    self.setAttributes(attributes, path: path)
   }
 }
 

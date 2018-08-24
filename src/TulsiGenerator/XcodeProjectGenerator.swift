@@ -1353,6 +1353,8 @@ final class XcodeProjectGenerator {
           try fileManager.removeItem(at: targetURL)
         }
         try fileManager.copyItem(at: sourceURL, to: targetURL)
+        // Touch the file so Python knows to update the .pyc files.
+        try fileManager.setAttributes([.modificationDate: Date()], ofItemAtPath: targetURL.path)
         errorInfo = nil
       } catch let e as NSError {
         errorInfo = e.localizedDescription
