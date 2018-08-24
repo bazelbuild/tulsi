@@ -23,7 +23,7 @@ load(
     "ios_ui_test",
 )
 load(
-    "@build_bazel_rules_apple//apple:swift.bzl",
+    "@build_bazel_rules_swift//swift:swift.bzl",
     "swift_library",
 )
 
