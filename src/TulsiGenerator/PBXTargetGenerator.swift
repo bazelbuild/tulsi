@@ -122,6 +122,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     case buildFileIsNotContainedByProjectRoot
     case generalFailure(String)
     case unsupportedTargetType(String, String)
+    case unexceptedCopts(String)
   }
 
   /// Names of Xcode build configurations to generate.
@@ -1060,8 +1061,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map({"-D\($0)"}))
     }
 
+    let allOtherCFlagsSearchPath = Set(allOtherCFlags.filter({$0.hasPrefix("-iquote") || $0.hasPrefix("-I")}))
+    let allOtherCFlagsWithoutHeaderSearchPath = Set(allOtherCFlags).subtracting(allOtherCFlagsSearchPath)
+
     if !allOtherCFlags.isEmpty {
-      buildSettings["OTHER_CFLAGS"] = allOtherCFlags.joined(separator: " ")
+      buildSettings["OTHER_CFLAGS"] = allOtherCFlagsWithoutHeaderSearchPath.joined(separator: " ")
     }
 
     if let bridgingHeader = data.bridgingHeader {
@@ -1073,8 +1077,21 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     if !data.includes.isEmpty {
-      let includes = data.includes.joined(separator: " ")
-      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includes) "
+      var includes = data.includes
+        if !allOtherCFlagsSearchPath.isEmpty {
+          do  {
+              includes += try allOtherCFlagsSearchPath.map({
+              let splits = $0.split(separator: " ")
+              guard splits.count == 2 else {
+                throw ProjectSerializationError.unexceptedCopts($0)
+              }
+              return "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(splits[1])"})
+          } catch {
+            print ("Unexcepted copts with \(error)")
+          }
+      }
+      let includesStr = includes.joined(separator: " ")
+      buildSettings["HEADER_SEARCH_PATHS"] = "$(inherited) \(includesStr) "
     }
 
     if !data.frameworkSearchPaths.isEmpty {
