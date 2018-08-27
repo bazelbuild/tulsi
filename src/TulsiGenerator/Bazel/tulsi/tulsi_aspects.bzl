@@ -25,6 +25,18 @@ load(
     "IosExtensionBundleInfo",
     "SwiftInfo",
 )
+load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
+
+# Defensive list of features that can appear in the C++ toolchain, but that we
+# definitely don't want to enable (meaning we don't want them to contribute
+# command line flags).
+UNSUPPORTED_FEATURES = [
+    "thin_lto",
+    "module_maps",
+    "use_header_modules",
+    "fdo_instrument",
+    "fdo_optimize",
+]
 
 # List of all of the attributes that can link from a Tulsi-supported rule to a
 # Tulsi-supported dependency of that rule.
@@ -460,7 +472,45 @@ def _extract_compiler_defines(ctx):
     defines = []
 
     cpp_fragment = _get_opt_attr(ctx.fragments, "cpp")
-    if cpp_fragment:
+
+    # Enabled in Bazel 0.17
+    if hasattr(cpp_fragment, "copts"):
+        cc_toolchain = find_cpp_toolchain(ctx)
+        copts = cpp_fragment.copts
+        cxxopts = cpp_fragment.cxxopts
+        conlyopts = cpp_fragment.conlyopts
+
+        feature_configuration = cc_common.configure_features(
+            cc_toolchain = cc_toolchain,
+            requested_features = ctx.features,
+            unsupported_features = ctx.disabled_features + UNSUPPORTED_FEATURES,
+        )
+        c_variables = cc_common.create_compile_variables(
+            feature_configuration = feature_configuration,
+            cc_toolchain = cc_toolchain,
+            user_compile_flags = depset(copts + conlyopts),
+        )
+        cpp_variables = cc_common.create_compile_variables(
+            feature_configuration = feature_configuration,
+            cc_toolchain = cc_toolchain,
+            add_legacy_cxx_options = True,
+            user_compile_flags = depset(copts + cxxopts),
+        )
+        c_options = cc_common.get_memory_inefficient_command_line(
+            feature_configuration = feature_configuration,
+            # TODO(hlopko): Replace with action_name once Bazel >= # 0.16 is assumed
+            action_name = "c-compile",
+            variables = c_variables,
+        )
+        cpp_options = cc_common.get_memory_inefficient_command_line(
+            feature_configuration = feature_configuration,
+            # TODO(hlopko): Replace with action_name once Bazel >= # 0.16 is assumed
+            action_name = "c++-compile",
+            variables = cpp_variables,
+        )
+        defines += _extract_defines_from_option_list(c_options)
+        defines += _extract_defines_from_option_list(cpp_options)
+    elif cpp_fragment:
         c_options = _get_opt_attr(cpp_fragment, "c_options")
         defines += _extract_defines_from_option_list(c_options)
 
@@ -1021,6 +1071,9 @@ tulsi_sources_aspect = aspect(
             name = "xcode_config_label",
             fragment = "apple",
         )),
+        "_cc_toolchain": attr.label(default = Label(
+            "@bazel_tools//tools/cpp:current_cc_toolchain",
+        )),
     },
     fragments = [
         "apple",
@@ -1034,6 +1087,11 @@ tulsi_sources_aspect = aspect(
 # the top target outputs.
 tulsi_outputs_aspect = aspect(
     attr_aspects = _TULSI_COMPILE_DEPS,
+    attrs = {
+        "_cc_toolchain": attr.label(
+            default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
+        ),
+    },
     fragments = [
         "apple",
         "cpp",
