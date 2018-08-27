@@ -62,7 +62,6 @@
                         </constraints>
                     </view>
                     <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </box>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mev-zr-1M1">
                     <rect key="frame" x="246" y="13" width="70" height="32"/>

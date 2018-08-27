@@ -93,7 +93,6 @@
                         </constraints>
                     </view>
                     <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8cI-FN-Vac">
                     <rect key="frame" x="18" y="193" width="228" height="17"/>
