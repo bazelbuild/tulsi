@@ -1209,10 +1209,10 @@ class BazelBuildBridge(object):
                                             output_full_path)
       if exit_code:
         _PrintXcodeWarning('Failed to install dSYM "%s" (%s)'
-                           % (target_dsym, exit_code))
+                           % (dsym_filename, exit_code))
       elif path is None:
         _PrintXcodeWarning('Could not find a dSYM bundle named "%s"'
-                           % target_dsym)
+                           % dsym_filename)
       else:
         dsyms_found.append(path)
 
