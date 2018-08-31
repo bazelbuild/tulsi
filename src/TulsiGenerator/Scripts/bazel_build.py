@@ -47,9 +47,10 @@ from update_symbol_cache import UpdateSymbolCache
 # List of frameworks that Xcode injects into test host targets that should be
 # re-signed when running the tests on devices.
 XCODE_INJECTED_FRAMEWORKS = [
-    'IDEBundleInjection',
-    'XCTAutomationSupport',
-    'XCTest',
+    'libXCTestBundleInject.dylib',
+    'IDEBundleInjection.framework',
+    'XCTAutomationSupport.framework',
+    'XCTest.framework',
 ]
 
 _logger = None
@@ -1295,8 +1296,8 @@ class BazelBuildBridge(object):
 
     for framework in XCODE_INJECTED_FRAMEWORKS:
       framework_path = os.path.join(
-          bundle, 'Frameworks', '%s.framework' % framework)
-      if os.path.isdir(framework_path):
+          bundle, 'Frameworks', framework)
+      if os.path.isdir(framework_path) or os.path.isfile(framework_path):
         exit_code = self._ResignBundle(framework_path, signing_identity)
         if exit_code != 0:
           return exit_code
