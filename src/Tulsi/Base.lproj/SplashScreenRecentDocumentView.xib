@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SplashScreenRecentDocumentViewController" customModule="Tulsi" customModuleProvider="target">
@@ -18,20 +20,30 @@
             <rect key="frame" x="0.0" y="0.0" width="316" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a4g-9D-XS7">
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a4g-9D-XS7">
                     <rect key="frame" x="8" y="8" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="9KY-nA-Ry6"/>
+                        <constraint firstAttribute="width" constant="48" id="elo-Vf-wnl"/>
+                    </constraints>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="oGO-n3-JEI"/>
                 </imageView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a9Y-ZL-ren">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a9Y-ZL-ren">
                     <rect key="frame" x="62" y="33" width="236" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="k6W-4S-boL"/>
+                    </constraints>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="UOe-FI-rME">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t6y-qp-aXL">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t6y-qp-aXL">
                     <rect key="frame" x="62" y="15" width="236" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="C65-4b-AUV"/>
+                    </constraints>
                     <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingMiddle" sendsActionOnEndEditing="YES" title="Label" id="EEP-rF-svp">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
@@ -39,6 +51,16 @@
                     </textFieldCell>
                 </textField>
             </subviews>
+            <constraints>
+                <constraint firstItem="a9Y-ZL-ren" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="14" id="0EQ-6P-Un5"/>
+                <constraint firstAttribute="trailing" secondItem="a9Y-ZL-ren" secondAttribute="trailing" constant="20" id="9KJ-GG-hDo"/>
+                <constraint firstItem="a4g-9D-XS7" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="8" id="Qev-eD-BRz"/>
+                <constraint firstItem="t6y-qp-aXL" firstAttribute="leading" secondItem="a9Y-ZL-ren" secondAttribute="leading" id="YP1-ht-oim"/>
+                <constraint firstItem="t6y-qp-aXL" firstAttribute="top" secondItem="a9Y-ZL-ren" secondAttribute="bottom" constant="4" id="YsN-SD-tGb"/>
+                <constraint firstItem="a9Y-ZL-ren" firstAttribute="leading" secondItem="a4g-9D-XS7" secondAttribute="trailing" constant="8" id="tC8-bk-jP2"/>
+                <constraint firstItem="t6y-qp-aXL" firstAttribute="width" secondItem="a9Y-ZL-ren" secondAttribute="width" id="uci-MC-x0S"/>
+                <constraint firstItem="a4g-9D-XS7" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="8" id="wlN-1p-2jE"/>
+            </constraints>
             <point key="canvasLocation" x="550" y="419"/>
         </customView>
     </objects>
