@@ -1673,6 +1673,9 @@ def main(argv):
 if __name__ == '__main__':
   _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
   _logger = tulsi_logging.Logger()
+  logger_warning = tulsi_logging.validity_check()
+  if logger_warning:
+    _PrintXcodeWarning(logger_warning)
   _timer = Timer('Everything', 'complete_build').Start()
   signal.signal(signal.SIGINT, _InterruptHandler)
   _exit_code = main(sys.argv)

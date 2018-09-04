@@ -53,11 +53,15 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
     let universalFlags: BazelFlags
+    // Install to ~/Library/Application Support when not running inside a test.
     if let applicationSupport = ApplicationSupport() {
       let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
       let aspectPath = try! applicationSupport.copyTulsiAspectFiles(tulsiVersion: tulsiVersion)
-      universalFlags = BazelFlags(build: ["--override_repository=tulsi=\(aspectPath)"])
-    } else {
+      universalFlags = BazelFlags(
+        // TODO(tulsi-team): See if we can avoid using --override_repository.
+        build: ["--override_repository=tulsi=\(aspectPath)"]
+      )
+    } else {  // Running inside a test, just refer to the files directly from TulsiGenerator.
       let bundle = Bundle(for: type(of: self))
       let bazelWorkspace =
         bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()

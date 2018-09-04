@@ -20,6 +20,11 @@ import os
 import sys
 
 
+def validity_check():
+  """Returns a warning message from logger initialization, if applicable."""
+  return None
+
+
 class Logger(object):
   """Tulsi specific logging."""
 

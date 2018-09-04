@@ -148,11 +148,19 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
   static let tulsiNonSwiftFlags = BazelFlagsSet(
       release: BazelFlags(build: ["--apple_generate_dsym"]))
 
+  /// Universal flags that apply to all Bazel invocations (even queries).
   let universalFlags: BazelFlags
+
+  /// Cache-able flags for builds.
   let cacheableFlags: BazelFlagsSet
+
+  /// Non-cacheable flags for builds. Avoid changing these if possible.
   let nonCacheableFlags: BazelFlagsSet
 
+  /// Flags used for targets which depend on Swift.
   let swiftFlags: BazelFlagsSet
+
+  /// Flags used for targets which do not depend on Swift.
   let nonSwiftFlags: BazelFlagsSet
 
   public convenience init(universalFlags: BazelFlags) {
