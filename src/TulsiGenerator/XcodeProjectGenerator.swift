@@ -695,20 +695,21 @@ final class XcodeProjectGenerator {
     }
 
     func preActionScripts(for ruleEntry: RuleEntry) -> [XcodeActionType: String] {
-        var preActionScripts: [XcodeActionType: String] = [:]
-        preActionScripts[.BuildAction] = config.options[.BuildActionPreActionScript, ruleEntry.label.value] ?? nil
-        preActionScripts[.LaunchAction] = config.options[.LaunchActionPreActionScript, ruleEntry.label.value] ?? nil
-        preActionScripts[.TestAction] = config.options[.TestActionPreActionScript, ruleEntry.label.value] ?? nil
-        return preActionScripts
+      var preActionScripts: [XcodeActionType: String] = [:]
+      preActionScripts[.BuildAction] = config.options[.BuildActionPreActionScript, ruleEntry.label.value] ?? nil
+      preActionScripts[.LaunchAction] = config.options[.LaunchActionPreActionScript, ruleEntry.label.value] ?? nil
+      preActionScripts[.TestAction] = config.options[.TestActionPreActionScript, ruleEntry.label.value] ?? nil
+      return preActionScripts
     }
 
     func postActionScripts(for ruleEntry: RuleEntry) -> [XcodeActionType: String] {
-        var postActionScripts: [XcodeActionType: String] = [:]
-        postActionScripts[.BuildAction] = config.options[.BuildActionPostActionScript, ruleEntry.label.value] ?? nil
-        postActionScripts[.LaunchAction] = config.options[.LaunchActionPostActionScript, ruleEntry.label.value] ?? nil
-        postActionScripts[.TestAction] = config.options[.TestActionPostActionScript, ruleEntry.label.value] ?? nil
-        return postActionScripts
+      var postActionScripts: [XcodeActionType: String] = [:]
+      postActionScripts[.BuildAction] = config.options[.BuildActionPostActionScript, ruleEntry.label.value] ?? nil
+      postActionScripts[.LaunchAction] = config.options[.LaunchActionPostActionScript, ruleEntry.label.value] ?? nil
+      postActionScripts[.TestAction] = config.options[.TestActionPostActionScript, ruleEntry.label.value] ?? nil
+      return postActionScripts
     }
+
     // Build a map of extension targets to hosts so the hosts may be referenced as additional build
     // requirements. This is necessary for watchOS2 targets (Xcode will spawn an error when
     // attempting to run the app without the scheme linkage, even though Bazel will create the

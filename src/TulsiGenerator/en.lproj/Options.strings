@@ -49,6 +49,11 @@
 "TestActionPreActionScript" = "Test";
 "TestActionPostActionScript" = "Test";
 
+"PreBuildPhaseRunScript" = "Build phase run script (pre bazel build)";
+"PreBuildPhaseRunScript_DESC" = "Build phase run script that runs before the bazel_build.py script (i.e. `exec ${PATH_TO_SCRIPT}')";
+"PostBuildPhaseRunScript" = "Build phase run script (post bazel build)";
+"PostBuildPhaseRunScript_DESC" = "Build phase run script that runs after the bazel_build.py script (i.e. `exec ${PATH_TO_SCRIPT}')";
+
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
 "SuppressSwiftUpdateCheck_DESC" = "Suppresses Xcode's update notification for projects containing Swift code. This asserts that the Swift code is at least version 2.1.";
 

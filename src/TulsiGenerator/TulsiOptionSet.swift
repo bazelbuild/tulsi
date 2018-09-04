@@ -60,7 +60,13 @@ public enum TulsiOptionKey: String {
       GenerateRunfiles,
 
       // Used by Tulsi to improve Bazel-caching of build flags.
-      ProjectPrioritizesSwift
+      ProjectPrioritizesSwift,
+
+      // Custom build phase run script that runs before bazel build.
+      PreBuildPhaseRunScript,
+
+      // Custom build phase run script that runs after bazel build.
+      PostBuildPhaseRunScript
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -318,6 +324,8 @@ public class TulsiOptionSet: Equatable {
     let cppLanguageStandards = ["compiler-default", "c++98", "gnu++98", "c++0x", "gnu++0x", "c++14", "gnu++14", "c++17", "gnu++17"]
     addStringEnumOption(.CLANG_CXX_LANGUAGE_STANDARD, .BuildSetting, "compiler-default",  cppLanguageStandards)
 
+    addStringOption(.PreBuildPhaseRunScript, [.TargetSpecializable])
+    addStringOption(.PostBuildPhaseRunScript, [.TargetSpecializable])
     addStringOption(.BuildActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.LaunchActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.TestActionPreActionScript, [.TargetSpecializable, .SupportsInheritKeyword])

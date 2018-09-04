@@ -794,6 +794,18 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      named: name,
                                                      ruleEntryMap: ruleEntryMap)
 
+      if let script = options[.PreBuildPhaseRunScript, entry.label.value] {
+        let runScript = PBXShellScriptBuildPhase(shellScript: script, shellPath: "/bin/bash")
+        runScript.showEnvVarsInLog = true
+        target.buildPhases.insert(runScript, at: 0)
+      }
+
+      if let script = options[.PostBuildPhaseRunScript, entry.label.value] {
+        let runScript = PBXShellScriptBuildPhase(shellScript: script, shellPath: "/bin/bash")
+        runScript.showEnvVarsInLog = true
+        target.buildPhases.append(runScript)
+      }
+
       if let hostLabelString = entry.attributes[.test_host] as? String {
         let hostLabel = BuildLabel(hostLabelString)
         testTargetLinkages.append((target, hostLabel, entry))
