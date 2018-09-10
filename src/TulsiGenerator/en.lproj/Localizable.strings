@@ -24,7 +24,7 @@
 "BazelResponseLabelAttributeInvalid" = "Bazel query returned an invalid, non-string convertible list element '%1$@'. This may be a Bazel bug or a BUILD file issue.";
 
 /* Bazel response XML element %1$@ was found but was missing an attribute named %2$@. */
-"BazelResponseMissingRequiredAttribute" = "Missing expected attribute named '%12@' on element '%1$@'. This is a Tulsi or Bazel bug, please report.";
+"BazelResponseMissingRequiredAttribute" = "Missing expected attribute named '%2$@' on element '%1$@'. This is a Tulsi or Bazel bug, please report.";
 
 /* General error to show when the XML parser returns something other than an NSXMLElement. This should never happen in practice. */
 "BazelResponseXMLNonElementType" = "Non element unexpectedly returned for query. This is a Tulsi bug, please report.";
