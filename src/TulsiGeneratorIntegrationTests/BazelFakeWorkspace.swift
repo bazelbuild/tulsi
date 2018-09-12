@@ -19,6 +19,7 @@ import TulsiGenerator
 class BazelFakeWorkspace {
   let resourcesPathBase = "src/TulsiGeneratorIntegrationTests/Resources"
   var runfilesURL: URL
+  var runfilesWorkspaceURL: URL
   var fakeExecroot: URL
   var workspaceRootURL: URL
   var bazelURL: URL
@@ -26,6 +27,7 @@ class BazelFakeWorkspace {
 
   init(runfilesURL: URL, tempDirURL: URL) {
     self.runfilesURL = runfilesURL
+    self.runfilesWorkspaceURL = runfilesURL.appendingPathComponent("__main__", isDirectory: true)
     self.fakeExecroot = tempDirURL.appendingPathComponent("fake_execroot", isDirectory: true)
     self.workspaceRootURL = fakeExecroot.appendingPathComponent("__main__", isDirectory: true)
     self.bazelURL = BazelLocator.bazelURL!

@@ -20,6 +20,10 @@ class ApplicationSupport {
   let tulsiFolder: URL
 
   init?(fileManager: FileManager = .default) {
+    // Fail if we are running in a test so that we don't install files to ~/Library/Application Support.
+    if ProcessInfo.processInfo.environment["TEST_SRCDIR"] != nil {
+      return nil
+    }
     /// Fetching the appName this way will result in failure for our tests, which is intentional as
     /// we don't want to install files to ~/Library/Application Support when testing.
     guard let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String else { return nil }

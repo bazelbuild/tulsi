@@ -1,0 +1,17 @@
+{
+  "configDefaults" : {
+    "optionSet" : {
+      "BazelBuildOptionsDebug" : {
+        "p" : "--ios_minimum_os=9.0 --workspace_status_command=/usr/bin/true"
+      },
+      "BazelBuildOptionsRelease" : {
+        "p" : "--ios_minimum_os=9.0 --workspace_status_command=/usr/bin/true"
+      }
+    }
+  },
+  "projectName" : "Buttons",
+  "packages" : [
+    "build_bazel_rules_apple/examples\/multi_platform\/Buttons"
+  ],
+  "workspaceRoot" : "..\/..\/..\/..\/..\/.."
+}

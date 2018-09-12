@@ -3,6 +3,7 @@
     "src/..."
   ],
   "buildTargets" : [
+    "//src/TulsiEndToEndTests:TulsiEndToEndTest",
     "//src/TulsiGeneratorIntegrationTests:AspectTests",
     "//src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests",
     "//src/TulsiGeneratorIntegrationTests:PlatformDependentEndToEndGenerationTests",

@@ -17,6 +17,7 @@ swift_library(
     resources = [
         "//:strings",
     ],
+    visibility = ["//:__subpackages__"],
     deps = ["//src/TulsiGenerator:tulsi_generator_lib"],
 )
 
