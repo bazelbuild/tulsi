@@ -15,7 +15,7 @@
 import Foundation
 
 /// Handles fetching of interesting paths for a Bazel workspace.
-class BazelWorkspacePathInfoFetcher {
+public class BazelWorkspacePathInfoFetcher {
   /// The Bazel execution_root as defined by the target workspace.
   private var executionRoot: String? = nil
   /// The bazel bin symlink name as defined by the target workspace.
@@ -32,7 +32,7 @@ class BazelWorkspacePathInfoFetcher {
   private let semaphore: DispatchSemaphore
   private var fetchCompleted = false
 
-  init(bazelURL: URL, workspaceRootURL: URL, bazelUniversalFlags: BazelFlags,
+  public init(bazelURL: URL, workspaceRootURL: URL, bazelUniversalFlags: BazelFlags,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
@@ -44,7 +44,7 @@ class BazelWorkspacePathInfoFetcher {
   }
 
   /// Returns the execution_root for this fetcher's workspace, blocking until it is available.
-  func getExecutionRoot() -> String {
+  public func getExecutionRoot() -> String {
     if !fetchCompleted { waitForCompletion() }
 
     guard let executionRoot = executionRoot else {

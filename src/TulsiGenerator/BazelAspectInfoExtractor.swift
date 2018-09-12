@@ -16,7 +16,7 @@ import Foundation
 
 
 // Provides methods utilizing Bazel aspects to extract information from a workspace.
-final class BazelAspectInfoExtractor: QueuedLogging {
+final public class BazelAspectInfoExtractor: QueuedLogging {
   enum ExtractorError: Error {
     /// Failed to build aspects.
     case buildFailed
@@ -31,7 +31,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Stores Tulsi-specific Bazel settings.
   let bazelSettingsProvider: BazelSettingsProviderProtocol
 
-  private let bundle: Bundle
   /// Absolute path to the workspace containing the Tulsi aspect bzl file.
   private let aspectWorkspacePath: String
   private let localizedMessageLogger: LocalizedMessageLogger
@@ -42,7 +41,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
   private typealias CompletionHandler = (Process, String) -> Void
 
-  init(bazelURL: URL,
+  public init(bazelURL: URL,
        workspaceRootURL: URL,
        bazelSettingsProvider: BazelSettingsProviderProtocol,
        localizedMessageLogger: LocalizedMessageLogger) {
@@ -55,8 +54,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     self.buildEventsFilePath =
         (NSTemporaryDirectory() as NSString).appendingPathComponent(buildEventsFileName)
 
-    bundle = Bundle(for: type(of: self))
-
+    let bundle = Bundle(for: type(of: self))
     let workspaceFilePath = bundle.path(forResource: "WORKSPACE", ofType: "")! as NSString
     aspectWorkspacePath = workspaceFilePath.deletingLastPathComponent
   }

@@ -40,7 +40,7 @@ public struct TulsiParameter<T> {
   public let value: T
   public let source: Source
 
-  init(value: T, source: Source) {
+  public init(value: T, source: Source) {
     self.value = value
     self.source = source
   }

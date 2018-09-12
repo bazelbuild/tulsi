@@ -16,7 +16,7 @@ import Foundation
 
 
 /// Provides functionality to log messages using a localized string table.
-class LocalizedMessageLogger {
+public class LocalizedMessageLogger {
 
   /// Structure representing a logging session in process.
   struct LogSessionHandle {
@@ -41,7 +41,7 @@ class LocalizedMessageLogger {
 
   let bundle: Bundle?
 
-  init(bundle: Bundle?) {
+  public init(bundle: Bundle?) {
     self.bundle = bundle
   }
 

@@ -14,7 +14,7 @@
 
 import Foundation
 
-protocol Pythonable {
+public protocol Pythonable {
   func toPython(_ indentation: String) -> String
 }
 
@@ -90,7 +90,7 @@ extension Set where Element: Pythonable {
 }
 
 extension String: Pythonable {
-  func toPython(_ indentation: String) -> String {
+  public func toPython(_ indentation: String) -> String {
     guard self.contains("'") else { return "'\(self)'"}
 
     let escapedStr = self.replacingOccurrences(of: "'", with: "\\'")
@@ -98,7 +98,7 @@ extension String: Pythonable {
   }
 }
 
-class BazelFlags: Equatable, Pythonable {
+public class BazelFlags: Equatable, Pythonable {
   public let startup: [String]
   public let build: [String]
 
@@ -116,7 +116,7 @@ class BazelFlags: Equatable, Pythonable {
     return startup.isEmpty && build.isEmpty
   }
 
-  func toPython(_ indentation: String) -> String {
+  public func toPython(_ indentation: String) -> String {
     guard !self.isEmpty else { return "BazelFlags()" }
 
     let nestedIndentation = "\(indentation)\(PythonSettings.doubleIndent)"
@@ -128,7 +128,7 @@ BazelFlags(
 """
   }
 
-  static func ==(lhs: BazelFlags, rhs: BazelFlags) -> Bool {
+  public static func ==(lhs: BazelFlags, rhs: BazelFlags) -> Bool {
     return lhs.startup == rhs.startup && lhs.build == rhs.build
   }
 
@@ -138,7 +138,7 @@ BazelFlags(
   }
 }
 
-class BazelFlagsSet: Equatable, Pythonable {
+public class BazelFlagsSet: Equatable, Pythonable {
   public let debug: BazelFlags
   public let release: BazelFlags
 
@@ -161,7 +161,7 @@ class BazelFlagsSet: Equatable, Pythonable {
     return forDebug ? debug : release
   }
 
-  func toPython(_ indentation: String) -> String {
+  public func toPython(_ indentation: String) -> String {
     guard !isEmpty else { return "BazelFlagsSet()" }
 
     let nestedIndentation = "\(indentation)\(PythonSettings.doubleIndent)"
@@ -183,7 +183,7 @@ BazelFlagsSet(
 """
   }
 
-  static func ==(lhs: BazelFlagsSet, rhs: BazelFlagsSet) -> Bool {
+  public static func ==(lhs: BazelFlagsSet, rhs: BazelFlagsSet) -> Bool {
     return lhs.debug == rhs.debug && lhs.release == rhs.release
   }
 
@@ -193,7 +193,7 @@ BazelFlagsSet(
   }
 }
 
-class BazelBuildSettings: Pythonable {
+public class BazelBuildSettings: Pythonable {
 
   public let bazel: String
   public let bazelExecRoot: String

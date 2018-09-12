@@ -153,8 +153,8 @@ public enum PlatformType: String {
 
 /// Target platform and os version to be used when generating the project.
 public struct DeploymentTarget : Equatable {
-  let platform: PlatformType
-  let osVersion: String
+  public let platform: PlatformType
+  public let osVersion: String
 
   public static func ==(lhs: DeploymentTarget, rhs: DeploymentTarget) -> Bool {
     return lhs.platform == rhs.platform && lhs.osVersion == rhs.osVersion

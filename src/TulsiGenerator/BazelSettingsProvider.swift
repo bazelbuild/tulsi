@@ -97,13 +97,13 @@ public enum BazelSettingFeature: Hashable, Pythonable {
     }
   }
 
-  func toPython(_ indentation: String) -> String {
+  public func toPython(_ indentation: String) -> String {
     return stringValue.toPython(indentation)
   }
 }
 
 /// Defines an object that provides flags for Bazel invocations.
-protocol BazelSettingsProviderProtocol {
+public protocol BazelSettingsProviderProtocol {
   /// All general-Tulsi flags, varying based on whether the project has Swift or not.
   func tulsiFlags(hasSwift: Bool,
                   options: TulsiOptionSet?,
