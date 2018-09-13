@@ -104,6 +104,18 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
 
     let filename = TulsiGeneratorConfig.sanitizeFilename("\(config).xcodeproj")
     let xcodeProjectURL = workspaceRootURL.appendingPathComponent(filename, isDirectory: true)
+
+    addTeardownBlock {
+      do {
+        if self.fileManager.fileExists(atPath: xcodeProjectURL.path) {
+          try self.fileManager.removeItem(at: xcodeProjectURL)
+          XCTAssertFalse(self.fileManager.fileExists(atPath: xcodeProjectURL.path))
+        }
+      } catch {
+          XCTFail("Error while deleting generated Xcode project: \(error)")
+      }
+    }
+
     return xcodeProjectURL
   }
 
@@ -139,6 +151,17 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
                                                config: "Buttons")
     XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
     testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
+  }
+
+  func testButtonsWithCanaryBazel() throws {
+    if let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL {
+      XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
+      bazelURL = canaryBazelURL
+      let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+      let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
+                                                 config: "Buttons")
+      testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
+    }
   }
 
   func testInvalidConfig() throws {

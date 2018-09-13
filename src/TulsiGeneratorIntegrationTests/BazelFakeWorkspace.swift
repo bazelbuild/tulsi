@@ -23,6 +23,7 @@ class BazelFakeWorkspace {
   var fakeExecroot: URL
   var workspaceRootURL: URL
   var bazelURL: URL
+  var canaryBazelURL: URL?
   var pathsToCleanOnTeardown = Set<URL>()
 
   init(runfilesURL: URL, tempDirURL: URL) {
