@@ -798,10 +798,12 @@ def _tulsi_sources_aspect(target, ctx):
         swift_transitive_modules = _depset_to_file_metadata_list(provider.swift_modules)
         objc_module_maps = _depset_to_file_metadata_list(provider.module_maps)
         test_deps = provider.deps.to_list()
+        module_name = provider.module_name
     else:
         swift_transitive_modules = swift_transitive_modules.to_list()
         objc_module_maps = objc_module_maps.to_list()
         test_deps = None
+        module_name = None
 
     info = _struct_omitting_none(
         artifacts = artifacts,
@@ -825,6 +827,7 @@ def _tulsi_sources_aspect(target, ctx):
         srcs = srcs,
         swift_transitive_modules = swift_transitive_modules,
         objc_module_maps = objc_module_maps,
+        module_name = module_name,
         type = target_kind,
         infoplist = infoplist.basename if infoplist else None,
         platform_type = platform_type,

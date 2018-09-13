@@ -221,6 +221,9 @@ public final class RuleEntry: RuleInfo {
   /// List containing the transitive ObjC modulemaps on which this rule depends.
   public let objCModuleMaps: [BazelFileInfo]
 
+  /// Module name to use in Xcode instead of the default.
+  public let moduleName: String?
+
   /// The deployment platform target for this target.
   public let deploymentTarget: DeploymentTarget?
 
@@ -343,6 +346,7 @@ public final class RuleEntry: RuleInfo {
        swiftToolchain: String? = nil,
        swiftTransitiveModules: [BazelFileInfo] = [],
        objCModuleMaps: [BazelFileInfo] = [],
+       moduleName: String? = nil,
        extensionType: String? = nil,
        xcodeVersion: String? = nil) {
 
@@ -390,6 +394,7 @@ public final class RuleEntry: RuleInfo {
     self.deploymentTarget = deploymentTarget
     self.buildFilePath = buildFilePath
     self.objcDefines = objcDefines
+    self.moduleName = moduleName
     self.swiftDefines = swiftDefines
     self.includePaths = includePaths
     self.swiftLanguageVersion = swiftLanguageVersion
@@ -460,6 +465,7 @@ public final class RuleEntry: RuleInfo {
                    swiftToolchain: String? = nil,
                    swiftTransitiveModules: [BazelFileInfo] = [],
                    objCModuleMaps: [BazelFileInfo] = [],
+                   moduleName: String? = nil,
                    extensionType: String? = nil,
                    xcodeVersion: String? = nil) {
     self.init(label: BuildLabel(label),
@@ -488,6 +494,7 @@ public final class RuleEntry: RuleInfo {
               swiftToolchain: swiftToolchain,
               swiftTransitiveModules: swiftTransitiveModules,
               objCModuleMaps: objCModuleMaps,
+              moduleName: moduleName,
               extensionType: extensionType,
               xcodeVersion: xcodeVersion)
   }

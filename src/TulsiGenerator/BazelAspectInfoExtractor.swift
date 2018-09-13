@@ -346,6 +346,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       let swiftToolchain = dict["swift_toolchain"] as? String
       let swiftTransitiveModules = MakeBazelFileInfos("swift_transitive_modules")
       let objCModuleMaps = MakeBazelFileInfos("objc_module_maps")
+      let moduleName = dict["module_name"] as? String
       let extensions: Set<BuildLabel>?
       if let extensionList = dict["extensions"] as? [String] {
         extensions = Set(extensionList.map({ BuildLabel($0) }))
@@ -415,6 +416,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 swiftToolchain: swiftToolchain,
                                 swiftTransitiveModules: swiftTransitiveModules,
                                 objCModuleMaps: objCModuleMaps,
+                                moduleName: moduleName,
                                 extensionType: extensionType,
                                 xcodeVersion: xcodeVersion)
       progressNotifier?.incrementValue()

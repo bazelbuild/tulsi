@@ -1329,6 +1329,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       testSettings["OTHER_SWIFT_FLAGS"] = "$(inherited) " + otherSwiftFlagsArr.joined(separator: " ")
     }
 
+    if let moduleName = ruleEntry.moduleName {
+      testSettings["PRODUCT_MODULE_NAME"] = moduleName
+    }
+
     return testSettings
   }
 
