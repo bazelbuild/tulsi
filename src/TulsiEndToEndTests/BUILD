@@ -8,6 +8,7 @@ test_suite(
 
 tulsi_integration_test(
     name = "TulsiEndToEndTest",
+    size = "large",
     srcs = ["TulsiEndToEndTest.swift"],
     data = [
         "Resources/Buttons.tulsiproj",
