@@ -108,7 +108,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
-        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "8.0"))
+        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_bundle")
 
@@ -337,7 +337,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
-        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "8.0"))
+        .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_bundle")
 

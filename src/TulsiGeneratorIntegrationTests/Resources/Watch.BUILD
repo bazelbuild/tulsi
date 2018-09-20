@@ -29,7 +29,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     watch_application = ":WatchApplication",
     deps = [
         ":ApplicationLibrary",

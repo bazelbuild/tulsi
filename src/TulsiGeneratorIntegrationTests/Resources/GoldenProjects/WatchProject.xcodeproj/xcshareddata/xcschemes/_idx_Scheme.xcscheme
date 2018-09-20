@@ -6,7 +6,7 @@
                 <BuildableReference BlueprintIdentifier="3D31C5E6074E6CA200000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="lib_idx_WatchExtensionLibrary_6997976B_watchos_min3.0.a" BlueprintName="_idx_WatchExtensionLibrary_6997976B_watchos_min3.0" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6C6B1A54800000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="lib_idx_ApplicationLibrary_06BBE256_ios_min8.0.a" BlueprintName="_idx_ApplicationLibrary_06BBE256_ios_min8.0" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6C6B1A54800000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="lib_idx_ApplicationLibrary_06BBE256_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_06BBE256_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

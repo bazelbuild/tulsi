@@ -83,12 +83,12 @@
 		43D68C283148FC2600000000 /* src.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src.mm; path = "tulsi-workspace/tulsi_e2e_complex/SubLibrary/srcs/src.mm"; sourceTree = "<group>"; };
 		43D68C283591DFD900000000 /* DataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv1.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a; path = lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C283CFBA10800000000 /* es */ = {isa = PBXFileReference; lastKnownFileType = text; name = es; path = "tulsi-workspace/tulsi_e2e_complex/Application/es.lproj/Localized.strings"; sourceTree = "<group>"; };
 		43D68C28442EC9D700000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		43D68C2845AE2B9000000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_complex/Library/xib.xib"; sourceTree = "<group>"; };
 		43D68C284C9C3B6600000000 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "tulsi-workspace/tulsi_e2e_complex/Application/en.lproj/Localized.strings"; sourceTree = "<group>"; };
-		43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; path = lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a; path = lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2858F5ABDF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_complex/Application/Info.plist"; sourceTree = "<group>"; };
 		43D68C285E266A6000000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28627DA73600000000 /* file2.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = file2.file; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file2.file"; sourceTree = "<group>"; };
@@ -107,24 +107,24 @@
 		43D68C288E876E6400000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_complex/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
 		43D68C28958553E300000000 /* src5.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src5.mm; path = "tulsi-workspace/tulsi_e2e_complex/Library/srcs/src5.mm"; sourceTree = "<group>"; };
 		43D68C289B31F4AA00000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src2.m"; sourceTree = "<group>"; };
-		43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min8.0.a; path = lib_idx_Library_20EC2F4A_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_20EC2F4A_ios_min10.0.a; path = lib_idx_Library_20EC2F4A_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A47D8A1F00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		43D68C28A6D7A7EC00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_complex/BUILD; sourceTree = "<group>"; };
 		43D68C28AB2790F000000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src3.m"; sourceTree = "<group>"; };
 		43D68C28B112D95100000000 /* structured_resources.file2 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy3a; name = structured_resources.file2; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file2"; sourceTree = "<group>"; };
 		43D68C28B72F496D00000000 /* test.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = test.framework; path = "tulsi-workspace/tulsi_e2e_complex/ObjCFramework/test.framework"; sourceTree = "<group>"; };
-		43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a; path = lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28BAE52D2E00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_complex/LibrarySources/srcs/src4.m"; sourceTree = "<group>"; };
 		43D68C28BD12D84F00000000 /* structured_resources.file1 */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy2u; name = structured_resources.file1; path = "tulsi-workspace/tulsi_e2e_complex/Application/structured_resources.file1"; sourceTree = "<group>"; };
 		43D68C28C01A0B2500000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_complex/Application/Base.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; path = lib_idx_SubLibrary_19588DB9_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibrary_19588DB9_ios_min10.0.a; path = lib_idx_SubLibrary_19588DB9_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28DACF7BDE00000000 /* DataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = DataModelsTestv2.xcdatamodel; path = tulsi_e2e_complex/Test.xcdatamodeld/DataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
 		43D68C28DC6A997500000000 /* NonARCFile.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NonARCFile.mm; path = "tulsi-workspace/tulsi_e2e_complex/Application/non_arc_srcs/NonARCFile.mm"; sourceTree = "<group>"; };
 		43D68C28ED583D0500000000 /* today_extension_library.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = today_extension_library.m; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/srcs/today_extension_library.m"; sourceTree = "<group>"; };
 		43D68C28EEE1AA8400000000 /* file1 */ = {isa = PBXFileReference; lastKnownFileType = text; name = file1; path = "tulsi-workspace/tulsi_e2e_complex/TodayExtension/resources/file1"; sourceTree = "<group>"; };
 		43D68C28F49055A600000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28F643652200000000 /* defaultTestSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = defaultTestSource.m; path = "tulsi-workspace/tulsi_e2e_complex/XCTest/srcs/defaultTestSource.m"; sourceTree = "<group>"; };
-		43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a; path = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a; path = lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28FE8BFD3900000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_complex/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,12 +132,12 @@
 		966FB6DE0562C2F700000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */,
-				43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */,
-				43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */,
-				43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */,
-				43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */,
-				43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0.a */,
+				43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a */,
+				43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min10.0.a */,
+				43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a */,
+				43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a */,
+				43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min10.0.a */,
+				43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -476,9 +476,9 @@
 			productReference = 43D68C283A3B027E00000000 /* TodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		3D31C5E6202AA80600000000 /* _idx_Library_20EC2F4A_ios_min8.0 */ = {
+		3D31C5E6202AA80600000000 /* _idx_Library_20EC2F4A_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558386FEC76600000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A_ios_min8.0" */;
+			buildConfigurationList = DE47558386FEC76600000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000003 /* Sources */,
 			);
@@ -490,14 +490,14 @@
 				4DAD0B425DB0F3F900000000 /* PBXTargetDependency */,
 				4DAD0B42FBA8FA0900000000 /* PBXTargetDependency */,
 			);
-			name = _idx_Library_20EC2F4A_ios_min8.0;
-			productName = _idx_Library_20EC2F4A_ios_min8.0;
-			productReference = 43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min8.0.a */;
+			name = _idx_Library_20EC2F4A_ios_min10.0;
+			productName = _idx_Library_20EC2F4A_ios_min10.0;
+			productReference = 43D68C28A0499AFA00000000 /* lib_idx_Library_20EC2F4A_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E63753AE4A00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0 */ = {
+		3D31C5E63753AE4A00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755836FEEB79400000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0" */;
+			buildConfigurationList = DE4755836FEEB79400000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000002 /* Sources */,
 			);
@@ -506,14 +506,14 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0;
-			productName = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0;
-			productReference = 43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0.a */;
+			name = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0;
+			productName = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0;
+			productReference = 43D68C283C339BDC00000000 /* lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min8.0 */ = {
+		3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583FE21F14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9_ios_min8.0" */;
+			buildConfigurationList = DE475583FE21F14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000005 /* Sources */,
 			);
@@ -522,9 +522,9 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SubLibrary_19588DB9_ios_min8.0;
-			productName = _idx_SubLibrary_19588DB9_ios_min8.0;
-			productReference = 43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min8.0.a */;
+			name = _idx_SubLibrary_19588DB9_ios_min10.0;
+			productName = _idx_SubLibrary_19588DB9_ios_min10.0;
+			productReference = 43D68C28D757BE4200000000 /* lib_idx_SubLibrary_19588DB9_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
@@ -543,9 +543,9 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min8.0 */ = {
+		3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583C8973FE700000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_30DD5A4B_ios_min8.0" */;
+			buildConfigurationList = DE475583C8973FE700000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_30DD5A4B_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000001 /* Sources */,
 			);
@@ -557,14 +557,14 @@
 				4DAD0B423753AE4B00000000 /* PBXTargetDependency */,
 				4DAD0B42202AA80700000000 /* PBXTargetDependency */,
 			);
-			name = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
-			productName = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
-			productReference = 43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min8.0.a */;
+			name = _idx_ApplicationLibrary_30DD5A4B_ios_min10.0;
+			productName = _idx_ApplicationLibrary_30DD5A4B_ios_min10.0;
+			productReference = 43D68C2853B580F400000000 /* lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0 */ = {
+		3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583AD8E320D00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0" */;
+			buildConfigurationList = DE475583AD8E320D00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000004 /* Sources */,
 			);
@@ -573,9 +573,9 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
-			productName = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
-			productReference = 43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0.a */;
+			name = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0;
+			productName = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0;
+			productReference = 43D68C28B7BD546800000000 /* lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3D31C5E6EF2E7F4000000000 /* XCTest */ = {
@@ -596,9 +596,9 @@
 			productReference = 43D68C285E266A6000000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0 */ = {
+		3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE475583FD65EB8600000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0" */;
+			buildConfigurationList = DE475583FD65EB8600000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000006 /* Sources */,
 			);
@@ -607,9 +607,9 @@
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
-			productName = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
-			productReference = 43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0.a */;
+			name = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0;
+			productName = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0;
+			productReference = 43D68C28F83513A200000000 /* lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -639,12 +639,12 @@
 				3D31C5E61F218FDA00000000 /* TodayExtension */,
 				3D31C5E6EF2E7F4000000000 /* XCTest */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min8.0 */,
-				3D31C5E6202AA80600000000 /* _idx_Library_20EC2F4A_ios_min8.0 */,
-				3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0 */,
-				3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0 */,
-				3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min8.0 */,
-				3D31C5E63753AE4A00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0 */,
+				3D31C5E6C106276200000000 /* _idx_ApplicationLibrary_30DD5A4B_ios_min10.0 */,
+				3D31C5E6202AA80600000000 /* _idx_Library_20EC2F4A_ios_min10.0 */,
+				3D31C5E6E3993AD600000000 /* _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0 */,
+				3D31C5E6FBA8FA0800000000 /* _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0 */,
+				3D31C5E65DB0F3F800000000 /* _idx_SubLibrary_19588DB9_ios_min10.0 */,
+				3D31C5E63753AE4A00000000 /* _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -846,7 +846,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosappTests;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
@@ -865,7 +865,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -916,7 +916,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
@@ -931,9 +931,9 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DA=BINARY_DEFINE -DLIBRARY SECOND DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
+				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -944,8 +944,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -957,9 +957,9 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY SECOND DEFINE=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min8.0;
+				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -970,9 +970,9 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
-				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
+				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -985,8 +985,8 @@
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -997,9 +997,9 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
+				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1015,7 +1015,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosappTests;
 				PRODUCT_NAME = XCTest;
 				SDKROOT = iphoneos;
@@ -1034,7 +1034,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -1085,7 +1085,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
@@ -1100,9 +1100,9 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tulsi_e2e_complex/ObjCFramework";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_WR)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/first/include $(TULSI_BWRS)/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/Application/includes/second/include $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DA=BINARY_DEFINE -DLIBRARY SECOND DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min8.0;
+				PRODUCT_NAME = _idx_ApplicationLibrary_30DD5A4B_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1113,8 +1113,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = _idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1126,9 +1126,9 @@
 				GCC_PREFIX_HEADER = "$(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/PCHGenerator/outs/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY SECOND DEFINE=2 -DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1 -DLIBRARY_VALUE_WITH_SPACES=Value with spaces -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines -DSubLibraryWithDifferentDefines=1";
-				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min8.0;
+				PRODUCT_NAME = _idx_Library_20EC2F4A_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1139,9 +1139,9 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_complex/SubLibraryWithDifferentDefines/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1 -D'SubLibraryWithDifferentDefines Define with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'";
-				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0;
+				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1154,8 +1154,8 @@
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = _idx_SubLibrary_19588DB9_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1166,9 +1166,9 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0;
+				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1185,7 +1185,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1212,7 +1212,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1276,7 +1276,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1302,7 +1302,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1329,7 +1329,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1393,7 +1393,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_complex-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1421,7 +1421,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755836FEEB79400000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min8.0" */ = {
+		DE4755836FEEB79400000000 /* Build configuration list for PBXNativeTarget "_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,
@@ -1429,7 +1429,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558386FEC76600000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A_ios_min8.0" */ = {
+		DE47558386FEC76600000000 /* Build configuration list for PBXNativeTarget "_idx_Library_20EC2F4A_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000006 /* Debug */,
@@ -1447,7 +1447,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583AD8E320D00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min8.0" */ = {
+		DE475583AD8E320D00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000007 /* Debug */,
@@ -1465,7 +1465,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583C8973FE700000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_30DD5A4B_ios_min8.0" */ = {
+		DE475583C8973FE700000000 /* Build configuration list for PBXNativeTarget "_idx_ApplicationLibrary_30DD5A4B_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000004 /* Debug */,
@@ -1489,7 +1489,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583FD65EB8600000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min8.0" */ = {
+		DE475583FD65EB8600000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000009 /* Debug */,
@@ -1497,7 +1497,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583FE21F14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9_ios_min8.0" */ = {
+		DE475583FE21F14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_19588DB9_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000008 /* Debug */,

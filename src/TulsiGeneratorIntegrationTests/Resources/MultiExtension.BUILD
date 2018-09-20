@@ -34,7 +34,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
 )
 
 ios_application(
@@ -49,7 +49,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
 )
 
 ios_extension(
@@ -62,5 +62,5 @@ ios_extension(
     infoplists = [
         "TodayExtension/Plist1.plist",
     ],
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
 )

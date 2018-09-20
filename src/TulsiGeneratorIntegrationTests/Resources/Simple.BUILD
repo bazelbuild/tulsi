@@ -34,7 +34,7 @@ ios_application(
         "assets.xcassets/images.launchimage/image.png",
     ],
     launch_storyboard = "Application/Launch.storyboard",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     deps = [":ApplicationLibrary"],
 )
 
@@ -52,7 +52,7 @@ ios_application(
         "assets.xcassets/images.launchimage/image.png",
     ],
     launch_storyboard = "Application/Launch.storyboard",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     deps = [":ApplicationLibrary"],
 )
 
@@ -134,7 +134,7 @@ objc_library(
 
 ios_unit_test(
     name = "XCTest",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":Application",
     deps = [

@@ -150,6 +150,7 @@ let FileExtensionToUTI = [
   "png": "image.png",
   "pp": "sourcecode.pascal",
   "ppob": "archive.ppob",
+  "proto": "public.protobuf-source",
   "py": "text.script.python",
   "qtz": "video.quartz-composer",
   "r": "sourcecode.rez",

@@ -35,7 +35,7 @@ ios_application(
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     settings_bundle = ":SettingsBundle",
     deps = [":MainLibrary"],
 )
@@ -46,7 +46,7 @@ ios_application(
     families = ["iphone"],
     infoplists = ["Application/Info.plist"],
     launch_storyboard = "Application/Launch.storyboard",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     deps = [":MainLibrary"],
 )
 
@@ -56,7 +56,7 @@ ios_extension(
     bundle_id = "com.google.Tulsi.TargetApplication.extension",
     families = ["iphone"],
     infoplists = ["Ext-Info.plist"],
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     product_type = apple_product_type.messages_sticker_pack_extension,
 )
 
@@ -163,7 +163,7 @@ swift_library(
 
 ios_unit_test(
     name = "XCTest",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":SkylarkApplication",
     deps = [
@@ -174,7 +174,7 @@ ios_unit_test(
 
 ios_unit_test(
     name = "XCTestWithNoTestHost",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     deps = [
         ":XCTestCode",
@@ -184,7 +184,7 @@ ios_unit_test(
 
 ios_ui_test(
     name = "XCUITest",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":SkylarkApplication",
     deps = [
@@ -201,7 +201,7 @@ objc_library(
 
 ios_unit_test(
     name = "LegacyTests",
-    minimum_os_version = "8.0",
+    minimum_os_version = "10.0",
     deps = [
         ":LegacyTestsLib",
     ],

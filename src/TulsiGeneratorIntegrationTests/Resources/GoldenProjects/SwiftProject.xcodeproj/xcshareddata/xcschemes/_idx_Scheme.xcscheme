@@ -3,13 +3,13 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E68D4F012A00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibrary_EA7FC891_ios_min8.0.framework" BlueprintName="_idx_SwiftLibrary_EA7FC891_ios_min8.0" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E68D4F012A00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibrary_EA7FC891_ios_min10.0.framework" BlueprintName="_idx_SwiftLibrary_EA7FC891_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E685D0530A00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV3_56AA3A57_ios_min8.0.framework" BlueprintName="_idx_SwiftLibraryV3_56AA3A57_ios_min8.0" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E685D0530A00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework" BlueprintName="_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E62F55BA0C00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV4_56AA3A59_ios_min8.0.framework" BlueprintName="_idx_SwiftLibraryV4_56AA3A59_ios_min8.0" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E62F55BA0C00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework" BlueprintName="_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

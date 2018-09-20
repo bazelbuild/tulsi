@@ -86,7 +86,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Explicitly set Xcode version to use. Must use the same version or the golden files
     // won't match.
-    bazelBuildOptions.append("--xcode_version=9.2")
+    bazelBuildOptions.append("--xcode_version=9.4")
 
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")
