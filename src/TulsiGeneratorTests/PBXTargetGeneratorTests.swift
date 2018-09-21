@@ -995,6 +995,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         expectedBuildPhases: [
           BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget),
           SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
+          ObjcDummyShellScriptBuildPhaseDefinition(),
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1113,7 +1114,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           expectedBuildPhases: [
               SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
               BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
-                                              buildTarget: testRuleBuildTarget)
+                                              buildTarget: testRuleBuildTarget),
+              ObjcDummyShellScriptBuildPhaseDefinition(),
           ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1200,7 +1202,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       expectedBuildPhases: [
         SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
         BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
-                                             buildTarget: "\(testRulePackage):\(testRuleTargetName)")
+                                             buildTarget: "\(testRulePackage):\(testRuleTargetName)"),
+        ObjcDummyShellScriptBuildPhaseDefinition(),
       ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -1408,7 +1411,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         expectedBuildPhases: [
           SourcesBuildPhaseDefinition(files: testSources, mainGroup: project.mainGroup),
           BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath,
-                                          buildTarget: testRuleBuildTarget)
+                                          buildTarget: testRuleBuildTarget),
+          ObjcDummyShellScriptBuildPhaseDefinition(),
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -2835,6 +2839,24 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   private class SwiftDummyShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
     init() {
       super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "SwiftDummy")
+    }
+
+    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
+      super.validate(phase, line: line)
+
+      // Guaranteed by the test infrastructure below, failing this indicates a programming error in
+      // the test fixture, not in the code being tested.
+      let scriptBuildPhase = phase as! PBXShellScriptBuildPhase
+
+      let script = scriptBuildPhase.shellScript
+      XCTAssert(script.contains("touch"), "Build script does not contain 'touch'.",
+                line: line)
+    }
+  }
+
+  private class ObjcDummyShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
+    init() {
+      super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "ObjcDummy")
     }
 
     override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {

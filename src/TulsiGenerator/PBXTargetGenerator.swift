@@ -1162,6 +1162,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       target.buildPhases.append(testBuildPhase)
     }
     if !testSourceFileInfos.isEmpty || !testNonArcSourceFileInfos.isEmpty {
+      if !containsSwift {
+        let allSources = testSourceFileInfos + testNonArcSourceFileInfos
+        let testBuildPhase = createGenerateDummyDependencyFilesTestBuildPhase(allSources)
+        target.buildPhases.append(testBuildPhase)
+      }
       var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos)
       let (nonARCFiles, nonARCSettings) =
           generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos)
@@ -1584,6 +1589,30 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return buildPhase
   }
 
+  private func createGenerateDummyDependencyFilesTestBuildPhase(_ sources: [BazelFileInfo]) -> PBXShellScriptBuildPhase {
+    let files = sources.map { ($0.subPath as NSString).deletingPathExtension.pbPathLastComponent }
+    let shellScript = """
+# Script to generate dependency files Xcode expects when running tests.
+set -eu
+ARCH_ARRAY=($ARCHS)
+FILES=(\(files.map { $0.escapingForShell }.joined(separator: " ")))
+for ARCH in "${ARCH_ARRAY[@]}"
+do
+  mkdir -p "$OBJECT_FILE_DIR_normal/$ARCH/"
+  rm -f "$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat"
+  printf '\\x00\\x31\\x00' >"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat"
+  for FILE in "${FILES[@]}"
+  do
+    touch "$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d"
+  done
+done
+"""
+    let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
+    buildPhase.showEnvVarsInLog = true
+    buildPhase.mnemonic = "ObjcDummy"
+    return buildPhase
+  }
+
   private func createBuildPhaseForRuleEntry(_ entry: RuleEntry)
       -> PBXShellScriptBuildPhase? {
     let buildLabel = entry.label.value
@@ -1599,7 +1628,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "\(changeDirectoryAction)\n" +
         "exec \(commandLine)"
 
-    let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
+    // Using the Info.plist as an input forces Xcode to run this after processing the Info.plist,
+    // allowing our script to safely overwrite the Info.plist after Xcode does its processing.
+    let inputPaths = ["$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)"]
+    let buildPhase = PBXShellScriptBuildPhase(
+      shellScript: shellScript,
+      shellPath: "/bin/bash",
+      inputPaths: inputPaths
+    )
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "BazelBuild"
     return buildPhase
