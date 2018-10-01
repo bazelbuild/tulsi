@@ -25,10 +25,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework; path = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework; path = _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework; path = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C280D5CF7EC00000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework; path = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C2846EE6A8A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework; path = _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C2897AEEFA100000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = "<group>"; };
+		43D68C289E2B41EA00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework; path = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28A81C321400000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
 		43D68C28ADF10C6300000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
 		43D68C28BF9D04A000000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = "<group>"; };
@@ -44,9 +44,9 @@
 		966FB6DE0562C2F700000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */,
-				43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */,
-				43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */,
+				43D68C289E2B41EA00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */,
+				43D68C280D5CF7EC00000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */,
+				43D68C2846EE6A8A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -186,20 +186,20 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E62F55BA0C00000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0 */ = {
+		3D31C5E64BB0ADDE00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558383F42CFC00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" */;
+			buildConfigurationList = DE4755837563152500000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" */;
 			buildPhases = (
-				605793E20000000000000001 /* Sources */,
+				605793E20000000000000000 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0;
-			productName = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0;
-			productReference = 43D68C281A91031800000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */;
+			name = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0;
+			productName = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0;
+			productReference = 43D68C289E2B41EA00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		3D31C5E66B144ABC00000000 /* Application */ = {
@@ -218,25 +218,25 @@
 			productReference = 43D68C28F49055A600000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E685D0530A00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0 */ = {
+		3D31C5E6CCAA0DE000000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558357CE7FFB00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" */;
+			buildConfigurationList = DE475583C81FC52600000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" */;
 			buildPhases = (
-				605793E20000000000000000 /* Sources */,
+				605793E20000000000000001 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4DAD0B426921D83500000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0;
-			productName = _idx_SwiftLibraryV3_56AA3A57_ios_min10.0;
-			productReference = 43D68C2875CB931600000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework */;
+			name = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0;
+			productName = _idx_SwiftLibraryV4_56AA3A59_ios_min10.0;
+			productReference = 43D68C280D5CF7EC00000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		3D31C5E68D4F012A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0 */ = {
+		3D31C5E6EB65D1FE00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755838C94FE4B00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min10.0" */;
+			buildConfigurationList = DE47558377FA29B500000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min10.0" */;
 			buildPhases = (
 				605793E20000000000000002 /* Sources */,
 			);
@@ -247,7 +247,7 @@
 			);
 			name = _idx_SwiftLibrary_EA7FC891_ios_min10.0;
 			productName = _idx_SwiftLibrary_EA7FC891_ios_min10.0;
-			productReference = 43D68C283DDF903600000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */;
+			productReference = 43D68C2846EE6A8A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -257,7 +257,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 0941;
 			};
 			buildConfigurationList = DE475583EEBE630B00000000 /* Build configuration list for PBXProject "SwiftProject" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -270,9 +270,9 @@
 			targets = (
 				3D31C5E66B144ABC00000000 /* Application */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E685D0530A00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0 */,
-				3D31C5E62F55BA0C00000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0 */,
-				3D31C5E68D4F012A00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0 */,
+				3D31C5E64BB0ADDE00000000 /* _idx_SwiftLibraryV3_56AA3A57_ios_min10.0 */,
+				3D31C5E6CCAA0DE000000000 /* _idx_SwiftLibraryV4_56AA3A59_ios_min10.0 */,
+				3D31C5E6EB65D1FE00000000 /* _idx_SwiftLibrary_EA7FC891_ios_min10.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -284,6 +284,7 @@
 			files = (
 			);
 			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
 			outputPaths = (
 			);
@@ -336,6 +337,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -380,7 +382,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Debug;
 		};
@@ -427,6 +429,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -471,7 +474,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Release;
 		};
@@ -518,6 +521,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -575,7 +579,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -583,6 +587,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -640,14 +645,14 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE47558357CE7FFB00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" */ = {
+		DE4755837563152500000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000002 /* Debug */,
@@ -655,19 +660,19 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558383F42CFC00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD6A3D45CE900000003 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		DE4755838C94FE4B00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min10.0" */ = {
+		DE47558377FA29B500000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_EA7FC891_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000004 /* Debug */,
 				44936BD6A3D45CE900000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DE475583C81FC52600000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44936BD67EED3C4D00000003 /* Debug */,
+				44936BD6A3D45CE900000003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

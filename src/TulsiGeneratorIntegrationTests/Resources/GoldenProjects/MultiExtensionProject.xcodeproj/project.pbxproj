@@ -186,7 +186,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 0941;
 			};
 			buildConfigurationList = DE47558358721DCF00000000 /* Build configuration list for PBXProject "MultiExtensionProject" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -212,6 +212,7 @@
 			files = (
 			);
 			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
 			outputPaths = (
 			);
@@ -226,6 +227,7 @@
 			files = (
 			);
 			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
 			outputPaths = (
 			);
@@ -240,6 +242,7 @@
 			files = (
 			);
 			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
 			outputPaths = (
 			);
@@ -262,6 +265,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -305,7 +309,7 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Debug;
 		};
@@ -322,7 +326,7 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Debug;
 		};
@@ -339,7 +343,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Debug;
 		};
@@ -347,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -390,7 +395,7 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Release;
 		};
@@ -407,7 +412,7 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Release;
 		};
@@ -424,7 +429,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = Release;
 		};
@@ -432,6 +437,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -488,7 +494,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -513,7 +519,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -538,7 +544,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -546,6 +552,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -602,7 +609,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -627,7 +634,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -652,7 +659,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.2.0;
+				TULSI_XCODE_VERSION = 9.4.1;
 			};
 			name = __TulsiTestRunner_Release;
 		};
