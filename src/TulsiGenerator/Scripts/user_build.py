@@ -48,6 +48,7 @@ def _CreateCommand(targets, build_settings, test, release,
   command.extend(flags)
   if xcode_version:
     command.append('--xcode_version=%s' % xcode_version)
+  command.append('--tool_tag=tulsi:user_build')
   command.extend(targets)
 
   return command

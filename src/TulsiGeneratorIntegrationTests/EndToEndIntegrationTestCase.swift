@@ -140,6 +140,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
       args.append(contentsOf: bazelBuildOptions)
       args.append(contentsOf: config.bazelFlags)
       args.append(contentsOf: tulsiFlags.build)
+      args.append("--tool_tag=tulsi:user_build")
       args.append(contentsOf: targets)
 
       return args.map { $0.escapingForShell }.joined(separator: " ")
