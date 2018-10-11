@@ -172,7 +172,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0941;
+				LastUpgradeCheck = 1000;
 			};
 			buildConfigurationList = DE475583D7572F3100000000 /* Build configuration list for PBXProject "SimpleCCProject" */;
 			compatibilityVersion = "Xcode 3.2";

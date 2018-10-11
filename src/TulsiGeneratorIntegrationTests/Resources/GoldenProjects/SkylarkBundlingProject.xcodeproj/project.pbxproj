@@ -212,7 +212,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0941;
+				LastUpgradeCheck = 1000;
 			};
 			buildConfigurationList = DE475583B6DDF65700000000 /* Build configuration list for PBXProject "SkylarkBundlingProject" */;
 			compatibilityVersion = "Xcode 3.2";
