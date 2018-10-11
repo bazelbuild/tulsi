@@ -135,7 +135,7 @@ BazelFlagsSet(
           "//dir/some/customized:target": BazelFlagsSet(buildFlags: ["a", "b"]),
       ]
       let swiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
-      let nonSwiftFeatures = [BazelSettingFeature.DirectDebugPrefixMap("", "").stringValue]
+      let nonSwiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
       let settings = BazelBuildSettings(bazel: bazel,
                                         bazelExecRoot: bazelExecRoot,
                                         defaultPlatformConfigIdentifier: defaultIdentifier,

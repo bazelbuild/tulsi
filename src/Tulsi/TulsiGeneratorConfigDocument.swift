@@ -442,11 +442,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   private func enabledFeatures(options: TulsiOptionSet) -> Set<BazelSettingFeature> {
-    let workspaceRoot = infoExtractor.workspaceRootURL.path
-    let bazelExecroot = infoExtractor.bazelExecutionRoot
-    return BazelBuildSettingsFeatures.enabledFeatures(options: options,
-                                                      workspaceRoot: workspaceRoot,
-                                                      bazelExecRoot: bazelExecroot)
+    return BazelBuildSettingsFeatures.enabledFeatures(options: options)
   }
 
   // Regenerates the sourcePaths array based on the currently selected ruleEntries.

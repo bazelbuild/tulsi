@@ -116,10 +116,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                                    options: TulsiOptionSet,
                                    targets: [String]) -> (String, String) {
     let provider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
-    let execRoot = workspaceInfoFetcher.getExecutionRoot()
-    let features = BazelBuildSettingsFeatures.enabledFeatures(options: options,
-                                                              workspaceRoot: workspaceRootURL.path,
-                                                              bazelExecRoot: execRoot)
+    let features = BazelBuildSettingsFeatures.enabledFeatures(options: options)
     let dbg = provider.tulsiFlags(hasSwift: swift, options: options, features: features).debug
     let rel = provider.tulsiFlags(hasSwift: swift, options: options, features: features).release
 

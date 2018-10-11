@@ -575,9 +575,7 @@ final class XcodeProjectGenerator {
 
   private func loadRuleEntryMap() throws -> RuleEntryMap {
     do {
-      let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options,
-                                                                workspaceRoot: workspaceRootURL.path,
-                                                                bazelExecRoot: workspaceInfoExtractor.bazelExecutionRoot)
+      let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options)
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
@@ -974,9 +972,7 @@ final class XcodeProjectGenerator {
 
     let bazelSettingsProvider = workspaceInfoExtractor.bazelSettingsProvider
     let bazelExecRoot = workspaceInfoExtractor.bazelExecutionRoot
-    let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options,
-                                                              workspaceRoot: workspaceRootURL.path,
-                                                              bazelExecRoot: bazelExecRoot)
+    let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options)
     let bazelBuildSettings = bazelSettingsProvider.buildSettings(bazel: config.bazelURL.path,
                                                                  bazelExecRoot: bazelExecRoot,
                                                                  options: config.options,

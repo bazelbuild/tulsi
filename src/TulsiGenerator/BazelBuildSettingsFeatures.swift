@@ -45,11 +45,15 @@ extension PlatformConfiguration {
 }
 
 public class BazelBuildSettingsFeatures {
-  public static func enabledFeatures(
-      options: TulsiOptionSet,
-      workspaceRoot: String,
-      bazelExecRoot: String
-  ) -> Set<BazelSettingFeature> {
-    return [.DirectDebugPrefixMap(bazelExecRoot, workspaceRoot)]
+  public static func enabledFeatures(options: TulsiOptionSet) -> Set<BazelSettingFeature> {
+    // A normalized path for -fdebug-prefix-map exists for keeping all debug information as built by
+    // Clang consistent for the sake of caching within a distributed build system.
+    //
+    // This is handled through a wrapped_clang feature flag via the CROSSTOOL.
+    //
+    // The use of this flag does not affect any sources built by swiftc. At present time, all Swift
+    // compiled sources will be built with uncacheable, absolute paths, as the Swift compiler does
+    // not present an easy means of similarly normalizing all debug information.
+    return [.DebugPathNormalization]
   }
 }

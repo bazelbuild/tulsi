@@ -24,24 +24,11 @@ public enum BazelSettingFeature: Hashable, Pythonable {
 
   /// Feature flag to normalize paths present in debug information via a Clang flag for distributed
   /// builds (e.g. multiple distinct paths).
-  /// - Mutually exclusive with DirectDebugPrefixMap feature
   ///
   /// The use of this flag does not affect any sources built by swiftc. At present time, all Swift
   /// compiled sources will be built with uncacheable, absolute paths, as the Swift compiler does
   /// not provide an easy means of similarly normalizing all debug information.
   case DebugPathNormalization
-
-  /// Feature flag to normalize paths present in debug information via a Clang flag for local
-  /// builds.
-  /// - Mutually exclusive with DebugPathNormalization feature
-  ///
-  /// NOTE: Use of -fdebug-prefix-map leads to producing binaries that cannot be
-  /// reused across multiple machines by a distributed build system, unless the
-  /// absolute paths to files visible to Xcode match perfectly between all of
-  /// those machines.
-  ///
-  /// For this reason, -fdebug-prefix-map is provided as a default for non-distributed purposes.
-  case DirectDebugPrefixMap(String, String)
 
   /// TODO(b/111928007): Remove this and/or BazelSettingFeature once DebugPathNormalization is
   /// supported by all builds.
@@ -49,8 +36,6 @@ public enum BazelSettingFeature: Hashable, Pythonable {
     switch self {
       case .DebugPathNormalization:
         return "DebugPathNormalization"
-      case .DirectDebugPrefixMap:
-        return "DirectDebugPrefixMap"
     }
   }
 
@@ -68,16 +53,12 @@ public enum BazelSettingFeature: Hashable, Pythonable {
         /// Technically this doesn't support swiftc, but we now support this feature for
         /// Cxx compilation alongside swift compilation.
         return true
-      case .DirectDebugPrefixMap:
-        return true
     }
   }
 
   public var supportsNonSwift: Bool {
     switch self {
       case .DebugPathNormalization:
-        return true
-      case .DirectDebugPrefixMap:
         return true
     }
   }
@@ -91,9 +72,6 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   public var buildFlags: [String] {
     switch self {
       case .DebugPathNormalization: return ["--features=debug_prefix_map_pwd_is_dot"]
-      case .DirectDebugPrefixMap(let execRoot, let workspaceRoot): return [
-          String(format: "--copt=-fdebug-prefix-map=%@=%@", execRoot, workspaceRoot)
-      ]
     }
   }
 
