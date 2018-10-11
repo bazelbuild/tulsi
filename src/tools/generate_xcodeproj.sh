@@ -26,14 +26,18 @@ if [[ "${TULSI_APP:-}" != "" ]]; then
   readonly app_bundle_path="${TULSI_APP}"
 else
   readonly tulsi_bundle_id=com.google.Tulsi
-  readonly app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id} | head -1)
+  app_bundle_path=$(mdfind kMDItemCFBundleIdentifier=${tulsi_bundle_id} | head -1)
 fi
 
 if [[ "${app_bundle_path}" == "" ]]; then
-  echo "Tulsi.app could not be located. Please ensure that you have built Tulsi\
- and that it exists in an accessible location."
+  if [[ -f "/Applications/Tulsi.app/Contents/MacOS/Tulsi" ]]; then
+    readonly app_bundle_path="/Applications/Tulsi.app"
+  else
+    echo "Tulsi.app could not be located. Please ensure that you have built\
+ Tulsi and that it exists in an accessible location."
 
-  exit 1
+    exit 1
+  fi
 fi
 
 readonly tulsi_path="${app_bundle_path}/Contents/MacOS/Tulsi"
