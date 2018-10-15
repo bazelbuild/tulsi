@@ -1,10 +1,6 @@
 # AppCode files.
 */.idea/
 
-# Xcode user data.
-*/Tulsi.xcodeproj/project.xcworkspace/xcuserdata
-*/Tulsi.xcodeproj/xcuserdata
-
 # Build artifacts
 src/build/
 /bazel-*
