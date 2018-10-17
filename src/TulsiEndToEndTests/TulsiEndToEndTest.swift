@@ -160,7 +160,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
       let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
       let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
                                                  config: "Buttons")
-      testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
+      testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
     }
   }
 
