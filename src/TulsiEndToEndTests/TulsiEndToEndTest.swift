@@ -18,40 +18,17 @@ import XCTest
 @testable import TulsiGenerator
 
 
-// End to end tests that generate an xcodeproj with the Tulsi binary and runs tests on the xcodeproj
-// to verify it was generated correctly.
+// Parent class for end to end tests that generate an xcodeproj with the Tulsi binary and verify the
+// generated xcodeproj by running the projects unit tests.
 class TulsiEndToEndTest: BazelIntegrationTestCase {
   let fileManager = FileManager.default
+  var runfilesWorkspaceURL: URL! = nil
 
   override func setUp() {
     super.setUp()
-
-    let runfilesWorkspaceURL = fakeBazelWorkspace.runfilesWorkspaceURL
-
-    // Takes a short path to data files and adds them to the correct location in the workspace.
-    func copyDataToFakeWorkspace(_ path: String) -> Bool {
-      let sourceURL = runfilesWorkspaceURL.appendingPathComponent(path, isDirectory: true)
-      let destURL = workspaceRootURL.appendingPathComponent(path, isDirectory: true)
-      do {
-        if fileManager.fileExists(atPath: destURL.path) {
-          try fileManager.removeItem(at: destURL)
-        }
-        // Symlinks cause issues with Tulsi and Storyboards so must deep copy any data files.
-        try fileManager.deepCopyItem(at: sourceURL, to: destURL)
-        return true
-      } catch let e as NSError {
-        print(e.localizedDescription)
-        return false
-      }
-    }
-
-    if (!copyDataToFakeWorkspace("build_bazel_rules_apple/examples/multi_platform/Buttons")) {
-      XCTFail("Failed to copy Buttons files to fake execroot.")
-    }
-
-    if (!copyDataToFakeWorkspace("src/TulsiEndToEndTests/Resources")) {
-      XCTFail("Failed to copy Buttons tulsiproj to fake execroot.")
-    }
+    super.continueAfterFailure = false
+    runfilesWorkspaceURL = fakeBazelWorkspace.runfilesWorkspaceURL
+    XCTAssertNotNil(runfilesWorkspaceURL, "runfilesWorkspaceURL must be not be nil after setup.")
 
     // Unzip the Tulsi.app bundle to the temp space.
     let semaphore = DispatchSemaphore(value: 0)
@@ -71,6 +48,28 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
   }
 
+  // Takes a short path to data files and adds them to the fake Bazel workspace.
+  func copyDataToFakeWorkspace(_ path: String) -> Bool {
+    let sourceURL = runfilesWorkspaceURL.appendingPathComponent(path, isDirectory: false)
+    let destURL = workspaceRootURL.appendingPathComponent(path, isDirectory: false)
+    do {
+      if(!fileManager.fileExists(atPath: sourceURL.path)) {
+        XCTFail("Source file  \(sourceURL.path) does not exist.")
+      }
+      if fileManager.fileExists(atPath: destURL.path) {
+        try fileManager.removeItem(at: destURL)
+      }
+
+      // Symlinks cause issues with Tulsi and Storyboards so must deep copy any data files.
+      try fileManager.deepCopyItem(at: sourceURL, to: destURL)
+      return true
+    } catch let e as NSError {
+      print(e.localizedDescription)
+      return false
+    }
+  }
+
+  // Runs the Tulsi binary with the given Tulsi project and config to generate an Xcode project.
   func generateXcodeProject(tulsiProject path: String, config: String) -> URL{
     let tulsiBinURL = workspaceRootURL.appendingPathComponent("Tulsi.app/Contents/MacOS/Tulsi", isDirectory: false)
     XCTAssert(fileManager.fileExists(atPath: tulsiBinURL.path), "Tulsi binary is missing.")
@@ -105,6 +104,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     let filename = TulsiGeneratorConfig.sanitizeFilename("\(config).xcodeproj")
     let xcodeProjectURL = workspaceRootURL.appendingPathComponent(filename, isDirectory: true)
 
+    // Remove Xcode project after each test method.
     addTeardownBlock {
       do {
         if self.fileManager.fileExists(atPath: xcodeProjectURL.path) {
@@ -119,8 +119,8 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     return xcodeProjectURL
   }
 
+  // Runs Xcode tests on the given Xcode project and scheme.
   func testXcodeProject(_ xcodeProjectURL: URL, scheme: String) {
-    // Run Xcode tests.
     let semaphore = DispatchSemaphore(value: 0)
     let xcodeTest = TulsiProcessRunner.createProcess("/usr/bin/xcodebuild",
                                                        arguments: ["test",
@@ -144,32 +144,6 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     xcodeTest.launch()
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
   }
-
-  func testButtons() throws {
-    let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "Buttons")
-    XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
-    testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
-  }
-
-  func testButtonsWithCanaryBazel() throws {
-    if let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL {
-      XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
-      bazelURL = canaryBazelURL
-      let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
-      let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                                 config: "Buttons")
-      testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
-    }
-  }
-
-  func testInvalidConfig() throws {
-    let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "InvalidConfig")
-    XCTAssertFalse(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was generated despite invalid config.")
-  }
 }
 
 extension FileManager {
@@ -177,7 +151,15 @@ extension FileManager {
   func deepCopyItem(at sourceURL: URL, to destURL: URL) throws {
     do {
       try self.createDirectory(atPath: destURL.deletingLastPathComponent().path, withIntermediateDirectories: true)
-      try self.copyItem(at: sourceURL, to: destURL)
+      let rootPath = sourceURL.path
+      if let rootAttributes = try? self.attributesOfItem(atPath: rootPath) {
+        if rootAttributes[FileAttributeKey.type] as? FileAttributeType == FileAttributeType.typeSymbolicLink {
+          let resolvedRootPath = try self.destinationOfSymbolicLink(atPath: rootPath)
+          try self.copyItem(atPath: resolvedRootPath, toPath: destURL.path)
+        } else {
+          try self.copyItem(at: sourceURL, to: destURL)
+        }
+      }
 
       let path = destURL.path
       if let paths = self.subpaths(atPath: path) {
