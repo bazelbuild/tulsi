@@ -12,6 +12,8 @@ TULSI_VERSION_COPYRIGHT = "2015-2018"
 
 TULSI_PRODUCT_NAME = "Tulsi"
 
+GOOGLE_VERSION_BUILDNUMBER = "4"
+
 #
 # Build things out of the parts.
 #
