@@ -70,6 +70,7 @@ macos_application(
     deps = [
         "//src/Tulsi:tulsi_lib",
     ],
+    visibility = ["//visibility:public"],
 )
 
 test_suite(
