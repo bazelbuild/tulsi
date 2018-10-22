@@ -314,7 +314,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
 
       popoverEditor = NSPopover()
       if popoverViewController == nil {
-        popoverViewController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "OptionsEditorPopover")) as? OptionsEditorPopoverViewController
+        popoverViewController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("OptionsEditorPopover")) as? OptionsEditorPopoverViewController
       }
       popoverEditor.contentViewController = popoverViewController
       popoverViewController.optionItem = optionItem as AnyObject?
@@ -457,7 +457,7 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
     }
 
     let attributedValue = NSMutableAttributedString(string: value)
-    attributedValue.setAttributes([NSAttributedStringKey.font: fontForOption(explicit)],
+    attributedValue.setAttributes([NSAttributedString.Key.font: fontForOption(explicit)],
                                   range: NSRange(location: 0, length: attributedValue.length))
     textField.attributedStringValue = attributedValue
   }

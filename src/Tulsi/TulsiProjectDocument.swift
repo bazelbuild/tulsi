@@ -302,8 +302,8 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   override func makeWindowControllers() {
-    let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
-    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiProjectDocumentWindow")) as! NSWindowController
+    let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
+    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("TulsiProjectDocumentWindow")) as! NSWindowController
     windowController.contentViewController?.representedObject = self
     addWindowController(windowController)
   }
@@ -598,7 +598,7 @@ class ErrorAlertView: NSAlert {
       alert.text = details
 
       var views: NSArray?
-      Bundle.main.loadNibNamed(NSNib.Name(rawValue: "ErrorAlertDetailView"),
+      Bundle.main.loadNibNamed(NSNib.Name("ErrorAlertDetailView"),
                                          owner: alert,
                                          topLevelObjects: &views)
       // Note: topLevelObjects will contain the accessory view and an NSApplication object in a

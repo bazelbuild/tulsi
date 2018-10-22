@@ -250,10 +250,10 @@ public final class ProcessRunner {
     private func threadMain(_ object: AnyObject) {
       let runLoop = RunLoop.current
       // Add a dummy port to prevent the runloop from returning immediately.
-      runLoop.add(NSMachPort(), forMode: RunLoopMode.defaultRunLoopMode)
+      runLoop.add(NSMachPort(), forMode: RunLoop.Mode.default)
 
       while !thread.isCancelled {
-        runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: Date.distantFuture)
+        runLoop.run(mode: RunLoop.Mode.default, before: Date.distantFuture)
       }
     }
 
