@@ -1576,6 +1576,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "SUFFIXES=(swiftdoc swiftmodule)\n" +
         "for ARCH in \"${ARCH_ARRAY[@]}\"\n" +
         "do\n" +
+        "  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n" +
         "  touch \"$OBJECT_FILE_DIR_normal/$ARCH/$SWIFT_OBJC_INTERFACE_HEADER_NAME\"\n" +
         "  for SUFFIX in \"${SUFFIXES[@]}\"\n" +
         "  do\n" +

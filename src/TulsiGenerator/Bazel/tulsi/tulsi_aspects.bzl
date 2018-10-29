@@ -488,13 +488,13 @@ def _extract_compiler_defines(ctx):
         c_variables = cc_common.create_compile_variables(
             feature_configuration = feature_configuration,
             cc_toolchain = cc_toolchain,
-            user_compile_flags = depset(copts + conlyopts),
+            user_compile_flags = copts + conlyopts,
         )
         cpp_variables = cc_common.create_compile_variables(
             feature_configuration = feature_configuration,
             cc_toolchain = cc_toolchain,
             add_legacy_cxx_options = True,
-            user_compile_flags = depset(copts + cxxopts),
+            user_compile_flags = copts + cxxopts,
         )
         c_options = cc_common.get_memory_inefficient_command_line(
             feature_configuration = feature_configuration,

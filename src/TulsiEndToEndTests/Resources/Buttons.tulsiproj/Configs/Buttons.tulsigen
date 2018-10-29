@@ -3,6 +3,7 @@
   ],
   "buildTargets" : [
     "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsTests",
+    "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsLogicTests",
     "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsUITests"
   ],
   "projectName" : "Buttons",
