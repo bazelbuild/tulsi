@@ -1007,6 +1007,16 @@ def _tulsi_outputs_aspect(target, ctx):
         ]
         if len(artifacts) > 0:
             artifact = artifacts[0]
+    else:
+        # Special support for *_library targets, which Tulsi allows building at
+        # the top-level.
+        artifacts = [
+            x.path
+            for x in target.files.to_list()
+            if x.extension == "a"
+        ]
+        if len(artifacts) > 0:
+            artifact = artifacts[0]
 
     # Collect generated files for bazel_build.py to copy under Tulsi root.
     all_files_depsets = []
