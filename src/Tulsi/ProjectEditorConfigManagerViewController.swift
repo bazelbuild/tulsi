@@ -101,11 +101,11 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
     let generatorController = XcodeProjectGenerationProgressViewController()
     generatorController.representedObject = representedObject
-    presentAsSheet(generatorController)
+    presentViewControllerAsSheet(generatorController)
 
     let projectDocument = representedObject as! TulsiProjectDocument
     generatorController.generateProjectForConfigName(configName) { (projectURL: URL?) in
-      self.dismiss(generatorController)
+      self.dismissViewController(generatorController)
       if let projectURL = projectURL {
         LogMessage.postInfo("Opening generated project in Xcode",
                             context: projectDocument.projectName)

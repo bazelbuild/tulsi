@@ -50,9 +50,9 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
 
   override func loadView() {
     ValueTransformer.setValueTransformer(MessageTypeToImageValueTransformer(),
-                                           forName: NSValueTransformerName("MessageTypeToImageValueTransformer"))
+                                           forName: NSValueTransformerName(rawValue: "MessageTypeToImageValueTransformer"))
     super.loadView()
-    bind(NSBindingName("messageCount"), to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
+    bind(NSBindingName(rawValue: "messageCount"), to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
   }
 
   @IBAction func copy(_ sender: AnyObject?) {
@@ -153,11 +153,11 @@ final class MessageTypeToImageValueTransformer : ValueTransformer {
 
     switch messageType {
       case .info, .debug, .syslog:
-        return NSImage(named: NSImage.Name("message_info"))
+        return NSImage(named: NSImage.Name(rawValue: "message_info"))
       case .warning:
-        return NSImage(named: NSImage.Name("message_warning"))
+        return NSImage(named: NSImage.Name(rawValue: "message_warning"))
       case .error:
-        return NSImage(named: NSImage.Name("message_error"))
+        return NSImage(named: NSImage.Name(rawValue: "message_error"))
     }
   }
 }

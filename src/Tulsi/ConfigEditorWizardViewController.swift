@@ -37,7 +37,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
   }
 
   override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-    if segue.identifier == "Embed Wizard PageController" {
+    if segue.identifier!.rawValue == "Embed Wizard PageController" {
       pageViewController = (segue.destinationController as! NSPageController)
       pageViewController.arrangedObjects = ConfigEditorWizardViewController.wizardPageIdentifiers
       pageViewController.delegate = self
@@ -114,11 +114,11 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
   // MARK: - NSPageControllerDelegate
 
   func pageController(_ pageController: NSPageController, identifierFor object: Any) -> NSPageController.ObjectIdentifier {
-    return NSPageController.ObjectIdentifier(object as! String)
+    return NSPageController.ObjectIdentifier(rawValue: object as! String)
   }
 
   func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: NSPageController.ObjectIdentifier) -> NSViewController {
-    let vc = storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(identifier)) as! NSViewController
+    let vc = storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: identifier.rawValue)) as! NSViewController
 
     // NSPageController doesn't appear to support Autolayout properly, so fall back to
     // autoresizingMask.

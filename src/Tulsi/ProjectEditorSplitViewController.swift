@@ -20,7 +20,7 @@ final class ProjectEditorSplitViewController: NSSplitViewController {
 
   override var representedObject: Any? {
     didSet {
-      for vc in children {
+      for vc in childViewControllers {
         vc.representedObject = representedObject
       }
     }

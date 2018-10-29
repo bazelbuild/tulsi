@@ -66,7 +66,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     // This is done via dispatch_async because we want it to happen after the window appearance
     // animation is complete.
     DispatchQueue.main.async(execute: {
-      self.presentAsSheet(self.newProjectSheet)
+      self.presentViewControllerAsSheet(self.newProjectSheet)
     })
   }
 
@@ -183,7 +183,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason reason: NewProjectViewController.CompletionReason) {
     defer {newProjectSheet = nil}
-    dismiss(newProjectSheet)
+    dismissViewController(newProjectSheet)
 
     guard reason == .create else {
       // Nothing useful can be done if the user doesn't wish to create a new project, so close this

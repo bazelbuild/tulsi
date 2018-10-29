@@ -35,7 +35,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
                                      comment: "Label for the button used to confirm the selected Bazel file in the Bazel selector sheet.")
 
     var views: NSArray?
-    Bundle.main.loadNibNamed(NSNib.Name("BazelOpenSheetAccessoryView"),
+    Bundle.main.loadNibNamed(NSNib.Name(rawValue: "BazelOpenSheetAccessoryView"),
                              owner: panel,
                              topLevelObjects: &views)
     // Note: topLevelObjects will contain the accessory view and an NSApplication object in a

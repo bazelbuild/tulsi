@@ -21,7 +21,7 @@ final class SplashScreenRecentDocumentViewController : NSViewController {
   var url: URL?
 
   override var nibName: NSNib.Name? {
-    return NSNib.Name("SplashScreenRecentDocumentView")
+    return NSNib.Name(rawValue: "SplashScreenRecentDocumentView")
   }
 
   override func viewDidLoad() {
@@ -41,7 +41,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   @objc dynamic var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
 
   override var windowNibName: NSNib.Name? {
-    return NSNib.Name("SplashScreenWindowController")
+    return NSNib.Name(rawValue: "SplashScreenWindowController")
   }
 
   override func windowDidLoad() {
