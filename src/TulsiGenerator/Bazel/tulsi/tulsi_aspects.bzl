@@ -982,7 +982,6 @@ def _tulsi_outputs_aspect(target, ctx):
     artifact = None
     bundle_name = None
     archive_root = None
-    bundle_dir = None
     infoplist = None
     if AppleBundleInfo in target:
         bundle_info = target[AppleBundleInfo]
@@ -992,7 +991,6 @@ def _tulsi_outputs_aspect(target, ctx):
         infoplist = bundle_info.infoplist
 
         bundle_name = bundle_info.bundle_name
-        bundle_dir = bundle_info.bundle_dir
     elif target_kind == "macos_command_line_application":
         # Special support for macos_command_line_application which does not have an
         # AppleBundleInfo provider.
@@ -1058,7 +1056,6 @@ def _tulsi_outputs_aspect(target, ctx):
 
     info = _struct_omitting_none(
         artifact = artifact,
-        bundle_dir = bundle_dir,
         archive_root = archive_root,
         generated_sources = [(x.path, x.short_path) for x in generated_files],
         bundle_name = bundle_name,
