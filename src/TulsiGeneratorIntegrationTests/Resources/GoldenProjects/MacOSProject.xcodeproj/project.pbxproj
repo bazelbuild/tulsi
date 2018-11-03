@@ -37,7 +37,7 @@
 		43D68C2876BC0BC700000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
 		43D68C289199386500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
 		43D68C28936F558E00000000 /* MyTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = MyTodayExtension.appex; path = MyTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28A674338600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D68C28CBE52D2300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
 		43D68C28DE68C70F00000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
 		43D68C28F1794D7D00000000 /* MyCommandLineApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyCommandLineApp-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyCommandLineApp-Info.plist"; sourceTree = "<group>"; };
@@ -47,7 +47,7 @@
 		966FB6DE0562C2F700000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */,
+				43D68C28A674338600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -234,6 +234,22 @@
 			productReference = 43D68C28936F558E00000000 /* MyTodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3D31C5E6E77D1C0E00000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4755830ED2D07F00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" */;
+			buildPhases = (
+				605793E20000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13;
+			productName = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13;
+			productReference = 43D68C28A674338600000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E6F53E4F0A00000000 /* MyMacOSApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558336864DFB00000000 /* Build configuration list for PBXNativeTarget "MyMacOSApp" */;
@@ -249,22 +265,6 @@
 			productName = MyMacOSApp;
 			productReference = 43D68C2810C8DA6C00000000 /* MyMacOSApp.app */;
 			productType = "com.apple.product-type.application";
-		};
-		3D31C5E6F77D1C0800000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755830ED6DB7C00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" */;
-			buildPhases = (
-				605793E20000000000000000 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
-			productName = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
-			productReference = 43D68C28A6703B8200000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -288,7 +288,7 @@
 				3D31C5E6F53E4F0A00000000 /* MyMacOSApp */,
 				3D31C5E665954B6A00000000 /* MyTodayExtension */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6F77D1C0800000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12 */,
+				3D31C5E6E77D1C0E00000000 /* _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13 */,
 			);
 		};
 /* End PBXProject section */
@@ -406,7 +406,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.command-line";
 				PRODUCT_NAME = MyCommandLineApp;
 				SDKROOT = macosx;
@@ -423,7 +423,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
@@ -440,7 +440,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app.today-extension";
 				PRODUCT_NAME = MyTodayExtension;
 				SDKROOT = macosx;
@@ -454,8 +454,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -504,7 +504,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.command-line";
 				PRODUCT_NAME = MyCommandLineApp;
 				SDKROOT = macosx;
@@ -521,7 +521,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
@@ -538,7 +538,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app.today-extension";
 				PRODUCT_NAME = MyTodayExtension;
 				SDKROOT = macosx;
@@ -552,8 +552,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -609,7 +609,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -634,7 +634,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -659,7 +659,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -724,7 +724,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -749,7 +749,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -774,7 +774,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_mac-MyTodayExtension.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -792,7 +792,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE4755830ED6DB7C00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" */ = {
+		DE4755830ED2D07F00000000 /* Build configuration list for PBXNativeTarget "_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000004 /* Debug */,

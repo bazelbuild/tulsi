@@ -1956,19 +1956,19 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                         bundleID: appBundleID,
                         productType: .Application,
                         platformType: "macos",
-                        osDeploymentTarget: "10.12"),
+                        osDeploymentTarget: "10.13"),
       makeTestRuleEntry(macAppExtBuildTarget,
                         type: "macos_extension",
                         bundleID: macAppExtBundleID,
                         productType: .AppExtension,
                         platformType: "macos",
-                        osDeploymentTarget: "10.12"),
+                        osDeploymentTarget: "10.13"),
       makeTestRuleEntry(macCLIAppBuildTarget,
                         type: "macos_command_line_application",
                         bundleID: macCLIAppBundleID,
                         productType: .Tool,
                         platformType: "macos",
-                        osDeploymentTarget: "10.12")
+                        osDeploymentTarget: "10.13")
       ])
 
     do {
@@ -1992,7 +1992,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_BUNDLE_IDENTIFIER": appBundleID,
         "PRODUCT_NAME": appTargetName,
         "SDKROOT": "macosx",
-        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "MACOSX_DEPLOYMENT_TARGET": "10.13",
         "TULSI_BUILD_PATH": appBuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -2030,7 +2030,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_BUNDLE_IDENTIFIER": macAppExtBundleID,
         "PRODUCT_NAME": macAppExtTargetName,
         "SDKROOT": "macosx",
-        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "MACOSX_DEPLOYMENT_TARGET": "10.13",
         "TULSI_BUILD_PATH": macAppExtBuildPath,
       ]
       let expectedTarget = TargetDefinition(
@@ -2068,7 +2068,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PRODUCT_BUNDLE_IDENTIFIER": macCLIAppBundleID,
         "PRODUCT_NAME": macCLIAppTargetName,
         "SDKROOT": "macosx",
-        "MACOSX_DEPLOYMENT_TARGET": "10.12",
+        "MACOSX_DEPLOYMENT_TARGET": "10.13",
         "TULSI_BUILD_PATH": macCLIAppBuildPath,
       ]
       let expectedTarget = TargetDefinition(

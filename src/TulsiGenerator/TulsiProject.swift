@@ -179,7 +179,7 @@ public final class TulsiProject {
 
     do {
       return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
-                                                                        options: .prettyPrinted)
+                                                                        options: [.prettyPrinted, .sortedKeys])
     } catch let e as NSError {
       throw ProjectError.serializationFailed(e.localizedDescription)
     } catch {
@@ -194,7 +194,7 @@ public final class TulsiProject {
     if dict.isEmpty { return nil }
     do {
       return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
-                                                                        options: .prettyPrinted)
+                                                                        options: [.prettyPrinted, .sortedKeys])
     } catch let e as NSError {
       throw ProjectError.serializationFailed(e.localizedDescription)
     } catch {

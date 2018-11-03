@@ -3,16 +3,16 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F77D1C0800000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6E77D1C0E00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F77D1C0800000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6E77D1C0E00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F77D1C0800000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6E77D1C0E00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F77D1C0800000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.12" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="3D31C5E6E77D1C0E00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13.a" BlueprintName="_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_F8389608_macos_min10.13" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

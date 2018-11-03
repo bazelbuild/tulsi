@@ -231,7 +231,7 @@ public class TulsiGeneratorConfig {
 
     do {
       return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
-                                                                        options: .prettyPrinted)
+                                                                        options: [.prettyPrinted, .sortedKeys])
     } catch let e as NSError {
       throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
@@ -245,7 +245,7 @@ public class TulsiGeneratorConfig {
     if dict.isEmpty { return nil }
     do {
       return try JSONSerialization.tulsi_newlineTerminatedUnescapedData(jsonObject: dict,
-                                                                        options: .prettyPrinted)
+                                                                        options: [.prettyPrinted, .sortedKeys])
     } catch let e as NSError {
       throw ConfigError.serializationFailed(e.localizedDescription)
     } catch {
