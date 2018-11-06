@@ -36,8 +36,9 @@ and their operation can be retrieved from Bazel's help.
 
 Flags used for all build modes:
 
-*   `--config=$(platform)_$(arch)` - sets up predefined Bazel options for the
+*   `--cpu=$(platform)_$(arch)` - sets up predefined Bazel options for the
     architecture exposed by Xcode.
+*   `--apple_platform_type=` - corresponds to the above option mostly.
 *   `--xcode_version` - passes the version of Xcode that invokes the compilation
     script.
 
