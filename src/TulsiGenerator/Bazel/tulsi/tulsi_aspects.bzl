@@ -23,6 +23,7 @@ load(
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
+    "SwiftClangModuleInfo",
     "SwiftInfo",
 )
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
@@ -597,13 +598,31 @@ def _collect_swift_modules(target):
             return swift_info.transitive_swiftmodules
     return depset()
 
-def _collect_module_maps(target):
+def _collect_module_maps(target, rule_attr):
     """Returns a depset of Clang module maps found on the given target."""
     if SwiftInfo in target and apple_common.Objc in target:
+        depsets = []
         objc = target[apple_common.Objc]
         if hasattr(objc, "module_map"):
-            return objc.module_map
+            depsets.append(objc.module_map)
+
+        for dep in _collect_dependencies(rule_attr, "deps"):
+            if SwiftClangModuleInfo in dep:
+                module_info = dep[SwiftClangModuleInfo]
+                if hasattr(module_info, "transitive_modulemaps"):
+                    depsets.append(module_info.transitive_modulemaps)
+        return depset(transitive = depsets)
     return depset()
+
+def _collect_objc_defines(objc_provider, rule_attr):
+    """Returns a depset of C-compiler defines."""
+    depsets = [objc_provider.define] if objc_provider else []
+    for dep in _collect_dependencies(rule_attr, "deps"):
+        if SwiftClangModuleInfo in dep:
+            module_info = dep[SwiftClangModuleInfo]
+            if hasattr(module_info, "transitive_defines"):
+                depsets.append(module_info.transitive_defines)
+    return depset(transitive = depsets)
 
 # TODO(b/64490743): Add these files to the Xcode project.
 def _collect_swift_header(target):
@@ -673,7 +692,7 @@ def _tulsi_sources_aspect(target, ctx):
 
     # Collect ObjC module maps dependencies for Swift targets.
     objc_module_maps = depset(
-        _depset_to_file_metadata_list(_collect_module_maps(target)),
+        _depset_to_file_metadata_list(_collect_module_maps(target, rule_attr)),
     )
 
     # Collect the dependencies of this rule, dropping any .jar files (which may be
@@ -784,7 +803,7 @@ def _tulsi_sources_aspect(target, ctx):
             _convert_outpath_to_symlink_path(x)
             for x in objc_provider.include
         ]
-        objc_defines = objc_provider.define.to_list()
+    objc_defines = _collect_objc_defines(objc_provider, rule_attr).to_list()
 
     platform_type, os_deployment_target = _get_deployment_info(target, ctx)
     non_arc_srcs = _collect_files(rule, "attr.non_arc_srcs")
@@ -1026,7 +1045,7 @@ def _tulsi_outputs_aspect(target, ctx):
 
     all_files_depsets.append(_collect_swift_header(target))
     all_files_depsets.append(_collect_swift_modules(target))
-    all_files_depsets.append(_collect_module_maps(target))
+    all_files_depsets.append(_collect_module_maps(target, rule_attr))
 
     source_files = [
         x
