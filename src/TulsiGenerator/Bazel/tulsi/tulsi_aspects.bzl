@@ -1057,7 +1057,7 @@ def _tulsi_outputs_aspect(target, ctx):
     info = _struct_omitting_none(
         artifact = artifact,
         archive_root = archive_root,
-        generated_sources = [(x.path, x.short_path) for x in generated_files],
+        generated_sources = [(x.path, x.short_path) for x in generated_files.to_list()],
         bundle_name = bundle_name,
         embedded_bundles = embedded_bundles.to_list(),
         has_dsym = has_dsym,
