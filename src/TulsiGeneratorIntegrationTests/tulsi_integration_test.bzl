@@ -24,7 +24,7 @@ def tulsi_integration_test(
 
     macos_unit_test(
         name = name,
-        minimum_os_version = "10.12",
+        minimum_os_version = "10.13",
         deps = [":%s" % lib_name],
         data = [
             "//:for_bazel_tests",

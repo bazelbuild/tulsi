@@ -32,7 +32,7 @@ macos_application(
         ":MyTodayExtension",
     ],
     infoplists = [":Info.plist"],
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     version = ":MyAppVersion",
     deps = [":MyMacAppSources"],
 )
@@ -68,7 +68,7 @@ macos_extension(
     bundle_id = "com.example.mac-app.today-extension",
     entitlements = ":MyTodayExtension-Entitlements.entitlements",
     infoplists = [":MyTodayExtension-Info.plist"],
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     sdk_frameworks = [
         "NotificationCenter",
     ],
@@ -96,7 +96,7 @@ macos_command_line_application(
     name = "MyCommandLineApp",
     bundle_id = "com.example.command-line",
     infoplists = [":MyCommandLineApp-Info.plist"],
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     version = ":CommandLineVersion",
     deps = [":MyCommandLineAppSource"],
 )
@@ -130,7 +130,7 @@ objc_library(
 
 macos_unit_test(
     name = "UnitTests",
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     test_host = ":MyMacOSApp",
     deps = [":UnitTestsLib"],
 )
@@ -143,7 +143,7 @@ macos_unit_test(
 
 macos_ui_test(
     name = "UITests",
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     test_host = ":MyMacOSApp",
     deps = [":UITestsLib"],
 )

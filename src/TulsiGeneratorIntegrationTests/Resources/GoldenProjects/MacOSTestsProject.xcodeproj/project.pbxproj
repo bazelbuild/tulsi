@@ -57,14 +57,14 @@
 		43D68C28CBE52D2300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
 		43D68C28DE68C70F00000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
 		43D68C28E22D54F800000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a; path = lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a; path = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D68C28FC3BD11A00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13.a; path = lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		966FB6DE0562C2F700000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */,
+				43D68C28FC3BD11A00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13.a */,
 				43D68C28E22D54F800000000 /* lib_idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10.a */,
 			);
 			name = Indexer;
@@ -233,6 +233,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3D31C5E6127F76BE00000000 /* _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE47558335EAC33300000000 /* Build configuration list for PBXNativeTarget "_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13" */;
+			buildPhases = (
+				605793E20000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+			);
+			name = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13;
+			productName = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13;
+			productReference = 43D68C28FC3BD11A00000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		3D31C5E619998B3A00000000 /* UnitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558302B841D300000000 /* Build configuration list for PBXNativeTarget "UnitTests" */;
@@ -305,22 +321,6 @@
 			productReference = 43D68C283E3D735200000000 /* UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		3D31C5E6F27F76B800000000 /* _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558335F2CA3000000000 /* Build configuration list for PBXNativeTarget "_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12" */;
-			buildPhases = (
-				605793E20000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
-			productName = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
-			productReference = 43D68C28FCC1A51000000000 /* lib_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		3D31C5E6F53E4F0A00000000 /* MyMacOSApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE47558336864DFB00000000 /* Build configuration list for PBXNativeTarget "MyMacOSApp" */;
@@ -368,7 +368,7 @@
 				3D31C5E619998B3A00000000 /* UnitTests */,
 				3D31C5E6211D1A7800000000 /* UnitTestsNoHost */,
 				ECCC95946921D83400000000 /* _bazel_clean_ */,
-				3D31C5E6F27F76B800000000 /* _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12 */,
+				3D31C5E6127F76BE00000000 /* _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13 */,
 				3D31C5E63AACEB6600000000 /* _idx_UnitTestsNoHostLib_EC0877C6_macos_min10.10 */,
 			);
 		};
@@ -548,7 +548,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-appTests";
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = macosx;
@@ -567,7 +567,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
@@ -585,7 +585,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-appTests";
 				PRODUCT_NAME = UITests;
 				SDKROOT = macosx;
@@ -655,8 +655,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -684,7 +684,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-appTests";
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = macosx;
@@ -703,7 +703,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-app";
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
@@ -721,7 +721,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.mac-appTests";
 				PRODUCT_NAME = UITests;
 				SDKROOT = macosx;
@@ -791,8 +791,8 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = _idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -821,7 +821,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -848,7 +848,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -873,7 +873,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -967,7 +967,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -994,7 +994,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1019,7 +1019,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-help";
 				OTHER_LDFLAGS = "-help";
@@ -1115,7 +1115,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558335F2CA3000000000 /* Build configuration list for PBXNativeTarget "_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.12" */ = {
+		DE47558335EAC33300000000 /* Build configuration list for PBXNativeTarget "_idx_UnitTestsLib_MyMacAppSources_MyTodayExtensionSources_UITestsLib_5415F9E2_macos_min10.13" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44936BD67EED3C4D00000005 /* Debug */,
