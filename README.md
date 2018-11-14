@@ -7,9 +7,7 @@ plant.
 
 ## Building and installing
 
-1.  Open src/Tulsi.xcodeproj, and within Xcode, build the **TulsiApp**.
-
-2.  Run the **TulsiApp**.
+1.  Run `build_and_run.sh`. This will install Tulsi.app inside ~/Applications.
 
 ## Notes
 

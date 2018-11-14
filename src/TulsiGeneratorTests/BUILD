@@ -12,6 +12,6 @@ swift_library(
 
 macos_unit_test(
     name = "TulsiGeneratorTests",
-    minimum_os_version = "10.12",
+    minimum_os_version = "10.13",
     deps = [":TulsiGeneratorTestsLib"],
 )

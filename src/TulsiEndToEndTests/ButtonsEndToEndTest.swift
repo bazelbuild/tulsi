@@ -41,14 +41,17 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
   }
 
   func testButtonsWithCanaryBazel() throws {
-    if let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL {
-      XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
-      bazelURL = canaryBazelURL
-      let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
-      let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                                 config: "Buttons")
-      testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
+    guard let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL else {
+      XCTFail("Expected Bazel canary URL.")
+      return
     }
+    XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
+
+    bazelURL = canaryBazelURL
+    let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
+                                               config: "Buttons")
+    testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
   }
 
   func testInvalidConfig() throws {
