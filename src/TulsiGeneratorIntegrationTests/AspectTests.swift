@@ -24,8 +24,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   override func setUp() {
     super.setUp()
     let bazelSettingsProvider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
+    let executionRootURL = URL(fileURLWithPath: workspaceInfoFetcher.getExecutionRoot(),
+                               isDirectory: false)
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
+                                                   executionRootURL: executionRootURL,
                                                    bazelSettingsProvider: bazelSettingsProvider,
                                                    localizedMessageLogger: localizedMessageLogger)
   }
@@ -456,8 +459,11 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   override func setUp() {
     super.setUp()
     let bazelSettingsProvider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
+    let executionRootURL = URL(fileURLWithPath: workspaceInfoFetcher.getExecutionRoot(),
+                               isDirectory: false)
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
+                                                   executionRootURL: executionRootURL,
                                                    bazelSettingsProvider: bazelSettingsProvider,
                                                    localizedMessageLogger: localizedMessageLogger)
     installBUILDFile("TestSuiteRoot",

@@ -73,8 +73,12 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                                              workspaceRootURL: workspaceRootURL,
                                                              bazelUniversalFlags: universalFlags,
                                                              localizedMessageLogger: localizedMessageLogger)
+
+    let executionRootURL =  URL(fileURLWithPath: workspacePathInfoFetcher.getExecutionRoot(),
+                                isDirectory: false)
     aspectExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                workspaceRootURL: workspaceRootURL,
+                                               executionRootURL: executionRootURL,
                                                bazelSettingsProvider: bazelSettingsProvider,
                                                localizedMessageLogger: localizedMessageLogger)
     queryExtractor = BazelQueryInfoExtractor(bazelURL: bazelURL,

@@ -848,7 +848,7 @@ def _tulsi_sources_aspect(target, ctx):
         objc_module_maps = objc_module_maps,
         module_name = module_name,
         type = target_kind,
-        infoplist = infoplist.basename if infoplist else None,
+        infoplist = infoplist.path if infoplist else None,
         platform_type = platform_type,
         product_type = product_type,
         xcode_version = xcode_version,

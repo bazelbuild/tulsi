@@ -28,6 +28,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   var bazelURL: URL
   /// The location of the Bazel workspace to be examined.
   let workspaceRootURL: URL
+  /// The execution root URL.
+  let executionRootURL: URL
   /// Stores Tulsi-specific Bazel settings.
   let bazelSettingsProvider: BazelSettingsProviderProtocol
 
@@ -44,10 +46,12 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
   init(bazelURL: URL,
        workspaceRootURL: URL,
+       executionRootURL: URL,
        bazelSettingsProvider: BazelSettingsProviderProtocol,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
+    self.executionRootURL = executionRootURL
     self.bazelSettingsProvider = bazelSettingsProvider
     self.localizedMessageLogger = localizedMessageLogger
 
@@ -375,12 +379,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
       var extensionType: String?
       if targetProductType?.isiOSAppExtension ?? false, let infoplistPath = dict["infoplist"] as? String {
-        // TODO(b/73349137): This relies on the fact the Plist will be located next to the
-        // .tulsiinfo file for the same target. It would be better to get an absolute path to the
-        // plist from bazel.
-        let plistPath = URL(fileURLWithPath: filename)
-          .deletingLastPathComponent()
-          .appendingPathComponent(infoplistPath).path
+        let plistPath = executionRootURL.appendingPathComponent(infoplistPath).path
         guard let info = NSDictionary(contentsOfFile: plistPath) else {
           throw ExtractorError.parsingFailed("Unable to load extension plist file: \(plistPath)")
         }
