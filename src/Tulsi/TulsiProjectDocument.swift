@@ -571,9 +571,10 @@ final class TulsiProjectDocument: NSDocument,
     }
 
     processingTaskStarted()
-    infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL, project: project)
 
     Thread.doOnQOSUserInitiatedThread() {
+      self.infoExtractor = TulsiProjectInfoExtractor(bazelURL: concreteBazelURL,
+                                                     project: self.project)
       let updatedRuleEntries = self.infoExtractor.extractTargetRules()
       Thread.doOnMainQueue() {
         self._ruleInfos = updatedRuleEntries
