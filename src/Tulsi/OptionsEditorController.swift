@@ -249,7 +249,10 @@ final class OptionsEditorController: NSObject, OptionsEditorOutlineViewDelegate,
         case .bool:
           newNode = OptionsEditorBooleanNode(key: key, option: option, model: model, target: target)
         case .string:
-          fallthrough
+          newNode = OptionsEditorStringNode(key: key,
+                                            option: option,
+                                            model: model,
+                                            target: target)
         case .stringEnum:
           newNode = OptionsEditorConstrainedStringNode(key: key,
                                                        option: option,
