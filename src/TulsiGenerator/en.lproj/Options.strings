@@ -32,6 +32,8 @@
 
 "GenerateRunfiles" = "Generate the runfiles directory used as TEST_SRCDIR";
 
+"UseArm64_32" = "Building for Apple Watch Series 4";
+"UseArm64_32_DESC" = "Enable this option only if you are building to a Series 4 device in Xcode 10 or greater. The default when building for a iOS device with a watch app is the 32bit armv7k architecture.";
 "ProjectPrioritizesSwift" = "Prioritize for Swift development instead of (Obj-)C(++)";
 "ProjectPrioritizesSwift_DESC" = "Tulsi uses this to try to improve Bazel caching; set this if you anticipate that most of your builds inside of the generated xcodeproj depend on Swift in some way. Setting this incorrectly won't break your builds but it will potentially make them slower.";
 "CLANG_CXX_LANGUAGE_STANDARD" = "C++ language standard";

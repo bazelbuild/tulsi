@@ -100,6 +100,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
+                            useArm64_32Option: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
@@ -118,6 +119,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     let compilationMode = compilationModeOption.commonValue
     let platformConfig = platformConfigOption.commonValue
     let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool
+    let useArm64_32Option = useArm64_32Option.commonValueAsBool
 
     do {
       let ruleEntryMap =
@@ -127,6 +129,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                                                         compilationMode: compilationMode,
                                                         platformConfig: platformConfig,
                                                         prioritizeSwift: prioritizeSwift,
+                                                        useArm64_32: useArm64_32Option,
                                                         features: features)
       ruleEntryCache = RuleEntryMap(ruleEntryMap)
     } catch BazelAspectInfoExtractor.ExtractorError.buildFailed {

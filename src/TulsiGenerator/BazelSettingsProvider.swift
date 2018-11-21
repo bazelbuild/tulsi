@@ -253,6 +253,10 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
       defaultConfig = PlatformConfiguration.defaultConfiguration
     }
 
+    if let useArm64_32 = options[.UseArm64_32].commonValueAsBool {
+      PlatformConfiguration.useArm64_32 = useArm64_32
+    }
+
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
                               defaultPlatformConfigIdentifier: defaultConfig.identifier,

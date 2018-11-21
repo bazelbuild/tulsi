@@ -468,12 +468,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let compilationModeOption = optionSet[.ProjectGenerationCompilationMode]
         let platformConfigOption = optionSet[.ProjectGenerationPlatformConfiguration]
         let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
+        let useArm64_32 = optionSet[.UseArm64_32]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
                                                                    compilationModeOption: compilationModeOption,
                                                                    platformConfigOption: platformConfigOption,
                                                                    prioritizeSwiftOption: prioritizeSwiftOption,
+                                                                   useArm64_32Option: useArm64_32,
                                                                    features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
@@ -803,6 +805,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                               compilationModeOption: options[.ProjectGenerationCompilationMode],
                                                               platformConfigOption: options[.ProjectGenerationPlatformConfiguration],
                                                               prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
+                                                              useArm64_32Option: options[.UseArm64_32],
                                                               features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
