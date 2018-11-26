@@ -47,7 +47,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   override func windowDidLoad() {
     super.windowDidLoad()
 
-    splashScreenImageView.image = NSApplication.shared.applicationIconImage
+    splashScreenImageView.image = NSImage(named: NSImage.Name("AppIcon"))
 
     if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       applicationVersion = cfBundleVersion

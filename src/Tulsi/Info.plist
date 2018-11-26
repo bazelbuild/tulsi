@@ -128,7 +128,7 @@
 			<key>UTTypeDescription</key>
 			<string>Bazel Skylark</string>
 			<key>UTTypeIconFile</key>
-			<string>BUILDIcon.icns</string>
+			<string>BUILDIcon</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.google.bazel.skylark</string>
 			<key>UTTypeReferenceURL</key>
