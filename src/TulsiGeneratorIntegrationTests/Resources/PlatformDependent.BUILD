@@ -21,7 +21,6 @@ load(
     "ios_extension",
     "ios_unit_test",
     "ios_ui_test",
-    "ios_legacy_test",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -190,20 +189,5 @@ ios_ui_test(
     test_host = ":SkylarkApplication",
     deps = [
         ":XCUITestCode",
-    ],
-)
-
-objc_library(
-    name = "LegacyTestsLib",
-    srcs = [
-        "LegacyTests/LegacyTests.m",
-    ],
-)
-
-ios_legacy_test(
-    name = "LegacyTests",
-    minimum_os_version = "10.0",
-    deps = [
-        ":LegacyTestsLib",
     ],
 )
