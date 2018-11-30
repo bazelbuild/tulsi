@@ -1055,7 +1055,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["GCC_PREFIX_HEADER"] = PBXTargetGenerator.projectRefForBazelFileInfo(pchFile)
     }
 
-    var allOtherCFlags = data.otherCFlags
+    var allOtherCFlags = data.otherCFlags.filter { !$0.hasPrefix("-W") }
     if !data.preprocessorDefines.isEmpty {
       allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map({"-D\($0)"}))
     }
