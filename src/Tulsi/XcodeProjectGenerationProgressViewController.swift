@@ -119,7 +119,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
     panel.canChooseFiles = false
     panel.beginSheetModal(for: view.window!) {
       let url: URL?
-      if $0.rawValue == NSFileHandlingPanelOKButton {
+      if $0 == NSApplication.ModalResponse.OK {
         url = panel.url
       } else {
         url = nil

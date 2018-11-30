@@ -303,8 +303,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   override func makeWindowControllers() {
-    let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
-    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiGeneratorConfigDocumentWindow")) as! NSWindowController
+    let storyboard = NSStoryboard(name: "Main", bundle: nil)
+    let windowController = storyboard.instantiateController(withIdentifier: "TulsiGeneratorConfigDocumentWindow") as! NSWindowController
     windowController.contentViewController?.representedObject = self
     windowController.window?.isRestorable = false
     addWindowController(windowController)
@@ -574,7 +574,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let newConfigSheet = NewGeneratorConfigViewController()
     newConfigSheet.configName = configName
     newConfigSheet.delegate = self
-    windowForSheet?.contentViewController?.presentViewControllerAsSheet(newConfigSheet)
+    windowForSheet?.contentViewController?.presentAsSheet(newConfigSheet)
   }
 
   /// Generates an Xcode project, returning an NSURL to the project on success.
@@ -709,7 +709,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   func viewController(_ vc: NewGeneratorConfigViewController,
                       didCompleteWithReason reason: NewGeneratorConfigViewController.CompletionReason) {
-    windowForSheet?.contentViewController?.dismissViewController(vc)
+    windowForSheet?.contentViewController?.dismiss(vc)
     guard reason == .create else {
       if let completionHandler = saveCompletionHandler {
         completionHandler(true, nil)

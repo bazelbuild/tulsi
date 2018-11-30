@@ -32,6 +32,9 @@ tulsi_integration_test(
 tulsi_integration_test(
     name = "EndToEndGenerationTests",
     srcs = ["EndToEndGenerationTests.swift"],
+    env = {
+        "SWIFT_DETERMINISTIC_HASHING": "1",
+    },
     deps = [":EndToEndIntegrationTestCase"],
 )
 
@@ -45,6 +48,9 @@ swift_library(
 tulsi_integration_test(
     name = "PlatformDependentEndToEndGenerationTests",
     srcs = ["PlatformDependentEndToEndGenerationTests.swift"],
+    env = {
+        "SWIFT_DETERMINISTIC_HASHING": "1",
+    },
     deps = [":EndToEndIntegrationTestCase"],
 )
 

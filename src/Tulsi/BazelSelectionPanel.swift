@@ -35,7 +35,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
                                      comment: "Label for the button used to confirm the selected Bazel file in the Bazel selector sheet.")
 
     var views: NSArray?
-    Bundle.main.loadNibNamed(NSNib.Name(rawValue: "BazelOpenSheetAccessoryView"),
+    Bundle.main.loadNibNamed("BazelOpenSheetAccessoryView",
                              owner: panel,
                              topLevelObjects: &views)
     // Note: topLevelObjects will contain the accessory view and an NSApplication object in a
@@ -55,7 +55,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
     panel.canChooseFiles = true
     panel.directoryURL = document.bazelURL?.deletingLastPathComponent()
     panel.beginSheetModal(for: window) { value in
-      if value.rawValue == NSFileHandlingPanelOKButton {
+      if value == NSApplication.ModalResponse.OK {
         document.bazelURL = panel.url
         if panel.bazelSelectorUseAsDefaultCheckbox.state == NSControl.StateValue.on {
           UserDefaults.standard.set(document.bazelURL!, forKey: BazelLocator.DefaultBazelURLKey)
@@ -66,7 +66,7 @@ class BazelSelectionPanel: FilteredOpenPanel {
       // spawns new sheet modals.
       panel.orderOut(panel)
       if let completionHandler = completionHandler {
-        completionHandler(value.rawValue == NSFileHandlingPanelOKButton ? panel.url : nil)
+        completionHandler(value == NSApplication.ModalResponse.OK ? panel.url : nil)
       }
     }
     return panel

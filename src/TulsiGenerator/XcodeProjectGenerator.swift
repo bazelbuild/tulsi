@@ -1412,8 +1412,7 @@ final class XcodeProjectGenerator {
       }
 
       func addPath<T: Collection>(_ pathComponents: T)
-                  where T.SubSequence : Collection,
-                  T.Iterator.Element == String {
+                  where T.Iterator.Element == String {
         guard let firstComponent = pathComponents.first else {
           return
         }

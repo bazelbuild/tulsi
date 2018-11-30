@@ -66,7 +66,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
     // This is done via dispatch_async because we want it to happen after the window appearance
     // animation is complete.
     DispatchQueue.main.async(execute: {
-      self.presentViewControllerAsSheet(self.newProjectSheet)
+      self.presentAsSheet(self.newProjectSheet)
     })
   }
 
@@ -118,7 +118,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
                                      comment: "Label for the button used to confirm adding the selected BUILD file to the Tulsi project.")
     panel.canChooseDirectories = false
     panel.beginSheetModal(for: self.view.window!) { value in
-      if value.rawValue == NSFileHandlingPanelOKButton {
+      if value == NSApplication.ModalResponse.OK {
         guard let URL = panel.url else {
           return
         }
@@ -183,7 +183,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason reason: NewProjectViewController.CompletionReason) {
     defer {newProjectSheet = nil}
-    dismissViewController(newProjectSheet)
+    dismiss(newProjectSheet)
 
     guard reason == .create else {
       // Nothing useful can be done if the user doesn't wish to create a new project, so close this

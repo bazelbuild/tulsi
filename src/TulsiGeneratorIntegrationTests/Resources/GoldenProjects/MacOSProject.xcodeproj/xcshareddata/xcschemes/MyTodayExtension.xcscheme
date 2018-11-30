@@ -1,32 +1,32 @@
 
-<Scheme LastUpgradeVersion="1000" version="1.3" wasCreatedForAppExtension="YES">
+<Scheme version="1.3" wasCreatedForAppExtension="YES" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E665954B6A00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BlueprintName="MyTodayExtension" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE62A43A2F9200000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BuildableIdentifier="primary" BlueprintName="MyTodayExtension"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6F53E4F0A00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyMacOSApp.app" BlueprintName="MyMacOSApp" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE62028EBCFE00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyMacOSApp.app" BuildableIdentifier="primary" BlueprintName="MyMacOSApp"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction buildConfiguration="__TulsiTestRunner_Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
         <Testables></Testables>
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E665954B6A00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BlueprintName="MyTodayExtension" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="7E9AFE62A43A2F9200000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BuildableIdentifier="primary" BlueprintName="MyTodayExtension"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES" launchAutomaticallySubstyle="2">
+    <LaunchAction launchAutomaticallySubstyle="2" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn">
         <EnvironmentVariables></EnvironmentVariables>
         <MacroExpansion>
-            <BuildableReference BlueprintIdentifier="3D31C5E665954B6A00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BlueprintName="MyTodayExtension" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="7E9AFE62A43A2F9200000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BuildableIdentifier="primary" BlueprintName="MyTodayExtension"></BuildableReference>
         </MacroExpansion>
     </LaunchAction>
-    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
+    <ProfileAction buildConfiguration="__TulsiTestRunner_Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES">
         <BuildableProductRunnable runnableDebuggingMode="0">
-            <BuildableReference BlueprintIdentifier="3D31C5E665954B6A00000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BlueprintName="MyTodayExtension" BuildableIdentifier="primary"></BuildableReference>
+            <BuildableReference BlueprintIdentifier="7E9AFE62A43A2F9200000000" ReferencedContainer="container:MacOSProject.xcodeproj" BuildableName="MyTodayExtension.appex" BuildableIdentifier="primary" BlueprintName="MyTodayExtension"></BuildableReference>
         </BuildableProductRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
-    <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>

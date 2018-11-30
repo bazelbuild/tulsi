@@ -1,32 +1,32 @@
 
-<Scheme LastUpgradeVersion="1000" version="1.3">
+<Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E61E7C5AB400000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E66B144ABC00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="Application.app" BlueprintName="Application" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6267D9455000000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="Application.app" BuildableIdentifier="primary" BlueprintName="Application"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction buildConfiguration="__TulsiTestRunner_Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
         <Testables></Testables>
-        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/WatchApplication">
-            <BuildableReference BlueprintIdentifier="3D31C5E61E7C5AB400000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BuildableIdentifier="primary"></BuildableReference>
+        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
+            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
         </RemoteRunnable>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
+    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
         <EnvironmentVariables></EnvironmentVariables>
-        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/WatchApplication">
-            <BuildableReference BlueprintIdentifier="3D31C5E61E7C5AB400000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BuildableIdentifier="primary"></BuildableReference>
+        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
+            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
         </RemoteRunnable>
     </LaunchAction>
-    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="__TulsiTestRunner_Release" debugDocumentVersioning="YES">
-        <RemoteRunnable runnableDebuggingMode="2" BundleIdentifier="com.apple.carousel" RemotePath="/WatchApplication">
-            <BuildableReference BlueprintIdentifier="3D31C5E61E7C5AB400000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BuildableIdentifier="primary"></BuildableReference>
+    <ProfileAction buildConfiguration="__TulsiTestRunner_Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES">
+        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
+            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
         </RemoteRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
-    <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>
