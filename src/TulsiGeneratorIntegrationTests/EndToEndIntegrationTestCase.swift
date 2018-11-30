@@ -29,8 +29,9 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     case userBuildScriptInvocationFailure(String)
   }
 
-  let extraDebugFlags = ["--define=TULSI_TEST=dbg"]
-  let extraReleaseFlags = ["--define=TULSI_TEST=rel"]
+  /// TODO(b/77804841): Remove the apple.experimental.bundling flag from this list.
+  let extraDebugFlags = ["--define=TULSI_TEST=dbg", "--define=apple.experimental.bundling=0"]
+  let extraReleaseFlags = ["--define=TULSI_TEST=rel", "--define=apple.experimental.bundling=0"]
   let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
