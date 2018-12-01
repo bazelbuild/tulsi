@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NewProjectViewController" customModule="Tulsi" customModuleProvider="target">
@@ -13,13 +14,13 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="513" height="230"/>
+            <rect key="frame" x="0.0" y="0.0" width="514" height="230"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="x6S-jF-Hz7">
-                    <rect key="frame" x="20" y="61" width="479" height="124"/>
+                    <rect key="frame" x="20" y="61" width="480" height="124"/>
                     <view key="contentView" id="Il9-Jg-Hvh">
-                        <rect key="frame" x="1" y="1" width="477" height="122"/>
+                        <rect key="frame" x="1" y="1" width="478" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MZz-Hp-qch">
@@ -39,7 +40,7 @@
                                 </textFieldCell>
                             </textField>
                             <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZFg-B8-Vl5">
-                                <rect key="frame" x="171" y="39" width="266" height="17"/>
+                                <rect key="frame" x="171" y="39" width="267" height="17"/>
                                 <pathCell key="cell" selectable="YES" editable="YES" alignment="left" placeholderString="Workspace location (default via bindings)" id="yIZ-N5-Zok">
                                     <font key="font" metaFont="system"/>
                                 </pathCell>
@@ -56,14 +57,14 @@
                                 </connections>
                             </pathControl>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SXg-pS-B9K">
-                                <rect key="frame" x="171" y="62" width="266" height="22"/>
+                                <rect key="frame" x="171" y="62" width="267" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="mQ6-H8-SiS"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="tyK-kg-dAn"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="4jb-dh-fvC">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
@@ -92,7 +93,7 @@
                             <constraint firstItem="SXg-pS-B9K" firstAttribute="baseline" secondItem="MZz-Hp-qch" secondAttribute="baseline" id="vMZ-cW-Vf3"/>
                         </constraints>
                     </view>
-                    <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                    <color key="borderColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8cI-FN-Vac">
                     <rect key="frame" x="18" y="193" width="228" height="17"/>
@@ -103,7 +104,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PFy-b8-mmS">
-                    <rect key="frame" x="430" y="13" width="69" height="32"/>
+                    <rect key="frame" x="431" y="13" width="69" height="32"/>
                     <buttonCell key="cell" type="push" title="Next" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IZq-Nh-BOv">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
