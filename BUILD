@@ -80,24 +80,6 @@ test_suite(
     ],
 )
 
-load("@build_bazel_rules_apple//apple:apple_genrule.bzl", "apple_genrule")
-
-apple_genrule(
-    name = "tulsi_dmg",
-    srcs = [
-        ":tulsi.zip",
-        "//src/tools:generate_xcodeproj.sh",
-    ],
-    outs = ["Tulsi.dmg"],
-    cmd = " && ".join([
-        "unzip -oq $(location :tulsi.zip) -d $(@D)/dmg_root",
-        "ln -s /Applications $(@D)/dmg_root/Applications",
-        "mkdir \"$(@D)/dmg_root/Tulsi Additional Files\"",
-        "cp -f $(location //src/tools:generate_xcodeproj.sh) \"$(@D)/dmg_root/Tulsi Additional Files\"/",
-        "hdiutil create -srcfolder $(@D)/dmg_root -volname Tulsi $@",
-    ]),
-)
-
 filegroup(
     name = "for_bazel_tests",
     testonly = 1,

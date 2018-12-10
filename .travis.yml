@@ -9,6 +9,6 @@ before_install:
 
 script:
   - bazel version
-  - bazel build //:tulsi --cpu=darwin_x86_64 --apple_platform_type=macos
-  - bazel test //src/TulsiGeneratorTests --cpu=darwin_x86_64 --apple_platform_type=macos --test_output=errors
-  - bazel test //src/TulsiGeneratorIntegrationTests --cpu=darwin_x86_64 --apple_platform_type=macos --test_output=errors
+  - bazel build //:tulsi
+  - bazel test //src/TulsiGeneratorTests --test_output=errors
+  - bazel test //src/TulsiGeneratorIntegrationTests --test_output=errors
