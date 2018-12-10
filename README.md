@@ -1,5 +1,7 @@
 # Tulsi - an Xcode Project Generator For Bazel
 
+[![Build Status](https://travis-ci.org/bazelbuild/tulsi.svg?branch=master)](https://travis-ci.org/bazelbuild/tulsi)
+
 <span style="background-color:OldLace; padding:10px">
 tulsi - /ˈto͝olsē/  A kind of basil that is venerated by Hindus as a sacred
 plant.
