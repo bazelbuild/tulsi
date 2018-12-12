@@ -23,15 +23,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25889F7C053A03DB00000000 /* MyTodayExtension-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "MyTodayExtension-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_mac/MyTodayExtension-Info-binary.plist"; sourceTree = "<group>"; };
 		25889F7C0B8893FD00000000 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.m"; sourceTree = "<group>"; };
 		25889F7C14A0CF5B00000000 /* MyTodayExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyTodayExtension-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Info.plist"; sourceTree = "<group>"; };
 		25889F7C1D215DBF00000000 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TodayViewController.m; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/ExtSources/TodayViewController.m"; sourceTree = "<group>"; };
 		25889F7C1DF2978800000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
 		25889F7C2659003900000000 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.h"; sourceTree = "<group>"; };
+		25889F7C28DF1E5500000000 /* _MyMacOSApp-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_MyMacOSApp-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_mac/_MyMacOSApp-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C431C3E6C00000000 /* MyCommandLineApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; name = MyCommandLineApp; path = MyCommandLineApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C434F672400000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
-		25889F7C4B048EE100000000 /* MyMacOSApp-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "MyMacOSApp-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_mac/MyMacOSApp-Info-binary.plist"; sourceTree = "<group>"; };
+		25889F7C607BCF0900000000 /* _MyTodayExtension-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_MyTodayExtension-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_mac/_MyTodayExtension-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C7CBFB06500000000 /* TodayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TodayViewController.xib; path = "tulsi-workspace/tulsi_e2e_mac/Resources/extensions/today/TodayViewController.xib"; sourceTree = "<group>"; };
 		25889F7C92DAB7BA00000000 /* lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_50A94BC0_macos_min10.13.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_50A94BC0_macos_min10.13.a; path = lib_idx_MyTodayExtensionSources_MyCommandLineAppSource_MyMacAppSources_50A94BC0_macos_min10.13.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CB053494A00000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = MyMacOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,8 +143,8 @@
 		45D05629C93B838500000000 /* tulsi_e2e_mac */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C4B048EE100000000 /* MyMacOSApp-Info-binary.plist */,
-				25889F7C053A03DB00000000 /* MyTodayExtension-Info-binary.plist */,
+				25889F7C28DF1E5500000000 /* _MyMacOSApp-Private-Info.plist */,
+				25889F7C607BCF0900000000 /* _MyTodayExtension-Private-Info.plist */,
 			);
 			name = tulsi_e2e_mac;
 			sourceTree = "<group>";

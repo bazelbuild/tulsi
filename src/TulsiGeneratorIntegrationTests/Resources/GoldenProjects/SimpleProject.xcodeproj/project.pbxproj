@@ -46,12 +46,10 @@
 		25889F7C1A1D3E7000000000 /* lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a; path = lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C301CC73800000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 		25889F7C477067CE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
+		25889F7C4D2AD16000000000 /* _Application-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_Application-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/_Application-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C6079DDB000000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_simple/Application/entitlements.entitlements"; sourceTree = "<group>"; };
-		25889F7C767509B800000000 /* XCTest_test_bundle-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "XCTest_test_bundle-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/XCTest_test_bundle-Info-binary.plist"; sourceTree = "<group>"; };
-		25889F7C805F21F400000000 /* TargetApplication-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TargetApplication-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/TargetApplication-Info-binary.plist"; sourceTree = "<group>"; };
 		25889F7C80E2A65800000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src2.m"; sourceTree = "<group>"; };
 		25889F7C80E959BE00000000 /* lib_idx_Library_744889E2_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_744889E2_ios_min10.0.a; path = lib_idx_Library_744889E2_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C8DDE49AB00000000 /* Application-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/Application-Info-binary.plist"; sourceTree = "<group>"; };
 		25889F7C8FC56C5400000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C978361E600000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
 		25889F7C99A5382C00000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src1.mm; path = "tulsi-workspace/tulsi_e2e_simple/XCTest/srcs/src1.mm"; sourceTree = "<group>"; };
@@ -59,9 +57,11 @@
 		25889F7CB150C3F800000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = "<group>"; };
 		25889F7CB6E4997A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src3.m"; sourceTree = "<group>"; };
 		25889F7CBA7026B400000000 /* lib_idx_TestLibrary_E66CBC86_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TestLibrary_E66CBC86_ios_min10.0.a; path = lib_idx_TestLibrary_E66CBC86_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CCBAE657E00000000 /* _TargetApplication-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_TargetApplication-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/_TargetApplication-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CCF6C202B00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		25889F7CD6AD0DEF00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = "<group>"; };
+		25889F7CE691CED600000000 /* _XCTest_test_bundle-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_XCTest_test_bundle-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_simple/_XCTest_test_bundle-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7CEA45B29C00000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Launch.storyboard; path = "tulsi-workspace/tulsi_e2e_simple/Application/Launch.storyboard"; sourceTree = "<group>"; };
 		25889F7CEBE4382E00000000 /* TargetApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TargetApplication.app; path = TargetApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CEC8BA1B100000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
@@ -164,9 +164,9 @@
 		45D05629BD96D6B400000000 /* tulsi_e2e_simple */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C8DDE49AB00000000 /* Application-Info-binary.plist */,
-				25889F7C805F21F400000000 /* TargetApplication-Info-binary.plist */,
-				25889F7C767509B800000000 /* XCTest_test_bundle-Info-binary.plist */,
+				25889F7C4D2AD16000000000 /* _Application-Private-Info.plist */,
+				25889F7CCBAE657E00000000 /* _TargetApplication-Private-Info.plist */,
+				25889F7CE691CED600000000 /* _XCTest_test_bundle-Private-Info.plist */,
 			);
 			name = tulsi_e2e_simple;
 			sourceTree = "<group>";

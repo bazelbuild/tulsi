@@ -19,22 +19,22 @@
 		25889F7C06EE647600000000 /* ApplicationOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationOne.app; path = ApplicationOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C203FAE5B00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/Info.plist"; sourceTree = "<group>"; };
 		25889F7C38357D4800000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C3FE7782E00000000 /* _TodayExtension-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_TodayExtension-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_TodayExtension-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C4339915300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_multi_extension/BUILD; sourceTree = "<group>"; };
-		25889F7C709BC51000000000 /* ApplicationOne-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "ApplicationOne-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/ApplicationOne-Info-binary.plist"; sourceTree = "<group>"; };
+		25889F7C7695CD7D00000000 /* _ApplicationTwo-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_ApplicationTwo-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_ApplicationTwo-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7CA4AD39EB00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/entitlements.entitlements"; sourceTree = "<group>"; };
 		25889F7CAB0F56C800000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_multi_extension/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
-		25889F7CB7EB115000000000 /* ApplicationTwo-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "ApplicationTwo-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/ApplicationTwo-Info-binary.plist"; sourceTree = "<group>"; };
-		25889F7CDB0519BA00000000 /* TodayExtension-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TodayExtension-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/TodayExtension-Info-binary.plist"; sourceTree = "<group>"; };
 		25889F7CE7EE802200000000 /* ApplicationTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationTwo.app; path = ApplicationTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CF9ACF93900000000 /* _ApplicationOne-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_ApplicationOne-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_ApplicationOne-Private-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		45D056291A9F288400000000 /* tulsi_e2e_multi_extension */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C709BC51000000000 /* ApplicationOne-Info-binary.plist */,
-				25889F7CB7EB115000000000 /* ApplicationTwo-Info-binary.plist */,
-				25889F7CDB0519BA00000000 /* TodayExtension-Info-binary.plist */,
+				25889F7CF9ACF93900000000 /* _ApplicationOne-Private-Info.plist */,
+				25889F7C7695CD7D00000000 /* _ApplicationTwo-Private-Info.plist */,
+				25889F7C3FE7782E00000000 /* _TodayExtension-Private-Info.plist */,
 			);
 			name = tulsi_e2e_multi_extension;
 			sourceTree = "<group>";

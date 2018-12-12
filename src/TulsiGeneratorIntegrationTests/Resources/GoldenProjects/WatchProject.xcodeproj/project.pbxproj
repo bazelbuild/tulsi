@@ -28,15 +28,15 @@
 
 /* Begin PBXFileReference section */
 		25889F7C0C556C9200000000 /* lib_idx_ApplicationLibrary_B45268BB_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_B45268BB_ios_min10.0.a; path = lib_idx_ApplicationLibrary_B45268BB_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C0D5ACA6100000000 /* _WatchExtension-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_WatchExtension-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/_WatchExtension-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C0E6614C000000000 /* ext_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = ext_resources.file; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/ext_resources.file"; sourceTree = "<group>"; };
 		25889F7C11BBAF6C00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_watch/Application/Info.plist"; sourceTree = "<group>"; };
 		25889F7C209FA0FE00000000 /* WatchExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = WatchExtension.appex; path = WatchExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C295E8D8E00000000 /* watch2_extension_binary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = watch2_extension_binary.m; path = "tulsi-workspace/tulsi_e2e_watch/Watch2ExtensionBinary/srcs/watch2_extension_binary.m"; sourceTree = "<group>"; };
-		25889F7C2B0037FB00000000 /* WatchExtension-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "WatchExtension-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/WatchExtension-Info-binary.plist"; sourceTree = "<group>"; };
 		25889F7C35DA0F1D00000000 /* ext_entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = ext_entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/ext_entitlements.entitlements"; sourceTree = "<group>"; };
 		25889F7C3820488800000000 /* ext_structured_resources.file */ = {isa = PBXFileReference; lastKnownFileType = dyn.age80q4pqqy; name = ext_structured_resources.file; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/ext_structured_resources.file"; sourceTree = "<group>"; };
 		25889F7C4DAFC77200000000 /* WatchApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = WatchApplication.app; path = WatchApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C4EAEA55D00000000 /* WatchApplication-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "WatchApplication-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/WatchApplication-Info-binary.plist"; sourceTree = "<group>"; };
+		25889F7C623F952E00000000 /* _Application-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_Application-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/_Application-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C69FDDDAB00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/ext_infoplists/Info.plist"; sourceTree = "<group>"; };
 		25889F7C6CA77FEE00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_watch/Application/entitlements.entitlements"; sourceTree = "<group>"; };
 		25889F7C6EE78B0C00000000 /* lib_idx_WatchExtensionLibrary_2A5269B8_watchos_min3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_WatchExtensionLibrary_2A5269B8_watchos_min3.0.a; path = lib_idx_WatchExtensionLibrary_2A5269B8_watchos_min3.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,9 +44,9 @@
 		25889F7C97FBB66F00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/app_infoplists/Info.plist"; sourceTree = "<group>"; };
 		25889F7C9FFA61B100000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_watch/Library/srcs/main.m"; sourceTree = "<group>"; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CD13DEF0300000000 /* _WatchApplication-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_WatchApplication-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/_WatchApplication-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7CE643C43000000000 /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Interface.storyboard; path = "tulsi-workspace/tulsi_e2e_watch/Watch2Extension/Interface.storyboard"; sourceTree = "<group>"; };
 		25889F7CEB058C2A00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_watch/BUILD; sourceTree = "<group>"; };
-		25889F7CF170920A00000000 /* Application-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "Application-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_watch/Application-Info-binary.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -136,9 +136,9 @@
 		45D056299F5F0E8300000000 /* tulsi_e2e_watch */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CF170920A00000000 /* Application-Info-binary.plist */,
-				25889F7C4EAEA55D00000000 /* WatchApplication-Info-binary.plist */,
-				25889F7C2B0037FB00000000 /* WatchExtension-Info-binary.plist */,
+				25889F7C623F952E00000000 /* _Application-Private-Info.plist */,
+				25889F7CD13DEF0300000000 /* _WatchApplication-Private-Info.plist */,
+				25889F7C0D5ACA6100000000 /* _WatchExtension-Private-Info.plist */,
 			);
 			name = tulsi_e2e_watch;
 			sourceTree = "<group>";
