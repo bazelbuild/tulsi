@@ -23,7 +23,6 @@ config_setting(
 
 load(
     "@build_bazel_rules_apple//apple:ios.bzl",
-    "apple_product_type",
     "ios_application",
     "ios_extension",
     "ios_unit_test",
