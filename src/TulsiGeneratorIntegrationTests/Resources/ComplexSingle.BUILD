@@ -29,6 +29,10 @@ load(
     "ios_ui_test",
 )
 load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_bundle_import",
+)
+load(
     "@build_bazel_rules_apple//apple:tvos.bzl",
     "tvos_application",
     "tvos_extension",
@@ -102,7 +106,7 @@ objc_library(
     ],
 )
 
-objc_bundle(
+apple_bundle_import(
     name = "ObjCBundle",
     bundle_imports = [
         "ObjCBundle.bundle/FileOne.txt",

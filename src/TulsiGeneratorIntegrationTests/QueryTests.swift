@@ -99,7 +99,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:ObjCBundle")
-        .hasType("objc_bundle")
+        .hasType("apple_bundle_import")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
