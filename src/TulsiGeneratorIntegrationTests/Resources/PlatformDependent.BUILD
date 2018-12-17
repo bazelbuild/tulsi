@@ -23,6 +23,10 @@ load(
     "ios_ui_test",
 )
 load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_bundle_import",
+)
+load(
     "@build_bazel_rules_swift//swift:swift.bzl",
     "swift_library",
 )
@@ -59,7 +63,7 @@ ios_sticker_pack_extension(
     sticker_assets = ["Stickers.xcstickers/AppIcon.stickersiconset/asset.png"],
 )
 
-objc_bundle(
+apple_bundle_import(
     name = "SettingsBundle",
     bundle_imports = [
         "Settings.bundle/Root.plist",
