@@ -183,7 +183,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
   func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason reason: NewProjectViewController.CompletionReason) {
     defer {newProjectSheet = nil}
-    dismiss(newProjectSheet)
+    dismiss(vc)
 
     guard reason == .create else {
       // Nothing useful can be done if the user doesn't wish to create a new project, so close this
