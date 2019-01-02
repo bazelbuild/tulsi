@@ -1,3 +1,5 @@
+load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
+
 licenses(["notice"])  # Apache 2.0
 
 package(default_visibility = ["//:__subpackages__"])
@@ -14,9 +16,9 @@ genrule(
     visibility = ["//visibility:private"],
 )
 
-filegroup(
+apple_resource_group(
     name = "tulsi",
-    srcs = [
+    structured_resources = [
         "tulsi/tulsi_aspects.bzl",
         "tulsi/tulsi_aspects_paths.bzl",
         ":aspect_build",
