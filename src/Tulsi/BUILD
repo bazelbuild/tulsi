@@ -35,8 +35,8 @@ filegroup(
 swift_library(
     name = "tulsi_lib",
     srcs = [":tulsi_srcs"],
+    data = [":tulsi_resources"],
     module_name = "Tulsi",
-    resources = [":tulsi_resources"],
     tags = ["nobuilder"],
     deps = ["//src/TulsiGenerator:tulsi_generator_lib"],
     copts = [

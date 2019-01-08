@@ -303,8 +303,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   }
 
   override func makeWindowControllers() {
-    let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
-    let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "TulsiGeneratorConfigDocumentWindow")) as! NSWindowController
+    let storyboard = NSStoryboard(name: "Main", bundle: nil)
+    let windowController = storyboard.instantiateController(withIdentifier: "TulsiGeneratorConfigDocumentWindow") as! NSWindowController
     windowController.contentViewController?.representedObject = self
     windowController.window?.isRestorable = false
     addWindowController(windowController)
@@ -468,12 +468,14 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let compilationModeOption = optionSet[.ProjectGenerationCompilationMode]
         let platformConfigOption = optionSet[.ProjectGenerationPlatformConfiguration]
         let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
+        let useArm64_32 = optionSet[.UseArm64_32]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    buildOptions: buildOptions,
                                                                    compilationModeOption: compilationModeOption,
                                                                    platformConfigOption: platformConfigOption,
                                                                    prioritizeSwiftOption: prioritizeSwiftOption,
+                                                                   useArm64_32Option: useArm64_32,
                                                                    features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
@@ -572,7 +574,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     let newConfigSheet = NewGeneratorConfigViewController()
     newConfigSheet.configName = configName
     newConfigSheet.delegate = self
-    windowForSheet?.contentViewController?.presentViewControllerAsSheet(newConfigSheet)
+    windowForSheet?.contentViewController?.presentAsSheet(newConfigSheet)
   }
 
   /// Generates an Xcode project, returning an NSURL to the project on success.
@@ -707,7 +709,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   func viewController(_ vc: NewGeneratorConfigViewController,
                       didCompleteWithReason reason: NewGeneratorConfigViewController.CompletionReason) {
-    windowForSheet?.contentViewController?.dismissViewController(vc)
+    windowForSheet?.contentViewController?.dismiss(vc)
     guard reason == .create else {
       if let completionHandler = saveCompletionHandler {
         completionHandler(true, nil)
@@ -803,6 +805,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                               compilationModeOption: options[.ProjectGenerationCompilationMode],
                                                               platformConfigOption: options[.ProjectGenerationPlatformConfiguration],
                                                               prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
+                                                              useArm64_32Option: options[.UseArm64_32],
                                                               features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()

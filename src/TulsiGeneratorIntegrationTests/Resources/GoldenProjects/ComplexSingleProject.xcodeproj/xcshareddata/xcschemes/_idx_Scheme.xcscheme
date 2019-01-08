@@ -1,52 +1,52 @@
 
-<Scheme LastUpgradeVersion="1000" version="1.3">
+<Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E641F9541E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6274D2521C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6185FFADC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6274D2521C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6185FFADC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6274D2521C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6185FFADC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0.a" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_EC7E0D8E_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE62C53FEAEE00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_ApplicationLibrary_3EA018EE_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_ApplicationLibrary_3EA018EE_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E641F9541E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE627939A05E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6511C18AA00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0.a" BlueprintName="_idx_SubLibraryWithDifferentDefines_32E5A9BC_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6255A1A44C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibrary_241BBB47_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_SubLibrary_241BBB47_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6B40F98DC00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibrary_19588DB9_ios_min10.0.a" BlueprintName="_idx_SubLibrary_19588DB9_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE627939A05E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E677AB1B2000000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_Library_20EC2F4A_ios_min10.0.a" BlueprintName="_idx_Library_20EC2F4A_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE627939A05E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E61062C93600000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_ApplicationLibrary_30DD5A4B_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_30DD5A4B_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6274D2521C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E641F9541E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6274D2521C00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_FCCFB05E_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E641F9541E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE62EE8F742400000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_Library_FAFE9183_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_Library_FAFE9183_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E641F9541E00000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0.a" BlueprintName="_idx_TodayExtensionLibrary_CoreDataResources_SrcGenerator_TestLibrary_903D0578_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE626123EF5600000000" ReferencedContainer="container:ComplexSingleProject.xcodeproj" BuildableName="lib_idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Debug">
+    <TestAction buildConfiguration="Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
         <Testables></Testables>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
+    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
         <EnvironmentVariables></EnvironmentVariables>
     </LaunchAction>
-    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Release" debugDocumentVersioning="YES"></ProfileAction>
+    <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"></ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
-    <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>

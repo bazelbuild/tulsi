@@ -21,7 +21,7 @@ final class SplashScreenRecentDocumentViewController : NSViewController {
   var url: URL?
 
   override var nibName: NSNib.Name? {
-    return NSNib.Name(rawValue: "SplashScreenRecentDocumentView")
+    return "SplashScreenRecentDocumentView"
   }
 
   override func viewDidLoad() {
@@ -41,13 +41,13 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
   @objc dynamic var recentDocumentViewControllers = [SplashScreenRecentDocumentViewController]()
 
   override var windowNibName: NSNib.Name? {
-    return NSNib.Name(rawValue: "SplashScreenWindowController")
+    return "SplashScreenWindowController"
   }
 
   override func windowDidLoad() {
     super.windowDidLoad()
 
-    splashScreenImageView.image = NSApplication.shared.applicationIconImage
+    splashScreenImageView.image = NSImage(named: "AppIcon")
 
     if let cfBundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       applicationVersion = cfBundleVersion

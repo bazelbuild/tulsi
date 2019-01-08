@@ -24,7 +24,7 @@ set -eu
 readonly unzip_dir="${1:-$HOME/Applications}"
 
 # build it
-bazel build //:tulsi --swiftcopt=-swift-version --swiftcopt=4
+bazel build //:tulsi
 # unzip it
 unzip -oq bazel-bin/tulsi.zip -d "$unzip_dir"
 # run it

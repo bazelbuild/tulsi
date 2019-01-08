@@ -31,9 +31,11 @@ filegroup(
 swift_library(
     name = "tulsi_generator_lib",
     srcs = [":tulsi_generator_srcs"],
+    data = [
+        ":tulsi_generator_resources",
+        "//src/TulsiGenerator/Bazel:tulsi",
+    ],
     module_name = "TulsiGenerator",
-    resources = [":tulsi_generator_resources"],
-    structured_resources = ["//src/TulsiGenerator/Bazel:tulsi"],
     tags = ["nobuilder"],
     copts = [
         "-swift-version",

@@ -21,23 +21,19 @@
 ///  - iOS also sets the --watchos_cpus flag (as it can contain a watchOS app embedded)
 extension PlatformConfiguration {
   public var bazelFlags: [String] {
-    let cpuStr = cpu.rawValue
     var flags = ["--apple_platform_type=\(platform.bazelPlatform)"]
 
     switch platform {
-    case .ios:
-      fallthrough
-    case .macos:
-      flags.append("--cpu=\(platform.bazelCPUPlatform)_\(cpuStr)")
+    case .ios, .macos:
+      flags.append("--cpu=\(platform.bazelCPUPlatform)_\(cpu.rawValue)")
     case .tvos:
-      fallthrough
+      flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpu.rawValue)")
     case .watchos:
-      flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpuStr)")
+      flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
     }
 
     if case .ios = platform {
-      let watchCPU: CPU = cpu.isARM ? .armv7k : .i386
-      flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(watchCPU.rawValue)")
+      flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
     }
 
     return flags

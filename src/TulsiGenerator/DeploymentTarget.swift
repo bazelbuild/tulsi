@@ -21,8 +21,9 @@ public enum CPU: String {
   case armv7
   case armv7k
   case arm64
+  case arm64_32
 
-  public static let allCases: [CPU] = [.i386, .x86_64, .armv7, .armv7k, .arm64]
+  public static let allCases: [CPU] = [.i386, .x86_64, .armv7, .armv7k, .arm64, .arm64_32]
 
   var isARM: Bool {
     switch self {
@@ -31,11 +32,13 @@ public enum CPU: String {
     case .armv7: return true
     case .armv7k: return true
     case .arm64: return true
+    case .arm64_32: return true
     }
   }
 
   var watchCPU: CPU {
-    return isARM ? .i386 : .armv7k
+    let armCPU = PlatformConfiguration.useArm64_32 ? CPU.arm64_32 : .armv7k
+    return isARM ? armCPU : .i386
   }
 }
 
@@ -44,6 +47,7 @@ public struct PlatformConfiguration {
 
   public let platform: PlatformType
   public let cpu: CPU
+  public static var useArm64_32 = false
 
   /// Default to iOS 64-bit simulator.
   public static let defaultConfiguration = PlatformConfiguration(platform: .ios, cpu: .x86_64)
@@ -98,7 +102,7 @@ public enum PlatformType: String {
     case .ios: return [.i386, .x86_64, .armv7, .arm64]
     case .macos: return  [.x86_64]
     case .tvos: return [.x86_64, .arm64]
-    case .watchos: return [.i386, .armv7k]
+    case .watchos: return [.i386, .armv7k, .arm64_32]
     }
   }
 

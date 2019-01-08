@@ -66,7 +66,7 @@ final class NewProjectViewController: NSViewController {
     panel.canChooseDirectories = false
     panel.canChooseFiles = true
     panel.beginSheetModal(for: self.view.window!) { value in
-      if value.rawValue == NSFileHandlingPanelOKButton {
+      if value == NSApplication.ModalResponse.OK {
         self.workspacePath = panel.url
       }
     }

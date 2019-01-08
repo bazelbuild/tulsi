@@ -79,14 +79,14 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Set the default deployment versions for all platforms to prevent different Xcode from
     // producing different generated projects that only differ on *_DEPLOYMENT_VERSION values.
-    bazelBuildOptions.append("--ios_minimum_os=7.0")
+    bazelBuildOptions.append("--ios_minimum_os=8.0")
     bazelBuildOptions.append("--macos_minimum_os=10.10")
     bazelBuildOptions.append("--tvos_minimum_os=10.0")
     bazelBuildOptions.append("--watchos_minimum_os=3.0")
 
     // Explicitly set Xcode version to use. Must use the same version or the golden files
     // won't match.
-    bazelBuildOptions.append("--xcode_version=9.4")
+    bazelBuildOptions.append("--xcode_version=10.1")
 
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")

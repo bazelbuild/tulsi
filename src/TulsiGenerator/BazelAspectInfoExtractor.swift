@@ -28,6 +28,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   var bazelURL: URL
   /// The location of the Bazel workspace to be examined.
   let workspaceRootURL: URL
+  /// The execution root URL.
+  let executionRootURL: URL
   /// Stores Tulsi-specific Bazel settings.
   let bazelSettingsProvider: BazelSettingsProviderProtocol
 
@@ -44,10 +46,12 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
   init(bazelURL: URL,
        workspaceRootURL: URL,
+       executionRootURL: URL,
        bazelSettingsProvider: BazelSettingsProviderProtocol,
        localizedMessageLogger: LocalizedMessageLogger) {
     self.bazelURL = bazelURL
     self.workspaceRootURL = workspaceRootURL
+    self.executionRootURL = executionRootURL
     self.bazelSettingsProvider = bazelSettingsProvider
     self.localizedMessageLogger = localizedMessageLogger
 
@@ -69,6 +73,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                    compilationMode: String? = nil,
                                    platformConfig: String? = nil,
                                    prioritizeSwift: Bool? = nil,
+                                   useArm64_32: Bool? = nil,
                                    features: Set<BazelSettingFeature> = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
@@ -80,6 +85,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           compilationMode: compilationMode,
                                           platformConfig: platformConfig,
                                           prioritizeSwift: prioritizeSwift,
+                                          useArm64_32: useArm64_32,
                                           features: features)
   }
 
@@ -91,6 +97,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           compilationMode: String?,
                                           platformConfig: String?,
                                           prioritizeSwift: Bool?,
+                                          useArm64_32: Bool?,
                                           features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
@@ -112,6 +119,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                compilationMode: compilationMode,
                                                platformConfig: platformConfig,
                                                prioritizeSwift: prioritizeSwift,
+                                               useArm64_32: useArm64_32,
                                                features: features,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
@@ -171,6 +179,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             compilationMode: String?,
                                             platformConfig: String?,
                                             prioritizeSwift: Bool?,
+                                            useArm64_32: Bool?,
                                             features: Set<BazelSettingFeature>,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
@@ -196,6 +205,10 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       config = parsedConfig
     } else {
       config = PlatformConfiguration.defaultConfiguration
+    }
+
+    if let useArm64_32 = useArm64_32 {
+      PlatformConfiguration.useArm64_32 = useArm64_32
     }
 
     let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: hasSwift,
@@ -375,12 +388,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
 
       var extensionType: String?
       if targetProductType?.isiOSAppExtension ?? false, let infoplistPath = dict["infoplist"] as? String {
-        // TODO(b/73349137): This relies on the fact the Plist will be located next to the
-        // .tulsiinfo file for the same target. It would be better to get an absolute path to the
-        // plist from bazel.
-        let plistPath = URL(fileURLWithPath: filename)
-          .deletingLastPathComponent()
-          .appendingPathComponent(infoplistPath).path
+        let plistPath = executionRootURL.appendingPathComponent(infoplistPath).path
         guard let info = NSDictionary(contentsOfFile: plistPath) else {
           throw ExtractorError.parsingFailed("Unable to load extension plist file: \(plistPath)")
         }

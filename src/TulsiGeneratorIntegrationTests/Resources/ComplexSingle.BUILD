@@ -23,11 +23,14 @@ config_setting(
 
 load(
     "@build_bazel_rules_apple//apple:ios.bzl",
-    "apple_product_type",
     "ios_application",
     "ios_extension",
     "ios_unit_test",
     "ios_ui_test",
+)
+load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_bundle_import",
 )
 load(
     "@build_bazel_rules_apple//apple:tvos.bzl",
@@ -103,7 +106,7 @@ objc_library(
     ],
 )
 
-objc_bundle(
+apple_bundle_import(
     name = "ObjCBundle",
     bundle_imports = [
         "ObjCBundle.bundle/FileOne.txt",

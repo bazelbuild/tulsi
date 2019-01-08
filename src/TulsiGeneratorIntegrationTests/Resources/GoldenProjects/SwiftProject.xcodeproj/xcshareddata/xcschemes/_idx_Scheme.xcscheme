@@ -1,25 +1,25 @@
 
-<Scheme LastUpgradeVersion="1000" version="1.3">
+<Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6CCAA0DE000000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV4_56AA3A59_ios_min10.0.framework" BlueprintName="_idx_SwiftLibraryV4_56AA3A59_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE623891B9E600000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibrary_77A8D266_ios_min10.0.framework" BuildableIdentifier="primary" BlueprintName="_idx_SwiftLibrary_77A8D266_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E6EB65D1FE00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibrary_EA7FC891_ios_min10.0.framework" BlueprintName="_idx_SwiftLibrary_EA7FC891_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6207D4F0E800000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV4_B3719410_ios_min10.0.framework" BuildableIdentifier="primary" BlueprintName="_idx_SwiftLibraryV4_B3719410_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="3D31C5E64BB0ADDE00000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV3_56AA3A57_ios_min10.0.framework" BlueprintName="_idx_SwiftLibraryV3_56AA3A57_ios_min10.0" BuildableIdentifier="primary"></BuildableReference>
+            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
+                <BuildableReference BlueprintIdentifier="7E9AFE6270DB4CE200000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableName="_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework" BuildableIdentifier="primary" BlueprintName="_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Debug">
+    <TestAction buildConfiguration="Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
         <Testables></Testables>
     </TestAction>
-    <LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
+    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
         <EnvironmentVariables></EnvironmentVariables>
     </LaunchAction>
-    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Release" debugDocumentVersioning="YES"></ProfileAction>
+    <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"></ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
-    <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>

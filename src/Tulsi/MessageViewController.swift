@@ -153,11 +153,11 @@ final class MessageTypeToImageValueTransformer : ValueTransformer {
 
     switch messageType {
       case .info, .debug, .syslog:
-        return NSImage(named: NSImage.Name(rawValue: "message_info"))
+        return NSImage(named: "message_info")
       case .warning:
-        return NSImage(named: NSImage.Name(rawValue: "message_warning"))
+        return NSImage(named: "message_warning")
       case .error:
-        return NSImage(named: NSImage.Name(rawValue: "message_error"))
+        return NSImage(named: "message_error")
     }
   }
 }

@@ -24,8 +24,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   override func setUp() {
     super.setUp()
     let bazelSettingsProvider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
+    let executionRootURL = URL(fileURLWithPath: workspaceInfoFetcher.getExecutionRoot(),
+                               isDirectory: false)
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
+                                                   executionRootURL: executionRootURL,
                                                    bazelSettingsProvider: bazelSettingsProvider,
                                                    localizedMessageLogger: localizedMessageLogger)
   }
@@ -392,9 +395,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       .dependsOn("//tulsi_test:WatchApplicationResources")
 
     checker.assertThat("//tulsi_test:WatchExtension")
-      .dependsOn("//tulsi_test:WatchExtension.apple_binary")
-
-    checker.assertThat("//tulsi_test:WatchExtension.apple_binary")
       .dependsOn("//tulsi_test:WatchExtensionLibrary")
       .dependsOn("//tulsi_test:WatchExtensionResources")
 
@@ -456,8 +456,11 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   override func setUp() {
     super.setUp()
     let bazelSettingsProvider = BazelSettingsProvider(universalFlags: bazelUniversalFlags)
+    let executionRootURL = URL(fileURLWithPath: workspaceInfoFetcher.getExecutionRoot(),
+                               isDirectory: false)
     aspectInfoExtractor = BazelAspectInfoExtractor(bazelURL: bazelURL,
                                                    workspaceRootURL: workspaceRootURL!,
+                                                   executionRootURL: executionRootURL,
                                                    bazelSettingsProvider: bazelSettingsProvider,
                                                    localizedMessageLogger: localizedMessageLogger)
     installBUILDFile("TestSuiteRoot",

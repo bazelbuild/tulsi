@@ -7,117 +7,117 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		819366726921D83500000000 /* PBXContainerItemProxy */ = {
+		30E8372A9734745D00000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7E7BD0EAA89CE39500000000 /* Project object */;
+			containerPortal = 9034464B708F5F9300000000 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ECCC95946921D83400000000;
+			remoteGlobalIDString = 01F2CBCF9734745C00000000;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43D68C281FF5D32500000000 /* ApplicationTwo-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "ApplicationTwo-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/ApplicationTwo-Info-binary.plist"; sourceTree = "<group>"; };
-		43D68C283A3B027E00000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28521081DD00000000 /* ApplicationOne-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "ApplicationOne-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/ApplicationOne-Info-binary.plist"; sourceTree = "<group>"; };
-		43D68C28588FEE6C00000000 /* ApplicationOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationOne.app; path = ApplicationOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C2877613F3E00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/Info.plist"; sourceTree = "<group>"; };
-		43D68C28A645E66500000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_multi_extension/BUILD; sourceTree = "<group>"; };
-		43D68C28BE0CC41C00000000 /* ApplicationTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationTwo.app; path = ApplicationTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43D68C28C17E1CD500000000 /* TodayExtension-Info-binary.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "TodayExtension-Info-binary.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/TodayExtension-Info-binary.plist"; sourceTree = "<group>"; };
-		43D68C28C876E87200000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/entitlements.entitlements"; sourceTree = "<group>"; };
-		43D68C28E75DBE9D00000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_multi_extension/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
+		25889F7C06EE647600000000 /* ApplicationOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationOne.app; path = ApplicationOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C203FAE5B00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/Info.plist"; sourceTree = "<group>"; };
+		25889F7C38357D4800000000 /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = TodayExtension.appex; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C3FE7782E00000000 /* _TodayExtension-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_TodayExtension-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_TodayExtension-Private-Info.plist"; sourceTree = "<group>"; };
+		25889F7C4339915300000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_multi_extension/BUILD; sourceTree = "<group>"; };
+		25889F7C7695CD7D00000000 /* _ApplicationTwo-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_ApplicationTwo-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_ApplicationTwo-Private-Info.plist"; sourceTree = "<group>"; };
+		25889F7CA4AD39EB00000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_multi_extension/Application/entitlements.entitlements"; sourceTree = "<group>"; };
+		25889F7CAB0F56C800000000 /* Plist1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Plist1.plist; path = tulsi_e2e_multi_extension/TodayExtension/Plist1.plist; sourceTree = "<group>"; };
+		25889F7CE7EE802200000000 /* ApplicationTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ApplicationTwo.app; path = ApplicationTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CF9ACF93900000000 /* _ApplicationOne-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_ApplicationOne-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_multi_extension/_ApplicationOne-Private-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		966FB6DE07201E0200000000 /* _tulsi-includes */ = {
+		45D056291A9F288400000000 /* tulsi_e2e_multi_extension */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE88DDC84A00000000 /* x */,
+				25889F7CF9ACF93900000000 /* _ApplicationOne-Private-Info.plist */,
+				25889F7C7695CD7D00000000 /* _ApplicationTwo-Private-Info.plist */,
+				25889F7C3FE7782E00000000 /* _TodayExtension-Private-Info.plist */,
 			);
-			name = "_tulsi-includes";
+			name = tulsi_e2e_multi_extension;
 			sourceTree = "<group>";
 		};
-		966FB6DE0F90C7ED00000000 /* TodayExtension */ = {
+		45D056291A9F288400000001 /* tulsi_e2e_multi_extension */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28E75DBE9D00000000 /* Plist1.plist */,
+				45D0562933ECA2A800000000 /* Application */,
+				25889F7C4339915300000000 /* BUILD */,
+				45D05629F6FDB1D000000000 /* TodayExtension */,
 			);
-			name = TodayExtension;
+			name = tulsi_e2e_multi_extension;
 			sourceTree = "<group>";
 		};
-		966FB6DE2BD1037D00000000 /* Products */ = {
+		45D056291BF813BD00000000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28588FEE6C00000000 /* ApplicationOne.app */,
-				43D68C28BE0CC41C00000000 /* ApplicationTwo.app */,
-				43D68C283A3B027E00000000 /* TodayExtension.appex */,
-				966FB6DE07201E0200000000 /* _tulsi-includes */,
+				25889F7C06EE647600000000 /* ApplicationOne.app */,
+				25889F7CE7EE802200000000 /* ApplicationTwo.app */,
+				25889F7C38357D4800000000 /* TodayExtension.appex */,
+				45D05629EAC0EC1600000000 /* _tulsi-includes */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		966FB6DE6C1A2E9100000000 /* mainGroup */ = {
+		45D0562933ECA2A800000000 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DE2BD1037D00000000 /* Products */,
-				966FB6DE7D09364A00000001 /* tulsi_e2e_multi_extension */,
+				25889F7C203FAE5B00000000 /* Info.plist */,
+				25889F7CA4AD39EB00000000 /* entitlements.entitlements */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		45D0562934CDA62100000000 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				45D0562934CDA62100000001 /* x */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		45D0562934CDA62100000001 /* x */ = {
+			isa = PBXGroup;
+			children = (
+				45D056291A9F288400000000 /* tulsi_e2e_multi_extension */,
+			);
+			name = x;
+			sourceTree = "<group>";
+		};
+		45D05629B56AD7F200000000 /* mainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				45D056291BF813BD00000000 /* Products */,
+				45D056291A9F288400000001 /* tulsi_e2e_multi_extension */,
 			);
 			name = mainGroup;
 			path = ..;
 			sourceTree = SOURCE_ROOT;
 		};
-		966FB6DE7D09364A00000000 /* tulsi_e2e_multi_extension */ = {
+		45D05629EAC0EC1600000000 /* _tulsi-includes */ = {
 			isa = PBXGroup;
 			children = (
-				43D68C28521081DD00000000 /* ApplicationOne-Info-binary.plist */,
-				43D68C281FF5D32500000000 /* ApplicationTwo-Info-binary.plist */,
-				43D68C28C17E1CD500000000 /* TodayExtension-Info-binary.plist */,
+				45D0562934CDA62100000000 /* x */,
 			);
-			name = tulsi_e2e_multi_extension;
+			name = "_tulsi-includes";
 			sourceTree = "<group>";
 		};
-		966FB6DE7D09364A00000001 /* tulsi_e2e_multi_extension */ = {
+		45D05629F6FDB1D000000000 /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
-				966FB6DEB58A255E00000000 /* Application */,
-				43D68C28A645E66500000000 /* BUILD */,
-				966FB6DE0F90C7ED00000000 /* TodayExtension */,
+				25889F7CAB0F56C800000000 /* Plist1.plist */,
 			);
-			name = tulsi_e2e_multi_extension;
-			sourceTree = "<group>";
-		};
-		966FB6DE88DDC84A00000000 /* x */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE88DDC84A00000001 /* x */,
-			);
-			name = x;
-			sourceTree = "<group>";
-		};
-		966FB6DE88DDC84A00000001 /* x */ = {
-			isa = PBXGroup;
-			children = (
-				966FB6DE7D09364A00000000 /* tulsi_e2e_multi_extension */,
-			);
-			name = x;
-			sourceTree = "<group>";
-		};
-		966FB6DEB58A255E00000000 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				43D68C2877613F3E00000000 /* Info.plist */,
-				43D68C28C876E87200000000 /* entitlements.entitlements */,
-			);
-			name = Application;
+			name = TodayExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		ECCC95946921D83400000000 /* _bazel_clean_ */ = {
+		01F2CBCF9734745C00000000 /* _bazel_clean_ */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"/fake/tulsi_test_bazel\" \"bazel-bin\"";
-			buildConfigurationList = DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
+			buildConfigurationList = F4222DED29203B0D00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */;
 			buildPhases = (
 			);
 			buildToolPath = "${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_clean.sh";
@@ -131,97 +131,82 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		3D31C5E61674D30A00000000 /* ApplicationOne */ = {
+		7E9AFE62DB07952E00000000 /* ApplicationOne */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE47558387191FFB00000000 /* Build configuration list for PBXNativeTarget "ApplicationOne" */;
+			buildConfigurationList = F4222DEDFF89353F00000000 /* Build configuration list for PBXNativeTarget "ApplicationOne" */;
 			buildPhases = (
-				84B422718EEB267300000000 /* ShellScript */,
+				978262AB2925DEB500000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
 			);
 			name = ApplicationOne;
 			productName = ApplicationOne;
-			productReference = 43D68C28588FEE6C00000000 /* ApplicationOne.app */;
+			productReference = 25889F7C06EE647600000000 /* ApplicationOne.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3D31C5E61F218FDA00000000 /* TodayExtension */ = {
+		7E9AFE62E07268D200000000 /* ApplicationTwo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */;
+			buildConfigurationList = F4222DED905397AE00000000 /* Build configuration list for PBXNativeTarget "ApplicationTwo" */;
 			buildPhases = (
-				84B4227118A91E7900000000 /* ShellScript */,
+				978262AB977812D500000000 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
-			);
-			name = TodayExtension;
-			productName = TodayExtension;
-			productReference = 43D68C283A3B027E00000000 /* TodayExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		3D31C5E680DEE93A00000000 /* ApplicationTwo */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DE4755839C0132D300000000 /* Build configuration list for PBXNativeTarget "ApplicationTwo" */;
-			buildPhases = (
-				84B422718EEB267300000001 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4DAD0B426921D83500000000 /* PBXTargetDependency */,
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
 			);
 			name = ApplicationTwo;
 			productName = ApplicationTwo;
-			productReference = 43D68C28BE0CC41C00000000 /* ApplicationTwo.app */;
+			productReference = 25889F7CE7EE802200000000 /* ApplicationTwo.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7E9AFE62EDFB63A000000000 /* TodayExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DEDAD38E80000000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */;
+			buildPhases = (
+				978262AB521E8B4C00000000 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+			);
+			name = TodayExtension;
+			productName = TodayExtension;
+			productReference = 25889F7C38357D4800000000 /* TodayExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		7E7BD0EAA89CE39500000000 /* Project object */ = {
+		9034464B708F5F9300000000 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 1000;
 			};
-			buildConfigurationList = DE47558358721DCF00000000 /* Build configuration list for PBXProject "MultiExtensionProject" */;
+			buildConfigurationList = F4222DED9638AFA800000000 /* Build configuration list for PBXProject "MultiExtensionProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 966FB6DE6C1A2E9100000000 /* mainGroup */;
+			mainGroup = 45D05629B56AD7F200000000 /* mainGroup */;
 			targets = (
-				3D31C5E61674D30A00000000 /* ApplicationOne */,
-				3D31C5E680DEE93A00000000 /* ApplicationTwo */,
-				3D31C5E61F218FDA00000000 /* TodayExtension */,
-				ECCC95946921D83400000000 /* _bazel_clean_ */,
+				7E9AFE62DB07952E00000000 /* ApplicationOne */,
+				7E9AFE62E07268D200000000 /* ApplicationTwo */,
+				7E9AFE62EDFB63A000000000 /* TodayExtension */,
+				01F2CBCF9734745C00000000 /* _bazel_clean_ */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		84B4227118A91E7900000000 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			inputPaths = (
-				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_multi_extension:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
-			showEnvVarsInLog = 1;
-		};
-		84B422718EEB267300000000 /* ShellScript */ = {
+		978262AB2925DEB500000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -236,7 +221,22 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_multi_extension:ApplicationOne --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		84B422718EEB267300000001 /* ShellScript */ = {
+		978262AB521E8B4C00000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_multi_extension:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
+			showEnvVarsInLog = 1;
+		};
+		978262AB977812D500000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -254,14 +254,129 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4DAD0B426921D83500000000 /* PBXTargetDependency */ = {
+		89B1AEB39734745D00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			targetProxy = 819366726921D83500000000 /* PBXContainerItemProxy */;
+			targetProxy = 30E8372A9734745D00000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		44936BD67EED3C4D00000000 /* Debug */ = {
+		0207AA281FC531E700000000 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PYTHONIOENCODING = utf8;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
+				TULSI_PROJECT = MultiExtensionProject;
+				TULSI_VERSION = 9.99.999.9999;
+				TULSI_WR = "${SRCROOT}/..";
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		0207AA281FC531E700000001 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_multi_extension:ApplicationOne";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
+				PRODUCT_NAME = ApplicationOne;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
+				TULSI_XCODE_VERSION = 10.1.0;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		0207AA281FC531E700000002 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_multi_extension:ApplicationTwo";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
+				PRODUCT_NAME = ApplicationTwo;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
+				TULSI_XCODE_VERSION = 10.1.0;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		0207AA281FC531E700000003 /* __TulsiTestRunner_Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
+				BAZEL_TARGET = "//tulsi_e2e_multi_extension:TodayExtension";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_multi_extension-TodayExtension.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-help";
+				OTHER_LDFLAGS = "-help";
+				OTHER_SWIFT_FLAGS = "-help";
+				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
+				PRODUCT_NAME = TodayExtension;
+				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
+				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
+				TULSI_XCODE_VERSION = 10.1.0;
+			};
+			name = __TulsiTestRunner_Release;
+		};
+		0207AA2838C3D90E00000000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -296,7 +411,7 @@
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000001 /* Debug */ = {
+		0207AA2838C3D90E00000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -309,11 +424,11 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000002 /* Debug */ = {
+		0207AA2838C3D90E00000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -326,11 +441,11 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Debug;
 		};
-		44936BD67EED3C4D00000003 /* Debug */ = {
+		0207AA2838C3D90E00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -343,11 +458,11 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Debug;
 		};
-		44936BD6A3D45CE900000000 /* Release */ = {
+		0207AA28616216BF00000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -382,7 +497,7 @@
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000001 /* Release */ = {
+		0207AA28616216BF00000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -395,11 +510,11 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000002 /* Release */ = {
+		0207AA28616216BF00000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -412,11 +527,11 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Release;
 		};
-		44936BD6A3D45CE900000003 /* Release */ = {
+		0207AA28616216BF00000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -429,11 +544,11 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = Release;
 		};
-		44936BD6C928366700000000 /* __TulsiTestRunner_Debug */ = {
+		0207AA28F23A778400000000 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -473,7 +588,7 @@
 			};
 			name = __TulsiTestRunner_Debug;
 		};
-		44936BD6C928366700000001 /* __TulsiTestRunner_Debug */ = {
+		0207AA28F23A778400000001 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -494,11 +609,11 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
-		44936BD6C928366700000002 /* __TulsiTestRunner_Debug */ = {
+		0207AA28F23A778400000002 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -519,11 +634,11 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
-		44936BD6C928366700000003 /* __TulsiTestRunner_Debug */ = {
+		0207AA28F23A778400000003 /* __TulsiTestRunner_Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -544,175 +659,60 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
+				TULSI_XCODE_VERSION = 10.1.0;
 			};
 			name = __TulsiTestRunner_Debug;
-		};
-		44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				CODE_SIGN_IDENTITY = "";
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PYTHONIOENCODING = utf8;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
-				TULSI_PROJECT = MultiExtensionProject;
-				TULSI_VERSION = 9.99.999.9999;
-				TULSI_WR = "${SRCROOT}/..";
-			};
-			name = __TulsiTestRunner_Release;
-		};
-		44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_TARGET = "//tulsi_e2e_multi_extension:ApplicationOne";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
-				PRODUCT_NAME = ApplicationOne;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
-			};
-			name = __TulsiTestRunner_Release;
-		};
-		44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_TARGET = "//tulsi_e2e_multi_extension:ApplicationTwo";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp;
-				PRODUCT_NAME = ApplicationTwo;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
-			};
-			name = __TulsiTestRunner_Release;
-		};
-		44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
-				BAZEL_TARGET = "//tulsi_e2e_multi_extension:TodayExtension";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/Stub_tulsi_e2e_multi_extension-TodayExtension.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-help";
-				OTHER_LDFLAGS = "-help";
-				OTHER_SWIFT_FLAGS = "-help";
-				PRODUCT_BUNDLE_IDENTIFIER = example.iosapp.todayextension;
-				PRODUCT_NAME = TodayExtension;
-				SDKROOT = iphoneos;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 9.4.1;
-			};
-			name = __TulsiTestRunner_Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE47558358721DCF00000000 /* Build configuration list for PBXProject "MultiExtensionProject" */ = {
+		F4222DED29203B0D00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000000 /* Debug */,
-				44936BD6A3D45CE900000000 /* Release */,
-				44936BD6C928366700000000 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000000 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE47558387191FFB00000000 /* Build configuration list for PBXNativeTarget "ApplicationOne" */ = {
+		F4222DED905397AE00000000 /* Build configuration list for PBXNativeTarget "ApplicationTwo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000001 /* Debug */,
-				44936BD6A3D45CE900000001 /* Release */,
-				44936BD6C928366700000001 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000001 /* __TulsiTestRunner_Release */,
+				0207AA2838C3D90E00000002 /* Debug */,
+				0207AA28616216BF00000002 /* Release */,
+				0207AA28F23A778400000002 /* __TulsiTestRunner_Debug */,
+				0207AA281FC531E700000002 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755839C0132D300000000 /* Build configuration list for PBXNativeTarget "ApplicationTwo" */ = {
+		F4222DED9638AFA800000000 /* Build configuration list for PBXProject "MultiExtensionProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000002 /* Debug */,
-				44936BD6A3D45CE900000002 /* Release */,
-				44936BD6C928366700000002 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000002 /* __TulsiTestRunner_Release */,
+				0207AA2838C3D90E00000000 /* Debug */,
+				0207AA28616216BF00000000 /* Release */,
+				0207AA28F23A778400000000 /* __TulsiTestRunner_Debug */,
+				0207AA281FC531E700000000 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE4755839DDBAE2300000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */ = {
+		F4222DEDAD38E80000000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				44936BD67EED3C4D00000003 /* Debug */,
-				44936BD6A3D45CE900000003 /* Release */,
-				44936BD6C928366700000003 /* __TulsiTestRunner_Debug */,
-				44936BD6FCBCA00300000003 /* __TulsiTestRunner_Release */,
+				0207AA2838C3D90E00000003 /* Debug */,
+				0207AA28616216BF00000003 /* Release */,
+				0207AA28F23A778400000003 /* __TulsiTestRunner_Debug */,
+				0207AA281FC531E700000003 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		DE475583CA83BF7E00000000 /* Build configuration list for PBXLegacyTarget "_bazel_clean_" */ = {
+		F4222DEDFF89353F00000000 /* Build configuration list for PBXNativeTarget "ApplicationOne" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				0207AA2838C3D90E00000001 /* Debug */,
+				0207AA28616216BF00000001 /* Release */,
+				0207AA28F23A778400000001 /* __TulsiTestRunner_Debug */,
+				0207AA281FC531E700000001 /* __TulsiTestRunner_Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 7E7BD0EAA89CE39500000000 /* Project object */;
+	rootObject = 9034464B708F5F9300000000 /* Project object */;
 }

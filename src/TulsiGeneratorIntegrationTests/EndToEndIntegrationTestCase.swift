@@ -44,6 +44,11 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
                            againstGoldenProject resourceName: String,
                            file: StaticString = #file,
                            line: UInt = #line) -> [String] {
+    guard let hashing = ProcessInfo.processInfo.environment["SWIFT_DETERMINISTIC_HASHING"],
+        hashing == "1" else {
+      XCTFail("Must define environment variable \"SWIFT_DETERMINISTIC_HASHING=1\", or golden tests will fail.")
+      return []
+    }
     let bundle = Bundle(for: type(of: self))
     let goldenProjectURL = workspaceRootURL.appendingPathComponent(fakeBazelWorkspace
                                                                        .resourcesPathBase,

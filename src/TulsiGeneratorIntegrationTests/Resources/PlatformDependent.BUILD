@@ -16,11 +16,15 @@
 
 load(
     "@build_bazel_rules_apple//apple:ios.bzl",
-    "apple_product_type",
     "ios_application",
     "ios_extension",
+    "ios_sticker_pack_extension",
     "ios_unit_test",
     "ios_ui_test",
+)
+load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_bundle_import",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -50,17 +54,16 @@ ios_application(
     deps = [":MainLibrary"],
 )
 
-ios_extension(
+ios_sticker_pack_extension(
     name = "StickerExtension",
-    asset_catalogs = ["Stickers.xcstickers/asset.png"],
     bundle_id = "com.google.Tulsi.TargetApplication.extension",
     families = ["iphone"],
     infoplists = ["Ext-Info.plist"],
     minimum_os_version = "10.0",
-    product_type = apple_product_type.messages_sticker_pack_extension,
+    sticker_assets = ["Stickers.xcstickers/AppIcon.stickersiconset/asset.png"],
 )
 
-objc_bundle(
+apple_bundle_import(
     name = "SettingsBundle",
     bundle_imports = [
         "Settings.bundle/Root.plist",
@@ -189,20 +192,5 @@ ios_ui_test(
     test_host = ":SkylarkApplication",
     deps = [
         ":XCUITestCode",
-    ],
-)
-
-objc_library(
-    name = "LegacyTestsLib",
-    srcs = [
-        "LegacyTests/LegacyTests.m",
-    ],
-)
-
-ios_unit_test(
-    name = "LegacyTests",
-    minimum_os_version = "10.0",
-    deps = [
-        ":LegacyTestsLib",
     ],
 )

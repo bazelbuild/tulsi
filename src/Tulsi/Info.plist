@@ -85,8 +85,6 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSRequiresAquaSystemAppearance</key>
-	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -128,7 +126,7 @@
 			<key>UTTypeDescription</key>
 			<string>Bazel Skylark</string>
 			<key>UTTypeIconFile</key>
-			<string>BUILDIcon.icns</string>
+			<string>BUILDIcon</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.google.bazel.skylark</string>
 			<key>UTTypeReferenceURL</key>

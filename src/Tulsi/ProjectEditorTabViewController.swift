@@ -20,7 +20,7 @@ final class ProjectTabViewController: NSTabViewController {
 
   override var representedObject: Any? {
     didSet {
-      for vc in childViewControllers {
+      for vc in children {
         vc.representedObject = representedObject
       }
     }

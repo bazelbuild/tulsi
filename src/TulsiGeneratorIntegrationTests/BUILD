@@ -13,10 +13,8 @@ swift_library(
         "BazelFakeWorkspace.swift",
         "BazelIntegrationTestCase.swift",
     ],
+    data = ["//:strings"],
     module_name = "BazelIntegrationTestCase",
-    resources = [
-        "//:strings",
-    ],
     visibility = ["//:__subpackages__"],
     deps = ["//src/TulsiGenerator:tulsi_generator_lib"],
 )
@@ -32,6 +30,9 @@ tulsi_integration_test(
 tulsi_integration_test(
     name = "EndToEndGenerationTests",
     srcs = ["EndToEndGenerationTests.swift"],
+    env = {
+        "SWIFT_DETERMINISTIC_HASHING": "1",
+    },
     deps = [":EndToEndIntegrationTestCase"],
 )
 
@@ -45,6 +46,9 @@ swift_library(
 tulsi_integration_test(
     name = "PlatformDependentEndToEndGenerationTests",
     srcs = ["PlatformDependentEndToEndGenerationTests.swift"],
+    env = {
+        "SWIFT_DETERMINISTIC_HASHING": "1",
+    },
     deps = [":EndToEndIntegrationTestCase"],
 )
 
