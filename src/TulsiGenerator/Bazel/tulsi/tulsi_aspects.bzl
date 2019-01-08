@@ -79,6 +79,7 @@ _TULSI_NON_EMBEDDEDABLE_ATTRS = [
 # generated Xcode project. For example, Info.plist and entitlements files.
 _SUPPORTING_FILE_ATTRIBUTES = [
     "app_icons",
+    "data",
     "entitlements",
     "infoplist",
     "infoplists",

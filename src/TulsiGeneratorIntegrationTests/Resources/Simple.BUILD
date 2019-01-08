@@ -62,16 +62,14 @@ objc_library(
         "ApplicationLibrary/srcs/main.m",
     ],
     asset_catalogs = ["ApplicationLibrary/Assets.xcassets/asset.png"],
+    data = ["ApplicationLibrary/Base.lproj/One.storyboard"],
     datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
         "APPLIB_ADDITIONAL_DEFINE",
         "APPLIB_ANOTHER_DEFINE=2",
     ],
     includes = ["ApplicationLibrary/includes"],
-    storyboards = ["ApplicationLibrary/Base.lproj/One.storyboard"],
-    deps = [
-        ":Library",
-    ],
+    deps = [":Library"],
 )
 
 cc_binary(
@@ -101,12 +99,12 @@ objc_library(
         "-I/Library/absolute/include/path",
         "-Irelative/Library/include/path",
     ],
+    data = ["Library/xibs/xib.xib"],
     defines = ["LIBRARY_DEFINES_DEFINE=1"],
     pch = "Library/pch/PCHFile.pch",
     textual_hdrs = [
         "Library/textual_hdrs/TextualHdrsHeader.h",
     ],
-    xibs = ["Library/xibs/xib.xib"],
 )
 
 cc_library(
