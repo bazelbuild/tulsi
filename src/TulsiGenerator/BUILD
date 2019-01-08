@@ -37,8 +37,4 @@ swift_library(
     ],
     module_name = "TulsiGenerator",
     tags = ["nobuilder"],
-    copts = [
-        "-swift-version",
-        "4",
-    ],
 )
