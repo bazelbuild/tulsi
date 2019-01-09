@@ -67,6 +67,7 @@ macos_application(
     minimum_os_version = "10.13",
     strings = [":strings"],
     version = ":AppVersion",
+    visibility = ["//visibility:public"],
     deps = [
         "//src/Tulsi:tulsi_lib",
     ],
