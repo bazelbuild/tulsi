@@ -873,6 +873,20 @@ class BazelBuildBridge(object):
       self._InstallBundle(primary_artifact,
                           xcode_artifact_path)
 
+      # When the rules output a tree artifact, Tulsi will copy the bundle as is
+      # into the expected Xcode output location. But because they're copied as
+      # is from the bazel output, they come with bazel's permissions, which are
+      # read only. Here we set them to write as well, so Xcode can modify the
+      # bundle too (for example, for codesigning).
+      chmod_timer = Timer('Modifying permissions of output bundle',
+                          'bundle_chmod').Start()
+
+      self._PrintVerbose('Spawning subprocess to add write permissions to '
+                         'copied bundle...')
+      process = subprocess.Popen(['chmod', '-R', 'uga+w', xcode_artifact_path])
+      process.wait()
+      chmod_timer.End()
+
     # No return code check as this is not an essential operation.
     self._InstallEmbeddedBundlesIfNecessary(primary_output_data)
 
