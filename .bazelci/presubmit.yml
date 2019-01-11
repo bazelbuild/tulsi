@@ -1,0 +1,7 @@
+---
+platforms:
+  macos:
+    build_targets:
+    - "//:tulsi"
+    test_targets:
+    - "//:tests"
