@@ -10,6 +10,7 @@ exports_files(["LICENSE"])
 load(
     ":version.bzl",
     "fill_info_plist",
+    "TULSI_VERSION_DATE",
     "TULSI_VERSION_MAJOR",
 )
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
@@ -29,7 +30,7 @@ apple_bundle_version(
         "date": "\d+",
         "buildnum": "\d+",
     },
-    fallback_build_label = "tulsi_999999999_build88",
+    fallback_build_label = "tulsi_%s_build88" % TULSI_VERSION_DATE,
 )
 
 genrule(
