@@ -22,6 +22,10 @@ config_setting(
 )
 
 load(
+    "@build_bazel_rules_apple//apple:apple.bzl",
+    "apple_static_framework_import",
+)
+load(
     "@build_bazel_rules_apple//apple:ios.bzl",
     "ios_application",
     "ios_extension",
@@ -226,7 +230,7 @@ ios_unit_test(
     ],
 )
 
-objc_framework(
+apple_static_framework_import(
     name = "ObjCFramework",
     framework_imports = [
         "ObjCFramework/test.framework/file1",

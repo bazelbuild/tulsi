@@ -134,7 +134,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:ObjCFramework")
-        .hasType("objc_framework")
+        .hasType("apple_static_framework_import")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
