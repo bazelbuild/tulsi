@@ -69,9 +69,6 @@ macos_extension(
     entitlements = ":MyTodayExtension-Entitlements.entitlements",
     infoplists = [":MyTodayExtension-Info.plist"],
     minimum_os_version = "10.13",
-    sdk_frameworks = [
-        "NotificationCenter",
-    ],
     version = ":MyTodayExtensionVersion",
     deps = [":MyTodayExtensionSources"],
 )
@@ -89,6 +86,9 @@ objc_library(
     ],
     resources = [
         "Resources/extensions/today/TodayViewController.xib",
+    ],
+    sdk_frameworks = [
+        "NotificationCenter",
     ],
 )
 
