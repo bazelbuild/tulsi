@@ -2614,6 +2614,36 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                           inTargets: targets)
   }
 
+  func testIndexerCFlags() {
+    let package = "test/package"
+
+    let swiftTargetName = "SwiftTarget"
+    let swiftTargetBuildLabel = BuildLabel("\(package):\(swiftTargetName)")
+    let swiftTargetCOpts = ["-iquote", "foo/bar", "-iquote", "."] as AnyObject
+
+    let swiftLibraryRule = makeTestRuleEntry(swiftTargetBuildLabel,
+                                             type: "swift_library",
+                                             attributes: ["copts": swiftTargetCOpts,
+                                                          "has_swift_info": true as AnyObject],
+                                             sourceFiles: sourceFileNames)
+
+    var processedEntries = [RuleEntry: (NSOrderedSet)]()
+    let indexerTargetName = String(format: "_idx_\(swiftTargetName)_%08X_ios_min9.0", swiftTargetBuildLabel.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(swiftLibraryRule,
+                                                ruleEntryMap: RuleEntryMap(),
+                                                pathFilters: pathFilters,
+                                                processedEntries: &processedEntries)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: sourceFileNames,
+                          otherCFlags: "-iquote foo/bar -iquote .",
+                          isSwift: true,
+                          inTargets: targets)
+  }
+
   // MARK: - Helper methods
 
   private func debugBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {
@@ -2898,6 +2928,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                      bridgingHeader: String? = nil,
                                      swiftLanguageVersion: String? = nil,
                                      swiftIncludePaths: String? = nil,
+                                     otherCFlags: String? = nil,
                                      otherSwiftFlags: String? = nil,
                                      isSwift: Bool = false,
                                      inTargets targets: Dictionary<String, PBXTarget> = Dictionary<String, PBXTarget>(),
@@ -2922,6 +2953,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     }
     if let swiftIncludePaths = swiftIncludePaths {
       expectedBuildSettings["SWIFT_INCLUDE_PATHS"] = swiftIncludePaths
+    }
+    if let otherCFlags = otherCFlags {
+      expectedBuildSettings["OTHER_CFLAGS"] = otherCFlags
     }
     if let otherSwiftFlags = otherSwiftFlags {
       expectedBuildSettings["OTHER_SWIFT_FLAGS"] = otherSwiftFlags
@@ -3010,5 +3044,3 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                    "Validation count mismatch in target '\(target.name)'")
   }
 }
-
-
