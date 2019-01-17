@@ -259,7 +259,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PYTHONIOENCODING = utf8;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
@@ -285,7 +285,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = ccBinary;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
@@ -320,7 +320,7 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
@@ -350,7 +350,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = ccBinary;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
 				TULSI_XCODE_VERSION = 10.1.0;
 			};
@@ -383,7 +383,7 @@
 				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
@@ -413,7 +413,7 @@
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = ccBinary;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
 				TULSI_XCODE_VERSION = 10.1.0;
 			};
@@ -449,7 +449,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PYTHONIOENCODING = utf8;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "${TULSI_WR}/tulsi-workspace";
@@ -475,7 +475,7 @@
 				OTHER_LDFLAGS = "-help";
 				OTHER_SWIFT_FLAGS = "-help";
 				PRODUCT_NAME = ccBinary;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;

@@ -1011,9 +1011,10 @@ def _tulsi_outputs_aspect(target, ctx):
         infoplist = bundle_info.infoplist
 
         bundle_name = bundle_info.bundle_name
-    elif target_kind == "macos_command_line_application":
-        # Special support for macos_command_line_application which does not have an
-        # AppleBundleInfo provider.
+    elif (target_kind == "macos_command_line_application" or
+          target_kind == "cc_binary" or target_kind == "cc_test"):
+        # Special support for macos_command_line_application and cc_* targets
+        # which do not have an AppleBundleInfo provider.
 
         # Both the dSYM binary and executable binary don't have an extension, so
         # pick the first extension-less file not in a DWARF folder.

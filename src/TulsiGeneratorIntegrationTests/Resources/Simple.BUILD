@@ -82,6 +82,16 @@ cc_binary(
     ],
 )
 
+cc_test(
+    name = "ccTest",
+    srcs = [
+        "Test/primaryTest.cc",
+    ],
+    deps = [
+        ":ccLibrary",
+    ],
+)
+
 objc_library(
     name = "Library",
     srcs = [

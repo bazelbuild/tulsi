@@ -135,6 +135,7 @@ public final class RuleEntry: RuleInfo {
   static let BuildTypeToTargetType = [
       "cc_binary": PBXTarget.ProductType.Application,
       "cc_library": PBXTarget.ProductType.StaticLibrary,
+      "cc_test": PBXTarget.ProductType.Tool,
       // macos_command_line_application is not a bundled type in our rules as it does not contain
       // any resources, so we must explicitly list it here.
       "macos_command_line_application": PBXTarget.ProductType.Tool,
@@ -314,6 +315,9 @@ public final class RuleEntry: RuleInfo {
   /// Returns the value to be used as the Xcode SDKROOT for the build target generated for this
   /// RuleEntry.
   private(set) lazy var XcodeSDKRoot: String? = { [unowned self] in
+    guard type != "cc_binary" && type != "cc_test" else {
+      return PlatformType.macos.deviceSDK
+    }
     if let platformType = self.deploymentTarget?.platform {
       return platformType.deviceSDK
     }

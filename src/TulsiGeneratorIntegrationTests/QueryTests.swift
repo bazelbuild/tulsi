@@ -74,6 +74,11 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
       .hasType("cc_binary")
       .hasNoLinkedTargetLabels()
       .hasNoDependencies()
+
+    checker.assertThat("//tulsi_test:ccTest")
+      .hasType("cc_test")
+      .hasNoLinkedTargetLabels()
+      .hasNoDependencies()
   }
 
 
