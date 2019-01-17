@@ -556,7 +556,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       var localPreprocessorDefines = defines
       let localIncludes = includes.mutableCopy() as! NSMutableOrderedSet
-      let otherCFlags = NSMutableOrderedSet()
+      let otherCFlags = NSMutableArray()
       let swiftIncludePaths = NSMutableOrderedSet()
       let otherSwiftFlags = NSMutableArray()
       addLocalSettings(ruleEntry, localDefines: &localPreprocessorDefines, localIncludes: localIncludes,
@@ -618,7 +618,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                       dependencies: ruleEntry.dependencies,
                                       resolvedDependencies: Set(resolvedDependecies),
                                       preprocessorDefines: localPreprocessorDefines,
-                                      otherCFlags: otherCFlags.array as! [String],
+                                      otherCFlags: otherCFlags as! [String],
                                       otherSwiftFlags: otherSwiftFlags as! [String],
                                       includes: resolvedIncludes,
                                       frameworkSearchPaths: frameworkSearchPaths.array as! [String],
@@ -1248,7 +1248,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func addLocalSettings(_ ruleEntry: RuleEntry,
                                 localDefines: inout Set<String>,
                                 localIncludes: NSMutableOrderedSet,
-                                otherCFlags: NSMutableOrderedSet,
+                                otherCFlags: NSMutableArray,
                                 swiftIncludePaths: NSMutableOrderedSet,
                                 otherSwiftFlags: NSMutableArray) {
     if let swiftc_opts = ruleEntry.attributes[.swiftc_opts] as? [String], !swiftc_opts.isEmpty {
@@ -1318,7 +1318,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
     addIncludes(ruleEntry, toSet: includes)
     addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes,
-                     otherCFlags: NSMutableOrderedSet(), swiftIncludePaths: NSMutableOrderedSet(),
+                     otherCFlags: NSMutableArray(), swiftIncludePaths: NSMutableOrderedSet(),
                      otherSwiftFlags: NSMutableArray())
     addSwiftIncludes(ruleEntry, toSet: swiftIncludePaths)
     addOtherSwiftFlags(ruleEntry, toArray: otherSwiftFlags)
