@@ -34,6 +34,13 @@ py_binary(
     srcs = ["symbol_cache_schema.py"],
     default_python_version = "PY3",
     srcs_version = "PY2AND3",
+    deps = [":symbol_cache_schema_lib"],
+)
+
+py_library(
+    name = "symbol_cache_schema_lib",
+    srcs = ["symbol_cache_schema.py"],
+    srcs_version = "PY2AND3",
 )
 
 py_binary(
@@ -41,7 +48,7 @@ py_binary(
     srcs = ["update_symbol_cache.py"],
     default_python_version = "PY3",
     srcs_version = "PY2AND3",
-    deps = [":symbol_cache_schema"],
+    deps = [":symbol_cache_schema_lib"],
 )
 
 py_binary(
@@ -49,7 +56,7 @@ py_binary(
     srcs = ["clean_symbol_cache.py"],
     default_python_version = "PY3",
     srcs_version = "PY2AND3",
-    deps = [":symbol_cache_schema"],
+    deps = [":symbol_cache_schema_lib"],
 )
 
 py_binary(
