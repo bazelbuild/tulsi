@@ -18,9 +18,9 @@ genrule(
 
 apple_resource_group(
     name = "tulsi",
+    resources = [":aspect_build"],
     structured_resources = [
         "tulsi/tulsi_aspects.bzl",
         "tulsi/tulsi_aspects_paths.bzl",
-        ":aspect_build",
     ],
 )

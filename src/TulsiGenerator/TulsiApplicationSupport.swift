@@ -40,11 +40,12 @@ class ApplicationSupport {
   /// returns the folder.
   func copyTulsiAspectFiles(tulsiVersion: String) throws -> String {
     let bundle = Bundle(for: type(of: self))
-    let bazelWorkspaceFile = bundle.url(forResource: "WORKSPACE", withExtension: nil)!
+    let aspectWorkspaceFile = bundle.url(forResource: "WORKSPACE", withExtension: nil)!
+    let aspectBuildFile = bundle.url(forResource: "BUILD", withExtension: nil)!
     let tulsiFiles = bundle.urls(forResourcesWithExtension: nil, subdirectory: "tulsi")!
 
     let bazelSubpath = (tulsiVersion as NSString).appendingPathComponent("Bazel")
-    let bazelPath = try installFiles([bazelWorkspaceFile], toSubpath: bazelSubpath)
+    let bazelPath = try installFiles([aspectWorkspaceFile, aspectBuildFile], toSubpath: bazelSubpath)
 
     let tulsiAspectsSubpath = (bazelSubpath as NSString).appendingPathComponent("tulsi")
     try installFiles(tulsiFiles, toSubpath: tulsiAspectsSubpath)
