@@ -741,6 +741,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // XCTest framework when performing Live issues analysis.
     buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 
+    // Prevent Xcode from replacing the Swift StdLib dylibs that Bazel already packaged.
+    buildSettings["DONT_RUN_SWIFT_STDLIB_TOOL"] = "YES"
+
     var sourceDirectory = PBXTargetGenerator.workingDirectoryForPBXGroup(project.mainGroup)
     if sourceDirectory.isEmpty {
       sourceDirectory = "$(SRCROOT)"
