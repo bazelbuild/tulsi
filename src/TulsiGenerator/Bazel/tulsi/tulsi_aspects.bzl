@@ -710,6 +710,14 @@ def _tulsi_sources_aspect(target, ctx):
                         _collect_bundle_imports(rule_attr))
 
     copts_attr = _get_opt_attr(rule_attr, "copts")
+    # Expand each location macro like "-I$(location headermap)" in copts
+    # and replace it with the corresponding location of a generated header map.
+    # Otherwise, the Xcode generated project ends up with HEADER_SEARCH_PATHS
+    # set to something like "-I$(location", "headermap)" because copts was just
+    # split on space and that messes up Xcode's indexing.
+    if copts_attr:
+        copts_attr = [ctx.expand_location(attr, [target]) for attr in copts_attr]
+
     is_swift_library = target_kind == "swift_library"
 
     # Keys for attribute and inheritable_attributes keys must be kept in sync
