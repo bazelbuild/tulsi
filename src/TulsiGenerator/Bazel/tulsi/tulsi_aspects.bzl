@@ -802,8 +802,9 @@ def _tulsi_sources_aspect(target, ctx):
     if objc_provider:
         target_includes = [
             _convert_outpath_to_symlink_path(x)
-            for x in objc_provider.include
+            for x in (objc_provider.include + objc_provider.iquote + objc_provider.include_system)
         ]
+
     objc_defines = _collect_objc_defines(objc_provider, rule_attr).to_list()
 
     platform_type, os_deployment_target = _get_deployment_info(target, ctx)
