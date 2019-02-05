@@ -124,7 +124,14 @@ final class TulsiProjectDocument: NSDocument,
     return fileURL?.appendingPathComponent(TulsiProjectDocument.ProjectConfigsSubpath)
   }
 
-  var infoExtractor: TulsiProjectInfoExtractor! = nil
+  /// Whether or not the document has finished initializing the info extractor.
+  @objc dynamic var infoExtractorInitialized: Bool = false
+
+  var infoExtractor: TulsiProjectInfoExtractor! = nil {
+    didSet {
+      infoExtractorInitialized = (infoExtractor != nil)
+    }
+  }
   private var logEventObserver: NSObjectProtocol! = nil
 
   /// Array of user-facing messages, generally output by the Tulsi generator.

@@ -32,21 +32,30 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
+  @IBOutlet var generateButton: NSButton!
 
   @objc dynamic var numBazelPackages: Int = 0 {
     didSet {
-      let enableAddButton = numBazelPackages > 0
+      let enableAddButton = numBazelPackages > 0 && infoExtractorInitialized
       addRemoveSegmentedControl.setEnabled(enableAddButton,
                                            forSegment: SegmentedControlButtonIndex.add.rawValue)
     }
   }
 
+  // Whether or not the Tulsi project document is still initializing components required for
+  // generation.
+  @objc dynamic var infoExtractorInitialized: Bool = false {
+    didSet {
+      updateButtonsState()
+      Thread.doOnMainQueue() {
+        self.generateButton.title = self.infoExtractorInitialized ? "Generate" : "Initializing..."
+      }
+    }
+  }
+
   @objc dynamic var numSelectedConfigs: Int = 0 {
     didSet {
-      addRemoveSegmentedControl.setEnabled(numSelectedConfigs > 0,
-                                           forSegment: SegmentedControlButtonIndex.remove.rawValue)
-      addRemoveSegmentedControl.setEnabled(numSelectedConfigs == 1,
-                                           forSegment: SegmentedControlButtonIndex.action.rawValue)
+      updateButtonsState()
     }
   }
 
@@ -57,11 +66,16 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
              to: concreteRepresentedObject,
              withKeyPath: "bazelPackages.@count",
              options: nil)
+        bind(NSBindingName(rawValue: "infoExtractorInitialized"),
+             to: concreteRepresentedObject,
+             withKeyPath: "infoExtractorInitialized",
+             options: nil)
       }
     }
   }
 
   deinit {
+    NSObject.unbind(NSBindingName(rawValue: "infoExtractorInitialized"))
     NSObject.unbind(NSBindingName(rawValue: "numBazelPackages"))
     NSObject.unbind(NSBindingName(rawValue: "numSelectedConfigs"))
   }
@@ -74,6 +88,22 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
          to: configArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
+  }
+
+  // Toggle the state of the buttons depending on the current selection as well as if any required
+  // components are still being initialized.
+  func updateButtonsState() {
+    Thread.doOnMainQueue() {
+      let numSelectedConfigs = self.numSelectedConfigs
+      let infoExtractorInitialized = self.infoExtractorInitialized
+      self.addRemoveSegmentedControl.setEnabled(self.numBazelPackages > 0 && infoExtractorInitialized,
+                                           forSegment: SegmentedControlButtonIndex.add.rawValue)
+      self.addRemoveSegmentedControl.setEnabled(numSelectedConfigs > 0 && infoExtractorInitialized,
+                                           forSegment: SegmentedControlButtonIndex.remove.rawValue)
+      self.addRemoveSegmentedControl.setEnabled(numSelectedConfigs == 1 && infoExtractorInitialized,
+                                           forSegment: SegmentedControlButtonIndex.action.rawValue)
+      self.generateButton.isEnabled = (numSelectedConfigs == 1 && infoExtractorInitialized)
+    }
   }
 
   @IBAction func didClickAddRemoveSegmentedControl(_ sender: NSSegmentedCell) {

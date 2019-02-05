@@ -434,17 +434,12 @@
                             </segmentedControl>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TIj-CZ-t8e">
                                 <rect key="frame" x="640" y="13" width="96" height="32"/>
-                                <buttonCell key="cell" type="push" title="Generate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bpc-vd-bqs">
+                                <buttonCell key="cell" type="push" title="Generate" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bpc-vd-bqs">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="doGenerate:" target="Pgt-4s-lhO" id="F2L-0G-7Eb"/>
-                                    <binding destination="EPJ-qo-bmN" name="enabled" keyPath="selectionIndexes.count" id="3si-Fr-iw5">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">IsOneValueTransformer</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </button>
                         </subviews>
@@ -462,6 +457,7 @@
                     <connections>
                         <outlet property="addRemoveSegmentedControl" destination="Igh-yT-sbk" id="TWE-xZ-kHk"/>
                         <outlet property="configArrayController" destination="EPJ-qo-bmN" id="mIf-bC-JqH"/>
+                        <outlet property="generateButton" destination="TIj-CZ-t8e" id="r34-ll-ZLf"/>
                     </connections>
                 </viewController>
                 <customObject id="Yqh-DQ-phg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
