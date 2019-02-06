@@ -117,6 +117,30 @@ public final class ProcessRunner {
                                          terminationHandler: terminationHandler)
   }
 
+  /// Creates and launches a Process using the given launch binary with the given arguments that
+  /// will run synchronously to completion and return a CompletionInfo.
+  static func launchProcessSync(_ launchPath: String,
+                                arguments: [String],
+                                environment: [String: String]? = nil,
+                                messageLogger: LocalizedMessageLogger? = nil,
+                                loggingIdentifier: String? = nil) -> CompletionInfo {
+    let semaphore = DispatchSemaphore(value: 0)
+    var completionInfo: CompletionInfo! = nil
+    let process = defaultInstance.createProcess(launchPath,
+                                                arguments: arguments,
+                                                environment: environment,
+                                                messageLogger: messageLogger,
+                                                loggingIdentifier: loggingIdentifier) {
+      processCompletionInfo in
+        completionInfo = processCompletionInfo
+        semaphore.signal()
+    }
+
+    process.launch()
+    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    return completionInfo
+  }
+
   // MARK: - Private methods
 
   private init() {
