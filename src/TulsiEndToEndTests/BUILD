@@ -3,9 +3,7 @@ licenses(["notice"])  # Apache 2.0
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 load("//src/TulsiGeneratorIntegrationTests:tulsi_integration_test.bzl", "tulsi_integration_test")
 
-test_suite(
-    name = "TulsiEndToEndTests",
-)
+test_suite(name = "TulsiEndToEndTests")
 
 swift_library(
     name = "TulsiEndToEndTestBase",
