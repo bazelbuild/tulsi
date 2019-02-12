@@ -21,15 +21,12 @@ import XCTest
 // End to end test that generates the Buttons project and runs its unit tests. This variation of the
 // test uses the nightly Bazel binary.
 class ButtonsNightlyEndToEndTest: TulsiEndToEndTest {
+  fileprivate let buttonsProjectPath = "third_party/tulsi/src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
   override func setUp() {
     super.setUp()
 
-    if (!copyDataToFakeWorkspace("third_party/bazel_rules/rules_apple/examples/multi_platform/Buttons")) {
-      XCTFail("Failed to copy Buttons files to fake execroot.")
-    }
-
     if (!copyDataToFakeWorkspace("third_party/tulsi/src/TulsiEndToEndTests/Resources")) {
-      XCTFail("Failed to copy Buttons tulsiproj to fake execroot.")
+      XCTFail("Failed to copy Buttons files to fake execroot.")
     }
   }
 
@@ -41,7 +38,6 @@ class ButtonsNightlyEndToEndTest: TulsiEndToEndTest {
     XCTAssert(fileManager.fileExists(atPath: nightlyBazelURL.path), "Bazel nightly is missing.")
 
     bazelURL = nightlyBazelURL
-    let buttonsProjectPath = "third_party/tulsi/src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
     let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
                                                config: "Buttons")
     XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")

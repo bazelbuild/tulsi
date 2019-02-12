@@ -11,7 +11,7 @@
   },
   "projectName" : "Buttons",
   "packages" : [
-    "build_bazel_rules_apple/examples\/multi_platform\/Buttons"
+    "third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons"
   ],
   "workspaceRoot" : "..\/..\/..\/..\/..\/.."
 }

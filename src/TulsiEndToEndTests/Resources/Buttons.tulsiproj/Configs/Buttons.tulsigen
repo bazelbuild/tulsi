@@ -2,9 +2,9 @@
   "sourceFilters" : [
   ],
   "buildTargets" : [
-    "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsTests",
-    "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsLogicTests",
-    "\/\/build_bazel_rules_apple/examples\/multi_platform\/Buttons:ButtonsUITests"
+    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsTests",
+    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsLogicTests",
+    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsUITests"
   ],
   "projectName" : "Buttons",
   "optionSet" : {
@@ -46,6 +46,6 @@
     }
   },
   "additionalFilePaths" : [
-    "build_bazel_rules_apple/examples\/multi_platform\/Buttons\/BUILD"
+    "third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons\/BUILD"
   ]
 }

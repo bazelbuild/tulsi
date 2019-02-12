@@ -26,7 +26,7 @@ tulsi_integration_test(
     data = [
         "Resources/Buttons.tulsiproj",
         "//:tulsi.zip",
-        "@build_bazel_rules_apple//examples/multi_platform/Buttons:all_files",
+        "//src/TulsiEndToEndTests/Resources/Buttons:all_files",
     ],
     deps = [
         ":TulsiEndToEndTestBase",
