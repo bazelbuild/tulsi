@@ -1165,9 +1165,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       target.buildPhases.append(testBuildPhase)
     }
     if !testSourceFileInfos.isEmpty || !testNonArcSourceFileInfos.isEmpty {
-      if !containsSwift {
-        let allSources = testSourceFileInfos + testNonArcSourceFileInfos
-        let testBuildPhase = createGenerateDummyDependencyFilesTestBuildPhase(allSources)
+      // Create dummy dependency files for non-Swift code as Xcode expects Clang to generate them.
+      let allSources = testSourceFileInfos + testNonArcSourceFileInfos
+      let nonSwiftSources = allSources.filter { !$0.subPath.hasSuffix(".swift") }
+      if !nonSwiftSources.isEmpty {
+        let testBuildPhase = createGenerateDummyDependencyFilesTestBuildPhase(nonSwiftSources)
         target.buildPhases.append(testBuildPhase)
       }
       var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos)
