@@ -415,7 +415,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tvOSLibrary_4AB12B40_tvos_min10.0;
 				SDKROOT = appletvos;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -498,7 +498,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/tools/cpp/gcc3 ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ $(TULSI_BWRS)/tools/cpp/gcc3 ";
 				PRODUCT_NAME = _idx_tvOSLibrary_4AB12B40_tvos_min10.0;
 				SDKROOT = appletvos;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
