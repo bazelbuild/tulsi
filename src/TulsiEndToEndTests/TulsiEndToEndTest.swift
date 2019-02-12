@@ -21,31 +21,92 @@ import XCTest
 // Parent class for end to end tests that generate an xcodeproj with the Tulsi binary and verify the
 // generated xcodeproj by running the projects unit tests.
 class TulsiEndToEndTest: BazelIntegrationTestCase {
+  fileprivate static let simulatorName = "tulsie2e-\(UUID().uuidString.prefix(8))"
+
   let fileManager = FileManager.default
   var runfilesWorkspaceURL: URL! = nil
 
+  // Creates a new simulator, for use with testing generated projects, before any tests run.
+  override class func setUp() {
+    super.setUp()
+
+    let targetDevice = "iPhone XS"
+    let targetVersion = "12.1"
+    let deviceName = targetDevice.replacingOccurrences(of: " ", with: "-")
+    let deviceVersion = targetVersion.replacingOccurrences(of: ".", with: "-")
+    let typeId = "com.apple.CoreSimulator.SimDeviceType.\(deviceName)"
+    let runtimeId = "com.apple.CoreSimulator.SimRuntime.iOS-\(deviceVersion)"
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcrun",
+                                                         arguments: ["simctl",
+                                                                     "create",
+                                                                     TulsiEndToEndTest.simulatorName,
+                                                                     typeId,
+                                                                     runtimeId])
+
+    if completionInfo.terminationStatus != 0 {
+      if let stderr = String(data: completionInfo.stderr, encoding: .utf8), !stderr.isEmpty {
+        XCTFail("\(completionInfo.commandlineString) failed with error: \(stderr)")
+      } else {
+        XCTFail("\(completionInfo.commandlineString) encountered an error. Exit code \(completionInfo.terminationStatus).")
+      }
+    }
+
+    // 'simctl' should output the UUID of the new simulator if it was created succesfully.
+    if let stdout = String(data: completionInfo.stdout, encoding: .utf8), stdout.isEmpty {
+      XCTFail("No UUID was ouputted for newly created simulator.")
+    }
+  }
+
+  // Deletes the simulator created after all tests have run.
+  override class func tearDown() {
+    super.tearDown()
+
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcrun",
+                                                         arguments: ["simctl",
+                                                                     "delete",
+                                                                     TulsiEndToEndTest.simulatorName])
+
+    if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+      print("""
+            \(completionInfo.commandlineString) failed with exit code: \(completionInfo.terminationStatus)
+            Error: \(error)
+            """)
+    }
+  }
+
+  // Unzips Tulsi and boots the simulator before each test case.
   override func setUp() {
     super.setUp()
     super.continueAfterFailure = false
     runfilesWorkspaceURL = fakeBazelWorkspace.runfilesWorkspaceURL
     XCTAssertNotNil(runfilesWorkspaceURL, "runfilesWorkspaceURL must be not be nil after setup.")
 
-    // Unzip the Tulsi.app bundle to the temp space.
-    let semaphore = DispatchSemaphore(value: 0)
-    let tulsiZipPath = "tulsi.zip"
-    let tulsiZipURL = runfilesWorkspaceURL.appendingPathComponent(tulsiZipPath, isDirectory: false)
-    let process = TulsiProcessRunner.createProcess("/usr/bin/unzip",
-                                                   arguments: [tulsiZipURL.path,
-                                                               "-d",
-                                                               workspaceRootURL.path]) {
-      completionInfo in
-        if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
-          XCTFail(error)
-        }
-        semaphore.signal()
+    // Extracting only needs to be done once but we can't do this during the class 'setUp' function
+    // because we need access to instance variables. Instead, check here if Tulsi has already been
+    // extracted.
+    if !fileManager.fileExists(atPath: workspaceRootURL.appendingPathComponent("Tulsi.app").path) {
+      // Unzip the Tulsi.app bundle to the temp space.
+      let tulsiZipPath = "tulsi.zip"
+      let tulsiZipURL = runfilesWorkspaceURL.appendingPathComponent(tulsiZipPath, isDirectory: false)
+      let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/unzip",
+                                                           arguments: [tulsiZipURL.path,
+                                                                       "-d",
+                                                                       workspaceRootURL.path])
+
+      if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+        XCTFail(error)
+      }
     }
-    process.launch()
-    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+
+    // Boots the simulator in the background.
+    self.runSimctlCommand("boot", onSimulator: TulsiEndToEndTest.simulatorName)
+  }
+
+  // Shuts down and erases the simulator after each test case.
+  override func tearDown() {
+    super.tearDown()
+    self.runSimctlCommand("shutdown", onSimulator: TulsiEndToEndTest.simulatorName)
+    self.runSimctlCommand("erase", onSimulator: TulsiEndToEndTest.simulatorName)
   }
 
   // Takes a short path to data files and adds them to the fake Bazel workspace.
@@ -79,27 +140,22 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     let configPath = projectURL.path + ":" + config
 
     // Generate Xcode project with Tulsi.
-    let semaphore = DispatchSemaphore(value: 0)
-    let process = TulsiProcessRunner.createProcess(tulsiBinURL.path,
-                                                   arguments: ["--",
-                                                               "--genconfig",
-                                                               configPath,
-                                                               "--outputfolder",
-                                                               workspaceRootURL.path,
-                                                               "--bazel",
-                                                               bazelURL.path,
-                                                               "--no-open-xcode"]) {
-      completionInfo in
-        if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8) {
-          print(stdoutput)
-        }
-        if let erroutput = String(data: completionInfo.stderr, encoding: .utf8) {
-          print(erroutput)
-        }
-        semaphore.signal()
+    let completionInfo = ProcessRunner.launchProcessSync(tulsiBinURL.path,
+                                                         arguments: ["--",
+                                                                     "--genconfig",
+                                                                     configPath,
+                                                                     "--outputfolder",
+                                                                     workspaceRootURL.path,
+                                                                     "--bazel",
+                                                                     bazelURL.path,
+                                                                     "--no-open-xcode"])
+
+    if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8) {
+      print(stdoutput)
     }
-    process.launch()
-    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+    if let erroutput = String(data: completionInfo.stderr, encoding: .utf8) {
+      print(erroutput)
+    }
 
     let filename = TulsiGeneratorConfig.sanitizeFilename("\(config).xcodeproj")
     let xcodeProjectURL = workspaceRootURL.appendingPathComponent(filename, isDirectory: true)
@@ -121,28 +177,43 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
 
   // Runs Xcode tests on the given Xcode project and scheme.
   func testXcodeProject(_ xcodeProjectURL: URL, scheme: String) {
-    let semaphore = DispatchSemaphore(value: 0)
-    let xcodeTest = TulsiProcessRunner.createProcess("/usr/bin/xcodebuild",
-                                                       arguments: ["test",
-                                                                   "-project",
-                                                                   xcodeProjectURL.path,
-                                                                   "-scheme",
-                                                                   scheme,
-                                                                   "-destination",
-                                                                   "platform=iOS Simulator,name=iPhone 8,OS=11.2"]) {
-      completionInfo in
-        if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
-          let result = stdoutput.split(separator: "\n").last {
-          XCTAssertEqual(String(result), "** TEST SUCCEEDED **", "xcodebuild did not return test success.")
-        } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
-          XCTFail(error)
-        } else {
-          XCTFail("Xcode project tests did not return  success.")
-        }
-        semaphore.signal()
+    let destination = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName)"
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcodebuild",
+                                                         arguments: ["test",
+                                                                     "-project",
+                                                                     xcodeProjectURL.path,
+                                                                     "-scheme",
+                                                                     scheme,
+                                                                     "-destination",
+                                                                     destination])
+
+    if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
+      let result = stdoutput.split(separator: "\n").last {
+      if (String(result) != "** TEST SUCCEEDED **") {
+        print(stdoutput)
+        XCTFail("\(completionInfo.commandlineString) did not return test sucess. Exit code: \(completionInfo.terminationStatus)")
+      }
+    } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+      XCTFail(error)
+    } else {
+      XCTFail("Xcode project tests did not return  success.")
     }
-    xcodeTest.launch()
-    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+  }
+
+  // Runs 'simctl' in a subprocess with whatever command (i.e. boot, shutdown, delete, etc) and
+  // target simulator specified.
+  fileprivate func runSimctlCommand(_ command: String, onSimulator target: String) {
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcrun",
+                                              arguments: ["simctl",
+                                                          command,
+                                                          target])
+
+    if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+      print("""
+            \(completionInfo.commandlineString) failed with exit code: \(completionInfo.terminationStatus)
+            Error: \(error)
+            """)
+    }
   }
 }
 
