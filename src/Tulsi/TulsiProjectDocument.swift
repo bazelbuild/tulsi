@@ -615,6 +615,19 @@ class ErrorAlertView: NSAlert {
         let viewsFound = views.filter() { $0 is NSView } as NSArray
         if let accessoryView = viewsFound.firstObject as? NSScrollView {
           alert.accessoryView = accessoryView
+
+          // Fix text color for dark mode.
+          //
+          // Text color is set to nil for the text view (which defaults to black) and Interface
+          // Builder can't seem to correctly assign the color, so the text color needs to be
+          // assigned at runtime.
+          for view in accessoryView.subviews {
+            for subview in view.subviews {
+              if let textView = subview as? NSTextView {
+                textView.textColor = NSColor.textColor
+              }
+            }
+          }
         } else {
           assertionFailure("Failed to load accessory view for error alert.")
         }
