@@ -662,7 +662,7 @@ def _tulsi_sources_aspect(target, ctx):
         for dep in _filter_deps(filter, deps):
             if TulsiSourcesAspectInfo in dep:
                 transitive_info_files.append(dep[TulsiSourcesAspectInfo].transitive_info_files)
-                transitive_attributes += dep[TulsiSourcesAspectInfo].transitive_attributes
+                transitive_attributes.update(dep[TulsiSourcesAspectInfo].transitive_attributes)
 
     artifacts = _get_opt_attr(target, "files")
     if artifacts:
@@ -793,7 +793,9 @@ def _tulsi_sources_aspect(target, ctx):
         transitive_attributes["has_swift_dependency"] = True
         swift_defines = swift_info.transitive_defines.to_list()
 
-    all_attributes = attributes + inheritable_attributes + transitive_attributes
+    all_attributes = attributes
+    all_attributes.update(inheritable_attributes)
+    all_attributes.update(transitive_attributes)
 
     objc_provider = _get_opt_attr(target, "objc")
     objc_defines = []
@@ -857,8 +859,8 @@ def _tulsi_sources_aspect(target, ctx):
     )
 
     # Create an action to write out this target's info.
-    output = ctx.new_file(target.label.name + ".tulsiinfo")
-    ctx.file_action(output, info.to_json())
+    output = ctx.actions.declare_file(target.label.name + ".tulsiinfo")
+    ctx.actions.write(output, info.to_json())
     output_files = [output]
 
     if infoplist:
@@ -1085,8 +1087,8 @@ def _tulsi_outputs_aspect(target, ctx):
         has_dsym = has_dsym,
     )
 
-    output = ctx.new_file(target.label.name + ".tulsiouts")
-    ctx.file_action(output, info.to_json())
+    output = ctx.actions.declare_file(target.label.name + ".tulsiouts")
+    ctx.actions.write(output, info.to_json())
 
     return [
         OutputGroupInfo(tulsi_outputs = [output]),
