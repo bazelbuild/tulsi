@@ -793,7 +793,7 @@ def _tulsi_sources_aspect(target, ctx):
         transitive_attributes["has_swift_dependency"] = True
         swift_defines = swift_info.transitive_defines.to_list()
 
-    all_attributes = attributes
+    all_attributes = dict(attributes)
     all_attributes.update(inheritable_attributes)
     all_attributes.update(transitive_attributes)
 
