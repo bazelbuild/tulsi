@@ -43,8 +43,7 @@ fill_info_plist = rule(
     attrs = {
         "template": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
         ),
         "out": attr.output(mandatory = True),
     },
