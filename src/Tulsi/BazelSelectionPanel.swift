@@ -27,7 +27,6 @@ class BazelSelectionPanel: FilteredOpenPanel {
                                                           document: TulsiProjectDocument,
                                                           completionHandler: ((URL?) -> Void)? = nil) -> BazelSelectionPanel {
     let panel = BazelSelectionPanel()
-    panel.filterFunc = filterNonPackageDirectoriesOrFilesMatchingNames(["bazel"])
     panel.delegate = panel
     panel.message = NSLocalizedString("ProjectEditor_SelectBazelPathMessage",
                                       comment: "Message to show at the top of the Bazel selector sheet, explaining what to do.")
