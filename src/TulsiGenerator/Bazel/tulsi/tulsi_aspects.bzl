@@ -57,6 +57,7 @@ _TULSI_COMPILE_DEPS = [
     "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
     "test_bundle",
     "test_host",
+    "additional_contents",  # macos_application can specify a dict with supported rules as keys.
     # Special attribute name which serves as an escape hatch intended for custom
     # rule creators who use non-standard attribute names for rule dependencies
     # and want those dependencies to show up in Xcode.
@@ -459,6 +460,8 @@ def _getattr_as_list(obj, attr_path):
 
     if type(val) == "list":
         return val
+    elif type(val) == "dict":
+        return val.keys()
     return [val]
 
 def _extract_defines_from_option_list(lst):

@@ -21,11 +21,15 @@ load(
     "macos_extension",
     "macos_unit_test",
     "macos_ui_test",
+    "macos_bundle",
 )
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
 
 macos_application(
     name = "MyMacOSApp",
+    additional_contents = dict({
+        "MyPlugin": "PlugIns",
+    }.items()),
     app_icons = [":MacAppIcon.xcassets"],
     bundle_id = "com.example.mac-app",
     extensions = [
@@ -73,8 +77,26 @@ macos_extension(
     deps = [":MyTodayExtensionSources"],
 )
 
+macos_bundle(
+    name = "MyPlugin",
+    bundle_extension = "bundle",
+    bundle_id = "com.example.mac-app.plugin",
+    bundle_name = "MyPlugin",
+    infoplists = [":MyPlugin_Info.plist"],
+    minimum_os_version = "10.13",
+    version = ":MyPlugInVersion",
+    deps = [
+        ":MyPluginSources",
+    ],
+)
+
 apple_bundle_version(
     name = "MyTodayExtensionVersion",
+    build_version = "1.0",
+)
+
+apple_bundle_version(
+    name = "MyPlugInVersion",
     build_version = "1.0",
 )
 
@@ -86,6 +108,20 @@ objc_library(
     ],
     resources = [
         "Resources/extensions/today/TodayViewController.xib",
+    ],
+    sdk_frameworks = [
+        "NotificationCenter",
+    ],
+)
+
+objc_library(
+    name = "MyPluginSources",
+    srcs = [
+        "src/plugin/PluginViewController.h",
+        "src/plugin/PluginViewController.m",
+    ],
+    resources = [
+        "Resources/plugin/PluginViewController.xib",
     ],
     sdk_frameworks = [
         "NotificationCenter",
