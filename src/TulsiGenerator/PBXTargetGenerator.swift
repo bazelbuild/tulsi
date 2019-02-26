@@ -596,13 +596,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
-        // Bazel appends a built-in tools/cpp/gcc3 path in CppHelper.java but that path is not
-        // exposed to Skylark. For now Tulsi hardcodes it here to allow proper indexer behavior.
-        // NOTE: this requires tools/cpp/gcc3 to be available from the workspace root, which may
-        // require symlinking on the part of the user. This requirement should go away when it is
-        // retrieved via the aspect (which should resolve the Bazel tool path correctly).
-        var resolvedIncludes = localIncludes.array as! [String]
-        resolvedIncludes.append("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
+        let resolvedIncludes = localIncludes.array as! [String]
 
         let deploymentTarget: DeploymentTarget
         if let ruleDeploymentTarget = ruleEntry.deploymentTarget {
@@ -1320,7 +1314,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let swiftIncludePaths = NSMutableOrderedSet()
     let otherSwiftFlags = NSMutableArray()
 
-    includes.add("$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/tools/cpp/gcc3")
     addIncludes(ruleEntry, toSet: includes)
     addLocalSettings(ruleEntry, localDefines: &defines, localIncludes: includes,
                      otherCFlags: NSMutableArray(), swiftIncludePaths: NSMutableOrderedSet(),
@@ -1329,7 +1322,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     addOtherSwiftFlags(ruleEntry, toArray: otherSwiftFlags)
 
     let includesArr = includes.array as! [String]
-    testSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includesArr.joined(separator: " ")
+    if !includesArr.isEmpty {
+      testSettings["HEADER_SEARCH_PATHS"] = "$(inherited) " + includesArr.joined(separator: " ")
+    }
 
     if let swiftIncludes = swiftIncludePaths.array as? [String], !swiftIncludes.isEmpty {
       testSettings["SWIFT_INCLUDE_PATHS"] = "$(inherited) " + swiftIncludes.joined(separator: " ")
