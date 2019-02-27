@@ -150,7 +150,6 @@ def _LockFileAcquire(lock_path):
   Args:
     lock_path: Path to the lock file.
   """
-  # TODO(b/74119354): Add lockfile timer back and lazily instantiate logger.
   _PrintUnbuffered('Queuing Tulsi build...')
   # TODO(b/69414272): See if we can improve this for multiple WORKSPACEs.
   lockfile = open(lock_path, 'w')
