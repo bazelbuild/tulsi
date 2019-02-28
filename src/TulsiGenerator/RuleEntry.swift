@@ -147,7 +147,6 @@ public final class RuleEntry: RuleInfo {
   /// Encyclopedia (see http://bazel.build/docs/be/overview.html).
   // Note: This set of must be kept in sync with the tulsi_aspects aspect.
   public enum Attribute: String {
-    case binary
     case bridging_header
     // Contains defines that were specified by the user on the commandline or are built into
     // Bazel itself.

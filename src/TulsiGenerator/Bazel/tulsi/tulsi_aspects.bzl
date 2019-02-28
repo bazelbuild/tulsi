@@ -45,7 +45,6 @@ UNSUPPORTED_FEATURES = [
 # objc_binary rule which in turn might have objc_library's in its "deps"
 # attribute.
 _TULSI_COMPILE_DEPS = [
-    "binary",
     "bundles",
     "deps",
     "extension",
@@ -63,7 +62,6 @@ _TULSI_COMPILE_DEPS = [
     # and want those dependencies to show up in Xcode.
     "tulsi_deps",
     "watch_application",
-    "xctest_app",
 ]
 
 # These are attributes that contain bundles but should not be considered as
@@ -72,7 +70,6 @@ _TULSI_COMPILE_DEPS = [
 # bundles as an embedded bundle of the app.
 _TULSI_NON_EMBEDDEDABLE_ATTRS = [
     "test_host",
-    "xctest_app",
 ]
 
 # List of all attributes whose contents should resolve to "support" files; files
@@ -82,7 +79,6 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     "app_icons",
     "data",
     "entitlements",
-    "infoplist",
     "infoplists",
     "resources",
     "strings",
@@ -704,10 +700,6 @@ def _tulsi_sources_aspect(target, ctx):
     dep_labels = _collect_dependency_labels(rule, filter, _TULSI_COMPILE_DEPS)
     compile_deps = [str(d) for d in dep_labels if not d.name.endswith(".jar")]
 
-    binary_rule = _get_opt_attr(rule_attr, "binary")
-    if binary_rule and type(binary_rule) == "list":
-        binary_rule = binary_rule[0]
-
     supporting_files = (_collect_supporting_files(rule_attr) +
                         _collect_asset_catalogs(rule_attr) +
                         _collect_bundle_imports(rule_attr))
@@ -718,12 +710,10 @@ def _tulsi_sources_aspect(target, ctx):
     # Keys for attribute and inheritable_attributes keys must be kept in sync
     # with defines in Tulsi's RuleEntry.
     attributes = _dict_omitting_none(
-        binary = _get_label_attr(binary_rule, "label"),
         copts = None if is_swift_library else copts_attr,
         swiftc_opts = copts_attr if is_swift_library else None,
         datamodels = _collect_xcdatamodeld_files(rule_attr, "datamodels"),
         supporting_files = supporting_files,
-        xctest_app = _get_label_attr(rule_attr, "xctest_app.label"),
         test_host = _get_label_attr(rule_attr, "test_host.label"),
         test_bundle = _get_label_attr(rule_attr, "test_bundle.label"),
     )
@@ -739,11 +729,6 @@ def _tulsi_sources_aspect(target, ctx):
         launch_storyboard = _collect_first_file(rule_attr, "launch_storyboard"),
         pch = _collect_first_file(rule_attr, "pch"),
     )
-
-    # Merge any attributes on the "binary" dependency into this container rule.
-    binary_attributes = _get_opt_attr(binary_rule, "inheritable_attributes")
-    if binary_attributes:
-        inheritable_attributes = binary_attributes + inheritable_attributes
 
     # Collect extensions for bundled targets.
     extensions = []

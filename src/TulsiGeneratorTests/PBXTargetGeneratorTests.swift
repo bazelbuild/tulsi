@@ -1126,12 +1126,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let objcLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):ObjcLib",
       type: "objc_library",
       sourceFiles: testSources)
-    let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
-      type: "apple_binary",
-      dependencies: Set([BuildLabel(objcLibraryRuleEntry.label.value)]))
     let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
       type: "ios_test_bundle",
-      attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
+      dependencies: Set([BuildLabel(objcLibraryRuleEntry.label.value)]))
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
       type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
@@ -1144,7 +1141,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [objcLibraryRuleEntry,
-                                                          appleBinaryRuleEntry,
                                                           testBundleRuleEntry,
                                                           testHostRuleEntry,
                                                           testRuleEntry])
@@ -1212,12 +1208,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let swiftLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):SwiftLib",
                                                   type: "swift_library",
                                                   sourceFiles: testSources)
-    let appleBinaryRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_binary",
-                                                 type: "apple_binary",
-                                                 dependencies: Set([BuildLabel(swiftLibraryRuleEntry.label.value)]))
     let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
                                                 type: "ios_test_bundle",
-                                                attributes: ["binary": appleBinaryRuleEntry.label.value as AnyObject])
+                                                dependencies: Set([BuildLabel(swiftLibraryRuleEntry.label.value)]))
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
                                               type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
@@ -1231,7 +1224,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                           osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRuleEntry,
-                                                          appleBinaryRuleEntry,
                                                           testBundleRuleEntry,
                                                           testHostRuleEntry,
                                                           testRuleEntry])
