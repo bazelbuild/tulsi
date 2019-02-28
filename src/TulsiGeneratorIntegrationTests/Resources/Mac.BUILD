@@ -174,6 +174,7 @@ macos_unit_test(
 macos_unit_test(
     name = "UnitTestsNoHost",
     bundle_id = "com.tulsi.tests",
+    minimum_os_version = "10.13",
     deps = [":UnitTestsNoHostLib"],
 )
 
