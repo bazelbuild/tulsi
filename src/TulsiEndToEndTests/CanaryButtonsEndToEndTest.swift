@@ -18,29 +18,31 @@ import XCTest
 @testable import TulsiEndToEndTestBase
 
 
-// End to end test that generates the Buttons project and runs its unit tests.
+// End to end test that generates the Buttons project and runs its unit tests. This variation of the
+// test uses the canary Bazel binary.
 class ButtonsEndToEndTest: TulsiEndToEndTest {
-  fileprivate let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+  fileprivate let buttonsProjectPath = "third_party/tulsi/src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
 
   override func setUp() {
     super.setUp()
 
-    if (!copyDataToFakeWorkspace("src/TulsiEndToEndTests/Resources")) {
+    if (!copyDataToFakeWorkspace("third_party/tulsi/src/TulsiEndToEndTests/Resources")) {
       XCTFail("Failed to copy Buttons files to fake execroot.")
     }
   }
 
-  func testButtons() throws {
+  func testButtonsWithCanaryBazel() throws {
+    guard let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL else {
+      XCTFail("Expected Bazel canary URL.")
+      return
+    }
+    XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
+
+    bazelURL = canaryBazelURL
     let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
                                                config: "Buttons")
     XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
-    testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
-  }
-
-  func testInvalidConfig() throws {
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "InvalidConfig")
-    XCTAssertFalse(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was generated despite invalid config.")
+    testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
   }
 }
 
