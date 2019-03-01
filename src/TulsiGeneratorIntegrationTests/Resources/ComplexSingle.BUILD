@@ -75,12 +75,20 @@ objc_library(
         "Application/srcs/main.m",
         ":SrcGenerator",
     ],
-    asset_catalogs = [
-        "Application/AssetsOne.xcassets/test_file.ico",
-        "Application/AssetsOne.xcassets/another_file.ico",
-        "Application/AssetsTwo.xcassets/png_file.png",
-    ],
     bundles = [":ObjCBundle"],
+    data = [
+        "Application/AssetsOne.xcassets/another_file.ico",
+        "Application/AssetsOne.xcassets/test_file.ico",
+        "Application/AssetsTwo.xcassets/png_file.png",
+        "Application/Base.lproj/Localizable.strings",
+        "Application/Base.lproj/Localized.strings",
+        "Application/Base.lproj/One.storyboard",
+        "Application/NonLocalized.strings",
+        "Application/en.lproj/EN.strings",
+        "Application/en.lproj/Localized.strings",
+        "Application/es.lproj/Localized.strings",
+        ":StoryboardGenerator",
+    ],
     defines = [
         "A=BINARY_DEFINE",
     ],
@@ -90,18 +98,6 @@ objc_library(
     ],
     non_arc_srcs = [
         "Application/non_arc_srcs/NonARCFile.mm",
-    ],
-    storyboards = [
-        "Application/Base.lproj/One.storyboard",
-        ":StoryboardGenerator",
-    ],
-    strings = [
-        "Application/Base.lproj/Localizable.strings",
-        "Application/Base.lproj/Localized.strings",
-        "Application/en.lproj/Localized.strings",
-        "Application/en.lproj/EN.strings",
-        "Application/es.lproj/Localized.strings",
-        "Application/NonLocalized.strings",
     ],
     deps = [
         ":CoreDataResources",

@@ -269,20 +269,38 @@ def _depset_to_file_metadata_list(a_depset):
     """"Converts a depset of files into a list of _file_metadata structs."""
     return [_file_metadata(f) for f in a_depset.to_list()]
 
-def _collect_artifacts(obj, attr_path):
+def _collect_artifacts(obj, attr_path, exclude_xcdatamodel = False, exclude_xcassets = False):
     """Returns a list of Artifact objects for the attr_path in obj."""
     return [
         f
         for src in _getattr_as_list(obj, attr_path)
         for f in _get_opt_attr(src, "files").to_list()
+        if (not exclude_xcdatamodel or ".xcdatamodel" not in f.path) and
+           (not exclude_xcassets or ".xcassets" not in f.path) and
+           (not exclude_xcassets or ".xcstickers" not in f.path)
     ]
 
-def _collect_files(obj, attr_path, convert_to_metadata = True):
+def _collect_files(
+        obj,
+        attr_path,
+        convert_to_metadata = True,
+        exclude_xcdatamodel = False,
+        exclude_xcassets = False):
     """Returns a list of artifact_location's for the attr_path in obj."""
     if convert_to_metadata:
-        return [_file_metadata(f) for f in _collect_artifacts(obj, attr_path)]
+        return [_file_metadata(f) for f in _collect_artifacts(
+            obj,
+            attr_path,
+            exclude_xcdatamodel = exclude_xcdatamodel,
+            exclude_xcassets = exclude_xcassets,
+        )]
     else:
-        return _collect_artifacts(obj, attr_path)
+        return _collect_artifacts(
+            obj,
+            attr_path,
+            exclude_xcdatamodel = exclude_xcdatamodel,
+            exclude_xcassets = exclude_xcassets,
+        )
 
 def _collect_first_file(obj, attr_path):
     """Returns a the first artifact_location for the attr_path in obj."""
@@ -299,6 +317,8 @@ def _collect_supporting_files(rule_attr, convert_to_metadata = True):
             rule_attr,
             attr,
             convert_to_metadata = convert_to_metadata,
+            exclude_xcdatamodel = True,
+            exclude_xcassets = True,
         )
     return all_files
 
@@ -334,7 +354,7 @@ def _collect_bundle_paths(rule_attr, bundle_attributes, bundle_ext):
 
 def _collect_asset_catalogs(rule_attr):
     """Extracts xcassets directories from the given rule attributes."""
-    attrs = ["app_asset_catalogs", "asset_catalogs"]
+    attrs = ["app_asset_catalogs", "asset_catalogs", "data"]
     bundles = _collect_bundle_paths(rule_attr, attrs, ".xcassets")
     bundles.extend(_collect_bundle_paths(rule_attr, attrs, ".xcstickers"))
 
@@ -707,12 +727,15 @@ def _tulsi_sources_aspect(target, ctx):
     copts_attr = _get_opt_attr(rule_attr, "copts")
     is_swift_library = target_kind == "swift_library"
 
+    datamodels = _collect_xcdatamodeld_files(rule_attr, "datamodels")
+    datamodels.extend(_collect_xcdatamodeld_files(rule_attr, "data"))
+
     # Keys for attribute and inheritable_attributes keys must be kept in sync
     # with defines in Tulsi's RuleEntry.
     attributes = _dict_omitting_none(
         copts = None if is_swift_library else copts_attr,
         swiftc_opts = copts_attr if is_swift_library else None,
-        datamodels = _collect_xcdatamodeld_files(rule_attr, "datamodels"),
+        datamodels = datamodels,
         supporting_files = supporting_files,
         test_host = _get_label_attr(rule_attr, "test_host.label"),
         test_bundle = _get_label_attr(rule_attr, "test_bundle.label"),

@@ -49,7 +49,7 @@ objc_library(
     srcs = [
         "Library/srcs/main.m",
     ],
-    asset_catalogs = [
+    data = [
         "Library/AssetsOne.xcassets/test_file.ico",
         "Library/AssetsTwo.xcassets/png_file.png",
     ],
@@ -71,8 +71,8 @@ watchos_application(
 
 objc_library(
     name = "WatchApplicationResources",
-    asset_catalogs = ["Watch2Extension/app_asset_catalogs.xcassets/app_asset_file.png"],
-    resources = [
+    data = [
+        "Watch2Extension/app_asset_catalogs.xcassets/app_asset_file.png",
         "Watch2Extension/ext_resources.file",
     ],
     structured_resources = [
@@ -94,7 +94,7 @@ watchos_extension(
 
 objc_library(
     name = "WatchExtensionResources",
-    resources = [
+    data = [
         "Watch2Extension/ext_resources.file",
     ],
     structured_resources = [

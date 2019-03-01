@@ -61,9 +61,10 @@ objc_library(
     srcs = [
         "ApplicationLibrary/srcs/main.m",
     ],
-    asset_catalogs = ["ApplicationLibrary/Assets.xcassets/asset.png"],
-    data = ["ApplicationLibrary/Base.lproj/One.storyboard"],
-    datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
+    data = [
+        "ApplicationLibrary/Assets.xcassets/asset.png",
+        "ApplicationLibrary/Base.lproj/One.storyboard",
+    ] + glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
         "APPLIB_ADDITIONAL_DEFINE",
         "APPLIB_ANOTHER_DEFINE=2",

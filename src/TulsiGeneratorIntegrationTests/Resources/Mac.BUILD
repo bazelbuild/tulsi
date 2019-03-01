@@ -62,7 +62,7 @@ objc_library(
         "src/AppDelegate.m",
         "src/main.m",
     ],
-    resources = [
+    data = [
         "Resources/Main.storyboard",
     ],
 )
@@ -106,7 +106,7 @@ objc_library(
         "src/extensions/today/ExtSources/TodayViewController.m",
         "src/extensions/today/TodayViewController.h",
     ],
-    resources = [
+    data = [
         "Resources/extensions/today/TodayViewController.xib",
     ],
     sdk_frameworks = [

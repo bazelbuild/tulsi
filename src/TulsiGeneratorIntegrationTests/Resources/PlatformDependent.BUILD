@@ -75,14 +75,15 @@ objc_library(
     srcs = [
         "App/srcs/main.m",
     ],
-    asset_catalogs = ["App/Assets.xcassets/asset.png"],
-    datamodels = glob(["SimpleTest.xcdatamodeld/**"]),
+    data = [
+        "App/Assets.xcassets/asset.png",
+        "App/Base.lproj/One.storyboard",
+    ] + glob(["SimpleTest.xcdatamodeld/**"]),
     defines = [
         "BINARY_ADDITIONAL_DEFINE",
         "BINARY_ANOTHER_DEFINE=2",
     ],
     includes = ["App/includes"],
-    storyboards = ["App/Base.lproj/One.storyboard"],
     deps = [
         ":Library",
     ],
@@ -105,12 +106,12 @@ objc_library(
         "-I/Library/absolute/include/path",
         "-Irelative/Library/include/path",
     ],
+    data = ["Library/xibs/xib.xib"],
     defines = ["LIBRARY_DEFINES_DEFINE=1"],
     pch = "Library/pch/PCHFile.pch",
     textual_hdrs = [
         "Library/textual_hdrs/TextualHdrsHeader.h",
     ],
-    xibs = ["Library/xibs/xib.xib"],
     deps = [
         "J2ObjCLibrary",
         ":ObjcProtos",
