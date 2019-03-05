@@ -35,6 +35,7 @@ load(
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
     "apple_bundle_import",
+    "apple_resource_group",
 )
 load(
     "@build_bazel_rules_apple//apple:tvos.bzl",
@@ -57,15 +58,6 @@ ios_application(
     minimum_os_version = "10.0",
     deps = [
         ":ApplicationLibrary",
-        ":ApplicationResources",
-    ],
-)
-
-objc_library(
-    name = "ApplicationResources",
-    structured_resources = [
-        "Application/structured_resources.file1",
-        "Application/structured_resources.file2",
     ],
 )
 
@@ -75,7 +67,6 @@ objc_library(
         "Application/srcs/main.m",
         ":SrcGenerator",
     ],
-    bundles = [":ObjCBundle"],
     data = [
         "Application/AssetsOne.xcassets/another_file.ico",
         "Application/AssetsOne.xcassets/test_file.ico",
@@ -87,6 +78,8 @@ objc_library(
         "Application/en.lproj/EN.strings",
         "Application/en.lproj/Localized.strings",
         "Application/es.lproj/Localized.strings",
+        ":ApplicationResources",
+        ":ObjCBundle",
         ":StoryboardGenerator",
     ],
     defines = [
@@ -106,6 +99,14 @@ objc_library(
     ],
 )
 
+apple_resource_group(
+    name = "ApplicationResources",
+    structured_resources = [
+        "Application/structured_resources.file1",
+        "Application/structured_resources.file2",
+    ],
+)
+
 apple_bundle_import(
     name = "ObjCBundle",
     bundle_imports = [
@@ -116,7 +117,7 @@ apple_bundle_import(
 
 objc_library(
     name = "CoreDataResources",
-    datamodels = glob(["Test.xcdatamodeld/**"]),
+    data = glob(["Test.xcdatamodeld/**"]),
 )
 
 objc_library(
@@ -130,13 +131,13 @@ objc_library(
         "Library/hdrs/HdrsHeader.h",
     ],
     copts = ["-DLIBRARY_COPT_DEFINE"],
+    data = ["Library/xib.xib"],
     defines = [
         "LIBRARY_DEFINES_DEFINE=1",
         "'LIBRARY SECOND DEFINE'=2",
         "LIBRARY_VALUE_WITH_SPACES=\"Value with spaces\"",
     ],
     pch = ":PCHGenerator",
-    xibs = ["Library/xib.xib"],
     deps = [
         ":SubLibrary",
         ":SubLibraryWithDefines",
@@ -262,7 +263,7 @@ objc_library(
 
 objc_library(
     name = "TodayExtensionResources",
-    resources = [
+    data = [
         "TodayExtension/resources/file1",
         "TodayExtension/resources/file2.file",
     ],

@@ -19,6 +19,10 @@ load(
     "ios_application",
 )
 load("@build_bazel_rules_apple//apple:watchos.bzl", "watchos_application", "watchos_extension")
+load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_resource_group",
+)
 
 ios_application(
     name = "Application",
@@ -39,6 +43,11 @@ ios_application(
 
 objc_library(
     name = "ApplicationResources",
+    data = [":ApplicationStructuredResources"],
+)
+
+apple_resource_group(
+    name = "ApplicationStructuredResources",
     structured_resources = [
         "Application/structured_resources.file1",
     ],
@@ -74,7 +83,12 @@ objc_library(
     data = [
         "Watch2Extension/app_asset_catalogs.xcassets/app_asset_file.png",
         "Watch2Extension/ext_resources.file",
+        ":WatchApplicationStructuredResources",
     ],
+)
+
+apple_resource_group(
+    name = "WatchApplicationStructuredResources",
     structured_resources = [
         "Watch2Extension/ext_structured_resources.file",
     ],
@@ -96,7 +110,12 @@ objc_library(
     name = "WatchExtensionResources",
     data = [
         "Watch2Extension/ext_resources.file",
+        ":WatchExtensionStructuredResources",
     ],
+)
+
+apple_resource_group(
+    name = "WatchExtensionStructuredResources",
     structured_resources = [
         "Watch2Extension/ext_structured_resources.file",
     ],

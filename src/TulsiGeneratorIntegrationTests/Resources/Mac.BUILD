@@ -120,7 +120,7 @@ objc_library(
         "src/plugin/PluginViewController.h",
         "src/plugin/PluginViewController.m",
     ],
-    resources = [
+    data = [
         "Resources/plugin/PluginViewController.xib",
     ],
     sdk_frameworks = [

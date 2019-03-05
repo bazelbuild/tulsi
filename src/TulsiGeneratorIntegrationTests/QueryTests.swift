@@ -94,7 +94,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:ApplicationResources")
-        .hasType("objc_library")
+        .hasType("apple_resource_group")
         .hasNoLinkedTargetLabels()
         .hasNoDependencies()
 
