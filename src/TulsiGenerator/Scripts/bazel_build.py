@@ -288,9 +288,9 @@ class _OptionsParser(object):
     all_build.extend(self.common_build_options)
     all_build.extend(build)
 
-    version_string = self._GetXcodeVersionString()
-    if version_string and self._NeedsXcodeVersionFlag(version_string):
-      all_build.append('--xcode_version=%s' % version_string)
+    xcode_version_flag = self._ComputeXcodeVersionFlag()
+    if xcode_version_flag:
+      all_build.append('--xcode_version=%s' % xcode_version_flag)
 
     return bazel, start_up, all_build
 
@@ -326,6 +326,11 @@ class _OptionsParser(object):
     return (None, 0)
 
   @staticmethod
+  def _GetXcodeBuildVersionString():
+    """Returns Xcode build version from the environment as a string."""
+    return os.environ['XCODE_PRODUCT_BUILD_VERSION']
+
+  @staticmethod
   def _GetXcodeVersionString():
     """Returns Xcode version info from the environment as a string."""
     reported_version = os.environ['XCODE_VERSION_ACTUAL']
@@ -337,14 +342,11 @@ class _OptionsParser(object):
     major_version = int(match.group(1))
     minor_version = int(match.group(2))
     fix_version = int(match.group(3))
-    fix_version_string = ''
-    if fix_version:
-      fix_version_string = '.%d' % fix_version
-    return '%d.%d%s' % (major_version, minor_version, fix_version_string)
+    return '%d.%d.%d' % (major_version, minor_version, fix_version)
 
   @staticmethod
-  def _NeedsXcodeVersionFlag(xcode_version):
-    """Returns True if the --xcode_version flag should be used for building.
+  def _ComputeXcodeVersionFlag():
+    """Returns a string for the --xcode_version build flag, if any.
 
     The flag should be used if the active Xcode version was not the same one
     used during project generation.
@@ -352,21 +354,31 @@ class _OptionsParser(object):
     Note this a best-attempt only; this may not be accurate as Bazel itself
     caches the active DEVELOPER_DIR path and the user may have changed their
     installed Xcode version.
-
-    Args:
-      xcode_version: active Xcode version string.
     """
-    tulsi_xcode_version = os.environ.get('TULSI_XCODE_VERSION')
-    if not tulsi_xcode_version:
-      return True
+    xcode_version = _OptionsParser._GetXcodeVersionString()
+    build_version = _OptionsParser._GetXcodeBuildVersionString()
 
-    # xcode_version will be of the form Major.Minor(.Fix)? while
-    # TULSI_XCODE_VERSION will be of the form Major.Minor.Fix so we'll need to
-    # remove the trailing .0 if it exists.
-    if tulsi_xcode_version.endswith('.0'):
-      tulsi_xcode_version = tulsi_xcode_version[:-2]
+    if not xcode_version or not build_version:
+      return None
 
-    return xcode_version != tulsi_xcode_version
+    # Of the form Major.Minor.Fix.Build (new Bazel form) or Major.Min.Fix (old).
+    full_bazel_version = os.environ.get('TULSI_XCODE_VERSION')
+    if not full_bazel_version:  # Unexpected: Tulsi gen didn't set the flag.
+      return xcode_version
+
+    # Newer Bazel versions specify the version as Major.Minor.Fix.Build.
+    if full_bazel_version.count('.') == 3:
+      components = full_bazel_version.rsplit('.', 1)
+      bazel_xcode_version = components[0]
+      bazel_build_version = components[1]
+
+      if (xcode_version != bazel_xcode_version
+          or build_version != bazel_build_version):
+        return '{}.{}'.format(xcode_version, build_version)
+      else:
+        return None
+    else:  # Old version of Bazel. We need to use form Major.Minor.Fix.
+      return xcode_version if xcode_version != full_bazel_version else None
 
 
 class BazelBuildBridge(object):
