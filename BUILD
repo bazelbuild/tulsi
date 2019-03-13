@@ -77,6 +77,7 @@ macos_application(
 test_suite(
     name = "tests",
     tests = [
+        "//src/TulsiEndToEndTests",
         "//src/TulsiGeneratorIntegrationTests",
         "//src/TulsiGeneratorTests",
     ],
