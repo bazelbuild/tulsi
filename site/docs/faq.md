@@ -3,10 +3,12 @@ layout: default
 title: FAQ
 ---
 
-# How do I build for debug/fastbuild/release?
+# How do I build for debug or release?
 
 Tulsi generated projects behave just like Xcode projects in this respect. You
-simply change the build configuration for your target scheme.
+simply change the build configuration for your target scheme. Note that Tulsi
+does not support Bazel's fastbuild compilation mode due to debugging
+limitations.
 
 1. Open up the scheme editor. You can do this via cmd-< or through the UI.
 2. Change the current build configuration in the "Info" pane.

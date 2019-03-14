@@ -44,8 +44,8 @@ Flags used for all build modes:
 
 Mode dependent flags:
 
-*   `--compilation_mode` - set to `dbg`, `opt`, or `fastbuild` depending on the
-    Xcode build mode (Debug, Release, or Fastbuild).
+*   `--compilation_mode` - set to `dbg` or `opt` depending on the Xcode build
+    mode (Debug or Release).
 
 Debug mode flags:
 

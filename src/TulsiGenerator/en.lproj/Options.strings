@@ -11,7 +11,6 @@
 "BazelBuildOptions" = "'build' options";
 "BazelBuildOptions_DESC" = "Options for bazel 'build' invocations.";
 "BazelBuildOptionsDebug" = "Debug";
-"BazelBuildOptionsFastbuild" = "Fastbuild";
 "BazelBuildOptionsRelease" = "Release";
 
 "ProjectGenerationCompilationMode" = "Bazel --compilation_mode for project generation";
@@ -23,7 +22,6 @@
 "BazelBuildStartupOptions" = "'build' startup options";
 "BazelBuildStartupOptions_DESC" = "Startup options for bazel 'build' invocations.";
 "BazelBuildStartupOptionsDebug" = "Debug";
-"BazelBuildStartupOptionsFastbuild" = "Fastbuild";
 "BazelBuildStartupOptionsRelease" = "Release";
 
 "BazelContinueBuildingAfterError" = "Continue building after error";
