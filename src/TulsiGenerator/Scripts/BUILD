@@ -18,7 +18,7 @@ filegroup(
 py_binary(
     name = "bazel_build_events",
     srcs = ["bazel_build_events.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
 )
 
@@ -32,7 +32,7 @@ py_test(
 py_binary(
     name = "symbol_cache_schema",
     srcs = ["symbol_cache_schema.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
     deps = [":symbol_cache_schema_lib"],
 )
@@ -46,7 +46,7 @@ py_library(
 py_binary(
     name = "update_symbol_cache",
     srcs = ["update_symbol_cache.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
     deps = [":symbol_cache_schema_lib"],
 )
@@ -54,7 +54,7 @@ py_binary(
 py_binary(
     name = "clean_symbol_cache",
     srcs = ["clean_symbol_cache.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
     deps = [":symbol_cache_schema_lib"],
 )
@@ -62,7 +62,7 @@ py_binary(
 py_binary(
     name = "install_genfiles",
     srcs = ["install_genfiles.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
 )
 
@@ -76,7 +76,7 @@ py_test(
 py_binary(
     name = "bootstrap_lldbinit",
     srcs = ["bootstrap_lldbinit.py"],
-    default_python_version = "PY3",
+    python_version = "PY3",
     srcs_version = "PY2AND3",
 )
 
