@@ -562,7 +562,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyMacOSApp.app/Contents/MacOS/MyMacOSApp";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -587,7 +587,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -614,7 +614,7 @@
 				TEST_TARGET_NAME = MyMacOSApp;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -681,7 +681,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -701,7 +701,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyMacOSApp.app/Contents/MacOS/MyMacOSApp";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -718,7 +718,7 @@
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -737,7 +737,7 @@
 				TEST_TARGET_NAME = MyMacOSApp;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -791,7 +791,7 @@
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -823,7 +823,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyMacOSApp.app/Contents/MacOS/MyMacOSApp";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -840,7 +840,7 @@
 				PRODUCT_NAME = MyMacOSApp;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -859,7 +859,7 @@
 				TEST_TARGET_NAME = MyMacOSApp;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -913,7 +913,7 @@
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -953,7 +953,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyMacOSApp.app/Contents/MacOS/MyMacOSApp";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -978,7 +978,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1005,7 +1005,7 @@
 				TEST_TARGET_NAME = MyMacOSApp;
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1072,7 +1072,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_mac;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

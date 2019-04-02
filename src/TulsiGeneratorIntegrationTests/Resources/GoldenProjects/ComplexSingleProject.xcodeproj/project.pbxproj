@@ -547,7 +547,7 @@
 			buildConfigurationList = F4222DED6042BF8400000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
 				978262AB0C8B8F3600000000 /* ShellScript */,
-				978262AB4617F10200000000 /* ShellScript */,
+				978262AB87E2752000000000 /* ShellScript */,
 				04BFD5160000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -685,20 +685,6 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB4617F10200000000 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(defaultTestSource SrcsHeader src5 src1 src2 src3 src4)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
-			showEnvVarsInLog = 1;
-		};
 		978262AB5E42831100000000 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
@@ -712,6 +698,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
+			showEnvVarsInLog = 1;
+		};
+		978262AB87E2752000000000 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(SrcsHeader src5 src1 src2 src3 src4 defaultTestSource)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
 		978262ABC642309A00000000 /* ShellScript */ = {
@@ -736,12 +736,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DF3273A4100000000 /* defaultTestSource.m in srcs */,
 				952C886D3A8E944E00000000 /* src5.mm in srcs */,
 				952C886D160C3D9400000000 /* src1.m in srcs */,
 				952C886DB778F33400000000 /* src2.m in srcs */,
 				952C886D55B4D94500000000 /* src3.m in srcs */,
 				952C886D52C027AF00000000 /* src4.m in srcs */,
+				952C886DF3273A4100000000 /* defaultTestSource.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,7 +908,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -933,7 +933,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -999,7 +999,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1020,7 +1020,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -1037,7 +1037,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -1090,7 +1090,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Debug;
 		};
@@ -1202,7 +1202,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -1219,7 +1219,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -1272,7 +1272,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = Release;
 		};
@@ -1391,7 +1391,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1416,7 +1416,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1482,7 +1482,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0;
+				TULSI_XCODE_VERSION = 10.1.0.10B61;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

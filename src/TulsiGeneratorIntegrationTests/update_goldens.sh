@@ -21,7 +21,7 @@ readonly GOLDENS_DIR="${WORKSPACE}/${TEST_PATH}/Resources/GoldenProjects"
 readonly TESTLOGS_DIR=$(bazel info bazel-testlogs)
 readonly OUTPUT_DIR="${TESTLOGS_DIR}/${TEST_PATH}"
 
-bazel test //src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests && :
+bazel test //src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests --nocheck_visibility && :
 
 bazel_exit_code=$?
 
