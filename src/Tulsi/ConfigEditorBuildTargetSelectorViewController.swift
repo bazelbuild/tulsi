@@ -26,22 +26,30 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
   // risk the user accidentally selecting the extension without the host. For this reason,
   // ios_extension and watchos_extension are omitted as well.
   static let filteredFileTypes = [
-      "apple_unit_test",
+      // Remove apple_ui_test and apple_unit_test once Tulsi has been released with support for
+      // the new rule names.
       "apple_ui_test",
+      "apple_unit_test",
       "cc_binary",
       "cc_library",
       "cc_test",
-      "objc_library",
       "ios_application",
       "ios_framework",
       "ios_legacy_test",
+      "ios_ui_test",
+      "ios_unit_test",
       "macos_application",
       "macos_bundle",
-      "macos_extension",
       "macos_command_line_application",
+      "macos_extension",
+      "macos_ui_test",
+      "macos_unit_test",
+      "objc_library",
       "swift_library",
       "test_suite",
       "tvos_application",
+      "tvos_ui_test",
+      "tvos_unit_test",
   ]
 
   @IBOutlet weak var buildTargetTable: NSTableView!
