@@ -10,5 +10,5 @@ before_install:
 script:
   - bazel version
   - bazel build //:tulsi
-  - bazel test //src/TulsiGeneratorTests --test_output=errors
-  - bazel test //src/TulsiGeneratorIntegrationTests --test_output=errors
+  - bazel test //src/TulsiGeneratorTests --test_output=errors --nocheck_visibility
+  - bazel test //src/TulsiGeneratorIntegrationTests --test_output=errors --nocheck_visibility
