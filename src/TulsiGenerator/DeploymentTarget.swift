@@ -21,9 +21,10 @@ public enum CPU: String {
   case armv7
   case armv7k
   case arm64
+  case arm64e
   case arm64_32
 
-  public static let allCases: [CPU] = [.i386, .x86_64, .armv7, .armv7k, .arm64, .arm64_32]
+  public static let allCases: [CPU] = [.i386, .x86_64, .armv7, .armv7k, .arm64, .arm64e, .arm64_32]
 
   var isARM: Bool {
     switch self {
@@ -32,6 +33,7 @@ public enum CPU: String {
     case .armv7: return true
     case .armv7k: return true
     case .arm64: return true
+    case .arm64e: return true
     case .arm64_32: return true
     }
   }
@@ -99,7 +101,7 @@ public enum PlatformType: String {
 
   var validCPUs: Set<CPU> {
     switch self {
-    case .ios: return [.i386, .x86_64, .armv7, .arm64]
+    case .ios: return [.i386, .x86_64, .armv7, .arm64, .arm64e]
     case .macos: return  [.x86_64]
     case .tvos: return [.x86_64, .arm64]
     case .watchos: return [.i386, .armv7k, .arm64_32]

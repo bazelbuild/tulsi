@@ -55,7 +55,7 @@ class BazelSettingsProviderTests: XCTestCase {
     let arm64_32Flag = "--watchos_cpus=arm64_32"
     // The flags corresponding to these identifiers will contain '--watchos_cpus=armv7k' which
     // must be overidden.
-    let identifiersToOverride = Set(["ios_armv7", "ios_arm64", "watchos_armv7k"])
+    let identifiersToOverride = Set(["ios_armv7", "ios_arm64", "ios_arm64e", "watchos_armv7k"])
 
     // Test that the arm64_32 flag is set in the proper locations.
     for (identifier, flags) in settings.platformConfigurationFlags {
