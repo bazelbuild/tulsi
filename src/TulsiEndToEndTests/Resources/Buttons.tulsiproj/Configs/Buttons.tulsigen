@@ -9,7 +9,7 @@
   "projectName" : "Buttons",
   "optionSet" : {
     "BazelBuildOptionsDebug" : {
-      "p" : "$(inherited)"
+      "p" : "$(inherited) --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1"
     },
     "BazelBuildStartupOptionsRelease" : {
       "p" : "$(inherited)"

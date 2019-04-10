@@ -88,6 +88,9 @@ class BazelIntegrationTestCase: XCTestCase {
     // won't match.
     bazelBuildOptions.append("--xcode_version=10.1")
 
+    // Disable the Swift worker as it adds extra dependencies.
+    bazelBuildOptions.append("--define=RULES_SWIFT_BUILD_DUMMY_WORKER=1")
+
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")
     }
