@@ -194,8 +194,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       progressNotifier.start()
     }
 
-    let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
-
     let hasSwift = prioritizeSwift ?? false
     let isDbg = (compilationMode ?? "dbg") == "dbg"
 
@@ -232,7 +230,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     arguments.append(contentsOf: [
         // The following flags are used by Tulsi to identify itself and read build information from
         // Bazel. They should not affect Bazel analysis caching.
-        "--tool_tag=tulsi_v\(tulsiVersion):generator",  // Add a tag for tracking.
+        "--tool_tag=tulsi:generator",  // Add a tag for tracking.
         "--build_event_json_file=\(self.buildEventsFilePath)",
         "--noexperimental_build_event_json_file_path_conversion",
         // Don't replace test_suites with their tests. This allows the Aspect to discover the
