@@ -1354,7 +1354,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   // Adds a dummy build configuration to the given list based off of the Debug config that is
   // used to effectively disable compilation when running XCTests by converting each compile call
-  // into a "clang -help" invocation.
+  // into a "clang --version" invocation.
   private func addTestRunnerBuildConfigurationToBuildConfigurationList(_ list: XCConfigurationList) {
 
     func createTestConfigNamed(_ testConfigName: String,
@@ -1364,11 +1364,11 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       var runTestTargetBuildSettings = baseConfig.buildSettings
       // Prevent compilation invocations from actually compiling ObjC, C and Swift files.
-      runTestTargetBuildSettings["OTHER_CFLAGS"] = "-help"
-      runTestTargetBuildSettings["OTHER_SWIFT_FLAGS"] = "-help"
+      runTestTargetBuildSettings["OTHER_CFLAGS"] = "--version"
+      runTestTargetBuildSettings["OTHER_SWIFT_FLAGS"] = "--version"
       // Prevents linker invocations from attempting to use the .o files which were never generated
       // due to compilation being turned into nop's.
-      runTestTargetBuildSettings["OTHER_LDFLAGS"] = "-help"
+      runTestTargetBuildSettings["OTHER_LDFLAGS"] = "--version"
 
       // Force the output of the -emit-objc-header flag to a known value. This should be kept in
       // sync with the RunScript build phase created in createGenerateSwiftDummyFilesTestBuildPhase.

@@ -1499,8 +1499,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       var testRunnerExpectedBuildSettings = expectedBuildSettings
       testRunnerExpectedBuildSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
       testRunnerExpectedBuildSettings["ONLY_ACTIVE_ARCH"] = "YES"
-      testRunnerExpectedBuildSettings["OTHER_CFLAGS"] = "-help"
-      testRunnerExpectedBuildSettings["OTHER_LDFLAGS"] = "-help"
+      testRunnerExpectedBuildSettings["OTHER_CFLAGS"] = "--version"
+      testRunnerExpectedBuildSettings["OTHER_LDFLAGS"] = "--version"
       let expectedTarget = TargetDefinition(
           name: testRuleTargetName,
           buildConfigurations: [
@@ -2658,9 +2658,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       testRunnerSettings["DEBUG_INFORMATION_FORMAT"] = "dwarf"
     }
     testRunnerSettings["ONLY_ACTIVE_ARCH"] = "YES"
-    testRunnerSettings["OTHER_CFLAGS"] = "-help"
-    testRunnerSettings["OTHER_LDFLAGS"] = "-help"
-    testRunnerSettings["OTHER_SWIFT_FLAGS"] = "-help"
+    testRunnerSettings["OTHER_CFLAGS"] = "--version"
+    testRunnerSettings["OTHER_LDFLAGS"] = "--version"
+    testRunnerSettings["OTHER_SWIFT_FLAGS"] = "--version"
     testRunnerSettings["SWIFT_OBJC_INTERFACE_HEADER_NAME"] = "$(PRODUCT_NAME).h"
     testRunnerSettings["SWIFT_INSTALL_OBJC_HEADER"] = "NO"
 
