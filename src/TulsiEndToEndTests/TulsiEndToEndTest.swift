@@ -22,6 +22,7 @@ import XCTest
 // generated xcodeproj by running the projects unit tests.
 class TulsiEndToEndTest: BazelIntegrationTestCase {
   fileprivate static let simulatorName = "tulsie2e-\(UUID().uuidString.prefix(8))"
+  fileprivate static let targetVersion = "12.1"
 
   let fileManager = FileManager.default
   var runfilesWorkspaceURL: URL! = nil
@@ -31,9 +32,8 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     super.setUp()
 
     let targetDevice = "iPhone XS"
-    let targetVersion = "12.1"
     let deviceName = targetDevice.replacingOccurrences(of: " ", with: "-")
-    let deviceVersion = targetVersion.replacingOccurrences(of: ".", with: "-")
+    let deviceVersion = TulsiEndToEndTest.targetVersion.replacingOccurrences(of: ".", with: "-")
     let typeId = "com.apple.CoreSimulator.SimDeviceType.\(deviceName)"
     let runtimeId = "com.apple.CoreSimulator.SimRuntime.iOS-\(deviceVersion)"
     let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcrun",
@@ -51,7 +51,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
       }
     }
 
-    // 'simctl' should output the UUID of the new simulator if it was created succesfully.
+    // 'simctl' should output the UUID of the new simulator if it was created successfully.
     if let stdout = String(data: completionInfo.stdout, encoding: .utf8), stdout.isEmpty {
       XCTFail("No UUID was ouputted for newly created simulator.")
     }
@@ -177,7 +177,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
 
   // Runs Xcode tests on the given Xcode project and scheme.
   func testXcodeProject(_ xcodeProjectURL: URL, scheme: String) {
-    let destination = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName)"
+    let destination = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName),OS=\(TulsiEndToEndTest.targetVersion)"
     let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcodebuild",
                                                          arguments: ["test",
                                                                      "-project",
@@ -191,7 +191,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
       let result = stdoutput.split(separator: "\n").last {
       if (String(result) != "** TEST SUCCEEDED **") {
         print(stdoutput)
-        XCTFail("\(completionInfo.commandlineString) did not return test sucess. Exit code: \(completionInfo.terminationStatus)")
+        XCTFail("\(completionInfo.commandlineString) did not return test success. Exit code: \(completionInfo.terminationStatus)")
       }
     } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
       XCTFail(error)
