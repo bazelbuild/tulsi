@@ -107,6 +107,7 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
   static let tulsiCommonNonCacheableFlags = BazelFlags(build:  [
       "--define=apple.add_debugger_entitlement=1",
       "--define=apple.propagate_embedded_extra_outputs=1",
+      "--define=apple.experimental.tree_artifact_outputs=1",
   ])
 
   /// Cache-able flags added by Tulsi for builds.

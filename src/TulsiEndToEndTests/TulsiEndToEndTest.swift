@@ -175,7 +175,8 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     return xcodeProjectURL
   }
 
-  // Runs Xcode tests on the given Xcode project and scheme.
+  // Runs Xcode tests on the given Xcode project and scheme. This verifies that
+  // the test passes and that rsync behavior is used to copy files.
   func testXcodeProject(_ xcodeProjectURL: URL, scheme: String) {
     let destination = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName),OS=\(TulsiEndToEndTest.targetVersion)"
     let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcodebuild",
@@ -189,6 +190,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
 
     if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
       let result = stdoutput.split(separator: "\n").last {
+      XCTAssert(stdoutput.contains("Rsyncing"), "Failed to find 'Rsyncing' in:\n\(stdoutput)")
       if (String(result) != "** TEST SUCCEEDED **") {
         print(stdoutput)
         XCTFail("\(completionInfo.commandlineString) did not return test success. Exit code: \(completionInfo.terminationStatus)")

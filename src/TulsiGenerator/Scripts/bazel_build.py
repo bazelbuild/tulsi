@@ -881,8 +881,9 @@ class BazelBuildBridge(object):
       if exit_code:
         return exit_code
     else:
-      self._InstallBundle(primary_artifact,
-                          xcode_artifact_path)
+      self._RsyncBundle(os.path.basename(primary_artifact),
+                        primary_artifact,
+                        xcode_artifact_path)
 
       # When the rules output a tree artifact, Tulsi will copy the bundle as is
       # into the expected Xcode output location. But because they're copied as
@@ -1066,7 +1067,7 @@ class BazelBuildBridge(object):
 
   def _RsyncBundle(self, source_path, full_source_path, output_path):
     """Rsyncs the given bundle to the given expected output path."""
-    self._PrintVerbose('Copying %s to %s' % (source_path, output_path))
+    self._PrintVerbose('Rsyncing %s to %s' % (source_path, output_path))
 
     # rsync behavior changes based on presence of a trailing slash.
     if not full_source_path.endswith('/'):
