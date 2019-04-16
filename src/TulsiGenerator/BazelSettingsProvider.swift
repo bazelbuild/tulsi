@@ -30,12 +30,18 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   /// not provide an easy means of similarly normalizing all debug information.
   case DebugPathNormalization
 
+  /// Presence of Swift forces dSYMs to be enabled. dSYMS were previously required for debugging.
+  /// See https://forums.swift.org/t/improving-swift-lldb-support-for-path-remappings/22694.
+  case SwiftForcesdSYMs
+
   /// TODO(b/111928007): Remove this and/or BazelSettingFeature once DebugPathNormalization is
   /// supported by all builds.
   public var stringValue: String {
     switch self {
       case .DebugPathNormalization:
         return "DebugPathNormalization"
+      case .SwiftForcesdSYMs:
+        return "SwiftForcesdSYMs"
     }
   }
 
@@ -53,6 +59,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
         /// Technically this doesn't support swiftc, but we now support this feature for
         /// Cxx compilation alongside swift compilation.
         return true
+      case .SwiftForcesdSYMs:
+        return true
     }
   }
 
@@ -60,6 +68,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
     switch self {
       case .DebugPathNormalization:
         return true
+      case .SwiftForcesdSYMs:
+        return false
     }
   }
 
@@ -72,6 +82,7 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   public var buildFlags: [String] {
     switch self {
       case .DebugPathNormalization: return ["--features=debug_prefix_map_pwd_is_dot"]
+      case .SwiftForcesdSYMs: return ["--apple_generate_dsym"]
     }
   }
 
@@ -101,10 +112,14 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
   static let tulsiDebugFlags = BazelFlags(build: ["--compilation_mode=dbg"])
 
   /// Non-cacheable flags added by Tulsi for opt (Release) builds.
-  static let tulsiReleaseFlags = BazelFlags(build: ["--compilation_mode=opt", "--strip=always"])
+  static let tulsiReleaseFlags = BazelFlags(build: [
+      "--compilation_mode=opt",
+      "--strip=always",
+      "--apple_generate_dsym",
+  ])
 
   /// Non-cacheable flags added by Tulsi for all builds.
-  static let tulsiCommonNonCacheableFlags = BazelFlags(build:  [
+  static let tulsiCommonNonCacheableFlags = BazelFlags(build: [
       "--define=apple.add_debugger_entitlement=1",
       "--define=apple.propagate_embedded_extra_outputs=1",
       "--define=apple.experimental.tree_artifact_outputs=1",
@@ -112,20 +127,11 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
 
   /// Cache-able flags added by Tulsi for builds.
   static let tulsiCacheableFlags = BazelFlagsSet(buildFlags: ["--announce_rc"])
+
   /// Non-cacheable flags added by Tulsi for builds.
   static let tulsiNonCacheableFlags = BazelFlagsSet(debug: tulsiDebugFlags,
                                                     release: tulsiReleaseFlags,
                                                     common: tulsiCommonNonCacheableFlags)
-
-  /// Flags added by Tulsi for builds which contain Swift.
-  /// - Always generate dSYMs for projects with Swift dependencies, as dSYMs are still required to
-  ///   expr or print variables within Bazel-built Swift modules in LLDB.
-  static let tulsiSwiftFlags = BazelFlagsSet(buildFlags: ["--apple_generate_dsym"])
-
-  /// Flags added by Tulsi for builds which do not contain Swift.
-  /// - Enable dSYMs only for Release builds.
-  static let tulsiNonSwiftFlags = BazelFlagsSet(
-      release: BazelFlags(build: ["--apple_generate_dsym"]))
 
   /// Universal flags that apply to all Bazel invocations (even queries).
   let universalFlags: BazelFlags
@@ -146,8 +152,8 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
     self.init(universalFlags: universalFlags,
               cacheableFlags: BazelSettingsProvider.tulsiCacheableFlags,
               nonCacheableFlags: BazelSettingsProvider.tulsiNonCacheableFlags,
-              swiftFlags: BazelSettingsProvider.tulsiSwiftFlags,
-              nonSwiftFlags: BazelSettingsProvider.tulsiNonSwiftFlags)
+              swiftFlags: BazelFlagsSet(),
+              nonSwiftFlags: BazelFlagsSet())
   }
 
   public init(universalFlags: BazelFlags,

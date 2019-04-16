@@ -32,6 +32,8 @@ public enum TulsiOptionKey: String {
       // Suppresses the Xcode warning and automated update on first opening of the generated
       // project.
       SuppressSwiftUpdateCheck,
+      // Whether or not containing a Swift dependency forces dSYM generation (used for debugging).
+      SwiftForcesdSYMs,
       // The path from a config file to its associated workspace root.
       WorkspaceRootPath,
 
@@ -315,6 +317,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.GenerateRunfiles, .Generic, false)
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
     addBoolOption(.UseArm64_32, .Generic, false)
+    addBoolOption(.SwiftForcesdSYMs, .Generic, true)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }

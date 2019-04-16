@@ -48,8 +48,14 @@ public class BazelBuildSettingsFeatures {
     // This is handled through a wrapped_clang feature flag via the CROSSTOOL.
     //
     // The use of this flag does not affect any sources built by swiftc. At present time, all Swift
-    // compiled sources will be built with uncacheable, absolute paths, as the Swift compiler does
-    // not present an easy means of similarly normalizing all debug information.
-    return [.DebugPathNormalization]
+    // compiled sources will be built with uncacheable, absolute paths, as until Xcode 10.2, the
+    // Swift compiler did not present an easy means of similarly normalizing all debug information.
+    // Unfortunately, this still has some slight issues (which may be worked around via changes to
+    // wrapped_clang).
+    var features: Set<BazelSettingFeature> = [.DebugPathNormalization]
+    if options[.SwiftForcesdSYMs].commonValueAsBool ?? true {
+      features.insert(.SwiftForcesdSYMs)
+    }
+    return features
   }
 }
