@@ -34,6 +34,10 @@ public enum TulsiOptionKey: String {
       SuppressSwiftUpdateCheck,
       // Whether or not containing a Swift dependency forces dSYM generation (used for debugging).
       SwiftForcesdSYMs,
+      // Whether or not to use tree artifact outputs. Should only be disabled if it causes errors.
+      // Known issues:
+      // - Bundles with spaces in the name
+      TreeArtifactOutputs,
       // The path from a config file to its associated workspace root.
       WorkspaceRootPath,
 
@@ -318,6 +322,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
     addBoolOption(.UseArm64_32, .Generic, false)
     addBoolOption(.SwiftForcesdSYMs, .Generic, true)
+    addBoolOption(.TreeArtifactOutputs, .Generic, true)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }

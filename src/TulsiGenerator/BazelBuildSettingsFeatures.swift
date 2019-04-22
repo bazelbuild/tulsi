@@ -56,6 +56,9 @@ public class BazelBuildSettingsFeatures {
     if options[.SwiftForcesdSYMs].commonValueAsBool ?? true {
       features.insert(.SwiftForcesdSYMs)
     }
+    if options[.TreeArtifactOutputs].commonValueAsBool ?? true {
+      features.insert(.TreeArtifactOutputs)
+    }
     return features
   }
 }

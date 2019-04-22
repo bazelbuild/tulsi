@@ -34,6 +34,12 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   /// See https://forums.swift.org/t/improving-swift-lldb-support-for-path-remappings/22694.
   case SwiftForcesdSYMs
 
+  /// Build using tree artifact outputs (--define=apple.experimental.tree_artifact_outputs=1).
+  /// Should only be disabled if it causes errors.
+  /// Known issues:
+  /// - Bundles with spaces in the name
+  case TreeArtifactOutputs
+
   /// TODO(b/111928007): Remove this and/or BazelSettingFeature once DebugPathNormalization is
   /// supported by all builds.
   public var stringValue: String {
@@ -42,6 +48,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
         return "DebugPathNormalization"
       case .SwiftForcesdSYMs:
         return "SwiftForcesdSYMs"
+      case .TreeArtifactOutputs:
+        return "TreeArtifactOutputs"
     }
   }
 
@@ -61,6 +69,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
         return true
       case .SwiftForcesdSYMs:
         return true
+      case .TreeArtifactOutputs:
+        return true
     }
   }
 
@@ -70,6 +80,8 @@ public enum BazelSettingFeature: Hashable, Pythonable {
         return true
       case .SwiftForcesdSYMs:
         return false
+      case .TreeArtifactOutputs:
+        return true
     }
   }
 
@@ -83,6 +95,7 @@ public enum BazelSettingFeature: Hashable, Pythonable {
     switch self {
       case .DebugPathNormalization: return ["--features=debug_prefix_map_pwd_is_dot"]
       case .SwiftForcesdSYMs: return ["--apple_generate_dsym"]
+      case .TreeArtifactOutputs: return ["--define=apple.experimental.tree_artifact_outputs=1"]
     }
   }
 
@@ -122,7 +135,6 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
   static let tulsiCommonNonCacheableFlags = BazelFlags(build: [
       "--define=apple.add_debugger_entitlement=1",
       "--define=apple.propagate_embedded_extra_outputs=1",
-      "--define=apple.experimental.tree_artifact_outputs=1",
   ])
 
   /// Cache-able flags added by Tulsi for builds.
