@@ -26,6 +26,7 @@ py_test(
     name = "bazel_build_events_tests",
     size = "small",
     srcs = ["bazel_build_events_tests.py"],
+    python_version = "PY2",
     deps = [":bazel_build_events"],
 )
 
@@ -70,6 +71,7 @@ py_test(
     name = "install_genfiles_tests",
     size = "small",
     srcs = ["install_genfiles_tests.py"],
+    python_version = "PY2",
     deps = [":install_genfiles"],
 )
 
