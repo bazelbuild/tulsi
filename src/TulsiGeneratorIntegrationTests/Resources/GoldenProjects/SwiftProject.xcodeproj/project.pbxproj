@@ -25,9 +25,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25889F7C101EF84900000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_swift/Application-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C2F678D0900000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = "<group>"; };
 		25889F7C3887B3BE00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
-		25889F7C6280FB4600000000 /* _Application-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_Application-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_swift/_Application-Private-Info.plist"; sourceTree = "<group>"; };
 		25889F7C721A835100000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = "<group>"; };
 		25889F7C7EE3C1D900000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = "<group>"; };
 		25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; path = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +101,14 @@
 			path = ..;
 			sourceTree = SOURCE_ROOT;
 		};
+		45D05629BBA58A3000000000 /* Application-intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				25889F7C101EF84900000000 /* Info.plist */,
+			);
+			name = "Application-intermediates";
+			sourceTree = "<group>";
+		};
 		45D05629C0087DBE00000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,7 +157,7 @@
 		45D05629F54B34FD00000000 /* tulsi_e2e_swift */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C6280FB4600000000 /* _Application-Private-Info.plist */,
+				45D05629BBA58A3000000000 /* Application-intermediates */,
 			);
 			name = tulsi_e2e_swift;
 			sourceTree = "<group>";

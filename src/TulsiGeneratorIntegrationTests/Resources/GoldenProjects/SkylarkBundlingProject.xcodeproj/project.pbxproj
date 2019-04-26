@@ -24,9 +24,9 @@
 		25889F7C48DB2D6200000000 /* tvOSExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = tvOSExtension.appex; path = tvOSExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C4A0F121D00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSApplication/Info.plist"; sourceTree = "<group>"; };
 		25889F7C5837CF4400000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_tvos_project/BUILD; sourceTree = "<group>"; };
-		25889F7C5A03287E00000000 /* _tvOSExtension-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_tvOSExtension-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/_tvOSExtension-Private-Info.plist"; sourceTree = "<group>"; };
-		25889F7C6D33055A00000000 /* _tvOSApplication-Private-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = "_tvOSApplication-Private-Info.plist"; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/_tvOSApplication-Private-Info.plist"; sourceTree = "<group>"; };
+		25889F7C843C2C2E00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSApplication-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C846EA2E600000000 /* lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a; path = lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CB65D1B7E00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSExtension-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CBBF8F11400000000 /* tvOSApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = tvOSApplication.app; path = tvOSApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CEDCF2DAE00000000 /* src.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src.m; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSLibrary/srcs/src.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,8 +54,8 @@
 		45D056292146CAB900000000 /* tulsi_e2e_tvos_project */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C6D33055A00000000 /* _tvOSApplication-Private-Info.plist */,
-				25889F7C5A03287E00000000 /* _tvOSExtension-Private-Info.plist */,
+				45D05629372B05BE00000000 /* tvOSApplication-intermediates */,
+				45D05629425A73C800000000 /* tvOSExtension-intermediates */,
 			);
 			name = tulsi_e2e_tvos_project;
 			sourceTree = "<group>";
@@ -93,6 +93,22 @@
 				45D056292146CAB900000000 /* tulsi_e2e_tvos_project */,
 			);
 			name = x;
+			sourceTree = "<group>";
+		};
+		45D05629372B05BE00000000 /* tvOSApplication-intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				25889F7C843C2C2E00000000 /* Info.plist */,
+			);
+			name = "tvOSApplication-intermediates";
+			sourceTree = "<group>";
+		};
+		45D05629425A73C800000000 /* tvOSExtension-intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				25889F7CB65D1B7E00000000 /* Info.plist */,
+			);
+			name = "tvOSExtension-intermediates";
 			sourceTree = "<group>";
 		};
 		45D05629AC3D7ED000000000 /* tvOSApplication */ = {
