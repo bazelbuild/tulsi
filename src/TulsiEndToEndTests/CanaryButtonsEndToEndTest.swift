@@ -16,7 +16,7 @@
 import XCTest
 @testable import BazelIntegrationTestCase
 @testable import TulsiEndToEndTestBase
-
+@testable import TulsiGenerator
 
 // End to end test that generates the Buttons project and runs its unit tests. This variation of the
 // test uses the canary Bazel binary.
@@ -25,6 +25,17 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
 
   override func setUp() {
     super.setUp()
+    guard let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL else {
+      XCTFail("Expected Bazel canary URL.")
+      return
+    }
+    XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary binary is missing.")
+
+    bazelURL = canaryBazelURL
+    let completionInfo = ProcessRunner.launchProcessSync(bazelURL.path, arguments: ["version"])
+    if let versionOutput = String(data: completionInfo.stdout, encoding: .utf8) {
+      print(versionOutput)
+    }
 
     if (!copyDataToFakeWorkspace("third_party/tulsi/src/TulsiEndToEndTests/Resources")) {
       XCTFail("Failed to copy Buttons files to fake execroot.")
@@ -32,13 +43,6 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
   }
 
   func testButtonsWithCanaryBazel() throws {
-    guard let canaryBazelURL = fakeBazelWorkspace.canaryBazelURL else {
-      XCTFail("Expected Bazel canary URL.")
-      return
-    }
-    XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary is missing.")
-
-    bazelURL = canaryBazelURL
     let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
                                                config: "Buttons")
     XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
