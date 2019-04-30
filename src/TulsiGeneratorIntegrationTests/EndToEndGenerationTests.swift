@@ -41,7 +41,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  type: "ios_application",
                                  linkedTargetLabels: []),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
-                                 type: "apple_unit_test",
+                                 type: "ios_unit_test",
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
@@ -187,7 +187,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
                                  type: "ios_application",
                                  linkedTargetLabels: []),
                         RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
-                                 type: "apple_unit_test",
+                                 type: "ios_unit_test",
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
@@ -324,13 +324,13 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     let uiTestsLabel = BuildLabel("//\(testDir):UITests")
     let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [RuleInfo(label: unitTestsLabel,
-                                 type: "apple_unit_test",
+                                 type: "macos_unit_test",
                                  linkedTargetLabels: hostLabels),
                         RuleInfo(label: unitTestsNoHostLabel,
-                                 type: "apple_unit_test",
+                                 type: "macos_unit_test",
                                  linkedTargetLabels: []),
                         RuleInfo(label: uiTestsLabel,
-                                 type: "apple_ui_test",
+                                 type: "macos_ui_test",
                                  linkedTargetLabels: hostLabels)]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 

@@ -114,10 +114,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:XCTest_test_bundle")
-
-    checker.assertThat("//tulsi_test:XCTest_test_bundle")
-        .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:TestLibrary")
   }
 
@@ -308,10 +304,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
         .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:XCTest_test_bundle")
-
-    checker.assertThat("//tulsi_test:XCTest_test_bundle")
-        .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:XCTest_test_binary")
 
     checker.assertThat("//tulsi_test:XCTest_test_binary")
@@ -340,18 +332,14 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:XCTest_test_bundle")
+        .dependsOn("//tulsi_test:Library")
+        .dependsOn("//tulsi_test:TestLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:CoreDataResources")
         .dependsOn("//tulsi_test:Library")
         .dependsOn("//tulsi_test:ObjCFramework")
         .dependsOn("//tulsi_test:SrcGenerator")
-
-    checker.assertThat("//tulsi_test:XCTest_test_bundle")
-        .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:Library")
-        .dependsOn("//tulsi_test:TestLibrary")
 
     checker.assertThat("//tulsi_test:Library")
         .hasSources(["tulsi_test/LibrarySources/srcs/src1.m",

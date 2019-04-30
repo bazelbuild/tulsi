@@ -61,7 +61,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
       .hasNoDependencies()
 
     checker.assertThat("//tulsi_test:XCTest")
-        .hasType("apple_unit_test")
+        .hasType("ios_unit_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_test:Application"))
         .hasNoDependencies()
 
@@ -154,7 +154,7 @@ class QueryTests_PackageRuleExtraction: BazelIntegrationTestCase {
         .hasNoDependencies()
 
     checker.assertThat("//tulsi_complex_test:XCTest")
-        .hasType("apple_unit_test")
+        .hasType("ios_unit_test")
         .hasExactlyOneLinkedTargetLabel(BuildLabel("//tulsi_complex_test:Application"))
         .hasNoDependencies()
   }

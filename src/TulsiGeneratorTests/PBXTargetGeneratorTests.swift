@@ -405,7 +405,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUnitTest() {
-    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("apple_unit_test",
+    checkGenerateTargetsForLinkedRuleEntriesWithNoSources("ios_unit_test",
                                                           testProductType: .UnitTest,
                                                           testHostAttributeName: "test_host")
   }
@@ -522,7 +522,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesAndSkylarkUITest() {
-    let testRuleType = "apple_ui_test"
+    let testRuleType = "ios_ui_test"
     let testHostAttributeName = "test_host"
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -632,7 +632,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesMacOSUnitTests() {
-    let testRuleType = "apple_unit_test"
+    let testRuleType = "ios_unit_test"
     let testHostAttributeName = "test_host"
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -748,7 +748,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithNoSourcesMacOSUITests() {
-    let testRuleType = "apple_ui_test"
+    let testRuleType = "ios_ui_test"
     let testHostAttributeName = "test_host"
     let rule1BuildPath = "test/app"
     let rule1TargetName = "TestApplication"
@@ -863,7 +863,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetWithNoSourcesNoHostMacOSUnitTests() {
-    let testRuleType = "apple_unit_test"
+    let testRuleType = "ios_unit_test"
     let rule1BuildPath = "test/testbundle"
     let rule1TargetName = "TestBundle"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
@@ -929,7 +929,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetWithSourcesNoHostMacOSUnitTests() {
-    let testRuleType = "apple_unit_test"
+    let testRuleType = "ios_unit_test"
     let rule1BuildPath = "test/testbundle"
     let rule1TargetName = "TestBundle"
     let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
@@ -999,7 +999,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUnitTest() {
-    checkGenerateTargetsForLinkedRuleEntriesWithSources("apple_unit_test",
+    checkGenerateTargetsForLinkedRuleEntriesWithSources("ios_unit_test",
                                                         testProductType: .UnitTest,
                                                         testHostAttributeName: "test_host")
   }
@@ -1119,29 +1119,24 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTestTargetWithObjectiveCSources() {
     let testRuleTargetName = "Tests"
-    let testRuleType = "apple_unit_test"
+    let testRuleType = "ios_unit_test"
     let testHostTargetName = "App"
     let testRulePackage = "test/app"
     let testSources = ["test/app/Tests.m"]
     let objcLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):ObjcLib",
       type: "objc_library",
       sourceFiles: testSources)
-    let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
-      type: "ios_test_bundle",
-      dependencies: Set([BuildLabel(objcLibraryRuleEntry.label.value)]))
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
       type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
       type: "\(testRuleType)",
-      attributes: ["test_bundle": testBundleRuleEntry.label.value as AnyObject,
-                   "test_host": testHostRuleEntry.label.value as AnyObject],
+      attributes: ["test_host": testHostRuleEntry.label.value as AnyObject],
       sourceFiles: testSources,
       productType: .UnitTest,
       platformType: "ios",
       osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [objcLibraryRuleEntry,
-                                                          testBundleRuleEntry,
                                                           testHostRuleEntry,
                                                           testRuleEntry])
 
@@ -1201,22 +1196,18 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTestTargetWithSwiftSources() {
     let testRuleTargetName = "Tests"
-    let testRuleType = "apple_unit_test"
+    let testRuleType = "ios_unit_test"
     let testHostTargetName = "App"
     let testRulePackage = "test/app"
     let testSources = ["test/app/Tests.swift"]
     let swiftLibraryRuleEntry = makeTestRuleEntry("\(testRulePackage):SwiftLib",
                                                   type: "swift_library",
                                                   sourceFiles: testSources)
-    let testBundleRuleEntry = makeTestRuleEntry("\(testRulePackage):Tests_test_bundle",
-                                                type: "ios_test_bundle",
-                                                dependencies: Set([BuildLabel(swiftLibraryRuleEntry.label.value)]))
     let testHostRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testHostTargetName)",
                                               type: "ios_application", productType: .Application)
     let testRuleEntry = makeTestRuleEntry("\(testRulePackage):\(testRuleTargetName)",
                                           type: "\(testRuleType)",
                                           attributes: ["has_swift_dependency": true as AnyObject,
-                                                       "test_bundle": testBundleRuleEntry.label.value as AnyObject,
                                                        "test_host": testHostRuleEntry.label.value as AnyObject],
                                           sourceFiles: testSources,
                                           productType: .UnitTest,
@@ -1224,7 +1215,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                                           osDeploymentTarget: "8.0")
 
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRuleEntry,
-                                                          testBundleRuleEntry,
                                                           testHostRuleEntry,
                                                           testRuleEntry])
 
@@ -1291,7 +1281,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSourcesWithSkylarkUITest() {
-    let testRuleType = "apple_ui_test"
+    let testRuleType = "ios_ui_test"
     let testProductType = PBXTarget.ProductType.UIUnitTest
     let testHostAttributeName = "test_host"
     let rule1BuildPath = "test/app"
@@ -1405,12 +1395,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-      "apple_unit_test", testProductType: .UnitTest, testHostAttributeName: "test_host")
+      "ios_unit_test", testProductType: .UnitTest, testHostAttributeName: "test_host")
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackagesWithSkylarkUITest() {
     checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
-      "apple_ui_test", testProductType: .UIUnitTest, testHostAttributeName: "test_host")
+      "ios_ui_test", testProductType: .UIUnitTest, testHostAttributeName: "test_host")
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithSameTestHostNameInDifferentPackages(
@@ -1453,12 +1443,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
   func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarnsWithSkylarkUnitTest() {
     checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
-        "apple_unit_test", testHostAttributeName: "test_host")
+        "ios_unit_test", testHostAttributeName: "test_host")
   }
 
   func testGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarnsWithSkylarkUITest() {
     checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(
-        "apple_ui_test", testHostAttributeName: "test_host")
+        "ios_ui_test", testHostAttributeName: "test_host")
   }
 
   func checkGenerateTargetsForLinkedRuleEntriesWithoutIncludingTheHostWarns(

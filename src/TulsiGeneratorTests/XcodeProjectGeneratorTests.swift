@@ -179,13 +179,13 @@ class XcodeProjectGeneratorTests: XCTestCase {
   }
 
   func testTestSuiteSchemeGenerationWithSkylarkUnitTest() {
-    checkTestSuiteSchemeGeneration("apple_unit_test",
+    checkTestSuiteSchemeGeneration("ios_unit_test",
                                    testProductType: .UnitTest,
                                    testHostAttributeName: "test_host")
   }
 
   func testTestSuiteSchemeGenerationWithSkylarkUITest() {
-    checkTestSuiteSchemeGeneration("apple_ui_test",
+    checkTestSuiteSchemeGeneration("ios_ui_test",
                                    testProductType: .UIUnitTest,
                                    testHostAttributeName: "test_host")
   }

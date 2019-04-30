@@ -54,7 +54,6 @@ _TULSI_COMPILE_DEPS = [
     "srcs",  # To propagate down onto rules which generate source files.
     "tests",  # for test_suite when the --noexpand_test_suites flag is used.
     "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
-    "test_bundle",
     "test_host",
     "additional_contents",  # macos_application can specify a dict with supported rules as keys.
     # Special attribute name which serves as an escape hatch intended for custom
@@ -738,7 +737,6 @@ def _tulsi_sources_aspect(target, ctx):
         datamodels = datamodels,
         supporting_files = supporting_files,
         test_host = _get_label_attr(rule_attr, "test_host.label"),
-        test_bundle = _get_label_attr(rule_attr, "test_bundle.label"),
     )
 
     # Inheritable attributes are pulled up through dependencies of type 'binary'
