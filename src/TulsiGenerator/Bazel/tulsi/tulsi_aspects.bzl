@@ -501,6 +501,7 @@ def _extract_compiler_defines(ctx):
         conlyopts = cpp_fragment.conlyopts
 
         feature_configuration = cc_common.configure_features(
+            ctx = ctx,
             cc_toolchain = cc_toolchain,
             requested_features = ctx.features,
             unsupported_features = ctx.disabled_features + UNSUPPORTED_FEATURES,
