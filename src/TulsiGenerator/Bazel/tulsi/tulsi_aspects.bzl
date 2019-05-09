@@ -23,7 +23,6 @@ load(
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
-    "SwiftClangModuleInfo",
     "SwiftInfo",
 )
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
@@ -627,8 +626,8 @@ def _collect_module_maps(target, rule_attr):
             depsets.append(objc.module_map)
 
         for dep in _collect_dependencies(rule_attr, "deps"):
-            if SwiftClangModuleInfo in dep:
-                module_info = dep[SwiftClangModuleInfo]
+            if SwiftInfo in dep:
+                module_info = dep[SwiftInfo]
                 if hasattr(module_info, "transitive_modulemaps"):
                     depsets.append(module_info.transitive_modulemaps)
         return depset(transitive = depsets)
@@ -638,10 +637,9 @@ def _collect_objc_defines(objc_provider, rule_attr):
     """Returns a depset of C-compiler defines."""
     depsets = [objc_provider.define] if objc_provider else []
     for dep in _collect_dependencies(rule_attr, "deps"):
-        if SwiftClangModuleInfo in dep:
-            module_info = dep[SwiftClangModuleInfo]
-            if hasattr(module_info, "transitive_defines"):
-                depsets.append(module_info.transitive_defines)
+        if CcInfo in dep:
+            compilation_context = dep[CcInfo].compilation_context
+            depsets.append(compilation_context.defines)
     return depset(transitive = depsets)
 
 # TODO(b/64490743): Add these files to the Xcode project.

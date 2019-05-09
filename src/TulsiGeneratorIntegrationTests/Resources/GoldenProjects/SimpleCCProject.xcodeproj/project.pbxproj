@@ -19,16 +19,23 @@
 			proxyType = 1;
 			remoteGlobalIDString = 01F2CBCF9734745C00000000;
 		};
+		30E8372AECC4155900000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9034464B04E85D2700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E9AFE62ECC4155800000000;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25889F7C31634C2800000000 /* lib_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0.a; path = lib_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C40FA11C700000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = "<group>"; };
 		25889F7C465997B800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; };
 		25889F7C6024490600000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		25889F7C7C32F61200000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = ccBinary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C9AAB485E00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
+		25889F7CA44D367C00000000 /* lib_idx_ccBinary_C9583FBE_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccBinary_C9583FBE_ios_min8.0.a; path = lib_idx_ccBinary_C9583FBE_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CAEA4670600000000 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = "tulsi-workspace/tulsi_e2e_ccsimple/Binary/srcs/main.cc"; sourceTree = "<group>"; };
+		25889F7CB7F6ECEE00000000 /* lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a; path = lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CBA739E5700000000 /* src2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src2.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src2.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +87,8 @@
 		45D05629C0087DBE00000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C31634C2800000000 /* lib_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0.a */,
+				25889F7CA44D367C00000000 /* lib_idx_ccBinary_C9583FBE_ios_min8.0.a */,
+				25889F7CB7F6ECEE00000000 /* lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -133,9 +141,9 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		7E9AFE62883BEF4A00000000 /* _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0 */ = {
+		7E9AFE624842150000000000 /* _idx_ccBinary_C9583FBE_ios_min8.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DEDCD63391D00000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0" */;
+			buildConfigurationList = F4222DEDC8A51A7100000000 /* Build configuration list for PBXNativeTarget "_idx_ccBinary_C9583FBE_ios_min8.0" */;
 			buildPhases = (
 				04BFD5160000000000000000 /* Sources */,
 			);
@@ -143,10 +151,11 @@
 			);
 			dependencies = (
 				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+				89B1AEB3ECC4155900000000 /* PBXTargetDependency */,
 			);
-			name = _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0;
-			productName = _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0;
-			productReference = 25889F7C31634C2800000000 /* lib_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0.a */;
+			name = _idx_ccBinary_C9583FBE_ios_min8.0;
+			productName = _idx_ccBinary_C9583FBE_ios_min8.0;
+			productReference = 25889F7CA44D367C00000000 /* lib_idx_ccBinary_C9583FBE_ios_min8.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		7E9AFE62CF73120000000000 /* ccBinary */ = {
@@ -164,6 +173,22 @@
 			productName = ccBinary;
 			productReference = 25889F7C7C32F61200000000 /* ccBinary.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7E9AFE62ECC4155800000000 /* _idx_ccLibrary_CCA8EDE9_ios_min8.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DED7C6DD08000000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_CCA8EDE9_ios_min8.0" */;
+			buildPhases = (
+				04BFD5160000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+			);
+			name = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
+			productName = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
+			productReference = 25889F7CB7F6ECEE00000000 /* lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -184,7 +209,8 @@
 			mainGroup = 45D05629B56AD7F200000000 /* mainGroup */;
 			targets = (
 				01F2CBCF9734745C00000000 /* _bazel_clean_ */,
-				7E9AFE62883BEF4A00000000 /* _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0 */,
+				7E9AFE624842150000000000 /* _idx_ccBinary_C9583FBE_ios_min8.0 */,
+				7E9AFE62ECC4155800000000 /* _idx_ccLibrary_CCA8EDE9_ios_min8.0 */,
 				7E9AFE62CF73120000000000 /* ccBinary */,
 			);
 		};
@@ -213,9 +239,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				952C886DAEA4670600000000 /* main.cc in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04BFD5160000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
 				952C886D40FA11C700000000 /* src1.c in srcs */,
 				952C886DBA739E5700000000 /* src2.c in srcs */,
-				952C886DAEA4670600000000 /* main.cc in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +258,10 @@
 		89B1AEB39734745D00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 30E8372A9734745D00000000 /* PBXContainerItemProxy */;
+		};
+		89B1AEB3ECC4155900000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 30E8372AECC4155900000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -335,13 +372,25 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
 			name = Debug;
 		};
 		0207AA2838C3D90E00000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Debug;
+		};
+		0207AA2838C3D90E00000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -398,13 +447,25 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = _idx_ccLibrary_ccBinary_96012DA7_ios_min8.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
+				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
 			name = Release;
 		};
 		0207AA28616216BF00000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Release;
+		};
+		0207AA28616216BF00000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Stub Launch Image";
@@ -497,10 +558,18 @@
 		F4222DED4700556B00000000 /* Build configuration list for PBXNativeTarget "ccBinary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0207AA2838C3D90E00000002 /* Debug */,
-				0207AA28616216BF00000002 /* Release */,
+				0207AA2838C3D90E00000003 /* Debug */,
+				0207AA28616216BF00000003 /* Release */,
 				0207AA28F23A778400000001 /* __TulsiTestRunner_Debug */,
 				0207AA281FC531E700000001 /* __TulsiTestRunner_Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F4222DED7C6DD08000000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_CCA8EDE9_ios_min8.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0207AA2838C3D90E00000002 /* Debug */,
+				0207AA28616216BF00000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -514,7 +583,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		F4222DEDCD63391D00000000 /* Build configuration list for PBXNativeTarget "_idx_ccLibrary_ccBinary_96012DA7_ios_min8.0" */ = {
+		F4222DEDC8A51A7100000000 /* Build configuration list for PBXNativeTarget "_idx_ccBinary_C9583FBE_ios_min8.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0207AA2838C3D90E00000001 /* Debug */,

@@ -15,13 +15,18 @@
 
 set -eu
 
+# Update this whenever the version of Xcode needed to generate the goldens
+# changes.
+readonly XCODE_VERSION=10.1
+
 readonly WORKSPACE=$(bazel info workspace)
 readonly TEST_PATH="src/TulsiGeneratorIntegrationTests"
 readonly GOLDENS_DIR="${WORKSPACE}/${TEST_PATH}/Resources/GoldenProjects"
 readonly TESTLOGS_DIR=$(bazel info bazel-testlogs)
 readonly OUTPUT_DIR="${TESTLOGS_DIR}/${TEST_PATH}"
 
-bazel test //src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests --nocheck_visibility && :
+bazel test //src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests \
+  --xcode_version="$XCODE_VERSION" --nocheck_visibility && :
 
 bazel_exit_code=$?
 

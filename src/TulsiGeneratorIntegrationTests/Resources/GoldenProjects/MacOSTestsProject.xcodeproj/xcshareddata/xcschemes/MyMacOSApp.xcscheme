@@ -10,10 +10,10 @@
     <TestAction buildConfiguration="__TulsiTestRunner_Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
         <Testables>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="7E9AFE6256F24F5400000000" ReferencedContainer="container:MacOSTestsProject.xcodeproj" BuildableName="UnitTests.xctest" BuildableIdentifier="primary" BlueprintName="UnitTests"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="7E9AFE628549A53C00000000" ReferencedContainer="container:MacOSTestsProject.xcodeproj" BuildableName="UITests.xctest" BuildableIdentifier="primary" BlueprintName="UITests"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="7E9AFE628549A53C00000000" ReferencedContainer="container:MacOSTestsProject.xcodeproj" BuildableName="UITests.xctest" BuildableIdentifier="primary" BlueprintName="UITests"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="7E9AFE6256F24F5400000000" ReferencedContainer="container:MacOSTestsProject.xcodeproj" BuildableName="UnitTests.xctest" BuildableIdentifier="primary" BlueprintName="UnitTests"></BuildableReference>
             </TestableReference>
         </Testables>
         <BuildableProductRunnable runnableDebuggingMode="0">

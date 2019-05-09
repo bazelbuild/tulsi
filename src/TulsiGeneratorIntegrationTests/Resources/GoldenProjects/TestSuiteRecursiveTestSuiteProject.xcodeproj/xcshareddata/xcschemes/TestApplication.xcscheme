@@ -13,10 +13,10 @@
                 <BuildableReference BlueprintIdentifier="7E9AFE62812108F600000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="tagged_xctest_1.xctest" BuildableIdentifier="primary" BlueprintName="tagged_xctest_1"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="7E9AFE623963A8D000000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="TestSuiteXCTest.xctest" BuildableIdentifier="primary" BlueprintName="TestSuiteXCTest"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="7E9AFE627547FBBC00000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="tagged_xctest_2.xctest" BuildableIdentifier="primary" BlueprintName="tagged_xctest_2"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
-                <BuildableReference BlueprintIdentifier="7E9AFE627547FBBC00000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="tagged_xctest_2.xctest" BuildableIdentifier="primary" BlueprintName="tagged_xctest_2"></BuildableReference>
+                <BuildableReference BlueprintIdentifier="7E9AFE623963A8D000000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="TestSuiteXCTest.xctest" BuildableIdentifier="primary" BlueprintName="TestSuiteXCTest"></BuildableReference>
             </TestableReference>
         </Testables>
         <BuildableProductRunnable runnableDebuggingMode="0">

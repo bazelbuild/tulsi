@@ -28,7 +28,6 @@ load(
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
-    _SwiftClangModuleInfo = "SwiftClangModuleInfo",
     _SwiftInfo = "SwiftInfo",
 )
 
@@ -38,7 +37,5 @@ AppleBundleInfo = _AppleBundleInfo
 AppleTestInfo = _AppleTestInfo
 
 IosExtensionBundleInfo = _IosExtensionBundleInfo
-
-SwiftClangModuleInfo = _SwiftClangModuleInfo
 
 SwiftInfo = _SwiftInfo
