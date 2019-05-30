@@ -1117,6 +1117,7 @@ tulsi_sources_aspect = aspect(
             "@bazel_tools//tools/cpp:current_cc_toolchain",
         )),
     },
+    toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
     fragments = [
         "apple",
         "cpp",
