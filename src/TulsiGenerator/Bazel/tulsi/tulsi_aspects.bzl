@@ -812,7 +812,7 @@ def _tulsi_sources_aspect(target, ctx):
     if objc_provider:
         target_includes = [
             _convert_outpath_to_symlink_path(x)
-            for x in depset(transitive = [objc_provider.include, objc_provider.iquote, objc_provider.include_system])
+            for x in depset(transitive = [objc_provider.include, objc_provider.iquote, objc_provider.include_system]).to_list()
         ]
 
     objc_defines = _collect_objc_defines(objc_provider, rule_attr).to_list()
