@@ -198,9 +198,9 @@ objc_library(
         "-DSubLibraryWithDifferentDefines_LocalDefine",
         "-DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1",
         "-DSubLibraryWithDifferentDefines_STRING_DEFINE=Test",
-        "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'",
-        "-D'SubLibraryWithDifferentDefines Define with spaces'",
-        "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1",
+        "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES=String with spaces",
+        "-D'SubLibraryWithDifferentDefines_SINGLEQUOTED=Single quoted with spaces'",
+        "-D\"SubLibraryWithDifferentDefines_PREQUOTED=Prequoted with spaces\"",
     ],
     defines = [
         "SubLibraryWithDifferentDefines=1",

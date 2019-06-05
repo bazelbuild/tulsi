@@ -2618,6 +2618,40 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
                           inTargets: targets)
   }
 
+  func testIndexerCFlagsDefinesEscaping() {
+    let package = "test/package"
+
+    let objcTargetName = "ObjcTarget"
+    let objcTargetBuildLabel = BuildLabel("\(package):\(objcTargetName)")
+    let objcTargetDefines = [
+        "A=value with space",
+        "'B=preescaped value'",
+        "\"C=preescaped value\"",
+        "D=nospaces"
+    ] as AnyObject
+
+    let objcLibraryRule = makeTestRuleEntry(objcTargetBuildLabel,
+                                            type: "objc_library",
+                                            attributes: ["compiler_defines": objcTargetDefines],
+                                            sourceFiles: sourceFileNames)
+
+    var processedEntries = [RuleEntry: (NSOrderedSet)]()
+    let indexerTargetName = String(format: "_idx_\(objcTargetName)_%08X_ios_min9.0", objcTargetBuildLabel.hashValue)
+    targetGenerator.registerRuleEntryForIndexer(objcLibraryRule,
+                                                ruleEntryMap: RuleEntryMap(),
+                                                pathFilters: pathFilters,
+                                                processedEntries: &processedEntries)
+    targetGenerator.generateIndexerTargets()
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 1)
+    validateIndexerTarget(indexerTargetName,
+                          sourceFileNames: sourceFileNames,
+                          otherCFlags: "-D\"C=preescaped value\" -D'B=preescaped value' -D\"A=value with space\" -DD=nospaces",
+                          isSwift: false,
+                          inTargets: targets)
+  }
+
   // MARK: - Helper methods
 
   private func debugBuildSettingsFromSettings(_ settings: [String: String]) -> [String: String] {

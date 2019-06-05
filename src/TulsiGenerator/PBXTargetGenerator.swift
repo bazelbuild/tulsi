@@ -1041,8 +1041,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   // Adds XCBuildConfigurations to the given indexer PBXTarget.
-  // Note that preprocessorDefines is expected to be a pre-quoted set of defines (e.g., if "key" has
-  // spaces it would be the string: key="value with spaces").
+  // Note that preprocessorDefines may or may not contain values with spaces. If it does contain
+  // spaces, the key will be escaped (e.g. -Dfoo bar becomes -D"foo bar").
   private func addConfigsForIndexingTarget(_ target: PBXTarget, data: IndexerData) {
 
     var buildSettings = options.buildSettingsForTarget(target.name)
@@ -1053,8 +1053,17 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     }
 
     var allOtherCFlags = data.otherCFlags.filter { !$0.hasPrefix("-W") }
+    // Escape the spaces in the defines by transforming -Dfoo bar into -D"foo bar".
     if !data.preprocessorDefines.isEmpty {
-      allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map({"-D\($0)"}))
+      allOtherCFlags.append(contentsOf: data.preprocessorDefines.sorted().map { define in
+        // Need to quote all defines with spaces that are not yet quoted.
+        if define.rangeOfCharacter(from: .whitespaces) != nil &&
+            !((define.hasPrefix("\"") && define.hasSuffix("\"")) ||
+              (define.hasPrefix("'") && define.hasSuffix("'"))) {
+          return "-D\"\(define)\""
+        }
+        return "-D\(define)"
+      })
     }
 
     if !allOtherCFlags.isEmpty {

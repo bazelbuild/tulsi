@@ -278,9 +278,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
         .hasAttribute(.copts, value: ["-DSubLibraryWithDifferentDefines_LocalDefine",
                                       "-DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1",
                                       "-DSubLibraryWithDifferentDefines_STRING_DEFINE=Test",
-                                      "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES='String with spaces'",
-                                      "-D'SubLibraryWithDifferentDefines Define with spaces'",
-                                      "-D'SubLibraryWithDifferentDefines Define with spaces and value'=1"] as NSArray)
+                                      "-DSubLibraryWithDifferentDefines_STRING_WITH_SPACES=String with spaces",
+                                      "-D'SubLibraryWithDifferentDefines_SINGLEQUOTED=Single quoted with spaces'",
+                                      "-D\"SubLibraryWithDifferentDefines_PREQUOTED=Prequoted with spaces\""] as NSArray)
         .hasObjcDefines(["SubLibraryWithDifferentDefines=1"])
         .hasIncludes(["tulsi_test/SubLibraryWithDifferentDefines/includes",
                       "tulsi-includes/x/x/tulsi_test/SubLibraryWithDifferentDefines/includes"])
