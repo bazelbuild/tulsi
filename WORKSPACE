@@ -3,7 +3,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 git_repository(
     name = "build_bazel_rules_apple",
     remote = "https://github.com/bazelbuild/rules_apple.git",
-    tag = "0.16.1",
+    tag = "0.17.2",
 )
 
 load(
@@ -19,6 +19,15 @@ load(
     "swift_rules_dependencies",
 )
 swift_rules_dependencies()
+
+# @build_bazel_apple_support is already defined via apple_rules_dependencies above.
+# This helps ensure that Tulsi, rules_apple, etc. are using the same versions.
+load(
+    "@build_bazel_apple_support//lib:repositories.bzl",
+    "apple_support_dependencies",
+)
+
+apple_support_dependencies()
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 

@@ -675,15 +675,15 @@ class InfoChecker {
 
     /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
     @discardableResult
-    func hasIncludes(_ value: [String], line: UInt = #line) -> Context {
+    func hasIncludes(_ value: Set<String>, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       guard let includes = ruleEntry.includePaths else {
         XCTFail("\(ruleEntry) expected to have includes", line: line)
         return self
       }
-      let paths = includes.map { (path, recursive) -> String in
+      let paths = Set(includes.map { (path, recursive) -> String in
         return path
-      }
+      })
       XCTAssertEqual(paths, value, line: line)
       return self
     }

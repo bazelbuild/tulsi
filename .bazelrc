@@ -1,0 +1,11 @@
+build --cpu=darwin_x86_64
+build --apple_platform_type=macos
+build --xcode_version=10.1
+
+# Disable the Swift compilation worker when running integration tests, since it
+# requires the protobuf dependency which is infeasible to get working on Bazel.
+build --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1
+
+# Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
+# See also: https://github.com/bazelbuild/rules_apple/issues/456.
+build "--host_force_python=PY2"

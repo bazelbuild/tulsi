@@ -50,6 +50,9 @@ class BazelIntegrationTestCase: XCTestCase {
     workspaceRootURL = fakeBazelWorkspace.workspaceRootURL
     bazelURL = fakeBazelWorkspace.bazelURL
 
+    // Add any build options specific to the fakeBazelWorkspace.
+    bazelBuildOptions.append(contentsOf: fakeBazelWorkspace.extraBuildFlags)
+
     if let testOutputPath = ProcessInfo.processInfo.environment["TEST_UNDECLARED_OUTPUTS_DIR"] {
       testUndeclaredOutputsDir = URL(fileURLWithPath: testOutputPath, isDirectory: true)
     }
