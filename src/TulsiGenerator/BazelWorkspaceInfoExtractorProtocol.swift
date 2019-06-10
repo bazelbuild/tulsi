@@ -28,6 +28,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// omitted from the returned dictionary).
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
+                            extraStartupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,

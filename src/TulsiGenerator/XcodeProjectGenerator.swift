@@ -579,6 +579,7 @@ final class XcodeProjectGenerator {
       let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options)
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
                                                              startupOptions: config.options[.BazelBuildStartupOptionsDebug],
+                                                             extraStartupOptions: config.options[.ProjectGenerationBazelStartupOptions],
                                                              buildOptions: config.options[.BazelBuildOptionsDebug],
                                                              compilationModeOption: config.options[.ProjectGenerationCompilationMode],
                                                              platformConfigOption: config.options[.ProjectGenerationPlatformConfiguration],

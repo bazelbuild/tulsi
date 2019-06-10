@@ -19,6 +19,9 @@
 "ProjectGenerationPlatformConfiguration" = "Bazel Apple platform and cpu for project generation";
 "ProjectGenerationPlatformConfiguration_DESC" = "Modify this to the expected configuration for your project. Setting this incorrectly won't break your builds but it will potentially make them slower and may potentially alter the generated project if your project depends on Bazel `select`s.";
 
+"ProjectGenerationBazelStartupOptions" = "'build' startup options used for project generation.";
+"ProjectGenerationBazelStartupOptions_DESC" = "Modify this to add startup options for bazel invocations during project generation. Note: Modifying this will trigger a server restart between project generation and building, so the first build after generating the project will be slower than usual.";
+
 "BazelBuildStartupOptions" = "'build' startup options";
 "BazelBuildStartupOptions_DESC" = "Startup options for bazel 'build' invocations.";
 "BazelBuildStartupOptionsDebug" = "Debug";

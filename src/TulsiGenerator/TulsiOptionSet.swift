@@ -59,6 +59,9 @@ public enum TulsiOptionKey: String {
       // Platform configuration to use during project generation.
       ProjectGenerationPlatformConfiguration,
 
+      // Startup options for project generation.
+      ProjectGenerationBazelStartupOptions,
+
       // Improve auto-completion for include/import statements.
       ImprovedImportAutocompletionFix,
 
@@ -118,6 +121,7 @@ public class TulsiOptionSet: Equatable {
   typealias PersistenceType = [String: TulsiOption.PersistenceType]
 
   static let OptionKeyGroups: [TulsiOptionKey: TulsiOptionKeyGroup] = [
+      .ProjectGenerationBazelStartupOptions: .BazelBuildStartupOptions,
       .BazelBuildOptionsDebug: .BazelBuildOptions,
       .BazelBuildOptionsRelease: .BazelBuildOptions,
       .BazelBuildStartupOptionsDebug: .BazelBuildStartupOptions,
@@ -329,6 +333,7 @@ public class TulsiOptionSet: Equatable {
     addStringEnumOption(.ProjectGenerationPlatformConfiguration, .Generic,
                         defaultIdentifier, platformCPUIdentifiers)
     addStringEnumOption(.ProjectGenerationCompilationMode, .Generic, "dbg", ["dbg", "opt"])
+    addStringOption(.ProjectGenerationBazelStartupOptions, [.SupportsInheritKeyword])
 
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])

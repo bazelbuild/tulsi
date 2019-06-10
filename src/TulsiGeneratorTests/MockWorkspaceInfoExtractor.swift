@@ -64,6 +64,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
+                            extraStartupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,

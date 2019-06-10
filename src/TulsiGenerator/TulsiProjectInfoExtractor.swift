@@ -54,6 +54,7 @@ public final class TulsiProjectInfoExtractor {
 
   public func ruleEntriesForInfos(_ infos: [RuleInfo],
                                   startupOptions: TulsiOption,
+                                  extraStartupOptions: TulsiOption,
                                   buildOptions: TulsiOption,
                                   compilationModeOption: TulsiOption,
                                   platformConfigOption: TulsiOption,
@@ -62,6 +63,7 @@ public final class TulsiProjectInfoExtractor {
                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
+                                    extraStartupOptions: extraStartupOptions,
                                     buildOptions: buildOptions,
                                     compilationModeOption: compilationModeOption,
                                     platformConfigOption: platformConfigOption,
@@ -72,6 +74,7 @@ public final class TulsiProjectInfoExtractor {
 
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
                                    startupOptions: TulsiOption,
+                                   extraStartupOptions: TulsiOption,
                                    buildOptions: TulsiOption,
                                    compilationModeOption: TulsiOption,
                                    platformConfigOption: TulsiOption,
@@ -81,6 +84,7 @@ public final class TulsiProjectInfoExtractor {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
                                                              startupOptions: startupOptions,
+                                                             extraStartupOptions: extraStartupOptions,
                                                              buildOptions: buildOptions,
                                                              compilationModeOption: compilationModeOption,
                                                              platformConfigOption: platformConfigOption,

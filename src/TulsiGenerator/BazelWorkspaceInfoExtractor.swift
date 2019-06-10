@@ -96,6 +96,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
                             startupOptions: TulsiOption,
+                            extraStartupOptions: TulsiOption,
                             buildOptions: TulsiOption,
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,
@@ -114,7 +115,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
 
-    let startupOptions = splitOptionString(startupOptions.commonValue)
+    let startupOptions = splitOptionString(startupOptions.commonValue) + splitOptionString(extraStartupOptions.commonValue)
     let buildOptions = splitOptionString(buildOptions.commonValue)
     let compilationMode = compilationModeOption.commonValue
     let platformConfig = platformConfigOption.commonValue
