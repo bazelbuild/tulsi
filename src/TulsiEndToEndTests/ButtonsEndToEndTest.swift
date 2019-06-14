@@ -37,6 +37,19 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
     testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
   }
 
+  /// Verifies that all of the _idx_ targets in the project build.
+  func testIndexingTargetsBuild() throws {
+    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
+                                               config: "Buttons")
+    XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
+    let targets = targetsOfXcodeProject(xcodeProjectURL)
+    let indexTargets = targets.filter{ $0.hasPrefix("_idx_") }
+    XCTAssertEqual(indexTargets.count, 8)
+    for target in indexTargets {
+      buildXcodeTarget(xcodeProjectURL, target: target)
+    }
+  }
+
   func testInvalidConfig() throws {
     let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
                                                config: "InvalidConfig")

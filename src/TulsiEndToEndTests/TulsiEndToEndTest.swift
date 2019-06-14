@@ -175,6 +175,92 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     return xcodeProjectURL
   }
 
+  /// Returns the "json" style dictionary of a project.
+  ///
+  /// - Parameters:
+  ///   - xcodeProjectURL: URL of project.
+  /// - Returns
+  ///   - Dictionary of string to json style objects.
+  fileprivate func xcodeProjectDictionary(_ xcodeProjectURL: URL) -> [String: Any]? {
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcodebuild",
+                                                         arguments: ["-list",
+                                                                     "-json",
+                                                                     "-project",
+                                                                     xcodeProjectURL.path])
+    guard let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
+         !stdoutput.isEmpty else {
+      if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+        XCTFail(error)
+      } else {
+        XCTFail("Xcode project tests did not return success.")
+      }
+      return nil
+    }
+    guard let jsonDeserialized = try? JSONSerialization.jsonObject(with: completionInfo.stdout, options: []) else {
+      XCTFail("Unable to decode from json: \(stdoutput)")
+      return nil
+    }
+    guard let jsonResponse = jsonDeserialized as? [String: Any] else {
+      XCTFail("Unable to decode from json as [String: Any]: \(stdoutput)")
+      return nil
+    }
+    guard let project = jsonResponse["project"] as? [String: Any] else {
+      XCTFail("Unable to extract project from \(jsonResponse)")
+      return nil
+    }
+    return project
+  }
+
+  /// Returns targets of a project.
+  ///
+  /// - Parameters:
+  ///   - xcodeProjectURL: URL of project.
+  /// - Returns
+  ///   - Array of target names.
+  func targetsOfXcodeProject(_ xcodeProjectURL: URL) -> [String] {
+    guard let project = xcodeProjectDictionary(xcodeProjectURL) else {
+      XCTFail("Unable to extract project for \(xcodeProjectURL)")
+      return []
+    }
+    guard let targets = project["targets"] as? [String] else {
+      XCTFail("Unable to extract targets from \(project)")
+      return []
+    }
+    return targets
+  }
+
+
+  /// Builds an Xcode Target
+  ///
+  /// - Parameters:
+  ///   - xcodeProjectURL: URL of project.
+  ///   - target: target name
+  func buildXcodeTarget(_ xcodeProjectURL: URL, target: String) {
+    let destination = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName),OS=\(TulsiEndToEndTest.targetVersion)"
+    let completionInfo = ProcessRunner.launchProcessSync("/usr/bin/xcodebuild",
+                                                         arguments: ["build",
+                                                                     "-project",
+                                                                     xcodeProjectURL.path,
+                                                                     "-target",
+                                                                     target,
+                                                                     "-destination",
+                                                                     destination,
+                                                                     "SYMROOT=xcodeBuild"])
+
+    if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
+        !stdoutput.isEmpty,
+        let result = stdoutput.split(separator: "\n").last {
+      if (String(result) != "** BUILD SUCCEEDED **") {
+        print(stdoutput)
+        XCTFail("\(completionInfo.commandlineString) did not return build success. Exit code: \(completionInfo.terminationStatus)")
+      }
+    } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
+      XCTFail(error)
+    } else {
+      XCTFail("Xcode project build did not return success \(xcodeProjectURL):\(target).")
+    }
+  }
+
   // Runs Xcode tests on the given Xcode project and scheme. This verifies that
   // the test passes and that rsync behavior is used to copy files.
   func testXcodeProject(_ xcodeProjectURL: URL, scheme: String) {
@@ -189,7 +275,8 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
                                                                      destination])
 
     if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8),
-      let result = stdoutput.split(separator: "\n").last {
+        !stdoutput.isEmpty,
+        let result = stdoutput.split(separator: "\n").last {
       XCTAssert(stdoutput.contains("Rsyncing"), "Failed to find 'Rsyncing' in:\n\(stdoutput)")
       if (String(result) != "** TEST SUCCEEDED **") {
         print(stdoutput)
@@ -198,7 +285,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
       XCTFail(error)
     } else {
-      XCTFail("Xcode project tests did not return  success.")
+      XCTFail("Xcode project tests did not return success \(xcodeProjectURL):\(scheme).")
     }
   }
 

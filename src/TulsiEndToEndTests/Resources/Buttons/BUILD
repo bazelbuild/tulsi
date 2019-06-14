@@ -29,6 +29,28 @@ load(
 
 licenses(["notice"])
 
+# Platform agnostic
+
+objc_library(
+    name = "ObjCLib",
+    srcs = [
+        "ObjCFoo.m",
+    ],
+    hdrs = [
+        "ObjCFoo.h",
+    ],
+)
+
+cc_library(
+    name = "CppLib",
+    srcs = [
+        "CppFoo.cc",
+    ],
+    hdrs = [
+        "CppFoo.h",
+    ],
+)
+
 # iOS
 
 ## Code
@@ -81,6 +103,8 @@ ios_application(
     deps = [
         ":ButtonsLib",
         ":ButtonsResources",
+        ":CppLib",
+        ":ObjCLib",
     ],
 )
 
@@ -164,6 +188,8 @@ watchos_extension(
     minimum_os_version = "3.0",
     deps = [
         ":ButtonsWatchExtensionLib",
+        ":CppLib",
+        ":ObjCLib",
     ],
 )
 
@@ -220,6 +246,8 @@ tvos_application(
     deps = [
         ":ButtonsTVLib",
         ":ButtonsTVResources",
+        ":CppLib",
+        ":ObjCLib",
     ],
 )
 
@@ -278,6 +306,8 @@ macos_application(
     deps = [
         ":ButtonsMacLib",
         ":ButtonsMacResources",
+        ":CppLib",
+        ":ObjCLib",
     ],
 )
 

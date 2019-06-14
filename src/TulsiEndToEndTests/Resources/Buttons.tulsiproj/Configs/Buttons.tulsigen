@@ -1,26 +1,30 @@
 {
-  "sourceFilters" : [
+  "additionalFilePaths" : [
+    "src/TulsiEndToEndTests/Resources/Buttons/BUILD"
   ],
   "buildTargets" : [
-    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsTests",
-    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsLogicTests",
-    "\/\/third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons:ButtonsUITests"
+    "//srcTulsiEndToEndTests/Resources/Buttons:Buttons",
+    "//srcTulsiEndToEndTests/Resources/Buttons:ButtonsLib",
+    "//srcTulsiEndToEndTests/Resources/Buttons:ButtonsLogicTests",
+    "//srcTulsiEndToEndTests/Resources/Buttons:ButtonsTests",
+    "//srcTulsiEndToEndTests/Resources/Buttons:ButtonsUITests",
+    "//srcTulsiEndToEndTests/Resources/Buttons:CppLib",
+    "//srcTulsiEndToEndTests/Resources/Buttons:ObjCLib"
   ],
-  "projectName" : "Buttons",
   "optionSet" : {
     "BazelBuildOptionsDebug" : {
       "p" : "$(inherited) --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1"
     },
-    "BazelBuildStartupOptionsRelease" : {
-      "p" : "$(inherited)"
-    },
-    "LaunchActionPreActionScript" : {
-      "p" : "$(inherited)"
-    },
     "BazelBuildOptionsRelease" : {
       "p" : "$(inherited)"
     },
-    "EnvironmentVariables" : {
+    "BazelBuildStartupOptionsDebug" : {
+      "p" : "$(inherited)"
+    },
+    "BazelBuildStartupOptionsRelease" : {
+      "p" : "$(inherited)"
+    },
+    "BuildActionPostActionScript" : {
       "p" : "$(inherited)"
     },
     "BuildActionPreActionScript" : {
@@ -29,23 +33,26 @@
     "CommandlineArguments" : {
       "p" : "$(inherited)"
     },
-    "TestActionPreActionScript" : {
+    "EnvironmentVariables" : {
+      "p" : "$(inherited)"
+    },
+    "LaunchActionPostActionScript" : {
+      "p" : "$(inherited)"
+    },
+    "LaunchActionPreActionScript" : {
       "p" : "$(inherited)"
     },
     "TestActionPostActionScript" : {
       "p" : "$(inherited)"
     },
-    "BuildActionPostActionScript" : {
-      "p" : "$(inherited)"
-    },
-    "BazelBuildStartupOptionsDebug" : {
-      "p" : "$(inherited)"
-    },
-    "LaunchActionPostActionScript" : {
+    "TestActionPreActionScript" : {
       "p" : "$(inherited)"
     }
   },
-  "additionalFilePaths" : [
-    "third_party\/tulsi\/src\/TulsiEndToEndTests\/Resources\/Buttons\/BUILD"
+  "projectName" : "Buttons",
+  "sourceFilters" : [
+    "src/TulsiEndToEndTests/Resources/Buttons",
+    "src/TulsiEndToEndTests/Resources/Buttons/Buttons",
+    "src/TulsiEndToEndTests/Resources/Buttons/Buttons/Base.lproj"
   ]
 }

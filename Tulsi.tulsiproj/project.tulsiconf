@@ -3,14 +3,17 @@
     "optionSet" : {
       "GenerateRunfiles" : {
         "p" : "YES"
+      },
+      "TreeArtifactOutputs" : {
+        "p" : "NO"
       }
     }
   },
-  "projectName" : "Tulsi",
   "packages" : [
     "",
     "src/TulsiGeneratorIntegrationTests",
     "src/TulsiGeneratorTests"
   ],
+  "projectName" : "Tulsi",
   "workspaceRoot" : ".."
 }
