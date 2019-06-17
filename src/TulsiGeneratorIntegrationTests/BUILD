@@ -29,6 +29,7 @@ tulsi_integration_test(
 
 tulsi_integration_test(
     name = "EndToEndGenerationTests",
+    timeout = "long",
     srcs = ["EndToEndGenerationTests.swift"],
     env = {
         "SWIFT_DETERMINISTIC_HASHING": "1",
