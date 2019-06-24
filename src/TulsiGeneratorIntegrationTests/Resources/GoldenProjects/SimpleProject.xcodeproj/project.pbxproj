@@ -767,7 +767,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_5E9B8EB0_ios_min10.0;
@@ -897,7 +897,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_5E9B8EB0_ios_min10.0;
