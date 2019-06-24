@@ -93,6 +93,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Disable the Swift worker as it adds extra dependencies.
     bazelBuildOptions.append("--define=RULES_SWIFT_BUILD_DUMMY_WORKER=1")
+    bazelBuildOptions.append("--strategy=SwiftCompile=local")
 
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")

@@ -5,6 +5,7 @@ build --xcode_version=10.1
 # Disable the Swift compilation worker when running integration tests, since it
 # requires the protobuf dependency which is infeasible to get working on Bazel.
 build --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1
+build --strategy=SwiftCompile=local
 
 # Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
 # See also: https://github.com/bazelbuild/rules_apple/issues/456.
