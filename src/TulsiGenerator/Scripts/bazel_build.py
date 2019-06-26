@@ -19,6 +19,7 @@
 import atexit
 import errno
 import fcntl
+import hashlib
 import inspect
 import io
 import json
@@ -139,19 +140,25 @@ class Timer(object):
       _logger.log_action(self.action_name, self.action_id, seconds)
 
 
+def _LockFileCreate():
+  # This relies on this script running at the root of the bazel workspace.
+  cwd = os.environ['PWD']
+  cwd_hash = hashlib.sha256(cwd.encode()).hexdigest()
+  return '/tmp/tulsi_bazel_build_{}.lock'.format(cwd_hash)
+
+
 # Function to be called atexit to release the file lock on script termination.
 def _LockFileExitCleanup(lock_file_handle):
   lock_file_handle.close()
 
 
 def _LockFileAcquire(lock_path):
-  """Force script to wait on global file lock to serialize build target actions.
+  """Force script to wait on file lock to serialize build target actions.
 
   Args:
     lock_path: Path to the lock file.
   """
   _PrintUnbuffered('Queuing Tulsi build...')
-  # TODO(b/69414272): See if we can improve this for multiple WORKSPACEs.
   lockfile = open(lock_path, 'w')
   # Register "fclose(...)" as early as possible, before acquiring lock.
   atexit.register(_LockFileExitCleanup, lockfile)
@@ -1697,7 +1704,7 @@ def main(argv):
 
 
 if __name__ == '__main__':
-  _LockFileAcquire('/tmp/tulsi_bazel_build.lock')
+  _LockFileAcquire(_LockFileCreate())
   _logger = tulsi_logging.Logger()
   logger_warning = tulsi_logging.validity_check()
   if logger_warning:
