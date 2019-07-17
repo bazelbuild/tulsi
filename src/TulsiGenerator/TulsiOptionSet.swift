@@ -338,9 +338,10 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.CommandlineArguments, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.EnvironmentVariables, [.TargetSpecializable, .SupportsInheritKeyword])
 
-    // List matches the available options for the 'C++ Language Dialect' setting in XCode 9.2.
-    let cppLanguageStandards = ["compiler-default", "c++98", "gnu++98", "c++0x", "gnu++0x", "c++14", "gnu++14", "c++17", "gnu++17"]
-    addStringEnumOption(.CLANG_CXX_LANGUAGE_STANDARD, .BuildSetting, "compiler-default",  cppLanguageStandards)
+    // List matches the available options for the 'C++ Language Dialect' setting in XCode 10.2.1 and 11.
+    // Currently compiler default is equivalent to GNU++98 (Xcode 10.2.1 and 11)
+    let cppLanguageStandards = ["compiler-default", "c++98", "gnu++98", "c++11", "gnu++11", "c++14", "gnu++14", "c++17", "gnu++17"]
+    addStringEnumOption(.CLANG_CXX_LANGUAGE_STANDARD, .BuildSetting, "c++11",  cppLanguageStandards)
 
     addStringOption(.PreBuildPhaseRunScript, [.TargetSpecializable])
     addStringOption(.PostBuildPhaseRunScript, [.TargetSpecializable])
