@@ -17,6 +17,10 @@ import Foundation
 
 class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
 
+  var universalFlags: BazelFlags {
+    return BazelFlags()
+  }
+
   func tulsiFlags(hasSwift: Bool,
                   options: TulsiOptionSet?,
                   features: Set<BazelSettingFeature>) -> BazelFlagsSet {

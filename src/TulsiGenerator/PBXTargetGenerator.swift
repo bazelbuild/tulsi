@@ -96,7 +96,8 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Generates a legacy target that is added as a dependency of all build targets and invokes
   /// the given script. The build action may be accessed by the script via the ACTION environment
   /// variable.
-  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String)
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String,
+                                startupOptions: [String])
 
   /// Generates project-level build configurations.
   func generateTopLevelBuildConfigurations(_ buildSettingOverrides: [String: String])
@@ -688,13 +689,17 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return indexerTargetByName
   }
 
-  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String = "") {
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String = "",
+                                startupOptions: [String] = []) {
     assert(bazelCleanScriptTarget == nil, "generateBazelCleanTarget may only be called once")
+
+    let allArgs = [bazelPath, bazelBinPath] + startupOptions
+    let buildArgs = allArgs.map { "\"\($0)\""}.joined(separator: " ")
 
     bazelCleanScriptTarget = project.createLegacyTarget(PBXTargetGenerator.BazelCleanTarget,
                                                         deploymentTarget: nil,
                                                         buildToolPath: "\(scriptPath)",
-                                                        buildArguments: "\"\(bazelPath)\" \"\(bazelBinPath)\"",
+                                                        buildArguments: buildArgs,
                                                         buildWorkingDirectory: workingDirectory)
 
     for target: PBXTarget in project.allTargets {

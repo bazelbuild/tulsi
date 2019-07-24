@@ -516,7 +516,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     return [:]
   }
 
-  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String) {
+  func generateBazelCleanTarget(_ scriptPath: String, workingDirectory: String,
+                                startupOptions: [String]) {
   }
 
   func generateTopLevelBuildConfigurations(_ buildSettingOverrides: [String: String]) {

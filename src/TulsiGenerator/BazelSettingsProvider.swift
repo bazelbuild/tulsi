@@ -106,6 +106,9 @@ public enum BazelSettingFeature: Hashable, Pythonable {
 
 /// Defines an object that provides flags for Bazel invocations.
 protocol BazelSettingsProviderProtocol {
+  /// Universal flags for all Bazel invocations.
+  var universalFlags: BazelFlags { get }
+
   /// All general-Tulsi flags, varying based on whether the project has Swift or not.
   func tulsiFlags(hasSwift: Bool,
                   options: TulsiOptionSet?,

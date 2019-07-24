@@ -16,13 +16,19 @@
 #
 # Bridge between Xcode and Bazel for the "clean" action.
 #
-# Usage: bazel_clean.sh <bazel_binary_path> <bazel_binary_output_path>
+# Usage: bazel_clean.sh <bazel_binary_path> <bazel_binary_output_path> <bazel startup options>
 # Note that the ACTION environment variable is expected to be set to "clean".
 
 set -eu
 
-readonly bazel_executable="$1"
-readonly bazel_bin_dir="$2"
+readonly bazel_executable="$1"; shift
+readonly bazel_bin_dir="$1"; shift
+
+if [ -z $# ]; then
+  readonly arguments=(clean)
+else
+  readonly arguments=("$@" clean)
+fi
 
 if [[ "${ACTION}" != "clean" ]]; then
   exit 0
@@ -43,5 +49,6 @@ remove_dir "${bazel_bin_dir}"
 
 (
   set -x
-  "${bazel_executable}" clean
+  "${bazel_executable}" "${arguments[@]}"
 )
+

@@ -479,7 +479,10 @@ final class XcodeProjectGenerator {
 
     let workingDirectory = pbxTargetGeneratorType.workingDirectoryForPBXGroup(mainGroup)
     profileAction("generating_clean_target") {
-      generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory)
+      let bazelSettingsProvider = workspaceInfoExtractor.bazelSettingsProvider
+      let startupOptions = bazelSettingsProvider.universalFlags.startup
+      generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory,
+                                         startupOptions: startupOptions)
     }
     profileAction("generating_top_level_build_configs") {
       var buildSettings = [String: String]()
