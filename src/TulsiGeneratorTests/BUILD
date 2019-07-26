@@ -12,6 +12,9 @@ swift_library(
 
 macos_unit_test(
     name = "TulsiGeneratorTests",
+    additional_contents = {
+        "//src/tools/bazel_cache_reader": "MacOS",
+    },
     minimum_os_version = "10.13",
     deps = [":TulsiGeneratorTestsLib"],
 )

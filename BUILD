@@ -61,6 +61,9 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
 
 macos_application(
     name = "tulsi",
+    additional_contents = {
+        "//src/tools/bazel_cache_reader": "MacOS",
+    },
     app_icons = ["//src/Tulsi:Icon"],
     bundle_id = "com.google.Tulsi",
     bundle_name = "Tulsi",

@@ -1043,8 +1043,7 @@ final class XcodeProjectGenerator {
 
     // Find bazel_cache_reader in Tulsi.app's Utilities folder.
     let bundle = Bundle(for: type(of: self))
-    let symbolCacheSourceURL = bundle.url(forResource: XcodeProjectGenerator.ShellCommandsUtil,
-                                          withExtension: "")!
+    let symbolCacheSourceURL = bundle.url(forAuxiliaryExecutable: XcodeProjectGenerator.ShellCommandsUtil)!
 
     // Copy bazel_cache_reader to ~/Library/Application Support/Tulsi/Scripts
     installFiles([(symbolCacheSourceURL, XcodeProjectGenerator.ShellCommandsUtil)],

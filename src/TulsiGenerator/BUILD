@@ -24,7 +24,6 @@ filegroup(
     ]) + [
         "//src/TulsiGenerator/Bazel:WORKSPACE",
         "//src/TulsiGenerator/Scripts",
-        "//src/tools/bazel_cache_reader",
     ],
 )
 
