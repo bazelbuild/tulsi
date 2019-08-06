@@ -2,30 +2,30 @@
 <Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0" BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0" BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0" BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0" BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0.a" BlueprintName="_idx_tagged_xctest_2_lib_ApplicationLibrary_TestSuiteXCTestLib_tagged_xctest_1_lib_5646CF7B_ios_min10.0" BlueprintIdentifier="7E9AFE625670E82200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction buildConfiguration="Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
         <Testables></Testables>
     </TestAction>
-    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
     </LaunchAction>
-    <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"></ProfileAction>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" debugDocumentVersioning="YES" buildConfiguration="Release"></ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
     <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>

@@ -2,29 +2,29 @@
 <Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE6267D9455000000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="Application.app" BuildableIdentifier="primary" BlueprintName="Application"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="Application.app" BlueprintName="Application" BlueprintIdentifier="7E9AFE6267D9455000000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction buildConfiguration="__TulsiTestRunner_Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
-        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
-            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
+        <RemoteRunnable RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel" runnableDebuggingMode="2">
+            <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </TestAction>
-    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
-        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
-            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
+        <RemoteRunnable RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel" runnableDebuggingMode="2">
+            <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </LaunchAction>
-    <ProfileAction buildConfiguration="__TulsiTestRunner_Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES">
-        <RemoteRunnable runnableDebuggingMode="2" RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel">
-            <BuildableReference BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableName="WatchApplication.app" BuildableIdentifier="primary" BlueprintName="WatchApplication"></BuildableReference>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
+        <RemoteRunnable RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel" runnableDebuggingMode="2">
+            <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>

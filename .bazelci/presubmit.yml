@@ -1,7 +1,7 @@
 ---
 platforms:
   macos:
-    xcode_version: "10.1"
+    xcode_version: "10.2.1"
     build_targets:
     - "//:tulsi"
     test_flags:

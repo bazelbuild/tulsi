@@ -360,7 +360,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Release;
@@ -385,7 +385,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Release;
@@ -451,7 +451,7 @@
 				PRODUCT_NAME = tvOSApplication;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
@@ -468,7 +468,7 @@
 				PRODUCT_NAME = tvOSExtension;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
@@ -534,7 +534,7 @@
 				PRODUCT_NAME = tvOSApplication;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
@@ -551,7 +551,7 @@
 				PRODUCT_NAME = tvOSExtension;
 				SDKROOT = appletvos;
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
@@ -617,7 +617,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Debug;
@@ -642,7 +642,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_tvos_project;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = __TulsiTestRunner_Debug;

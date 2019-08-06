@@ -30,7 +30,7 @@ public class TulsiOption: Equatable, CustomStringConvertible {
   /// The valid value types for this option.
   public enum ValueType: Equatable {
     case bool, string
-    case stringEnum([String])
+    case stringEnum(Set<String>)
 
     public static func ==(lhs: ValueType, rhs: ValueType) -> Bool {
       switch (lhs, rhs) {

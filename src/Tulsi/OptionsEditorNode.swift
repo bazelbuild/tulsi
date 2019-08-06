@@ -354,7 +354,7 @@ class OptionsEditorConstrainedStringNode: OptionsEditorStringNode {
 
   override var multiSelectItems: [String] {
     if case .stringEnum(let values) = valueType {
-      return values
+      return Array(values)
     }
     return []
   }

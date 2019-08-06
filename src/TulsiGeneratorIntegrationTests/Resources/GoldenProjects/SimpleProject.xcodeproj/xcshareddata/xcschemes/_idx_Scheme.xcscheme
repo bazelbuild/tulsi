@@ -2,24 +2,24 @@
 <Scheme version="1.3" LastUpgradeVersion="1000">
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE62036907F800000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="lib_idx_Library_744889E2_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_Library_744889E2_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0" BlueprintIdentifier="7E9AFE6229A25C1600000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE6229A25C1600000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_TestLibrary_E66CBC86_ios_min10.0.a" BlueprintName="_idx_TestLibrary_E66CBC86_ios_min10.0" BlueprintIdentifier="7E9AFE62A45508F600000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
-            <BuildActionEntry buildForArchiving="YES" buildForRunning="YES" buildForAnalyzing="YES" buildForTesting="YES" buildForProfiling="YES">
-                <BuildableReference BlueprintIdentifier="7E9AFE62A45508F600000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableName="lib_idx_TestLibrary_E66CBC86_ios_min10.0.a" BuildableIdentifier="primary" BlueprintName="_idx_TestLibrary_E66CBC86_ios_min10.0"></BuildableReference>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_Library_744889E2_ios_min10.0.a" BlueprintName="_idx_Library_744889E2_ios_min10.0" BlueprintIdentifier="7E9AFE62036907F800000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction buildConfiguration="Debug" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
         <Testables></Testables>
     </TestAction>
-    <LaunchAction ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" debugServiceExtension="internal" launchStyle="0" debugDocumentVersioning="YES" buildConfiguration="Debug" useCustomWorkingDirectory="NO" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
     </LaunchAction>
-    <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"></ProfileAction>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" debugDocumentVersioning="YES" buildConfiguration="Release"></ProfileAction>
     <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
     <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
 </Scheme>

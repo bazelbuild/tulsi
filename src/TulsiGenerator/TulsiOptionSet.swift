@@ -309,7 +309,7 @@ public class TulsiOptionSet: Equatable {
                              _ values: [String]) {
       assert(values.contains(defaultValue), "Invalid enum for \(optionKey.rawValue): " +
           "defaultValue of \"\(defaultValue)\" is not present in enum values: \(values).")
-      addOption(optionKey, valueType: .stringEnum(values),
+      addOption(optionKey, valueType: .stringEnum(Set(values)),
                 optionType: optionType, defaultValue: defaultValue)
     }
 

@@ -506,7 +506,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED86C5E14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_241BBB47_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000005 /* Sources */,
+				04BFD5160000000000000004 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -522,7 +522,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED9460E59C00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000006 /* Sources */,
+				04BFD5160000000000000005 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -554,7 +554,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDB8D68C4000000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000004 /* Sources */,
+				04BFD5160000000000000006 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -630,9 +630,9 @@
 			);
 			dependencies = (
 				89B1AEB39734745D00000000 /* PBXTargetDependency */,
-				89B1AEB37939A05F00000000 /* PBXTargetDependency */,
 				89B1AEB355A1A44D00000000 /* PBXTargetDependency */,
 				89B1AEB36123EF5700000000 /* PBXTargetDependency */,
+				89B1AEB37939A05F00000000 /* PBXTargetDependency */,
 			);
 			name = _idx_Library_FAFE9183_ios_min10.0;
 			productName = _idx_Library_FAFE9183_ios_min10.0;
@@ -802,8 +802,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D99D62A3000000000 /* sub_library_with_identical_defines.m in srcs */,
-				952C886DE7146E0400000000 /* src.mm in srcs */,
+				952C886DE56C768000000000 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,7 +810,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DE56C768000000000 /* src.mm in srcs */,
+				952C886DEF9CAD8A00000000 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,7 +818,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DEF9CAD8A00000000 /* src.mm in srcs */,
+				952C886D99D62A3000000000 /* sub_library_with_identical_defines.m in srcs */,
+				952C886DE7146E0400000000 /* src.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -932,7 +932,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -957,7 +957,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1023,7 +1023,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -1044,7 +1044,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Debug;
 		};
@@ -1061,7 +1061,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Debug;
 		};
@@ -1114,7 +1114,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Debug;
 		};
@@ -1160,19 +1160,6 @@
 		0207AA2838C3D90E00000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0;
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
-			};
-			name = Debug;
-		};
-		0207AA2838C3D90E00000008 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1184,7 +1171,7 @@
 			};
 			name = Debug;
 		};
-		0207AA2838C3D90E00000009 /* Debug */ = {
+		0207AA2838C3D90E00000008 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -1192,6 +1179,19 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-D\"SubLibraryWithDifferentDefines_PREQUOTED=Prequoted with spaces\" -D'SubLibraryWithDifferentDefines_SINGLEQUOTED=Single quoted with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -D\"SubLibraryWithDifferentDefines_STRING_WITH_SPACES=String with spaces\"";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Debug;
+		};
+		0207AA2838C3D90E00000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes ";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
+				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1226,7 +1226,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Release;
 		};
@@ -1243,7 +1243,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Release;
 		};
@@ -1296,7 +1296,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = Release;
 		};
@@ -1342,19 +1342,6 @@
 		0207AA28616216BF00000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
-				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0;
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
-			};
-			name = Release;
-		};
-		0207AA28616216BF00000008 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_complex/SubLibrary/pch/AnotherPCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1366,7 +1353,7 @@
 			};
 			name = Release;
 		};
-		0207AA28616216BF00000009 /* Release */ = {
+		0207AA28616216BF00000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -1374,6 +1361,19 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-D\"SubLibraryWithDifferentDefines_PREQUOTED=Prequoted with spaces\" -D'SubLibraryWithDifferentDefines_SINGLEQUOTED=Single quoted with spaces' -DSubLibraryWithDifferentDefines=1 -DSubLibraryWithDifferentDefines_INTEGER_DEFINE=1 -DSubLibraryWithDifferentDefines_LocalDefine -DSubLibraryWithDifferentDefines_STRING_DEFINE=Test -D\"SubLibraryWithDifferentDefines_STRING_WITH_SPACES=String with spaces\"";
 				PRODUCT_NAME = _idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
+			};
+			name = Release;
+		};
+		0207AA28616216BF00000009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ /SubLibraryWithDefines/local/includes $(TULSI_BWRS)/relative/SubLibraryWithDefines/local/includes ";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = "-menable-no-nans -menable-no-infs -DSubLibraryWithDefines=1 -DSubLibraryWithDefines_DEFINE=SubLibraryWithDefines";
+				PRODUCT_NAME = _idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1415,7 +1415,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1440,7 +1440,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1506,7 +1506,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_complex;
-				TULSI_XCODE_VERSION = 10.1.0.10B61;
+				TULSI_XCODE_VERSION = 10.2.1.10E1001;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1558,16 +1558,16 @@
 		F4222DED86C5E14A00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibrary_241BBB47_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0207AA2838C3D90E00000008 /* Debug */,
-				0207AA28616216BF00000008 /* Release */,
+				0207AA2838C3D90E00000007 /* Debug */,
+				0207AA28616216BF00000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 		F4222DED9460E59C00000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithDifferentDefines_B982A5CC_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0207AA2838C3D90E00000009 /* Debug */,
-				0207AA28616216BF00000009 /* Release */,
+				0207AA2838C3D90E00000008 /* Debug */,
+				0207AA28616216BF00000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -1584,8 +1584,8 @@
 		F4222DEDB8D68C4000000000 /* Build configuration list for PBXNativeTarget "_idx_SubLibraryWithIdenticalDefines_SubLibraryWithDefines_3CB291AA_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0207AA2838C3D90E00000007 /* Debug */,
-				0207AA28616216BF00000007 /* Release */,
+				0207AA2838C3D90E00000009 /* Debug */,
+				0207AA28616216BF00000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
