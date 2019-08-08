@@ -22,10 +22,16 @@ import XCTest
 // generated xcodeproj by running the projects unit tests.
 class TulsiEndToEndTest: BazelIntegrationTestCase {
   fileprivate static let simulatorName = "tulsie2e-\(UUID().uuidString.prefix(8))"
-  fileprivate static let targetVersion = "12.1"
+  fileprivate static let targetVersion = "12.2"
 
   let fileManager = FileManager.default
   var runfilesWorkspaceURL: URL! = nil
+
+  // Calling XCTFail() in a setUp() function will cause the test to crash and hide any logs.
+  // Instead, explicitly log that a set up error occured.
+  static func setUpFailure(_ msg: String) {
+    print("SETUP FAILURE: \(msg)")
+  }
 
   // Creates a new simulator, for use with testing generated projects, before any tests run.
   override class func setUp() {
@@ -45,15 +51,15 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
 
     if completionInfo.terminationStatus != 0 {
       if let stderr = String(data: completionInfo.stderr, encoding: .utf8), !stderr.isEmpty {
-        XCTFail("\(completionInfo.commandlineString) failed with error: \(stderr)")
+        TulsiEndToEndTest.setUpFailure("\(completionInfo.commandlineString) failed with error: \(stderr)")
       } else {
-        XCTFail("\(completionInfo.commandlineString) encountered an error. Exit code \(completionInfo.terminationStatus).")
+        TulsiEndToEndTest.setUpFailure("\(completionInfo.commandlineString) encountered an error. Exit code \(completionInfo.terminationStatus).")
       }
     }
 
     // 'simctl' should output the UUID of the new simulator if it was created successfully.
     if let stdout = String(data: completionInfo.stdout, encoding: .utf8), stdout.isEmpty {
-      XCTFail("No UUID was ouputted for newly created simulator.")
+      TulsiEndToEndTest.setUpFailure("No UUID was ouputted for newly created simulator.")
     }
   }
 
@@ -94,7 +100,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
                                                                        workspaceRootURL.path])
 
       if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
-        XCTFail(error)
+        TulsiEndToEndTest.setUpFailure(error)
       }
     }
 
