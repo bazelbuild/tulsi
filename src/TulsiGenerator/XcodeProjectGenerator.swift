@@ -231,7 +231,7 @@ final class XcodeProjectGenerator {
     installStubExtensionPlistFiles(projectURL,
                                    rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType?.isiOSAppExtension ?? false },
                                    plistPaths: plistPaths)
-    linkTulsiWorkspace()
+    linkTulsiWorkspace(projectURL)
     return projectURL
   }
 
@@ -597,12 +597,12 @@ final class XcodeProjectGenerator {
   // Links tulsi-workspace to the current Bazel execution root. This may be overwritten during
   // builds, but is useful to include in project generation for users who have local_repository
   // references.
-  private func linkTulsiWorkspace() {
+  private func linkTulsiWorkspace(_ projectURL: URL) {
     // Don't create the tulsi-workspace symlink for tests.
     guard !self.redactWorkspaceSymlink else { return }
 
-    let path = workspaceRootURL.appendingPathComponent(PBXTargetGenerator.TulsiWorkspacePath,
-                                                       isDirectory: false).path
+    let path = projectURL.appendingPathComponent(".tulsi/\(PBXTargetGenerator.TulsiWorkspacePath)",
+                                                 isDirectory: false).path
     let bazelExecRoot = self.workspaceInfoExtractor.bazelExecutionRoot;
 
     // See if tulsi-includes is already present.

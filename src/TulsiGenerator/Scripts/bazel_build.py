@@ -1662,10 +1662,11 @@ class BazelBuildBridge(object):
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""
-    tulsi_workspace = self.workspace_root + '/tulsi-workspace'
+    tulsi_workspace = os.path.join(self.project_file_path,
+                                   '.tulsi',
+                                   'tulsi-workspace')
     if os.path.islink(tulsi_workspace):
       os.unlink(tulsi_workspace)
-
     os.symlink(self.bazel_exec_root, tulsi_workspace)
     if not os.path.exists(tulsi_workspace):
       _PrintXcodeError(

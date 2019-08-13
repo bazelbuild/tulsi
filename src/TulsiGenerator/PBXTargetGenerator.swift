@@ -755,8 +755,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // workspace. While this is often identical to the workspace, it sometimes collects other paths
     // and is the better option for most Xcode project path references.
     // This directory is symlinked to `tulsi-workspace` during builds.
+    // The symlink is located inside of the project package as opposed to relative to the workspace
+    // so that it is using the same local file system as the project to maximize performance.
+    // In some cases where the workspace was on a remote volume, jumping through the symlink on the
+    // remote volume that pointed back to local disk was causing performance issues.
     buildSettings["\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName)"] =
-        "${\(PBXTargetGenerator.WorkspaceRootVarName)}/\(PBXTargetGenerator.TulsiWorkspacePath)"
+        "$(PROJECT_FILE_PATH)/.tulsi/\(PBXTargetGenerator.TulsiWorkspacePath)"
 
     buildSettings["TULSI_VERSION"] = tulsiVersion
 

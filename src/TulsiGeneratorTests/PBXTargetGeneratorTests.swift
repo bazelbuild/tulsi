@@ -225,7 +225,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PYTHONIOENCODING": "utf8",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",
+        "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -278,7 +278,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "PYTHONIOENCODING": "utf8",
         "TULSI_VERSION": testTulsiVersion,
         "TULSI_WR": "$(SRCROOT)",
-        "TULSI_BWRS": "${TULSI_WR}/tulsi-workspace",
+        "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
