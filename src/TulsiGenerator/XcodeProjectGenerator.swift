@@ -82,10 +82,6 @@ final class XcodeProjectGenerator {
   private static let DefaultSwiftVersion = "4"
   private static let SupportScriptsPath = "Library/Application Support/Tulsi/Scripts"
 
-  /// Rules which should not be generated at the top level.
-  private static let LibraryRulesForTopLevelWarning =
-      Set(["objc_library", "swift_library", "cc_library"])
-
   private let workspaceRootURL: URL
   private let config: TulsiGeneratorConfig
   private let localizedMessageLogger: LocalizedMessageLogger
@@ -333,7 +329,7 @@ final class XcodeProjectGenerator {
   }
 
   /// Validates that the aspect output contains all targets listed in the config file and that
-  /// there are no ambiguous top-level targets.
+  /// any bundled iOS targets use the same minimum OS version.
   private func validateConfigReferences(_ ruleEntryMap: RuleEntryMap) throws {
     let unresolvedLabels = config.buildTargetLabels.filter {
       !ruleEntryMap.hasAnyRuleEntry(withBuildLabel: $0)
@@ -341,13 +337,43 @@ final class XcodeProjectGenerator {
     if !unresolvedLabels.isEmpty {
       throw ProjectGeneratorError.labelResolutionFailed(Set<BuildLabel>(unresolvedLabels))
     }
-    for label in config.buildTargetLabels {
-      if let entry = ruleEntryMap.anyRuleEntry(withBuildLabel: label),
-         XcodeProjectGenerator.LibraryRulesForTopLevelWarning.contains(entry.type) {
-        localizedMessageLogger.warning("TopLevelLibraryTarget",
-                                       comment: "Warning when a library target is used as a top level buildTarget. Target in %1$@, target type in %2$@.",
-                                       values: entry.label.description, entry.type)
+
+    var bundleEntriesByMinIos = [String: [RuleEntry]]()
+
+    // Phase 1: Collect all bundled iOS targets into a dictionary by their min iOS version.
+    //   - Explicitly ignore the ios_default_host target which may be outside of a user's project.
+    for entry in ruleEntryMap.allRuleEntries {
+      // Only inspect bundled targets - they will all have a product type.
+      guard entry.productType != nil else { continue }
+
+      // Ignore the `ios_default_host` target as it's outside of the user's project.
+      guard entry.label.targetName != "ios_default_host" else { continue }
+
+      // For now we only care about iOS targets. In the future we could expand this to handle
+      // others platforms as well.
+      guard let deploymentTarget = entry.deploymentTarget,
+        deploymentTarget.platform == .ios else { continue }
+
+      bundleEntriesByMinIos[deploymentTarget.osVersion, default: []].append(entry)
+    }
+
+    // Phase 2: Warning if they have multiple min iOS versions.
+    if bundleEntriesByMinIos.count > 1 {
+      let platform = PlatformType.ios.userString
+
+      // Sort the entries so the most popular min iOS version is first.
+      let sortedEntries = bundleEntriesByMinIos.enumerated().sorted { (a, b) -> Bool in
+        return a.element.value.count > b.element.value.count
       }
+      let debugString = sortedEntries.map { (offset, element) in
+        let targets = element.value.map { $0.label.value }.joined(separator: ", ")
+        return "\(platform) \(element.key) minimum_os_version: target(s) \(targets)"
+      }.joined(separator: "\n")
+
+      localizedMessageLogger.warning("MultiMinOSVersions",
+                                   comment: "Warning when multiple bundled targets have different minimum OS versions. Platform type in %1$@, context in %2$@.",
+                                   context: config.projectName,
+                                   values: platform, debugString)
     }
   }
 

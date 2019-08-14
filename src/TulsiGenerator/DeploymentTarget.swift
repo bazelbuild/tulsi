@@ -146,6 +146,15 @@ public enum PlatformType: String {
     }
   }
 
+  var userString: String {
+    switch self {
+    case .ios: return "iOS"
+    case .macos: return "macOS"
+    case .tvos: return "tvOS"
+    case .watchos: return "watchOS"
+    }
+  }
+
   /// Path of where the test host is expected to be built for each available platform.
   func testHostPath(hostTargetPath: String, hostTargetProductName: String) -> String? {
     switch self {

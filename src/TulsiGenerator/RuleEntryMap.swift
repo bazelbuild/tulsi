@@ -42,16 +42,7 @@ public class RuleEntryMap {
 
   public func insert(ruleEntry: RuleEntry) {
     allEntries.append(ruleEntry)
-
-    let label = ruleEntry.label
-    guard var entries = labelToEntries[label] else {
-      labelToEntries[label] = [ruleEntry]
-      return
-    }
-    // Don't warn about duplicate entries with the same DeploymentTarget as they should
-    // only be caused by a root-level library which we already warn about.
-    entries.append(ruleEntry)
-    labelToEntries[label] = entries
+    labelToEntries[ruleEntry.label, default: []].append(ruleEntry)
   }
 
   public func hasAnyRuleEntry(withBuildLabel buildLabel: BuildLabel) -> Bool {
