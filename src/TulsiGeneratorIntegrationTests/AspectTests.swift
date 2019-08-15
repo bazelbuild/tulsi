@@ -112,6 +112,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest.__internal__.__test_bundle")
+
+    // TODO(b/139478940): Replace this dependency on the naming convention for an implementation
+    // detail of rules_apple with the solution arrived at from the referenced bug.
+    checker.assertThat("//tulsi_test:XCTest.__internal__.__test_bundle")
+        .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
         .dependsOn("//tulsi_test:TestLibrary")
@@ -329,6 +335,12 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//tulsi_test:XCTest")
+        .hasTestHost("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:XCTest.__internal__.__test_bundle")
+
+    // TODO(b/139478940): Replace this dependency on the naming convention for an implementation
+    // detail of rules_apple with the solution arrived at from the referenced bug.
+    checker.assertThat("//tulsi_test:XCTest.__internal__.__test_bundle")
         .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
         .dependsOn("//tulsi_test:Application")
