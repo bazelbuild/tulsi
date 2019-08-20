@@ -579,13 +579,14 @@ def _extract_generated_sources(target):
 
 def _get_deployment_info(target, ctx):
     """Returns (platform_type, minimum_os_version) for the given target."""
-    platform_type = _get_platform_type(ctx)
-
     if AppleBundleInfo in target:
         apple_bundle_provider = target[AppleBundleInfo]
         minimum_os_version = apple_bundle_provider.minimum_os_version
+        platform_type = apple_bundle_provider.platform_type
         return (platform_type, minimum_os_version)
-    return (platform_type, _minimum_os_for_platform(ctx, platform_type))
+
+    attr_platform_type = _get_platform_type(ctx)
+    return (attr_platform_type, _minimum_os_for_platform(ctx, attr_platform_type))
 
 def _get_xcode_version(ctx):
     """Returns the current Xcode version as a string."""
