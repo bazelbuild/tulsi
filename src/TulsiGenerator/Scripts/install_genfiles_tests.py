@@ -40,7 +40,7 @@ class TestInstallForData(unittest.TestCase):
     installer = install_genfiles.Installer('.', output_root=tmpdir)
     installer.InstallForData(DOES_NOT_EXIST_DATA)
     self.assertFalse(os.path.lexists(
-        os.path.join(tmpdir, '_tulsi-includes/x/x/exist.txt')))
+        os.path.join(tmpdir, 'bazel-tulsi-includes/x/x/exist.txt')))
 
   def testSrcDoesExist(self):
     tmpdir = os.environ['TEST_TMPDIR']
@@ -49,7 +49,7 @@ class TestInstallForData(unittest.TestCase):
     # Must use lexists because we create a link but use the wrong exec root,
     # so the symlink is not valid.
     self.assertTrue(os.path.lexists(
-        os.path.join(tmpdir, '_tulsi-includes/x/x/install_genfiles.py')))
+        os.path.join(tmpdir, 'bazel-tulsi-includes/x/x/install_genfiles.py')))
 
 if __name__ == '__main__':
   unittest.main()

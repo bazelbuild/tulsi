@@ -185,6 +185,9 @@ public class TulsiGeneratorConfig {
     // Convert any path filters specified as build labels to their package paths.
     var pathFilters = Set<String>()
     for sourceTarget in rawPathFilters {
+      // Remap legacy tulsi includes path to the new one to preserve behavior for older projects.
+      let sourceTarget = sourceTarget.replacingOccurrences(
+        of: PBXTargetGenerator.legacyTulsiIncludesPath, with: PBXTargetGenerator.tulsiIncludesPath)
       if let packageName = BuildLabel(sourceTarget).packageName {
         pathFilters.insert(packageName)
       }

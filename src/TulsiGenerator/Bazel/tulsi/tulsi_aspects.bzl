@@ -175,21 +175,21 @@ def _convert_outpath_to_symlink_path(path):
     and the bazel_build.py script will link the artifacts into the correct
     location under it.
 
-    Tulsi root is located at WORKSPACE/bazel-exec-root-link/_tulsi-includes/x/x/.
+    Tulsi root is located at WORKSPACE/bazel-exec-root-link/bazel-tulsi-includes/x/x/.
     The two "x" directories are stubs to match the number of path components, so
     that relative paths work with the new location. Some Bazel outputs, like
     module maps, use relative paths to reference other files in the build.
 
-    The leading underscore in _tulsi-includes is present as Bazel will clear
-    all directories that don't start with '.', '_', or 'bazel-' when it builds.
-    Otherwise, upon a build failure, _tulsi-includes would be removed and
+    The prefix of bazel-tulsi-includes is present as Bazel will clear all
+    directories that don't start with 'bazel-' when it builds.
+    Otherwise, upon a build failure, bazel-tulsi-includes would be removed and
     indexing and auto-completion for generated files would no longer work until
     the next successful build.
 
     In short, this method will transform
       bazel-out/ios-x86_64-min7.0/genfiles/foo
     to
-      _tulsi-includes/x/x/foo
+      bazel-tulsi-includes/x/x/foo
 
     This is currently enabled for everything although it will only affect
     generated files.
@@ -204,13 +204,13 @@ def _convert_outpath_to_symlink_path(path):
     # Transform paths of the form:
     #   bazel-[whatever]/[platform-config]/symlink[/.*]
     # to:
-    #   _tulsi-includes/x/x/symlink[/.*]
+    #   bazel-tulsi-includes/x/x/symlink[/.*]
     first_dash = path.find("-")
     components = path.split("/")
     if (len(components) > 2 and
         first_dash >= 0 and
         first_dash < len(components[0])):
-        return "_tulsi-includes/x/x/" + "/".join(components[3:])
+        return "bazel-tulsi-includes/x/x/" + "/".join(components[3:])
     return path
 
 def _is_bazel_external_file(f):

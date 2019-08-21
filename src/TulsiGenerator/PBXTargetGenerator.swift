@@ -181,8 +181,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return self.bazelBinPath.replacingOccurrences(of: "-bin", with: "-genfiles")
   }()
 
+  /// Previous path to the Tulsi generated outputs root. We remap any paths of this form to the
+  /// new `tulsiIncludesPath` form automatically for convenience.
+  static let legacyTulsiIncludesPath = "_tulsi-includes/x/x"
+
   /// The path to the Tulsi generated outputs root. For more information see tulsi_aspects.bzl
-  let tulsiIncludesPath = "_tulsi-includes/x/x"
+  static let tulsiIncludesPath = "bazel-tulsi-includes/x/x"
 
   let project: PBXProject
   let buildScriptPath: String
@@ -772,7 +776,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let searchPaths = ["$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelBinPath)",
                        "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(bazelGenfilesPath)",
-                       "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(tulsiIncludesPath)"
+                       "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(PBXTargetGenerator.tulsiIncludesPath)"
     ]
     // Ideally this would use USER_HEADER_SEARCH_PATHS but some code generation tools (e.g.,
     // protocol buffers) make use of system-style includes.

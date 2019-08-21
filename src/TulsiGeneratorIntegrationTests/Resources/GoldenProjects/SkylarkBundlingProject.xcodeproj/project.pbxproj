@@ -24,11 +24,11 @@
 		25889F7C48DB2D6200000000 /* tvOSExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; name = tvOSExtension.appex; path = tvOSExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C4A0F121D00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSApplication/Info.plist"; sourceTree = "<group>"; };
 		25889F7C5837CF4400000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_tvos_project/BUILD; sourceTree = "<group>"; };
-		25889F7C843C2C2E00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSApplication-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C846EA2E600000000 /* lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a; path = lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CB65D1B7E00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/_tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSExtension-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CBBF8F11400000000 /* tvOSApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = tvOSApplication.app; path = tvOSApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CD78F682300000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSExtension-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CEDCF2DAE00000000 /* src.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src.m; path = "tulsi-workspace/tulsi_e2e_tvos_project/tvOSLibrary/srcs/src.m"; sourceTree = "<group>"; };
+		25889F7CFE74A21000000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_tvos_project/tvOSApplication-intermediates/Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -36,7 +36,7 @@
 			isa = PBXGroup;
 			children = (
 				45D05629C0087DBE00000000 /* Indexer */,
-				45D05629EAC0EC1600000000 /* _tulsi-includes */,
+				45D05629A259EF0200000000 /* bazel-tulsi-includes */,
 				25889F7CBBF8F11400000000 /* tvOSApplication.app */,
 				25889F7C48DB2D6200000000 /* tvOSExtension.appex */,
 			);
@@ -98,7 +98,7 @@
 		45D05629372B05BE00000000 /* tvOSApplication-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C843C2C2E00000000 /* Info.plist */,
+				25889F7CFE74A21000000000 /* Info.plist */,
 			);
 			name = "tvOSApplication-intermediates";
 			sourceTree = "<group>";
@@ -106,9 +106,17 @@
 		45D05629425A73C800000000 /* tvOSExtension-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CB65D1B7E00000000 /* Info.plist */,
+				25889F7CD78F682300000000 /* Info.plist */,
 			);
 			name = "tvOSExtension-intermediates";
+			sourceTree = "<group>";
+		};
+		45D05629A259EF0200000000 /* bazel-tulsi-includes */ = {
+			isa = PBXGroup;
+			children = (
+				45D0562934CDA62100000000 /* x */,
+			);
+			name = "bazel-tulsi-includes";
 			sourceTree = "<group>";
 		};
 		45D05629AC3D7ED000000000 /* tvOSApplication */ = {
@@ -143,14 +151,6 @@
 				25889F7CEDCF2DAE00000000 /* src.m */,
 			);
 			name = srcs;
-			sourceTree = "<group>";
-		};
-		45D05629EAC0EC1600000000 /* _tulsi-includes */ = {
-			isa = PBXGroup;
-			children = (
-				45D0562934CDA62100000000 /* x */,
-			);
-			name = "_tulsi-includes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,7 +415,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = appletvos;
@@ -431,7 +431,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				PRODUCT_NAME = _idx_tvOSLibrary_4AB12B40_tvos_min10.0;
 				SDKROOT = appletvos;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -498,7 +498,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/_tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = appletvos;
@@ -514,7 +514,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/_tulsi-includes/x/x/ $(TULSI_BWRS)/_tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				PRODUCT_NAME = _idx_tvOSLibrary_4AB12B40_tvos_min10.0;
 				SDKROOT = appletvos;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
