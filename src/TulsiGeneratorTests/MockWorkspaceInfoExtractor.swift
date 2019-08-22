@@ -73,7 +73,6 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
-                            useArm64_32Option: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)
     let ret = RuleEntryMap()

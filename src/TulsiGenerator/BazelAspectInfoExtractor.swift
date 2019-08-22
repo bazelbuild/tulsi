@@ -73,7 +73,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                    compilationMode: String? = nil,
                                    platformConfig: String? = nil,
                                    prioritizeSwift: Bool? = nil,
-                                   useArm64_32: Bool? = nil,
                                    features: Set<BazelSettingFeature> = []) throws -> RuleEntryMap {
     guard !targets.isEmpty else {
       return RuleEntryMap()
@@ -85,7 +84,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           compilationMode: compilationMode,
                                           platformConfig: platformConfig,
                                           prioritizeSwift: prioritizeSwift,
-                                          useArm64_32: useArm64_32,
                                           features: features)
   }
 
@@ -97,7 +95,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                           compilationMode: String?,
                                           platformConfig: String?,
                                           prioritizeSwift: Bool?,
-                                          useArm64_32: Bool?,
                                           features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     localizedMessageLogger.infoMessage("Build Events JSON file at \"\(buildEventsFilePath)\"")
 
@@ -119,7 +116,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                                compilationMode: compilationMode,
                                                platformConfig: platformConfig,
                                                prioritizeSwift: prioritizeSwift,
-                                               useArm64_32: useArm64_32,
                                                features: features,
                                                progressNotifier: progressNotifier) {
                                                 (process: Process, debugInfo: String) -> Void in
@@ -179,7 +175,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                             compilationMode: String?,
                                             platformConfig: String?,
                                             prioritizeSwift: Bool?,
-                                            useArm64_32: Bool?,
                                             features: Set<BazelSettingFeature>,
                                             progressNotifier: ProgressNotifier? = nil,
                                             terminationHandler: @escaping CompletionHandler) -> Process? {
@@ -203,10 +198,6 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       config = parsedConfig
     } else {
       config = PlatformConfiguration.defaultConfiguration
-    }
-
-    if let useArm64_32 = useArm64_32 {
-      PlatformConfiguration.useArm64_32 = useArm64_32
     }
 
     let tulsiFlags = bazelSettingsProvider.tulsiFlags(hasSwift: hasSwift,

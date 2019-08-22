@@ -75,11 +75,7 @@ public enum TulsiOptionKey: String {
       PreBuildPhaseRunScript,
 
       // Custom build phase run script that runs after bazel build.
-      PostBuildPhaseRunScript,
-
-      // When building an iOS app with a companion watchOS app, the default architecture for the
-      // watchOS app will be armv7k. This option overrides the default and uses arm64_32 instead.
-      UseArm64_32
+      PostBuildPhaseRunScript
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -324,7 +320,6 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
     addBoolOption(.GenerateRunfiles, .Generic, false)
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
-    addBoolOption(.UseArm64_32, .Generic, false)
     addBoolOption(.SwiftForcesdSYMs, .Generic, true)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
 

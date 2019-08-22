@@ -39,8 +39,7 @@ public enum CPU: String {
   }
 
   var watchCPU: CPU {
-    let armCPU = PlatformConfiguration.useArm64_32 ? CPU.arm64_32 : .armv7k
-    return isARM ? armCPU : .i386
+    return isARM ? .armv7k : .i386
   }
 }
 
@@ -49,7 +48,6 @@ public struct PlatformConfiguration {
 
   public let platform: PlatformType
   public let cpu: CPU
-  public static var useArm64_32 = false
 
   /// Default to iOS 64-bit simulator.
   public static let defaultConfiguration = PlatformConfiguration(platform: .ios, cpu: .x86_64)

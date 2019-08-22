@@ -59,7 +59,6 @@ public final class TulsiProjectInfoExtractor {
                                   compilationModeOption: TulsiOption,
                                   platformConfigOption: TulsiOption,
                                   prioritizeSwiftOption: TulsiOption,
-                                  useArm64_32Option: TulsiOption,
                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
@@ -68,7 +67,6 @@ public final class TulsiProjectInfoExtractor {
                                     compilationModeOption: compilationModeOption,
                                     platformConfigOption: platformConfigOption,
                                     prioritizeSwiftOption: prioritizeSwiftOption,
-                                    useArm64_32Option: useArm64_32Option,
                                     features: features)
   }
 
@@ -79,7 +77,6 @@ public final class TulsiProjectInfoExtractor {
                                    compilationModeOption: TulsiOption,
                                    platformConfigOption: TulsiOption,
                                    prioritizeSwiftOption: TulsiOption,
-                                   useArm64_32Option: TulsiOption,
                                    features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
@@ -89,7 +86,6 @@ public final class TulsiProjectInfoExtractor {
                                                              compilationModeOption: compilationModeOption,
                                                              platformConfigOption: platformConfigOption,
                                                              prioritizeSwiftOption: prioritizeSwiftOption,
-                                                             useArm64_32Option: useArm64_32Option,
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ExtractorError.ruleEntriesFailed(info)
