@@ -33,11 +33,17 @@ extension PlatformConfiguration {
     }
 
     if case .ios = platform {
-      // Xcode doesn't provide a way to determine the architecture of a paired
-      // watch so target both watchOS cpus when building for iOS, otherwise we
-      // might unintentionally install a watch app with the wrong architecture.
-      let cpus = "\(CPU.armv7k.rawValue),\(CPU.arm64_32.rawValue)"
-      flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpus)")
+      if cpu == .arm64 || cpu == .arm64e {
+        // Xcode doesn't provide a way to determine the architecture of a paired
+        // watch so target both watchOS cpus when building for physical iOS,
+        // otherwise we might unintentionally install a watch app with the wrong
+        // architecture. Only 64-bit iOS devices support the Apple Watch Series
+        // 4 so we only need to apply the flag to the 64bit iOS CPUs.
+        let cpus = "\(CPU.armv7k.rawValue),\(CPU.arm64_32.rawValue)"
+        flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpus)")
+      } else {
+        flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
+      }
     }
 
     return flags
