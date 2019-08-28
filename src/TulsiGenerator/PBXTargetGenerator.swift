@@ -489,6 +489,25 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       project.getOrCreateGroupsAndFileReferencesForPaths([buildFilePath])
     }
 
+    // Recursively find all targets that are direct dependencies of test targets, and skip adding
+    // indexers for them, because their sources will be added directly to the test target.
+    var ruleEntryLabelsToSkipForIndexing = Set<BuildLabel>()
+    func addTestDepsToSkipList(_ ruleEntry: RuleEntry) {
+      if ruleEntry.pbxTargetType?.isTest ?? false {
+        for dep in ruleEntry.dependencies {
+          ruleEntryLabelsToSkipForIndexing.insert(dep)
+          guard let depEntry = ruleEntryMap.ruleEntry(buildLabel: dep, depender: ruleEntry) else {
+            localizedMessageLogger.warning("UnknownTargetRule",
+                                           comment: "Failure to look up a Bazel target that was expected to be present. The target label is %1$@",
+                                           values: dep.value)
+            continue
+          }
+          addTestDepsToSkipList(depEntry)
+        }
+      }
+    }
+    addTestDepsToSkipList(ruleEntry)
+
     // TODO(b/63628175): Clean this nested method to also retrieve framework_dir and framework_file
     // from the ObjcProvider, for both static and dynamic frameworks.
     @discardableResult
@@ -551,11 +570,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       // - if the target is a filegroup (we generate an indexer for what references the filegroup).
       // - if the target has no source files (there's nothing to index!)
       // - if the target is a test bundle (we generate proper targets for these).
+      // - if the target is a direct dependency of a test target (these sources are added directly to the test target).
       if (sourceFileInfos.isEmpty &&
           nonARCSourceFileInfos.isEmpty &&
           frameworkFileInfos.isEmpty &&
           nonSourceVersionedFileInfos.isEmpty)
-        || ruleEntry.pbxTargetType?.isTest ?? false || ruleEntry.type == "filegroup" {
+        || ruleEntry.pbxTargetType?.isTest ?? false
+        || ruleEntry.type == "filegroup"
+        || ruleEntryLabelsToSkipForIndexing.contains(ruleEntry.label) {
         return (frameworkSearchPaths)
       }
 

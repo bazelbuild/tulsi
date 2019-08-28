@@ -11,7 +11,6 @@
 		952C886D3EFFE63100000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */ = {isa = PBXBuildFile; fileRef = D0BE1A9D3EFFE63100000000 /* SimpleTest.xcdatamodeld */; };
 		952C886D80E2A65800000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C80E2A65800000000 /* src2.m */; };
 		952C886D99A5382C00000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C99A5382C00000000 /* src1.mm */; };
-		952C886D99A5382C00000001 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C99A5382C00000000 /* src1.mm */; };
 		952C886DB150C3F800000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CB150C3F800000000 /* main.m */; };
 		952C886DB6E4997A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CB6E4997A00000000 /* src3.m */; };
 		952C886DD6AD0DEF00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CD6AD0DEF00000000 /* src4.m */; };
@@ -58,7 +57,6 @@
 		25889F7CAF25182F00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
 		25889F7CB150C3F800000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = "<group>"; };
 		25889F7CB6E4997A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src3.m"; sourceTree = "<group>"; };
-		25889F7CBA7026B400000000 /* lib_idx_TestLibrary_E66CBC86_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_TestLibrary_E66CBC86_ios_min10.0.a; path = lib_idx_TestLibrary_E66CBC86_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CCF6C202B00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
 		25889F7CD6AD0DEF00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = "<group>"; };
@@ -221,7 +219,6 @@
 			children = (
 				25889F7C1A1D3E7000000000 /* lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a */,
 				25889F7C80E959BE00000000 /* lib_idx_Library_744889E2_ios_min10.0.a */,
-				25889F7CBA7026B400000000 /* lib_idx_TestLibrary_E66CBC86_ios_min10.0.a */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -375,23 +372,6 @@
 			productReference = 25889F7C8FC56C5400000000 /* XCTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		7E9AFE62A45508F600000000 /* _idx_TestLibrary_E66CBC86_ios_min10.0 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DED057C94B300000000 /* Build configuration list for PBXNativeTarget "_idx_TestLibrary_E66CBC86_ios_min10.0" */;
-			buildPhases = (
-				04BFD5160000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				89B1AEB39734745D00000000 /* PBXTargetDependency */,
-				89B1AEB3036907F900000000 /* PBXTargetDependency */,
-			);
-			name = _idx_TestLibrary_E66CBC86_ios_min10.0;
-			productName = _idx_TestLibrary_E66CBC86_ios_min10.0;
-			productReference = 25889F7CBA7026B400000000 /* lib_idx_TestLibrary_E66CBC86_ios_min10.0.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -421,7 +401,6 @@
 				01F2CBCF9734745C00000000 /* _bazel_clean_ */,
 				7E9AFE6229A25C1600000000 /* _idx_ApplicationLibrary_5E9B8EB0_ios_min10.0 */,
 				7E9AFE62036907F800000000 /* _idx_Library_744889E2_ios_min10.0 */,
-				7E9AFE62A45508F600000000 /* _idx_TestLibrary_E66CBC86_ios_min10.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -514,14 +493,6 @@
 				952C886D80E2A65800000000 /* src2.m in srcs */,
 				952C886DB6E4997A00000000 /* src3.m in srcs */,
 				952C886DD6AD0DEF00000000 /* src4.m in srcs */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		04BFD5160000000000000003 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				952C886D99A5382C00000001 /* src1.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,19 +761,6 @@
 			};
 			name = Debug;
 		};
-		0207AA2838C3D90E00000006 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _idx_TestLibrary_E66CBC86_ios_min10.0;
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
-			};
-			name = Debug;
-		};
 		0207AA28616216BF00000000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -915,19 +873,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_744889E2_ios_min10.0;
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
-			};
-			name = Release;
-		};
-		0207AA28616216BF00000006 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
-				PRODUCT_NAME = _idx_TestLibrary_E66CBC86_ios_min10.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
 			};
@@ -1055,14 +1000,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4222DED057C94B300000000 /* Build configuration list for PBXNativeTarget "_idx_TestLibrary_E66CBC86_ios_min10.0" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0207AA2838C3D90E00000006 /* Debug */,
-				0207AA28616216BF00000006 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 		F4222DED09D93B4C00000000 /* Build configuration list for PBXNativeTarget "_idx_Library_744889E2_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

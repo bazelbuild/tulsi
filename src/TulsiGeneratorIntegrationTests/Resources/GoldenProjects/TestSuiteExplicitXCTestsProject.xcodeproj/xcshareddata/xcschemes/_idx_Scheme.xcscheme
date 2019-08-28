@@ -3,22 +3,7 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </BuildActionEntry>
-            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0.a" BlueprintName="_idx_XCTestLib_ApplicationLibrary_LogicTestLib_XCTestLib_XCTestLib_F6CE7457_ios_min10.0" BlueprintIdentifier="7E9AFE62A2FFBD5000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_468DE48B_ios_min10.0" BlueprintIdentifier="7E9AFE62BC40BFA200000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
