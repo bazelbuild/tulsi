@@ -30,5 +30,5 @@ ios_application(
     launch_images = ["Binary_Assets_LaunchImage"],
     launch_storyboard = "Application/Launch.storyboard",
     lolno = "binaary",
-    minimum_os_version = "9.0",
+    minimum_os_version = "10.0",
 )

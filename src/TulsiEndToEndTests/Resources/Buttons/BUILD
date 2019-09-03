@@ -119,20 +119,20 @@ ios_static_framework(
 
 ios_unit_test(
     name = "ButtonsTests",
-    minimum_os_version = "9.0",
+    minimum_os_version = "10.0",
     test_host = ":Buttons",
     deps = [":ButtonsTestsLib"],
 )
 
 ios_unit_test(
     name = "ButtonsLogicTests",
-    minimum_os_version = "9.0",
+    minimum_os_version = "10.0",
     deps = [":ButtonsTestsLib"],
 )
 
 ios_ui_test(
     name = "ButtonsUITests",
-    minimum_os_version = "9.0",
+    minimum_os_version = "10.0",
     test_host = ":Buttons",
     deps = [":ButtonsUITestsLib"],
 )

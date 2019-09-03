@@ -2,10 +2,10 @@
   "configDefaults" : {
     "optionSet" : {
       "BazelBuildOptionsDebug" : {
-        "p" : "--ios_minimum_os=9.0 --workspace_status_command=/usr/bin/true"
+        "p" : "--ios_minimum_os=10.0 --workspace_status_command=/usr/bin/true"
       },
       "BazelBuildOptionsRelease" : {
-        "p" : "--ios_minimum_os=9.0 --workspace_status_command=/usr/bin/true"
+        "p" : "--ios_minimum_os=10.0 --workspace_status_command=/usr/bin/true"
       }
     }
   },
