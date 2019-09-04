@@ -32,7 +32,7 @@ class BazelSettingsProviderTests: XCTestCase {
                                                        buildRuleEntries: buildRuleEntries)
 
     let expectedFlag = "--watchos_cpus=armv7k,arm64_32"
-    let expectedIdentifiers = Set(["watchos_armv7k", "watchos_arm64_32"])
+    let expectedIdentifiers = Set(["watchos_armv7k", "watchos_arm64_32", "ios_arm64", "ios_arm64e"])
     // Check that both watchos flags are set for both architectures.
     for (identifier, flags) in settings.platformConfigurationFlags {
       if (expectedIdentifiers.contains(identifier)) {

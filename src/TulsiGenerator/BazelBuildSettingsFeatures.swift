@@ -22,6 +22,7 @@
 extension PlatformConfiguration {
   public var bazelFlags: [String] {
     var flags = ["--apple_platform_type=\(platform.bazelPlatform)"]
+    let physicalWatchCPUs = "\(CPU.armv7k.rawValue),\(CPU.arm64_32.rawValue)"
 
     switch platform {
     case .ios, .macos:
@@ -29,7 +30,13 @@ extension PlatformConfiguration {
     case .tvos:
       flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpu.rawValue)")
     case .watchos:
-      flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
+      if (cpu == .armv7k || cpu == .arm64_32) {
+        // Xcode doesn't provide a way to determine the architecture of a watch
+        // so target both watchOS cpus when building for a physical watch.
+        flags.append("--\(platform.bazelCPUPlatform)_cpus=\(physicalWatchCPUs)")
+      } else {
+        flags.append("--\(platform.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
+      }
     }
 
     if case .ios = platform {
@@ -39,8 +46,7 @@ extension PlatformConfiguration {
         // otherwise we might unintentionally install a watch app with the wrong
         // architecture. Only 64-bit iOS devices support the Apple Watch Series
         // 4 so we only need to apply the flag to the 64bit iOS CPUs.
-        let cpus = "\(CPU.armv7k.rawValue),\(CPU.arm64_32.rawValue)"
-        flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpus)")
+        flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(physicalWatchCPUs)")
       } else {
         flags.append("--\(PlatformType.watchos.bazelCPUPlatform)_cpus=\(cpu.watchCPU.rawValue)")
       }
