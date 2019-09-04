@@ -9,7 +9,12 @@ plant.
 
 ## Building and installing
 
+1.  Check `.bazelrc` to see if the Xcode version used by Tulsi is installed
+    locally. If it isn't, feel free to remove the `--xcode_version` flag or
+    modify it as you wish, but note that Tulsi may not build correctly with
+    different versions of Xcode.
 1.  Run `build_and_run.sh`. This will install Tulsi.app inside ~/Applications.
+
 
 ## Notes
 

@@ -112,15 +112,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:XCTest.__internal__.__test_bundle")
-
-    // TODO(b/139478940): Replace this dependency on the naming convention for an implementation
-    // detail of rules_apple with the solution arrived at from the referenced bug.
-    checker.assertThat("//tulsi_test:XCTest.__internal__.__test_bundle")
-        .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
-        .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:TestLibrary")
+        .dependsTransitivelyOn("//tulsi_test:Application")
+        .dependsTransitivelyOn("//tulsi_test:TestLibrary")
   }
 
   func testExceptionThrown() {
@@ -336,16 +330,10 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:XCTest")
         .hasTestHost("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:XCTest.__internal__.__test_bundle")
-
-    // TODO(b/139478940): Replace this dependency on the naming convention for an implementation
-    // detail of rules_apple with the solution arrived at from the referenced bug.
-    checker.assertThat("//tulsi_test:XCTest.__internal__.__test_bundle")
-        .hasTestHost("//tulsi_test:Application")
         .hasDeploymentTarget(DeploymentTarget(platform: .ios, osVersion: "10.0"))
-        .dependsOn("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:Library")
-        .dependsOn("//tulsi_test:TestLibrary")
+        .dependsTransitivelyOn("//tulsi_test:Application")
+        .dependsTransitivelyOn("//tulsi_test:Library")
+        .dependsTransitivelyOn("//tulsi_test:TestLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:CoreDataResources")
@@ -573,6 +561,25 @@ class InfoChecker {
       XCTAssert(ruleEntry.dependencies.contains(BuildLabel(targetLabel)),
                 "\(ruleEntry) must depend on \(targetLabel)",
                 line: line)
+      return self
+    }
+
+    /// Asserts that the contextual RuleEntry is linked to a rule identified by the given
+    /// targetLabel as a transitive dependency.
+    @discardableResult
+    func dependsTransitivelyOn(_ targetLabel: String, line: UInt = #line) -> Context {
+      guard let ruleEntry = ruleEntry else { return self }
+      let label = BuildLabel(targetLabel)
+      var ruleEntries = [ruleEntry]
+      while true {
+        guard let entry = ruleEntries.popLast() else { break }
+        guard !entry.dependencies.contains(label) else { return self }
+
+        ruleEntries.append(contentsOf: entry.dependencies.compactMap {
+          ruleEntryMap.ruleEntry(buildLabel: $0, depender: entry)
+        })
+      }
+      XCTFail("\(ruleEntry) must transitively depend on \(targetLabel)", line: line)
       return self
     }
 
