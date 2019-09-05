@@ -1,4 +1,3 @@
-
 // Copyright 2016 The Tulsi Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,36 +13,41 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import BazelIntegrationTestCase
 @testable import TulsiEndToEndTestBase
 
-
 // End to end test that generates the Buttons project and runs its unit tests.
 class ButtonsEndToEndTest: TulsiEndToEndTest {
-  fileprivate let buttonsProjectPath = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+  fileprivate let buttonsProjectPath
+    = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
 
   override func setUp() {
     super.setUp()
 
-    if (!copyDataToFakeWorkspace("src/TulsiEndToEndTests/Resources")) {
+    if !copyDataToFakeWorkspace("src/TulsiEndToEndTests/Resources") {
       XCTFail("Failed to copy Buttons files to fake execroot.")
     }
   }
 
   func testButtons() throws {
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "Buttons")
-    XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
+    let xcodeProjectURL = generateXcodeProject(
+      tulsiProject: buttonsProjectPath,
+      config: "Buttons")
+    XCTAssert(
+      fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
     testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
   }
 
   /// Verifies that all of the _idx_ targets in the project build.
   func testIndexingTargetsBuild() throws {
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "Buttons")
-    XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
+    let xcodeProjectURL = generateXcodeProject(
+      tulsiProject: buttonsProjectPath,
+      config: "Buttons")
+    XCTAssert(
+      fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
     let targets = targetsOfXcodeProject(xcodeProjectURL)
-    let indexTargets = targets.filter{ $0.hasPrefix("_idx_") }
+    let indexTargets = targets.filter { $0.hasPrefix("_idx_") }
     XCTAssertEqual(indexTargets.count, 8)
     for target in indexTargets {
       buildXcodeTarget(xcodeProjectURL, target: target)
@@ -51,9 +55,11 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
   }
 
   func testInvalidConfig() throws {
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "InvalidConfig")
-    XCTAssertFalse(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was generated despite invalid config.")
+    let xcodeProjectURL = generateXcodeProject(
+      tulsiProject: buttonsProjectPath,
+      config: "InvalidConfig")
+    XCTAssertFalse(
+      fileManager.fileExists(atPath: xcodeProjectURL.path),
+      "Xcode project was generated despite invalid config.")
   }
 }
-

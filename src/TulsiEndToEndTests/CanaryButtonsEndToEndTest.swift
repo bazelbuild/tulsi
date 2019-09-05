@@ -1,4 +1,3 @@
-
 // Copyright 2016 The Tulsi Authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import BazelIntegrationTestCase
 @testable import TulsiEndToEndTestBase
 @testable import TulsiGenerator
@@ -21,7 +21,8 @@ import XCTest
 // End to end test that generates the Buttons project and runs its unit tests. This variation of the
 // test uses the canary Bazel binary.
 class ButtonsEndToEndTest: TulsiEndToEndTest {
-  fileprivate let buttonsProjectPath = "third_party/tulsi/src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+  fileprivate let buttonsProjectPath
+    = "third_party/tulsi/src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
 
   override func setUp() {
     super.setUp()
@@ -29,7 +30,8 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
       XCTFail("Expected Bazel canary URL.")
       return
     }
-    XCTAssert(fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary binary is missing.")
+    XCTAssert(
+      fileManager.fileExists(atPath: canaryBazelURL.path), "Bazel canary binary is missing.")
 
     bazelURL = canaryBazelURL
     let completionInfo = ProcessRunner.launchProcessSync(bazelURL.path, arguments: ["version"])
@@ -37,16 +39,17 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
       print(versionOutput)
     }
 
-    if (!copyDataToFakeWorkspace("third_party/tulsi/src/TulsiEndToEndTests/Resources")) {
+    if !copyDataToFakeWorkspace("third_party/tulsi/src/TulsiEndToEndTests/Resources") {
       XCTFail("Failed to copy Buttons files to fake execroot.")
     }
   }
 
   func testButtonsWithCanaryBazel() throws {
-    let xcodeProjectURL = generateXcodeProject(tulsiProject: buttonsProjectPath,
-                                               config: "Buttons")
-    XCTAssert(fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
+    let xcodeProjectURL = generateXcodeProject(
+      tulsiProject: buttonsProjectPath,
+      config: "Buttons")
+    XCTAssert(
+      fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
     testXcodeProject(xcodeProjectURL, scheme: "ButtonsLogicTests")
   }
 }
-
