@@ -142,8 +142,9 @@ public class TulsiOption: Equatable, CustomStringConvertible {
     let inheritValue = defaultValue ?? ""
     func resolveInheritKeyword(_ value: String?) -> String? {
       guard let value = value else { return nil }
-      return value.replacingOccurrences(of: TulsiOption.InheritKeyword,
-                                                        with: inheritValue)
+      let newValue = value.replacingOccurrences(of: TulsiOption.InheritKeyword,
+                                                with: inheritValue)
+      return newValue.isEmpty ? nil : newValue
     }
     if optionType.contains(.SupportsInheritKeyword) {
       projectValue = resolveInheritKeyword(projectValue)
