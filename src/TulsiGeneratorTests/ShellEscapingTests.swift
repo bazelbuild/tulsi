@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 class ShellEscapingTests: XCTestCase {

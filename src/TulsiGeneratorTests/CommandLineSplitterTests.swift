@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import XCTest
-@testable import TulsiGenerator
 
+@testable import TulsiGenerator
 
 class CommandLineSplitterTests: XCTestCase {
   var splitter: CommandLineSplitter! = nil

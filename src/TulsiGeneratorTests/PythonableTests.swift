@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 class PythonableTests: XCTestCase {
@@ -37,7 +38,7 @@ class PythonableTests: XCTestCase {
     let arr = [
       "Hello",
       "Goodbye",
-      "'Escape'"
+      "'Escape'",
     ]
     XCTAssertEqual(arr.toPython(""), """
 [
@@ -46,7 +47,8 @@ class PythonableTests: XCTestCase {
     '\\'Escape\\'',
 ]
 """)
-    XCTAssertEqual(arr.toPython("  "), """
+    XCTAssertEqual(
+      arr.toPython("  "), """
 [
       'Hello',
       'Goodbye',
@@ -91,4 +93,3 @@ set([
 """)
   }
 }
-

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+
 @testable import TulsiGenerator
 
 class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
@@ -21,30 +22,35 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
     return BazelFlags()
   }
 
-  func tulsiFlags(hasSwift: Bool,
-                  options: TulsiOptionSet?,
-                  features: Set<BazelSettingFeature>) -> BazelFlagsSet {
+  func tulsiFlags(
+    hasSwift: Bool,
+    options: TulsiOptionSet?,
+    features: Set<BazelSettingFeature>
+  ) -> BazelFlagsSet {
     return BazelFlagsSet()
   }
 
-  func buildSettings(bazel: String,
-                     bazelExecRoot: String,
-                     options: TulsiOptionSet,
-                     features: Set<BazelSettingFeature>,
-                     buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
-    return BazelBuildSettings(bazel: bazel,
-                              bazelExecRoot: bazelExecRoot,
-                              defaultPlatformConfigIdentifier: "",
-                              platformConfigurationFlags: nil,
-                              swiftTargets: [],
-                              tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
-                              tulsiCacheSafeFlagSet: BazelFlagsSet(),
-                              tulsiSwiftFlagSet: BazelFlagsSet(),
-                              tulsiNonSwiftFlagSet: BazelFlagsSet(),
-                              swiftFeatures: [],
-                              nonSwiftFeatures: [],
-                              projDefaultFlagSet: BazelFlagsSet(),
-                              projTargetFlagSets: [:])
+  func buildSettings(
+    bazel: String,
+    bazelExecRoot: String,
+    options: TulsiOptionSet,
+    features: Set<BazelSettingFeature>,
+    buildRuleEntries: Set<RuleEntry>
+  ) -> BazelBuildSettings {
+    return BazelBuildSettings(
+      bazel: bazel,
+      bazelExecRoot: bazelExecRoot,
+      defaultPlatformConfigIdentifier: "",
+      platformConfigurationFlags: nil,
+      swiftTargets: [],
+      tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
+      tulsiCacheSafeFlagSet: BazelFlagsSet(),
+      tulsiSwiftFlagSet: BazelFlagsSet(),
+      tulsiNonSwiftFlagSet: BazelFlagsSet(),
+      swiftFeatures: [],
+      nonSwiftFeatures: [],
+      projDefaultFlagSet: BazelFlagsSet(),
+      projTargetFlagSets: [:])
   }
 }
 
@@ -53,27 +59,31 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   let bazelSettingsProvider: BazelSettingsProviderProtocol = MockBazelSettingsProvider()
 
   var labelToRuleEntry = [BuildLabel: RuleEntry]()
+
   /// The set of labels passed to ruleEntriesForLabels that could not be found in the
   /// labelToRuleEntry dictionary.
   var invalidLabels = Set<BuildLabel>()
 
   var bazelURL = URL(fileURLWithPath: "")
   var bazelBinPath = "bazel-bin"
-  var bazelExecutionRoot = "/private/var/tmp/_bazel_localhost/1234567890abcdef1234567890abcdef/execroot/workspace_dir"
+  var bazelExecutionRoot
+    = "/private/var/tmp/_bazel_localhost/1234567890abcdef1234567890abcdef/execroot/workspace_dir"
   var workspaceRootURL = URL(fileURLWithPath: "")
 
   func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {
     return []
   }
 
-  func ruleEntriesForLabels(_ labels: [BuildLabel],
-                            startupOptions: TulsiOption,
-                            extraStartupOptions: TulsiOption,
-                            buildOptions: TulsiOption,
-                            compilationModeOption: TulsiOption,
-                            platformConfigOption: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption,
-                            features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
+  func ruleEntriesForLabels(
+    _ labels: [BuildLabel],
+    startupOptions: TulsiOption,
+    extraStartupOptions: TulsiOption,
+    buildOptions: TulsiOption,
+    compilationModeOption: TulsiOption,
+    platformConfigOption: TulsiOption,
+    prioritizeSwiftOption: TulsiOption,
+    features: Set<BazelSettingFeature>
+  ) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)
     let ret = RuleEntryMap()
     for label in labels {
@@ -86,7 +96,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     return ret
   }
 
-  func extractBuildfiles<T:Collection>(_ forTargets: T) -> Set<BuildLabel> where T.Iterator.Element == BuildLabel {
+  func extractBuildfiles<T: Collection>(_ forTargets: T) -> Set<BuildLabel>
+  where T.Iterator.Element == BuildLabel {
     return Set()
   }
 

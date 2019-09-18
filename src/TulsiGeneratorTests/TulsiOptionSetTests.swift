@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 class TulsiOptionSetTests: XCTestCase {
@@ -32,12 +33,12 @@ class TulsiOptionSetTests: XCTestCase {
     let optionSet = TulsiOptionSet()
     optionSet[.ALWAYS_SEARCH_USER_PATHS].projectValue = "YES"
     optionSet[.BazelBuildOptionsDebug].targetValues = [
-        target1: "Target-Value1",
-        target2: "Target-Value2",
+      target1: "Target-Value1",
+      target2: "Target-Value2",
     ]
     optionSet[.BazelBuildOptionsRelease].projectValue = "releaseProjectValue"
     optionSet[.BazelBuildOptionsRelease].targetValues = [
-        target1: "Target-Release-Value1",
+      target1: "Target-Release-Value1",
     ]
     var dict = [String: AnyObject]()
     optionSet.saveAllOptionsIntoDictionary(&dict)
@@ -99,7 +100,8 @@ class TulsiOptionSetTests: XCTestCase {
     optionSet.savePerUserOptionsIntoDictionary(&dict)
 
     let perUserOptions = optionSet.options.filter({ $1.optionType.contains(.PerUserOnly) })
-    let serializedValues = dict[TulsiOptionSet.PersistenceKey] as! [String: TulsiOption.PersistenceType]
+    let serializedValues = dict[TulsiOptionSet.PersistenceKey] as! [String: TulsiOption
+      .PersistenceType]
     XCTAssertEqual(serializedValues.count, perUserOptions.count)
 
     let optionsDict = TulsiOptionSet.getOptionsFromContainerDictionary(dict) ?? [:]
@@ -119,7 +121,6 @@ class TulsiOptionSetTests: XCTestCase {
     parent[.ALWAYS_SEARCH_USER_PATHS].projectValue = "YES"
     parent[.SuppressSwiftUpdateCheck].projectValue = "NO"
     parent[.IncludeBuildSources].projectValue = "NO"
-
 
     let childValue = "ChildValue"
     let child = TulsiOptionSet(withInheritanceEnabled: true)

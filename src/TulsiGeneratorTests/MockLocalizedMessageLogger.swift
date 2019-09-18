@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 // Stub LocalizedMessageLogger that does nothing.
@@ -20,21 +21,27 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
   var syslogMessages = [String]()
   var infoMessages = [String]()
   var warningMessageKeys = [String]()
+
   let nonFatalWarningKeys = Set([
     "BootstrapLLDBInitFailed",
-    "CleanCachedDsymsFailed"
+    "CleanCachedDsymsFailed",
   ])
+
   var errorMessageKeys = [String]()
 
   init() {
     super.init(bundle: nil)
   }
 
-  override func error(_ key: String, comment: String, details: String?, context: String?, values: CVarArg...) {
+  override func error(
+    _ key: String, comment: String, details: String?, context: String?, values: CVarArg...
+  ) {
     errorMessageKeys.append(key)
   }
 
-  override func warning(_ key: String, comment: String, details: String?, context: String?, values: CVarArg...) {
+  override func warning(
+    _ key: String, comment: String, details: String?, context: String?, values: CVarArg...
+  ) {
     warningMessageKeys.append(key)
   }
 
@@ -47,17 +54,19 @@ class MockLocalizedMessageLogger: LocalizedMessageLogger {
   }
 
   func assertNoErrors(_ file: StaticString = #file, line: UInt = #line) {
-    XCTAssert(errorMessageKeys.isEmpty,
-              "Unexpected error messages printed: \(errorMessageKeys)",
-              file: file,
-              line: line)
+    XCTAssert(
+      errorMessageKeys.isEmpty,
+      "Unexpected error messages printed: \(errorMessageKeys)",
+      file: file,
+      line: line)
   }
 
   func assertNoWarnings(_ file: StaticString = #file, line: UInt = #line) {
     let hasOnlyNonFatalWarnings = Set(warningMessageKeys).isSubset(of: nonFatalWarningKeys)
-    XCTAssert(warningMessageKeys.isEmpty || hasOnlyNonFatalWarnings,
-              "Unexpected warning messages printed: \(warningMessageKeys)",
-              file: file,
-              line: line)
+    XCTAssert(
+      warningMessageKeys.isEmpty || hasOnlyNonFatalWarnings,
+      "Unexpected warning messages printed: \(warningMessageKeys)",
+      file: file,
+      line: line)
   }
 }

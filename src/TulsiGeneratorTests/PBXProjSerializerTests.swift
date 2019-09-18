@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 typealias StringToObjectDict = [String: NSObject]
@@ -34,7 +35,7 @@ class PBXProjSerializerTests: XCTestCase {
 
   func testOpenStepSerializesEmptyDictionaries() {
     let config = project.buildConfigurationList.getOrCreateBuildConfiguration("Empty")
-    config.buildSettings = Dictionary<String, String>()
+    config.buildSettings = [String: String]()
     config.globalID = gidGenerator.generateReservedID()
 
     guard let openStepData = serializer.serialize() else {
@@ -43,18 +44,22 @@ class PBXProjSerializerTests: XCTestCase {
     }
     let root: StringToObjectDict
     do {
-      root = try PropertyListSerialization.propertyList(from: openStepData,
-          options: [], format: nil) as! StringToObjectDict
+      root = try PropertyListSerialization.propertyList(
+        from: openStepData,
+        options: [], format: nil) as! StringToObjectDict
     } catch let error as NSError {
       let serializedData = String(data: openStepData, encoding: String.Encoding.utf8)!
-      XCTFail("Failed to parse OpenStep serialized data " + error.localizedDescription + "\n" + serializedData)
+      XCTFail(
+        "Failed to parse OpenStep serialized data " + error.localizedDescription + "\n"
+          + serializedData)
       return
     }
 
     let objects = root["objects"] as! StringToObjectDict
-    let buildConfigDict: StringToObjectDict! = getObjectByID(config.globalID,
-                                                             withPBXClass: "XCBuildConfiguration",
-                                                             fromObjects: objects)
+    let buildConfigDict: StringToObjectDict! = getObjectByID(
+      config.globalID,
+      withPBXClass: "XCBuildConfiguration",
+      fromObjects: objects)
     XCTAssertNotNil(buildConfigDict["buildSettings"])
   }
 
@@ -92,7 +97,8 @@ class PBXProjSerializerTests: XCTestCase {
     let gid: String
     let isInputFile: Bool
 
-    init(sourceTree: SourceTree, path: String, uti: String?, gid: String, isInputFile: Bool = true) {
+    init(sourceTree: SourceTree, path: String, uti: String?, gid: String, isInputFile: Bool = true)
+    {
       self.sourceTree = sourceTree
       self.path = path
       self.uti = uti
@@ -102,11 +108,12 @@ class PBXProjSerializerTests: XCTestCase {
 
     init(sourceTree: SourceTree, path: String, gid: String, isInputFile: Bool = true) {
       let uti = FileExtensionToUTI[(path as NSString).pathExtension]
-      self.init(sourceTree: sourceTree,
-                path: path,
-                uti: uti,
-                gid: gid,
-                isInputFile: isInputFile)
+      self.init(
+        sourceTree: sourceTree,
+        path: path,
+        uti: uti,
+        gid: gid,
+        isInputFile: isInputFile)
     }
   }
 
@@ -120,13 +127,15 @@ class PBXProjSerializerTests: XCTestCase {
     let groups: [GroupDefinition]
     let expectedPBXClass: String
 
-    init(name: String,
-         sourceTree: SourceTree,
-         path: String?,
-         gid: String,
-         files: [FileDefinition],
-         groups: [GroupDefinition],
-         expectedPBXClass: String = "PBXGroup") {
+    init(
+      name: String,
+      sourceTree: SourceTree,
+      path: String?,
+      gid: String,
+      files: [FileDefinition],
+      groups: [GroupDefinition],
+      expectedPBXClass: String = "PBXGroup"
+    ) {
       self.name = name
       self.sourceTree = sourceTree
       self.path = path
@@ -139,13 +148,14 @@ class PBXProjSerializerTests: XCTestCase {
     func groupByAddingGroup(_ group: GroupDefinition) -> GroupDefinition {
       var newGroups = groups
       newGroups.append(group)
-      return GroupDefinition(name: name,
-                             sourceTree: sourceTree,
-                             path: path,
-                             gid: gid,
-                             files: files,
-                             groups: newGroups,
-                             expectedPBXClass: expectedPBXClass)
+      return GroupDefinition(
+        name: name,
+        sourceTree: sourceTree,
+        path: path,
+        gid: gid,
+        files: files,
+        groups: newGroups,
+        expectedPBXClass: expectedPBXClass)
     }
   }
 
@@ -153,27 +163,30 @@ class PBXProjSerializerTests: XCTestCase {
     let currentVersion: FileDefinition
     let versionGroupType: String
 
-    init(name: String,
-         sourceTree: SourceTree,
-         path: String?,
-         gid: String,
-         files: [FileDefinition],
-         groups: [GroupDefinition],
-         currentVersion: FileDefinition,
-         versionGroupType: String? = nil) {
+    init(
+      name: String,
+      sourceTree: SourceTree,
+      path: String?,
+      gid: String,
+      files: [FileDefinition],
+      groups: [GroupDefinition],
+      currentVersion: FileDefinition,
+      versionGroupType: String? = nil
+    ) {
       self.currentVersion = currentVersion
       if let versionGroupType = versionGroupType {
         self.versionGroupType = versionGroupType
       } else {
         self.versionGroupType = FileExtensionToUTI[(name as NSString).pathExtension] ?? ""
       }
-      super.init(name: name,
-                 sourceTree: sourceTree,
-                 path: path,
-                 gid: gid,
-                 files: files,
-                 groups: groups,
-                 expectedPBXClass: "XCVersionGroup")
+      super.init(
+        name: name,
+        sourceTree: sourceTree,
+        path: path,
+        gid: gid,
+        files: files,
+        groups: groups,
+        expectedPBXClass: "XCVersionGroup")
     }
   }
 
@@ -181,7 +194,7 @@ class PBXProjSerializerTests: XCTestCase {
   struct SimpleProjectDefinition {
     struct NativeTargetDefinition {
       let name: String
-      let settings: Dictionary<String, String>
+      let settings: [String: String]
       let config: String
       let targetType: PBXTarget.ProductType
     }
@@ -194,7 +207,7 @@ class PBXProjSerializerTests: XCTestCase {
     }
 
     let projectLevelBuildConfigName: String
-    let projectLevelBuildConfigSettings: Dictionary<String, String>
+    let projectLevelBuildConfigSettings: [String: String]
     let nativeTarget: NativeTargetDefinition
     let legacyTarget: LegacyTargetDefinition
     let mainGroupGID: String
@@ -206,19 +219,25 @@ class PBXProjSerializerTests: XCTestCase {
   }
 
   @discardableResult
-  private func populateProject(_ targetProject: PBXProject, withGIDGenerator generator: MockGIDGenerator) -> SimpleProjectDefinition {
+  private func populateProject(
+    _ targetProject: PBXProject, withGIDGenerator generator: MockGIDGenerator
+  ) -> SimpleProjectDefinition {
     let projectLevelBuildConfigName = "ProjectConfig"
-    let projectLevelBuildConfigSettings = ["TEST_SETTING": "test_setting",
-                                           "QuotedSetting": "Quoted string value"]
-    let nativeTarget = SimpleProjectDefinition.NativeTargetDefinition(name: "NativeApplicationTarget",
-        settings: ["PRODUCT_NAME": "ProductName", "QuotedValue": "A quoted value"],
-        config: "Config1",
-        targetType: PBXTarget.ProductType.Application
+    let projectLevelBuildConfigSettings = [
+      "TEST_SETTING": "test_setting",
+      "QuotedSetting": "Quoted string value"
+    ]
+    let nativeTarget = SimpleProjectDefinition.NativeTargetDefinition(
+      name: "NativeApplicationTarget",
+      settings: ["PRODUCT_NAME": "ProductName", "QuotedValue": "A quoted value"],
+      config: "Config1",
+      targetType: PBXTarget.ProductType.Application
     )
-    let legacyTarget = SimpleProjectDefinition.LegacyTargetDefinition(name: "LegacyTarget",
-        buildToolPath: "buildToolPath",
-        buildArguments: "buildArguments",
-        buildWorkingDirectory: "buildWorkingDirectory")
+    let legacyTarget = SimpleProjectDefinition.LegacyTargetDefinition(
+      name: "LegacyTarget",
+      buildToolPath: "buildToolPath",
+      buildArguments: "buildArguments",
+      buildWorkingDirectory: "buildWorkingDirectory")
 
     // Note: This test relies on the fact that the current serializer implementation preserves the
     // GIDs of any objects it attempts to serialize.
@@ -226,93 +245,120 @@ class PBXProjSerializerTests: XCTestCase {
     let mainGroupDefinition: GroupDefinition
     do {
       let mainGroupFiles = [
-          FileDefinition(sourceTree: .Group, path: "GroupFile.swift", gid: generator.generateReservedID()),
-          FileDefinition(sourceTree: .Absolute, path: "/fake/path/AbsoluteFile.swift", gid: generator.generateReservedID()),
+        FileDefinition(
+          sourceTree: .Group, path: "GroupFile.swift", gid: generator.generateReservedID()),
+        FileDefinition(
+          sourceTree: .Absolute, path: "/fake/path/AbsoluteFile.swift",
+          gid: generator.generateReservedID()),
       ]
-      let activeDatamodelVersion = FileDefinition(sourceTree: .Group,
-                                                  path: "v2.xcdatamodel",
-                                                  uti: DirExtensionToUTI["xcdatamodel"],
-                                                  gid: generator.generateReservedID(),
-                                                  isInputFile: true)
+      let activeDatamodelVersion = FileDefinition(
+        sourceTree: .Group,
+        path: "v2.xcdatamodel",
+        uti: DirExtensionToUTI["xcdatamodel"],
+        gid: generator.generateReservedID(),
+        isInputFile: true)
       let mainGroupGroups = [
-          GroupDefinition(name: "Products",
-              sourceTree: .Group,
-              path: nil,
-              gid: generator.generateReservedID(),
-              files: [],
-              groups: []
-          ),
-          GroupDefinition(name: "ChildGroup",
-              sourceTree: .Group,
-              path: "child_group_path",
-              gid: generator.generateReservedID(),
-              files: [
-                  FileDefinition(sourceTree: .Group, path: "ChildRelativeFile.swift", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.a", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.dylib", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.framework", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.jpg", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.m", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.mm", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.pch", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.plist", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.png", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.rtf", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.storyboard", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.xcassets", uti: DirExtensionToUTI["xcassets"], gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.xcstickers", uti: DirExtensionToUTI["xcstickers"], gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "t.xib", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "Test", uti: "text", gid: generator.generateReservedID()),
-                  FileDefinition(sourceTree: .Group, path: "Output.app", gid: generator.generateReservedID(), isInputFile: false),
-              ],
-              groups: []
-          ),
-          VersionGroupDefinition(name: "DataModel.xcdatamodeld",
-                                 sourceTree: .Group,
-                                 path: "DataModel.xcdatamodeld",
-                                 gid: generator.generateReservedID(),
-                                 files: [
-                                     FileDefinition(sourceTree: .Group,
-                                                    path: "v1.xcdatamodel",
-                                                    uti: DirExtensionToUTI["xcdatamodel"],
-                                                    gid: generator.generateReservedID(),
-                                                    isInputFile: true),
-                                     activeDatamodelVersion,
-                                 ],
-                                 groups: [],
-                                 currentVersion: activeDatamodelVersion,
-                                 versionGroupType: DirExtensionToUTI["xcdatamodeld"]
-          )
-      ]
-      mainGroupDefinition = GroupDefinition(name: "mainGroup",
-          sourceTree: .SourceRoot,
+        GroupDefinition(
+          name: "Products",
+          sourceTree: .Group,
           path: nil,
-          gid: mainGroupGID,
-          files: mainGroupFiles,
-          groups: mainGroupGroups)
+          gid: generator.generateReservedID(),
+          files: [],
+          groups: []
+        ),
+        GroupDefinition(
+          name: "ChildGroup",
+          sourceTree: .Group,
+          path: "child_group_path",
+          gid: generator.generateReservedID(),
+          files: [
+            FileDefinition(
+              sourceTree: .Group, path: "ChildRelativeFile.swift",
+              gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.a", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.dylib", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.framework", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.jpg", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.m", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.mm", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.pch", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.plist", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.png", gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.rtf", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.storyboard", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.xcassets", uti: DirExtensionToUTI["xcassets"],
+              gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "t.xcstickers", uti: DirExtensionToUTI["xcstickers"],
+              gid: generator.generateReservedID()),
+            FileDefinition(sourceTree: .Group, path: "t.xib", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "Test", uti: "text", gid: generator.generateReservedID()),
+            FileDefinition(
+              sourceTree: .Group, path: "Output.app", gid: generator.generateReservedID(),
+              isInputFile: false),
+          ],
+          groups: []
+        ),
+        VersionGroupDefinition(
+          name: "DataModel.xcdatamodeld",
+          sourceTree: .Group,
+          path: "DataModel.xcdatamodeld",
+          gid: generator.generateReservedID(),
+          files: [
+            FileDefinition(
+              sourceTree: .Group,
+              path: "v1.xcdatamodel",
+              uti: DirExtensionToUTI["xcdatamodel"],
+              gid: generator.generateReservedID(),
+              isInputFile: true),
+            activeDatamodelVersion,
+          ],
+          groups: [],
+          currentVersion: activeDatamodelVersion,
+          versionGroupType: DirExtensionToUTI["xcdatamodeld"]
+        ),
+      ]
+      mainGroupDefinition = GroupDefinition(
+        name: "mainGroup",
+        sourceTree: .SourceRoot,
+        path: nil,
+        gid: mainGroupGID,
+        files: mainGroupFiles,
+        groups: mainGroupGroups)
     }
-    let definition = SimpleProjectDefinition(projectLevelBuildConfigName: projectLevelBuildConfigName,
-        projectLevelBuildConfigSettings: projectLevelBuildConfigSettings,
-        nativeTarget: nativeTarget,
-        legacyTarget: legacyTarget,
-        mainGroupGID: mainGroupGID,
-        mainGroupDefinition: mainGroupDefinition
+    let definition = SimpleProjectDefinition(
+      projectLevelBuildConfigName: projectLevelBuildConfigName,
+      projectLevelBuildConfigSettings: projectLevelBuildConfigSettings,
+      nativeTarget: nativeTarget,
+      legacyTarget: legacyTarget,
+      mainGroupGID: mainGroupGID,
+      mainGroupDefinition: mainGroupDefinition
     )
 
     do {
-      let config = targetProject.buildConfigurationList.getOrCreateBuildConfiguration(projectLevelBuildConfigName)
+      let config = targetProject.buildConfigurationList.getOrCreateBuildConfiguration(
+        projectLevelBuildConfigName)
       config.buildSettings = projectLevelBuildConfigSettings
     }
-    let nativePBXTarget = targetProject.createNativeTarget(nativeTarget.name,
-                                                           deploymentTarget: nil,
-                                                           targetType: nativeTarget.targetType)
-    let config = nativePBXTarget.buildConfigurationList.getOrCreateBuildConfiguration(nativeTarget.config)
+    let nativePBXTarget = targetProject.createNativeTarget(
+      nativeTarget.name,
+      deploymentTarget: nil,
+      targetType: nativeTarget.targetType)
+    let config = nativePBXTarget.buildConfigurationList.getOrCreateBuildConfiguration(
+      nativeTarget.config)
     config.buildSettings = nativeTarget.settings
-    let legacyPBXTarget = targetProject.createLegacyTarget(legacyTarget.name,
-                                                           deploymentTarget: nil,
-                                                           buildToolPath: legacyTarget.buildToolPath,
-                                                           buildArguments: legacyTarget.buildArguments,
-                                                           buildWorkingDirectory: legacyTarget.buildWorkingDirectory)
+    let legacyPBXTarget = targetProject.createLegacyTarget(
+      legacyTarget.name,
+      deploymentTarget: nil,
+      buildToolPath: legacyTarget.buildToolPath,
+      buildArguments: legacyTarget.buildArguments,
+      buildWorkingDirectory: legacyTarget.buildWorkingDirectory)
     targetProject.linkTestTarget(legacyPBXTarget, toHostTarget: nativePBXTarget)
 
     do {
@@ -326,12 +372,14 @@ class PBXProjSerializerTests: XCTestCase {
         for childDef in groupDefinition.groups {
           let childGroup: PBXGroup
           if let versionedChildDef = childDef as? VersionGroupDefinition {
-            let versionGroup = group.getOrCreateChildVersionGroupByName(versionedChildDef.name,
-                                                                        path: versionedChildDef.path)
+            let versionGroup = group.getOrCreateChildVersionGroupByName(
+              versionedChildDef.name,
+              path: versionedChildDef.path)
             versionGroup.versionGroupType = versionedChildDef.versionGroupType
             let currentVersionDef = versionedChildDef.currentVersion
-            let currentFileRef = versionGroup.getOrCreateFileReferenceBySourceTree(currentVersionDef.sourceTree,
-                                                                                   path: currentVersionDef.path)
+            let currentFileRef = versionGroup.getOrCreateFileReferenceBySourceTree(
+              currentVersionDef.sourceTree,
+              path: currentVersionDef.path)
             currentFileRef.globalID = currentVersionDef.gid
             currentFileRef.isInputFile = currentVersionDef.isInputFile
             versionGroup.currentVersion = currentFileRef
@@ -350,18 +398,23 @@ class PBXProjSerializerTests: XCTestCase {
     return definition
   }
 
-  private func assertDict(_ dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = #line) {
+  private func assertDict(
+    _ dict: StringToObjectDict, isPBXObjectClass pbxClass: String, line: UInt = #line
+  ) {
     guard let isa = dict["isa"] as? String else {
       XCTFail("dictionary is not a PBXObject (missing 'isa' member)", line: line)
       return
     }
-    XCTAssertEqual(isa, pbxClass, "Serialized dict is not of the expected PBXObject type", line: line)
+    XCTAssertEqual(
+      isa, pbxClass, "Serialized dict is not of the expected PBXObject type", line: line)
   }
 
-  private func getObjectByID(_ gid: String,
-                             withPBXClass pbxClass: String,
-                             fromObjects objects: StringToObjectDict,
-                             line: UInt = #line) -> StringToObjectDict? {
+  private func getObjectByID(
+    _ gid: String,
+    withPBXClass pbxClass: String,
+    fromObjects objects: StringToObjectDict,
+    line: UInt = #line
+  ) -> StringToObjectDict? {
     guard let dict = objects[gid] as? StringToObjectDict else {
       XCTFail("Missing \(pbxClass) with globalID '\(gid)'", line: line)
       return nil
@@ -369,7 +422,6 @@ class PBXProjSerializerTests: XCTestCase {
     assertDict(dict, isPBXObjectClass: pbxClass, line: line)
     return dict
   }
-
 
   /// Generates predictable GlobalID's for use in tests.
   // Note, this implementation is only suitable for projects with less than 4 billion objects.
@@ -385,13 +437,13 @@ class PBXProjSerializerTests: XCTestCase {
 
     // MARK: - Methods for testing.
     func generateReservedID() -> String {
-      let reservedID = gidForCounter(nextID, prefix: 0xBAADF00D)
+      let reservedID = gidForCounter(nextID, prefix: 0xBAAD_F00D)
       nextID += 1
       return reservedID
     }
 
-    private func gidForCounter(_ counter : Int, prefix: Int = 0) -> String {
-      return String(format: "%08X%08X%08X", prefix, 0, counter & 0xFFFFFFFF)
+    private func gidForCounter(_ counter: Int, prefix: Int = 0) -> String {
+      return String(format: "%08X%08X%08X", prefix, 0, counter & 0xFFFF_FFFF)
     }
   }
 }

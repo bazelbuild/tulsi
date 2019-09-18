@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import XCTest
+
 @testable import TulsiGenerator
 
 class BuildSettingsTests: XCTestCase {
@@ -21,6 +22,7 @@ class BuildSettingsTests: XCTestCase {
     XCTAssert(BazelFlags().isEmpty)
     XCTAssertEqual(BazelFlags().toPython(""), "BazelFlags()")
   }
+
   func testBazelFlagsOperators() {
     let a = BazelFlags(startupStr: "a b", buildStr: "x y")
     let b = BazelFlags(startupStr: "c d", buildStr: "z 1")
@@ -35,10 +37,13 @@ class BuildSettingsTests: XCTestCase {
     XCTAssertEqual(c.build, ["x", "y", "z", "1"])
     XCTAssertNotEqual(c, b + a)
   }
+
   func testBazelFlagsPythonable() {
     let startup = ["--startup-flag"]
     let build = ["--build-flag"]
-    XCTAssertEqual(BazelFlags(startup: startup, build: build).toPython(""), """
+    XCTAssertEqual(
+      BazelFlags(startup: startup, build: build).toPython(""),
+      """
 BazelFlags(
     startup = [
         '--startup-flag',
@@ -47,13 +52,15 @@ BazelFlags(
         '--build-flag',
     ],
 )
-""")
+"""
+    )
   }
 
   func testBazelFlagsSetEmpty() {
     XCTAssert(BazelFlagsSet().isEmpty)
     XCTAssertEqual(BazelFlagsSet().toPython(""), "BazelFlagsSet()")
   }
+
   func testBazelFlagsSetInitializers() {
     let basicFlagsSet = BazelFlagsSet(startupFlags: ["a"], buildFlags: ["b"])
     let basicFlags = BazelFlags(startup: ["a"], build: ["b"])
@@ -62,15 +69,19 @@ BazelFlags(
     XCTAssertEqual(basicFlagsSet.getFlags(forDebug: true), basicFlagsSet.debug)
     XCTAssertEqual(basicFlagsSet.getFlags(forDebug: false), basicFlagsSet.release)
 
-    let complexFlagSet = BazelFlagsSet(debug: BazelFlags(startup: ["a"], build: ["b"]),
-                                       release: BazelFlags(startup: ["x"], build: ["y"]),
-                                       common: BazelFlags(startup: ["1"], build: ["2"]))
+    let complexFlagSet = BazelFlagsSet(
+      debug: BazelFlags(startup: ["a"], build: ["b"]),
+      release: BazelFlags(startup: ["x"], build: ["y"]),
+      common: BazelFlags(startup: ["1"], build: ["2"]))
     XCTAssertEqual(complexFlagSet.debug, BazelFlags(startup: ["a", "1"], build: ["b", "2"]))
     XCTAssertEqual(complexFlagSet.release, BazelFlags(startup: ["x", "1"], build: ["y", "2"]))
   }
+
   func testBazelFlagsSetPythonable() {
     let basicFlagsSet = BazelFlagsSet(startupFlags: ["a"], buildFlags: ["b"])
-    XCTAssertEqual(basicFlagsSet.toPython(""), """
+    XCTAssertEqual(
+      basicFlagsSet.toPython(""),
+      """
 BazelFlagsSet(
     flags = BazelFlags(
         startup = [
@@ -81,11 +92,15 @@ BazelFlagsSet(
         ],
     ),
 )
-""")
-    let complexFlagSet = BazelFlagsSet(debug: BazelFlags(startup: ["a"], build: ["b"]),
-                                       release: BazelFlags(startup: ["x"], build: ["y"]),
-                                       common: BazelFlags(startup: ["1"], build: ["2"]))
-    XCTAssertEqual(complexFlagSet.toPython(""), """
+"""
+    )
+    let complexFlagSet = BazelFlagsSet(
+      debug: BazelFlags(startup: ["a"], build: ["b"]),
+      release: BazelFlags(startup: ["x"], build: ["y"]),
+      common: BazelFlags(startup: ["1"], build: ["2"]))
+    XCTAssertEqual(
+      complexFlagSet.toPython(""),
+      """
 BazelFlagsSet(
     debug = BazelFlags(
         startup = [
@@ -108,48 +123,54 @@ BazelFlagsSet(
         ],
     ),
 )
-""")
+"""
+    )
   }
 
-    func testBazelBuildSettingsPythonable() {
-      let bazel = "/path/to/bazel"
-      let bazelExecRoot = "__MOCK_EXEC_ROOT__"
-      let defaultIdentifier = "fake_config"
-      let platformConfigurationFlags = [
-        "fake_config": ["a", "b"],
-        "another_one": ["--x", "-c"],
-      ]
+  func testBazelBuildSettingsPythonable() {
+    let bazel = "/path/to/bazel"
+    let bazelExecRoot = "__MOCK_EXEC_ROOT__"
+    let defaultIdentifier = "fake_config"
+    let platformConfigurationFlags = [
+      "fake_config": ["a", "b"],
+      "another_one": ["--x", "-c"],
+    ]
 
-      let swiftTargets: Set<String> = [
-          "//dir/swiftTarget:swiftTarget",
-          "//dir/nested/depOnswift:depOnswift"
-      ]
-      let cacheAffecting = BazelFlagsSet(startupFlags: ["--nocacheStartup"],
-                                         buildFlags: ["--nocacheBuild"])
-      let cacheSafe = BazelFlagsSet(startupFlags: ["--cacheSafeStartup"],
-                                    buildFlags: ["--cacheSafeBuild"])
-      let swift = BazelFlagsSet(buildFlags: ["--swift-only"])
-      let nonSwift = BazelFlagsSet(startupFlags: ["--non-swift-only"])
-      let projDefaults = BazelFlagsSet()
-      let projTargetFlags = [
-          "//dir/some/customized:target": BazelFlagsSet(buildFlags: ["a", "b"]),
-      ]
-      let swiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
-      let nonSwiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
-      let settings = BazelBuildSettings(bazel: bazel,
-                                        bazelExecRoot: bazelExecRoot,
-                                        defaultPlatformConfigIdentifier: defaultIdentifier,
-                                        platformConfigurationFlags: platformConfigurationFlags,
-                                        swiftTargets: swiftTargets,
-                                        tulsiCacheAffectingFlagsSet: cacheAffecting,
-                                        tulsiCacheSafeFlagSet: cacheSafe,
-                                        tulsiSwiftFlagSet: swift,
-                                        tulsiNonSwiftFlagSet: nonSwift,
-                                        swiftFeatures: swiftFeatures,
-                                        nonSwiftFeatures: nonSwiftFeatures,
-                                        projDefaultFlagSet: projDefaults,
-                                        projTargetFlagSets: projTargetFlags)
-      XCTAssertEqual(settings.toPython(""), """
+    let swiftTargets: Set<String> = [
+      "//dir/swiftTarget:swiftTarget",
+      "//dir/nested/depOnswift:depOnswift",
+    ]
+    let cacheAffecting = BazelFlagsSet(
+      startupFlags: ["--nocacheStartup"],
+      buildFlags: ["--nocacheBuild"])
+    let cacheSafe = BazelFlagsSet(
+      startupFlags: ["--cacheSafeStartup"],
+      buildFlags: ["--cacheSafeBuild"])
+    let swift = BazelFlagsSet(buildFlags: ["--swift-only"])
+    let nonSwift = BazelFlagsSet(startupFlags: ["--non-swift-only"])
+    let projDefaults = BazelFlagsSet()
+    let projTargetFlags = [
+      "//dir/some/customized:target": BazelFlagsSet(buildFlags: ["a", "b"]),
+    ]
+    let swiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
+    let nonSwiftFeatures = [BazelSettingFeature.DebugPathNormalization.stringValue]
+    let settings = BazelBuildSettings(
+      bazel: bazel,
+      bazelExecRoot: bazelExecRoot,
+      defaultPlatformConfigIdentifier: defaultIdentifier,
+      platformConfigurationFlags: platformConfigurationFlags,
+      swiftTargets: swiftTargets,
+      tulsiCacheAffectingFlagsSet: cacheAffecting,
+      tulsiCacheSafeFlagSet: cacheSafe,
+      tulsiSwiftFlagSet: swift,
+      tulsiNonSwiftFlagSet: nonSwift,
+      swiftFeatures: swiftFeatures,
+      nonSwiftFeatures: nonSwiftFeatures,
+      projDefaultFlagSet: projDefaults,
+      projTargetFlagSets: projTargetFlags)
+    XCTAssertEqual(
+      settings.toPython(""),
+      """
 BazelBuildSettings(
     '\(bazel)',
     '\(bazelExecRoot)',
@@ -165,6 +186,7 @@ BazelBuildSettings(
     \(projDefaults.toPython("    ")),
     \(projTargetFlags.toPython("    ")),
 )
-""")
+"""
+    )
   }
 }
