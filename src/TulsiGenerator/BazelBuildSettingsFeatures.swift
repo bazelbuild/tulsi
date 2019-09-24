@@ -69,7 +69,7 @@ public class BazelBuildSettingsFeatures {
     // Unfortunately, this still has some slight issues (which may be worked around via changes to
     // wrapped_clang).
     var features: Set<BazelSettingFeature> = [.DebugPathNormalization]
-    if options[.SwiftForcesdSYMs].commonValueAsBool ?? true {
+    if options[.SwiftForcesdSYMs].commonValueAsBool ?? false {
       features.insert(.SwiftForcesdSYMs)
     }
     if options[.TreeArtifactOutputs].commonValueAsBool ?? true {

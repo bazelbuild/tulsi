@@ -320,7 +320,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
     addBoolOption(.GenerateRunfiles, .Generic, false)
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
-    addBoolOption(.SwiftForcesdSYMs, .Generic, true)
+    addBoolOption(.SwiftForcesdSYMs, .Generic, false)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier

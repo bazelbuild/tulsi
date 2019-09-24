@@ -55,7 +55,7 @@
 "PostBuildPhaseRunScript" = "Build phase run script (post bazel build)";
 "PostBuildPhaseRunScript_DESC" = "Build phase run script that runs after the bazel_build.py script (i.e. `exec ${PATH_TO_SCRIPT}')";
 
-"SwiftForcesdSYMs" = "Swift code dependency enables dSYMs (required for debugging).";
+"SwiftForcesdSYMs" = "Swift code dependency enables dSYMs (optional for debugging after 10.2.1)";
 "TreeArtifactOutputs" = "Enable tree artifact outputs (--define=apple.experimental.tree_artifact_outputs=1). Disable if you're having issues.";
 
 "SuppressSwiftUpdateCheck" = "Suppress Xcode Swift update check";
