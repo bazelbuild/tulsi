@@ -15,6 +15,7 @@
 
 """Copy on write with similar behavior to shutil.copy2, when available."""
 
+import errno
 import os
 import re
 import shutil
@@ -44,8 +45,34 @@ def _APFSCheck(volume_path):
   return True
 
 
+def _IsOnDevice(path, st_dev):
+  """Checks if a given path belongs to a FS on a given device.
+
+  Args:
+    path: a filesystem path, possibly to a non-existent file or directory.
+    st_dev: the ID of a device with a filesystem, as in os.stat(...).st_dev.
+
+  Returns:
+    True if the path or (if the path does not exist) its closest existing
+    ancestor exists on the device.
+    False if not.
+  """
+  if not os.path.isabs(path):
+    path = os.path.abspath(path)
+  try:
+    return os.stat(path).st_dev == st_dev
+  except OSError as err:
+    if err.errno == errno.ENOENT:
+      dirname = os.path.dirname(path)
+      if len(dirname) < len(path):
+        return _IsOnDevice(dirname, st_dev)
+  return False
+
 # At launch, determine if the root filesystem is APFS.
 IS_ROOT_APFS = _APFSCheck('/')
+
+# At launch, determine the root filesystem device ID.
+ROOT_ST_DEV = os.stat('/').st_dev
 
 
 def CopyOnWrite(source, dest, tree=False):
@@ -61,8 +88,11 @@ def CopyOnWrite(source, dest, tree=False):
   #
   # Identical to shutil's copy2 method, used by shutil's move and copytree.
   cmd = ['cp']
-  if IS_ROOT_APFS:
-    # Assume copy on write (clone) is possible if the root FS is APFS.
+  if IS_ROOT_APFS and _IsOnDevice(source, ROOT_ST_DEV) and _IsOnDevice(
+      dest, ROOT_ST_DEV):
+    # Copy on write (clone) is possible if both source and destination reside in
+    # the same APFS volume. For simplicity, and since checking FS type can be
+    # expensive, allow CoW only for the root volume.
     cmd.append('-c')
   if tree:
     # Copy recursively if indicated.
