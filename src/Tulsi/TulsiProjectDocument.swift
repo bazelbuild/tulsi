@@ -217,6 +217,9 @@ final class TulsiProjectDocument: NSDocument,
     // Ensure that the project's URL is set to the location in which this document is being saved so
     // that relative paths can be set properly.
     project.projectBundleURL = url
+    // Create any parent directories if they don't yet exist.
+    try FileManager.default.createDirectory(
+      at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
     try super.writeSafely(to: url, ofType: typeName, for: saveOperation)
   }
 
