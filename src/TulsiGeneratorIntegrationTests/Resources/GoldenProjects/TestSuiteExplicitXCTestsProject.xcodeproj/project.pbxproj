@@ -33,16 +33,19 @@
 		25889F7C149738A400000000 /* TestSuite-Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Three-XCTest.xctest"; path = "TestSuite-Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C1E33767800000000 /* TestSuite-One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-One-XCTest.xctest"; path = "TestSuite-One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C2A3379D000000000 /* lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; path = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C2E28BE8E00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Two/BUILD; sourceTree = "<group>"; };
 		25889F7C35687C6800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; };
 		25889F7C35F4A86400000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/TestSuite/Application/srcs/main.m"; sourceTree = "<group>"; };
 		25889F7C5801CD8000000000 /* LogicTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = LogicTest.xctest; path = LogicTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C5D1BD9FD00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/Two/XCTest.m"; sourceTree = "<group>"; };
+		25889F7C5F8D5C0800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/One/BUILD; sourceTree = "<group>"; };
 		25889F7C96D67B6F00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/Three/XCTest.m"; sourceTree = "<group>"; };
 		25889F7C9B804E0000000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/One/XCTest-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C9BDE3CEF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/TestSuite/Info.plist"; sourceTree = "<group>"; };
 		25889F7C9F3B3D3900000000 /* LogicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LogicTest.m; path = "tulsi-workspace/TestSuite/One/LogicTest.m"; sourceTree = "<group>"; };
 		25889F7CA25B0A0200000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "tulsi-workspace/TestSuite/One/XCTest.m"; sourceTree = "<group>"; };
 		25889F7CA46B3F1D00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/XCTest-intermediates/Info.plist"; sourceTree = "<group>"; };
+		25889F7CADBB0ACA00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Three/BUILD; sourceTree = "<group>"; };
 		25889F7CB8B54B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CCD38665F00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Two/XCTest-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CCE0328AC00000000 /* TestSuite-Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "TestSuite-Two-XCTest.xctest"; path = "TestSuite-Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +89,7 @@
 		45D056290913F81B00000001 /* Two */ = {
 			isa = PBXGroup;
 			children = (
+				25889F7C2E28BE8E00000000 /* BUILD */,
 				25889F7C5D1BD9FD00000000 /* XCTest.m */,
 			);
 			name = Two;
@@ -148,6 +152,7 @@
 		45D0562978986CA000000001 /* Three */ = {
 			isa = PBXGroup;
 			children = (
+				25889F7CADBB0ACA00000000 /* BUILD */,
 				25889F7C96D67B6F00000000 /* XCTest.m */,
 			);
 			name = Three;
@@ -231,6 +236,7 @@
 		45D05629D43882ED00000001 /* One */ = {
 			isa = PBXGroup;
 			children = (
+				25889F7C5F8D5C0800000000 /* BUILD */,
 				25889F7C9F3B3D3900000000 /* LogicTest.m */,
 				25889F7CA25B0A0200000000 /* XCTest.m */,
 			);

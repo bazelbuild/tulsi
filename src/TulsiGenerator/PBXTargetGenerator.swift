@@ -578,6 +578,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         || ruleEntry.pbxTargetType?.isTest ?? false
         || ruleEntry.type == "filegroup"
         || ruleEntryLabelsToSkipForIndexing.contains(ruleEntry.label) {
+        addBuildFileForRule(ruleEntry)
         return (frameworkSearchPaths)
       }
 
