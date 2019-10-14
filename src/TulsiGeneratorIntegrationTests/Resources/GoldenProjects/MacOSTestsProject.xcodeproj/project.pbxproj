@@ -35,11 +35,11 @@
 		25889F7C0B8893FD00000000 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.m"; sourceTree = "<group>"; };
 		25889F7C13A3ADB400000000 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UITests.xctest; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C14A0CF5B00000000 /* MyTodayExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "MyTodayExtension-Info.plist"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Info.plist"; sourceTree = "<group>"; };
+		25889F7C1673EEDD00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UITests.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C190C6AD900000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/MyMacOSApp-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C1D215DBF00000000 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TodayViewController.m; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/ExtSources/TodayViewController.m"; sourceTree = "<group>"; };
 		25889F7C1DF2978800000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/Info.plist"; sourceTree = "<group>"; };
 		25889F7C2659003900000000 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "tulsi-workspace/tulsi_e2e_mac/src/AppDelegate.h"; sourceTree = "<group>"; };
-		25889F7C2FC9B06400000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UnitTestsNoHost-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C2FDF604B00000000 /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UnitTests.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UnitTests.m"; sourceTree = "<group>"; };
 		25889F7C434F672400000000 /* MyTodayExtension-Entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = "MyTodayExtension-Entitlements.entitlements"; path = "tulsi-workspace/tulsi_e2e_mac/MyTodayExtension-Entitlements.entitlements"; sourceTree = "<group>"; };
 		25889F7C59FF2E4A00000000 /* PluginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginViewController.h; path = "tulsi-workspace/tulsi_e2e_mac/src/plugin/PluginViewController.h"; sourceTree = "<group>"; };
@@ -49,15 +49,15 @@
 		25889F7C88BF1D8A00000000 /* PluginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PluginViewController.m; path = "tulsi-workspace/tulsi_e2e_mac/src/plugin/PluginViewController.m"; sourceTree = "<group>"; };
 		25889F7C89A6486800000000 /* MyPlugin_Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = MyPlugin_Info.plist; path = "tulsi-workspace/tulsi_e2e_mac/MyPlugin_Info.plist"; sourceTree = "<group>"; };
 		25889F7C8BF96B6600000000 /* UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UITests.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UITests.m"; sourceTree = "<group>"; };
-		25889F7C91086DF900000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UITests-intermediates/Info.plist"; sourceTree = "<group>"; };
+		25889F7C9D2ADD1300000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UnitTests.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CA42D0C9A00000000 /* lib_idx_MyTodayExtensionSources_MyMacAppSources_MyPluginSources_FEE655FD_macos_min10.13.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_MyTodayExtensionSources_MyMacAppSources_MyPluginSources_FEE655FD_macos_min10.13.a; path = lib_idx_MyTodayExtensionSources_MyMacAppSources_MyPluginSources_FEE655FD_macos_min10.13.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CAD40374500000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UnitTests-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CB053494A00000000 /* MyMacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = MyMacOSApp.app; path = MyMacOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CBE1ACDB100000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_mac/src/main.m"; sourceTree = "<group>"; };
 		25889F7CC867E1F300000000 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TodayViewController.h; path = "tulsi-workspace/tulsi_e2e_mac/src/extensions/today/TodayViewController.h"; sourceTree = "<group>"; };
 		25889F7CCDA86EAB00000000 /* UnitTestsNoHost.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UnitTestsNoHost.m; path = "tulsi-workspace/tulsi_e2e_mac/test/UnitTestsNoHost.m"; sourceTree = "<group>"; };
 		25889F7CEAD580F400000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_mac/BUILD; sourceTree = "<group>"; };
 		25889F7CEF58351100000000 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "tulsi-workspace/tulsi_e2e_mac/Resources/Main.storyboard"; sourceTree = "<group>"; };
+		25889F7CEF97F98300000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_mac/UnitTestsNoHost.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CF8E2406C00000000 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = UnitTests.xctest; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -73,6 +73,14 @@
 				45D05629A259EF0200000000 /* bazel-tulsi-includes */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		45D056292621D11600000000 /* UnitTestsNoHost.__internal__.__test_bundle-intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				25889F7CEF97F98300000000 /* Info.plist */,
+			);
+			name = "UnitTestsNoHost.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
 		};
 		45D0562932083AD600000000 /* plugin */ = {
@@ -116,14 +124,6 @@
 				45D05629C93B838500000000 /* tulsi_e2e_mac */,
 			);
 			name = x;
-			sourceTree = "<group>";
-		};
-		45D056293C017A9100000000 /* UnitTestsNoHost-intermediates */ = {
-			isa = PBXGroup;
-			children = (
-				25889F7C2FC9B06400000000 /* Info.plist */,
-			);
-			name = "UnitTestsNoHost-intermediates";
 			sourceTree = "<group>";
 		};
 		45D056293D848C8300000000 /* today */ = {
@@ -185,20 +185,20 @@
 			name = "MyMacOSApp-intermediates";
 			sourceTree = "<group>";
 		};
+		45D056297BFE52A200000000 /* UnitTests.__internal__.__test_bundle-intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				25889F7C9D2ADD1300000000 /* Info.plist */,
+			);
+			name = "UnitTests.__internal__.__test_bundle-intermediates";
+			sourceTree = "<group>";
+		};
 		45D05629A259EF0200000000 /* bazel-tulsi-includes */ = {
 			isa = PBXGroup;
 			children = (
 				45D0562934CDA62100000000 /* x */,
 			);
 			name = "bazel-tulsi-includes";
-			sourceTree = "<group>";
-		};
-		45D05629A370188800000000 /* UnitTests-intermediates */ = {
-			isa = PBXGroup;
-			children = (
-				25889F7CAD40374500000000 /* Info.plist */,
-			);
-			name = "UnitTests-intermediates";
 			sourceTree = "<group>";
 		};
 		45D05629B56AD7F200000000 /* mainGroup */ = {
@@ -223,9 +223,9 @@
 			isa = PBXGroup;
 			children = (
 				45D056296ADC2BDB00000000 /* MyMacOSApp-intermediates */,
-				45D05629E02415E500000000 /* UITests-intermediates */,
-				45D05629A370188800000000 /* UnitTests-intermediates */,
-				45D056293C017A9100000000 /* UnitTestsNoHost-intermediates */,
+				45D05629CE8239BD00000000 /* UITests.__internal__.__test_bundle-intermediates */,
+				45D056297BFE52A200000000 /* UnitTests.__internal__.__test_bundle-intermediates */,
+				45D056292621D11600000000 /* UnitTestsNoHost.__internal__.__test_bundle-intermediates */,
 			);
 			name = tulsi_e2e_mac;
 			sourceTree = "<group>";
@@ -257,12 +257,12 @@
 			name = src;
 			sourceTree = "<group>";
 		};
-		45D05629E02415E500000000 /* UITests-intermediates */ = {
+		45D05629CE8239BD00000000 /* UITests.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C91086DF900000000 /* Info.plist */,
+				25889F7C1673EEDD00000000 /* Info.plist */,
 			);
-			name = "UITests-intermediates";
+			name = "UITests.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
