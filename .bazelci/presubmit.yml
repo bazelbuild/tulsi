@@ -1,6 +1,7 @@
 ---
 platforms:
   macos:
+    bazel: last_rc
     xcode_version: "10.2.1"
     build_targets:
     - "//:tulsi"
