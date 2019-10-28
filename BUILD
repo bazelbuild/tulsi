@@ -9,9 +9,9 @@ exports_files(["LICENSE"])
 
 load(
     ":version.bzl",
-    "fill_info_plist",
     "TULSI_VERSION_DATE",
     "TULSI_VERSION_MAJOR",
+    "fill_info_plist",
 )
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
 

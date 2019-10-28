@@ -21,6 +21,7 @@ swift_library(
 
 tulsi_integration_test(
     name = "AspectTests",
+    timeout = "long",
     srcs = [
         "AspectTests.swift",
         "PlatformDependentAspectTests.swift",
