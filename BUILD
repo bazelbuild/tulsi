@@ -1,12 +1,6 @@
 # Description:
 #   Tulsi, an Xcode project generator for Bazel-bazed projects.
 
-package(default_visibility = ["//:__subpackages__"])
-
-licenses(["notice"])  # Apache 2.0
-
-exports_files(["LICENSE"])
-
 load(
     ":version.bzl",
     "TULSI_VERSION_DATE",
@@ -14,6 +8,13 @@ load(
     "fill_info_plist",
 )
 load("@build_bazel_rules_apple//apple:versioning.bzl", "apple_bundle_version")
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
+
+package(default_visibility = ["//:__subpackages__"])
+
+licenses(["notice"])  # Apache 2.0
+
+exports_files(["LICENSE"])
 
 fill_info_plist(
     name = "info_plist",
@@ -56,8 +57,6 @@ filegroup(
         "//src/TulsiGenerator:en.lproj/Options.strings",
     ],
 )
-
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
 
 macos_application(
     name = "tulsi",
