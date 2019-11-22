@@ -609,8 +609,12 @@ class BazelBuildBridge(object):
     # Starting with Xcode 7.3, XCTests inject several supporting frameworks
     # into the test host that need to be signed with the same identity as
     # the host itself.
-    if (self.is_test and not self.platform_name.startswith('macos') and
-        self.codesigning_allowed):
+    if (self.is_test 
+        and not any(
+            self.platform_name.startswith(prefix) 
+            for prefix in ('macos', 'iphone')
+        )
+        and self.codesigning_allowed):
       exit_code = self._ResignTestArtifacts()
       if exit_code:
         return exit_code
