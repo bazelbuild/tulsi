@@ -340,16 +340,22 @@ class _OptionsParser(object):
   @staticmethod
   def _GetXcodeVersionString():
     """Returns Xcode version info from the environment as a string."""
-    reported_version = os.environ['XCODE_VERSION_ACTUAL']
-    match = re.match(r'(\d{2})(\d)(\d)$', reported_version)
-    if not match:
-      _PrintUnbuffered('Warning: Failed to extract Xcode version from %s' % (
-          reported_version))
+    xcodebuild_bin = os.path.join(os.environ["SYSTEM_DEVELOPER_BIN_DIR"], "xcodebuild")
+    # Expect something like this
+    # ['Xcode 11.2.1', 'Build version 11B500', '']
+    # This command is a couple hundred MS to run and should be removed. On
+    # Xcode 11.2.1 Xcode uses the wrong # version, although version.plist is
+    # correct.
+    process = subprocess.Popen([xcodebuild_bin, "-version"], stdout=subprocess.PIPE)
+    process.wait()
+
+    if process.returncode != 0:
+      _PrintXcodeWarning('Can\'t find xcode version')
       return None
-    major_version = int(match.group(1))
-    minor_version = int(match.group(2))
-    fix_version = int(match.group(3))
-    return '%d.%d.%d' % (major_version, minor_version, fix_version)
+
+    output = process.stdout.read()
+    lines = output.split("\n")
+    return lines[0].split(" ")[1]
 
   @staticmethod
   def _ComputeXcodeVersionFlag():
