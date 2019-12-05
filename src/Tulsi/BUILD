@@ -6,6 +6,11 @@ load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 
 exports_files(["Info.plist"])
 
+exports_files(
+    ["BazelSelectionPanel.swift"],
+    visibility = ["//:__subpackages__"],
+)
+
 filegroup(
     name = "Icon",
     srcs = glob(["Assets.xcassets/AppIcon.appiconset/*"]),
