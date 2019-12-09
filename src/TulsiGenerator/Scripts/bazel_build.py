@@ -49,6 +49,7 @@ from update_symbol_cache import UpdateSymbolCache
 # re-signed when running the tests on devices.
 XCODE_INJECTED_FRAMEWORKS = [
     'libXCTestBundleInject.dylib',
+    'libXCTestSwiftSupport.dylib',
     'IDEBundleInjection.framework',
     'XCTAutomationSupport.framework',
     'XCTest.framework',
