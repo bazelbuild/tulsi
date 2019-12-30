@@ -88,6 +88,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
          to: configArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
+    self.generateButton.keyEquivalent = "\r"
   }
 
   // Toggle the state of the buttons depending on the current selection as well as if any required
