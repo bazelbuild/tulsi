@@ -1,6 +1,9 @@
 {
   "configDefaults" : {
     "optionSet" : {
+      "BazelBuildOptionsDebug" : {
+        "p" : "--nocheck_visibility"
+      },
       "GenerateRunfiles" : {
         "p" : "YES"
       },
