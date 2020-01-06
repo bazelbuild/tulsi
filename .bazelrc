@@ -1,6 +1,6 @@
 build --cpu=darwin_x86_64
 build --apple_platform_type=macos
-build --xcode_version=11.1
+build --xcode_version=11.2.1
 
 # Disable the Swift compilation worker when running integration tests, since it
 # requires the protobuf dependency which is infeasible to get working on Bazel.
