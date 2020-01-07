@@ -371,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_WR)/external/bazel_tools $(TULSI_WR)/bazel-tulsi-includes/x/x/external/bazel_tools $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/external/bazel_tools $(TULSI_BWRS)/bazel-tulsi-includes/x/x/external/bazel_tools ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
@@ -383,7 +384,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
@@ -446,6 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_WR)/external/bazel_tools $(TULSI_WR)/bazel-tulsi-includes/x/x/external/bazel_tools $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/external/bazel_tools $(TULSI_BWRS)/bazel-tulsi-includes/x/x/external/bazel_tools ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
@@ -458,7 +462,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";

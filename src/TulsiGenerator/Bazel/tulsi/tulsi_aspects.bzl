@@ -640,8 +640,10 @@ def _collect_module_maps(target, rule_attr):
         return depset(transitive = depsets)
     return depset()
 
-def _collect_objc_defines(objc_provider, rule_attr):
+def _collect_objc_defines(objc_provider, cc_provider, rule_attr):
     """Returns a depset of C-compiler defines."""
+    if cc_provider and not objc_provider:
+        return cc_provider.compilation_context.defines
     depsets = [objc_provider.define] if objc_provider else []
     for dep in _collect_dependencies(rule_attr, "deps"):
         if CcInfo in dep:
@@ -813,16 +815,25 @@ def _tulsi_sources_aspect(target, ctx):
     all_attributes.update(transitive_attributes)
 
     objc_provider = _get_opt_provider(target, ObjcInfo)
+    cc_provider = _get_opt_provider(target, CcInfo)
     objc_defines = []
-    target_includes = []
+    includes_depsets = []
 
     if objc_provider:
+        includes_depsets = [objc_provider.include, objc_provider.iquote, objc_provider.include_system]
+    elif cc_provider:
+        cc_ctx = cc_provider.compilation_context
+        includes_depsets = [cc_ctx.includes, cc_ctx.quote_includes, cc_ctx.system_includes]
+
+    if includes_depsets:
         target_includes = [
             _convert_outpath_to_symlink_path(x)
-            for x in depset(transitive = [objc_provider.include, objc_provider.iquote, objc_provider.include_system]).to_list()
+            for x in depset(transitive = includes_depsets).to_list()
         ]
+    else:
+        target_includes = []
 
-    objc_defines = _collect_objc_defines(objc_provider, rule_attr).to_list()
+    objc_defines = _collect_objc_defines(objc_provider, cc_provider, rule_attr).to_list()
 
     platform_type, os_deployment_target = _get_deployment_info(target, ctx)
     non_arc_srcs = _collect_files(rule, "attr.non_arc_srcs")
