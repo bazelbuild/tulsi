@@ -28,8 +28,8 @@ apple_bundle_version(
     build_version = "%s.{date}.{buildnum}" % TULSI_VERSION_MAJOR,
     capture_groups = {
         "project": "[^_]*",
-        "date": "\d+",
-        "buildnum": "\d+",
+        "date": "\\d+",
+        "buildnum": "\\d+",
     },
     fallback_build_label = "tulsi_%s_build88" % TULSI_VERSION_DATE,
 )

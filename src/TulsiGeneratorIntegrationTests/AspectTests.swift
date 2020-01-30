@@ -709,13 +709,13 @@ class InfoChecker {
 
     /// Asserts that the contextual RuleEntry has an attribute with the given name and value.
     @discardableResult
-    func hasObjcDefines(_ value: [String], line: UInt = #line) -> Context {
+    func hasObjcDefines(_ value: Set<String>, line: UInt = #line) -> Context {
       guard let ruleEntry = ruleEntry else { return self }
       guard let defines = ruleEntry.objcDefines else {
         XCTFail("\(ruleEntry) expected to have defines", line: line)
         return self
       }
-      XCTAssertEqual(defines, value, line: line)
+      XCTAssertEqual(Set(defines), value, line: line)
       return self
     }
 
