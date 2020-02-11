@@ -28,21 +28,22 @@ public final class TulsiProcessRunner {
     return environment
   }()
 
+  /// Used to synchronize access to `defaultEnvironment`.
+  private static let semaphore = DispatchSemaphore(value: 1)
+
   /// Prepares a Process using the given launch binary with the given arguments that will collect
   /// output and passing it to a terminationHandler.
   static func createProcess(_ launchPath: String,
                             arguments: [String],
-                            environment: [String: String]? = nil,
+                            environment: [String: String] = [:],
                             messageLogger: LocalizedMessageLogger? = nil,
                             loggingIdentifier: String? = nil,
                             terminationHandler: @escaping CompletionHandler) -> Process {
-
-    var env = defaultEnvironment
-    if let environment = environment {
-      for (key, value) in environment {
-        env[key] = value
-      }
+    _ = TulsiProcessRunner.semaphore.wait(timeout: DispatchTime.distantFuture)
+    let env = environment.merging(defaultEnvironment) { (current, _) in
+      return current
     }
+    TulsiProcessRunner.semaphore.signal()
     return ProcessRunner.createProcess(launchPath,
                                        arguments: arguments,
                                        environment: env,
