@@ -640,6 +640,16 @@ def _collect_module_maps(target, rule_attr):
         return depset(transitive = depsets)
     return depset()
 
+def _collect_objc_strict_includes(target, rule_attr):
+    """Returns a depset of strict includes found on the deps of given target."""
+    depsets = []
+    for dep in _collect_dependencies(rule_attr, "deps"):
+        if ObjcInfo in dep:
+            objc = dep[ObjcInfo]
+            if hasattr(objc, "strict_include"):
+                depsets.append(objc.strict_include)
+    return depset(transitive = depsets)
+
 def _collect_objc_defines(objc_provider, cc_provider, rule_attr):
     """Returns a depset of C-compiler defines."""
     if cc_provider and not objc_provider:
@@ -814,13 +824,20 @@ def _tulsi_sources_aspect(target, ctx):
     all_attributes.update(inheritable_attributes)
     all_attributes.update(transitive_attributes)
 
+    objc_strict_includes = _collect_objc_strict_includes(target, rule_attr)
+
     objc_provider = _get_opt_provider(target, ObjcInfo)
     cc_provider = _get_opt_provider(target, CcInfo)
     objc_defines = []
     includes_depsets = []
 
     if objc_provider:
-        includes_depsets = [objc_provider.include, objc_provider.iquote, objc_provider.include_system]
+        includes_depsets = [
+            objc_strict_includes,
+            objc_provider.include,
+            objc_provider.iquote,
+            objc_provider.include_system,
+        ]
     elif cc_provider:
         cc_ctx = cc_provider.compilation_context
         includes_depsets = [cc_ctx.includes, cc_ctx.quote_includes, cc_ctx.system_includes]
