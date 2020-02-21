@@ -703,7 +703,10 @@ class InfoChecker {
       let paths = Set(includes.map { (path, recursive) -> String in
         return path
       })
-      XCTAssertEqual(paths, value, line: line)
+      // The CcCompilationContext migration adds "." to the include paths. We filter that out
+      // to make the test robust against the change.  See
+      // https://github.com/bazelbuild/bazel/issues/10674 for more details.
+      XCTAssertEqual(paths.filter({ $0 != "."}), value, line: line)
       return self
     }
 
