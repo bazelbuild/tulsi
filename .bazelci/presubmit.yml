@@ -2,7 +2,7 @@
 platforms:
   macos:
     xcode_version: "11.1"
-    bazel: last_green
+    bazel: last_downstream_green
     build_targets:
     - "//:tulsi"
     test_flags:
