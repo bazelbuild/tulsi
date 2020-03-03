@@ -843,10 +843,12 @@ def _tulsi_sources_aspect(target, ctx):
         includes_depsets = [cc_ctx.includes, cc_ctx.quote_includes, cc_ctx.system_includes]
 
     if includes_depsets:
-        target_includes = [
+        # Use a depset here to remove duplicates which is possible since
+        # converting the output path can strip some path information.
+        target_includes = depset([
             _convert_outpath_to_symlink_path(x)
             for x in depset(transitive = includes_depsets).to_list()
-        ]
+        ]).to_list()
     else:
         target_includes = []
 

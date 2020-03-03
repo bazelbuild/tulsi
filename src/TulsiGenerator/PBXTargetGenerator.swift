@@ -1226,26 +1226,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                            toSet includes: NSMutableOrderedSet) {
     if let includePaths = ruleEntry.includePaths {
       let rootedPaths: [String] = includePaths.map() { (path, recursive) in
-        let rootedPath = "$(\(PBXTargetGenerator.WorkspaceRootVarName))/\(path)"
+        // Any paths of the tulsi-includes form will only be in the bazel workspace symlink since
+        // they refer to generated files from a build.
+        // Otherwise we assume the file exists in the workspace.
+        let prefixVar = path.hasPrefix(PBXTargetGenerator.tulsiIncludesPath)
+            ? PBXTargetGenerator.BazelWorkspaceSymlinkVarName
+            : PBXTargetGenerator.WorkspaceRootVarName
+        let rootedPath = "$(\(prefixVar))/\(path)"
         if recursive {
           return "\(rootedPath)/**"
         }
         return rootedPath
       }
       includes.addObjects(from: rootedPaths)
-
-      /// Some targets that generate sources also provide header search paths into non-generated
-      /// sources. Using workspace root is needed for the former, but the latter has to be
-      /// included via the Bazel workspace root.
-      /// TODO(tulsi-team): See if we can merge the two locations to just Bazel workspace.
-      let bazelWorkspaceRootedPaths: [String] = includePaths.map() { (path, recursive) in
-        let rootedPath = "$(\(PBXTargetGenerator.BazelWorkspaceSymlinkVarName))/\(path)"
-        if recursive {
-          return "\(rootedPath)/**"
-        }
-        return rootedPath
-      }
-      includes.addObjects(from: bazelWorkspaceRootedPaths)
     }
 
     // TODO(rdar://36107040): Once Xcode supports indexing with multiple -fmodule-map-file
