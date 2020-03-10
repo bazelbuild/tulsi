@@ -633,7 +633,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_B45268BB_ios_min10.0;
 				SDKROOT = iphoneos;
@@ -645,7 +645,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				PRODUCT_NAME = _idx_WatchExtensionLibrary_2A5269B8_watchos_min3.0;
 				SDKROOT = watchos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";
@@ -744,7 +744,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_watch/Library/includes/one/include $(TULSI_WR)/tulsi_e2e_watch/Library/includes/one/include $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_B45268BB_ios_min10.0;
 				SDKROOT = iphoneos;
@@ -756,7 +756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				PRODUCT_NAME = _idx_WatchExtensionLibrary_2A5269B8_watchos_min3.0;
 				SDKROOT = watchos;
 				USER_HEADER_SEARCH_PATHS = "$(TULSI_WR)";

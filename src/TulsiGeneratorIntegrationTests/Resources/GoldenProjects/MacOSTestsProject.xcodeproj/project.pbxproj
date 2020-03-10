@@ -825,7 +825,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyMacAppSources_MyPluginSources_FEE655FD_macos_min10.13;
 				SDKROOT = macosx;
@@ -947,7 +947,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = _idx_MyTodayExtensionSources_MyMacAppSources_MyPluginSources_FEE655FD_macos_min10.13;
 				SDKROOT = macosx;

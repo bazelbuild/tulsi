@@ -738,7 +738,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_5E9B8EB0_ios_min10.0;
@@ -752,7 +752,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_744889E2_ios_min10.0;
@@ -855,7 +855,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_WR)/tulsi_e2e_simple/ApplicationLibrary/includes $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DAPPLIB_ADDITIONAL_DEFINE -DAPPLIB_ANOTHER_DEFINE=2 -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ApplicationLibrary_5E9B8EB0_ios_min10.0;
@@ -869,7 +869,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(TULSI_BWRS)/tulsi_e2e_simple/Library/pch/PCHFile.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_WR)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ /Library/absolute/include/path $(TULSI_BWRS)/relative/Library/include/path ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_COPT_DEFINE -DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_Library_744889E2_ios_min10.0;
