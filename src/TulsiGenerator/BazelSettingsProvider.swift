@@ -40,6 +40,7 @@ public enum BazelSettingFeature: Hashable, Pythonable {
   /// - Bundles with spaces in the name
   /// - When enabled, the working directory of the `ipa_post_processor` tool for `ios_application` is
   ///   the `Payload` directory, not its parent directory.
+  ///   See https://github.com/bazelbuild/rules_apple/issues/733.
   case TreeArtifactOutputs
 
   /// TODO(b/111928007): Remove this and/or BazelSettingFeature once DebugPathNormalization is
