@@ -10,3 +10,5 @@ build --strategy=SwiftCompile=local
 # Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
 # See also: https://github.com/bazelbuild/rules_apple/issues/456.
 build "--host_force_python=PY2"
+
+test --test_output=all
