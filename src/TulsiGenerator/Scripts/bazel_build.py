@@ -659,7 +659,7 @@ class BazelBuildBridge(object):
 
     bazel_command.extend([
         # The following flags are used by Tulsi to identify itself and read
-        # build information from Bazel. They shold not affect Bazel anaylsis
+        # build information from Bazel. They shold not affect Bazel analysis
         # caching.
         '--tool_tag=tulsi:bazel_build',
         '--build_event_json_file=%s' % self.build_events_file_path,
