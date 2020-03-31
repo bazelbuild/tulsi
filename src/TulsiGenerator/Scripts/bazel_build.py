@@ -664,7 +664,7 @@ class BazelBuildBridge(object):
         '--tool_tag=tulsi:bazel_build',
         '--build_event_json_file=%s' % self.build_events_file_path,
         '--noexperimental_build_event_json_file_path_conversion',
-        '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'])
+        '--aspects', '@tulsi//tulsi:tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
     if self.is_test and self.gen_runfiles:
       bazel_command.append('--output_groups=+tulsi_outputs')

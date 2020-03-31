@@ -230,7 +230,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         // The following flags WILL affect Bazel analysis caching.
         // Keep this consistent with bazel_build.py.
         "--aspects",
-        "@tulsi//:tulsi/tulsi_aspects.bzl%\(aspect)",
+        "@tulsi//tulsi:tulsi_aspects.bzl%\(aspect)",
         "--output_groups=tulsi_info,-_,-default",  // Build only the aspect artifacts.
     ])
     arguments.append(contentsOf: targets)

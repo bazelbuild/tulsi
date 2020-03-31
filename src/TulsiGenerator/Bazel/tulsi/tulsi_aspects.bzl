@@ -19,7 +19,7 @@ project and pass it back to Tulsi.
 """
 
 load(
-    ":tulsi/tulsi_aspects_paths.bzl",
+    ":tulsi_aspects_paths.bzl",
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
