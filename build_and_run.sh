@@ -24,7 +24,7 @@ set -eu
 readonly unzip_dir="${1:-$HOME/Applications}"
 
 # build it
-bazel build //:tulsi
+bazel build //:tulsi --use_top_level_targets_for_symlinks
 # unzip it
 unzip -oq $(bazel info workspace)/bazel-bin/tulsi.zip -d "$unzip_dir"
 # run it

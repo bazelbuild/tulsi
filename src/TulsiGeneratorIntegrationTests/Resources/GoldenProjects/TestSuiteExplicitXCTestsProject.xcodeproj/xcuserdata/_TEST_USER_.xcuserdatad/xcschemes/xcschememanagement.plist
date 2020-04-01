@@ -9,22 +9,22 @@
 			<key>isShown</key>
 			<true/>
 		</dict>
+		<key>One-XCTest.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+		</dict>
 		<key>TestApplication.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<true/>
 		</dict>
-		<key>TestSuite-One-XCTest.xcscheme_^#shared#^_</key>
+		<key>Three-XCTest.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<true/>
 		</dict>
-		<key>TestSuite-Three-XCTest.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<true/>
-		</dict>
-		<key>TestSuite-Two-XCTest.xcscheme_^#shared#^_</key>
+		<key>Two-XCTest.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<true/>

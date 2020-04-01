@@ -315,6 +315,9 @@ final class XcodeProjectGenerator {
 
     /// A mapping of indexer targets by name.
     let indexerTargets: [String: PBXTarget]
+
+    /// Mapping from label to top-level build target.
+    let topLevelBuildTargetsByLabel: [BuildLabel: PBXNativeTarget]
   }
 
   /// Throws an exception if the Xcode project path is found to be in a forbidden location,
@@ -534,8 +537,9 @@ final class XcodeProjectGenerator {
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
+    var targetsByLabel = [BuildLabel: PBXNativeTarget]()
     try profileAction("generating_build_targets") {
-      try generator.generateBuildTargetsForRuleEntries(targetRules,
+      targetsByLabel = try generator.generateBuildTargetsForRuleEntries(targetRules,
                                                        ruleEntryMap: ruleEntryMap)
     }
 
@@ -565,7 +569,8 @@ final class XcodeProjectGenerator {
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
-                                indexerTargets: indexerTargets)
+                                indexerTargets: indexerTargets,
+                                topLevelBuildTargetsByLabel: targetsByLabel)
   }
 
   private func installWorkspaceSettings(_ projectURL: URL) throws {
@@ -697,6 +702,9 @@ final class XcodeProjectGenerator {
     }
 
     func targetForLabel(_ label: BuildLabel) -> PBXTarget? {
+      if let pbxTarget = info.topLevelBuildTargetsByLabel[label] {
+        return pbxTarget
+      }
       if let pbxTarget = info.project.targetByName[label.targetName!] {
         return pbxTarget
       } else if let pbxTarget = info.project.targetByName[label.asFullPBXTargetName!] {
@@ -972,11 +980,7 @@ final class XcodeProjectGenerator {
     var testSuiteSchemes = [String: [RuleEntry]]()
     for (label, entry) in info.testSuiteRuleEntries {
       let shortName = label.targetName!
-      if let _ = testSuiteSchemes[shortName] {
-        testSuiteSchemes[shortName]!.append(entry)
-      } else {
-        testSuiteSchemes[shortName] = [entry]
-      }
+      testSuiteSchemes[shortName, default: []].append(entry)
     }
     for testSuites in testSuiteSchemes.values {
       for suite in testSuites {

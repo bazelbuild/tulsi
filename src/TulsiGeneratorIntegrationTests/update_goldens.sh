@@ -26,7 +26,8 @@ readonly TESTLOGS_DIR=$(bazel info bazel-testlogs)
 readonly OUTPUT_DIR="${TESTLOGS_DIR}/${TEST_PATH}"
 
 bazel test //src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests \
-  --xcode_version="$XCODE_VERSION" --nocheck_visibility && :
+  --xcode_version="$XCODE_VERSION" --nocheck_visibility \
+  --use_top_level_targets_for_symlinks && :
 
 bazel_exit_code=$?
 

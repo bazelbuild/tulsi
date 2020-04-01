@@ -104,9 +104,13 @@ protocol PBXTargetGeneratorProtocol: class {
 
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
+  ///
+  /// Returns a mapping from build label to generated PBXNativeTarget.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
-  func generateBuildTargetsForRuleEntries(_ entries: Set<RuleEntry>,
-                                          ruleEntryMap: RuleEntryMap) throws
+  func generateBuildTargetsForRuleEntries(
+    _ entries: Set<RuleEntry>,
+    ruleEntryMap: RuleEntryMap
+  ) throws -> [BuildLabel: PBXNativeTarget]
 }
 
 extension PBXTargetGeneratorProtocol {
@@ -810,8 +814,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Generates build targets for the given rule entries.
-  func generateBuildTargetsForRuleEntries(_ ruleEntries: Set<RuleEntry>,
-                                          ruleEntryMap: RuleEntryMap) throws {
+  func generateBuildTargetsForRuleEntries(
+    _ ruleEntries: Set<RuleEntry>,
+    ruleEntryMap: RuleEntryMap
+  ) throws -> [BuildLabel: PBXNativeTarget] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
 
     let progressNotifier = ProgressNotifier(name: GeneratingBuildTargets,
@@ -820,12 +826,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var testTargetLinkages = [(PBXNativeTarget, BuildLabel?, RuleEntry)]()
     var watchAppTargets = [String: (PBXNativeTarget, RuleEntry)]()
     var watchExtensionsByEntry = [RuleEntry: PBXNativeTarget]()
+    var targetsByLabel = [BuildLabel: PBXNativeTarget]()
 
     for (name, entry) in namedRuleEntries {
       progressNotifier.incrementValue()
       let target = try createBuildTargetForRuleEntry(entry,
                                                      named: name,
                                                      ruleEntryMap: ruleEntryMap)
+      targetsByLabel[entry.label] = target
 
       if let script = options[.PreBuildPhaseRunScript, entry.label.value] {
         let runScript = PBXShellScriptBuildPhase(shellScript: script, shellPath: "/bin/bash")
@@ -877,7 +885,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     for (testTarget, testHostLabel, entry) in testTargetLinkages {
       let testHostTarget: PBXNativeTarget?
       if let hostTargetLabel = testHostLabel {
-        testHostTarget = projectTargetForLabel(hostTargetLabel) as? PBXNativeTarget
+        testHostTarget = targetsByLabel[hostTargetLabel]
         if testHostTarget == nil {
           // If the user did not choose to include the host target it won't be available so the
           // linkage can be skipped. We will still force the generation of this test host target to
@@ -895,6 +903,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                        ruleEntry: entry,
                        ruleEntryMap: ruleEntryMap)
     }
+    return targetsByLabel
   }
 
   // MARK: - Private methods
@@ -983,30 +992,76 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return (nonARCFileReferences, settings)
   }
 
-  private func generateUniqueNamesForRuleEntries(_ ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
-    // Build unique names for the target rules.
-    var collidingRuleEntries = [String: [RuleEntry]]()
-    for entry: RuleEntry in ruleEntries {
-      let shortName = entry.label.targetName!
-      if var existingRules = collidingRuleEntries[shortName] {
-        existingRules.append(entry)
-        collidingRuleEntries[shortName] = existingRules
-      } else {
-        collidingRuleEntries[shortName] = [entry]
-      }
+  /// Find the longest common non-empty strict prefix for the given strings if there is one.
+  private func longestCommonPrefix(_ strings: Set<String>, separator: Character) -> String {
+    // Longest common prefix for 0 or 1 string(s) doesn't make sense.
+    guard strings.count >= 2, var shortestString = strings.first else { return "" }
+    for str in strings {
+      guard str.count < shortestString.count else { continue }
+      shortestString = str
     }
 
+    guard !shortestString.isEmpty else { return "" }
+
+    // Drop the last so we can only get a strict prefix.
+    var components = shortestString.split(separator: separator).dropLast()
+    var potentialPrefix = "\(components.joined(separator: "\(separator)"))\(separator)"
+
+    for str in strings {
+      while !components.isEmpty && !str.hasPrefix(potentialPrefix) {
+        components = components.dropLast()
+        potentialPrefix = "\(components.joined(separator: "\(separator)"))\(separator)"
+      }
+    }
+    return potentialPrefix
+  }
+
+  private func generateUniqueNamesForRuleEntries(_ ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
+    // Build unique names for the target rules.
+    var rulesEntriesByTargetName = [String: [RuleEntry]]()
+    for entry: RuleEntry in ruleEntries {
+      let shortName = entry.label.targetName!
+      rulesEntriesByTargetName[shortName, default: []].append(entry)
+    }
+
+    var conflictingRuleEntries: [RuleEntry] = []
+    var conflictingFullNames: Set<String> = []
     var namedRuleEntries = [String: RuleEntry]()
-    for (name, entries) in collidingRuleEntries {
+
+    // Identify those which are OK and those which are in conflict.
+    for (name, entries) in rulesEntriesByTargetName {
       guard entries.count > 1 else {
         namedRuleEntries[name] = entries.first!
         continue
       }
 
-      for entry in entries {
+      conflictingRuleEntries.append(contentsOf: entries)
+      conflictingFullNames.formUnion(entries.map {
+        $0.label.asFullPBXTargetName!
+      })
+    }
+
+    // Try to strip out a common prefix if we can find one.
+    let commonPrefix = self.longestCommonPrefix(conflictingFullNames, separator: "-")
+
+    guard !commonPrefix.isEmpty else {
+      for entry in conflictingRuleEntries {
         let fullName = entry.label.asFullPBXTargetName!
         namedRuleEntries[fullName] = entry
       }
+      return namedRuleEntries
+    }
+
+    // Found a common prefix, we can strip it as long as we don't cause a new duplicate.
+    let charsToDrop = commonPrefix.count
+    for entry in conflictingRuleEntries {
+      let fullName = entry.label.asFullPBXTargetName!
+      let shortenedFullName = String(fullName.dropFirst(charsToDrop))
+      guard !shortenedFullName.isEmpty && namedRuleEntries.index(forKey: shortenedFullName) == nil else {
+        namedRuleEntries[fullName] = entry
+        continue
+      }
+      namedRuleEntries[shortenedFullName] = entry
     }
 
     return namedRuleEntries
@@ -1379,17 +1434,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return testSettings
   }
 
-  // Resolves a BuildLabel to an existing PBXTarget, handling target name collisions.
-  private func projectTargetForLabel(_ label: BuildLabel) -> PBXTarget? {
-    guard let targetName = label.targetName else { return nil }
-    if let target = project.targetByName[targetName] {
-      return target
-    }
-
-    guard let fullTargetName = label.asFullPBXTargetName else { return nil }
-    return project.targetByName[fullTargetName]
-  }
-
   // Adds a dummy build configuration to the given list based off of the Debug config that is
   // used to effectively disable compilation when running XCTests by converting each compile call
   // into a "clang --version" invocation.
@@ -1550,7 +1594,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
 
 
-    buildSettings["PRODUCT_NAME"] = entry.bundleName ?? name
+    buildSettings["PRODUCT_NAME"] = name
     if let bundleID = entry.bundleID {
       buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleID
     }

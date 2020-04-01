@@ -10,16 +10,16 @@
     <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables>
             <TestableReference skipped="NO">
-                <BuildableReference BuildableName="TestSuite-Three-XCTest.xctest" BlueprintName="TestSuite-Three-XCTest" BlueprintIdentifier="7E9AFE6238918F2000000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
-            </TestableReference>
-            <TestableReference skipped="NO">
-                <BuildableReference BuildableName="TestSuite-Two-XCTest.xctest" BlueprintName="TestSuite-Two-XCTest" BlueprintIdentifier="7E9AFE628EB1D89400000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BuildableName="Three-XCTest.xctest" BlueprintName="Three-XCTest" BlueprintIdentifier="7E9AFE62F7F03B1E00000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
                 <BuildableReference BuildableName="LogicTest.xctest" BlueprintName="LogicTest" BlueprintIdentifier="7E9AFE6278F802E600000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </TestableReference>
             <TestableReference skipped="NO">
-                <BuildableReference BuildableName="TestSuite-One-XCTest.xctest" BlueprintName="TestSuite-One-XCTest" BlueprintIdentifier="7E9AFE6243B8875800000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BuildableName="One-XCTest.xctest" BlueprintName="One-XCTest" BlueprintIdentifier="7E9AFE6269ABCA1200000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </TestableReference>
+            <TestableReference skipped="NO">
+                <BuildableReference BuildableName="Two-XCTest.xctest" BlueprintName="Two-XCTest" BlueprintIdentifier="7E9AFE6296A78E1400000000" ReferencedContainer="container:TestSuiteExplicitXCTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </TestableReference>
         </Testables>
         <MacroExpansion>
