@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Darwin
 import Foundation
-
 
 /// Encapsulates functionality to launch and manage Processes.
 public final class ProcessRunner {
@@ -42,13 +42,42 @@ public final class ProcessRunner {
     private static var KVOContext: Int = 0
 
     /// Mapping between Processes and LogSessionHandles created for each.
+    ///
+    /// - Warning: Do not access directly; use `accessPendingLogHandles` instead.
+    /// - SeeAlso: `accessPendingLogHandles`
     private var pendingLogHandles = Dictionary<Process, LocalizedMessageLogger.LogSessionHandle>()
+
+    /// Lock to serialize access to `pendingLogHandles`.
+    ///
+    /// We use `os_unfair_lock` because it is efficient when contention is rare, which should be
+    /// the case in this situation.
+    private var pendingLogHandlesLock = os_unfair_lock()
+
+    /// Provides thread-safe access to `pendingLogHandles`.
+    ///
+    /// We need to access `pendingLogHandles` in a thread-safe way because
+    /// `TimedProcessRunnerObserver` can be used concurrently by multiple threads.
+    ///
+    /// - Parameter usePendingLogHandles: The critical section that reads from or writes to
+    ///                                   `pendingLogHandles`. Minimize the code in the critical
+    ///                                   section to avoid unnecessary lock contention.
+    private func accessPendingLogHandles<T>(usePendingLogHandles: (inout Dictionary<Process, LocalizedMessageLogger.LogSessionHandle>) throws -> T) rethrows -> T {
+      os_unfair_lock_lock(&pendingLogHandlesLock)
+      defer {
+        os_unfair_lock_unlock(&pendingLogHandlesLock)
+      }
+
+      return try usePendingLogHandles(&pendingLogHandles)
+    }
 
     /// Start logging the given Process with KVO to determine the time when it starts running.
     fileprivate func startLoggingProcessTime(process: Process,
                                              loggingIdentifier: String,
                                              messageLogger: LocalizedMessageLogger) {
-      self.pendingLogHandles[process] = messageLogger.startProfiling(loggingIdentifier)
+      let logSessionHandle = messageLogger.startProfiling(loggingIdentifier)
+      accessPendingLogHandles { pendingLogHandles in
+        pendingLogHandles[process] = logSessionHandle
+      }
       process.addObserver(self,
                           forKeyPath: #keyPath(Process.isRunning),
                           options: .new,
@@ -62,7 +91,9 @@ public final class ProcessRunner {
         process.removeObserver(self,
                                forKeyPath: #keyPath(Process.isRunning),
                                context: &TimedProcessRunnerObserver.KVOContext)
-        self.pendingLogHandles.removeValue(forKey: process)
+        accessPendingLogHandles { pendingLogHandles in
+          _ = pendingLogHandles.removeValue(forKey: process)
+        }
       }
     }
 
@@ -80,7 +111,9 @@ public final class ProcessRunner {
           let newValue = change?[NSKeyValueChangeKey.newKey] as? NSNumber,
           newValue.boolValue,
           let process = object as? Process {
-        pendingLogHandles[process]?.resetStartTime()
+        accessPendingLogHandles { pendingLogHandles in
+          pendingLogHandles[process]?.resetStartTime()
+        }
       }
     }
   }
