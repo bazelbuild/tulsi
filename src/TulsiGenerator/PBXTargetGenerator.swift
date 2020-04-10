@@ -1016,55 +1016,88 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     return potentialPrefix
   }
 
-  private func generateUniqueNamesForRuleEntries(_ ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
-    // Build unique names for the target rules.
-    var rulesEntriesByTargetName = [String: [RuleEntry]]()
-    for entry: RuleEntry in ruleEntries {
-      let shortName = entry.label.targetName!
-      rulesEntriesByTargetName[shortName, default: []].append(entry)
-    }
+  /// Name the given `ruleEntries` using the `namer` function.
+  ///
+  /// `ruleEntries` must be mutually exclusive with the values in `named`. Intended use case:
+  /// call this first with an initial set and `namer`, and then subsequent calls should use the
+  /// results of the previous call (unnamed entries) with a different `namer`.
+  ///
+  /// Only unique names will be inserted into the `named` dictionary. If when naming a
+  /// `RuleEntry`, the name is already in the `named` dictionary, the previously named
+  /// `RuleEntry` will still be valid.
+  ///
+  /// Returns a `Set<RuleEntry>` representing the entries which still need to be named.
+  private func uniqueNames(for ruleEntries: Set<RuleEntry>,
+                           named: inout [String: RuleEntry],
+                           namer: (_ ruleEntry: RuleEntry) -> String?
+  ) -> Set<RuleEntry> {
+    var unnamed = Set<RuleEntry>()
 
-    var conflictingRuleEntries: [RuleEntry] = []
-    var conflictingFullNames: Set<String> = []
-    var namedRuleEntries = [String: RuleEntry]()
-
-    // Identify those which are OK and those which are in conflict.
-    for (name, entries) in rulesEntriesByTargetName {
-      guard entries.count > 1 else {
-        namedRuleEntries[name] = entries.first!
+    // Group the entries by name.
+    var ruleEntriesByName = [String: [RuleEntry]]()
+    for entry in ruleEntries {
+      guard let name = namer(entry) else {
+        unnamed.insert(entry)
         continue
       }
-
-      conflictingRuleEntries.append(contentsOf: entries)
-      conflictingFullNames.formUnion(entries.map {
-        $0.label.asFullPBXTargetName!
-      })
+      ruleEntriesByName[name, default: []].append(entry)
     }
+
+    for (name, entries) in ruleEntriesByName {
+      // Name already used or not unique.
+      guard entries.count == 1 && named.index(forKey: name) == nil else {
+        unnamed.formUnion(entries)
+        continue
+      }
+      named[name] = entries.first!
+    }
+    return unnamed
+  }
+
+  /// Generate unique names for the given rule entries, using the bundle name when it is
+  /// unique. Otherwise, falls back to a name based on the target label.
+  private func generateUniqueNamesForRuleEntries(_ ruleEntries: Set<RuleEntry>) -> [String: RuleEntry] {
+    var named = [String: RuleEntry]()
+    // Try to name using the bundle names first, then the target name.
+    var unnamed = self.uniqueNames(for: ruleEntries, named: &named) { $0.bundleName }
+    unnamed = self.uniqueNames(for: unnamed, named: &named) {
+      $0.label.targetName
+    }
+
+    // Continue only if we need to de-duplicate.
+    guard !unnamed.isEmpty else {
+      return named
+    }
+
+    // Special handling for the remaining unnamed entries - use their full target label.
+    let conflictingFullNames = Set(unnamed.map {
+      $0.label.asFullPBXTargetName!
+    })
 
     // Try to strip out a common prefix if we can find one.
     let commonPrefix = self.longestCommonPrefix(conflictingFullNames, separator: "-")
 
     guard !commonPrefix.isEmpty else {
-      for entry in conflictingRuleEntries {
+      for entry in unnamed {
         let fullName = entry.label.asFullPBXTargetName!
-        namedRuleEntries[fullName] = entry
+        named[fullName] = entry
       }
-      return namedRuleEntries
+      return named
     }
 
     // Found a common prefix, we can strip it as long as we don't cause a new duplicate.
     let charsToDrop = commonPrefix.count
-    for entry in conflictingRuleEntries {
+    for entry in unnamed {
       let fullName = entry.label.asFullPBXTargetName!
       let shortenedFullName = String(fullName.dropFirst(charsToDrop))
-      guard !shortenedFullName.isEmpty && namedRuleEntries.index(forKey: shortenedFullName) == nil else {
-        namedRuleEntries[fullName] = entry
+      guard !shortenedFullName.isEmpty && named.index(forKey: shortenedFullName) == nil else {
+        named[fullName] = entry
         continue
       }
-      namedRuleEntries[shortenedFullName] = entry
+      named[shortenedFullName] = entry
     }
 
-    return namedRuleEntries
+    return named
   }
 
   /// Adds the given file targets to a versioned group.

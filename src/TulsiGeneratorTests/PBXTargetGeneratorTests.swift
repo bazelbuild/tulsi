@@ -1814,12 +1814,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "BAZEL_TARGET": buildTarget,
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
-        "PRODUCT_NAME": targetName,
+        "PRODUCT_NAME": bundleName,
         "SDKROOT": "iphoneos",
         "TULSI_BUILD_PATH": buildPath,
       ]
       let expectedTarget = TargetDefinition(
-        name: targetName,
+        name: bundleName,
         buildConfigurations: [
           BuildConfigurationDefinition(
             name: "Debug",
@@ -1844,7 +1844,202 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       )
       assertTarget(expectedTarget, inTargets: targets)
     }
+  }
 
+  func testGenerateTargetsForRuleEntriesWithTheSameBundleName() {
+    let bundleName = "test"
+    let rule1TargetName = "test1"
+    let rule1BuildPath = "test/test1"
+    let rule1BuildTarget = "\(rule1BuildPath):\(rule1TargetName)"
+    let rule2TargetName = "test2"
+    let rule2BuildPath = "test/test2"
+    let rule2BuildTarget = "\(rule2BuildPath):\(rule2TargetName)"
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", bundleName: bundleName, productType: .Application),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application", bundleName: bundleName, productType: .Application),
+    ])
+
+    do {
+      _ = try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/test1:\(rule1TargetName)",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": rule1TargetName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+      ]
+      let expectedTarget = TargetDefinition(
+        name: rule1TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget),
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/test2:\(rule2TargetName)",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": rule2TargetName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule2BuildPath,
+      ]
+      let expectedTarget = TargetDefinition(
+        name: rule2TargetName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget),
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+  }
+
+  func testGenerateTargetsForRuleEntriesWithSamePotentialName() {
+    let targetAndBundleName = "test"
+    let rule1BuildPath = "test/test1"
+    let rule1BuildTarget = "\(rule1BuildPath):\(targetAndBundleName)"
+    let rule2BuildPath = "test/test2"
+    let rule2BuildTarget = "\(rule2BuildPath):\(targetAndBundleName)"
+    let rules = Set([
+      makeTestRuleEntry(rule1BuildTarget, type: "ios_application", bundleName: targetAndBundleName, productType: .Application),
+      makeTestRuleEntry(rule2BuildTarget, type: "ios_application", productType: .Application),
+    ])
+
+    do {
+      _ = try targetGenerator.generateBuildTargetsForRuleEntries(rules, ruleEntryMap: RuleEntryMap())
+    } catch let e as NSError {
+      XCTFail("Failed to generate build targets with error \(e.localizedDescription)")
+    }
+
+    let topLevelConfigs = project.buildConfigurationList.buildConfigurations
+    XCTAssertEqual(topLevelConfigs.count, 0)
+
+    let targets = project.targetByName
+    XCTAssertEqual(targets.count, 2)
+
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/test1:\(targetAndBundleName)",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": targetAndBundleName,
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule1BuildPath,
+      ]
+      let expectedTarget = TargetDefinition(
+        name: targetAndBundleName,
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget),
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
+    do {
+      let expectedBuildSettings = [
+        "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
+        "BAZEL_TARGET": "test/test2:\(targetAndBundleName)",
+        "DEBUG_INFORMATION_FORMAT": "dwarf",
+        "INFOPLIST_FILE": stubPlistPaths.defaultStub,
+        "PRODUCT_NAME": "test-test2-test",
+        "SDKROOT": "iphoneos",
+        "TULSI_BUILD_PATH": rule2BuildPath,
+      ]
+      let expectedTarget = TargetDefinition(
+        name: "test-test2-test",
+        buildConfigurations: [
+          BuildConfigurationDefinition(
+            name: "Debug",
+            expectedBuildSettings: debugBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "Release",
+            expectedBuildSettings: releaseBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Debug",
+            expectedBuildSettings: debugTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+          BuildConfigurationDefinition(
+            name: "__TulsiTestRunner_Release",
+            expectedBuildSettings: releaseTestRunnerBuildSettingsFromSettings(expectedBuildSettings)
+          ),
+        ],
+        expectedBuildPhases: [
+          BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule2BuildTarget),
+        ]
+      )
+      assertTarget(expectedTarget, inTargets: targets)
+    }
   }
 
   func testGenerateWatchOSTarget() {
