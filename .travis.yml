@@ -1,7 +1,7 @@
 os: osx
 language: swift
 # macOS images: https://docs.travis-ci.com/user/reference/osx#macos-version
-osx_image: xcode11.2
+osx_image: xcode11.3
 
 before_install:
   - brew tap bazelbuild/tap
