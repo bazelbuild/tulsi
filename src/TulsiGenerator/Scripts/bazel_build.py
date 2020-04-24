@@ -1706,13 +1706,15 @@ def main(argv):
 
 
 if __name__ == '__main__':
+  # Register the interrupt handler immediately in case we receive SIGINT while
+  # trying to acquire the lock.
+  signal.signal(signal.SIGINT, _InterruptHandler)
   _LockFileAcquire(_LockFileCreate())
   _logger = tulsi_logging.Logger()
   logger_warning = tulsi_logging.validity_check()
   if logger_warning:
     _PrintXcodeWarning(logger_warning)
   _timer = Timer('Everything', 'complete_build').Start()
-  signal.signal(signal.SIGINT, _InterruptHandler)
   _exit_code = main(sys.argv)
   _timer.End()
   sys.exit(_exit_code)
