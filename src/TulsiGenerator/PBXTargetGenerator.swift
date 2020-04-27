@@ -764,6 +764,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     buildSettings["CLANG_ENABLE_OBJC_ARC"] = "YES"
 
     // Bazel takes care of signing the generated applications, so Xcode's signing must be disabled.
+    buildSettings["CODE_SIGNING_ALLOWED"] = "NO"
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
     buildSettings["CODE_SIGN_IDENTITY"] = ""
 
