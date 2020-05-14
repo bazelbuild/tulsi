@@ -20,6 +20,7 @@ project and pass it back to Tulsi.
 
 load(
     ":tulsi/tulsi_aspects_paths.bzl",
+    "AppleBinaryInfo",
     "AppleBundleInfo",
     "AppleTestInfo",
     "IosExtensionBundleInfo",
@@ -915,6 +916,17 @@ def _tulsi_sources_aspect(target, ctx):
         ),
     ]
 
+def _bundle_dsym_path(apple_bundle):
+    """Compute the dSYM path for the bundle.
+
+    Due to b/110264170 dSYMs are not fully exposed via a provider. We instead
+    rely on the fact that `rules_apple` puts them next to the bundle just like
+    Xcode.
+    """
+    bin_path = apple_bundle.archive.dirname
+    dsym_name = apple_bundle.bundle_name + apple_bundle.bundle_extension + ".dSYM"
+    return bin_path + "/" + dsym_name
+
 def _collect_bundle_info(target):
     """Returns Apple bundle info for the given target, None if not a bundle."""
     if AppleBundleInfo in target:
@@ -922,6 +934,7 @@ def _collect_bundle_info(target):
         has_dsym = (apple_common.AppleDebugOutputs in target)
         return struct(
             archive_root = apple_bundle.archive_root,
+            dsym_path = _bundle_dsym_path(apple_bundle),
             bundle_name = apple_bundle.bundle_name,
             bundle_extension = apple_bundle.bundle_extension,
             has_dsym = has_dsym,
@@ -1038,6 +1051,7 @@ def _tulsi_outputs_aspect(target, ctx):
     embedded_bundles = depset(direct_embedded_bundles, transitive = transitive_embedded_bundles)
 
     artifact = None
+    dsym_path = None
     bundle_name = None
     archive_root = None
     infoplist = None
@@ -1045,35 +1059,41 @@ def _tulsi_outputs_aspect(target, ctx):
         bundle_info = target[AppleBundleInfo]
 
         artifact = bundle_info.archive.path
+        dsym_path = _bundle_dsym_path(bundle_info)
         archive_root = bundle_info.archive_root
         infoplist = bundle_info.infoplist
 
         bundle_name = bundle_info.bundle_name
-    elif (target_kind == "macos_command_line_application" or
-          target_kind == "cc_binary" or target_kind == "cc_test"):
-        # Special support for macos_command_line_application and cc_* targets
-        # which do not have an AppleBundleInfo provider.
-
-        # Both the dSYM binary and executable binary don't have an extension, so
-        # pick the first extension-less file not in a DWARF folder.
+    elif AppleBinaryInfo in target:
+        # Support for non-bundled binary targets such as
+        # `macos_command_line_application`. These still have dSYMs support and
+        # should be located next to the binary.
+        artifact = target[AppleBinaryInfo].binary.path
+        dsym_path = artifact + ".dSYM"
+    elif (target_kind == "cc_binary" or target_kind == "cc_test"):
+        # Special support for cc_* targets which do not have AppleBinaryInfo or
+        # AppleBundleInfo providers.
+        #
+        # At the moment these don't have support for dSYMs (b/124859331), but
+        # in case they do in the future we filter out the dSYM files.
         artifacts = [
-            x.path
+            x
             for x in target.files.to_list()
             if x.extension == "" and
                "Contents/Resources/DWARF" not in x.path
         ]
         if len(artifacts) > 0:
-            artifact = artifacts[0]
+            artifact = artifacts[0].path
     else:
         # Special support for *_library targets, which Tulsi allows building at
         # the top-level.
         artifacts = [
-            x.path
+            x
             for x in target.files.to_list()
             if x.extension == "a"
         ]
         if len(artifacts) > 0:
-            artifact = artifacts[0]
+            artifact = artifacts[0].path
 
     # Collect generated files for bazel_build.py to copy under Tulsi root.
     all_files_depsets = []
@@ -1109,15 +1129,12 @@ def _tulsi_outputs_aspect(target, ctx):
         transitive = transitive_generated_files,
     )
 
-    has_dsym = False
-    if hasattr(ctx.fragments, "objc"):
-        # Check the fragment directly, as macos_command_line_application does not
-        # propagate apple_common.AppleDebugOutputs.
-        has_dsym = ctx.fragments.objc.generate_dsym
+    has_dsym = apple_common.AppleDebugOutputs in target
 
     info = _struct_omitting_none(
         artifact = artifact,
         archive_root = archive_root,
+        dsym_path = dsym_path,
         generated_sources = [(x.path, x.short_path) for x in generated_files.to_list()],
         bundle_name = bundle_name,
         embedded_bundles = embedded_bundles.to_list(),

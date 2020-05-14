@@ -19,6 +19,7 @@ Provides a small set of variables to be referenced for aspect dependencies.
 
 load(
     "@build_bazel_rules_apple//apple:providers.bzl",
+    _AppleBinaryInfo = "AppleBinaryInfo",
     _AppleBundleInfo = "AppleBundleInfo",
     _IosExtensionBundleInfo = "IosExtensionBundleInfo",
 )
@@ -32,6 +33,8 @@ load(
 )
 
 # Re-export providers.
+AppleBinaryInfo = _AppleBinaryInfo
+
 AppleBundleInfo = _AppleBundleInfo
 
 AppleTestInfo = _AppleTestInfo
