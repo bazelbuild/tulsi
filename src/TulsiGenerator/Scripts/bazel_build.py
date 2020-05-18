@@ -681,29 +681,50 @@ class BazelBuildBridge(object):
                        (' '.join([pipes.quote(x) for x in command]),
                         self.workspace_root,
                         self.project_dir))
-    # Xcode translates anything that looks like ""<path>:<line>:" that is not
-    # followed by the word "warning" into an error. Bazel warnings and debug
-    # messages do not fit this scheme and must be patched here.
-    bazel_warning_line_regex = re.compile(
-        r'(?:DEBUG|WARNING): ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
+    # Clean up bazel output to make it look better in Xcode.
+    bazel_line_regex = re.compile(
+        r'(INFO|DEBUG|WARNING|ERROR|FAILED): ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
 
-    def PatchBazelWarningStatements(output_line):
-      match = bazel_warning_line_regex.match(output_line)
+    bazel_generic_regex = re.compile(r'(INFO|DEBUG|WARNING|ERROR|FAILED): (.*)')
+
+    def PatchBazelDiagnosticStatements(output_line):
+      """Make Bazel output more Xcode friendly."""
+
+      def BazelLabelToXcodeLabel(bazel_label):
+        """Map Bazel labels to xcode labels for build output."""
+        xcode_labels = {
+            'INFO': 'note',
+            'DEBUG': 'note',
+            'WARNING': 'warning',
+            'ERROR': 'error',
+            'FAILED': 'error'
+        }
+        return xcode_labels.get(bazel_label, bazel_label)
+
+      match = bazel_line_regex.match(output_line)
       if match:
-        output_line = '%s warning: %s' % (match.group(1), match.group(2))
+        xcode_label = BazelLabelToXcodeLabel(match.group(1))
+        output_line = '%s %s: %s' % (match.group(2), xcode_label,
+                                     match.group(3))
+      else:
+        match = bazel_generic_regex.match(output_line)
+        if match:
+          xcode_label = BazelLabelToXcodeLabel(match.group(1))
+          output_line = '%s: %s' % (xcode_label, match.group(2))
       return output_line
 
-    patch_xcode_parsable_line = PatchBazelWarningStatements
     if self.workspace_root != self.project_dir:
       # Match (likely) filename:line_number: lines.
       xcode_parsable_line_regex = re.compile(r'([^/][^:]+):\d+:')
 
       def PatchOutputLine(output_line):
-        output_line = PatchBazelWarningStatements(output_line)
+        output_line = PatchBazelDiagnosticStatements(output_line)
         if xcode_parsable_line_regex.match(output_line):
           output_line = '%s/%s' % (self.workspace_root, output_line)
         return output_line
       patch_xcode_parsable_line = PatchOutputLine
+    else:
+      patch_xcode_parsable_line = PatchBazelDiagnosticStatements
 
     def HandleOutput(output):
       for line in output.splitlines():
