@@ -1,5 +1,5 @@
 Want to contribute? Great! First, read this page (including the
-[fine print](fineprint) at the end).
+fine print at the end).
 
 ## Before you contribute
 Before we can use your code, you must sign the
@@ -18,46 +18,48 @@ possibly guide you. Coordinating up front makes it much easier to avoid
 frustration later on.
 
 ## Code reviews
-All submissions, including submissions by project members, require review. We
-use Gerrit for this purpose.
+All submissions, including submissions by project members, require review.
 
-To propose a patch:
+Tulsi is developed internally with our own version control system and then
+pushed out externally to Gerrit and GitHub using Copybara.
 
-1. Discuss your plan and design, getting agreement on our
-   [mailing list](https://groups.google.com/forum/#!forum/tulsi-dev).
-1. Prepare a git commit that implements the feature. Don't forget to add tests.
-1. Create a new code review on Gerrit by running:
+We prefer contributors send PRs on [GitHub](https://github.com/bazelbuild/tulsi)
+instead of code reviews on [Gerrit](https://bazel.googlesource.com/tulsi).
 
-       $ git push https://bazel.googlesource.com/tulsi HEAD:refs/for/master
+Instructions to contribute via a GitHub PR:
 
-   Gerrit upload requires that you:
-   * Have signed a Contributor License Agreement.
-   * Have an automatically generated "Change Id" line in your commit message.
-     If you haven't used Gerrit before, it will print a bash command to create
-     the git hook and then you will need to run `git commit --amend` to add the
-     line.
-   The HTTP password required by Gerrit can be obtained from your
-   [Gerrit settings page](https://bazel-review.googlesource.com/#/settings/).
-   See the
-   [Gerrit documentation](https://gerrit-review.googlesource.com/Documentation/user-upload.html)
-   for more information about uploading changes.
+1. Prepare a git commit for your change. Don't forget to add tests.
+1. Create a PR as you would normally on GitHub (push your commit to a fork and
+   then open a PR against Tulsi from there).
+1. You may need to sign a `Contributor License Agreement (CLA)` if you haven't
+   already. If so, `googlebot` will comment on the PR and give you instructions
+   on how to do so. Follow them and you should see a `cla: yes` tag added to the
+   PR.
 1. Complete a code review with a core contributor. Amend your existing commit
    and re-push to make changes to your patch.
-1. An engineer at Google will apply the patch to our internal version control
-   system.
-1. The patch is exported as a Git commit, at which point the Gerrit code review
-   is closed.
+1. When the PR is accepted, an engineer at Google will apply the patch to our
+   internal version control system.
+1. The patch will be exported as a Git commit, at which point the GitHub PR will
+   be closed.
 
 ## Code layout
 
-Tulsi is split into several blocks.
-* `Tulis/` the project editor UI. Also known as the "App."
-* `TulsiGenerator/` a framework that does all of the interesting non-UI work.
-* `TulsiPlugin/` the Xcode plugin used to interact with the Tulsi app. Known as
-  the "Plugin."
-* `TulsiShared/` code that is common between the App and Plugin.
+Tulsi is split into several components.
+* `Tulsi/` the project editor UI and CLI. Also known as the "Tulsi App"
+* `TulsiEndToEndTests/` contains tests that verify Tulsi end to end including
+   Xcodeproj generation and running/testing schemes in the generated Xcodeproj.
+   Like the `TulsiGeneratorIntegrationTests`, these tests themselves invoke
+   Bazel. Note: These tests only work internally, they should be OK to ignore
+   unless you modify the test handling in `TulsiGeneratorIntegrationTests`.
+* `TulsiGenerator/` a framework that does all of the interesting non-UI work,
+   including invoking Bazel to fetch project information and creating an
+   Xcodeproj in memory.
+* `TulsiGeneratorIntegrationTests/` contains tests that verify Xcodeproj
+   generation using golden xcodeprojs. These are a bit tricky and heavy-handed
+   since the tests themselves need to run Bazel using a fake WORKSPACE.
+* `tools/` contains helper scripts and binaries.
 
-## The fine print {fineprint}
+## The fine print
 Contributions made by corporations are covered by a different agreement than
 the one above, the
 [Software Grant and Corporate Contributor License Agreement]
