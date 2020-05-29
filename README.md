@@ -18,9 +18,11 @@ plant.
 
 ## Notes
 
-Tulsi-generated Xcode projects use Bazel to build, **not** Xcode via xcbuild. This means
-that many common components of an Xcode project are handled differently than you
-may be used to. Notable differences:
+Tulsi-generated Xcode projects use Bazel to build, **not** Xcode.  Building in
+Xcode will cause it to only run a script; the script invokes Bazel to build
+the configured Bazel target and copies the artifacts to where Xcode expects
+them to be. This means that many common components of an Xcode project are
+handled differently than you may be used to. Notable differences:
 
 *   **BUILD files are the source of truth**; most changes made to your Xcode project
     won't affect the build.
