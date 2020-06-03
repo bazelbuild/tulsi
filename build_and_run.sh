@@ -21,11 +21,22 @@
 
 set -eu
 
-readonly unzip_dir="${1:-$HOME/Applications}"
+unzip_dir=${unzip_dir:-$HOME/Applications}
+bazel_path=${bazel_path:-bazel}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+   fi
+
+  shift
+done
 
 # build it
-bazel build //:tulsi --use_top_level_targets_for_symlinks
+$bazel_path build //:tulsi --use_top_level_targets_for_symlinks
 # unzip it
-unzip -oq $(bazel info workspace)/bazel-bin/tulsi.zip -d "$unzip_dir"
+unzip -oq $("$bazel_path" info workspace)/bazel-bin/tulsi.zip -d "$unzip_dir"
 # run it
 open "$unzip_dir/Tulsi.app"
