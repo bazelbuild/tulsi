@@ -24,15 +24,24 @@ set -eu
 unzip_dir="$HOME/Applications"
 bazel_path="bazel"
 
-while [ $# -gt 0 ]; do
-
-   if [[ $1 == *"--"* ]]; then
-        param="${1/--/}"
-        declare $param="$2"
-   fi
-
-  shift
+while getopts ":b:d:h" opt; do
+  case ${opt} in
+    h)
+      echo "Usage:"
+      echo "    ./build_and_run -h          Display this help message."
+      echo "    ./build_and_run -b PATH     Bazel path used to build Tulsi"
+      echo "    ./build_and_run -d PATH     Unzip built Tulsi App to a provided Path"
+      exit 0
+      ;;
+    b) bazel_path=$OPTARG;;
+    d) unzip_dir=$OPTARG;;
+    ?)
+      echo "Invalid Option: -$OPTARG" 1>&2
+      exit 1
+      ;;
+  esac
 done
+shift $((OPTIND -1))
 
 # build it
 $bazel_path build //:tulsi --use_top_level_targets_for_symlinks

@@ -15,10 +15,10 @@ plant.
     different versions of Xcode.
 2.  Run `build_and_run.sh`. This will install Tulsi.app inside ~/Applications.
 
-Supported Options:
+**Supported Options:**
 
-* `--unzip_dir`: Location will unzip the built Tulsi app (Default is `$HOME/Applications`)
-* `--bazel-path`: Bazel path that Tulsi should use to build and install the app (Default is `bazel`)
+* `-b`: Bazel path that Tulsi should use to build and install the app (Default is `bazel`)
+* `-d`: Location will unzip the built Tulsi app (Default is `$HOME/Applications`)
 
 
 ## Notes
