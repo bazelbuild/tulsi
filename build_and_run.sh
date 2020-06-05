@@ -29,8 +29,8 @@ while getopts ":b:d:h" opt; do
     h)
       echo "Usage:"
       echo "    ./build_and_run -h          Display this help message."
-      echo "    ./build_and_run -b PATH     Bazel path used to build Tulsi"
-      echo "    ./build_and_run -d PATH     Unzip built Tulsi App to a provided Path"
+      echo "    ./build_and_run -b PATH     Bazel binary used to build Tulsi"
+      echo "    ./build_and_run -d PATH     Intall Tulsi App at the provided path"
       exit 0
       ;;
     b) bazel_path=$OPTARG;;
