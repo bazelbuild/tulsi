@@ -19,6 +19,7 @@ plant.
 
 * `-b`: Bazel binary that Tulsi should use to build and install the app (Default is `bazel`)
 * `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
+* `-x`: The XCode version Tulsi should be built for (Default is `11.3.1`)
 
 
 ## Notes
