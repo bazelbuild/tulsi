@@ -32,7 +32,7 @@ while getopts ":b:d:x:h" opt; do
       echo "    ./build_and_run -h          Display this help message."
       echo "    ./build_and_run -b PATH     Bazel binary used to build Tulsi"
       echo "    ./build_and_run -d PATH     Intall Tulsi App at the provided path"
-      echo "    ./build_and_run -x VERSION  XCode version Tulsi should be built for"
+      echo "    ./build_and_run -x VERSION  Xcode version Tulsi should be built for"
       exit 0
       ;;
     b) bazel_path=$OPTARG;;
