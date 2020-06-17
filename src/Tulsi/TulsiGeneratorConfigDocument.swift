@@ -88,16 +88,24 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     }
   }
 
+  private var uiRuleInfoObservers: [NSKeyValueObservation] = []
+
   /// The UIRuleEntry instances that are acted on by the associated UI.
   @objc dynamic var uiRuleInfos = [UIRuleInfo]() {
     willSet {
       stopObservingRuleEntries()
 
-      for entry in newValue {
-        entry.addObserver(self,
-                          forKeyPath: "selected",
-                          options: .new,
-                          context: &TulsiGeneratorConfigDocument.KVOContext)
+      uiRuleInfoObservers = newValue.map { entry in
+        entry.observe(
+          \.selected, options: .new
+        ) { [unowned self] _, change in
+          guard let value = change.newValue else { return }
+          if value {
+            self.selectedRuleInfoCount += 1
+          } else {
+            self.selectedRuleInfoCount -= 1
+          }
+        }
       }
     }
   }
@@ -158,8 +166,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
   // Closure to be invoked when a save operation completes.
   private var saveCompletionHandler: ((_ canceled: Bool, _ error: Error?) -> Void)? = nil
-
-  private static var KVOContext: Int = 0
 
   static func isGeneratorConfigFilename(_ filename: String) -> Bool {
     return (filename as NSString).pathExtension == TulsiGeneratorConfig.FileExtension
@@ -422,23 +428,6 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     // As configs are always relative to some other object, the NSSavePanel is never appropriate.
     assertionFailure("Save panel should never be invoked.")
     return false
-  }
-
-  override func observeValue(forKeyPath keyPath: String?,
-                              of object: Any?,
-                              change: [NSKeyValueChangeKey : Any]?,
-                              context: UnsafeMutableRawPointer?) {
-    if context != &TulsiGeneratorConfigDocument.KVOContext {
-      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-      return
-    }
-    if keyPath == "selected", let newValue = change?[NSKeyValueChangeKey.newKey] as? Bool {
-      if (newValue) {
-        selectedRuleInfoCount += 1
-      } else {
-        selectedRuleInfoCount -= 1
-      }
-    }
   }
 
   private func enabledFeatures(options: TulsiOptionSet) -> Set<BazelSettingFeature> {
@@ -724,9 +713,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
   // MARK: - Private methods
 
   private func stopObservingRuleEntries() {
-    for entry in uiRuleInfos {
-      entry.removeObserver(self, forKeyPath: "selected", context: &TulsiGeneratorConfigDocument.KVOContext)
-    }
+    uiRuleInfoObservers.forEach { $0.invalidate() }
+    uiRuleInfoObservers = []
   }
 
   private func makeConfig(withFullyResolvedOptions resolve: Bool = false) -> TulsiGeneratorConfig? {

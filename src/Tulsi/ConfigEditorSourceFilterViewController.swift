@@ -44,20 +44,20 @@ final class SourcePathNode: UISelectableOutlineViewNode {
 
       guard let entry = entry as? UISourcePath else { return }
       let enabled = newValue == NSControl.StateValue.on.rawValue
-      willChangeValue(forKey: "explicitlyRecursive")
+      willChangeValue(for: \.explicitlyRecursive)
       entry.recursive = enabled
-      didChangeValue(forKey: "explicitlyRecursive")
+      didChangeValue(for: \.explicitlyRecursive)
 
       // If this node is newly recursive, force hasRecursiveEnabledParent, otherwise have children
       // inherit this node's status.
       setChildrenHaveRecursiveParent(enabled || hasRecursiveEnabledParent)
 
       // Notify KVO that this node's ancestors have also changed state.
-      var ancestor = parent
-      while ancestor != nil {
-        ancestor!.willChangeValue(forKey: "recursive")
-        ancestor!.didChangeValue(forKey: "recursive")
-        ancestor = ancestor!.parent
+      var child: SourcePathNode? = self
+      while let parent = child?.parent as? SourcePathNode {
+        parent.willChangeValue(for: \.recursive)
+        parent.didChangeValue(for: \.recursive)
+        child = parent
       }
     }
   }

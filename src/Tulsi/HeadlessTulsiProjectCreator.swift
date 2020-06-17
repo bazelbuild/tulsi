@@ -19,35 +19,7 @@ import TulsiGenerator
 /// Provides functionality to generate a Tulsiproj bundle.
 struct HeadlessTulsiProjectCreator {
 
-  /// Provides functionality to signal a semaphore when the "processing" key on some object is set
-  /// to false.
-  private class ProcessingCompletedObserver: NSObject {
-    let semaphore: DispatchSemaphore
-
-    init(semaphore: DispatchSemaphore) {
-      self.semaphore = semaphore
-    }
-
-    override func observeValue(forKeyPath keyPath: String?,
-                                of object: Any?,
-                                change: [NSKeyValueChangeKey : Any]?,
-                                context: UnsafeMutableRawPointer?) {
-      if context != &HeadlessTulsiProjectCreator.KVOContext {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        return
-      }
-
-      if keyPath == "processing", let newValue = change?[NSKeyValueChangeKey.newKey] as? Bool {
-        if (!newValue) {
-          semaphore.signal()
-        }
-      }
-    }
-  }
-
   let arguments: TulsiCommandlineParser.Arguments
-
-  private static var KVOContext: Int = 0
 
   init(arguments: TulsiCommandlineParser.Arguments) {
     self.arguments = arguments
@@ -149,18 +121,16 @@ struct HeadlessTulsiProjectCreator {
     // Updating the project's bazelPackages will cause it to go into processing, observe the
     // processing key and block further execution until it is completed.
     let semaphore = DispatchSemaphore(value: 0)
-    let observer = ProcessingCompletedObserver(semaphore: semaphore)
-    document.addObserver(observer,
-                         forKeyPath: "processing",
-                         options: .new,
-                         context: &HeadlessTulsiProjectCreator.KVOContext)
-
+    let observer = document.observe(\.processing, options: .new) { _, change in
+      guard change.newValue == false else { return }
+      semaphore.signal()
+    }
+    defer { observer.invalidate() }
     document.bazelPackages = Array(bazelPackages)
 
     // Wait until processing completes.
     _ = semaphore.wait(timeout: DispatchTime.distantFuture)
 
-    document.removeObserver(observer, forKeyPath: "processing")
     return bazelPackages
   }
 

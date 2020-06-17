@@ -38,8 +38,8 @@ public final class ProcessRunner {
 
   /// Coordinates logging with Process lifetime to accurately report when a given process started.
   final class TimedProcessRunnerObserver: NSObject {
-    /// Context for KVO
-    private static var KVOContext: Int = 0
+    /// Observer for KVO on the process.
+    private var processObserver: NSKeyValueObservation?
 
     /// Mapping between Processes and LogSessionHandles created for each.
     ///
@@ -78,41 +78,22 @@ public final class ProcessRunner {
       accessPendingLogHandles { pendingLogHandles in
         pendingLogHandles[process] = logSessionHandle
       }
-      process.addObserver(self,
-                          forKeyPath: #keyPath(Process.isRunning),
-                          options: .new,
-                          context: &TimedProcessRunnerObserver.KVOContext)
+      processObserver = process.observe(\.isRunning, options: .new) {
+        [unowned self] process, change in
+        guard change.newValue == true else { return }
+        self.accessPendingLogHandles { pendingLogHandles in
+          pendingLogHandles[process]?.resetStartTime()
+        }
+      }
     }
 
     /// Report the time this process has taken, and cleanup its logging handle and KVO observer.
     fileprivate func stopLogging(process: Process, messageLogger: LocalizedMessageLogger) {
       if let logHandle = self.pendingLogHandles[process] {
         messageLogger.logProfilingEnd(logHandle)
-        process.removeObserver(self,
-                               forKeyPath: #keyPath(Process.isRunning),
-                               context: &TimedProcessRunnerObserver.KVOContext)
+        processObserver?.invalidate()
         accessPendingLogHandles { pendingLogHandles in
           _ = pendingLogHandles.removeValue(forKey: process)
-        }
-      }
-    }
-
-    /// KVO to set the logger start time to the moment when the Process indicates that it's running.
-    override public func observeValue(forKeyPath keyPath: String?,
-                                      of object: Any?,
-                                      change: [NSKeyValueChangeKey : Any]?,
-                                      context: UnsafeMutableRawPointer?) {
-      if context != &TimedProcessRunnerObserver.KVOContext {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        return
-      }
-
-      if keyPath == #keyPath(Process.isRunning),
-          let newValue = change?[NSKeyValueChangeKey.newKey] as? NSNumber,
-          newValue.boolValue,
-          let process = object as? Process {
-        accessPendingLogHandles { pendingLogHandles in
-          pendingLogHandles[process]?.resetStartTime()
         }
       }
     }

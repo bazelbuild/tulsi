@@ -72,7 +72,7 @@ class UISelectableOutlineViewNode: NSObject {
         return
       }
 
-      willChangeValue(forKey: "state")
+      willChangeValue(for: \.state)
       if let entry = entry {
         entry.selected = newSelectionState
       }
@@ -80,13 +80,13 @@ class UISelectableOutlineViewNode: NSObject {
       for node in children {
         node.state = newValue
       }
-      didChangeValue(forKey: "state")
+      didChangeValue(for: \.state)
 
       // Notify KVO that this node's ancestors have also changed state.
       var ancestor = parent
       while ancestor != nil {
-        ancestor!.willChangeValue(forKey: "state")
-        ancestor!.didChangeValue(forKey: "state")
+        ancestor!.willChangeValue(for: \.state)
+        ancestor!.didChangeValue(for: \.state)
         ancestor = ancestor!.parent
       }
     }

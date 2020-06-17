@@ -190,9 +190,12 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   func createNewProject(_ projectName: String, workspaceFileURL: URL) {
-    willChangeValue(forKey: "bazelURL")
-    willChangeValue(forKey: "bazelPackages")
-    willChangeValue(forKey: "workspaceRootURL")
+    willChangeValue(for: \.bazelURL)
+    defer { didChangeValue(for: \.bazelURL) }
+    willChangeValue(for: \.bazelPackages)
+    defer { didChangeValue(for: \.bazelPackages) }
+    willChangeValue(for: \.workspaceRootURL)
+    defer { didChangeValue(for: \.workspaceRootURL) }
 
     // Default the bundleURL to a sibling of the selected workspace file.
     let bundleName = "\(projectName).\(bundleExtension)"
@@ -205,10 +208,6 @@ final class TulsiProjectDocument: NSDocument,
     updateChangeCount(.changeDone)
 
     LogMessage.postSyslog("Create project: \(projectName)")
-
-    didChangeValue(forKey: "bazelURL")
-    didChangeValue(forKey: "bazelPackages")
-    didChangeValue(forKey: "workspaceRootURL")
   }
 
   override func writeSafely(to url: URL,
