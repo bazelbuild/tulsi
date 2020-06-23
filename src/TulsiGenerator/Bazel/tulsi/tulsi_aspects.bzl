@@ -99,7 +99,7 @@ _NON_ARC_SOURCE_GENERATING_RULES = [
     "objc_proto_library",
 ]
 
-# Whitelist of all extensions to include when scanning target.files for generated
+# List of all extensions to include when scanning target.files for generated
 # files. This helps avoid but not prevent the following:
 #
 # _tulsi-include maps generated files from multiple configurations into one
