@@ -89,7 +89,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Explicitly set Xcode version to use. Must use the same version or the golden files
     // won't match.
-    bazelBuildOptions.append("--xcode_version=11.3.1")
+    bazelBuildOptions.append("--xcode_version=11.5")
 
     // Disable the Swift worker as it adds extra dependencies.
     bazelBuildOptions.append("--define=RULES_SWIFT_BUILD_DUMMY_WORKER=1")

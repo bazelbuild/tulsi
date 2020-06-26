@@ -327,7 +327,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 11.3.1.11C505;
+				TULSI_XCODE_VERSION = 11.5.0.11E608c;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -405,7 +405,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 11.3.1.11C505;
+				TULSI_XCODE_VERSION = 11.5.0.11E608c;
 			};
 			name = Debug;
 		};
@@ -483,7 +483,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 11.3.1.11C505;
+				TULSI_XCODE_VERSION = 11.5.0.11E608c;
 			};
 			name = Release;
 		};
@@ -548,7 +548,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 11.3.1.11C505;
+				TULSI_XCODE_VERSION = 11.5.0.11E608c;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
