@@ -704,6 +704,14 @@ class BazelBuildBridge(object):
                        (' '.join([pipes.quote(x) for x in command]),
                         self.workspace_root,
                         self.project_dir))
+    # Xcode translates any warning that sounds like an error into an error. If
+    # you use a shared remote cache, there will be modules that are likely to
+    # have been compiled on a different machine, thus dsymutil will emit a
+    # "/path/to/YourModule.pcm: No such file or directory" warning about that.
+    # We patch the message slightly to make Xcode seeing that as a warning.
+    no_pcm_line_regex = re.compile(
+        r'(warning):\s+(.+.pcm):\s+(No such file or directory)')
+
     # Clean up bazel output to make it look better in Xcode.
     bazel_line_regex = re.compile(
         r'(INFO|DEBUG|WARNING|ERROR|FAILED): ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
@@ -723,6 +731,10 @@ class BazelBuildBridge(object):
             'FAILED': 'error'
         }
         return xcode_labels.get(bazel_label, bazel_label)
+
+      match = no_pcm_line_regex.match(output_line)
+      if match:
+        return 'warning: %s does not exist' % match.group(2)
 
       match = bazel_line_regex.match(output_line)
       if match:
