@@ -39,7 +39,7 @@ public enum CPU: String {
   }
 
   var watchCPU: CPU {
-    return isARM ? .armv7k : .i386
+    return isARM ? .armv7k : .x86_64
   }
 }
 
