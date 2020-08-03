@@ -676,6 +676,31 @@ def _target_filtering_info(ctx):
     else:
         return None
 
+
+def _expand_copt(ctx, target, input_copt):
+    """
+    Process make variables in coptss
+    https://docs.bazel.build/versions/master/be/make-variables.html
+    Note: this requires all to be declared as a pre-requisite
+    """
+    if not "$(" in input_copt:
+        return input_copt
+    expanded_copt = ctx.expand_location(input_copt)
+    if "bazel-out/" in expanded_copt:
+        converted = _convert_outpath_to_symlink_path(expanded_copt)
+        # The previous code will strip off the leading characters up to
+        # bazel-out/. This also strips leading strings such as -I or
+        # -fmodule-map=
+        prefix = expanded_copt[:expanded_copt.find("bazel-out")]
+        return prefix + converted
+    return expanded_copt
+
+def _expanded_copts(ctx, target, copts):
+    """Expands Bazel make variables in an array"""
+    if not copts:
+        return None
+    return [_expand_copt(ctx, target, c)  for c in copts]
+
 def _tulsi_sources_aspect(target, ctx):
     """Extracts information from a given rule, emitting it as a JSON struct."""
     rule = ctx.rule
@@ -739,11 +764,16 @@ def _tulsi_sources_aspect(target, ctx):
     datamodels = _collect_xcdatamodeld_files(rule_attr, "datamodels")
     datamodels.extend(_collect_xcdatamodeld_files(rule_attr, "data"))
 
+    copts = None if is_swift_library else expanded_copts,
+    swiftc_opts = expanded_copts if is_swift_library else None,
     # Keys for attribute and inheritable_attributes keys must be kept in sync
     # with defines in Tulsi's RuleEntry.
+
+
+    expanded_copts = _expanded_copts(ctx, target, copts_attr)
     attributes = _dict_omitting_none(
-        copts = None if is_swift_library else copts_attr,
-        swiftc_opts = copts_attr if is_swift_library else None,
+        copts = None if is_swift_library else expanded_copts,
+        swiftc_opts = expanded_copts if is_swift_library else None,
         datamodels = datamodels,
         supporting_files = supporting_files,
         test_host = _get_label_attr(rule_attr, "test_host.label"),
