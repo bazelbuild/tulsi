@@ -764,12 +764,8 @@ def _tulsi_sources_aspect(target, ctx):
     datamodels = _collect_xcdatamodeld_files(rule_attr, "datamodels")
     datamodels.extend(_collect_xcdatamodeld_files(rule_attr, "data"))
 
-    copts = None if is_swift_library else expanded_copts,
-    swiftc_opts = expanded_copts if is_swift_library else None,
     # Keys for attribute and inheritable_attributes keys must be kept in sync
     # with defines in Tulsi's RuleEntry.
-
-
     expanded_copts = _expanded_copts(ctx, target, copts_attr)
     attributes = _dict_omitting_none(
         copts = None if is_swift_library else expanded_copts,
