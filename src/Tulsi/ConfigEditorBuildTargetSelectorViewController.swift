@@ -35,6 +35,7 @@ final class ConfigEditorBuildTargetSelectorViewController: NSViewController, Wiz
       "cc_test",
       "ios_application",
       "ios_framework",
+      "ios_static_framework",
       "ios_legacy_test",
       "ios_ui_test",
       "ios_unit_test",
