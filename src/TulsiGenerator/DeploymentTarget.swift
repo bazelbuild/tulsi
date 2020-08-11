@@ -39,7 +39,11 @@ public enum CPU: String {
   }
 
   var watchCPU: CPU {
+#if swift(>=5.3)
+    return isARM ? .armv7k : .x86_64
+#else
     return isARM ? .armv7k : .i386
+#endif
   }
 }
 
@@ -102,7 +106,7 @@ public enum PlatformType: String {
     case .ios: return [.i386, .x86_64, .armv7, .arm64, .arm64e]
     case .macos: return  [.x86_64]
     case .tvos: return [.x86_64, .arm64]
-    case .watchos: return [.i386, .armv7k, .arm64_32]
+    case .watchos: return [.i386, .x86_64, .armv7k, .arm64_32]
     }
   }
 
