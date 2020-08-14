@@ -620,29 +620,34 @@ def _minimum_os_for_platform(ctx, platform_type_str):
     # Convert the DottedVersion to a string suitable for inclusion in a struct.
     return str(min_os)
 
+def _is_swift_target(target):
+    """Returns whether a target is a Swift target"""
+    if SwiftInfo not in target:
+        return False
+
+    # Containing a SwiftInfo provider is insufficient to determine whether a target is a Swift
+    # target so check whether it contains at least one Swift direct module.
+    for module in target[SwiftInfo].direct_modules:
+        if module.swift != None:
+            return True
+
+    return False
+
 def _collect_swift_modules(target):
-    """Returns a depset of Swift modules found on the given target."""
-    if SwiftInfo in target:
-        swift_info = target[SwiftInfo]
-        if hasattr(swift_info, "transitive_swiftmodules"):
-            return swift_info.transitive_swiftmodules
-    return depset()
+    """Returns a list of Swift modules found on the given target."""
+    return [
+        module.swift.swiftmodule
+        for module in target[SwiftInfo].transitive_modules.to_list()
+        if module.swift
+    ]
 
-def _collect_module_maps(target, rule_attr):
-    """Returns a depset of Clang module maps found on the given target."""
-    if SwiftInfo in target and ObjcInfo in target:
-        depsets = []
-        objc = target[ObjcInfo]
-        if hasattr(objc, "module_map"):
-            depsets.append(objc.module_map)
-
-        for dep in _collect_dependencies(rule_attr, "deps"):
-            if SwiftInfo in dep:
-                module_info = dep[SwiftInfo]
-                if hasattr(module_info, "transitive_modulemaps"):
-                    depsets.append(module_info.transitive_modulemaps)
-        return depset(transitive = depsets)
-    return depset()
+def _collect_module_maps(target):
+    """Returns a list of Clang module maps found on the given target."""
+    return [
+        module.clang.module_map
+        for module in target[SwiftInfo].transitive_modules.to_list()
+        if module.clang
+    ]
 
 def _collect_objc_strict_includes(target, rule_attr):
     """Returns a depset of strict includes found on the deps of given target."""
@@ -715,14 +720,14 @@ def _tulsi_sources_aspect(target, ctx):
     elif target_kind in _NON_ARC_SOURCE_GENERATING_RULES:
         generated_non_arc_files = _extract_generated_sources(target)
 
-    swift_transitive_modules = depset(
-        _depset_to_file_metadata_list(_collect_swift_modules(target)),
-    )
+    is_swift_target = _is_swift_target(target)
 
-    # Collect ObjC module maps dependencies for Swift targets.
-    objc_module_maps = depset(
-        _depset_to_file_metadata_list(_collect_module_maps(target, rule_attr)),
-    )
+    if is_swift_target:
+        swift_transitive_modules = depset([_file_metadata(f) for f in _collect_swift_modules(target)])
+        objc_module_maps = depset([_file_metadata(f) for f in _collect_module_maps(target)])
+    else:
+        swift_transitive_modules = depset()
+        objc_module_maps = depset()
 
     # Collect the dependencies of this rule, dropping any .jar files (which may be
     # created as artifacts of java/j2objc rules).
@@ -805,7 +810,7 @@ def _tulsi_sources_aspect(target, ctx):
     # Collect Swift related attributes.
     swift_defines = []
 
-    if SwiftInfo in target:
+    if is_swift_target:
         swift_info = target[SwiftInfo]
         attributes["has_swift_info"] = True
         transitive_attributes["swift_language_version"] = swift_info.swift_version
@@ -1105,9 +1110,10 @@ def _tulsi_outputs_aspect(target, ctx):
         if cc_info:
             all_files_depsets.append(cc_info.compilation_context.headers)
 
-    all_files_depsets.append(_collect_swift_header(target))
-    all_files_depsets.append(_collect_swift_modules(target))
-    all_files_depsets.append(_collect_module_maps(target, rule_attr))
+    if _is_swift_target(target):
+        all_files_depsets.append(_collect_swift_header(target))
+        all_files_depsets.append(depset(_collect_swift_modules(target)))
+        all_files_depsets.append(depset(_collect_module_maps(target)))
 
     source_files = [
         x
