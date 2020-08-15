@@ -173,7 +173,7 @@ public final class TulsiProject {
     let dict: [String: Any] = [
         TulsiProject.ProjectNameKey: projectName,
         TulsiProject.WorkspaceRootKey: projectBundleURL.relativePathTo(workspaceRootURL)!,
-        TulsiProject.PackagesKey: bazelPackages,
+        TulsiProject.PackagesKey: bazelPackages.sorted(),
         TulsiProject.ConfigDefaultsKey: configDefaults,
     ]
 
