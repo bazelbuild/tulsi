@@ -46,7 +46,7 @@ class TulsiProjectTests: XCTestCase {
       let data = try project.save()
       let dict = try JSONSerialization.jsonObject(
         with: data as Data, options: JSONSerialization.ReadingOptions()) as! [String: Any]
-      XCTAssertEqual(dict["packages"] as! [String], bazelPackages)
+      XCTAssertEqual(dict["packages"] as! [String], bazelPackages.sorted())
       XCTAssertEqual(dict["projectName"] as! String, projectName)
       XCTAssertEqual(dict["workspaceRoot"] as! String, relativeRootPath)
     } catch {
