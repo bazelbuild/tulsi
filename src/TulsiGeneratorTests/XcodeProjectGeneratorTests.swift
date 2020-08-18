@@ -612,7 +612,8 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   func generateBuildTargetsForRuleEntries(
     _ ruleEntries: Set<RuleEntry>,
-    ruleEntryMap: RuleEntryMap
+    ruleEntryMap: RuleEntryMap,
+    pathFilters: Set<String>?
   ) throws -> [BuildLabel: PBXNativeTarget] {
     // This works as this file only tests native targets that don't have multiple configurations.
     let namedRuleEntries = ruleEntries.map { (e: RuleEntry) -> (String, RuleEntry) in

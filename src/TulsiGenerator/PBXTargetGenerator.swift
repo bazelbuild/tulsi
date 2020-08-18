@@ -105,11 +105,15 @@ protocol PBXTargetGeneratorProtocol: class {
   /// Generates Xcode build targets that invoke Bazel for the given targets. For test-type rules,
   /// non-compiling source file linkages are created to facilitate indexing of XCTests.
   ///
+  /// If `pathFilters` is nil, no path filtering is done for test sources (to keep legacy behavior
+  /// for users who were depending upon it).
+  ///
   /// Returns a mapping from build label to generated PBXNativeTarget.
   /// Throws if one of the RuleEntry instances is for an unsupported Bazel target type.
   func generateBuildTargetsForRuleEntries(
     _ entries: Set<RuleEntry>,
-    ruleEntryMap: RuleEntryMap
+    ruleEntryMap: RuleEntryMap,
+    pathFilters: Set<String>?
   ) throws -> [BuildLabel: PBXNativeTarget]
 }
 
@@ -816,7 +820,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// Generates build targets for the given rule entries.
   func generateBuildTargetsForRuleEntries(
     _ ruleEntries: Set<RuleEntry>,
-    ruleEntryMap: RuleEntryMap
+    ruleEntryMap: RuleEntryMap,
+    pathFilters: Set<String>?
   ) throws -> [BuildLabel: PBXNativeTarget] {
     let namedRuleEntries = generateUniqueNamesForRuleEntries(ruleEntries)
 
@@ -901,7 +906,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       updateTestTarget(testTarget,
                        withLinkageToHostTarget: testHostTarget,
                        ruleEntry: entry,
-                       ruleEntryMap: ruleEntryMap)
+                       ruleEntryMap: ruleEntryMap,
+                       pathFilters: pathFilters)
     }
     return targetsByLabel
   }
@@ -910,7 +916,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Generates a filter function that may be used to verify that a path string is allowed by the
   /// given set of pathFilters.
-  private func pathFilterFunc(_ pathFilters: Set<String>) -> (String) -> Bool {
+  private func pathFilterFunc(_ pathFilters: Set<String>?) -> (String) -> Bool {
+    guard let pathFilters = pathFilters else {
+      return { (path: String) -> Bool in
+        return true
+      }
+    }
     let recursiveFilters = Set<String>(pathFilters.filter({ $0.hasSuffix("/...") }).map() {
       let index = $0.index($0.endIndex, offsetBy: -3)
       return String($0[..<index])
@@ -1249,13 +1260,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   private func updateTestTarget(_ target: PBXNativeTarget,
                                 withLinkageToHostTarget hostTarget: PBXNativeTarget?,
                                 ruleEntry: RuleEntry,
-                                ruleEntryMap: RuleEntryMap) {
+                                ruleEntryMap: RuleEntryMap,
+                                pathFilters: Set<String>?) {
     // If the test target has a test host, check that it was included in the Tulsi configuration.
     if let hostTarget = hostTarget {
       project.linkTestTarget(target, toHostTarget: hostTarget)
     }
     updateTestTargetIndexer(target, ruleEntry: ruleEntry, hostTarget: hostTarget, ruleEntryMap: ruleEntryMap)
-    updateTestTargetBuildPhases(target, ruleEntry: ruleEntry, ruleEntryMap: ruleEntryMap)
+    updateTestTargetBuildPhases(target, ruleEntry: ruleEntry, ruleEntryMap: ruleEntryMap, pathFilters: pathFilters)
   }
 
   /// Updates the test target indexer with test specific values.
@@ -1280,9 +1292,14 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   private func updateTestTargetBuildPhases(_ target: PBXNativeTarget,
                                            ruleEntry: RuleEntry,
-                                           ruleEntryMap: RuleEntryMap) {
-    let testSourceFileInfos = ruleEntry.sourceFiles
-    let testNonArcSourceFileInfos = ruleEntry.nonARCSourceFiles
+                                           ruleEntryMap: RuleEntryMap,
+                                           pathFilters: Set<String>?) {
+    let includePathInProject = pathFilterFunc(pathFilters)
+    func includeFileInProject(_ info: BazelFileInfo) -> Bool {
+      return includePathInProject(info.fullPath)
+    }
+    let testSourceFileInfos = ruleEntry.sourceFiles.filter(includeFileInProject)
+    let testNonArcSourceFileInfos = ruleEntry.nonARCSourceFiles.filter(includeFileInProject)
     let containsSwift = ruleEntry.attributes[.has_swift_dependency] as? Bool ?? false
 
     // For the Swift dummy files phase to work, it has to be placed before the Compile Sources build
