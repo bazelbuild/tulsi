@@ -539,8 +539,11 @@ final class XcodeProjectGenerator {
     }
     var targetsByLabel = [BuildLabel: PBXNativeTarget]()
     try profileAction("generating_build_targets") {
+      let useFilters = config.options[.PathFiltersApplyToTestSources].commonValueAsBool ?? true
+      let pathFilters = useFilters ? config.pathFilters : nil
       targetsByLabel = try generator.generateBuildTargetsForRuleEntries(targetRules,
-                                                       ruleEntryMap: ruleEntryMap)
+                                                       ruleEntryMap: ruleEntryMap,
+                                                        pathFilters: pathFilters)
     }
 
     let referencePatcher = BazelXcodeProjectPatcher(fileManager: fileManager)
