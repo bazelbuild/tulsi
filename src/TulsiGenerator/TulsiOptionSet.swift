@@ -68,6 +68,9 @@ public enum TulsiOptionKey: String {
       // Generate .runfiles directory, as referenced by TEST_SRCDIR in bazel tests.
       GenerateRunfiles,
 
+      // Whether test sources are filtered by the project's path filters.
+      PathFiltersApplyToTestSources,
+
       // Used by Tulsi to improve Bazel-caching of build flags.
       ProjectPrioritizesSwift,
 
@@ -319,6 +322,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.IncludeBuildSources, .Generic, false)
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
     addBoolOption(.GenerateRunfiles, .Generic, false)
+    addBoolOption(.PathFiltersApplyToTestSources, .Generic, true)
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
     addBoolOption(.SwiftForcesdSYMs, .Generic, false)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
