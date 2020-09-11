@@ -227,6 +227,9 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         // Don't replace test_suites with their tests. This allows the Aspect to discover the
         // structure of test_suites instead of just the tests they resolve to.
         "--noexpand_test_suites",
+        // Don't run validation actions during project generation; validation actions could
+        // slow down the project generation or fail it.
+        "--experimental_run_validations=0",
         // The following flags WILL affect Bazel analysis caching.
         // Keep this consistent with bazel_build.py.
         "--aspects",
