@@ -2,7 +2,7 @@
 x_defaults:
   common: &common
     platform: macos
-    xcode_version: "11.5"
+    xcode_version: "11.7"
     build_targets:
     - "//:tulsi"
     test_flags:
