@@ -9,3 +9,6 @@ build --strategy=SwiftCompile=local
 # Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
 # See also: https://github.com/bazelbuild/rules_apple/issues/456.
 build "--host_force_python=PY2"
+
+# This is required for re-invoking bazel in shell tests. CI adds it implicitly
+test --test_env=HOME
