@@ -74,6 +74,12 @@ public enum TulsiOptionKey: String {
       // Used by Tulsi to improve Bazel-caching of build flags.
       ProjectPrioritizesSwift,
 
+      // When building an iOS app with a companion watchOS app, the default architecture for the
+      // watchOS app will be i386. This option overrides the default and uses x86_64 instead. This
+      // is needed for Xcode where watch simulators are x86_64 but older versions will still need
+      // i386.
+      Use64BitWatchSimulator,
+
       // Custom build phase run script that runs before bazel build.
       PreBuildPhaseRunScript,
 
@@ -326,6 +332,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
     addBoolOption(.SwiftForcesdSYMs, .Generic, false)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
+    addBoolOption(.Use64BitWatchSimulator, .Generic, false)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }
