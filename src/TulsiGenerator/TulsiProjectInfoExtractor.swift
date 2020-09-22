@@ -59,6 +59,7 @@ public final class TulsiProjectInfoExtractor {
                                   compilationModeOption: TulsiOption,
                                   platformConfigOption: TulsiOption,
                                   prioritizeSwiftOption: TulsiOption,
+                                  use64BitWatchSimulatorOption: TulsiOption,
                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
                                     startupOptions: startupOptions,
@@ -67,6 +68,7 @@ public final class TulsiProjectInfoExtractor {
                                     compilationModeOption: compilationModeOption,
                                     platformConfigOption: platformConfigOption,
                                     prioritizeSwiftOption: prioritizeSwiftOption,
+                                    use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
                                     features: features)
   }
 
@@ -77,6 +79,7 @@ public final class TulsiProjectInfoExtractor {
                                    compilationModeOption: TulsiOption,
                                    platformConfigOption: TulsiOption,
                                    prioritizeSwiftOption: TulsiOption,
+                                   use64BitWatchSimulatorOption: TulsiOption,
                                    features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
@@ -86,6 +89,7 @@ public final class TulsiProjectInfoExtractor {
                                                              compilationModeOption: compilationModeOption,
                                                              platformConfigOption: platformConfigOption,
                                                              prioritizeSwiftOption: prioritizeSwiftOption,
+                                                             use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ExtractorError.ruleEntriesFailed(info)

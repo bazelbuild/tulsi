@@ -458,6 +458,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
         let compilationModeOption = optionSet[.ProjectGenerationCompilationMode]
         let platformConfigOption = optionSet[.ProjectGenerationPlatformConfiguration]
         let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
+        let use64BitWatchSimulatorOption = optionSet[.Use64BitWatchSimulator]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
                                                                    startupOptions: startupOptions,
                                                                    extraStartupOptions: extraStartupOptions,
@@ -465,6 +466,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                                    compilationModeOption: compilationModeOption,
                                                                    platformConfigOption: platformConfigOption,
                                                                    prioritizeSwiftOption: prioritizeSwiftOption,
+                                                                   use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
                                                                    features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
@@ -794,6 +796,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
                                                               compilationModeOption: options[.ProjectGenerationCompilationMode],
                                                               platformConfigOption: options[.ProjectGenerationPlatformConfiguration],
                                                               prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
+                                                              use64BitWatchSimulatorOption: options[.Use64BitWatchSimulator],
                                                               features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()

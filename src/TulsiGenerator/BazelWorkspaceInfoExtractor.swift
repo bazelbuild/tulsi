@@ -101,6 +101,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
+                            use64BitWatchSimulatorOption: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
@@ -119,6 +120,10 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
     let compilationMode = compilationModeOption.commonValue
     let platformConfig = platformConfigOption.commonValue
     let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool
+
+    if let use64BitWatchSimulatorOption = use64BitWatchSimulatorOption.commonValueAsBool {
+      PlatformConfiguration.use64BitWatchSimulator = use64BitWatchSimulatorOption
+    }
 
     do {
       let ruleEntryMap =
