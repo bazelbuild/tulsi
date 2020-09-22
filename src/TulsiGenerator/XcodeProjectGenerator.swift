@@ -622,6 +622,7 @@ final class XcodeProjectGenerator {
                                                              compilationModeOption: config.options[.ProjectGenerationCompilationMode],
                                                              platformConfigOption: config.options[.ProjectGenerationPlatformConfiguration],
                                                              prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift],
+                                                             use64BitWatchSimulatorOption: config.options[.Use64BitWatchSimulator],
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)

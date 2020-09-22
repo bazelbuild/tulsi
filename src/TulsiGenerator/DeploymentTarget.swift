@@ -39,16 +39,26 @@ public enum CPU: String {
   }
 
   var watchCPU: CPU {
-#if swift(>=5.3)
-    return isARM ? .armv7k : .x86_64
-#else
-    return isARM ? .armv7k : .i386
-#endif
+    if PlatformConfiguration.use64BitWatchSimulator {
+      return isARM ? .armv7k : .x86_64
+    } else {
+      return isARM ? .armv7k : .i386
+    }
   }
 }
 
 /// Represents a (PlatformType, AppleCPU) pair.
 public struct PlatformConfiguration {
+
+  /// Xcode 12 uses x86_64 64bit watch simulators in contrast to i386 32bit watch simulators
+  /// used in Xcode 11 and older. 32bit apps cannot run on 64bit simulators and vice versa.
+  /// Tulsi sets the CPU configuration at project generation time so we cannot dynamically
+  /// swap between the two. Instead, Tulsi has an option 'Use64BitWatchSimulator' in the project
+  /// config that allows the user to specify whether Tulsi should assume 64bit watch simulators.
+  /// This value should be set to the value read from the Tulsi config and should be set as
+  /// soon as the TulsiOption's are extracted to ensure the proper architecture is used
+  /// everywhere.
+  public static var use64BitWatchSimulator = false
 
   public let platform: PlatformType
   public let cpu: CPU

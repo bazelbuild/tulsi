@@ -33,6 +33,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
                             compilationModeOption: TulsiOption,
                             platformConfigOption: TulsiOption,
                             prioritizeSwiftOption: TulsiOption,
+                            use64BitWatchSimulatorOption: TulsiOption,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of
