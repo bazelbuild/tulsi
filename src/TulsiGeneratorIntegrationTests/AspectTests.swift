@@ -63,9 +63,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                   "path": "tulsi_test/Application/Launch.storyboard",
                                                   "src": true] as NSDictionary)
 
-    // TODO(kaipi): Reenable once the application rules use the Starlark Linking API.
-    // checker.assertThat("//tulsi_test:Application")
-    //     .dependsOn("//tulsi_test:ApplicationLibrary")
+    checker.assertThat("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:ApplicationLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:Library")
@@ -361,10 +360,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
-    // TODO(kaipi): Reenable once the application rules use the Starlark Linking API.
-    // checker.assertThat("//tulsi_test:Application")
-    //   .dependsOn("//tulsi_test:ApplicationLibrary")
-    //   .dependsOn("//tulsi_test:ApplicationResources")
+    checker.assertThat("//tulsi_test:Application")
+      .dependsOn("//tulsi_test:ApplicationLibrary")
+      .dependsOn("//tulsi_test:ApplicationResources")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
       .hasSources(["tulsi_test/Library/srcs/main.m"])
@@ -390,9 +388,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
-    // TODO(kaipi): Reenable once the application rules use the Starlark Linking API.
-    // checker.assertThat("//tulsi_test:Application")
-    //     .dependsOn("//tulsi_test:ApplicationLibrary")
+    checker.assertThat("//tulsi_test:Application")
+        .dependsOn("//tulsi_test:ApplicationLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:SwiftLibrary")
