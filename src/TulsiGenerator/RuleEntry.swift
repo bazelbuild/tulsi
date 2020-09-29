@@ -200,6 +200,9 @@ public final class RuleEntry: RuleInfo {
   /// Set of ios_application extension labels that this rule utilizes.
   public let extensions: Set<BuildLabel>
 
+  /// Set of ios_application app clip labels that this rule utilizes.
+  public let appClips: Set<BuildLabel>
+
   /// .framework bundles provided by this rule.
   public let frameworkImports: [BazelFileInfo]
 
@@ -332,6 +335,7 @@ public final class RuleEntry: RuleInfo {
        secondaryArtifacts: [BazelFileInfo] = [],
        weakDependencies: Set<BuildLabel>? = nil,
        extensions: Set<BuildLabel>? = nil,
+       appClips: Set<BuildLabel>? = nil,
        bundleID: String? = nil,
        bundleName: String? = nil,
        productType: PBXTarget.ProductType? = nil,
@@ -377,11 +381,8 @@ public final class RuleEntry: RuleInfo {
     if let weakDependencies = weakDependencies {
       self.weakDependencies = weakDependencies
     }
-    if let extensions = extensions {
-      self.extensions = extensions
-    } else {
-      self.extensions = Set()
-    }
+    self.extensions = extensions ?? Set()
+    self.appClips = appClips ?? Set()
     self.bundleID = bundleID
     self.bundleName = bundleName
     self.productType = productType
@@ -451,6 +452,7 @@ public final class RuleEntry: RuleInfo {
                    secondaryArtifacts: [BazelFileInfo] = [],
                    weakDependencies: Set<BuildLabel>? = nil,
                    extensions: Set<BuildLabel>? = nil,
+                   appClips: Set<BuildLabel>? = nil,
                    bundleID: String? = nil,
                    bundleName: String? = nil,
                    productType: PBXTarget.ProductType? = nil,
@@ -480,6 +482,7 @@ public final class RuleEntry: RuleInfo {
               secondaryArtifacts: secondaryArtifacts,
               weakDependencies: weakDependencies,
               extensions: extensions,
+              appClips: appClips,
               bundleID: bundleID,
               bundleName: bundleName,
               productType: productType,

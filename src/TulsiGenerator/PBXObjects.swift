@@ -699,6 +699,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     case Framework = "com.apple.product-type.framework"
     case StaticFramework = "com.apple.product-type.framework.static"
     case Application = "com.apple.product-type.application"
+    case AppClip = "com.apple.product-type.application.on-demand-install-capable"
     case MessagesApplication = "com.apple.product-type.application.messages"
     case MessagesExtension = "com.apple.product-type.app-extension.messages"
     case MessagesStickerPackExtension = "com.apple.product-type.app-extension.messages-sticker-pack"
@@ -773,6 +774,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
           fallthrough
         case .MessagesApplication:
           fallthrough
+        case .AppClip:
+          fallthrough
         case .Application:
           return "wrapper.application"
 
@@ -825,6 +828,8 @@ class PBXTarget: PBXObjectProtocol, Hashable {
         case .Watch2App:
           fallthrough
         case .MessagesApplication:
+          fallthrough
+        case .AppClip:
           fallthrough
         case .Application:
           return "\(name).app"

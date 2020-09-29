@@ -382,6 +382,26 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       .hasSources(["tulsi_test/Watch2ExtensionBinary/srcs/watch2_extension_binary.m"])
   }
 
+  func testAppClip() throws {
+    installBUILDFile("AppClip", intoSubdirectory: "tulsi_test")
+    let ruleEntryMap = try extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")])
+
+    let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
+
+    checker.assertThat("//tulsi_test:Application")
+      .dependsOn("//tulsi_test:AppClip")
+
+    checker.assertThat("//tulsi_test:ApplicationLibrary")
+      .hasSources(["tulsi_test/Library/srcs/main.m"])
+
+    checker.assertThat("//tulsi_test:AppClip")
+      .dependsOn("//tulsi_test:AppClipLibrary")
+      .hasAttribute(.supporting_files,
+                            value: [["is_dir": false,
+                                     "path": "tulsi_test/AppClip/app_infoplists/Info.plist",
+                                     "src": true]] as NSArray)
+  }
+
   func testSwift() throws {
     installBUILDFile("Swift", intoSubdirectory: "tulsi_test")
     let ruleEntryMap = try extractRuleEntriesForLabels([BuildLabel("//tulsi_test:Application")])

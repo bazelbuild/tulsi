@@ -116,6 +116,31 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     validateDiff(diffLines)
   }
 
+  func test_AppClipProject() throws {
+    let testDir = "tulsi_e2e_app_clip"
+    installBUILDFile("AppClip", intoSubdirectory: testDir)
+
+    let appLabel = BuildLabel("//\(testDir):Application")
+    let buildTargets = [RuleInfo(label: appLabel,
+                                 type: "ios_application",
+                                 linkedTargetLabels: [])]
+    let additionalFilePaths = ["\(testDir)/BUILD"]
+
+    let projectName = "AppClipProject"
+    let projectURL = try generateProjectNamed(projectName,
+                                              buildTargets: buildTargets,
+                                              pathFilters: ["\(testDir)/...",
+                                                            "bazel-bin/...",
+                                                            "bazel-genfiles/..."],
+                                              additionalFilePaths: additionalFilePaths,
+                                              outputDir: "tulsi_e2e_output")
+
+    try validateBuildCommandForProject(projectURL, targets: [appLabel.value])
+
+    let diffLines = diffProjectAt(projectURL, againstGoldenProject: projectName)
+    validateDiff(diffLines)
+  }
+
   func test_BrokenSourceBUILD() {
     let aspectLogExpectation = expectation(description:
       "Should see a statement that Bazel aspect info is being printed to our logs."

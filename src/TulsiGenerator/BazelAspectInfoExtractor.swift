@@ -358,6 +358,12 @@ final class BazelAspectInfoExtractor: QueuedLogging {
       } else {
         extensions = nil
       }
+      let appClips: Set<BuildLabel>?
+      if let appClipsList = dict["app_clips"] as? [String] {
+        appClips = Set(appClipsList.map({ BuildLabel($0) }))
+      } else {
+        appClips = nil
+      }
       let bundleID = dict["bundle_id"] as? String
       let bundleName = dict["bundle_name"] as? String
       let productType = dict["product_type"] as? String
@@ -403,6 +409,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
                                 frameworkImports: frameworkImports,
                                 secondaryArtifacts: secondaryArtifacts,
                                 extensions: extensions,
+                                appClips: appClips,
                                 bundleID: bundleID,
                                 bundleName: bundleName,
                                 productType: targetProductType,

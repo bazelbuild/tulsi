@@ -1,0 +1,25 @@
+
+<Scheme version="1.3" LastUpgradeVersion="1000">
+    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
+        <BuildActionEntries>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0.a" BlueprintName="_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0" BlueprintIdentifier="7E9AFE62D9606AC400000000" ReferencedContainer="container:AppClipProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0.a" BlueprintName="_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0" BlueprintIdentifier="7E9AFE62D9606AC400000000" ReferencedContainer="container:AppClipProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0.a" BlueprintName="_idx_ApplicationLibrary_AppClipLibrary_6F5A3A13_ios_min14.0" BlueprintIdentifier="7E9AFE62D9606AC400000000" ReferencedContainer="container:AppClipProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+        </BuildActionEntries>
+    </BuildAction>
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug">
+        <Testables></Testables>
+    </TestAction>
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
+        <EnvironmentVariables></EnvironmentVariables>
+    </LaunchAction>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" debugDocumentVersioning="YES" buildConfiguration="Release"></ProfileAction>
+    <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
+</Scheme>
