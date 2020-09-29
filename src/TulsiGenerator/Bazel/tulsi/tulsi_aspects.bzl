@@ -23,6 +23,7 @@ load(
     "AppleBinaryInfo",
     "AppleBundleInfo",
     "AppleTestInfo",
+    "IosApplicationBundleInfo",
     "IosExtensionBundleInfo",
     "SwiftInfo",
 )
@@ -47,6 +48,7 @@ UNSUPPORTED_FEATURES = [
 # objc_binary rule which in turn might have objc_library's in its "deps"
 # attribute.
 _TULSI_COMPILE_DEPS = [
+    "app_clips",  # For ios_application which can include app clips.
     "bundles",
     "deps",
     "extension",
@@ -780,6 +782,11 @@ def _tulsi_sources_aspect(target, ctx):
         if watch_app:
             extensions.append(watch_app)
 
+    # Collect app clips for iOS app targets
+    app_clips = None
+    if IosApplicationBundleInfo in target:
+        app_clips = [str(t.label) for t in _getattr_as_list(rule_attr, "app_clips")]
+
     # Record the Xcode version used for all targets, although it will only be used by bazel_build.py
     # for targets that are buildable in the xcodeproj.
     xcode_version = _get_xcode_version(ctx)
@@ -880,6 +887,7 @@ def _tulsi_sources_aspect(target, ctx):
         deps = compile_deps,
         test_deps = test_deps,
         extensions = extensions,
+        app_clips = app_clips,
         framework_imports = _collect_framework_imports(rule_attr),
         generated_files = generated_files,
         generated_non_arc_files = generated_non_arc_files,

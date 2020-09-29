@@ -420,9 +420,11 @@ final class XcodeProjectGenerator {
         let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
         for ruleEntry in ruleEntries {
           if ruleEntry.type != "test_suite" {
-            // Add the RuleEntry itself and any registered extensions.
+            // Add the RuleEntry itself and any registered extensions + app clips so they are
+            // automatically added as buildable schemes in the project.
             expandedTargetLabels.insert(label)
             expandedTargetLabels.formUnion(ruleEntry.extensions)
+            expandedTargetLabels.formUnion(ruleEntry.appClips)
 
             // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
             expandTargetLabels(ruleEntry.extensions)
