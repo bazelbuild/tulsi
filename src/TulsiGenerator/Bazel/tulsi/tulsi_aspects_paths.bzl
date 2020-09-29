@@ -21,6 +21,7 @@ load(
     "@build_bazel_rules_apple//apple:providers.bzl",
     _AppleBinaryInfo = "AppleBinaryInfo",
     _AppleBundleInfo = "AppleBundleInfo",
+    _IosApplicationBundleInfo = "IosApplicationBundleInfo",
     _IosExtensionBundleInfo = "IosExtensionBundleInfo",
 )
 load(
@@ -38,6 +39,8 @@ AppleBinaryInfo = _AppleBinaryInfo
 AppleBundleInfo = _AppleBundleInfo
 
 AppleTestInfo = _AppleTestInfo
+
+IosApplicationBundleInfo = _IosApplicationBundleInfo
 
 IosExtensionBundleInfo = _IosExtensionBundleInfo
 
