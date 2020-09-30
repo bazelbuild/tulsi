@@ -1656,6 +1656,13 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]"] = "1,4"
     }
 
+    // App clips are improperly signed by Xcode when using the legacy build system even with
+    // CODE_SIGNING_REQUIRED=NO so disable code signing and let bazel_build.py do the necessary
+    // signing.
+    if pbxTargetType == .AppClip {
+      buildSettings["CODE_SIGNING_ALLOWED"] = "NO"
+    }
+
     // bazel_build.py uses this to determine if it needs to pass the --xcode_version flag, as the
     // flag can have implications for caching even if the user's active Xcode version is the same
     // as the flag.
