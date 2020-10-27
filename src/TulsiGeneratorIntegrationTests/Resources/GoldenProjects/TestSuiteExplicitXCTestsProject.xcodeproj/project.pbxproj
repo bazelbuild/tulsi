@@ -623,7 +623,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -648,7 +648,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -676,7 +676,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -704,7 +704,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -771,7 +771,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -792,7 +792,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -809,7 +809,7 @@
 				PRODUCT_NAME = TestApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -830,7 +830,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -851,7 +851,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -906,7 +906,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -939,7 +939,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -956,7 +956,7 @@
 				PRODUCT_NAME = TestApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -977,7 +977,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -998,7 +998,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -1053,7 +1053,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -1093,7 +1093,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Three;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1118,7 +1118,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1146,7 +1146,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1174,7 +1174,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApplication.app/TestApplication";
 				TULSI_BUILD_PATH = TestSuite/Two;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1241,7 +1241,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = TestSuite/One;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

@@ -347,7 +347,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -372,7 +372,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -397,7 +397,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -450,7 +450,7 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -467,7 +467,7 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -484,7 +484,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Debug;
 		};
@@ -537,7 +537,7 @@
 				PRODUCT_NAME = ApplicationOne;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -554,7 +554,7 @@
 				PRODUCT_NAME = ApplicationTwo;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -571,7 +571,7 @@
 				PRODUCT_NAME = TodayExtension;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = Release;
 		};
@@ -637,7 +637,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -662,7 +662,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -687,7 +687,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_multi_extension;
-				TULSI_XCODE_VERSION = 11.7.0.11E801a;
+				TULSI_XCODE_VERSION = 12.0.1.12A7300;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
