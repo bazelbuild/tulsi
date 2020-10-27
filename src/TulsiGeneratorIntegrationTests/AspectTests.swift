@@ -64,7 +64,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
                                                   "src": true] as NSDictionary)
 
     checker.assertThat("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:ApplicationLibrary")
+        .dependsTransitivelyOn("//tulsi_test:ApplicationLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:Library")
@@ -361,8 +361,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//tulsi_test:Application")
-      .dependsOn("//tulsi_test:ApplicationLibrary")
-      .dependsOn("//tulsi_test:ApplicationResources")
+      .dependsTransitivelyOn("//tulsi_test:ApplicationLibrary")
+      .dependsTransitivelyOn("//tulsi_test:ApplicationResources")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
       .hasSources(["tulsi_test/Library/srcs/main.m"])
@@ -395,7 +395,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       .hasSources(["tulsi_test/Library/srcs/main.m"])
 
     checker.assertThat("//tulsi_test:AppClip")
-      .dependsOn("//tulsi_test:AppClipLibrary")
+      .dependsTransitivelyOn("//tulsi_test:AppClipLibrary")
       .hasAttribute(.supporting_files,
                             value: [["is_dir": false,
                                      "path": "tulsi_test/AppClip/app_infoplists/Info.plist",
@@ -409,7 +409,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
     checker.assertThat("//tulsi_test:Application")
-        .dependsOn("//tulsi_test:ApplicationLibrary")
+        .dependsTransitivelyOn("//tulsi_test:ApplicationLibrary")
 
     checker.assertThat("//tulsi_test:ApplicationLibrary")
         .dependsOn("//tulsi_test:SwiftLibrary")
