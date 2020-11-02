@@ -9,3 +9,8 @@ build --strategy=SwiftCompile=local
 # Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
 # See also: https://github.com/bazelbuild/rules_apple/issues/456.
 build "--host_force_python=PY2"
+
+# Disable this for now because apple_support currently relies on a workaround
+# that needs to be able to pass a sequence of strings to actions.run_shell's
+# 'command'.
+build --incompatible_run_shell_command_string=false
