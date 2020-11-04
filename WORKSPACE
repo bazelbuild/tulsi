@@ -1,10 +1,9 @@
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-git_repository(
+http_archive(
     name = "build_bazel_rules_apple",
-    commit = "532382330b6fdb22af2051b06cb74093efeec761",
-    remote = "https://github.com/bazelbuild/rules_apple.git",
-    shallow_since = "1577724587 -0800",
+    sha256 = "9537af9ca8a978a9832c08c1bc194897d3805b35fc82dcfedaea1c7626043e5b",
+    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.21.0/rules_apple.0.21.0.tar.gz",
 )
 
 load(
