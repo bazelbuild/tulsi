@@ -227,6 +227,8 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         // Don't replace test_suites with their tests. This allows the Aspect to discover the
         // structure of test_suites instead of just the tests they resolve to.
         "--noexpand_test_suites",
+        // Don't generate parse headers actions.  They are not needed and would consume memory.
+        "--features=-parse_headers",
         // Don't run validation actions during project generation; validation actions could
         // slow down the project generation or fail it.
         "--experimental_run_validations=0",
