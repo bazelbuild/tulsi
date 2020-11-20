@@ -960,8 +960,9 @@ def _has_dsym(target):
     if apple_common.AppleDebugOutputs in target:
         debug_outputs_provider = target[apple_common.AppleDebugOutputs]
         outputs_map = debug_outputs_provider.outputs_map
-        if outputs_map:
-            return True
+        for _, arch_outputs in outputs_map.items():
+            if "dsym_binary" in arch_outputs:
+                return True
     return False
 
 # Due to b/71744111 we have to manually re-create tag filtering for test_suite
