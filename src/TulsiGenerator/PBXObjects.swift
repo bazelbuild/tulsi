@@ -236,6 +236,13 @@ final class PBXFileReference: PBXReference, Hashable {
     } else if let uti = explicitFileType {
       try serializer.addField("explicitFileType", uti)
     }
+
+    // Give Starlark files Python syntax highlighting by default.
+    // It's quite a good match--and certainly a better default than no highlighting.
+    // Xcode's plugin functionality is currently so limited that we can't do better.
+    if name == "BUILD" || name == "WORKSPACE" || name.hasSuffix(".bzl") {
+      try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.python")
+    }
   }
 }
 
