@@ -242,6 +242,8 @@ final class PBXFileReference: PBXReference, Hashable {
     // Xcode's plugin functionality is currently so limited that we can't do better.
     if name == "BUILD" || name == "WORKSPACE" || name.hasSuffix(".bzl") {
       try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.python")
+    } else if name.hasSuffix(".bazelrc") {
+      try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.sh")
     }
   }
 }
