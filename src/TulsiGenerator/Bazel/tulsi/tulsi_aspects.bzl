@@ -822,7 +822,13 @@ def _tulsi_sources_aspect(target, ctx):
         attributes["has_swift_info"] = True
         transitive_attributes["swift_language_version"] = swift_info.swift_version
         transitive_attributes["has_swift_dependency"] = True
-        swift_defines = swift_info.transitive_defines.to_list()
+        defines = {}
+        for module in swift_info.transitive_modules.to_list():
+            swift_module = module.swift
+            if swift_module and swift_module.defines:
+                for x in swift_module.defines:
+                    defines[x] = None
+        swift_defines = defines.keys()
 
     all_attributes = dict(attributes)
     all_attributes.update(inheritable_attributes)
