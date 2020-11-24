@@ -240,7 +240,7 @@ final class PBXFileReference: PBXReference, Hashable {
     // Give Starlark files Python syntax highlighting by default.
     // It's quite a good match--and certainly a better default than no highlighting.
     // Xcode's plugin functionality is currently so limited that we can't do better.
-    if name == "BUILD" || name == "WORKSPACE" || name.hasSuffix(".bzl") {
+    if name == "BUILD" || name == "WORKSPACE" || name.hasSuffix(".bzl") || name.hasSuffix(".bazel") {
       try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.python")
     } else if name.hasSuffix(".bazelrc") { // Similarly, but shell for .bazelrc 
       try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.sh")
