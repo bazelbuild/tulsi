@@ -670,6 +670,28 @@ def _collect_swift_header(target):
         return target[CcInfo].compilation_context.headers
     return depset()
 
+def collect_swift_version(copts):
+    """Returns the value of the `-swift-version` argument, if found.
+
+    Args:
+        copts: The list of copts to be scanned.
+
+    Returns:
+        The value of the `-swift-version` argument, or None if it was not found
+        in the copt list.
+    """
+
+    # Note that the argument can occur multiple times, and the last one wins.
+    last_swift_version = None
+
+    count = len(copts)
+    for i in range(count):
+        copt = copts[i]
+        if copt == "-swift-version" and i + 1 < count:
+            last_swift_version = copts[i + 1]
+
+    return last_swift_version
+
 def _target_filtering_info(ctx):
     """Returns filtering information for test rules."""
     rule = ctx.rule
@@ -818,12 +840,12 @@ def _tulsi_sources_aspect(target, ctx):
     swift_defines = []
 
     if is_swift_target:
-        swift_info = target[SwiftInfo]
         attributes["has_swift_info"] = True
-        transitive_attributes["swift_language_version"] = swift_info.swift_version
+        swift_version = collect_swift_version(copts_attr) if is_swift_library else None
+        transitive_attributes["swift_language_version"] = swift_version
         transitive_attributes["has_swift_dependency"] = True
         defines = {}
-        for module in swift_info.transitive_modules.to_list():
+        for module in target[SwiftInfo].transitive_modules.to_list():
             swift_module = module.swift
             if swift_module and swift_module.defines:
                 for x in swift_module.defines:
