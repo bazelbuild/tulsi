@@ -242,8 +242,12 @@ final class PBXFileReference: PBXReference, Hashable {
     // Xcode's plugin functionality is currently so limited that we can't do better.
     if name == "BUILD" || name == "WORKSPACE" || name.hasSuffix(".bzl") || name.hasSuffix(".sky") || name.hasSuffix(".star") || name.hasSuffix(".bazel") || name.hasSuffix(".BUILD") || name.hasSuffix(".WORKSPACE") {
       try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.python")
-    } else if name.hasSuffix(".bazelrc") { // Similarly, but shell for .bazelrc 
+    } else if name.hasSuffix(".bazelrc") {
+      // Similarly, but shell for .bazelrc 
       try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.sh")
+    } else if name.hasSuffix(".tulsigen") || name.hasSuffix(".tulsiconf") || name.hasSuffix(".tulsiconf-user") {
+      // Similarly, but JSON for Tulsi configuation files.
+      try serializer.addField("xcLanguageSpecificationIdentifier", "xcode.lang.json")
     }
   }
 }
