@@ -9,6 +9,9 @@
                 <BuildableReference BuildableName="_idx_SwiftLibrary_77A8D266_ios_min10.0.framework" BlueprintName="_idx_SwiftLibrary_77A8D266_ios_min10.0" BlueprintIdentifier="7E9AFE623891B9E600000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="_idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework" BlueprintName="_idx_SubSwiftLibrary_1CB322B5_ios_min10.0" BlueprintIdentifier="7E9AFE6216D2A34400000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
                 <BuildableReference BuildableName="_idx_SwiftLibraryV4_B3719410_ios_min10.0.framework" BlueprintName="_idx_SwiftLibraryV4_B3719410_ios_min10.0" BlueprintIdentifier="7E9AFE6207D4F0E800000000" ReferencedContainer="container:SwiftProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>

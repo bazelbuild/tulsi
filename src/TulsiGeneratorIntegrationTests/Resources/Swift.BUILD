@@ -90,6 +90,9 @@ swift_library(
 
 swift_library(
     name = "SubSwiftLibrary",
+    srcs = [
+        "SubSwiftLibrary/srcs/c.swift",
+    ],
     defines = [
         "SUB_LIBRARY_DEFINE",
     ],
