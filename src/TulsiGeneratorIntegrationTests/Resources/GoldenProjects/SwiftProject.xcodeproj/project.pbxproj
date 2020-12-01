@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		952C886D2F678D0900000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C2F678D0900000000 /* b.swift */; };
 		952C886D3887B3BE00000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C3887B3BE00000000 /* b.swift */; };
+		952C886D4C13D11700000000 /* c.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C4C13D11700000000 /* c.swift */; };
 		952C886D721A835100000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C721A835100000000 /* b.swift */; };
 		952C886D7EE3C1D900000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C7EE3C1D900000000 /* a.swift */; };
 		952C886D96574DF200000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C96574DF200000000 /* a.swift */; };
@@ -16,6 +17,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		30E8372A16D2A34500000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9034464BC8C52B7700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E9AFE6216D2A34400000000;
+		};
 		30E8372A9734745D00000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9034464BC8C52B7700000000 /* Project object */;
@@ -27,11 +34,13 @@
 /* Begin PBXFileReference section */
 		25889F7C2F678D0900000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = "<group>"; };
 		25889F7C3887B3BE00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
+		25889F7C4C13D11700000000 /* c.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = c.swift; path = "tulsi-workspace/tulsi_e2e_swift/SubSwiftLibrary/srcs/c.swift"; sourceTree = "<group>"; };
 		25889F7C71B5994C00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_swift/Application-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C721A835100000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = "<group>"; };
 		25889F7C7EE3C1D900000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = "<group>"; };
 		25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; path = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C889EFE9900000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		25889F7C889EFE9900000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; };
+		25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; path = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C92490AD400000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
 		25889F7C96574DF200000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
 		25889F7C9937DBCA00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = "<group>"; };
@@ -67,10 +76,18 @@
 			name = x;
 			sourceTree = "<group>";
 		};
+		45D0562939DF9C9F00000000 /* SubSwiftLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				45D05629CC62AD9600000000 /* srcs */,
+			);
+			name = SubSwiftLibrary;
+			sourceTree = "<group>";
+		};
 		45D056294538659E00000000 /* SwiftLibraryV3 */ = {
 			isa = PBXGroup;
 			children = (
-				45D05629CC62AD9600000001 /* srcs */,
+				45D05629CC62AD9600000002 /* srcs */,
 			);
 			name = SwiftLibraryV3;
 			sourceTree = "<group>";
@@ -78,7 +95,7 @@
 		45D0562973F84CD700000000 /* SwiftLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				45D05629CC62AD9600000000 /* srcs */,
+				45D05629CC62AD9600000001 /* srcs */,
 			);
 			name = SwiftLibrary;
 			sourceTree = "<group>";
@@ -86,7 +103,7 @@
 		45D056299F6C0D6200000000 /* SwiftLibraryV4 */ = {
 			isa = PBXGroup;
 			children = (
-				45D05629CC62AD9600000002 /* srcs */,
+				45D05629CC62AD9600000003 /* srcs */,
 			);
 			name = SwiftLibraryV4;
 			sourceTree = "<group>";
@@ -120,6 +137,7 @@
 		45D05629C0087DBE00000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
+				25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */,
 				25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */,
 				25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */,
 				25889F7CAAC072EA00000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0.framework */,
@@ -130,13 +148,21 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
+				25889F7C4C13D11700000000 /* c.swift */,
+			);
+			name = srcs;
+			sourceTree = "<group>";
+		};
+		45D05629CC62AD9600000001 /* srcs */ = {
+			isa = PBXGroup;
+			children = (
 				25889F7C96574DF200000000 /* a.swift */,
 				25889F7C3887B3BE00000000 /* b.swift */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
 		};
-		45D05629CC62AD9600000001 /* srcs */ = {
+		45D05629CC62AD9600000002 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
 				25889F7C9937DBCA00000000 /* a.swift */,
@@ -145,7 +171,7 @@
 			name = srcs;
 			sourceTree = "<group>";
 		};
-		45D05629CC62AD9600000002 /* srcs */ = {
+		45D05629CC62AD9600000003 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
 				25889F7C7EE3C1D900000000 /* a.swift */,
@@ -167,6 +193,7 @@
 			children = (
 				25889F7C889EFE9900000000 /* BUILD */,
 				25889F7C92490AD400000000 /* Info.plist */,
+				45D0562939DF9C9F00000000 /* SubSwiftLibrary */,
 				45D0562973F84CD700000000 /* SwiftLibrary */,
 				45D056294538659E00000000 /* SwiftLibraryV3 */,
 				45D056299F6C0D6200000000 /* SwiftLibraryV4 */,
@@ -198,7 +225,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED54B4CFB700000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000001 /* Sources */,
+				04BFD5160000000000000002 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -210,16 +237,33 @@
 			productReference = 25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		7E9AFE623891B9E600000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0 */ = {
+		7E9AFE6216D2A34400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DED12883A4100000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min10.0" */;
+			buildConfigurationList = F4222DEDECEC06AF00000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000002 /* Sources */,
+				04BFD5160000000000000000 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+			);
+			name = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+			productName = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+			productReference = 25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7E9AFE623891B9E600000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DED12883A4100000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min10.0" */;
+			buildPhases = (
+				04BFD5160000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+				89B1AEB316D2A34500000000 /* PBXTargetDependency */,
 			);
 			name = _idx_SwiftLibrary_77A8D266_ios_min10.0;
 			productName = _idx_SwiftLibrary_77A8D266_ios_min10.0;
@@ -246,7 +290,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDDDE8563D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0" */;
 			buildPhases = (
-				04BFD5160000000000000000 /* Sources */,
+				04BFD5160000000000000001 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -278,6 +322,7 @@
 			targets = (
 				7E9AFE6267D9455000000000 /* Application */,
 				01F2CBCF9734745C00000000 /* _bazel_clean_ */,
+				7E9AFE6216D2A34400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0 */,
 				7E9AFE6270DB4CE200000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0 */,
 				7E9AFE6207D4F0E800000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0 */,
 				7E9AFE623891B9E600000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0 */,
@@ -308,12 +353,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				952C886D4C13D11700000000 /* c.swift in srcs */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04BFD5160000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
 				952C886D9937DBCA00000000 /* a.swift in srcs */,
 				952C886D721A835100000000 /* b.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		04BFD5160000000000000001 /* Sources */ = {
+		04BFD5160000000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -322,7 +375,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		04BFD5160000000000000002 /* Sources */ = {
+		04BFD5160000000000000003 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -334,6 +387,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		89B1AEB316D2A34500000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 30E8372A16D2A34500000000 /* PBXContainerItemProxy */;
+		};
 		89B1AEB39734745D00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 30E8372A9734745D00000000 /* PBXContainerItemProxy */;
@@ -468,6 +525,20 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
+				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+			};
+			name = Debug;
+		};
+		0207AA2838C3D90E00000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
@@ -476,7 +547,7 @@
 			};
 			name = Debug;
 		};
-		0207AA2838C3D90E00000003 /* Debug */ = {
+		0207AA2838C3D90E00000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -490,7 +561,7 @@
 			};
 			name = Debug;
 		};
-		0207AA2838C3D90E00000004 /* Debug */ = {
+		0207AA2838C3D90E00000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
@@ -564,6 +635,20 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
+				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+				SDKROOT = iphoneos;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+			};
+			name = Release;
+		};
+		0207AA28616216BF00000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
@@ -572,7 +657,7 @@
 			};
 			name = Release;
 		};
-		0207AA28616216BF00000003 /* Release */ = {
+		0207AA28616216BF00000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -586,7 +671,7 @@
 			};
 			name = Release;
 		};
-		0207AA28616216BF00000004 /* Release */ = {
+		0207AA28616216BF00000005 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
@@ -673,8 +758,8 @@
 		F4222DED12883A4100000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0207AA2838C3D90E00000004 /* Debug */,
-				0207AA28616216BF00000004 /* Release */,
+				0207AA2838C3D90E00000005 /* Debug */,
+				0207AA28616216BF00000005 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
@@ -707,12 +792,20 @@
 		F4222DED54B4CFB700000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				0207AA2838C3D90E00000004 /* Debug */,
+				0207AA28616216BF00000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F4222DEDDDE8563D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
 				0207AA2838C3D90E00000003 /* Debug */,
 				0207AA28616216BF00000003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		F4222DEDDDE8563D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0" */ = {
+		F4222DEDECEC06AF00000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min10.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0207AA2838C3D90E00000002 /* Debug */,
