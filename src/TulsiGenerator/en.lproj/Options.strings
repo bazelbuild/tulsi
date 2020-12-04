@@ -41,6 +41,9 @@
 "Use64BitWatchSimulator" = "Building for watchOS simulator on Xcode 12";
 "Use4BitWatchSimulator_DESC" = "Enable this option if you are using Xcode 12 or greater and building watchOS apps for the simulator OR building iOS apps that include a watchOS app. The default architecture when building an iOS app with a watchOS app is incompatible with Xcode 12.";
 
+"DisableCustomLLDBInit" = "Disable project-level lldbinit";
+"DisableCustomLLDBInit_DESC" = "When this option is enabled, Tulsi will revert to using and modifying the global lldbinit to import the shared ~/.lldbinit-tulsiproj file. When this option is disabled (default), Tulsi will generate a dedicated lldbinit and bundle it with an Xcode project. The dedicated lldbinit will import the global lldbinit file.";
+
 "CLANG_CXX_LANGUAGE_STANDARD" = "C++ language standard";
 "CLANG_CXX_LANGUAGE_STANDARD_DESC" = "Sets the C++ language standard project wide to prevent any false live issue errors involving certain C++ features.";
 

@@ -7,7 +7,7 @@
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables>
             <TestableReference skipped="NO">
                 <BuildableReference BuildableName="TestSuiteXCTest.xctest" BlueprintName="TestSuiteXCTest" BlueprintIdentifier="7E9AFE623963A8D000000000" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
@@ -17,7 +17,7 @@
             <BuildableReference BuildableName="TestApplication.app" BlueprintName="TestApplication" BlueprintIdentifier="7E9AFE621FDDBD5C00000000" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
-    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BuildableName="TestApplication.app" BlueprintName="TestApplication" BlueprintIdentifier="7E9AFE621FDDBD5C00000000" ReferencedContainer="container:TestSuiteLocalTaggedTestsProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>

@@ -10,13 +10,13 @@
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" BlueprintIdentifier="7E9AFE6285D2BDA200000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </BuildableProductRunnable>
     </TestAction>
-    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
         <BuildableProductRunnable runnableDebuggingMode="0">
             <BuildableReference BuildableName="WatchExtension.appex" BlueprintName="WatchExtension" BlueprintIdentifier="7E9AFE6285D2BDA200000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
