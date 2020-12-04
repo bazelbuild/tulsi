@@ -10,13 +10,13 @@
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
-    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
         <Testables></Testables>
         <RemoteRunnable RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel" runnableDebuggingMode="2">
             <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
         </RemoteRunnable>
     </TestAction>
-    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" useCustomWorkingDirectory="NO">
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" useCustomWorkingDirectory="NO">
         <EnvironmentVariables></EnvironmentVariables>
         <RemoteRunnable RemotePath="/WatchApplication" BundleIdentifier="com.apple.carousel" runnableDebuggingMode="2">
             <BuildableReference BuildableName="WatchApplication.app" BlueprintName="WatchApplication" BlueprintIdentifier="7E9AFE6249D7FF7A00000000" ReferencedContainer="container:WatchProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
