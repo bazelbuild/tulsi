@@ -48,6 +48,7 @@ final class XcodeScheme {
   let archiveActionBuildConfig: String
   let appExtension: Bool
   let extensionType: String?
+  let customLLDBInitFile: String?
   let launchStyle: LaunchStyle?
   let runnableDebuggingMode: RunnableDebuggingMode
   let explicitTests: [PBXTarget]?
@@ -71,6 +72,7 @@ final class XcodeScheme {
        archiveActionBuildConfig: String = "Release",
        appExtension: Bool = false,
        extensionType: String? = nil,
+       customLLDBInitFile: String? = nil,
        launchStyle: LaunchStyle? = nil,
        runnableDebuggingMode: RunnableDebuggingMode = .Default,
        version: String = "1.3",
@@ -91,6 +93,7 @@ final class XcodeScheme {
     self.archiveActionBuildConfig = archiveActionBuildConfig
     self.appExtension = appExtension
     self.extensionType = extensionType
+    self.customLLDBInitFile = customLLDBInitFile
     self.launchStyle = launchStyle
     self.runnableDebuggingMode = runnableDebuggingMode
     self.explicitTests = explicitTests
@@ -187,12 +190,15 @@ final class XcodeScheme {
   /// Settings for the Xcode "Test" action.
   private func testAction() -> XMLElement {
     let element = XMLElement(name: "TestAction")
-    let testActionAttributes = [
+    var testActionAttributes = [
       "buildConfiguration": testActionBuildConfig,
       "selectedDebuggerIdentifier": "Xcode.DebuggerFoundation.Debugger.LLDB",
       "selectedLauncherIdentifier": "Xcode.DebuggerFoundation.Launcher.LLDB",
       "shouldUseLaunchSchemeArgsEnv": "YES",
     ]
+    if let customLLDBInitFile = self.customLLDBInitFile {
+      testActionAttributes["customLLDBInitFile"] = customLLDBInitFile
+    }
     element.setAttributesWith(testActionAttributes)
 
     let testTargets: [PBXTarget]
@@ -271,6 +277,9 @@ final class XcodeScheme {
       attributes["selectedDebuggerIdentifier"] = ""
       attributes["selectedLauncherIdentifier"] = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       attributes["launchAutomaticallySubstyle"] = launchStyle.rawValue
+    }
+    if let customLLDBInitFile = self.customLLDBInitFile {
+      attributes["customLLDBInitFile"] = customLLDBInitFile
     }
 
     element.setAttributesWith(attributes)

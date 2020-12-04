@@ -72,6 +72,7 @@ final class XcodeProjectGenerator {
   private static let ShellCommandsUtil = "bazel_cache_reader"
   private static let ShellCommandsCleanScript = "clean_symbol_cache"
   private static let LLDBInitBootstrapScript = "bootstrap_lldbinit"
+  private static let CustomLLDBInit = "lldbinit"
   private static let WorkspaceFile = "WORKSPACE"
   private static let IOSUIRunnerEntitlements = "iOSXCTRunner.entitlements"
   private static let MacOSUIRunnerEntitlements = "macOSXCTRunner.entitlements"
@@ -89,6 +90,7 @@ final class XcodeProjectGenerator {
   private let workspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol
   private let resourceURLs: ResourceSourcePathURLs
   private let tulsiVersion: String
+  private let customLLDBInitFile: String?
 
   private let pbxTargetGeneratorType: PBXTargetGeneratorProtocol.Type
 
@@ -135,6 +137,19 @@ final class XcodeProjectGenerator {
     self.tulsiVersion = tulsiVersion
     self.fileManager = fileManager
     self.pbxTargetGeneratorType = pbxTargetGeneratorType
+    self.customLLDBInitFile = XcodeProjectGenerator.computeCustomLLDBInitFile(config)
+  }
+
+  static private func computeCustomLLDBInitFile(_ config: TulsiGeneratorConfig) -> String?  {
+    // The custom lldbinit file feature is supported starting with Xcode 11.4 which is also the
+    // first version to ship with Swift 5.2.
+#if swift(>=5.2)
+    if config.options[.DisableCustomLLDBInit].commonValueAsBool != true {
+      return
+        "$(PROJECT_FILE_PATH)/\(XcodeProjectGenerator.UtilDirectorySubpath)/\(XcodeProjectGenerator.CustomLLDBInit)"
+    }
+#endif
+    return nil
   }
 
   /// Determines the "best" common SDKROOT for a sequence of RuleEntries.
@@ -220,7 +235,8 @@ final class XcodeProjectGenerator {
     try installWorkspaceSettings(projectURL)
     try installXcodeSchemesForProjectInfo(projectInfo,
                                           projectURL: projectURL,
-                                          projectBundleName: projectBundleName)
+                                          projectBundleName: projectBundleName,
+                                          customLLDBInitFile: self.customLLDBInitFile)
     installTulsiScriptsForProjectInfo(projectInfo, projectURL: projectURL)
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
@@ -228,6 +244,7 @@ final class XcodeProjectGenerator {
                                    rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType?.isiOSAppExtension ?? false },
                                    plistPaths: plistPaths)
     linkTulsiWorkspace(projectURL)
+    createUtilsDirectory(projectURL)
     return projectURL
   }
 
@@ -536,6 +553,11 @@ final class XcodeProjectGenerator {
         buildSettings["GENERATE_RUNFILES"] = "YES"
       }
 
+      if let customLLDBInitFile = self.customLLDBInitFile {
+        // A variable pointing to the custom lldbinit file that all schemes will use.
+        buildSettings["TULSI_LLDBINIT_FILE"] = customLLDBInitFile
+      }
+
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
@@ -568,8 +590,11 @@ final class XcodeProjectGenerator {
     profileAction("cleaning_cached_dsym_paths") {
       cleanCachedDsymPaths()
     }
-    profileAction("bootstrapping_lldbinit") {
-      bootstrapLLDBInit()
+    // TODO(b/174775524): Remove support for the global lldbinit and cleanup any related files.
+    if self.customLLDBInitFile == nil {
+      profileAction("bootstrapping_lldbinit") {
+        bootstrapLLDBInit()
+      }
     }
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
@@ -685,7 +710,8 @@ final class XcodeProjectGenerator {
   // Writes Xcode schemes for non-indexer targets if they don't already exist.
   private func installXcodeSchemesForProjectInfo(_ info: GeneratedProjectInfo,
                                                  projectURL: URL,
-                                                 projectBundleName: String) throws {
+                                                 projectBundleName: String,
+                                                 customLLDBInitFile: String?) throws {
     let xcschemesURL = projectURL.appendingPathComponent("xcshareddata/xcschemes")
     guard createDirectory(xcschemesURL) else { return }
 
@@ -854,6 +880,7 @@ final class XcodeProjectGenerator {
                                  profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                  appExtension: appExtension,
                                  extensionType: extensionType,
+                                 customLLDBInitFile: customLLDBInitFile,
                                  launchStyle: launchStyle,
                                  runnableDebuggingMode: runnableDebuggingMode,
                                  additionalBuildTargets: additionalBuildTargets,
@@ -969,6 +996,7 @@ final class XcodeProjectGenerator {
                                projectBundleName: projectBundleName,
                                testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
+                               customLLDBInitFile: customLLDBInitFile,
                                launchStyle: .Normal,
                                explicitTests: Array(validTests),
                                commandlineArguments: commandlineArguments(for: suite),
@@ -1186,6 +1214,13 @@ final class XcodeProjectGenerator {
                                           context: self.config.projectName,
                                           values: returncode, stderr)
     }
+  }
+
+  private func createUtilsDirectory(_ projectURL: URL) {
+    let scriptDirectoryURL = projectURL.appendingPathComponent(
+      XcodeProjectGenerator.UtilDirectorySubpath,
+      isDirectory: true)
+    _ = createDirectory(scriptDirectoryURL)
   }
 
   private func bootstrapLLDBInit() {

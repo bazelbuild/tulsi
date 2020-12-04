@@ -80,6 +80,9 @@ public enum TulsiOptionKey: String {
       // i386.
       Use64BitWatchSimulator,
 
+      // Option to fallback to using a global lldbinit.
+      DisableCustomLLDBInit,
+
       // Custom build phase run script that runs before bazel build.
       PreBuildPhaseRunScript,
 
@@ -333,6 +336,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.SwiftForcesdSYMs, .Generic, false)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
     addBoolOption(.Use64BitWatchSimulator, .Generic, false)
+    addBoolOption(.DisableCustomLLDBInit, .Generic, false)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }
