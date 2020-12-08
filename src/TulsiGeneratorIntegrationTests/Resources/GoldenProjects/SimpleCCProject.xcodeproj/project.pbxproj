@@ -29,7 +29,7 @@
 
 /* Begin PBXFileReference section */
 		25889F7C40FA11C700000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = "<group>"; };
-		25889F7C465997B800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; };
+		25889F7C465997B800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		25889F7C6024490600000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		25889F7C7C32F61200000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = ccBinary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C9AAB485E00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
