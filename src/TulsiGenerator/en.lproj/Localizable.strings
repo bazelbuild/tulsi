@@ -87,7 +87,7 @@
 "MissingTestHost" = "Failed to link test target '%1$@' to its host, '%2$@'. This test will not be runnable in the generated Xcode project.";
 
 /* Warning when multiple bundled targets have different minimum OS versions. Platform type in %1$@, context in %2$@. */
-"MultiMinOSVersions" = "[ACTION REQUIRED] You have multiple top-level %1$@ bundle targets (e.g. applications or tests) with different minimum %1$@ versions.\nWe advise you to use a single minimum OS version for these targets in order to save Bazel analysis time and Xcode indexing time. You can fix this by setting a single `minimum_os_version` attribute on all of the targets mentioned below:\n------------------------\n%2$@\n------------------------";
+"MultiMinOSVersions" = "You have multiple top-level %1$@ bundle targets (e.g. applications or tests) with different minimum %1$@ versions.\nUnless this is intentional (e.g. due to extension or API restrictions where a different version is needed for some targets), we strongly advise you to use a single minimum OS version for these targets in order to save Bazel build time and Xcode indexing time. You can fix this by setting a single `minimum_os_version` attribute on all of the targets mentioned below:\n------------------------\n%2$@\n------------------------";
 
 /* Warning to show when a RuleEntry does not have a DeploymentTarget to be used by the indexer. */
 "NoDeploymentTarget" = "Target %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
