@@ -375,8 +375,8 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       .dependsOn("//tulsi_test:WatchApplicationResources")
 
     checker.assertThat("//tulsi_test:WatchExtension")
-      .dependsOn("//tulsi_test:WatchExtensionLibrary")
-      .dependsOn("//tulsi_test:WatchExtensionResources")
+      .dependsTransitivelyOn("//tulsi_test:WatchExtensionLibrary")
+      .dependsTransitivelyOn("//tulsi_test:WatchExtensionResources")
 
     checker.assertThat("//tulsi_test:WatchExtensionLibrary")
       .hasSources(["tulsi_test/Watch2ExtensionBinary/srcs/watch2_extension_binary.m"])
