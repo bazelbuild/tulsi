@@ -412,16 +412,15 @@ public final class RuleEntry: RuleInfo {
     // combine sources from potentially multiple targets into one test target.
     let targetsToAvoid = testDependencies + [label]
     let moduleMapsToAvoid = targetsToAvoid.compactMap { (targetLabel: BuildLabel) -> String? in
-      if let fileName = targetLabel.asFileName {
-        return "\(fileName).modulemaps/module.modulemap"
-      }
-      return nil
+      return targetLabel.asFileName
     }
     if !moduleMapsToAvoid.isEmpty {
       self.objCModuleMaps = objCModuleMaps.filter { moduleMapFileInfo in
         let moduleMapPath = moduleMapFileInfo.fullPath
         for mapToAvoid in moduleMapsToAvoid {
-          if moduleMapPath.hasSuffix(mapToAvoid) {
+          if moduleMapPath.hasSuffix("\(mapToAvoid).modulemaps/module.modulemap")
+            || moduleMapPath.hasSuffix("\(mapToAvoid).swift.modulemap")
+          {
             return false
           }
         }
