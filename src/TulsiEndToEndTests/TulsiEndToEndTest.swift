@@ -265,9 +265,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
   /// - Parameters:
   ///   - xcodeProjectURL: URL of project.
   ///   - target: target name
-  func buildXcodeTarget(_ xcodeProjectURL: URL, target: String) {
-    let destination
-      = "platform=iOS Simulator,name=\(TulsiEndToEndTest.simulatorName),OS=\(TulsiEndToEndTest.targetVersion)"
+  func buildXcodeTarget(_ xcodeProjectURL: URL, target: String, configuration: String = "Release") -> String {
     let completionInfo = ProcessRunner.launchProcessSync(
       "/usr/bin/xcodebuild",
       arguments: [
@@ -276,8 +274,16 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
         xcodeProjectURL.path,
         "-target",
         target,
-        "-destination",
-        destination,
+        // "destination" seems to be ignored when specifying a target, it might only apply
+        // when specifying a scheme. We will not actually be running artifacts from this
+        // build on a specifix device anyway so instead specify values to indicate we are
+        // building for an iOS simulator.
+        "-arch",
+        "x86_64",
+        "-sdk",
+        "iphonesimulator",
+        "-configuration",
+        configuration,
         "SYMROOT=xcodeBuild"
       ])
 
@@ -291,11 +297,15 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
           "\(completionInfo.commandlineString) did not return build success. Exit code: \(completionInfo.terminationStatus)"
         )
       }
+
+      return String(stdoutput)
     } else if let error = String(data: completionInfo.stderr, encoding: .utf8), !error.isEmpty {
       XCTFail(error)
     } else {
       XCTFail("Xcode project build did not return success \(xcodeProjectURL):\(target).")
     }
+
+    return ""
   }
 
   // Runs Xcode tests on the given Xcode project and scheme. This verifies that
@@ -311,6 +321,7 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
         xcodeProjectURL.path,
         "-scheme",
         scheme,
+        // Use the device created specifically for this test for hermicity.
         "-destination",
         destination
       ])
