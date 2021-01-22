@@ -19,8 +19,8 @@ import XCTest
 
 // End to end test that generates the Buttons project and runs its unit tests.
 class ButtonsEndToEndTest: TulsiEndToEndTest {
-  fileprivate let buttonsProjectPath
-    = "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
+  fileprivate let buttonsProjectPath =
+    "src/TulsiEndToEndTests/Resources/Buttons.tulsiproj"
 
   override func setUp() {
     super.setUp()
@@ -36,7 +36,18 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
       config: "Buttons")
     XCTAssert(
       fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
+
     testXcodeProject(xcodeProjectURL, scheme: "ButtonsTests")
+
+    let installingDsymBundlesOutput = "Installing dSYM bundles completed"
+
+    let releaseBuildOutput = buildXcodeTarget(
+      xcodeProjectURL, target: "Buttons", configuration: "Release")
+    XCTAssert(releaseBuildOutput.contains(installingDsymBundlesOutput))
+
+    let debugBuildOutput = buildXcodeTarget(
+      xcodeProjectURL, target: "Buttons", configuration: "Debug")
+    XCTAssertFalse(debugBuildOutput.contains(installingDsymBundlesOutput))
   }
 
   /// Verifies that all of the _idx_ targets in the project build.
@@ -50,7 +61,7 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
     let indexTargets = targets.filter { $0.hasPrefix("_idx_") }
     XCTAssertEqual(indexTargets.count, 8)
     for target in indexTargets {
-      buildXcodeTarget(xcodeProjectURL, target: target)
+      _ = buildXcodeTarget(xcodeProjectURL, target: target)
     }
   }
 
