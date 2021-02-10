@@ -11,7 +11,7 @@ Run `build_and_run.sh`. This will install Tulsi.app inside `$HOME/Applications` 
 
 * `-b`: Bazel binary that Tulsi should use to build and install the app (Default is `bazel`)
 * `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
-* `-x`: The Xcode version Tulsi should be built for (Default is `12.2`)
+* `-x`: The Xcode version Tulsi should be built for (Default is `12.4`)
 
 
 ## Notes
