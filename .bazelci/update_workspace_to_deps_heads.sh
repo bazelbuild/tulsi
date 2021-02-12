@@ -37,3 +37,11 @@ git_repository(\
 )\
 ' \
   WORKSPACE
+
+# rules_swift at HEAD changed the path of module map.
+# TODO: Remove once rules_swift has a new release.
+file=src/TulsiGeneratorIntegrationTests/Resources/GoldenProjects/SwiftProject.xcodeproj/project.pbxproj
+/usr/bin/sed -i "" -e \
+  's/[.]modulemaps\/module[.]modulemap/.swift.modulemap/' $file
+# sed appends a newline at EOF; remove it.
+/bin/dd if=/dev/null of=$file obs="$(($(wc -c < $file)-1))" seek=1
