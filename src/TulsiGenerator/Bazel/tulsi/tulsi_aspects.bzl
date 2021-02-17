@@ -648,7 +648,7 @@ def _collect_module_maps(target):
     return [
         module.clang.module_map
         for module in target[SwiftInfo].transitive_modules.to_list()
-        if module.clang
+        if module.clang and type(module.clang.module_map) == "File"
     ]
 
 def _collect_objc_strict_includes(target, rule_attr):
