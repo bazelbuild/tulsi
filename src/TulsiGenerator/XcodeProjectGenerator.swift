@@ -346,6 +346,21 @@ final class XcodeProjectGenerator {
             " (\"\(invalidPath)\")")
       }
     }
+
+    let usingProjectLldbinit = self.config.options[.DisableCustomLLDBInit].commonValueAsBool != true
+    let projectPathHasWhiteSpace =
+      outputPath.path.rangeOfCharacter(from: NSCharacterSet.whitespaces) != nil
+    // TODO(b/179704044): Project level lldbinit files are generated inside the Xcode project bundle
+    // and Xcode has issues with loading lldbinit files containing spaces. Without the lldbinit,
+    // debugging will not work properly so fail generation and offer alternatives.
+    if usingProjectLldbinit, projectPathHasWhiteSpace {
+      throw ProjectGeneratorError.invalidXcodeProjectPath(
+        path: outputPath.path,
+        reason: "a path that has white space which will break debugging. Select a new "
+          + "destination without whitespace OR enable the 'Disable project-level lldbinit' setting "
+          + "in the Shared options tab of your Tulsi project and regenerate with the chosen path"
+      )
+    }
   }
 
   /// Validates that the aspect output contains all targets listed in the config file and that
