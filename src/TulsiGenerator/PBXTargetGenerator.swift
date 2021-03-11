@@ -196,6 +196,9 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   /// The path to the Tulsi generated outputs root. For more information see tulsi_aspects.bzl
   static let tulsiIncludesPath = "bazel-tulsi-includes/x/x"
 
+  /// Path prefix for files from external repositories.
+  static let externalPrefix = "external/"
+
   let project: PBXProject
   let buildScriptPath: String
   let stubInfoPlistPaths: StubInfoPlistPaths
@@ -1334,9 +1337,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         // Any paths of the tulsi-includes form will only be in the bazel workspace symlink since
         // they refer to generated files from a build.
         // Otherwise we assume the file exists in the workspace.
-        let prefixVar = path.hasPrefix(PBXTargetGenerator.tulsiIncludesPath)
-            ? PBXTargetGenerator.BazelWorkspaceSymlinkVarName
-            : PBXTargetGenerator.WorkspaceRootVarName
+        let prefixVar: String
+        if path.hasPrefix(PBXTargetGenerator.externalPrefix) || path.hasPrefix(PBXTargetGenerator.tulsiIncludesPath) {
+          prefixVar = PBXTargetGenerator.BazelWorkspaceSymlinkVarName
+        } else {
+          prefixVar = PBXTargetGenerator.WorkspaceRootVarName
+        }
         let rootedPath = "$(\(prefixVar))/\(path)"
         if recursive {
           return "\(rootedPath)/**"
