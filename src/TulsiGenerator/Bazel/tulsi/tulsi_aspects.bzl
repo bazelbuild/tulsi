@@ -216,20 +216,32 @@ def _convert_outpath_to_symlink_path(path):
         return "bazel-tulsi-includes/x/x/" + "/".join(components[3:])
     return path
 
-def _is_bazel_external_file(f):
-    """Returns True if the given file is a Bazel external file."""
-    return f.path.startswith("external/")
+def _is_file_a_directory(f):
+    """Returns True is the given file is a directory."""
+    # Starting Bazel 3.3.0, the File type as a is_directory attribute.
+    if getattr(f, "is_directory", None):
+        return f.is_directory
+    # If is_directory is not in the File type, fall back to the old method:
+    # As of Oct. 2016, Bazel disallows most files without extensions.
+    # As a temporary hack, Tulsi treats File instances pointing at extension-less
+    # paths as directories. This is extremely fragile and must be replaced with
+    # logic properly homed in Bazel.
+    return (f.basename.find(".") == -1)
+
+def _is_file_external(f):
+    """Returns True if the given file is an external file."""
+    return f.owner.workspace_root != ""
 
 def _file_metadata(f):
     """Returns metadata about a given File."""
     if not f:
         return None
 
-    # Special case handling for Bazel external files which have a path that starts
-    # with 'external/' but their short_path and root.path have no mention of being
-    # external.
-    out_path = f.path if _is_bazel_external_file(f) else f.short_path
-    if not f.is_source:
+    # Special case handling for external files.
+    is_external = _is_file_external(f)
+
+    out_path = f.path if is_external else f.short_path
+    if not f.is_source and not is_external:
         root_path = f.root.path
         symlink_path = _convert_outpath_to_symlink_path(root_path)
         if symlink_path == root_path:
@@ -242,17 +254,11 @@ def _file_metadata(f):
     else:
         root_execution_path_fragment = None
 
-    # At the moment (Oct. 2016), Bazel disallows most files without extensions.
-    # As a temporary hack, Tulsi treats File instances pointing at extension-less
-    # paths as directories. This is extremely fragile and must be replaced with
-    # logic properly homed in Bazel.
-    is_dir = (f.basename.find(".") == -1)
-
     return _struct_omitting_none(
         path = out_path,
         src = f.is_source,
         root = root_execution_path_fragment,
-        is_dir = is_dir,
+        is_dir = _is_file_a_directory(f),
     )
 
 def _file_metadata_by_replacing_path(f, new_path, new_is_dir = None):
