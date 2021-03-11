@@ -27,8 +27,8 @@ final class BazelPBXReferencePatcher {
   // Resolves the given Bazel exec-root relative path to a filesystem path.
   // This is intended to be used to resolve "@external_repo" style labels to paths usable by Xcode
   // and any other paths that must be relative to the Bazel exec root.
-  private func resolvePathFromBazelExecRoot(_ path: String) -> String {
-    return "\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
+  private func resolvePathFromBazelExecRoot(_ xcodeProject: PBXProject, _ path: String) -> String {
+    return "\(xcodeProject.name).xcodeproj/.tulsi/\(PBXTargetGenerator.TulsiWorkspacePath)/\(path)"
   }
 
   // Returns true if the file reference patching was handled.
@@ -48,10 +48,10 @@ final class BazelPBXReferencePatcher {
     let childGroups = externalGroup.children.filter { $0 is PBXGroup } as! [PBXGroup]
 
     for child in childGroups {
-      let resolvedPath = resolvePathFromBazelExecRoot("external/\(child.name)")
+      let resolvedPath = resolvePathFromBazelExecRoot(xcodeProject, "external/\(child.name)")
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
-                                                           sourceTree: .Group)
+                                                           sourceTree: .SourceRoot)
       newChild.migrateChildrenOfGroup(child)
     }
     mainGroup.removeChild(externalGroup)
