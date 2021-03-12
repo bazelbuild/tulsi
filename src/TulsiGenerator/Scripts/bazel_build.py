@@ -1480,8 +1480,12 @@ class BazelBuildBridge(object):
       # Make sure a reference to ~/.lldbinit-tulsiproj exists in ~/.lldbinit or
       # ~/.lldbinit-Xcode. Priority is given to ~/.lldbinit-Xcode if it exists,
       # otherwise the bootstrapping will be written to ~/.lldbinit.
-      BootstrapLLDBInit()
+      BootstrapLLDBInit(True)
     else:
+      # Remove any reference to ~/.lldbinit-tulsiproj if the global lldbinit was
+      # previously bootstrapped. This prevents the global lldbinit from having
+      # side effects on the custom lldbinit file.
+      BootstrapLLDBInit(False)
       # When using a custom lldbinit, Xcode will directly load our custom file
       # so write our settings to this custom file. Retain standard Xcode
       # behavior by loading the default file in our custom file.
