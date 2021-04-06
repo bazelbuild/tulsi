@@ -57,6 +57,7 @@ swift_library(
     defines = [
         "LIBRARY_DEFINE_V3",
     ],
+    generates_header = True,
 )
 
 swift_library(
@@ -72,6 +73,7 @@ swift_library(
     defines = [
         "LIBRARY_DEFINE_V4",
     ],
+    generates_header = True,
 )
 
 swift_library(
@@ -83,6 +85,7 @@ swift_library(
     defines = [
         "LIBRARY_DEFINE",
     ],
+    generates_header = True,
     deps = [
         ":SubSwiftLibrary",
     ],
@@ -96,4 +99,5 @@ swift_library(
     defines = [
         "SUB_LIBRARY_DEFINE",
     ],
+    generates_header = True,
 )
