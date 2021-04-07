@@ -2,7 +2,7 @@
 
 <span style="background-color:OldLace; padding:10px">
 tulsi - /ˈto͝olsē/  A kind of basil that is venerated by Hindus as a sacred
-plant.
+plant. test
 </span>
 
 ## Building and installing
