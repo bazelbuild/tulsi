@@ -96,4 +96,5 @@ swift_library(
     defines = [
         "SUB_LIBRARY_DEFINE",
     ],
+    generates_header = True,
 )
