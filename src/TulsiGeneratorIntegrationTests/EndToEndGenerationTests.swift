@@ -51,7 +51,7 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     options.options[.BazelContinueBuildingAfterError]?.projectValue = "YES"
 
     options.options[.CommandlineArguments]?.projectValue = "--project-flag"
-    options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag"
+    options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag !--disabled-flag"
 
     options.options[.EnvironmentVariables]?.projectValue = "projectKey=projectValue"
     options.options[.EnvironmentVariables]?.targetValues?[targetLabel.value] =
