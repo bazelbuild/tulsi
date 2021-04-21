@@ -765,14 +765,19 @@ final class XcodeProjectGenerator {
       return config.options[.CommandlineArguments, ruleEntry.label.value]?.components(separatedBy: " ") ?? []
     }
 
-    func environmentVariables(for ruleEntry: RuleEntry) -> [String: String] {
-      var environmentVariables: [String: String] = [:]
+    func environmentVariables(for ruleEntry: RuleEntry) -> [String: (String, Bool)] {
+      var environmentVariables: [String: (String, Bool)] = [:]
       config.options[.EnvironmentVariables, ruleEntry.label.value]?.components(separatedBy: .newlines).forEach() { keyValueString in
         let components = keyValueString.components(separatedBy: "=")
-        let key = components.first ?? ""
+        var key = components.first ?? ""
         if !key.isEmpty {
+          var enabled = true
+          if key.hasPrefix("!") {
+            key.remove(at: key.startIndex)
+            enabled = false
+          }
           let value = components[1..<components.count].joined(separator: "=")
-          environmentVariables[key] = value
+          environmentVariables[key] = (value, enabled)
         }
       }
       return environmentVariables
@@ -854,7 +859,7 @@ final class XcodeProjectGenerator {
          let productType = entry.productType,
           genRunfiles && (productType == .UnitTest || productType == .UIUnitTest) {
         let bazelBinPath = "$(TULSI_WR)/\(workspaceInfoExtractor.bazelBinPath)"
-        schemeEnvVars["TEST_SRCDIR"] = "\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles"
+        schemeEnvVars["TEST_SRCDIR"] = ("\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles", true)
       }
 
       var extensionHostsForEntry = extensionHosts[entry.label] ?? Set<RuleEntry>()

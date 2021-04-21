@@ -57,7 +57,7 @@ final class XcodeScheme {
   let additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]?
 
   let commandlineArguments: [String]
-  let environmentVariables: [String: String]
+  let environmentVariables: [String: (String, Bool)]
   let preActionScripts: [XcodeActionType: String]
   let postActionScripts: [XcodeActionType: String]
   let localizedMessageLogger: LocalizedMessageLogger
@@ -79,7 +79,7 @@ final class XcodeScheme {
        explicitTests: [PBXTarget]? = nil,
        additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]? = nil,
        commandlineArguments: [String] = [],
-       environmentVariables: [String: String] = [:],
+       environmentVariables: [String: (String, Bool)] = [:],
        preActionScripts: [XcodeActionType: String],
        postActionScripts: [XcodeActionType: String],
        localizedMessageLogger: LocalizedMessageLogger) {
@@ -444,14 +444,14 @@ final class XcodeScheme {
   }
 
   /// Generates an EnvironmentVariables element based on vars.
-  private func environmentVariablesElement(_ variables: [String: String]) -> XMLElement {
+  private func environmentVariablesElement(_ variables: [String: (String, Bool)]) -> XMLElement {
     let element = XMLElement(name:"EnvironmentVariables")
-    for (key, value) in variables {
+    for (key, (value, isEnabled)) in variables {
       let environmentVariable = XMLElement(name:"EnvironmentVariable")
       environmentVariable.setAttributesWith([
         "key": key,
         "value": value,
-        "isEnabled": "YES"
+        "isEnabled": isEnabled ? "YES" : "NO"
       ])
       element.addChild(environmentVariable)
     }

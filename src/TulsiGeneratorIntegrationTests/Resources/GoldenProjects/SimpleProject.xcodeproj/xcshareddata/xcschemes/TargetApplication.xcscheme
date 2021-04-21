@@ -56,7 +56,7 @@
         <EnvironmentVariables>
             <EnvironmentVariable value="" isEnabled="YES" key="targetKey3"></EnvironmentVariable>
             <EnvironmentVariable value="targetValue1" isEnabled="YES" key="targetKey1"></EnvironmentVariable>
-            <EnvironmentVariable value="targetValue2=" isEnabled="YES" key="targetKey2"></EnvironmentVariable>
+            <EnvironmentVariable value="targetValue2=" isEnabled="NO" key="targetKey2"></EnvironmentVariable>
         </EnvironmentVariables>
         <PreActions>
             <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
