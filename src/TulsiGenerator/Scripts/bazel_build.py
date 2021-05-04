@@ -1531,6 +1531,13 @@ class BazelBuildBridge(object):
                 'root used by %r.\n' % project_basename)
       out.write('platform settings -w "%s"\n' % workspace_root)
 
+      out.write('# This enables implicitly loading Clang modules which can be '
+                'disabled when a Swift module was built with explicit modules '
+                'enabled.\n')
+      out.write(
+          'settings set -- target.swift-extra-clang-flags "-fimplicit-module-maps"\n'
+      )
+
       if clear_source_map:
         out.write('settings clear target.source-map\n')
         return 0
