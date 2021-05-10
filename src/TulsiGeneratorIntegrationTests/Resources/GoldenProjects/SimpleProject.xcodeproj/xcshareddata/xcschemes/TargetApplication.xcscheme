@@ -52,11 +52,12 @@
     <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" useCustomWorkingDirectory="NO">
         <CommandLineArguments>
             <CommandLineArgument isEnabled="YES" argument="--target-specific-test-flag"></CommandLineArgument>
+            <CommandLineArgument isEnabled="NO" argument="--disabled-flag"></CommandLineArgument>
         </CommandLineArguments>
         <EnvironmentVariables>
             <EnvironmentVariable value="" isEnabled="YES" key="targetKey3"></EnvironmentVariable>
             <EnvironmentVariable value="targetValue1" isEnabled="YES" key="targetKey1"></EnvironmentVariable>
-            <EnvironmentVariable value="targetValue2=" isEnabled="YES" key="targetKey2"></EnvironmentVariable>
+            <EnvironmentVariable value="targetValue2=" isEnabled="NO" key="targetKey2"></EnvironmentVariable>
         </EnvironmentVariables>
         <PreActions>
             <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">

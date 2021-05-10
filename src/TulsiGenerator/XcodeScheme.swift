@@ -56,8 +56,8 @@ final class XcodeScheme {
   // primary target.
   let additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]?
 
-  let commandlineArguments: [String]
-  let environmentVariables: [String: String]
+  let commandlineArguments: [(String, Bool)]
+  let environmentVariables: [String: (String, Bool)]
   let preActionScripts: [XcodeActionType: String]
   let postActionScripts: [XcodeActionType: String]
   let localizedMessageLogger: LocalizedMessageLogger
@@ -78,8 +78,8 @@ final class XcodeScheme {
        version: String = "1.3",
        explicitTests: [PBXTarget]? = nil,
        additionalBuildTargets: [(PBXTarget, String, BuildActionEntryAttributes)]? = nil,
-       commandlineArguments: [String] = [],
-       environmentVariables: [String: String] = [:],
+       commandlineArguments: [(String, Bool)] = [],
+       environmentVariables: [String: (String, Bool)] = [:],
        preActionScripts: [XcodeActionType: String],
        postActionScripts: [XcodeActionType: String],
        localizedMessageLogger: LocalizedMessageLogger) {
@@ -430,13 +430,13 @@ final class XcodeScheme {
   }
 
   /// Generates a CommandlineArguments element based on arguments.
-  private func commandlineArgumentsElement(_ arguments: [String]) -> XMLElement {
+  private func commandlineArgumentsElement(_ arguments: [(String, Bool)]) -> XMLElement {
     let element = XMLElement(name: "CommandLineArguments")
-    for argument in arguments {
+    for (argument, isEnabled) in arguments {
       let argumentElement = XMLElement(name: "CommandLineArgument")
       argumentElement.setAttributesAs([
         "argument": argument,
-        "isEnabled": "YES"
+        "isEnabled": isEnabled ? "YES" : "NO"
       ])
       element.addChild(argumentElement)
     }
@@ -444,14 +444,14 @@ final class XcodeScheme {
   }
 
   /// Generates an EnvironmentVariables element based on vars.
-  private func environmentVariablesElement(_ variables: [String: String]) -> XMLElement {
+  private func environmentVariablesElement(_ variables: [String: (String, Bool)]) -> XMLElement {
     let element = XMLElement(name:"EnvironmentVariables")
-    for (key, value) in variables {
+    for (key, (value, isEnabled)) in variables {
       let environmentVariable = XMLElement(name:"EnvironmentVariable")
       environmentVariable.setAttributesWith([
         "key": key,
         "value": value,
-        "isEnabled": "YES"
+        "isEnabled": isEnabled ? "YES" : "NO"
       ])
       element.addChild(environmentVariable)
     }

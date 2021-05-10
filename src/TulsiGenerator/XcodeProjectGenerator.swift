@@ -761,21 +761,33 @@ final class XcodeProjectGenerator {
       return nil
     }
 
-    func commandlineArguments(for ruleEntry: RuleEntry) -> [String] {
-      return config.options[.CommandlineArguments, ruleEntry.label.value]?.components(separatedBy: " ") ?? []
+    func commandlineArguments(for ruleEntry: RuleEntry) -> [(String, Bool)] {
+      let args = config.options[.CommandlineArguments, ruleEntry.label.value]?.components(separatedBy: " ") ?? []
+      return args.map(getKeyAndEnabled)
     }
 
-    func environmentVariables(for ruleEntry: RuleEntry) -> [String: String] {
-      var environmentVariables: [String: String] = [:]
+    func environmentVariables(for ruleEntry: RuleEntry) -> [String: (String, Bool)] {
+      var environmentVariables: [String: (String, Bool)] = [:]
       config.options[.EnvironmentVariables, ruleEntry.label.value]?.components(separatedBy: .newlines).forEach() { keyValueString in
         let components = keyValueString.components(separatedBy: "=")
         let key = components.first ?? ""
         if !key.isEmpty {
+          let (envKey, enabled) = getKeyAndEnabled(key)
           let value = components[1..<components.count].joined(separator: "=")
-          environmentVariables[key] = value
+          environmentVariables[envKey] = (value, enabled)
         }
       }
       return environmentVariables
+    }
+
+    func getKeyAndEnabled(_ key: String) -> (String, Bool) {
+      if key.hasPrefix("!") {
+        var newKey = key
+        newKey.removeFirst()
+        return (newKey, false)
+      } else {
+        return (key, true)
+      }
     }
 
     func preActionScripts(for ruleEntry: RuleEntry) -> [XcodeActionType: String] {
@@ -854,7 +866,7 @@ final class XcodeProjectGenerator {
          let productType = entry.productType,
           genRunfiles && (productType == .UnitTest || productType == .UIUnitTest) {
         let bazelBinPath = "$(TULSI_WR)/\(workspaceInfoExtractor.bazelBinPath)"
-        schemeEnvVars["TEST_SRCDIR"] = "\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles"
+        schemeEnvVars["TEST_SRCDIR"] = ("\(bazelBinPath)/$(TULSI_BUILD_PATH)/$(TARGET_NAME).runfiles", true)
       }
 
       var extensionHostsForEntry = extensionHosts[entry.label] ?? Set<RuleEntry>()

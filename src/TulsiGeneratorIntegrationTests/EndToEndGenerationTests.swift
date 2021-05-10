@@ -51,11 +51,11 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
     options.options[.BazelContinueBuildingAfterError]?.projectValue = "YES"
 
     options.options[.CommandlineArguments]?.projectValue = "--project-flag"
-    options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag"
+    options.options[.CommandlineArguments]?.targetValues?[targetLabel.value] = "--target-specific-test-flag !--disabled-flag"
 
     options.options[.EnvironmentVariables]?.projectValue = "projectKey=projectValue"
     options.options[.EnvironmentVariables]?.targetValues?[targetLabel.value] =
-        "targetKey1=targetValue1\ntargetKey2=targetValue2=\ntargetKey3="
+        "targetKey1=targetValue1\n!targetKey2=targetValue2=\ntargetKey3="
 
     options.options[.BuildActionPreActionScript]?.projectValue = "This is a build pre action script"
     options.options[.BuildActionPreActionScript]?.targetValues?[targetLabel.value] = "This is a target specific build pre action script"
