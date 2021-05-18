@@ -23,6 +23,7 @@ import Foundation
 public class RuleEntryMap {
   private var labelToEntries = [BuildLabel: [RuleEntry]]()
   private var allEntries = [RuleEntry]()
+  private var labelsWithWarning = Set<BuildLabel>()
 
   private let localizedMessageLogger: LocalizedMessageLogger?
 
@@ -97,10 +98,13 @@ public class RuleEntryMap {
       }
     }
 
-    // Must be multiple. Shoot out a warning and return the last.
-    localizedMessageLogger?.warning("AmbiguousRuleEntryReference",
-                                    comment: "Warning when unable to resolve a RuleEntry for a given DeploymentTarget. RuleEntry's label is in %1$@.",
-                                    values: buildLabel.description)
+    if labelsWithWarning.insert(buildLabel).inserted {
+      // Must be multiple. Shoot out a warning and return the last.
+      localizedMessageLogger?.warning("AmbiguousRuleEntryReference",
+                                      comment: "Warning when unable to resolve a RuleEntry for a given DeploymentTarget. RuleEntry's label is in %1$@.",
+                                      values: buildLabel.description)
+    }
+
     return ruleEntries.last
   }
 }
