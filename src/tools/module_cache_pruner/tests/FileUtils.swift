@@ -16,6 +16,57 @@ import Foundation
 
 private let fileManager = FileManager.default
 
+struct DirectoryStructure {
+  var files: [String]?
+  var directories: [String: DirectoryStructure]?
+}
+
+/// Creates a directory and any subdirectories + dummy files at the given location on the file
+/// system.
+func createDirectoryStructure(_ directory: URL, withContents contents: DirectoryStructure) throws {
+  if let files = contents.files {
+    for filename in files {
+      let filepath = directory.appendingPathComponent(filename)
+      try "".write(to: filepath, atomically: true, encoding: .utf8)
+    }
+  }
+
+  if let directories = contents.directories {
+    for (dirname, contents) in directories {
+      let subdirectory = directory.appendingPathComponent(dirname)
+      try fileManager.createDirectory(at: subdirectory, withIntermediateDirectories: true)
+      try createDirectoryStructure(subdirectory, withContents: contents)
+    }
+  }
+}
+
+/// Creates a directory with a random name in the macOS temporary directory.
+func createTemporaryDirectory() -> URL? {
+  let osTemporaryDirectory = URL(
+    fileURLWithPath: NSTemporaryDirectory(),
+    isDirectory: true)
+
+  guard
+    let temporaryDirectory = try? fileManager.url(
+      for: .itemReplacementDirectory,
+      in: .userDomainMask,
+      appropriateFor: osTemporaryDirectory,
+      create: true)
+  else {
+    return nil
+  }
+
+  // The macOS temporary directory is located under the `/var` root directory. `/var` is a symlink
+  // to `/private/var` which can cause problems when testing for equal values since equality will
+  // depend on whether prod code resolves the realpath or leaves it as the symlink. To avoid issues,
+  // return the realpath so test and prod code will only ever handle one version of the path.
+  guard let temporaryDirectoryRealPath = realpath(temporaryDirectory.path, nil) else {
+    return nil
+  }
+
+  return URL(fileURLWithPath: String(cString: temporaryDirectoryRealPath), isDirectory: true)
+}
+
 /// Returns a URL to a location for a JSON file with a random filename under the macOS temporary
 /// directory. This function does not create a file at that location.
 func getTemporaryJSONFileURL() -> URL {
