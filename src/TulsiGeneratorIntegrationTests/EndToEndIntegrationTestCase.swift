@@ -248,6 +248,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     projectGenerator.xcodeProjectGenerator.suppressCompilerDefines = true
     // Don't update shell command utilities.
     projectGenerator.xcodeProjectGenerator.suppressUpdatingShellCommands = true
+    // Don't install module cache pruner tool.
+    projectGenerator.xcodeProjectGenerator.suppressModuleCachePrunerInstallation = true
     // The username is forced to a known value.
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
     // The workspace symlink is forced to a known value.
