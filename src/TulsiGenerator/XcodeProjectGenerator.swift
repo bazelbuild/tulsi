@@ -70,6 +70,7 @@ final class XcodeProjectGenerator {
   private static let SettingsScript = "bazel_build_settings.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let ShellCommandsUtil = "bazel_cache_reader"
+  private static let ModuleCachePrunerUtil = "module_cache_pruner"
   private static let ShellCommandsCleanScript = "clean_symbol_cache"
   private static let LLDBInitBootstrapScript = "bootstrap_lldbinit"
   private static let CustomLLDBInit = "lldbinit"
@@ -112,6 +113,9 @@ final class XcodeProjectGenerator {
 
   /// Exposed for testing. Do not attempt to update/install files related to DBGShellCommands.
   var suppressUpdatingShellCommands = false
+
+  /// Exposed for testing. Do not install the module cache pruning tool.
+  var suppressModuleCachePrunerInstallation = false
 
   /// Exposed for testing. Do not modify user defaults.
   var suppressModifyingUserDefaults = false
@@ -611,6 +615,18 @@ final class XcodeProjectGenerator {
         bootstrapLLDBInit()
       }
     }
+
+    if !suppressModuleCachePrunerInstallation {
+      do {
+        _ = try installAuxiliaryExecutable(XcodeProjectGenerator.ModuleCachePrunerUtil)
+      } catch {
+        self.localizedMessageLogger.warning("InstallModuleCachePrunerFailed",
+                                            comment: LocalizedMessageLogger.bugWorthyComment("Failed to install the module cache pruner executable."),
+                                            context: self.config.projectName,
+                                            values: "\(error)")
+      }
+    }
+
     return GeneratedProjectInfo(project: xcodeProject,
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
@@ -1112,8 +1128,11 @@ final class XcodeProjectGenerator {
     }
   }
 
-  /// Copy the bazel_cache_reader to a subfolder in the user's Library, return the absolute path.
-  private func installShellCommands(atURL supportScriptsAbsoluteURL: URL) throws -> String {
+  /// Copy an auxiliary executable to a subfolder in the user's Library, return the absolute path.
+  private func installAuxiliaryExecutable(_ auxiliaryExecutable: String) throws -> String {
+    // Construct a URL to ~/Library/Application Support/Tulsi/Scripts.
+    let supportScriptsAbsoluteURL = fileManager.homeDirectoryForCurrentUser.appendingPathComponent(
+      XcodeProjectGenerator.SupportScriptsPath, isDirectory: true)
 
     // Create all intermediate directories if they aren't present.
     var isDir = ObjCBool(false)
@@ -1123,20 +1142,19 @@ final class XcodeProjectGenerator {
                                       attributes: nil)
     }
 
-    // Find bazel_cache_reader in Tulsi.app's Utilities folder.
+    // Find the executable in Tulsi.app's Utilities folder.
     let bundle = Bundle(for: type(of: self))
-    let symbolCacheSourceURL = bundle.url(forAuxiliaryExecutable: XcodeProjectGenerator.ShellCommandsUtil)!
+    let sourceURL = bundle.url(forAuxiliaryExecutable: auxiliaryExecutable)!
 
-    // Copy bazel_cache_reader to ~/Library/Application Support/Tulsi/Scripts
-    installFiles([(symbolCacheSourceURL, XcodeProjectGenerator.ShellCommandsUtil)],
-                 toDirectory: supportScriptsAbsoluteURL)
+    // Copy the executable to ~/Library/Application Support/Tulsi/Scripts
+    installFiles([(sourceURL, auxiliaryExecutable)], toDirectory: supportScriptsAbsoluteURL)
 
-    // Return the absolute path to ~/Library/Application Support/Tulsi/Scripts/bazel_cache_reader.
-    let shellCommandsURL =
-        supportScriptsAbsoluteURL.appendingPathComponent(XcodeProjectGenerator.ShellCommandsUtil,
+    // Return the absolute path to the installed executable.
+    let auxiliaryBinaryURL =
+        supportScriptsAbsoluteURL.appendingPathComponent(auxiliaryExecutable,
                                                          isDirectory: false)
 
-    return shellCommandsURL.path
+    return auxiliaryBinaryURL.path
   }
 
   /// Update the global user defaults to reference bazel_cache_reader
@@ -1193,12 +1211,8 @@ final class XcodeProjectGenerator {
   private func updateShellCommands() throws {
     guard !suppressUpdatingShellCommands else { return }
 
-    // Construct a URL to ~/Library/Application Support/Tulsi/Scripts.
-    let supportScriptsAbsoluteURL = fileManager.homeDirectoryForCurrentUser.appendingPathComponent(
-      XcodeProjectGenerator.SupportScriptsPath, isDirectory: true)
-
     // Install the latest version of the app to ~/Library/Application Support/Tulsi/Scripts/.
-    let shellCommandsAppPath = try installShellCommands(atURL: supportScriptsAbsoluteURL)
+    let shellCommandsAppPath = try installAuxiliaryExecutable(XcodeProjectGenerator.ShellCommandsUtil)
 
     // Add a reference to it in global user defaults.
     updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: shellCommandsAppPath)

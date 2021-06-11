@@ -118,3 +118,6 @@
 
 /* Warning shown when failing to update the tulsi-workspace symlink to the Bazel execution root. tulsi-workspace path is in %1$@, additional error context in %2$@. */
 "UpdatingTulsiWorkspaceSymlinkFailed" = "Failed to update the %1$@ symlink to the Bazel execution root. Additional context: %2$@";
+
+/* Warning when installing the module cache pruner executable to ~/Library/Application Support/Tulsi failed. */
+"InstallModuleCachePrunerFailed" = "Failed to install the module cache pruner executable used avoid an lldb crash during the explicit module migration: received error '%1$@'.";
