@@ -4,3 +4,10 @@
 # Build artifacts
 src/build/
 /bazel-*
+
+# Tulsi files
+*.tulsiconf-user
+tulsi-*
+
+# Xcode project
+/Tulsi.xcodeproj/
