@@ -87,6 +87,7 @@ _SUPPORTING_FILE_ATTRIBUTES = [
     "strings",
     "structured_resources",
     "storyboards",
+    "swiftc_inputs",
     "xibs",
 ]
 
