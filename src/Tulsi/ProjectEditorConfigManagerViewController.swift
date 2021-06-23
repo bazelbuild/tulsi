@@ -32,6 +32,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
 
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
+  @IBOutlet var deletePreviousProjectCheckbox: NSButton!
   @IBOutlet var generateButton: NSButton!
 
   @objc dynamic var numBazelPackages: Int = 0 {
@@ -88,6 +89,8 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
          to: configArrayController,
          withKeyPath: "selectedObjects.@count",
          options: nil)
+    self.deletePreviousProjectCheckbox.title = "Delete previous project"
+    self.deletePreviousProjectCheckbox.state = UserDefaults.standard.bool(forKey: "deletePreviousProject") ? .on : .off
     self.generateButton.keyEquivalent = "\r"
   }
 
@@ -124,6 +127,10 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
       case .action:
         didClickAction(sender)
     }
+  }
+  
+  @IBAction func tapDeletePreviosProject(_ sender: AnyObject?) {
+    UserDefaults.standard.setValue(deletePreviousProjectCheckbox.state == .on, forKey: "deletePreviousProject")
   }
 
   @IBAction func doGenerate(_ sender: AnyObject?) {

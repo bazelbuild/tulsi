@@ -150,6 +150,17 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       }
       return
     }
+    
+    if UserDefaults.standard.bool(forKey: "deletePreviousProject") {
+      let projectPath = concreteOutputFolderURL.appendingPathComponent(name + ".xcodeproj")
+      do {
+        try FileManager.default.removeItem(at: projectPath)
+      } catch {
+        // if error happend, we still continue the generate process.
+        LogMessage.postWarning(NSLocalizedString("Error_DeletePreviousProject",
+                                               comment: "Fail delete previous project at \(projectPath)"))
+      }
+    }
 
     guard let configDocument = getConfigDocumentNamed(name) else {
       // Error messages have already been displayed.
