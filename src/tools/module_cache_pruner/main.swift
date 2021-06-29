@@ -15,7 +15,7 @@
 import Foundation
 
 if CommandLine.arguments.count == 3 {
-  _ = pruneModuleCache(
+  pruneModuleCache(
     moduleCachePath: CommandLine.arguments[1], explicitModuleMetadataFile: CommandLine.arguments[2])
 } else {
   print(
