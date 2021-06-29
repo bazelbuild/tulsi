@@ -24,7 +24,9 @@ let prunedModulesTokenFilename = "modules.hash"
 /// an explicit module counterpart exists.
 /// Returns: A list of URLs of the modules that were removed or nil if pruning was skipped all
 /// together.
-func pruneModuleCache(moduleCachePath: String, explicitModuleMetadataFile: String) -> [URL]? {
+@discardableResult public func pruneModuleCache(
+  moduleCachePath: String, explicitModuleMetadataFile: String
+) -> [URL]? {
   os_log(
     "Pruning implicit module cache at %@ of explicit modules in %@.", log: logger, type: .default,
     moduleCachePath, explicitModuleMetadataFile)
