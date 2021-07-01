@@ -459,7 +459,9 @@ class BazelBuildBridge(object):
     self.direct_debug_prefix_map = False
     self.normalized_prefix_map = False
 
-    self.update_symbol_cache = UpdateSymbolCache()
+    self.update_symbol_cache = None
+    if os.environ.get('TULSI_USE_BAZEL_CACHE_READER') is not None:
+      self.update_symbol_cache = UpdateSymbolCache()
 
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
@@ -1691,13 +1693,14 @@ class BazelBuildBridge(object):
       return False
 
     # Update the dSYM symbol cache with a reference to this dSYM bundle.
-    err_msg = self.update_symbol_cache.UpdateUUID(uuid,
-                                                  dsym_bundle_path,
-                                                  arch)
-    if err_msg:
-      _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
-                         'to DBGShellCommands\' dSYM cache, but got error '
-                         '\"%s\".' % err_msg)
+    if self.update_symbol_cache is not None:
+      err_msg = self.update_symbol_cache.UpdateUUID(uuid,
+                                                    dsym_bundle_path,
+                                                    arch)
+      if err_msg:
+        _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
+                           'to DBGShellCommands\' dSYM cache, but got error '
+                           '\"%s\".' % err_msg)
 
     return True
 
