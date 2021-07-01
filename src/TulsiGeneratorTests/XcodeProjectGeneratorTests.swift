@@ -102,7 +102,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
       let cacheReaderURL = supportScriptsURL.appendingPathComponent(
         "bazel_cache_reader",
         isDirectory: false)
-      XCTAssert(mockFileManager.copyOperations.keys.contains(cacheReaderURL.path))
+      XCTAssertFalse(mockFileManager.copyOperations.keys.contains(cacheReaderURL.path))
 
       let xcp = "\(xcodeProjectPath)/xcuserdata/USER.xcuserdatad/xcschemes/xcschememanagement.plist"
       XCTAssert(!mockFileManager.attributesMap.isEmpty)
@@ -110,6 +110,24 @@ class XcodeProjectGeneratorTests: XCTestCase {
         XCTAssertNotNil(attrs[.modificationDate])
       }
       XCTAssert(mockFileManager.writeOperations.keys.contains(xcp))
+    } catch let e {
+      XCTFail("Unexpected exception \(e)")
+    }
+  }
+
+  func testSuccessfulGenerationWithBazelCacheReader() {
+    let ruleEntries = XcodeProjectGeneratorTests.labelToRuleEntryMapForLabels(buildTargetLabels)
+    let options = TulsiOptionSet()
+    options[.UseBazelCacheReader].projectValue = "YES"
+    prepareGenerator(ruleEntries, options: options)
+    do {
+      _ = try generator.generateXcodeProjectInFolder(outputFolderURL)
+      mockLocalizedMessageLogger.assertNoErrors()
+      mockLocalizedMessageLogger.assertNoWarnings()
+
+      let cacheReaderURL = mockFileManager.homeDirectoryForCurrentUser.appendingPathComponent(
+        "Library/Application Support/Tulsi/Scripts/bazel_cache_reader", isDirectory: false)
+      XCTAssert(mockFileManager.copyOperations.keys.contains(cacheReaderURL.path))
     } catch let e {
       XCTFail("Unexpected exception \(e)")
     }
@@ -375,8 +393,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
       extensionType: extensionType)
   }
 
-  private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry]) {
-    let options = TulsiOptionSet()
+  private func prepareGenerator(_ ruleEntries: [BuildLabel: RuleEntry], options: TulsiOptionSet = TulsiOptionSet()) {
     // To avoid creating ~/Library folders and changing UserDefaults during CI testing.
     config = TulsiGeneratorConfig(
       projectName: XcodeProjectGeneratorTests.projectName,

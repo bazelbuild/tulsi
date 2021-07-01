@@ -44,6 +44,9 @@
 "DisableCustomLLDBInit" = "Disable project-level lldbinit";
 "DisableCustomLLDBInit_DESC" = "When this option is enabled, Tulsi will revert to using and modifying the global lldbinit to import the shared ~/.lldbinit-tulsiproj file. When this option is disabled (default), Tulsi will generate a dedicated lldbinit and bundle it with an Xcode project. The dedicated lldbinit will import the global lldbinit file.";
 
+"UseBazelCacheReader" = "Enable fallback dSYM searches";
+"UseBazelCacheReader_DESC" = "When this option is enabled, Tulsi will maintain a SQL database to track dSYMs and query the table for each executable/library in all debug sessions. This may result in a hit on debugging attach times, so enable this option only when dSYMs are required and Spotlight is unable to find dSYMs automatically.";
+
 "CLANG_CXX_LANGUAGE_STANDARD" = "C++ language standard";
 "CLANG_CXX_LANGUAGE_STANDARD_DESC" = "Sets the C++ language standard project wide to prevent any false live issue errors involving certain C++ features.";
 
