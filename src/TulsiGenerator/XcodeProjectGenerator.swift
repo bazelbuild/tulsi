@@ -551,6 +551,7 @@ final class XcodeProjectGenerator {
       generator.generateBazelCleanTarget(cleanScriptPath, workingDirectory: workingDirectory,
                                          startupOptions: startupOptions)
     }
+    let useBazelCacheReader = config.options[.UseBazelCacheReader].commonValueAsBool == true
     profileAction("generating_top_level_build_configs") {
       var buildSettings = [String: String]()
       if let sdkroot = XcodeProjectGenerator.projectSDKROOT(targetRules) {
@@ -577,6 +578,10 @@ final class XcodeProjectGenerator {
         buildSettings["TULSI_LLDBINIT_FILE"] = customLLDBInitFile
       }
 
+      if useBazelCacheReader {
+        buildSettings["TULSI_USE_BAZEL_CACHE_READER"] = "YES"
+      }
+
       buildSettings["TULSI_PROJECT"] = config.projectName
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
@@ -598,7 +603,7 @@ final class XcodeProjectGenerator {
     }
     profileAction("updating_dbgshellcommands") {
       do {
-        try updateShellCommands()
+        try updateShellCommands(useBazelCacheReader: useBazelCacheReader)
       } catch {
         self.localizedMessageLogger.warning("UpdatingDBGShellCommandsFailed",
                                             comment: LocalizedMessageLogger.bugWorthyComment("Failed to update the script to find cached dSYM bundles via DBGShellCommands."),
@@ -1157,6 +1162,35 @@ final class XcodeProjectGenerator {
     return auxiliaryBinaryURL.path
   }
 
+  /// Update the global user defaults to remove any reference to bazel_cache_reader
+  private func removeShellCommandsFromGlobalUserDefaults(shellCommandsBasename: String) {
+    // Find if there is an existing entry for com.apple.DebugSymbols.
+    let dbgDefaults = UserDefaults.standard.persistentDomain(forName: "com.apple.DebugSymbols")
+
+    guard var currentDBGDefaults = dbgDefaults else {
+      // No com.apple.DebugSymbols exists, nothing to remove.
+      return
+    }
+
+    var newShellCommands : [String] = []
+
+    if let currentShellCommands = currentDBGDefaults["DBGShellCommands"] as? [String] {
+      // Copy all the current shell commands to the new DBGShellCommands array excluding the
+      // bazel_cache_reader command.
+      newShellCommands = currentShellCommands.filter { !$0.contains(shellCommandsBasename) }
+    } else if let currentShellCommand = currentDBGDefaults["DBGShellCommands"] as? String {
+      // Check that the single path at DBGShellCommands contains the shellCommandsBasename.
+      guard currentShellCommand.contains(shellCommandsBasename) else {
+        // Otherwise there is no need to remove anything.
+        return
+      }
+    }
+
+    // Replace DBGShellCommands in the existing com.apple.DebugSymbols defaults.
+    currentDBGDefaults["DBGShellCommands"] = newShellCommands.isEmpty ? nil : newShellCommands
+    UserDefaults.standard.setPersistentDomain(currentDBGDefaults, forName: "com.apple.DebugSymbols")
+  }
+
   /// Update the global user defaults to reference bazel_cache_reader
   private func updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: String) {
     guard !suppressModifyingUserDefaults else { return }
@@ -1207,15 +1241,19 @@ final class XcodeProjectGenerator {
     UserDefaults.standard.setPersistentDomain(currentDBGDefaults, forName: "com.apple.DebugSymbols")
   }
 
-  /// Install the latest bazel_cache_reader.
-  private func updateShellCommands() throws {
+  /// Install or remove bazel_cache_reader.
+  private func updateShellCommands(useBazelCacheReader: Bool) throws {
     guard !suppressUpdatingShellCommands else { return }
 
-    // Install the latest version of the app to ~/Library/Application Support/Tulsi/Scripts/.
-    let shellCommandsAppPath = try installAuxiliaryExecutable(XcodeProjectGenerator.ShellCommandsUtil)
+    if useBazelCacheReader {
+      // Install the latest version of the app to ~/Library/Application Support/Tulsi/Scripts/.
+      let shellCommandsAppPath = try installAuxiliaryExecutable(XcodeProjectGenerator.ShellCommandsUtil)
 
-    // Add a reference to it in global user defaults.
-    updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: shellCommandsAppPath)
+      // Add a reference to it in global user defaults.
+      updateGlobalUserDefaultsWithShellCommands(shellCommandsPath: shellCommandsAppPath)
+    } else {
+      removeShellCommandsFromGlobalUserDefaults(shellCommandsBasename: XcodeProjectGenerator.ShellCommandsUtil)
+    }
   }
 
   private func executePythonProcess(_ scriptFileName: String, onError: @escaping (Int32, String) -> Void) {
