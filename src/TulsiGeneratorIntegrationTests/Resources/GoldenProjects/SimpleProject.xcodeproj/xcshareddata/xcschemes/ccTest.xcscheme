@@ -1,0 +1,88 @@
+
+<Scheme version="1.3" LastUpgradeVersion="1000">
+    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
+        <BuildActionEntries>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+        </BuildActionEntries>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a build pre action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a build post action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PostActions>
+    </BuildAction>
+    <TestAction shouldUseLaunchSchemeArgsEnv="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="__TulsiTestRunner_Debug">
+        <Testables></Testables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a test pre action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a test post action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PostActions>
+        <BuildableProductRunnable runnableDebuggingMode="0">
+            <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+        </BuildableProductRunnable>
+    </TestAction>
+    <LaunchAction debugServiceExtension="internal" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" debugDocumentVersioning="YES" launchStyle="0" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES" customLLDBInitFile="$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit" useCustomWorkingDirectory="NO">
+        <CommandLineArguments>
+            <CommandLineArgument isEnabled="YES" argument="--project-flag"></CommandLineArgument>
+        </CommandLineArguments>
+        <EnvironmentVariables>
+            <EnvironmentVariable value="projectValue" isEnabled="YES" key="projectKey"></EnvironmentVariable>
+        </EnvironmentVariables>
+        <PreActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a lauch pre action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PreActions>
+        <PostActions>
+            <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+                <ActionContent scriptText="This is a launch post action script" title="Run Script">
+                    <EnvironmentBuildable>
+                        <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                    </EnvironmentBuildable>
+                </ActionContent>
+            </ExecutionAction>
+        </PostActions>
+        <BuildableProductRunnable runnableDebuggingMode="0">
+            <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+        </BuildableProductRunnable>
+    </LaunchAction>
+    <ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" debugDocumentVersioning="YES" buildConfiguration="__TulsiTestRunner_Release">
+        <BuildableProductRunnable runnableDebuggingMode="0">
+            <BuildableReference BuildableName="ccTest" BlueprintName="ccTest" BlueprintIdentifier="7E9AFE6276D5FB2400000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+        </BuildableProductRunnable>
+    </ProfileAction>
+    <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
+    <ArchiveAction revealArchiveInOrganizer="YES" buildConfiguration="Release"></ArchiveAction>
+</Scheme>

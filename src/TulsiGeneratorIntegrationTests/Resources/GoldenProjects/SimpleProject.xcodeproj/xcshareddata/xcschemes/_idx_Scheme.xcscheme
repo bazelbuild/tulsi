@@ -3,10 +3,16 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ccTest_9CA2C56A_ios_min8.0.a" BlueprintName="_idx_ccTest_9CA2C56A_ios_min8.0" BlueprintIdentifier="7E9AFE628D50BA7A00000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
                 <BuildableReference BuildableName="lib_idx_Library_744889E2_ios_min10.0.a" BlueprintName="_idx_Library_744889E2_ios_min10.0" BlueprintIdentifier="7E9AFE62036907F800000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
                 <BuildableReference BuildableName="lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0" BlueprintIdentifier="7E9AFE6229A25C1600000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+            </BuildActionEntry>
+            <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
+                <BuildableReference BuildableName="lib_idx_ccLibrary_F3CA84BB_ios_min8.0.a" BlueprintName="_idx_ccLibrary_F3CA84BB_ios_min8.0" BlueprintIdentifier="7E9AFE6257F3F38800000000" ReferencedContainer="container:SimpleProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
