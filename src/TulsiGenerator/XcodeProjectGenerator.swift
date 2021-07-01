@@ -339,6 +339,10 @@ final class XcodeProjectGenerator {
 
     /// Mapping from label to top-level build target.
     let topLevelBuildTargetsByLabel: [BuildLabel: PBXNativeTarget]
+
+    /// Test targets from `test_suite` rules which were silently dropped since
+    /// their rule kind is unsupported.
+    let ignoredTestTargets: Set<BuildLabel>
   }
 
   /// Throws an exception if the Xcode project path is found to be in a forbidden location,
@@ -447,15 +451,23 @@ final class XcodeProjectGenerator {
     let ruleEntryMap = try loadRuleEntryMap()
     try validateConfigReferences(ruleEntryMap)
 
+    // Expand test_suites recursively into their respective tests, ignoring
+    // unsupported target types.
+    var ignoredTests = Set<BuildLabel>()
     var expandedTargetLabels = Set<BuildLabel>()
     var testSuiteRules = [BuildLabel: RuleEntry]()
-    func expandTargetLabels<T: Sequence>(_ labels: T) where T.Iterator.Element == BuildLabel {
+    func expandTargetLabels<T: Sequence>(_ labels: T, inTestSuite: Bool) where T.Iterator.Element == BuildLabel {
       for label in labels {
         // Effectively we will only be using the last RuleEntry in the case of duplicates.
         // We could log about duplicates here, but this would only lead to duplicate logging.
         let ruleEntries = ruleEntryMap.ruleEntries(buildLabel: label)
         for ruleEntry in ruleEntries {
           if ruleEntry.type != "test_suite" {
+            // Ignore unsupported target types in `test_suite`s.
+            guard !inTestSuite || ruleEntry.pbxTargetType != nil else {
+              ignoredTests.insert(label)
+              continue
+            }
             // Add the RuleEntry itself and any registered extensions + app clips so they are
             // automatically added as buildable schemes in the project.
             expandedTargetLabels.insert(label)
@@ -463,16 +475,16 @@ final class XcodeProjectGenerator {
             expandedTargetLabels.formUnion(ruleEntry.appClips)
 
             // Recursively expand extensions. Currently used by App -> Watch App -> Watch Extension.
-            expandTargetLabels(ruleEntry.extensions)
+            expandTargetLabels(ruleEntry.extensions, inTestSuite: false)
           } else {
             // Expand the test_suite to its set of tests.
             testSuiteRules[ruleEntry.label] = ruleEntry
-            expandTargetLabels(ruleEntry.testSuiteDependencies)
+            expandTargetLabels(ruleEntry.testSuiteDependencies, inTestSuite: true)
           }
         }
       }
     }
-    expandTargetLabels(config.buildTargetLabels)
+    expandTargetLabels(config.buildTargetLabels, inTestSuite: false)
 
     var targetRules = Set<RuleEntry>()
     var hostTargetLabels = [BuildLabel: BuildLabel]()
@@ -636,7 +648,8 @@ final class XcodeProjectGenerator {
                                 buildRuleEntries: targetRules,
                                 testSuiteRuleEntries: testSuiteRules,
                                 indexerTargets: indexerTargets,
-                                topLevelBuildTargetsByLabel: targetsByLabel)
+                                topLevelBuildTargetsByLabel: targetsByLabel,
+                                ignoredTestTargets: ignoredTests)
   }
 
   private func installWorkspaceSettings(_ projectURL: URL) throws {
@@ -943,6 +956,11 @@ final class XcodeProjectGenerator {
       var suiteHostTarget: PBXTarget? = nil
       var validTests = Set<PBXTarget>()
       for testEntryLabel in testSuite.testSuiteDependencies {
+        // Skip over tests which were dropped since they were unsupported.
+        guard !info.ignoredTestTargets.contains(testEntryLabel) else {
+          continue
+        }
+
         if let recursiveTestSuite = info.testSuiteRuleEntries[testEntryLabel] {
           let (recursiveTests, recursiveSuiteHostTarget) = extractTestTargets(recursiveTestSuite)
           validTests.formUnion(recursiveTests)
