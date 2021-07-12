@@ -52,7 +52,9 @@ public class BuildLabel: Comparable, Equatable, Hashable, CustomStringConvertibl
     // Fix for external and local_repository, which may be referenced by Bazel via
     // @repository//subpath while we internally refer to them via external/repository/subpath.
     if package.starts(with: "@") {
-      package = "external/" + package.suffix(from: package.index(package.startIndex, offsetBy: 1))
+      package = "external/" + 
+        package.suffix(from: package.index(package.startIndex, offsetBy: 1)) // Munch @ prefix
+          .replacingOccurrences(of: "//", with: "/") // Fixup //. Xcode can't handle paths like that.
     }
     return "\(package)/\(target)"
   }()
