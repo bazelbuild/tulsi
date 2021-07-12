@@ -33,6 +33,7 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
   func buildSettings(
     bazel: String,
     bazelExecRoot: String,
+    bazelOutputBase: String,
     options: TulsiOptionSet,
     features: Set<BazelSettingFeature>,
     buildRuleEntries: Set<RuleEntry>
@@ -40,6 +41,7 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
     return BazelBuildSettings(
       bazel: bazel,
       bazelExecRoot: bazelExecRoot,
+      bazelOutputBase: bazelOutputBase,
       defaultPlatformConfigIdentifier: "",
       platformConfigurationFlags: nil,
       swiftTargets: [],
@@ -68,6 +70,8 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   var bazelBinPath = "bazel-bin"
   var bazelExecutionRoot
     = "/private/var/tmp/_bazel_localhost/1234567890abcdef1234567890abcdef/execroot/workspace_dir"
+  var bazelOutputBase
+    = "/private/var/tmp/_bazel_localhost/1234567890abcdef1234567890abcdef"
   var workspaceRootURL = URL(fileURLWithPath: "")
 
   func extractRuleInfoFromProject(_ project: TulsiProject) -> [RuleInfo] {

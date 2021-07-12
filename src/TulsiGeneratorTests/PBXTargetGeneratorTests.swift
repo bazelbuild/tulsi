@@ -268,8 +268,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
       "TULSI_VERSION": testTulsiVersion,
-      "TULSI_WR": "$(SRCROOT)",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
+      PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
+      PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
+      PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -325,8 +326,9 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
       "TULSI_VERSION": testTulsiVersion,
-      "TULSI_WR": "$(SRCROOT)",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
+      PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
+      PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
+      PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])

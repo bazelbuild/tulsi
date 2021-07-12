@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		952C886D35F4A86400000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C35F4A86400000000 /* main.m */; };
-		952C886D6518C99300000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 25889F7C6518C99300000000 /* TestSuiteXCTest.m */; };
-		952C886D66D4941800000000 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C66D4941800000000 /* tagged_xctest_2.m */; };
-		952C886D6DC9EDB600000000 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C6DC9EDB600000000 /* tagged_xctest_1.m */; };
+		952C886D0D79AA4B00000000 /* tagged_xctest_1.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C0D79AA4B00000000 /* tagged_xctest_1.m */; };
+		952C886D5E279DA600000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C5E279DA600000000 /* main.m */; };
+		952C886D74070F5F00000000 /* tagged_xctest_2.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C74070F5F00000000 /* tagged_xctest_2.m */; };
+		952C886DF7D9345E00000000 /* TestSuiteXCTest.m in TestSuite */ = {isa = PBXBuildFile; fileRef = 25889F7CF7D9345E00000000 /* TestSuiteXCTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,29 +29,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25889F7C0D79AA4B00000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_1.m; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Three/tagged_xctest_1.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C0FE5D51600000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/tagged_xctest_2.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C2A3379D000000000 /* lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; path = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C35687C6800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		25889F7C35F4A86400000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/TestSuite/Application/srcs/main.m"; sourceTree = "<group>"; };
-		25889F7C4273558500000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/tagged_xctest_1.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
-		25889F7C6518C99300000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteXCTest.m; path = "tulsi-workspace/TestSuite/TestSuite/TestSuiteXCTest.m"; sourceTree = "<group>"; };
-		25889F7C66D4941800000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_2.m; path = "tulsi-workspace/TestSuite/Three/tagged_xctest_2.m"; sourceTree = "<group>"; };
-		25889F7C6DC9EDB600000000 /* tagged_xctest_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_1.m; path = "tulsi-workspace/TestSuite/Three/tagged_xctest_1.m"; sourceTree = "<group>"; };
+		25889F7C5C95EE0B00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/TestSuiteXCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C5E279DA600000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Application/srcs/main.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C68729DC500000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/tagged_xctest_1.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C74070F5F00000000 /* tagged_xctest_2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = tagged_xctest_2.m; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Three/tagged_xctest_2.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C89A97C5A00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C8E4953C800000000 /* tagged_xctest_1.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = tagged_xctest_1.xctest; path = tagged_xctest_1.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C8E912BB200000000 /* TestSuiteXCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = TestSuiteXCTest.xctest; path = TestSuiteXCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C8EF3881F00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/TestSuiteXCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
-		25889F7C9402028700000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/tagged_xctest_2.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C965CD29E00000000 /* tagged_xctest_2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = tagged_xctest_2.xctest; path = tagged_xctest_2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C9BDE3CEF00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/TestSuite/Info.plist"; sourceTree = "<group>"; };
 		25889F7CADBB0ACA00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Three/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		25889F7CB8B54B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CDF260A6500000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/TestApplication-intermediates/Info.plist"; sourceTree = "<group>"; };
+		25889F7CEED661D200000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/TestApplication-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7CF7D9345E00000000 /* TestSuiteXCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestSuiteXCTest.m; path = "TestSuiteRecursiveTestSuiteProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/TestSuite/TestSuiteXCTest.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		45D0562904015BAC00000000 /* tagged_xctest_1.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C4273558500000000 /* Info.plist */,
+				25889F7C68729DC500000000 /* Info.plist */,
 			);
 			name = "tagged_xctest_1.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -71,7 +71,7 @@
 			children = (
 				45D0562933ECA2A800000000 /* Application */,
 				25889F7C35687C6800000000 /* BUILD */,
-				25889F7C9BDE3CEF00000000 /* Info.plist */,
+				25889F7C89A97C5A00000000 /* Info.plist */,
 				45D0562906FE71CF00000002 /* TestSuite */,
 				45D0562978986CA000000001 /* Three */,
 			);
@@ -81,7 +81,7 @@
 		45D0562906FE71CF00000002 /* TestSuite */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C6518C99300000000 /* TestSuiteXCTest.m */,
+				25889F7CF7D9345E00000000 /* TestSuiteXCTest.m */,
 			);
 			name = TestSuite;
 			sourceTree = "<group>";
@@ -89,7 +89,7 @@
 		45D05629143ABA8700000000 /* TestApplication-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CDF260A6500000000 /* Info.plist */,
+				25889F7CEED661D200000000 /* Info.plist */,
 			);
 			name = "TestApplication-intermediates";
 			sourceTree = "<group>";
@@ -144,8 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				25889F7CADBB0ACA00000000 /* BUILD */,
-				25889F7C6DC9EDB600000000 /* tagged_xctest_1.m */,
-				25889F7C66D4941800000000 /* tagged_xctest_2.m */,
+				25889F7C0D79AA4B00000000 /* tagged_xctest_1.m */,
+				25889F7C74070F5F00000000 /* tagged_xctest_2.m */,
 			);
 			name = Three;
 			sourceTree = "<group>";
@@ -161,7 +161,7 @@
 		45D05629AC87744D00000000 /* tagged_xctest_2.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C9402028700000000 /* Info.plist */,
+				25889F7C0FE5D51600000000 /* Info.plist */,
 			);
 			name = "tagged_xctest_2.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -179,7 +179,7 @@
 		45D05629B69C62F000000000 /* TestSuiteXCTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C8EF3881F00000000 /* Info.plist */,
+				25889F7C5C95EE0B00000000 /* Info.plist */,
 			);
 			name = "TestSuiteXCTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -195,7 +195,7 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C35F4A86400000000 /* main.m */,
+				25889F7C5E279DA600000000 /* main.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -458,7 +458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D66D4941800000000 /* tagged_xctest_2.m in Three */,
+				952C886D74070F5F00000000 /* tagged_xctest_2.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +466,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D6DC9EDB600000000 /* tagged_xctest_1.m in Three */,
+				952C886D0D79AA4B00000000 /* tagged_xctest_1.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +474,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D6518C99300000000 /* TestSuiteXCTest.m in TestSuite */,
+				952C886DF7D9345E00000000 /* TestSuiteXCTest.m in TestSuite */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,7 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D35F4A86400000000 /* main.m in srcs */,
+				952C886D5E279DA600000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +645,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteRecursiveTestSuiteProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -762,6 +763,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteRecursiveTestSuiteProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -891,6 +893,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteRecursiveTestSuiteProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -1054,6 +1057,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteRecursiveTestSuiteProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

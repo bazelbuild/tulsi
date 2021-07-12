@@ -108,7 +108,7 @@ final class XcodeProjectGenerator {
 
   /// Exposed for testing. Instead of writing the real workspace name into the generated project,
   /// write a stub value that will be the same regardless of the execution environment.
-  var redactWorkspaceSymlink = false
+  var redactSymlinksToBazelOutput = false
 
   /// Exposed for testing. Do not attempt to update/install files related to DBGShellCommands.
   var suppressUpdatingShellCommands = false
@@ -433,8 +433,7 @@ final class XcodeProjectGenerator {
                                                 options: config.options,
                                                 localizedMessageLogger: localizedMessageLogger,
                                                 workspaceRootURL: workspaceRootURL,
-                                                suppressCompilerDefines: suppressCompilerDefines,
-                                                redactWorkspaceSymlink: redactWorkspaceSymlink)
+                                                suppressCompilerDefines: suppressCompilerDefines)
 
     if let additionalFilePaths = config.additionalFilePaths {
       generator.generateFileReferencesForFilePaths(additionalFilePaths)
@@ -671,55 +670,60 @@ final class XcodeProjectGenerator {
     }
   }
 
-  // Links tulsi-workspace to the current Bazel execution root. This may be overwritten during
-  // builds, but is useful to include in project generation for users who have local_repository
-  // references.
+  // Create symlinks into to the current Bazel output directories. This may be overwritten during
+  // builds, but is useful to include in project generation for users who have external workspaces
+  // or prior builds.
   private func linkTulsiWorkspace(_ projectURL: URL) {
-    // Don't create the tulsi-workspace symlink for tests.
-    guard !self.redactWorkspaceSymlink else { return }
+    // Don't create symlinks for tests.
+    guard !self.redactSymlinksToBazelOutput else { return }
 
-    let path = projectURL.appendingPathComponent(".tulsi/\(PBXTargetGenerator.TulsiWorkspacePath)",
-                                                 isDirectory: false).path
-    let bazelExecRoot = self.workspaceInfoExtractor.bazelExecutionRoot;
+    func createLink(from: String, to: String) {
+      let from = projectURL.appendingPathComponent(from, isDirectory: false).path
 
-    // See if tulsi-includes is already present.
-    if let attributes = try? fileManager.attributesOfItem(atPath: path) {
-      // If tulsi-includes is already a symlink, we only need to change it if it points to the wrong
-      // Bazel exec root.
-      if attributes[FileAttributeKey.type] as? FileAttributeType == FileAttributeType.typeSymbolicLink {
+      // See if symlink is already present.
+      if let attributes = try? self.fileManager.attributesOfItem(atPath: from) {
+        // If there is already a symlink, we only need to change it if it points to the wrong place
+        if attributes[FileAttributeKey.type] as? FileAttributeType == FileAttributeType.typeSymbolicLink {
+          do {
+            let oldDestination = try self.fileManager.destinationOfSymbolicLink(atPath: from)
+            guard oldDestination != to else { return }
+          } catch {
+            self.localizedMessageLogger.warning("UpdatingTulsiSymlinksFailed",
+                                                comment: "Warning shown when failing to update the tulsi symlinks into the Bazel output files. symlink path is in %1$@, symlink destination is in %2$@, additional error context in %3$@.",
+                                                context: self.config.projectName,
+                                                values: from, to, "Unable to read old symlink. Was it modified?")
+            return
+          }
+        }
+
+        // The symlink exists but points to the wrong path or is a different file type. Remove it.
         do {
-          let oldBazelExecRoot = try self.fileManager.destinationOfSymbolicLink(atPath: path)
-          guard oldBazelExecRoot != bazelExecRoot else { return }
+          try self.fileManager.removeItem(atPath: from)
         } catch {
-          self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
-                                              comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
-                                              context: config.projectName,
-                                              values: path, "Unable to read old symlink. Was it modified?")
+          self.localizedMessageLogger.warning("UpdatingTulsiSymlinksFailed",
+                                              comment: "Warning shown when failing to update the tulsi symlinks into the Bazel output files. symlink path is in %1$@, symlink destination is in %2$@, additional error context in %3$@.",
+                                              context: self.config.projectName,
+                                              values: from, to, "Unable to remove the old symlink. Trying removing it and try again.")
           return
         }
       }
 
-      // The symlink exists but points to the wrong path or is a different file type. Remove it.
+      // Create symlink
       do {
-        try fileManager.removeItem(atPath: path)
+        try self.fileManager.createSymbolicLink(atPath: from, withDestinationPath: to)
       } catch {
-        self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
-                                            comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
-                                            context: config.projectName,
-                                            values: path, "Unable to remove the old tulsi-workspace symlink. Trying removing it and try again.")
-        return
+        self.localizedMessageLogger.warning("UpdatingTulsiSymlinksFailed",
+                                            comment: "Warning shown when failing to update the tulsi symlinks into the Bazel output files. symlink path is in %1$@, symlink destination is in %2$@, additional error context in %3$@.",
+                                            context: self.config.projectName,
+                                            values: from, to, "Creating symlink failed. Is it already present?")
       }
+
     }
 
-    // Symlink tulsi-workspace ->  Bazel exec root.
-    do {
-      try self.fileManager.createSymbolicLink(atPath: path, withDestinationPath: bazelExecRoot)
-    } catch {
-      self.localizedMessageLogger.warning("UpdatingTulsiWorkspaceSymlinkFailed",
-                                          comment: "Warning shown when failing to update the tulsi-workspace symlink in %1$@ to the Bazel execution root, additional context %2$@.",
-                                          context: config.projectName,
-                                          values: path, "Creating symlink failed. Is it already present?")
-    }
+    createLink(from: PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
+               to: self.workspaceInfoExtractor.bazelExecutionRoot)
+    createLink(from: PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
+               to: self.workspaceInfoExtractor.bazelOutputBase)
   }
 
   // Writes Xcode schemes for non-indexer targets if they don't already exist.
@@ -1057,9 +1061,11 @@ final class XcodeProjectGenerator {
 
     let bazelSettingsProvider = workspaceInfoExtractor.bazelSettingsProvider
     let bazelExecRoot = workspaceInfoExtractor.bazelExecutionRoot
+    let bazelOutputBase = workspaceInfoExtractor.bazelOutputBase
     let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options)
     let bazelBuildSettings = bazelSettingsProvider.buildSettings(bazel: config.bazelURL.path,
                                                                  bazelExecRoot: bazelExecRoot,
+                                                                 bazelOutputBase: bazelOutputBase,
                                                                  options: config.options,
                                                                  features: features,
                                                                  buildRuleEntries: buildRuleEntries)

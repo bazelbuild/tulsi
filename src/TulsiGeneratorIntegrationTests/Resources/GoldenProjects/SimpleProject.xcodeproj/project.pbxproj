@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		952C886D11A6302600000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C11A6302600000000 /* src1.m */; };
+		952C886D13CF7DED00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C13CF7DED00000000 /* src4.m */; };
+		952C886D29E8670100000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C29E8670100000000 /* src1.m */; };
+		952C886D33A9CEA000000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C33A9CEA000000000 /* main.m */; };
 		952C886D3EFFE63100000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */ = {isa = PBXBuildFile; fileRef = D0BE1A9D3EFFE63100000000 /* SimpleTest.xcdatamodeld */; };
-		952C886D80E2A65800000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C80E2A65800000000 /* src2.m */; };
-		952C886D99A5382C00000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C99A5382C00000000 /* src1.mm */; };
-		952C886DB150C3F800000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CB150C3F800000000 /* main.m */; };
-		952C886DB6E4997A00000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CB6E4997A00000000 /* src3.m */; };
-		952C886DD6AD0DEF00000000 /* src4.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CD6AD0DEF00000000 /* src4.m */; };
+		952C886DD1CB339B00000000 /* src2.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CD1CB339B00000000 /* src2.m */; };
+		952C886DDB551C2600000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CDB551C2600000000 /* src3.m */; };
+		952C886DECF5170900000000 /* src1.mm in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CECF5170900000000 /* src1.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,32 +38,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25889F7C0C7E2AEB00000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextualHdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/textual_hdrs/TextualHdrsHeader.h"; sourceTree = "<group>"; };
-		25889F7C0DFE4FDE00000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "tulsi-workspace/tulsi_e2e_simple/Library/xibs/xib.xib"; sourceTree = "<group>"; };
-		25889F7C11A6302600000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src1.m"; sourceTree = "<group>"; };
+		25889F7C0E6CDD8E00000000 /* xib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = xib.xib; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/xibs/xib.xib"; sourceTree = SOURCE_ROOT; };
 		25889F7C126E22AB00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_simple/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		25889F7C13CF7DED00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = SOURCE_ROOT; };
 		25889F7C1A1D3E7000000000 /* lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a; path = lib_idx_ApplicationLibrary_5E9B8EB0_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C301CC73800000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
-		25889F7C32F6AA5C00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/TargetApplication-intermediates/Info.plist"; sourceTree = "<group>"; };
+		25889F7C1EED151200000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C29E8670100000000 /* src1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src1.m; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/srcs/src1.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C2A1CA7E800000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/pch/PCHFile.pch"; sourceTree = SOURCE_ROOT; };
+		25889F7C33A9CEA000000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C343ACE8E00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = SOURCE_ROOT; };
+		25889F7C357B52A000000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/srcs/SrcsHeader.h"; sourceTree = SOURCE_ROOT; };
 		25889F7C477067CE00000000 /* SimpleDataModelsTestv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv2.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv2.xcdatamodel; sourceTree = "<group>"; };
-		25889F7C6079DDB000000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "tulsi-workspace/tulsi_e2e_simple/Application/entitlements.entitlements"; sourceTree = "<group>"; };
-		25889F7C80E2A65800000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src2.m"; sourceTree = "<group>"; };
+		25889F7C5FAA83E600000000 /* TextualHdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextualHdrsHeader.h; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/textual_hdrs/TextualHdrsHeader.h"; sourceTree = SOURCE_ROOT; };
+		25889F7C61C9919800000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Launch.storyboard; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Application/Launch.storyboard"; sourceTree = SOURCE_ROOT; };
+		25889F7C72E62A3B00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Application/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C76AFAE5C00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/TargetApplication-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C80E959BE00000000 /* lib_idx_Library_744889E2_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_Library_744889E2_ios_min10.0.a; path = lib_idx_Library_744889E2_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C84A85CEE00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/Application-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7C8FC56C5400000000 /* XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = XCTest.xctest; path = XCTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C9459384D00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/Application-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C978361E600000000 /* SimpleDataModelsTestv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = SimpleDataModelsTestv1.xcdatamodel; path = tulsi_e2e_simple/SimpleTest.xcdatamodeld/SimpleDataModelsTestv1.xcdatamodel; sourceTree = "<group>"; };
-		25889F7C99A5382C00000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src1.mm; path = "tulsi-workspace/tulsi_e2e_simple/XCTest/srcs/src1.mm"; sourceTree = "<group>"; };
-		25889F7CAF25182F00000000 /* PCHFile.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PCHFile.pch; path = "tulsi-workspace/tulsi_e2e_simple/Library/pch/PCHFile.pch"; sourceTree = "<group>"; };
-		25889F7CB150C3F800000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/srcs/main.m"; sourceTree = "<group>"; };
-		25889F7CB6E4997A00000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src3.m"; sourceTree = "<group>"; };
-		25889F7CB7C2A0EE00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_simple/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = "<group>"; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CCF6C202B00000000 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = "tulsi-workspace/tulsi_e2e_simple/ApplicationLibrary/Base.lproj/One.storyboard"; sourceTree = "<group>"; };
-		25889F7CD6AD0DEF00000000 /* src4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src4.m; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/src4.m"; sourceTree = "<group>"; };
-		25889F7CEA45B29C00000000 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Launch.storyboard; path = "tulsi-workspace/tulsi_e2e_simple/Application/Launch.storyboard"; sourceTree = "<group>"; };
+		25889F7CD1CB339B00000000 /* src2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src2.m; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/srcs/src2.m"; sourceTree = SOURCE_ROOT; };
+		25889F7CDB551C2600000000 /* src3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = src3.m; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/srcs/src3.m"; sourceTree = SOURCE_ROOT; };
+		25889F7CE617CD2900000000 /* entitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.xcode.entitlements-property-list"; name = entitlements.entitlements; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Application/entitlements.entitlements"; sourceTree = SOURCE_ROOT; };
+		25889F7CE6488C5500000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/Library/hdrs/HdrsHeader.h"; sourceTree = SOURCE_ROOT; };
 		25889F7CEBE4382E00000000 /* TargetApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TargetApplication.app; path = TargetApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CEC8BA1B100000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_simple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
-		25889F7CFC41714700000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_simple/Application/Info.plist"; sourceTree = "<group>"; };
+		25889F7CECF5170900000000 /* src1.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = src1.mm; path = "SimpleProject.xcodeproj/.tulsi/tulsi-workspace/tulsi_e2e_simple/XCTest/srcs/src1.mm"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -82,7 +82,7 @@
 		45D056291D99E09D00000000 /* xibs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C0DFE4FDE00000000 /* xib.xib */,
+				25889F7C0E6CDD8E00000000 /* xib.xib */,
 			);
 			name = xibs;
 			sourceTree = "<group>";
@@ -90,9 +90,9 @@
 		45D0562933ECA2A800000000 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CFC41714700000000 /* Info.plist */,
-				25889F7CEA45B29C00000000 /* Launch.storyboard */,
-				25889F7C6079DDB000000000 /* entitlements.entitlements */,
+				25889F7C72E62A3B00000000 /* Info.plist */,
+				25889F7C61C9919800000000 /* Launch.storyboard */,
+				25889F7CE617CD2900000000 /* entitlements.entitlements */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -124,7 +124,7 @@
 		45D056294C3C17AD00000000 /* TargetApplication-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C32F6AA5C00000000 /* Info.plist */,
+				25889F7C76AFAE5C00000000 /* Info.plist */,
 			);
 			name = "TargetApplication-intermediates";
 			sourceTree = "<group>";
@@ -144,7 +144,7 @@
 		45D056296592723000000000 /* hdrs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C301CC73800000000 /* HdrsHeader.h */,
+				25889F7CE6488C5500000000 /* HdrsHeader.h */,
 			);
 			name = hdrs;
 			sourceTree = "<group>";
@@ -152,7 +152,7 @@
 		45D0562991BACA9000000000 /* pch */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CAF25182F00000000 /* PCHFile.pch */,
+				25889F7C2A1CA7E800000000 /* PCHFile.pch */,
 			);
 			name = pch;
 			sourceTree = "<group>";
@@ -178,7 +178,7 @@
 		45D05629BBA58A3000000000 /* Application-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C84A85CEE00000000 /* Info.plist */,
+				25889F7C9459384D00000000 /* Info.plist */,
 			);
 			name = "Application-intermediates";
 			sourceTree = "<group>";
@@ -227,7 +227,7 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CB150C3F800000000 /* main.m */,
+				25889F7C33A9CEA000000000 /* main.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -235,11 +235,11 @@
 		45D05629CC62AD9600000001 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CEC8BA1B100000000 /* SrcsHeader.h */,
-				25889F7C11A6302600000000 /* src1.m */,
-				25889F7C80E2A65800000000 /* src2.m */,
-				25889F7CB6E4997A00000000 /* src3.m */,
-				25889F7CD6AD0DEF00000000 /* src4.m */,
+				25889F7C357B52A000000000 /* SrcsHeader.h */,
+				25889F7C29E8670100000000 /* src1.m */,
+				25889F7CD1CB339B00000000 /* src2.m */,
+				25889F7CDB551C2600000000 /* src3.m */,
+				25889F7C13CF7DED00000000 /* src4.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -247,7 +247,7 @@
 		45D05629CC62AD9600000002 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C99A5382C00000000 /* src1.mm */,
+				25889F7CECF5170900000000 /* src1.mm */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -255,7 +255,7 @@
 		45D05629D4BE17CD00000000 /* textual_hdrs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C0C7E2AEB00000000 /* TextualHdrsHeader.h */,
+				25889F7C5FAA83E600000000 /* TextualHdrsHeader.h */,
 			);
 			name = textual_hdrs;
 			sourceTree = "<group>";
@@ -263,7 +263,7 @@
 		45D05629F281D9F700000000 /* XCTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CB7C2A0EE00000000 /* Info.plist */,
+				25889F7C1EED151200000000 /* Info.plist */,
 			);
 			name = "XCTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -472,7 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D99A5382C00000000 /* src1.mm in srcs */,
+				952C886DECF5170900000000 /* src1.mm in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +481,7 @@
 			buildActionMask = 0;
 			files = (
 				952C886D3EFFE63100000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */,
-				952C886DB150C3F800000000 /* main.m in srcs */,
+				952C886D33A9CEA000000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,10 +489,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D11A6302600000000 /* src1.m in srcs */,
-				952C886D80E2A65800000000 /* src2.m in srcs */,
-				952C886DB6E4997A00000000 /* src3.m in srcs */,
-				952C886DD6AD0DEF00000000 /* src4.m in srcs */,
+				952C886D29E8670100000000 /* src1.m in srcs */,
+				952C886DD1CB339B00000000 /* src2.m in srcs */,
+				952C886DDB551C2600000000 /* src3.m in srcs */,
+				952C886D13CF7DED00000000 /* src4.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,7 +502,7 @@
 		0EEA156AC83AE7C200000000 /* One.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				25889F7CCF6C202B00000000 /* Base */,
+				25889F7C343ACE8E00000000 /* Base */,
 			);
 			name = One.storyboard;
 			sourceTree = "<group>";
@@ -614,6 +614,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -714,6 +715,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -833,6 +835,7 @@
 				SDKROOT = iphoneos;
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -972,6 +975,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

@@ -18,6 +18,8 @@ import Foundation
 class BazelWorkspacePathInfoFetcher {
   /// The Bazel execution_root as defined by the target workspace.
   private var executionRoot: String? = nil
+  /// The Bazel output_base as defined by the target workspace.
+  private var outputBase: String? = nil
   /// The bazel bin symlink name as defined by the target workspace.
   private var bazelBinSymlinkName: String? = nil
 
@@ -53,6 +55,18 @@ class BazelWorkspacePathInfoFetcher {
       return ""
     }
     return executionRoot
+  }
+
+  /// Returns the output_base for this fetcher's workspace, blocking until it is available.
+  func getOutputBase() -> String {
+    if !fetchCompleted { waitForCompletion() }
+
+    guard let outputBase = outputBase else {
+      localizedMessageLogger.error("OutputBaseNotFound",
+                                   comment: "Output base should have been extracted from the workspace.")
+      return ""
+    }
+    return outputBase
   }
 
   /// Returns the bazel bin path for this workspace, blocking until the fetch is completed.
@@ -147,6 +161,8 @@ class BazelWorkspacePathInfoFetcher {
 
       if key == "execution_root" {
         executionRoot = value
+      } else if key == "output_base" {
+        outputBase = value
       }
     }
   }
