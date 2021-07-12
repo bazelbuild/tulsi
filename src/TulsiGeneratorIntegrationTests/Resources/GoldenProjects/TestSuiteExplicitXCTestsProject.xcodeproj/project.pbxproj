@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		952C886D38AD2F9B00000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C38AD2F9B00000000 /* main.m */; };
-		952C886D5CC5419500000000 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C5CC5419500000000 /* XCTest.m */; };
-		952C886DC3DDD97D00000000 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 25889F7CC3DDD97D00000000 /* XCTest.m */; };
-		952C886DE6CF3B7800000000 /* LogicTest.m in One */ = {isa = PBXBuildFile; fileRef = 25889F7CE6CF3B7800000000 /* LogicTest.m */; };
-		952C886DF705CC2700000000 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 25889F7CF705CC2700000000 /* XCTest.m */; };
+		952C886D4987C55700000000 /* XCTest.m in Three */ = {isa = PBXBuildFile; fileRef = 25889F7C4987C55700000000 /* XCTest.m */; };
+		952C886D661AD82A00000000 /* XCTest.m in One */ = {isa = PBXBuildFile; fileRef = 25889F7C661AD82A00000000 /* XCTest.m */; };
+		952C886D83067C0F00000000 /* XCTest.m in Two */ = {isa = PBXBuildFile; fileRef = 25889F7C83067C0F00000000 /* XCTest.m */; };
+		952C886DB43102EC00000000 /* LogicTest.m in One */ = {isa = PBXBuildFile; fileRef = 25889F7CB43102EC00000000 /* LogicTest.m */; };
+		952C886DC859951600000000 /* main.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CC859951600000000 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,27 +30,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25889F7C0F3B914E00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/One/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C2A3379D000000000 /* lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; path = lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C2E28BE8E00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Two/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		25889F7C32811BB200000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/TestSuite/One/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C35687C6800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		25889F7C38AD2F9B00000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Application/srcs/main.m"; sourceTree = SOURCE_ROOT; };
-		25889F7C3FD32B9700000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/TestApplication-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C4987C55700000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/Three/XCTest.m"; sourceTree = SOURCE_ROOT; };
 		25889F7C516E750000000000 /* Two-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "Two-XCTest.xctest"; path = "Two-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C572C7E1E00000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C5417796100000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7C5801CD8000000000 /* LogicTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = LogicTest.xctest; path = LogicTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C5CC5419500000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Three/XCTest.m"; sourceTree = SOURCE_ROOT; };
 		25889F7C5F8D5C0800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/One/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		25889F7C7895DF4400000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Three/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C661AD82A00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/One/XCTest.m"; sourceTree = SOURCE_ROOT; };
+		25889F7C6AECD35B00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/TestSuite/TestApplication-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C7D90560D00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/TestSuite/Two/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7C83067C0F00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/Two/XCTest.m"; sourceTree = SOURCE_ROOT; };
 		25889F7CA014E18400000000 /* One-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "One-XCTest.xctest"; path = "One-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CADBB0ACA00000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = TestSuite/Three/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		25889F7CB2E3D3A200000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/TestSuite/One/LogicTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7CB43102EC00000000 /* LogicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LogicTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/One/LogicTest.m"; sourceTree = SOURCE_ROOT; };
 		25889F7CB8B54B6E00000000 /* TestApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = TestApplication.app; path = TestApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CC3DDD97D00000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/Two/XCTest.m"; sourceTree = SOURCE_ROOT; };
-		25889F7CC425DC6900000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/Two/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
-		25889F7CCEE8138400000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/bazel-tulsi-includes/x/x/TestSuite/One/LogicTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
-		25889F7CE6CF3B7800000000 /* LogicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LogicTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/One/LogicTest.m"; sourceTree = SOURCE_ROOT; };
+		25889F7CC859951600000000 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/TestSuite/Application/srcs/main.m"; sourceTree = SOURCE_ROOT; };
+		25889F7CCFF620F800000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/TestSuite/Three/XCTest.__internal__.__test_bundle-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7CF16496E600000000 /* Three-XCTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = "Three-XCTest.xctest"; path = "Three-XCTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CF705CC2700000000 /* XCTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCTest.m; path = "TestSuiteExplicitXCTestsProject.xcodeproj/.tulsi/tulsi-workspace/TestSuite/One/XCTest.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -70,7 +70,7 @@
 			children = (
 				45D0562933ECA2A800000000 /* Application */,
 				25889F7C35687C6800000000 /* BUILD */,
-				25889F7C572C7E1E00000000 /* Info.plist */,
+				25889F7C5417796100000000 /* Info.plist */,
 				45D05629D43882ED00000001 /* One */,
 				45D0562978986CA000000001 /* Three */,
 				45D056290913F81B00000001 /* Two */,
@@ -90,7 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				25889F7C2E28BE8E00000000 /* BUILD */,
-				25889F7CC3DDD97D00000000 /* XCTest.m */,
+				25889F7C83067C0F00000000 /* XCTest.m */,
 			);
 			name = Two;
 			sourceTree = "<group>";
@@ -98,7 +98,7 @@
 		45D056290F1598EF00000000 /* LogicTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CCEE8138400000000 /* Info.plist */,
+				25889F7CB2E3D3A200000000 /* Info.plist */,
 			);
 			name = "LogicTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 		45D05629143ABA8700000000 /* TestApplication-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C3FD32B9700000000 /* Info.plist */,
+				25889F7C6AECD35B00000000 /* Info.plist */,
 			);
 			name = "TestApplication-intermediates";
 			sourceTree = "<group>";
@@ -161,7 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				25889F7CADBB0ACA00000000 /* BUILD */,
-				25889F7C5CC5419500000000 /* XCTest.m */,
+				25889F7C4987C55700000000 /* XCTest.m */,
 			);
 			name = Three;
 			sourceTree = "<group>";
@@ -195,7 +195,7 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C38AD2F9B00000000 /* main.m */,
+				25889F7CC859951600000000 /* main.m */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -213,8 +213,8 @@
 			isa = PBXGroup;
 			children = (
 				25889F7C5F8D5C0800000000 /* BUILD */,
-				25889F7CE6CF3B7800000000 /* LogicTest.m */,
-				25889F7CF705CC2700000000 /* XCTest.m */,
+				25889F7CB43102EC00000000 /* LogicTest.m */,
+				25889F7C661AD82A00000000 /* XCTest.m */,
 			);
 			name = One;
 			sourceTree = "<group>";
@@ -222,7 +222,7 @@
 		45D05629F281D9F700000000 /* XCTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C0F3B914E00000000 /* Info.plist */,
+				25889F7C32811BB200000000 /* Info.plist */,
 			);
 			name = "XCTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 		45D05629F281D9F700000001 /* XCTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C7895DF4400000000 /* Info.plist */,
+				25889F7CCFF620F800000000 /* Info.plist */,
 			);
 			name = "XCTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -238,7 +238,7 @@
 		45D05629F281D9F700000002 /* XCTest.__internal__.__test_bundle-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CC425DC6900000000 /* Info.plist */,
+				25889F7C7D90560D00000000 /* Info.plist */,
 			);
 			name = "XCTest.__internal__.__test_bundle-intermediates";
 			sourceTree = "<group>";
@@ -549,7 +549,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D5CC5419500000000 /* XCTest.m in Three */,
+				952C886D4987C55700000000 /* XCTest.m in Three */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,7 +557,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DF705CC2700000000 /* XCTest.m in One */,
+				952C886D661AD82A00000000 /* XCTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,7 +565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DC3DDD97D00000000 /* XCTest.m in Two */,
+				952C886D83067C0F00000000 /* XCTest.m in Two */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,7 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DE6CF3B7800000000 /* LogicTest.m in One */,
+				952C886DB43102EC00000000 /* LogicTest.m in One */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,7 +581,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D38AD2F9B00000000 /* main.m in srcs */,
+				952C886DC859951600000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,7 +742,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
 				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;
@@ -785,7 +785,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -823,7 +823,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -844,7 +844,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -882,11 +882,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
 				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;
@@ -902,7 +902,7 @@
 				BAZEL_TARGET = "//TestSuite/One:LogicTest";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
@@ -918,7 +918,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_468DE48B_ios_min10.0;
 				SDKROOT = iphoneos;
@@ -934,7 +934,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -972,7 +972,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -993,7 +993,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.testapplicationTests;
@@ -1031,11 +1031,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
 				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;
@@ -1051,7 +1051,7 @@
 				BAZEL_TARGET = "//TestSuite/One:LogicTest";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
@@ -1067,7 +1067,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_NAME = _idx_ApplicationLibrary_468DE48B_ios_min10.0;
 				SDKROOT = iphoneos;
@@ -1218,7 +1218,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
 				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = TestSuiteExplicitXCTestsProject;

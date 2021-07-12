@@ -601,7 +601,7 @@ class BazelBuildBridge(object):
              % self.bazel_output_base)
       return 404
 
-    exit_code = self._LinkTulsiToBazel('tulsi-workspace', self.bazel_exec_root)
+    exit_code = self._LinkTulsiToBazel('tulsi-execution-root', self.bazel_exec_root)
     if exit_code:
       return exit_code
     exit_code = self._LinkTulsiToBazel(

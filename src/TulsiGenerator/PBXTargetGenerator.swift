@@ -173,10 +173,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   static let WorkspaceRootVarName = "TULSI_WR"
 
   /// Symlink to the Bazel execution root inside .tulsi in the xcodeproj
-  static let TulsiExecutionRootSymlinkPath = ".tulsi/tulsi-workspace" // TODO rename
+  static let TulsiExecutionRootSymlinkPath = ".tulsi/tulsi-execution-root"
 
   /// Xcode variable name used to refer to the symlink to the Bazel execution root.
-  static let BazelExecutionRootSymlinkVarName = "TULSI_BWRS" // TODO rename
+  static let BazelExecutionRootSymlinkVarName = "TULSI_EXECUTION_ROOT"
 
   /// Symlink to the Bazel output base inside .tulsi in the xcodeproj
   static let TulsiOutputBaseSymlinkPath = ".tulsi/tulsi-output-base"

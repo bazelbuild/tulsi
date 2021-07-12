@@ -263,8 +263,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
       "GCC_WARN_UNUSED_FUNCTION": "YES",
       "GCC_WARN_UNUSED_VARIABLE": "YES",
-      "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
-        + "$(TULSI_BWRS)/\(PBXTargetGenerator.tulsiIncludesPath)",
+      "HEADER_SEARCH_PATHS": "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
+        + "$(TULSI_EXECUTION_ROOT)/\(PBXTargetGenerator.tulsiIncludesPath)",
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
       "TULSI_VERSION": testTulsiVersion,
@@ -320,8 +320,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "GCC_WARN_UNINITIALIZED_AUTOS": "YES",
       "GCC_WARN_UNUSED_FUNCTION": "YES",
       "GCC_WARN_UNUSED_VARIABLE": "YES",
-      "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
-        + "$(TULSI_BWRS)/\(PBXTargetGenerator.tulsiIncludesPath)",
+      "HEADER_SEARCH_PATHS": "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
+        + "$(TULSI_EXECUTION_ROOT)/\(PBXTargetGenerator.tulsiIncludesPath)",
       "SDKROOT": projectSDKROOT,
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
@@ -2589,7 +2589,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     validateIndexerTarget(
       indexerTargetName,
       sourceFileNames: sourceFileNames,
-      bridgingHeader: "$(TULSI_BWRS)/\(bridgingHeaderFilePath)",
+      bridgingHeader: "$(TULSI_EXECUTION_ROOT)/\(bridgingHeaderFilePath)",
       inTargets: targets)
   }
 
@@ -3494,7 +3494,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       expectedBuildSettings["USER_HEADER_SEARCH_PATHS"] = "$(TULSI_WR)"
     }
     if let pchFile = pchFile {
-      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_BWRS)/\(pchFile.path!)"
+      expectedBuildSettings["GCC_PREFIX_HEADER"] = "$(TULSI_EXECUTION_ROOT)/\(pchFile.path!)"
     }
     if let bridgingHeader = bridgingHeader {
       expectedBuildSettings["SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeader
