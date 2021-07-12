@@ -104,7 +104,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
         continue
       }
 
-      var components: [String] = url.pathComponents
+      let components: [String] = url.pathComponents
       var i = components.count - 1
       repeat {
         if (components[i] as NSString).pathExtension == projectExtension {
@@ -121,12 +121,12 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
         projectURL = NSURL.fileURL(withPathComponents: projectComponents)! as URL
       }
       if (recentDocumentURLs.contains(projectURL)) {
-        continue;
+        continue
       }
-      recentDocumentURLs.insert(projectURL);
+      recentDocumentURLs.insert(projectURL)
 
       let viewController = SplashScreenRecentDocumentViewController()
-      viewController.url = projectURL;
+      viewController.url = projectURL
       recentDocumentViewControllers.append(viewController)
     }
 

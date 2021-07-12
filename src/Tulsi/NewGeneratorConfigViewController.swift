@@ -16,7 +16,7 @@ import Cocoa
 
 
 /// Protocol used to inform receiver of a NewGeneratorConfigViewController's exit status.
-protocol NewGeneratorConfigViewControllerDelegate: class {
+protocol NewGeneratorConfigViewControllerDelegate: AnyObject {
   func viewController(_ vc: NewGeneratorConfigViewController,
                       didCompleteWithReason: NewGeneratorConfigViewController.CompletionReason)
 }
