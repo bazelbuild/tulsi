@@ -141,7 +141,7 @@ final class ConfigEditorWizardViewController: NSViewController, NSPageController
     viewController.representedObject = representedObject
 
     // This index is guaranteed to exist due to fixed number of pages we have.
-    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.index(of: object as! String)!
+    let newPageIndex = ConfigEditorWizardViewController.wizardPageIdentifiers.firstIndex(of: object as! String)!
     let subview = viewController as? WizardSubviewProtocol
     subview?.presentingWizardViewController = self
     if pageController.selectedIndex < newPageIndex {

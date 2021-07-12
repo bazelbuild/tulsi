@@ -16,7 +16,7 @@ import Cocoa
 
 
 /// Protocol used to inform receiver of a NewProjectViewController's exit status.
-protocol NewProjectViewControllerDelegate: class {
+protocol NewProjectViewControllerDelegate: AnyObject {
   func viewController(_ vc: NewProjectViewController,
                       didCompleteWithReason: NewProjectViewController.CompletionReason)
 }

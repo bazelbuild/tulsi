@@ -16,7 +16,7 @@ import Cocoa
 import TulsiGenerator
 
 /// Defines an object that holds an array of UIMessages.
-protocol MessageLogProtocol: class {
+protocol MessageLogProtocol: AnyObject {
   var messages: [UIMessage] { get }
 }
 

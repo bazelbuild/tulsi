@@ -53,7 +53,7 @@ struct StubInfoPlistPaths {
 }
 
 /// Defines an object that can populate a PBXProject based on RuleEntry's.
-protocol PBXTargetGeneratorProtocol: class {
+protocol PBXTargetGeneratorProtocol: AnyObject {
   static func getRunTestTargetBuildConfigPrefix() -> String
 
   static func workingDirectoryForPBXGroup(_ group: PBXGroup) -> String

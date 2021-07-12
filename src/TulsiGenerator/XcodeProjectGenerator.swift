@@ -1434,7 +1434,7 @@ final class XcodeProjectGenerator {
         // Only over-write if needed.
         if fileManager.fileExists(atPath: targetURL.path) {
           guard !fileManager.contentsEqual(atPath: sourceURL.path, andPath: targetURL.path) else {
-            continue;
+            continue
           }
           print("Overwriting \(targetURL.path) as its contents changed.")
           try fileManager.removeItem(at: targetURL)
