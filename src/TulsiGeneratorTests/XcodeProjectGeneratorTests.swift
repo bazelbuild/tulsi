@@ -388,8 +388,11 @@ class XcodeProjectGeneratorTests: XCTestCase {
     let projectURL = URL(fileURLWithPath: xcodeProjectPath, isDirectory: true)
     mockFileManager.allowedDirectoryCreates.insert(projectURL.path)
 
-    let tulsiworkspace = projectURL.appendingPathComponent("tulsi-workspace")
-    mockFileManager.allowedDirectoryCreates.insert(tulsiworkspace.path)
+    let tulsiExecRoot = projectURL.appendingPathComponent(PBXTargetGenerator.TulsiExecutionRootSymlinkPath)
+    mockFileManager.allowedDirectoryCreates.insert(tulsiExecRoot.path)
+
+    let tulsiOutputBase = projectURL.appendingPathComponent(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)
+    mockFileManager.allowedDirectoryCreates.insert(tulsiOutputBase.path)
 
     let bazelCacheReaderURL = mockFileManager.homeDirectoryForCurrentUser.appendingPathComponent(
       "Library/Application Support/Tulsi/Scripts", isDirectory: true)
@@ -439,7 +442,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
       tulsiVersion: testTulsiVersion,
       fileManager: mockFileManager,
       pbxTargetGeneratorType: MockPBXTargetGenerator.self)
-    generator.redactWorkspaceSymlink = true
+    generator.redactSymlinksToBazelOutput = true
     generator.suppressModifyingUserDefaults = true
     generator.suppressGeneratingBuildSettings = true
     generator.writeDataHandler = { (url, _) in
@@ -580,8 +583,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     options: TulsiOptionSet,
     localizedMessageLogger: LocalizedMessageLogger,
     workspaceRootURL: URL,
-    suppressCompilerDefines: Bool,
-    redactWorkspaceSymlink: Bool
+    suppressCompilerDefines: Bool
   ) {
     self.project = project
   }

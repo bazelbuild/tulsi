@@ -19,6 +19,7 @@ import XCTest
 class BazelSettingsProviderTests: XCTestCase {
   let bazel = "/path/to/bazel"
   let bazelExecRoot = "__MOCK_EXEC_ROOT__"
+  let bazelOutputBase = "__MOCK_OUTPUT_BASE__"
   let features = Set<BazelSettingFeature>()
   let buildRuleEntries = Set<RuleEntry>()
   let bazelSettingsProvider = BazelSettingsProvider(universalFlags: BazelFlags())
@@ -28,6 +29,7 @@ class BazelSettingsProviderTests: XCTestCase {
     let settings = bazelSettingsProvider.buildSettings(
       bazel: bazel,
       bazelExecRoot: bazelExecRoot,
+      bazelOutputBase: bazelOutputBase,
       options: options,
       features: features,
       buildRuleEntries: buildRuleEntries)
