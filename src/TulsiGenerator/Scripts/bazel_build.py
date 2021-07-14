@@ -427,6 +427,11 @@ class BazelBuildBridge(object):
 
   BUILD_EVENTS_FILE = 'build_events.json'
 
+  XCODE_MODULE_CACHE_DIRECTORY = os.path.expanduser(
+      '~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex')
+  MODULE_CACHE_PRUNER_EXECUTABLE = os.path.expanduser(
+      '~/Library/Application Support/Tulsi/Scripts/module_cache_pruner')
+
   def __init__(self, build_settings):
     self.build_settings = build_settings
     self.verbose = 0
@@ -454,7 +459,9 @@ class BazelBuildBridge(object):
     self.direct_debug_prefix_map = False
     self.normalized_prefix_map = False
 
-    self.update_symbol_cache = UpdateSymbolCache()
+    self.update_symbol_cache = None
+    if os.environ.get('TULSI_USE_BAZEL_CACHE_READER') is not None:
+      self.update_symbol_cache = UpdateSymbolCache()
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag. Note that Xcode will set multiple values in
@@ -646,6 +653,8 @@ class BazelBuildBridge(object):
       exit_code = self._ResignTestArtifacts()
       if exit_code:
         return exit_code
+
+    self._PruneLLDBModuleCache(outputs)
 
     # Starting with Xcode 8, .lldbinit files are honored during Xcode debugging
     # sessions. This allows use of the target.source-map field to remap the
@@ -1466,6 +1475,24 @@ class BazelBuildBridge(object):
     self.codesign_attributes[signed_bundle] = bundle_attributes
     return bundle_attributes.Get(attribute)
 
+  def _PruneLLDBModuleCache(self, output_files):
+    """Run the module cache pruner tool as a subprocess."""
+    if not os.path.exists(BazelBuildBridge.MODULE_CACHE_PRUNER_EXECUTABLE):
+      _PrintXcodeWarning(
+          'Could find module cache pruner executable at %s. '
+          'You may need to manually remove %s if lldb-rpc-server crashes.' %
+          (BazelBuildBridge.MODULE_CACHE_PRUNER_EXECUTABLE,
+           BazelBuildBridge.XCODE_MODULE_CACHE_DIRECTORY))
+      return
+
+    timer = Timer('Pruning module cache', 'prune_module_cache').Start()
+    for output_file in output_files:
+      self._RunSubprocess([
+          BazelBuildBridge.MODULE_CACHE_PRUNER_EXECUTABLE,
+          BazelBuildBridge.XCODE_MODULE_CACHE_DIRECTORY, output_file
+      ])
+    timer.End()
+
   def _UpdateLLDBInit(self, clear_source_map=False):
     """Updates lldbinit to enable debugging of Bazel binaries."""
 
@@ -1507,6 +1534,13 @@ class BazelBuildBridge(object):
       out.write('# This sets lldb\'s working directory to the Bazel workspace '
                 'root used by %r.\n' % project_basename)
       out.write('platform settings -w "%s"\n' % workspace_root)
+
+      out.write('# This enables implicitly loading Clang modules which can be '
+                'disabled when a Swift module was built with explicit modules '
+                'enabled.\n')
+      out.write(
+          'settings set -- target.swift-extra-clang-flags "-fimplicit-module-maps"\n'
+      )
 
       if clear_source_map:
         out.write('settings clear target.source-map\n')
@@ -1655,13 +1689,14 @@ class BazelBuildBridge(object):
       return False
 
     # Update the dSYM symbol cache with a reference to this dSYM bundle.
-    err_msg = self.update_symbol_cache.UpdateUUID(uuid,
-                                                  dsym_bundle_path,
-                                                  arch)
-    if err_msg:
-      _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
-                         'to DBGShellCommands\' dSYM cache, but got error '
-                         '\"%s\".' % err_msg)
+    if self.update_symbol_cache is not None:
+      err_msg = self.update_symbol_cache.UpdateUUID(uuid,
+                                                    dsym_bundle_path,
+                                                    arch)
+      if err_msg:
+        _PrintXcodeWarning('Attempted to save (uuid, dsym_bundle_path, arch) '
+                           'to DBGShellCommands\' dSYM cache, but got error '
+                           '\"%s\".' % err_msg)
 
     return True
 

@@ -398,6 +398,9 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
       .dependsTransitivelyOn("//tulsi_test:AppClipLibrary")
       .hasAttribute(.supporting_files,
                             value: [["is_dir": false,
+                                     "path": "tulsi_test/AppClip/app_entitlements.entitlements",
+                                     "src": true],
+                                   ["is_dir": false,
                                      "path": "tulsi_test/AppClip/app_infoplists/Info.plist",
                                      "src": true]] as NSArray)
   }

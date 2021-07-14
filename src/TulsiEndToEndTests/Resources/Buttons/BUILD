@@ -1,7 +1,6 @@
 load(
     "@build_bazel_rules_apple//apple:ios.bzl",
     "ios_application",
-    "ios_static_framework",
     "ios_ui_test",
     "ios_unit_test",
 )
@@ -106,13 +105,6 @@ ios_application(
         ":CppLib",
         ":ObjCLib",
     ],
-)
-
-ios_static_framework(
-    name = "ButtonsStaticFramework",
-    bundle_name = "ButtonsStaticFramework",
-    minimum_os_version = "8.0",
-    deps = [":ButtonsLib"],
 )
 
 ## Tests

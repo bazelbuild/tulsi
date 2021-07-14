@@ -33,16 +33,15 @@ class EndToEndGenerationTests: EndToEndIntegrationTestCase {
 
     let appLabel = BuildLabel("//\(testDir):Application")
     let targetLabel = BuildLabel("//\(testDir):TargetApplication")
-    let hostLabels = Set<BuildLabel>([appLabel])
     let buildTargets = [RuleInfo(label: appLabel,
                                  type: "ios_application",
                                  linkedTargetLabels: []),
                         RuleInfo(label: targetLabel,
                                  type: "ios_application",
                                  linkedTargetLabels: []),
-                        RuleInfo(label: BuildLabel("//\(testDir):XCTest"),
-                                 type: "ios_unit_test",
-                                 linkedTargetLabels: hostLabels)]
+                        RuleInfo(label: BuildLabel("//\(testDir):AllTests"),
+                                 type: "test_suite",
+                                 linkedTargetLabels: [])]
     let additionalFilePaths = ["\(testDir)/BUILD"]
 
     let projectName = "SimpleProject"
