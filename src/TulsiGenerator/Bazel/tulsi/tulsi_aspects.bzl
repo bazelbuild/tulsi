@@ -54,6 +54,7 @@ _TULSI_COMPILE_DEPS = [
     "extension",
     "extensions",
     "frameworks",
+    "private_deps", # used in rules_swift
     "settings_bundle",
     "srcs",  # To propagate down onto rules which generate source files.
     "tests",  # for test_suite when the --noexpand_test_suites flag is used.
