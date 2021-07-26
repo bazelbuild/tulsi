@@ -47,6 +47,7 @@ swift_library(
 
 tulsi_integration_test(
     name = "PlatformDependentEndToEndGenerationTests",
+    timeout = "long",
     srcs = ["PlatformDependentEndToEndGenerationTests.swift"],
     env = {
         "SWIFT_DETERMINISTIC_HASHING": "1",
