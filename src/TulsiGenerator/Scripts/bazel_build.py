@@ -721,6 +721,10 @@ class BazelBuildBridge(object):
         r'(INFO|DEBUG|WARNING|ERROR|FAILED): ([^:]+:\d+:(?:\d+:)?)\s+(.+)')
 
     bazel_generic_regex = re.compile(r'(INFO|DEBUG|WARNING|ERROR|FAILED): (.*)')
+    target_source_map = self._ExtractTargetSourceMap()
+    compile_message_file_regex = re.compile(
+      r'^%s([^:]+:\d+:(\d+:)?\s+.*)' % re.escape(target_source_map[0])
+    )
 
     def PatchBazelDiagnosticStatements(output_line):
       """Make Bazel output more Xcode friendly."""
@@ -746,6 +750,12 @@ class BazelBuildBridge(object):
         if match:
           xcode_label = BazelLabelToXcodeLabel(match.group(1))
           output_line = '%s: %s' % (xcode_label, match.group(2))
+
+      output_line = compile_message_file_regex.sub(
+        r'%s\1' % target_source_map[1],
+        output_line
+      )
+
       return output_line
 
     if self.workspace_root != self.project_dir:
