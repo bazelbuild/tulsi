@@ -34,10 +34,10 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
   let fakeBazelURL = URL(fileURLWithPath: "/fake/tulsi_test_bazel", isDirectory: false)
   let testTulsiVersion = "9.99.999.9999"
 
-  final func validateDiff(_ diffLines: [String], file: StaticString = #file, line: UInt = #line) {
-    for diff in diffLines {
-      XCTFail(diff, file: file, line: line)
-    }
+  final func validateDiff(_ diffLines: [String], for resourceName: String, file: StaticString = #file, line: UInt = #line) {
+    guard !diffLines.isEmpty else { return }
+    let message = "\(resourceName) xcodeproj does not match its golden. Diff output:\n\(diffLines.joined(separator: "\n"))"
+    XCTFail(message, file: file, line: line)
   }
 
   final func diffProjectAt(_ projectURL: URL,
@@ -49,7 +49,6 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
       XCTFail("Must define environment variable \"SWIFT_DETERMINISTIC_HASHING=1\", or golden tests will fail.")
       return []
     }
-    let bundle = Bundle(for: type(of: self))
     let goldenProjectURL = workspaceRootURL.appendingPathComponent(fakeBazelWorkspace
                                                                        .resourcesPathBase,
                                                                    isDirectory: true)
