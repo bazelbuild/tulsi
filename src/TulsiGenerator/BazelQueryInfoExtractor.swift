@@ -81,9 +81,8 @@ final class BazelQueryInfoExtractor: QueuedLogging {
     let profilingStart = localizedMessageLogger.startProfiling("extracting_skylark_files",
                                                                message: "Finding Skylark files for \(targets.count) rules")
 
-    let labelDeps = targets.map {"deps(\($0.value))"}
-    let joinedLabelDeps = labelDeps.joined(separator: "+")
-    let query = "buildfiles(\(joinedLabelDeps))"
+    let joinedLabels = targets.map { $0.value }.joined(separator: " + ")
+    let query = "buildfiles(deps(\(joinedLabels)))"
     let buildFiles: Set<BuildLabel>
     do {
       // Errors in the BUILD structure being examined should not prevent partial extraction, so this
