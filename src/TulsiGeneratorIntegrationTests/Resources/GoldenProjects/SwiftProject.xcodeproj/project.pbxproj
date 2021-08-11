@@ -462,7 +462,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 12.4.0.12D4e;
+				TULSI_XCODE_VERSION = 12.5.1.12E507;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -517,7 +517,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 12.4.0.12D4e;
+				TULSI_XCODE_VERSION = 12.5.1.12E507;
 			};
 			name = Debug;
 		};
@@ -570,7 +570,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.modulemaps/module.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
@@ -628,7 +628,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 12.4.0.12D4e;
+				TULSI_XCODE_VERSION = 12.5.1.12E507;
 			};
 			name = Release;
 		};
@@ -681,7 +681,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.modulemaps/module.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
@@ -752,7 +752,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 12.4.0.12D4e;
+				TULSI_XCODE_VERSION = 12.5.1.12E507;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

@@ -33,9 +33,7 @@ class BazelFakeWorkspace {
     self.fakeExecroot = tempDirURL.appendingPathComponent("fake_execroot", isDirectory: true)
     self.workspaceRootURL = fakeExecroot.appendingPathComponent("__main__", isDirectory: true)
     self.bazelURL = BazelLocator.bazelURL!
-    // Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
-    // See also: https://github.com/bazelbuild/rules_apple/issues/456.
-    self.extraBuildFlags = ["--host_force_python=PY2"]
+    self.extraBuildFlags = []
   }
 
   private func addExportsFiles(buildFilePath: String,

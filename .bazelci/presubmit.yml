@@ -1,7 +1,7 @@
 ---
 platforms:
   macos:
-    xcode_version: "12.4"
+    xcode_version: "12.5.1"
     bazel: last_downstream_green
     build_targets:
     - "//:tulsi"
