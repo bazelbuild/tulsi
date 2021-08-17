@@ -13,12 +13,6 @@ set -euo pipefail
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")\
 \
 git_repository(\
-\    name = "bazel_skylib",\
-\    remote = "https://github.com/bazelbuild/bazel-skylib.git",\
-\    branch = "main",\
-)\
-\
-git_repository(\
 \    name = "build_bazel_apple_support",\
 \    remote = "https://github.com/bazelbuild/apple_support.git",\
 \    branch = "master",\
