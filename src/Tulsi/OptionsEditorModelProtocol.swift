@@ -17,7 +17,7 @@ import TulsiGenerator
 
 
 /// Provides functionality for accessing and mutating an object capable of storing Tulsi options.
-protocol OptionsEditorModelProtocol: class {
+protocol OptionsEditorModelProtocol: AnyObject {
   /// The name of the project that the model's options are associated with.
   var projectName: String? { get }
 

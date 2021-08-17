@@ -15,7 +15,7 @@
 import Cocoa
 
 
-protocol Selectable: class {
+protocol Selectable: AnyObject {
   var selected: Bool { get set }
 }
 
