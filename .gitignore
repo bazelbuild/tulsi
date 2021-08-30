@@ -1,6 +1,15 @@
 # AppCode files.
 */.idea/
 
+# Xcode Proj
+*.xcodeproj/
+
+# macos
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
 # Build artifacts
 src/build/
 /bazel-*
