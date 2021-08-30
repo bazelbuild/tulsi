@@ -231,12 +231,15 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         "--features=-parse_headers",
         // Don't run validation actions during project generation; validation actions could
         // slow down the project generation or fail it.
-        "--experimental_run_validations=0",
+        "--norun_validations",
         // The following flags WILL affect Bazel analysis caching.
         // Keep this consistent with bazel_build.py.
         "--aspects",
         "@tulsi//:tulsi/tulsi_aspects.bzl%\(aspect)",
-        "--output_groups=tulsi_info,-_,-default",  // Build only the aspect artifacts.
+        // Build only the aspect artifacts. We explicitly disable the
+        // rules_apple `dsyms` output group since it may trigger a full build
+        // and we've seen some folks enabling it in their rc file.
+        "--output_groups=tulsi_info,-dsyms",
     ])
     arguments.append(contentsOf: targets)
 
