@@ -1,0 +1,10 @@
+git_url ENV["MATCH_REPO"]
+git_user_email ENV["GIT_EMAIL"]
+
+shallow_clone true
+
+storage_mode "git"
+platform "macos"
+app_identifier [
+  "com.wendyliga.TulsiPlusPlus"
+]

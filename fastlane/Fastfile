@@ -1,0 +1,10 @@
+lane :certificates do
+    match(
+      app_identifier: [
+        "com.wendyliga.TulsiPlusPlus"
+      ],
+      type: "developer_id",
+      readonly: true,
+      output_path: './src/provisioning_profile'
+    )
+end

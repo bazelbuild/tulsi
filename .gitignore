@@ -3,12 +3,16 @@
 
 # Xcode Proj
 *.xcodeproj/
+src/provisioning_profile/*
 
 # macos
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
+
+# fastlane
+fastlane/.env
 
 # Build artifacts
 src/build/

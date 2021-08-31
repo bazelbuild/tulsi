@@ -28,7 +28,7 @@
 			<key>LSTypeIsPackage</key>
 			<true/>
 			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).TulsiProjectDocument</string>
+			<string>Tulsi.TulsiProjectDocument</string>
 			<key>NSExportableTypes</key>
 			<array>
 				<string>com.google.tulsi.project</string>
@@ -54,7 +54,7 @@
 				<string>com.google.tulsi.generatorconfig</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).TulsiGeneratorConfigDocument</string>
+			<string>Tulsi.TulsiGeneratorConfigDocument</string>
 			<key>NSExportableTypes</key>
 			<array>
 				<string>com.google.tulsi.generatorconfig</string>
@@ -85,6 +85,10 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUPublicEDKey</key>
+    <string>Cs9oiPHLFW0Byb0KcqceNwxmroKwEYodOKvON5TFO0U=</string>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/wendyliga/tulsi-plus-plus/main/appcast.xml</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

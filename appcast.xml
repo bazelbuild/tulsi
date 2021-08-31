@@ -2,11 +2,32 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>Tulsi++</title>
+        
         <item>
-            <title>0.20210318.88</title>
-            <pubDate>Tue, 31 Aug 2021 12:17:46 +0700</pubDate>
+            <title>0.3.0</title>
+            <pubDate>Tue, 31 Aug 2021 20:16:45 +0700</pubDate>
+            <description>
+            <![CDATA[
+            <h2>Tulsi++ 0.3.0 🔨 </h2>
+            <h4>Release date: 31 Aug 2021</h4>
+            <h4>What's new:</h4> 
+            <ol> 
+                <li>Use Sparkle to support OTA update</li>
+                <li>Rebrand Tulsi++ from Tulsi source</li>
+                <li>Remove unneccessary file on repo</li>
+                <li>Add OSS License page on Help</li>
+            </ol> 
+            ]]>
+            </description>
             <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/wendyliga/tulsi-plus-plus/releases/download/0.20210318.88/tulsi.zip" sparkle:version="0.20210318.88" sparkle:shortVersionString="0.20210318.88" length="22391574" type="application/octet-stream" sparkle:edSignature="Mz3FCUzx/K16wwtBb1nG19VvzgXo7/SCLWTc3g+eabHda1nQW1kOWGh+9OTdPuX8AfsR/I/W85ur0XN4qyC2CA=="/>
+            <enclosure 
+                url="https://github.com/wendyliga/tulsi-plus-plus/releases/download/0.3.0/Tulsi++.zip" 
+                sparkle:version="0.3.0" 
+                sparkle:shortVersionString="0.3.0" 
+                length="7796124" 
+                type="application/octet-stream" 
+                sparkle:edSignature="zvUOnKCjwfBxCG6H+iCaoEx6oICMM6q27AJyXdXOOeA9UCw6iIbyr1fHE9ISaen+H1ZjsOfg6wXY/1akYJLwDg=="/>
         </item>
     </channel>
 </rss>
+
