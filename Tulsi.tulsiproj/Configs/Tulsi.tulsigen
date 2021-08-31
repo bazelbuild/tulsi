@@ -1,35 +1,35 @@
 {
-  "sourceFilters" : [
-    "src/..."
+  "additionalFilePaths" : [
+    "BUILD"
   ],
   "buildTargets" : [
-    "//src/TulsiEndToEndTests:TulsiEndToEndTest",
-    "//src/TulsiGeneratorIntegrationTests:AspectTests",
-    "//src/TulsiGeneratorIntegrationTests:EndToEndGenerationTests",
-    "//src/TulsiGeneratorIntegrationTests:PlatformDependentEndToEndGenerationTests",
-    "//src/TulsiGeneratorIntegrationTests:QueryTests",
-    "//src/TulsiGeneratorTests:TulsiGeneratorTests",
     "//:tulsi"
   ],
-  "projectName" : "Tulsi",
   "optionSet" : {
     "BazelBuildOptionsDebug" : {
       "p" : "$(inherited)"
     },
-    "BazelBuildStartupOptionsRelease" : {
+    "BazelBuildOptionsRelease" : {
       "p" : "$(inherited)"
     },
     "BazelBuildStartupOptionsDebug" : {
       "p" : "$(inherited)"
     },
+    "BazelBuildStartupOptionsRelease" : {
+      "p" : "$(inherited)"
+    },
     "GenerateRunfiles" : {
       "p" : "YES"
     },
-    "BazelBuildOptionsRelease" : {
-      "p" : "$(inherited)"
+    "ProjectGenerationPlatformConfiguration" : {
+      "p" : "macos_x86_64"
+    },
+    "ProjectPrioritizesSwift" : {
+      "p" : "YES"
     }
   },
-  "additionalFilePaths" : [
-    "BUILD"
+  "projectName" : "Tulsi",
+  "sourceFilters" : [
+    "src/..."
   ]
 }

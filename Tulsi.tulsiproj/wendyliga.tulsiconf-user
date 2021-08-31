@@ -1,0 +1,10 @@
+{
+  "optionSet" : {
+    "BazelPath" : {
+      "p" : "/usr/local/bin/bazel"
+    },
+    "WorkspaceRootPath" : {
+      "p" : "/Users/wendyliga/code/tulsi-plus-plus"
+    }
+  }
+}

@@ -13,9 +13,7 @@
     }
   },
   "packages" : [
-    "",
-    "src/TulsiGeneratorIntegrationTests",
-    "src/TulsiGeneratorTests"
+    ""
   ],
   "projectName" : "Tulsi",
   "workspaceRoot" : ".."
