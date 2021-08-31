@@ -1,0 +1,5 @@
+app_identifier "com.wendyliga.TulsiPlusPlus"
+apple_id ENV["APPLE_ID"]
+
+team_name ENV["TEAM_NAME"] 
+team_id ENV["TEAM_ID"]

@@ -14,12 +14,20 @@
 
 import Cocoa
 import TulsiGenerator
+import Sparkle
 
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
-
+  @IBOutlet var checkForUpdatesMenuItem: NSMenuItem!
+  
+  let updaterController = SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil)
   var splashScreenWindowController: SplashScreenWindowController! = nil
 
+  @IBAction func openSourceLicense(_ sender: NSMenuItem) {
+    let window = OpenSourceLicenseWindowController()
+    window.showWindow(self)
+  }
+  
   @IBAction func fileBugReport(_ sender: NSMenuItem) {
     BugReporter.fileBugReport()
   }
@@ -37,6 +45,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationDidFinishLaunching(_ notification: Notification) {
     splashScreenWindowController = SplashScreenWindowController()
     splashScreenWindowController.showWindow(self)
+    
+    // start updater
+    checkForUpdatesMenuItem.target = updaterController
+    checkForUpdatesMenuItem.action = #selector(SPUStandardUpdaterController.checkForUpdates(_:))
+    updaterController.startUpdater()
   }
 
   func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {

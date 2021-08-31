@@ -43,5 +43,8 @@ swift_library(
     data = [":tulsi_resources"],
     module_name = "Tulsi",
     tags = ["nobuilder"],
-    deps = ["//src/TulsiGenerator:tulsi_generator_lib"],
+    deps = [
+        "//src/TulsiGenerator:tulsi_generator_lib",
+        "//src/Sparkle:Sparkle",
+    ],
 )
