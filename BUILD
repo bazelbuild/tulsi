@@ -75,20 +75,3 @@ macos_application(
         "//src/Tulsi:tulsi_lib",
     ],
 )
-
-test_suite(
-    name = "tests",
-    tests = [
-        "//src/TulsiGeneratorIntegrationTests",
-        "//src/TulsiGeneratorTests",
-    ],
-)
-
-filegroup(
-    name = "for_bazel_tests",
-    testonly = 1,
-    srcs = [
-        "WORKSPACE",
-        "@build_bazel_rules_apple//:for_bazel_tests",
-    ],
-)
