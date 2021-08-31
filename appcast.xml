@@ -2,12 +2,7 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>Tulsi++</title>
-        <item>
-            <title>0.20210318.88</title>
-            <pubDate>Tue, 31 Aug 2021 14:32:43 +0700</pubDate>
-            <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/wendyliga/tulsi-plus-plus/releases/download/0.20210318.88/Tulsi++.dmg" sparkle:version="0.20210318.88" sparkle:shortVersionString="0.20210318.88" length="6639817" type="application/octet-stream" sparkle:edSignature="TT3miZGfllP5mmnq4xqcftCRoFDLfqErTklFz/pMkva2cVsSHKqMhWhhBDmV5WPpRfIVzIKWceA/R86piyjmCg=="/>
-        </item>
+        
         <item>
             <title>0.20210318.88</title>
             <pubDate>Tue, 31 Aug 2021 14:32:28 +0700</pubDate>
