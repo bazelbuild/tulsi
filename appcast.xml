@@ -6,7 +6,7 @@
             <title>0.20210318.88</title>
             <pubDate>Tue, 31 Aug 2021 12:17:46 +0700</pubDate>
             <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/wendyliga/tulsi-plus-plus/releases/download/0.20210318.88/Tulsi++.zip" sparkle:version="0.20210318.88" sparkle:shortVersionString="0.20210318.88" length="7272348" type="application/octet-stream" sparkle:edSignature="M+45vFnhUnVkycdIi22yjJA3Yt3+1LPVWq+HVjlO3ETSRPKIEg2BaDlvBq0sluE/ZmpLPGHcZTydLgWpHPYABQ=="/>
+            <enclosure url="https://github.com/wendyliga/tulsi-plus-plus/releases/download/0.20210318.88/Tulsi++.zip" sparkle:version="0.20210318.88" sparkle:shortVersionString="0.20210318.88" length="7272348" type="application/octet-stream" sparkle:edSignature="bGIrDJ+BWVu8w5KlVpi0HhNGolb2BklzL7yI3htej/WVuNg4BBdZ/J8kan4REIZnWh6L+eBdBp7y0FL8HfZFDA=="/>
         </item>
     </channel>
 </rss>
