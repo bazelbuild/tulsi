@@ -15,6 +15,7 @@ src/provisioning_profile/*.p12
 
 # fastlane
 fastlane/.env
+fastlane/report.xml
 
 # Build artifacts
 src/build/

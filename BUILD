@@ -75,5 +75,9 @@ macos_application(
     visibility = ["//visibility:public"],
     deps = [
         "//src/Tulsi:tulsi_lib",
+    ],
+    codesignopts = [
+        "--deep",
+        "--verbose"
     ]
 )
