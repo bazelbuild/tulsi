@@ -88,7 +88,7 @@
 	<key>SUPublicEDKey</key>
     <string>Cs9oiPHLFW0Byb0KcqceNwxmroKwEYodOKvON5TFO0U=</string>
 	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/wendyliga/tulsi-plus-plus/main/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/wendyliga/tulsi-plus-plus/main/binary/appcast.xml</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

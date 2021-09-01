@@ -20,6 +20,11 @@ or alternatively using `brew install fastlane`
 fastlane certificates
 ```
 
+### release
+```
+fastlane release
+```
+
 
 ----
 

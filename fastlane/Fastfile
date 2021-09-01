@@ -8,3 +8,87 @@ lane :certificates do
       output_path: './src/provisioning_profile'
     )
 end
+
+lane :release do
+  workspace_path = (sh "bazel info workspace").delete("\n")
+  bazel_bin = workspace_path + "/bazel-bin"
+  
+  # build
+  sh "make -f ../Makefile build"
+
+  # code sign
+  sh "codesign --verbose --force --deep --no-strict -o runtime " \
+			"--sign \"#{ENV['CODESIGN_CERTIFICATE']}\" " \
+			"#{bazel_bin}/Tulsi++.app/Contents/Frameworks/Sparkle.framework"
+
+  sh "codesign --verbose --force --deep --no-strict -o runtime " \
+			"--sign \"#{ENV['CODESIGN_CERTIFICATE']}\" " \
+			"#{bazel_bin}/Tulsi++.app"
+
+	# print out codesign validation
+  sh "codesign --verify --deep --verbose=4 #{bazel_bin}/Tulsi++.app"
+
+  # notorize
+  notarize(
+    package: "bazel-bin/Tulsi++.app",
+    asc_provider: ENV["TEAM_ID"],
+    print_log: true,
+    verbose: true
+  )
+
+  # create zip
+	sh "ditto -c -k --keepParent #{bazel_bin}/Tulsi++.app #{bazel_bin}/Tulsi++.zip"
+	# sh "#{workspace_path}/src/tools/sparkle/sign_update -s #{ENV['SPARKLE_PRIVATE_KEY']} #{bazel_bin}/Tulsi++.zip"
+	
+  # create dmg
+	sh "(#{workspace_path}/src/tools/BuildTools/create_dmg.sh #{bazel_bin}/Tulsi++.app -o #{bazel_bin}/Tulsi++.dmg)"
+  # codesign dmg
+  sh "codesign --verbose --force --deep --no-strict -o runtime " \
+			"--sign \"#{ENV['CODESIGN_CERTIFICATE']}\" " \
+			"#{bazel_bin}/Tulsi++.dmg"
+
+  # create appcast
+  app_version = sh "/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' #{bazel_bin}/Tulsi++.App/Contents/Info.plist"
+  app_version_with_underscore = app_version.gsub(".", "_").delete("\n")
+  sh "cp -rf #{bazel_bin}/Tulsi++.zip '#{workspace_path}/binary/tulsi_plus_plus_#{app_version_with_underscore}.zip'"
+  sh "cp -rf #{bazel_bin}/Tulsi++.dmg '#{workspace_path}/binary/tulsi_plus_plus_#{app_version_with_underscore}.dmg'"
+
+  # create changelog html
+  create_versional_changelog_html(workspace_path, app_version.delete("\n"))
+
+  # generate appcast
+  sh "#{workspace_path}/src/tools/sparkle/generate_appcast #{workspace_path}/binary " \
+    "-s #{ENV['SPARKLE_PRIVATE_KEY']} " \
+    "--download-url-prefix 'https://raw.githubusercontent.com/wendyliga/tulsi-plus-plus/main/binary/'"
+
+  
+end
+
+def create_versional_changelog_html(workspace_path, app_version)
+  app_version_with_underscore = app_version.gsub(".", "_")
+  start_index = 0
+  end_index = 0
+  is_found = false
+
+  file = File.open("#{workspace_path}/CHANGELOG.md")
+  file_data = file.readlines.map(&:chomp)
+  file_data.each_with_index do |line, index| 
+    if line == "## #{app_version}" 
+      start_index = index
+      is_found = true 
+    elsif is_found and line == "" 
+      end_index = index
+    end
+  end
+
+  if start_index != 0 and end_index != 0 and is_found
+    start_index_without_header = start_index + 1
+    versional_changelog_data = file_data[start_index_without_header..end_index]
+    join = versional_changelog_data.join("\n")
+
+    # write data
+    out_file = File.new("#{workspace_path}/binary/tulsi_plus_plus_#{app_version_with_underscore}.html", "w")
+    out_file.puts(join)
+    out_file.close
+  end
+end

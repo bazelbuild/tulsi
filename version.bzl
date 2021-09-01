@@ -3,7 +3,7 @@
 
 # Version number (recorded into the Info.plist)
 TULSI_VERSION_MAJOR = "0"
-TULSI_VERSION_MINOR = "3"
+TULSI_VERSION_MINOR = "4"
 TULSI_VERSION_FIXLEVEL = "0"
 
 TULSI_VERSION_COPYRIGHT = "2021"
