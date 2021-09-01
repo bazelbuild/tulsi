@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="XcodeProjectGenerationProgressViewController" customModule="Tulsi" customModuleProvider="target">
@@ -11,25 +12,24 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="654" height="272"/>
+        <customView misplaced="YES" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="658" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPn-pK-JCY">
-                    <rect key="frame" x="20" y="20" width="614" height="232"/>
+                    <rect key="frame" x="20" y="20" width="618" height="229"/>
                     <clipView key="contentView" id="ggq-zQ-YoP">
-                        <rect key="frame" x="1" y="1" width="612" height="230"/>
+                        <rect key="frame" x="1" y="1" width="616" height="227"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" id="Bj6-Wn-hfL">
-                                <rect key="frame" x="0.0" y="0.0" width="612" height="0.0"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <rect key="frame" x="0.0" y="0.0" width="616" height="227"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="247.92906847318659" minWidth="40" maxWidth="1000" id="SA6-bk-oYa" userLabel="Label">
+                                    <tableColumn width="242.92906847318659" minWidth="40" maxWidth="1000" id="SA6-bk-oYa" userLabel="Label">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                            <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -39,12 +39,12 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView id="bFg-cG-5a1">
+                                            <tableCellView misplaced="YES" id="bFg-cG-5a1">
                                                 <rect key="frame" x="1" y="1" width="248" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="feM-az-gFo">
-                                                        <rect key="frame" x="18" y="0.0" width="212" height="17"/>
+                                                        <rect key="frame" x="18" y="0.0" width="212" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="dGu-Ae-x31">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -73,7 +73,6 @@
                                     </tableColumn>
                                     <tableColumn width="358" minWidth="10" maxWidth="3.4028234663852886e+38" id="rbR-mk-1W4" userLabel="Progressbar">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                            <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
@@ -84,11 +83,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="AQy-J0-j5x">
-                                                <rect key="frame" x="252" y="1" width="358" height="18"/>
+                                                <rect key="frame" x="252" y="1" width="362" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="NfU-Ln-yWK">
-                                                        <rect key="frame" x="20" y="-1" width="318" height="20"/>
+                                                        <rect key="frame" x="20" y="-1" width="322" height="20"/>
                                                         <connections>
                                                             <binding destination="AQy-J0-j5x" name="animate" keyPath="objectValue.indeterminate" id="DWy-gm-HFE">
                                                                 <dictionary key="options">
@@ -140,6 +139,7 @@
             <point key="canvasLocation" x="533" y="483"/>
         </customView>
         <arrayController objectClassName="ProgressItem" editable="NO" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="HCS-Y5-zII" userLabel="ProgressItems">
+            <classReference key="objectClass" className="ProgressItem"/>
             <connections>
                 <binding destination="-2" name="contentArray" keyPath="self.progressItems" id="gV7-IY-cD5">
                     <dictionary key="options">

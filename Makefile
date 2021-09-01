@@ -5,8 +5,12 @@ xcode_version="12.5.1"
 workspace_path:=$(shell ${bazel_path} info workspace)
 bazel_bin=${workspace_path}/bazel-bin
 
-build:
-	src/tools/codesign.sh
+clean:
+	rm -f $(bazel_bin)/tulsi.zip
+	rm -f $(bazel_bin)/Tulsi++.zip
+	rm -rf $(bazel_bin)/Tulsi++.app
+
+build: clean
 	${bazel_path} build //:tulsi --use_top_level_targets_for_symlinks --xcode_version=${xcode_version}
 
 install: build
@@ -22,7 +26,7 @@ install: build
 	cp -R $(bazel_bin)/Tulsi++.app ${unzip_dir}/Tulsi++.app
 	open "${unzip_dir}/Tulsi++.app"
 
-release:
+release: clean
 	src/tools/codesign.sh
 
 	rm -f $(bazel_bin)/tulsi.zip

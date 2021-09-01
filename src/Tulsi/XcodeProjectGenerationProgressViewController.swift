@@ -60,6 +60,7 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
 
   weak var outputFolderOpenPanel: NSOpenPanel? = nil
 
+  var removePreviousProject: Bool = true
   var outputFolderURL: URL? = nil
 
   deinit {
@@ -76,8 +77,13 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
   }
 
   // Extracts source paths for selected source rules, generates a PBXProject and opens it.
-  func generateProjectForConfigName(_ name: String, completionHandler: @escaping (URL?) -> Void) {
+  func generateProjectForConfigName(
+    _ name: String,
+    removePreviousProject: Bool,
+    completionHandler: @escaping (URL?) -> Void
+  ) {
     assert(view.window != nil, "Must not be called until after the view controller is presented.")
+    self.removePreviousProject = removePreviousProject
     if outputFolderURL == nil {
       showOutputFolderPicker() { (url: URL?) in
         guard let url = url else {
@@ -85,7 +91,11 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
           return
         }
         self.outputFolderURL = url
-        self.generateProjectForConfigName(name, completionHandler: completionHandler)
+        self.generateProjectForConfigName(
+          name,
+          removePreviousProject: removePreviousProject,
+          completionHandler: completionHandler
+        )
       }
       return
     }
@@ -156,12 +166,74 @@ class XcodeProjectGenerationProgressViewController: NSViewController {
       completionHandler(nil)
       return
     }
+    
+    func ending() {
+      Thread.doOnQOSUserInitiatedThread() {
+        let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
+                                                              withWorkspaceRootURL: workspaceRootURL)
+        Thread.doOnMainQueue() {
+          completionHandler(url)
+        }
+      }
+    }
+    
+    if let projectName = configDocument.projectName {
+      let projectPath = concreteOutputFolderURL.appendingPathComponent(projectName + ".xcodeproj")
+      
+      delete(previousProject: projectPath) {
+        ending()
+      }
+    } else {
+      ending()
+    }
+  }
+  
+  private func delete(previousProject path: URL, completion: @escaping () -> Void) {
+    guard removePreviousProject else { return completion() }
+    let maxProgress = 1
+    progressItems.append(ProgressItem(
+      // so it will become unique, and other notification center will no distrub this process
+      notifier: nil,
+      values: [
+        ProgressUpdatingTaskName: "Delete Previous Project",
+        ProgressUpdatingTaskMaxValue: maxProgress,
+        ProgressUpdatingTaskStartIndeterminate: false
+      ]
+    ))
+    
+    func completeProgress() {
+      progressItems.first(where: { $0.label == "Delete Previous Project" })?.value = maxProgress
+    }
+    
+    Thread.doOnQOSUserInitiatedThread {
+      guard FileManager.default.fileExists(atPath: path.path) else {
+        Thread.doOnMainQueue {
+          LogMessage.postInfo("No previous project detected")
+          completeProgress()
+          completion()
+        }
+        return
+      }
+      
+      do {
+        try FileManager.default.removeItem(at: path)
+        LogMessage.postInfo("\(path.path) is removed")
+        
+        Thread.doOnMainQueue {
+          completeProgress()
+          completion()
+        }
+      } catch {
+        // if error happend, we still continue the generate process.
+        LogMessage.postWarning(NSLocalizedString(
+          "Error_DeletePreviousProject",
+          comment: "Fail to delete previous project at \(path.path)"
+        ))
 
-    Thread.doOnQOSUserInitiatedThread() {
-      let url = configDocument.generateXcodeProjectInFolder(concreteOutputFolderURL,
-                                                            withWorkspaceRootURL: workspaceRootURL)
-      Thread.doOnMainQueue() {
-        completionHandler(url)
+        Thread.doOnMainQueue {
+          completeProgress()
+          completion()
+        }
       }
     }
   }

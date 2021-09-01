@@ -30,6 +30,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
   // Context indicating that a new config should be added after a document save completes.
   private static var PostSaveContextAddConfig = 0
 
+  @IBOutlet var deletePreviousProjectCheckBox: NSButton!
   @IBOutlet var configArrayController: NSArrayController!
   @IBOutlet weak var addRemoveSegmentedControl: NSSegmentedControl!
   @IBOutlet var generateButton: NSButton!
@@ -130,12 +131,16 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
     guard let configName = configArrayController.selectedObjects.first as? String else { return }
     guard requireValidBazel({ self.doGenerate(sender) }) else { return }
 
+    
     let generatorController = XcodeProjectGenerationProgressViewController()
     generatorController.representedObject = representedObject
     presentAsSheet(generatorController)
 
     let projectDocument = representedObject as! TulsiProjectDocument
-    generatorController.generateProjectForConfigName(configName) { (projectURL: URL?) in
+    generatorController.generateProjectForConfigName(
+      configName,
+      removePreviousProject: deletePreviousProjectCheckBox.state.rawValue == 1
+    ) { (projectURL: URL?) in
       self.dismiss(generatorController)
       if let projectURL = projectURL {
         LogMessage.postInfo("Opening generated project in Xcode",
