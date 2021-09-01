@@ -25,7 +25,20 @@ Tulsi++ is steroid version of Tulsi with lots of improvement on UX side.
 ### Download latest
 Download latest `dmg` or `zip` at [release page](https://github.com/wendyliga/tulsi-plus-plus/releases)
 ### Build it yourself
-Run `make install`. This will install Tulsi.app inside `$HOME/Applications` by default.
+
+Run `make install`. This will install `Tulsi++.app` inside $HOME/Applications by default. See below for supported options:
+
+- `bazel_path`: Bazel binary that Tulsi should use to build and install the app (Default is bazel)
+
+- `install_path`: The folder where to install the Tulsi app into (Default is $HOME/Applications)
+
+- `xcode`: The Xcode version Tulsi++ should be built for (Default is 12.5.1)
+
+Example
+```
+make install xcode=13.0 install_path=/Applications
+```
+
 
 ## Notes
 
