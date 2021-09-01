@@ -1,18 +1,31 @@
-# Tulsi - an Xcode Project Generator For Bazel
+# Tulsi++ - an Xcode Project Generator For Bazel
 
-<span style="background-color:OldLace; padding:10px">
-tulsi - /ˈto͝olsē/  A kind of basil that is venerated by Hindus as a sacred
-plant.
-</span>
+<p align="center"><img width="200" src="src/Tulsi/Assets.xcassets/AppIcon.appiconset/tulsi_plus_plus.png"></p>
 
-## Building and installing
+<p align="center">
+    <a href="https://github.com/wendyliga/tulsi-plus-plus/releases">
+        <img src="https://img.shields.io/github/v/release/wendyliga/tulsi-plus-plus" alt="Latest Release" />
+    </a>
+    <a href="#">
+        <img src="https://img.shields.io/github/license/wendyliga/tulsi-plus-plus" />
+    </a>
+    <a href="https://twitter.com/wendyliga">
+        <img src="https://img.shields.io/badge/contact-@wendyliga-blue.svg?style=flat" alt="Twitter: @wendyliga" />
+    </a>
+</p>
 
-Run `build_and_run.sh`. This will install Tulsi.app inside `$HOME/Applications` by default. See below for supported options:
+Tulsi++ is steroid version of Tulsi with lots of improvement on UX side.
 
-* `-b`: Bazel binary that Tulsi should use to build and install the app (Default is `bazel`)
-* `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
-* `-x`: The Xcode version Tulsi should be built for (Default is `12.4`)
+## Difference from standart Tulsi
+- OTA Update 
+- Improvement to support latest Xcode
+- and many more
 
+## Installing
+### Download latest
+Download latest `dmg` or `zip` at [release page](https://github.com/wendyliga/tulsi-plus-plus/releases)
+### Build it yourself
+Run `make install`. This will install Tulsi.app inside `$HOME/Applications` by default.
 
 ## Notes
 
@@ -68,3 +81,19 @@ project generation and builds.
         project although it may potentially worsen generation and build
         performance.
 
+## License
+```
+Copyright 2021 Wendy Liga. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
