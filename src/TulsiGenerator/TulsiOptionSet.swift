@@ -332,7 +332,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.ImprovedImportAutocompletionFix, .Generic, true)
     addBoolOption(.GenerateRunfiles, .Generic, false)
     addBoolOption(.PathFiltersApplyToTestSources, .Generic, true)
-    addBoolOption(.ProjectPrioritizesSwift, .Generic, false)
+    addBoolOption(.ProjectPrioritizesSwift, .Generic, true)
     addBoolOption(.SwiftForcesdSYMs, .Generic, false)
     addBoolOption(.TreeArtifactOutputs, .Generic, true)
     addBoolOption(.Use64BitWatchSimulator, .Generic, false)

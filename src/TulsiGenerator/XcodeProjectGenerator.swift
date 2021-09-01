@@ -640,6 +640,7 @@ final class XcodeProjectGenerator {
     let sharedWorkspaceSettings: [String: Any] = [
       "BuildSystemType": "Original",
       "DisableBuildSystemDeprecationWarning": true as AnyObject,
+      "DisableBuildSystemDeprecationDiagnostic": true as AnyObject,
       "IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded": false as AnyObject,
     ]
     try writeWorkspaceSettings(sharedWorkspaceSettings,
