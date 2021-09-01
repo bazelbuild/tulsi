@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: [main]
+    types: [synchronize, opened, reopened, ready_for_review]
+      
+jobs:
+  build_darwin:
+    name: Build Darwin
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build
+      run: make build
