@@ -90,13 +90,16 @@ final class BazelXcodeProjectPatcher {
 
     // The external directory may contain files such as a WORKSPACE file, but we only patch folders
     let childGroups = externalGroup.children.filter { $0 is PBXGroup } as! [PBXGroup]
-
+      
+    let relativeRootPath = mainGroup.path ?? ".";
+    let externalPath = "\(relativeRootPath)/external"
+      
     for child in childGroups {
       // Resolve external workspaces via their more stable location in output base
       // <output base>/external remains between builds and contains all external workspaces
       // <execution root>/external is instead torn down on each build, breaking the paths to any
       // external workspaces not used in the particular target being built 
-      let resolvedPath = "\(xcodeProject.name).xcodeproj/\(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)/external/\(child.name)"
+      let resolvedPath = "\(externalPath)/\(child.name)"
       let newChild = mainGroup.getOrCreateChildGroupByName("@\(child.name)",
                                                            path: resolvedPath,
                                                            sourceTree: .SourceRoot)

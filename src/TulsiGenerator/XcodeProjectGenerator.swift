@@ -435,6 +435,26 @@ final class XcodeProjectGenerator {
                                    values: platform, debugString)
     }
   }
+  
+  private func createExternalSymoblicLink(_ outputFolderURL: URL,
+                                            xcodeProject: PBXProject) {
+    let externalPath = "\(outputFolderURL.relativePath)/\(xcodeProject.name).xcodeproj/\(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)/external"
+    let externalSymbolicLinkPath = "\(workspaceRootURL.absoluteURL.path)/external"
+      
+    var isDirectory: ObjCBool = false
+    let fileExists = fileManager.fileExists(atPath: externalSymbolicLinkPath, isDirectory: &isDirectory)
+
+    if !fileExists || !isDirectory.boolValue {
+      do {
+        try fileManager.createSymbolicLink(atPath: externalSymbolicLinkPath, withDestinationPath: externalPath)
+      } catch {
+        self.localizedMessageLogger.warning("CreateExternalSymbolicLink",
+                                            comment: LocalizedMessageLogger.bugWorthyComment("Failed to create '\(externalPath)' symbolic link at \(externalSymbolicLinkPath)."),
+                                            context: self.config.projectName,
+                                            values: "\(error)")
+      }
+    }
+  }
 
   // Generates a PBXProject and a returns it along with a set of build, test and indexer targets.
   private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup,
@@ -642,6 +662,9 @@ final class XcodeProjectGenerator {
     }
     profileAction("cleaning_cached_dsym_paths") {
       cleanCachedDsymPaths()
+    }
+    profileAction("create_external_symbolic_link") {
+      createExternalSymoblicLink(outputFolderURL, xcodeProject: xcodeProject);
     }
     // TODO(b/174775524): Remove support for the global lldbinit and cleanup any related files.
     if self.customLLDBInitFile == nil {
