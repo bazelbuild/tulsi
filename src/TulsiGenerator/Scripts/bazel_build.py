@@ -456,16 +456,6 @@ class BazelBuildBridge(object):
 
     self.update_symbol_cache = UpdateSymbolCache()
 
-    # Target architecture.  Must be defined for correct setting of
-    # the --cpu flag. Note that Xcode will set multiple values in
-    # ARCHS when building for a Generic Device.
-    archs = os.environ.get('ARCHS')
-    if not archs:
-      _PrintXcodeError('Tulsi requires env variable ARCHS to be '
-                       'set.  Please file a bug against Tulsi.')
-      sys.exit(1)
-    self.arch = archs.split()[-1]
-
     # Path into which generated artifacts should be copied.
     self.built_products_dir = os.environ['BUILT_PRODUCTS_DIR']
     # Path where Xcode expects generated sources to be placed.
@@ -520,6 +510,20 @@ class BazelBuildBridge(object):
       self.codesigning_allowed = False
     else:
       self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
+
+    # Target architecture.  Must be defined for correct setting of
+    # the --cpu flag. Note that Xcode will set multiple values in
+    # ARCHS when building for a Generic Device.
+    archs = os.environ.get('ARCHS')
+    if not archs:
+      _PrintXcodeError('Tulsi requires env variable ARCHS to be '
+                       'set.  Please file a bug against Tulsi.')
+      sys.exit(1)
+    arch = archs.split()[-1]
+    if self.is_simulator and arch == "arm64":
+      self.arch = "sim_" + arch
+    else:
+      self.arch = arch
 
     if self.codesigning_allowed:
       platform_prefix = 'iOS'
