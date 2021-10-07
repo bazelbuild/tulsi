@@ -166,7 +166,7 @@ final class TulsiProjectDocument: NSDocument,
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(logEventObserver)
+    NotificationCenter.default.removeObserver(logEventObserver!)
   }
 
   func clearMessages() {
