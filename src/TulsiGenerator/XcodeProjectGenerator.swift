@@ -722,6 +722,8 @@ final class XcodeProjectGenerator {
 
     createLink(from: PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
                to: self.workspaceInfoExtractor.bazelExecutionRoot)
+    createLink(from: PBXTargetGenerator.TulsiExecutionRootSymlinkLegacyPath,
+               to: self.workspaceInfoExtractor.bazelExecutionRoot)
     createLink(from: PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
                to: self.workspaceInfoExtractor.bazelOutputBase)
   }

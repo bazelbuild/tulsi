@@ -174,9 +174,16 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   /// Symlink to the Bazel execution root inside .tulsi in the xcodeproj
   static let TulsiExecutionRootSymlinkPath = ".tulsi/tulsi-execution-root"
+  // Old versions of Tulsi mis-referred to the execution root as the workspace.
+  // We preserve the old symlink name for backwards compatibility. 
+  static let TulsiExecutionRootSymlinkLegacyPath = ".tulsi/tulsi-workspace"
+
 
   /// Xcode variable name used to refer to the symlink to the Bazel execution root.
   static let BazelExecutionRootSymlinkVarName = "TULSI_EXECUTION_ROOT"
+  // Old versions of Tulsi mis-referred to the execution root as the workspace.
+  // We preserve the old build variable name for backwards compatibility. 
+  static let BazelExecutionRootSymlinkLegacyVarName = "TULSI_BWRS"
 
   /// Symlink to the Bazel output base inside .tulsi in the xcodeproj
   static let TulsiOutputBaseSymlinkPath = ".tulsi/tulsi-output-base"
@@ -796,6 +803,8 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // In some cases where the workspace was on a remote volume, jumping through the symlink on the
     // remote volume that pointed back to local disk was causing performance issues.
     buildSettings[PBXTargetGenerator.BazelExecutionRootSymlinkVarName] =
+        "$(PROJECT_FILE_PATH)/\(PBXTargetGenerator.TulsiExecutionRootSymlinkPath)"
+    buildSettings[PBXTargetGenerator.BazelExecutionRootSymlinkLegacyVarName] =
         "$(PROJECT_FILE_PATH)/\(PBXTargetGenerator.TulsiExecutionRootSymlinkPath)"
     buildSettings[PBXTargetGenerator.BazelOutputBaseSymlinkVarName] =
         "$(PROJECT_FILE_PATH)/\(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)"

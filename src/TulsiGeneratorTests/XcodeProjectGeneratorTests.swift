@@ -391,6 +391,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
     let tulsiExecRoot = projectURL.appendingPathComponent(PBXTargetGenerator.TulsiExecutionRootSymlinkPath)
     mockFileManager.allowedDirectoryCreates.insert(tulsiExecRoot.path)
 
+    let tulsiLegacyExecRoot = projectURL.appendingPathComponent(PBXTargetGenerator.TulsiExecutionRootSymlinkLegacyPath)
+    mockFileManager.allowedDirectoryCreates.insert(tulsiLegacyExecRoot.path)
+
     let tulsiOutputBase = projectURL.appendingPathComponent(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)
     mockFileManager.allowedDirectoryCreates.insert(tulsiOutputBase.path)
 

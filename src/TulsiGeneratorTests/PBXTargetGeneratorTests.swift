@@ -270,6 +270,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "TULSI_VERSION": testTulsiVersion,
       PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
       PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
+      PBXTargetGenerator.BazelExecutionRootSymlinkLegacyVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
     ]
 
@@ -328,6 +329,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "TULSI_VERSION": testTulsiVersion,
       PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
       PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
+      PBXTargetGenerator.BazelExecutionRootSymlinkLegacyVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
     ]
 

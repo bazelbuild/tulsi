@@ -608,6 +608,11 @@ class BazelBuildBridge(object):
     exit_code = self._LinkTulsiToBazel('tulsi-execution-root', self.bazel_exec_root)
     if exit_code:
       return exit_code
+    # Old versions of Tulsi mis-referred to the execution root as the workspace.
+    # We preserve the old symlink name for backwards compatibility.
+    exit_code = self._LinkTulsiToBazel('tulsi-workspace', self.bazel_exec_root)
+    if exit_code:
+      return exit_code
     exit_code = self._LinkTulsiToBazel(
         'tulsi-output-base', self.bazel_output_base)
     if exit_code:
