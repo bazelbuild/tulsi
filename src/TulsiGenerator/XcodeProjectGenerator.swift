@@ -637,11 +637,12 @@ final class XcodeProjectGenerator {
 
 
     let workspaceSharedDataURL = projectURL.appendingPathComponent("project.xcworkspace/xcshareddata")
+
+    // Legacy build system was promoted to a deprecation error in Xcode 13 / Swift 5.5.
     let sharedWorkspaceSettings: [String: Any] = [
-      "BuildSystemType": "Original",
-      "DisableBuildSystemDeprecationWarning": true as AnyObject,
       "IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded": false as AnyObject,
     ]
+
     try writeWorkspaceSettings(sharedWorkspaceSettings,
                                toDirectoryAtURL: workspaceSharedDataURL,
                                replaceIfExists: true)
