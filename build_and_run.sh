@@ -23,7 +23,7 @@ set -eu
 
 unzip_dir="$HOME/Applications"
 bazel_path="bazel"
-xcode_version="12.5.1"
+xcode_version="13.0"
 
 while getopts ":b:d:x:h" opt; do
   case ${opt} in
