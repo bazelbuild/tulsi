@@ -250,8 +250,8 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
     projectGenerator.xcodeProjectGenerator.suppressUpdatingShellCommands = true
     // The username is forced to a known value.
     projectGenerator.xcodeProjectGenerator.usernameFetcher = { "_TEST_USER_" }
-    // Omit bazel output symlinks so they don't have unknown values.
-    projectGenerator.xcodeProjectGenerator.redactSymlinksToBazelOutput = true
+    // The workspace symlink is forced to a known value.
+    projectGenerator.xcodeProjectGenerator.redactWorkspaceSymlink = true
     let errorInfo: String
     do {
       let generatedProjURL = try projectGenerator.generateXcodeProjectInFolder(outputFolderURL)

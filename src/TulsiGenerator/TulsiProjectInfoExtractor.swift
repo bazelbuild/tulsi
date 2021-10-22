@@ -33,10 +33,6 @@ public final class TulsiProjectInfoExtractor {
     return workspaceInfoExtractor.bazelExecutionRoot
   }
 
-  public var bazelOutputBase: String {
-    return workspaceInfoExtractor.bazelOutputBase
-  }
-
   public var workspaceRootURL: URL {
     return workspaceInfoExtractor.workspaceRootURL
   }

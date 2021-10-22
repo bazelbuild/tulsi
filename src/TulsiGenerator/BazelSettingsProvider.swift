@@ -120,7 +120,6 @@ protocol BazelSettingsProviderProtocol {
   /// Bazel build settings, used during Xcode/user Bazel builds.
   func buildSettings(bazel: String,
                      bazelExecRoot: String,
-                     bazelOutputBase: String,
                      options: TulsiOptionSet,
                      features: Set<BazelSettingFeature>,
                      buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings
@@ -241,7 +240,6 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
 
   func buildSettings(bazel: String,
                      bazelExecRoot: String,
-                     bazelOutputBase: String,
                      options: TulsiOptionSet,
                      features: Set<BazelSettingFeature>,
                      buildRuleEntries: Set<RuleEntry>) -> BazelBuildSettings {
@@ -282,7 +280,6 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
 
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
-                              bazelOutputBase: bazelOutputBase,
                               defaultPlatformConfigIdentifier: defaultConfig.identifier,
                               platformConfigurationFlags: nil,
                               swiftTargets: swiftTargets,
