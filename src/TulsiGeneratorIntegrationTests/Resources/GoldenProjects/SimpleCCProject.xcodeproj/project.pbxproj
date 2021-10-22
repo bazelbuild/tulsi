@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		952C886D760C782200000000 /* src2.c in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C760C782200000000 /* src2.c */; };
-		952C886DC335172B00000000 /* main.cc in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CC335172B00000000 /* main.cc */; };
-		952C886DD87FF37800000000 /* src1.c in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CD87FF37800000000 /* src1.c */; };
+		952C886D40FA11C700000000 /* src1.c in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C40FA11C700000000 /* src1.c */; };
+		952C886DAEA4670600000000 /* main.cc in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CAEA4670600000000 /* main.cc */; };
+		952C886DBA739E5700000000 /* src2.c in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CBA739E5700000000 /* src2.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,15 +28,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25889F7C40FA11C700000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = "<group>"; };
 		25889F7C465997B800000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_ccsimple/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		25889F7C760C782200000000 /* src2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src2.c; path = "SimpleCCProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_ccsimple/Library/srcs/src2.c"; sourceTree = SOURCE_ROOT; };
+		25889F7C6024490600000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = "<group>"; };
 		25889F7C7C32F61200000000 /* ccBinary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = ccBinary.app; path = ccBinary.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C83741A6500000000 /* SrcsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SrcsHeader.h; path = "SimpleCCProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_ccsimple/Library/srcs/SrcsHeader.h"; sourceTree = SOURCE_ROOT; };
-		25889F7C95DAF1A800000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "SimpleCCProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = SOURCE_ROOT; };
+		25889F7C9AAB485E00000000 /* HdrsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HdrsHeader.h; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/hdrs/HdrsHeader.h"; sourceTree = "<group>"; };
 		25889F7CA44D367C00000000 /* lib_idx_ccBinary_C9583FBE_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccBinary_C9583FBE_ios_min8.0.a; path = lib_idx_ccBinary_C9583FBE_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CAEA4670600000000 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = "tulsi-workspace/tulsi_e2e_ccsimple/Binary/srcs/main.cc"; sourceTree = "<group>"; };
 		25889F7CB7F6ECEE00000000 /* lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a; path = lib_idx_ccLibrary_CCA8EDE9_ios_min8.0.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CC335172B00000000 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = "SimpleCCProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_ccsimple/Binary/srcs/main.cc"; sourceTree = SOURCE_ROOT; };
-		25889F7CD87FF37800000000 /* src1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src1.c; path = "SimpleCCProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_ccsimple/Library/srcs/src1.c"; sourceTree = SOURCE_ROOT; };
+		25889F7CBA739E5700000000 /* src2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = src2.c; path = "tulsi-workspace/tulsi_e2e_ccsimple/Library/srcs/src2.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -61,7 +61,7 @@
 		45D056296592723000000000 /* hdrs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C95DAF1A800000000 /* HdrsHeader.h */,
+				25889F7C9AAB485E00000000 /* HdrsHeader.h */,
 			);
 			name = hdrs;
 			sourceTree = "<group>";
@@ -96,7 +96,7 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7CC335172B00000000 /* main.cc */,
+				25889F7CAEA4670600000000 /* main.cc */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -104,9 +104,9 @@
 		45D05629CC62AD9600000001 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C83741A6500000000 /* SrcsHeader.h */,
-				25889F7CD87FF37800000000 /* src1.c */,
-				25889F7C760C782200000000 /* src2.c */,
+				25889F7C6024490600000000 /* SrcsHeader.h */,
+				25889F7C40FA11C700000000 /* src1.c */,
+				25889F7CBA739E5700000000 /* src2.c */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -239,7 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DC335172B00000000 /* main.cc in srcs */,
+				952C886DAEA4670600000000 /* main.cc in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,8 +247,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886DD87FF37800000000 /* src1.c in srcs */,
-				952C886D760C782200000000 /* src2.c in srcs */,
+				952C886D40FA11C700000000 /* src1.c in srcs */,
+				952C886DBA739E5700000000 /* src2.c in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,10 +300,8 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
-				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
-				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -359,14 +357,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = macosx;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
-				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
-				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -377,7 +373,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ $(TULSI_OUTPUT_BASE)/external/bazel_tools $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/external/bazel_tools ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/external/bazel_tools $(TULSI_BWRS)/bazel-tulsi-includes/x/x/external/bazel_tools ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
@@ -390,7 +386,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
@@ -440,14 +436,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = macosx;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
-				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
-				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -458,7 +452,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ $(TULSI_OUTPUT_BASE)/external/bazel_tools $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/external/bazel_tools ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ $(TULSI_BWRS)/external/bazel_tools $(TULSI_BWRS)/bazel-tulsi-includes/x/x/external/bazel_tools ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccBinary_C9583FBE_ios_min8.0;
@@ -471,7 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINES_DEFINE=1";
 				PRODUCT_NAME = _idx_ccLibrary_CCA8EDE9_ios_min8.0;
@@ -530,10 +524,8 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
-				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
-				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SimpleCCProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

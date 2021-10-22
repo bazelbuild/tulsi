@@ -114,9 +114,8 @@ final class XCBuildConfiguration: PBXObjectProtocol {
 class PBXReference: PBXObjectProtocol {
   var globalID: String = ""
   let name: String
-  // be careful setting these; they're cached in PBXGroup
-  fileprivate(set) var path: String?
-  fileprivate(set) var sourceTree: SourceTree
+  var path: String?
+  let sourceTree: SourceTree
 
   var isa: String {
     assertionFailure("PBXReference must be subclassed")
@@ -388,22 +387,18 @@ class PBXGroup: PBXReference, Hashable {
         child.updatePathForChild(grandchild, currentPath: childPath)
       }
     } else if let child = child as? PBXFileReference {
-      updatePathForChildFile(child, toPath: childPath)
-    }
-  }
+      // Remove old source path reference. All PBXFileReferences should have valid paths as
+      // non-main/external groups no longer have any paths, meaning a PBXFileReference without a
+      // path shouldn't exist as it doesn't point to anything.
+      var sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: child.path!)
+      fileReferencesBySourceTreePath.removeValue(forKey: sourceTreePath)
 
-  func updatePathForChildFile(
-    _ child: PBXFileReference,
-    toPath: String,
-    sourceTree: SourceTree? = nil) { // Source tree defaults to staying the same
-    // Updates internal index to match
-    fileReferencesBySourceTreePath.removeValue(
-      forKey: SourceTreePath(sourceTree: child.sourceTree, path: child.path!))
-    let newSourceTreePath =
-      SourceTreePath(sourceTree: sourceTree ?? child.sourceTree, path: toPath)
-    child.path = newSourceTreePath.path
-    child.sourceTree = newSourceTreePath.sourceTree
-    fileReferencesBySourceTreePath[newSourceTreePath] = child
+      // Add in new source path reference.
+      sourceTreePath = SourceTreePath(sourceTree: child.sourceTree, path: childPath)
+      fileReferencesBySourceTreePath[sourceTreePath] = child
+
+      child.path = childPath
+    }
   }
 
   /// Takes ownership of the children of the given group. Note that this leaves the "other" group in

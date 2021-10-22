@@ -92,9 +92,6 @@
 /* Warning to show when a RuleEntry does not have a DeploymentTarget to be used by the indexer. */
 "NoDeploymentTarget" = "Target %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
 
-/* Message to show when the output base was not able to be extracted from the workspace. */
-"OutputBaseNotFound" = "Was not able to extract the output base from the workspace. This is a Tulsi or Bazel bug, please report.";
-
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
 
@@ -119,5 +116,5 @@
 /* Warning when updating the user's DBGShellCommands script in ~/Library/Application Support/Tulsi failed. */
 "UpdatingDBGShellCommandsFailed" = "Failed to update the DBGShellCommands script used to locate dSYM bundles: received error '%1$@'.";
 
-/* Warning shown when failing to update the tulsi symlinks into the Bazel output files. symlink path is in %1$@, symlink destination is in %2$@, additional error context in %3$@. */
-"UpdatingTulsiSymlinksFailed" = "Failed to update the %1$@ symlink to %2$@. Additional context: %3$@";
+/* Warning shown when failing to update the tulsi-workspace symlink to the Bazel execution root. tulsi-workspace path is in %1$@, additional error context in %2$@. */
+"UpdatingTulsiWorkspaceSymlinkFailed" = "Failed to update the %1$@ symlink to the Bazel execution root. Additional context: %2$@";

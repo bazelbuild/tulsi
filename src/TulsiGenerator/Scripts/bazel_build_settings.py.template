@@ -67,7 +67,7 @@ class BazelFlagsSet(object):
 class BazelBuildSettings(object):
   """Represents a Tulsi project's Bazel settings."""
 
-  def __init__(self, bazel, bazelExecRoot, bazelOutputBase,
+  def __init__(self, bazel, bazelExecRoot,
                defaultPlatformConfigId, platformConfigFlags,
                swiftTargets,
                cacheAffecting, cacheSafe,
@@ -76,7 +76,6 @@ class BazelBuildSettings(object):
                projDefault, projTargetMap):
     self.bazel = bazel
     self.bazelExecRoot = bazelExecRoot
-    self.bazelOutputBase = bazelOutputBase
     self.defaultPlatformConfigId = defaultPlatformConfigId
     self.platformConfigFlags = platformConfigFlags
     self.swiftTargets = swiftTargets
