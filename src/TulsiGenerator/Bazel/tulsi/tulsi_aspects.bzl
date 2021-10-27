@@ -218,9 +218,11 @@ def _convert_outpath_to_symlink_path(path):
 
 def _is_file_a_directory(f):
     """Returns True is the given file is a directory."""
+
     # Starting Bazel 3.3.0, the File type as a is_directory attribute.
     if getattr(f, "is_directory", None):
         return f.is_directory
+
     # If is_directory is not in the File type, fall back to the old method:
     # As of Oct. 2016, Bazel disallows most files without extensions.
     # As a temporary hack, Tulsi treats File instances pointing at extension-less
@@ -1222,7 +1224,6 @@ tulsi_sources_aspect = aspect(
         )),
     },
     toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
-    incompatible_use_toolchain_transition = True,
     fragments = [
         "apple",
         "cpp",
