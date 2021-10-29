@@ -85,7 +85,7 @@ final class ProjectEditorConfigManagerViewController: NSViewController {
                                            forName: NSValueTransformerName(rawValue: "IsOneValueTransformer"))
     super.loadView()
     bind(NSBindingName(rawValue: "numSelectedConfigs"),
-         to: configArrayController,
+         to: configArrayController!,
          withKeyPath: "selectedObjects.@count",
          options: nil)
     self.generateButton.keyEquivalent = "\r"

@@ -146,7 +146,7 @@ class PBXReference: PBXObjectProtocol {
   fileprivate weak var _parent: PBXReference?
 
   init(name: String, path: String?, sourceTree: SourceTree, parent: PBXReference? = nil) {
-    self.name = name;
+    self.name = name
     self.path = path
     self.sourceTree = sourceTree
     self._parent = parent
@@ -1321,8 +1321,8 @@ final class PBXProject: PBXObjectProtocol {
     try serializer.addField("attributes", attributes)
     try serializer.addField("buildConfigurationList", buildConfigurationList)
     try serializer.addField("compatibilityVersion", compatibilityVersion)
-    try serializer.addField("mainGroup", mainGroup);
-    try serializer.addField("targets", targetByName.values.sorted(by: {$0.name < $1.name}));
+    try serializer.addField("mainGroup", mainGroup)
+    try serializer.addField("targets", targetByName.values.sorted(by: {$0.name < $1.name}))
 
     // Hardcoded defaults to match Xcode behavior.
     try serializer.addField("developmentRegion", "English")
