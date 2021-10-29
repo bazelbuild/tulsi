@@ -1,3 +1,6 @@
+# https://github.com/bazelbuild/stardoc/issues/112
+common --incompatible_allow_tags_propagation
+
 build --cpu=darwin_x86_64
 build --apple_platform_type=macos
 
