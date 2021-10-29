@@ -48,7 +48,7 @@ final class ProjectEditorPackageManagerViewController: NSViewController, NewProj
                                            forName: NSValueTransformerName(rawValue: "PackagePathValueTransformer"))
     super.loadView()
     bind(NSBindingName(rawValue: "numSelectedPackagePaths"),
-         to: packageArrayController,
+         to: packageArrayController!,
          withKeyPath: "selectedObjects.@count",
          options: nil)
   }

@@ -52,7 +52,7 @@ final class MessageViewController: NSViewController, NSTableViewDelegate, NSUser
     ValueTransformer.setValueTransformer(MessageTypeToImageValueTransformer(),
                                            forName: NSValueTransformerName(rawValue: "MessageTypeToImageValueTransformer"))
     super.loadView()
-    bind(NSBindingName(rawValue: "messageCount"), to: messageArrayController, withKeyPath: "arrangedObjects.@count", options: nil)
+    bind(NSBindingName(rawValue: "messageCount"), to: messageArrayController!, withKeyPath: "arrangedObjects.@count", options: nil)
   }
 
   @IBAction func copy(_ sender: AnyObject?) {
