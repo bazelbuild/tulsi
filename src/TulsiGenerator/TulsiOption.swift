@@ -51,7 +51,7 @@ public class TulsiOption: Equatable, CustomStringConvertible {
     }
 
     /// An option that is handled in Tulsi's code.
-    static let Generic = OptionType(rawValue: 0)
+    static let Generic = OptionType([])
 
     /// An option that may be automatically encoded into a build setting.
     static let BuildSetting = OptionType(rawValue: 1 << 0)
