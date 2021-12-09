@@ -9,4 +9,8 @@ build --strategy=SwiftCompile=local
 
 # Stop gap for https://github.com/bazelbuild/tulsi/issues/94.
 # See also: https://github.com/bazelbuild/rules_apple/issues/456.
-build "--host_force_python=PY2"
+# by @woshimaliang: issues above have been fixed but this is a fork so...
+# build "--host_force_python=PY2"
+
+#invalid escape sequence: \d. You can enable unknown escape sequences by passing the flag --incompatible_restrict_string_escapes=false
+build --incompatible_restrict_string_escapes=false
