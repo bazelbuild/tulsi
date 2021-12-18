@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		952C886D2F678D0900000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C2F678D0900000000 /* b.swift */; };
-		952C886D3887B3BE00000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C3887B3BE00000000 /* b.swift */; };
-		952C886D4C13D11700000000 /* c.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C4C13D11700000000 /* c.swift */; };
-		952C886D721A835100000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C721A835100000000 /* b.swift */; };
-		952C886D7EE3C1D900000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C7EE3C1D900000000 /* a.swift */; };
-		952C886D96574DF200000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C96574DF200000000 /* a.swift */; };
-		952C886D9937DBCA00000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C9937DBCA00000000 /* a.swift */; };
+		952C886D2F4161CE00000000 /* c.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C2F4161CE00000000 /* c.swift */; };
+		952C886D771DF59700000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C771DF59700000000 /* b.swift */; };
+		952C886D8291613A00000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C8291613A00000000 /* a.swift */; };
+		952C886D8E0BD87B00000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C8E0BD87B00000000 /* b.swift */; };
+		952C886DAB5E399B00000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CAB5E399B00000000 /* a.swift */; };
+		952C886DC30E4A2200000000 /* a.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CC30E4A2200000000 /* a.swift */; };
+		952C886DC680F8C400000000 /* b.swift in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7CC680F8C400000000 /* b.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,21 +32,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25889F7C2F678D0900000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = "<group>"; };
-		25889F7C3887B3BE00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = "<group>"; };
-		25889F7C4C13D11700000000 /* c.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = c.swift; path = "tulsi-workspace/tulsi_e2e_swift/SubSwiftLibrary/srcs/c.swift"; sourceTree = "<group>"; };
-		25889F7C71B5994C00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "tulsi-workspace/bazel-tulsi-includes/x/x/tulsi_e2e_swift/Application-intermediates/Info.plist"; sourceTree = "<group>"; };
-		25889F7C721A835100000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = "<group>"; };
-		25889F7C7EE3C1D900000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = "<group>"; };
+		25889F7C2F4161CE00000000 /* c.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = c.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SubSwiftLibrary/srcs/c.swift"; sourceTree = SOURCE_ROOT; };
+		25889F7C771DF59700000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
+		25889F7C8291613A00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; path = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C889EFE9900000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; path = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7C92490AD400000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "tulsi-workspace/tulsi_e2e_swift/Info.plist"; sourceTree = "<group>"; };
-		25889F7C96574DF200000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = "<group>"; };
-		25889F7C9937DBCA00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "tulsi-workspace/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = "<group>"; };
+		25889F7C8E0BD87B00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7CAAC072EA00000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_77A8D266_ios_min10.0.framework; path = _idx_SwiftLibrary_77A8D266_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CAAD5E37A00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/tulsi_e2e_swift/Application-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
+		25889F7CAB5E399B00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
+		25889F7CC30E4A2200000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
+		25889F7CC680F8C400000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework; path = _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CFD30C2C500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -129,7 +129,7 @@
 		45D05629BBA58A3000000000 /* Application-intermediates */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C71B5994C00000000 /* Info.plist */,
+				25889F7CAAD5E37A00000000 /* Info.plist */,
 			);
 			name = "Application-intermediates";
 			sourceTree = "<group>";
@@ -148,7 +148,7 @@
 		45D05629CC62AD9600000000 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C4C13D11700000000 /* c.swift */,
+				25889F7C2F4161CE00000000 /* c.swift */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -156,8 +156,8 @@
 		45D05629CC62AD9600000001 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C96574DF200000000 /* a.swift */,
-				25889F7C3887B3BE00000000 /* b.swift */,
+				25889F7CAB5E399B00000000 /* a.swift */,
+				25889F7C771DF59700000000 /* b.swift */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -165,8 +165,8 @@
 		45D05629CC62AD9600000002 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C9937DBCA00000000 /* a.swift */,
-				25889F7C721A835100000000 /* b.swift */,
+				25889F7CC30E4A2200000000 /* a.swift */,
+				25889F7C8E0BD87B00000000 /* b.swift */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -174,8 +174,8 @@
 		45D05629CC62AD9600000003 /* srcs */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C7EE3C1D900000000 /* a.swift */,
-				25889F7C2F678D0900000000 /* b.swift */,
+				25889F7C8291613A00000000 /* a.swift */,
+				25889F7CC680F8C400000000 /* b.swift */,
 			);
 			name = srcs;
 			sourceTree = "<group>";
@@ -192,7 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				25889F7C889EFE9900000000 /* BUILD */,
-				25889F7C92490AD400000000 /* Info.plist */,
+				25889F7CFD30C2C500000000 /* Info.plist */,
 				45D0562939DF9C9F00000000 /* SubSwiftLibrary */,
 				45D0562973F84CD700000000 /* SwiftLibrary */,
 				45D056294538659E00000000 /* SwiftLibraryV3 */,
@@ -353,7 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D4C13D11700000000 /* c.swift in srcs */,
+				952C886D2F4161CE00000000 /* c.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,8 +361,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D9937DBCA00000000 /* a.swift in srcs */,
-				952C886D721A835100000000 /* b.swift in srcs */,
+				952C886DC30E4A2200000000 /* a.swift in srcs */,
+				952C886D8E0BD87B00000000 /* b.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,8 +370,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D7EE3C1D900000000 /* a.swift in srcs */,
-				952C886D2F678D0900000000 /* b.swift in srcs */,
+				952C886D8291613A00000000 /* a.swift in srcs */,
+				952C886DC680F8C400000000 /* b.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,8 +379,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D96574DF200000000 /* a.swift in srcs */,
-				952C886D3887B3BE00000000 /* b.swift in srcs */,
+				952C886DAB5E399B00000000 /* a.swift in srcs */,
+				952C886D771DF59700000000 /* b.swift in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,8 +433,10 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 4;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -491,13 +493,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -525,13 +529,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Debug;
 		};
@@ -539,13 +543,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Debug;
 		};
@@ -553,13 +557,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
 				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Debug;
 		};
@@ -567,13 +571,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Debug;
 		};
@@ -602,13 +606,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_BWRS)/bazel-tulsi-includes/x/x";
+				HEADER_SEARCH_PATHS = "$(TULSI_EXECUTION_ROOT) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x";
 				ONLY_ACTIVE_ARCH = YES;
 				PYTHONIOENCODING = utf8;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";
@@ -636,13 +642,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Release;
 		};
@@ -650,13 +656,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
 				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Release;
 		};
@@ -664,13 +670,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
 				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Release;
 		};
@@ -678,13 +684,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
 				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
 			name = Release;
 		};
@@ -723,8 +729,10 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				SWIFT_VERSION = 4;
-				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace";
+				TULSI_BWRS = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
+				TULSI_EXECUTION_ROOT = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-execution-root";
 				TULSI_LLDBINIT_FILE = "$(PROJECT_FILE_PATH)/.tulsi/Utils/lldbinit";
+				TULSI_OUTPUT_BASE = "$(PROJECT_FILE_PATH)/.tulsi/tulsi-output-base";
 				TULSI_PROJECT = SwiftProject;
 				TULSI_VERSION = 9.99.999.9999;
 				TULSI_WR = "${SRCROOT}/..";

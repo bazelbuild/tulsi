@@ -92,6 +92,9 @@
 /* Warning to show when a RuleEntry does not have a DeploymentTarget to be used by the indexer. */
 "NoDeploymentTarget" = "Target %1$@ has no DeploymentTarget set. Defaulting to iOS 9. This is an unexpected problem and should be reported as a Tulsi bug.";
 
+/* Message to show when the output base was not able to be extracted from the workspace. */
+"OutputBaseNotFound" = "Was not able to extract the output base from the workspace. This is a Tulsi or Bazel bug, please report.";
+
 /* Warning shown when none of the tests of a test suite %1$@ were able to be resolved. */
 "TestSuiteHasNoValidTests" = "Failed to resolve any tests for test_suite '%1$@', no scheme will be generated.";
 

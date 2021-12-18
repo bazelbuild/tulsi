@@ -197,6 +197,7 @@ class BazelBuildSettings: Pythonable {
 
   public let bazel: String
   public let bazelExecRoot: String
+  public let bazelOutputBase: String
 
   public let defaultPlatformConfigIdentifier: String
   public let platformConfigurationFlags: [String: [String]]
@@ -224,6 +225,7 @@ class BazelBuildSettings: Pythonable {
 
   public init(bazel: String,
               bazelExecRoot: String,
+              bazelOutputBase: String,
               defaultPlatformConfigIdentifier: String,
               platformConfigurationFlags: [String: [String]]?,
               swiftTargets: Set<String>,
@@ -237,6 +239,7 @@ class BazelBuildSettings: Pythonable {
               projTargetFlagSets: [String: BazelFlagsSet]) {
     self.bazel = bazel
     self.bazelExecRoot = bazelExecRoot
+    self.bazelOutputBase = bazelOutputBase
     self.defaultPlatformConfigIdentifier = defaultPlatformConfigIdentifier
     self.platformConfigurationFlags = platformConfigurationFlags ?? BazelBuildSettings.platformConfigurationFlagsMap
     self.swiftTargets = swiftTargets
@@ -256,6 +259,7 @@ class BazelBuildSettings: Pythonable {
 BazelBuildSettings(
 \(nestedIndentation)\(bazel.toPython(nestedIndentation)),
 \(nestedIndentation)\(bazelExecRoot.toPython(nestedIndentation)),
+\(nestedIndentation)\(bazelOutputBase.toPython(nestedIndentation)),
 \(nestedIndentation)\(defaultPlatformConfigIdentifier.toPython(nestedIndentation)),
 \(nestedIndentation)\(platformConfigurationFlags.toPython(nestedIndentation)),
 \(nestedIndentation)\(swiftTargets.toPython(nestedIndentation)),
