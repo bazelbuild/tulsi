@@ -55,6 +55,9 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// Absolute path to the Bazel execution root.
   var bazelExecutionRoot: String {get}
 
+  /// Absolute path to the Bazel output base.
+  var bazelOutputBase: String {get}
+
   /// The location of the Bazel workspace to be examined.
   var workspaceRootURL: URL {get}
 
