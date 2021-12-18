@@ -11,14 +11,16 @@ http_archive(
 # TODO: Remove with next rules_swift + rules_apple release
 http_archive(
     name = "build_bazel_rules_swift",
-    sha256 = "653e8756001616500b110fd156694de7899278bb7480aba22b2f156438a1d810",
-    url = "https://github.com/bazelbuild/rules_swift/releases/download/0.22.0/rules_swift.0.22.0.tar.gz",
+    sha256 = "fff70e28e9b28a4249fbfb413f860cb9b5df567fe20a1bc4017dd89e678dd9b5",
+    strip_prefix = "rules_swift-35ddf9f6e8c0fcd8bcb521e92dd4fd11c3f181b6",
+    url = "https://github.com/bazelbuild/rules_swift/archive/35ddf9f6e8c0fcd8bcb521e92dd4fd11c3f181b6.tar.gz",
 )
 
 http_archive(
     name = "build_bazel_rules_apple",
-    sha256 = "0052d452af7742c8f3a4e0929763388a66403de363775db7e90adecb2ba4944b",
-    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.31.3/rules_apple.0.31.3.tar.gz",
+    sha256 = "2e6c88b66c671b4abb7cebc5d072804d6fc42bd18aa31586b060e2629aae7251",
+    strip_prefix = "rules_apple-0bba769a9aafe9bd3349b32a326e599553886e98",
+    url = "https://github.com/bazelbuild/rules_apple/archive/0bba769a9aafe9bd3349b32a326e599553886e98.tar.gz",
 )
 
 load(
