@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2018 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ def _APFSCheck(volume_path):
   """
   output = subprocess.check_output(['diskutil',
                                     'info',
-                                    volume_path])
+                                    volume_path]).decode('utf-8')
   # Match the output's "Type (Bundle): ..." entry to determine if apfs.
   target_fs = re.search(r'(?:Type \(Bundle\):) +([^ ]+)', output)
   if not target_fs:

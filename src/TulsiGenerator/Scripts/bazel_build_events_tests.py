@@ -14,8 +14,8 @@
 
 """Test for bazel_build_events.py."""
 
+import io
 import json
-import StringIO
 import unittest
 
 import bazel_build_events
@@ -65,7 +65,7 @@ GRANDCHILD_EVENT_DICT = {
 class TestFileLineReader(unittest.TestCase):
 
   def testMultiLine(self):
-    test_file = StringIO.StringIO()
+    test_file = io.StringIO()
     test_file.write('First Line.\nSecond Line.\nThird Line.\n')
     test_file.seek(0)
     reader = bazel_build_events._FileLineReader(test_file)
@@ -75,7 +75,7 @@ class TestFileLineReader(unittest.TestCase):
     self.assertEqual(reader.check_for_changes(), None)
 
   def testLineRescans(self):
-    test_file = StringIO.StringIO()
+    test_file = io.StringIO()
     reader = bazel_build_events._FileLineReader(test_file)
     self.assertEqual(reader.check_for_changes(), None)
     test_file.write('Line')
@@ -102,7 +102,7 @@ class TestBazelBuildEvents(unittest.TestCase):
 class TestBazelBuildEventsWatcher(unittest.TestCase):
 
   def testWatcherBuildEvent(self):
-    test_file = StringIO.StringIO()
+    test_file = io.StringIO()
     watcher = bazel_build_events.BazelBuildEventsWatcher(test_file)
     test_file.write(json.dumps(ROOT_EVENT_DICT) + '\n')
     test_file.seek(0)

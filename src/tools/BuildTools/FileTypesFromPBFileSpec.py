@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2016 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ def _ParseFile(filename):
       'plutil', '-convert', 'xml1', '-o', '-', filename
   ])
   result = dict()
-  entry_list = plistlib.readPlistFromString(xml_content)
+  entry_list = plistlib.load(open(xml_content, 'rb'))
   assert type(entry_list) is list
   for entry in entry_list:
     identifier = entry.get('Identifier')
@@ -50,12 +50,12 @@ def main(args):
   for filename in files:
     extensions_to_uti.update(_ParseFile(filename))
   for ext in sorted(extensions_to_uti):
-    print '  "%s": "%s",' % (ext, extensions_to_uti[ext])
+    print('  "%s": "%s",' % (ext, extensions_to_uti[ext]))
   return 0
 
 
 if __name__ == '__main__':
   if len(sys.argv) <= 1:
-    print 'Usage: %s <Xcode.app path>' % sys.argv[0]
+    print('Usage: %s <Xcode.app path>' % sys.argv[0])
     sys.exit(1)
   sys.exit(main(sys.argv))

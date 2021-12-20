@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2018 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -100,7 +100,7 @@ def main():
                            args.release, args.config, args.xcode_version,
                            args.swift)
   if args.print_cmd:
-    print _QuoteCommandForShell(command)
+    print(_QuoteCommandForShell(command))
 
   if args.run:
     return _InterruptSafeCall(command)

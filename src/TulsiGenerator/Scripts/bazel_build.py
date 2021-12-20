@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # Copyright 2016 The Tulsi Authors. All rights reserved.
 #
@@ -362,8 +362,7 @@ class _OptionsParser(object):
     app_dir = developer_dir.split('.app')[0] + '.app'
     version_plist_path = os.path.join(app_dir, 'Contents', 'version.plist')
     try:
-      # python2 API to plistlib - needs updating if/when Tulsi bumps to python3
-      plist = plistlib.readPlist(version_plist_path)
+      plist = plistlib.load(open(version_plist_path, 'rb'))
     except IOError:
       _PrintXcodeWarning('Tulsi cannot determine Xcode version, error '
                          'reading from {}'.format(version_plist_path))
@@ -831,7 +830,8 @@ class BazelBuildBridge(object):
     process = subprocess.Popen(command,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
-                               bufsize=1)
+                               bufsize=1,
+                               universal_newlines=True)
 
     # Register atexit function to clean up BEP file.
     atexit.register(_BEPFileExitCleanup, self.build_events_file_path)
@@ -1276,7 +1276,7 @@ class BazelBuildBridge(object):
 
         # If the archive item looks like a file, extract it.
         if not filename.endswith(os.sep):
-          with zf.open(item) as src, file(target_path, 'wb') as dst:
+          with zf.open(item) as src, open(target_path, 'wb') as dst:
             shutil.copyfileobj(src, dst)
 
         # Patch up the extracted file's attributes to match the zip content.

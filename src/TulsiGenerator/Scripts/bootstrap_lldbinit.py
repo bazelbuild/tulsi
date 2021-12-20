@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2018 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,9 @@
 
 """Bootstraps the presence and setup of ~/.lldbinit-tulsiproj."""
 
+import io
 import os
 import shutil
-import StringIO
 import sys
 
 
@@ -139,7 +139,7 @@ class BootstrapLLDBInit(object):
                                                         source_string,
                                                         add_source_string)
 
-    out = StringIO.StringIO()
+    out = io.StringIO()
 
     if add_source_string:
       if return_code == CHANGE_NEEDED:
