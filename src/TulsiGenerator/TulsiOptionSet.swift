@@ -80,6 +80,9 @@ public enum TulsiOptionKey: String {
       // i386.
       Use64BitWatchSimulator,
 
+      // Target the legacy build system instead of the new build system.
+      UseLegacyBuildSystem,
+
       // Option to fallback to using a global lldbinit.
       DisableCustomLLDBInit,
 
@@ -274,6 +277,13 @@ public class TulsiOptionSet: Equatable {
     return buildSettings
   }
 
+  // MARK: - Public Getters
+
+  /// Whether the legacy build system should be used instead of the new build system.
+  var useLegacyBuildSystem: Bool {
+    return self[.UseLegacyBuildSystem].commonValueAsBool ?? true
+  }
+
   // MARK: - Private methods.
 
   private func saveToDictionary(_ filter: (TulsiOptionKey, TulsiOption) -> Bool) -> PersistenceType {
@@ -341,6 +351,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.Use64BitWatchSimulator, .Generic, false)
     addBoolOption(.DisableCustomLLDBInit, .Generic, false)
     addBoolOption(.UseBazelCacheReader, .Generic, false)
+    addBoolOption(.UseLegacyBuildSystem, .Generic, true)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }
