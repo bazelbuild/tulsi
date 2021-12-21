@@ -9,19 +9,19 @@ on:
 jobs:
   macos_latest:
     name: macos_latest
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@cherry-pick-upstream
+    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
     with:
       bazel: last_rc
       name: macos_latest
   macos_last_green:
     name: macos_last_green
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@cherry-pick-upstream
+    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
     with:
       bazel: last_green
       name: macos_last_green
   macos_latest_head_deps:
     name: macos_latest_head_deps
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@cherry-pick-upstream
+    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
     with:
       bazel: last_rc
       name: macos_latest_head_deps
