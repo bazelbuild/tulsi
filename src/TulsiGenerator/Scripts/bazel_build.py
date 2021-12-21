@@ -54,6 +54,9 @@ XCODE_INJECTED_FRAMEWORKS = [
     'IDEBundleInjection.framework',
     'XCTAutomationSupport.framework',
     'XCTest.framework',
+    'XCTestCore.framework',
+    'XCUnit.framework',
+    'XCUIAutomation.framework',
 ]
 
 _logger = None
