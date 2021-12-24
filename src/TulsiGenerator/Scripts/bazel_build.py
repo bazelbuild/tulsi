@@ -1839,7 +1839,7 @@ class BazelBuildBridge(object):
     process = subprocess.Popen(cmd,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
-    output, _ = process.communicate()
+    output = process.communicate()[0].decode('utf-8')
     return (process.returncode, output)
 
   def _PrintVerbose(self, msg, level=0):
