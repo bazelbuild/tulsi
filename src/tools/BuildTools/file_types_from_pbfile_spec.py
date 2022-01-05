@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2016 The Tulsi Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""
-Helper script to parse Xcode's pbfilespec's and create a map of file
-extension to PBXProj UTI.
+"""Helper script to parse Xcode's pbfilespec's and create a map of file extension to PBXProj UTI.
 """
 
-import plistlib
 import os
+import plistlib
 import subprocess
 import sys
 
@@ -30,8 +27,8 @@ def _ParseFile(filename):
       'plutil', '-convert', 'xml1', '-o', '-', filename
   ])
   result = dict()
-  entry_list = plistlib.readPlistFromString(xml_content)
-  assert type(entry_list) is list
+  entry_list = plistlib.loads(xml_content)
+  assert isinstance(entry_list, list)
   for entry in entry_list:
     identifier = entry.get('Identifier')
     extensions = entry.get('Extensions')
@@ -44,18 +41,19 @@ def _ParseFile(filename):
 
 def main(args):
   xcode_path = os.path.abspath(args[1])
-  files = subprocess.check_output(['find', xcode_path, '-name', '*.pbfilespec'])
+  files = subprocess.check_output(['find', xcode_path, '-name', '*.pbfilespec'],
+                                  encoding='utf-8')
   files = [f for f in files.split('\n') if f.strip()]
   extensions_to_uti = dict()
   for filename in files:
     extensions_to_uti.update(_ParseFile(filename))
   for ext in sorted(extensions_to_uti):
-    print '  "%s": "%s",' % (ext, extensions_to_uti[ext])
+    print('  "%s": "%s",' % (ext, extensions_to_uti[ext]))
   return 0
 
 
 if __name__ == '__main__':
   if len(sys.argv) <= 1:
-    print 'Usage: %s <Xcode.app path>' % sys.argv[0]
+    print('Usage: %s <Xcode.app path>' % sys.argv[0])
     sys.exit(1)
   sys.exit(main(sys.argv))
