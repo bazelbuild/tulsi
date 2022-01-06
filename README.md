@@ -7,7 +7,7 @@ plant.
 
 ## Building and installing
 
-Run `build_and_run.sh`. This will install Tulsi.app inside `$HOME/Applications` by default. See below for supported options:
+To use Tulsi, clone this repository and run `build_and_run.sh`. By default this will install the Tulsi.app inside `$HOME/Applications`. Additionally, following options are available:
 
 * `-b`: Bazel binary that Tulsi should use to build and install the app (Default is `bazel`)
 * `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
