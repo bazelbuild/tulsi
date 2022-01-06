@@ -22,5 +22,6 @@ apple_resource_group(
     structured_resources = [
         "tulsi/tulsi_aspects.bzl",
         "tulsi/tulsi_aspects_paths.bzl",
+        "tulsi/tulsi_aspects_propagation_attrs.bzl",
     ],
 )
