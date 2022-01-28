@@ -76,6 +76,10 @@ struct HeadlessXcodeProjectGenerator {
     if let project = projectDocument.project {
       config = config.configByResolvingInheritedSettingsFromProject(project)
     }
+    if let extraFlags = arguments.buildOptions {
+      config.options[.BazelBuildOptionsDebug].appendProjectValue(extraFlags)
+      config.options[.BazelBuildOptionsRelease].appendProjectValue(extraFlags)
+    }
 
     let workspaceRootURL: URL
     let projectWorkspaceRootURL = projectDocument.workspaceRootURL

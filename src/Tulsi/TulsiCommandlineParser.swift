@@ -108,6 +108,7 @@ class TulsiCommandlineParser {
 
   static let ParamAdditionalPathFilters = "--additionalSourceFilters"
   static let ParamBazel = "--bazel"
+  static let ParamBuildOptions = "--build-options"
 
   // Xcode project generation mode:
   static let ParamGeneratorConfigShort = "-c"
@@ -117,7 +118,6 @@ class TulsiCommandlineParser {
   // Tulsi project creation mode:
   static let ParamCreateTulsiProj = "--create-tulsiproj"
   static let ParamBuildStartupOptions = "--startup-options"
-  static let ParamBuildOptions = "--build-options"
   static let ParamBuildTargetShort = "-t"
   static let ParamBuildTargetLong = "--target"
 
@@ -194,6 +194,10 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBazel)
           i += 1
 
+        case TulsiCommandlineParser.ParamBuildOptions:
+          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBuildOptions)
+          i += 1
+
         case TulsiCommandlineParser.ParamOutputFolderShort:
           fallthrough
         case TulsiCommandlineParser.ParamOutputFolderLong:
@@ -242,10 +246,6 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBuildStartupOptions)
           i += 1
 
-        case TulsiCommandlineParser.ParamBuildOptions:
-          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBuildOptions)
-          i += 1
-
         case TulsiCommandlineParser.ParamBuildTargetShort:
           fallthrough
         case TulsiCommandlineParser.ParamBuildTargetLong:
@@ -285,6 +285,7 @@ class TulsiCommandlineParser {
         "      is equivalent to ",
         "        \"MyProject.tulsiproj:MyProject\"",
         "  \(ParamNoOpenXcode): Do not automatically open the generated project in Xcode.",
+        "  \(ParamBuildOptions) <options>: Extra Bazel build options to add.",
         "",
         "  \(ParamCreateTulsiProj) <tulsiproj_bundle_name>:",
         "    Generates a Tulsi project suitable for building the given Bazel target.",

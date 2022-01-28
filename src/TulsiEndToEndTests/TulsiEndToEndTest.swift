@@ -159,20 +159,25 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
     let projectURL = workspaceRootURL.appendingPathComponent(path, isDirectory: true)
     XCTAssert(fileManager.fileExists(atPath: projectURL.path), "Tulsi project is missing.")
     let configPath = projectURL.path + ":" + config
+    var args: [String] = [
+      "--",
+      "--genconfig",
+      configPath,
+      "--outputfolder",
+      workspaceRootURL.path,
+      "--bazel",
+      bazelURL.path,
+      "--no-open-xcode"
+    ]
+    if !extraBuildFlags.isEmpty {
+      args.append("--build-options")
+      args.append(extraBuildFlags)
+    }
 
     // Generate Xcode project with Tulsi.
     let completionInfo = ProcessRunner.launchProcessSync(
       tulsiBinURL.path,
-      arguments: [
-        "--",
-        "--genconfig",
-        configPath,
-        "--outputfolder",
-        workspaceRootURL.path,
-        "--bazel",
-        bazelURL.path,
-        "--no-open-xcode"
-      ])
+      arguments: args)
 
     if let stdoutput = String(data: completionInfo.stdout, encoding: .utf8) {
       print(stdoutput)
