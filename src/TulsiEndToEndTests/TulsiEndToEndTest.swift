@@ -169,9 +169,9 @@ class TulsiEndToEndTest: BazelIntegrationTestCase {
       bazelURL.path,
       "--no-open-xcode"
     ]
-    if !extraBuildFlags.isEmpty {
+    if !bazelBuildOptions.isEmpty {
       args.append("--build-options")
-      args.append(extraBuildFlags)
+      args.append(bazelBuildOptions.joined(separator: " "))
     }
 
     // Generate Xcode project with Tulsi.
