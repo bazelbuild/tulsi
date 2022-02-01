@@ -8,7 +8,6 @@ test_suite(name = "TulsiEndToEndTests")
 swift_library(
     name = "TulsiEndToEndTestBase",
     srcs = [
-        "BuildFlags.swift",
         "TulsiEndToEndTest.swift",
     ],
     module_name = "TulsiEndToEndTestBase",
