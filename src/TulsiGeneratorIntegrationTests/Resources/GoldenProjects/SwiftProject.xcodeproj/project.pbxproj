@@ -462,7 +462,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -517,7 +517,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -525,7 +525,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
@@ -539,7 +539,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
@@ -553,7 +553,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
@@ -567,7 +567,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
@@ -628,7 +628,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -636,7 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
@@ -650,7 +650,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
@@ -664,7 +664,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
@@ -678,7 +678,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
-				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
+				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_BWRS)/bazel-tulsi-includes/x/x/ ";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_BWRS)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
@@ -752,7 +752,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
