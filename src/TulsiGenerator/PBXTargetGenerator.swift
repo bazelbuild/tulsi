@@ -534,7 +534,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if let data = processedEntries[ruleEntry] {
         return data
       }
-      var frameworkSearchPaths = NSMutableOrderedSet()
+      let frameworkSearchPaths = NSMutableOrderedSet()
 
       defer {
         processedEntries[ruleEntry] = (frameworkSearchPaths)
