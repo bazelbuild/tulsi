@@ -42,22 +42,10 @@ import bazel_build_settings
 import bazel_options
 from bootstrap_lldbinit import BootstrapLLDBInit
 from bootstrap_lldbinit import TULSI_LLDBINIT_FILE
+import resigner
 import tulsi_logging
 from update_symbol_cache import UpdateSymbolCache
 
-
-# List of frameworks that Xcode injects into test host targets that should be
-# re-signed when running the tests on devices.
-XCODE_INJECTED_FRAMEWORKS = [
-    'libXCTestBundleInject.dylib',
-    'libXCTestSwiftSupport.dylib',
-    'IDEBundleInjection.framework',
-    'XCTAutomationSupport.framework',
-    'XCTest.framework',
-    'XCTestCore.framework',
-    'XCUnit.framework',
-    'XCUIAutomation.framework',
-]
 
 _logger = None
 
@@ -441,7 +429,18 @@ class BazelBuildBridge(object):
     self.bazel_bin_path = None
     self.codesign_attributes = {}
 
-    self.codesigning_folder_path = os.environ['CODESIGNING_FOLDER_PATH']
+    # UI tests have different handling with the new and old build system:
+    #
+    # New:
+    #  - CODESIGNING_FOLDER_PATH: points to the xctest bundle embedded in the
+    #    test runner
+    #  - PROVISIONING_PROFILE_DESTINATION_PATH: points to the test runner
+    # Old:
+    #  - CODESIGNING_FOLDER_PATH: points to the test runner
+    #  - PROVISIONING_PROFILE_DESTINATION_PATH: not set
+    profile_path = os.environ.get('PROVISIONING_PROFILE_DESTINATION_PATH')
+    self.codesigning_folder_path = (
+        profile_path or os.environ['CODESIGNING_FOLDER_PATH'])
 
     self.xcode_action = os.environ['ACTION']  # The Xcode build action.
     # When invoked as an external build system script, Xcode will set ACTION to
@@ -516,6 +515,8 @@ class BazelBuildBridge(object):
 
     self.is_simulator = self.platform_name.endswith('simulator')
     self.codesigning_allowed = not self.is_simulator
+
+    self.resign_manifest = os.environ.get('TULSI_RESIGN_MANIFEST')
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag. Note that Xcode will set multiple values in
@@ -672,9 +673,18 @@ class BazelBuildBridge(object):
     # the host itself.
     if (self.is_test and not self.platform_name.startswith('macos') and
         self.codesigning_allowed):
-      exit_code = self._ResignTestArtifacts()
+      exit_code, operations = self._PlanResigning()
       if exit_code:
         return exit_code
+      if self.resign_manifest:
+        with open(self.resign_manifest, 'w') as resign_manifest_file:
+          json_obj = resigner.OperationsSerialization.OperationsToJson(
+              operations)
+          json.dump(json_obj, resign_manifest_file)
+      else:
+        exit_code = resigner.PerformOperations(operations)
+        if exit_code:
+          return exit_code
 
     self._PruneLLDBModuleCache(outputs)
 
@@ -1163,6 +1173,16 @@ class BazelBuildBridge(object):
     if not full_source_path.endswith('/'):
       full_source_path += '/'
 
+    # With the new build system, Xcode will inject the test frameworks for unit
+    # tests before our shell script runs, not after, so make sure rsync doesn't
+    # delete them.
+    exclude_flags = []
+    # rsync wants the relative path from `output_path`, not the absolute path,
+    # so we pass '' instead of `output_path` here.
+    for exclude in self._PossibleTestFrameworksPaths(''):
+      exclude_flags.append('--filter')
+      exclude_flags.append('protect {}'.format(exclude))
+
     try:
       # Use -c to check differences by checksum, -v for verbose,
       # and --delete to delete stale files.
@@ -1173,7 +1193,7 @@ class BazelBuildBridge(object):
                                '-vcrlpgoD',
                                '--delete',
                                full_source_path,
-                               output_path],
+                               output_path] + exclude_flags,
                               stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
       _PrintXcodeError('Rsync failed. %s' % e)
@@ -1208,6 +1228,35 @@ class BazelBuildBridge(object):
       return 650
     return 0
 
+  def _RmTreeKeepingTestFrameworks(self, output_path):
+    """Delete all files except Xcode injected test frameworks."""
+    framework_paths = set(self._PossibleTestFrameworksPaths(output_path))
+    if not framework_paths:
+      shutil.rmtree(output_path)
+      return
+
+    with os.scandir(output_path) as it:
+      for entry in it:
+        if entry.name == 'Frameworks' and entry.is_dir():
+          self._CleanFrameworksDir(entry.path, framework_paths)
+          continue
+        if entry.is_dir():
+          shutil.rmtree(entry.path)
+        else:
+          os.remove(entry.path)
+
+  def _CleanFrameworksDir(self, dir_path, keep_set):
+    """Clean the Frameworks dir besides Xcode injected test frameworks."""
+
+    with os.scandir(dir_path) as it:
+      for entry in it:
+        if entry.path in keep_set:
+          continue
+        if entry.is_dir():
+          shutil.rmtree(entry.path)
+        else:
+          os.remove(entry.path)
+
   def _UnpackTarget(self, bundle_path, output_path, bundle_subpath):
     """Unpacks generated bundle into the given expected output path."""
     self._PrintVerbose('Unpacking %s to %s' % (bundle_path, output_path))
@@ -1218,7 +1267,7 @@ class BazelBuildBridge(object):
 
     if os.path.isdir(output_path):
       try:
-        shutil.rmtree(output_path)
+        self._RmTreeKeepingTestFrameworks(output_path)
       except OSError as e:
         _PrintXcodeError('Failed to remove stale output directory ""%s". '
                          '%s' % (output_path, e))
@@ -1346,88 +1395,48 @@ class BazelBuildBridge(object):
     timer.End()
     return 0, dsyms_found
 
-  def _ResignBundle(self, bundle_path, signing_identity, entitlements=None):
-    """Re-signs the bundle with the given signing identity and entitlements."""
-    if not self.codesigning_allowed:
-      return 0
-
-    timer = Timer('\tSigning ' + bundle_path, 'signing_bundle').Start()
-    command = [
-        'xcrun',
-        'codesign',
-        '-f',
-        '--timestamp=none',
-        '-s',
-        signing_identity,
-    ]
-
-    if entitlements:
-      command.extend(['--entitlements', entitlements])
-    else:
-      command.append('--preserve-metadata=entitlements')
-
-    command.append(bundle_path)
-
-    returncode, output = self._RunSubprocess(command)
-    timer.End()
-    if returncode:
-      _PrintXcodeError('Re-sign command %r failed. %s' % (command, output))
-      return 800 + returncode
-    return 0
-
-  def _ResignTestArtifacts(self):
-    """Resign test related artifacts that Xcode injected into the outputs."""
+  def _PlanResigning(self):
+    """Perform identity/extraction and plan signing operations."""
     if not self.is_test:
-      return 0
+      return (0, [])
     # Extract the signing identity from the bundle at the expected output path
     # since that's where the signed bundle from bazel was placed.
     signing_identity = self._ExtractSigningIdentity(self.artifact_output_path)
     if not signing_identity:
-      return 800
+      return (800, [])
 
     exit_code = 0
-    timer = Timer('Re-signing injected test host artifacts',
-                  'resigning_test_host').Start()
+    operations = []
 
     if self.test_host_binary:
       # For Unit tests, we need to resign the frameworks that Xcode injected
       # into the test host bundle.
       test_host_bundle = os.path.dirname(self.test_host_binary)
-      exit_code = self._ResignXcodeTestFrameworks(
-          test_host_bundle, signing_identity)
+      operations.append(resigner.FrameworksResigningOperation(
+          test_host_bundle, signing_identity))
     else:
       # For UI tests, we need to resign the UI test runner app and the
       # frameworks that Xcode injected into the runner app. The UI Runner app
       # also needs to be signed with entitlements.
-      exit_code = self._ResignXcodeTestFrameworks(
-          self.codesigning_folder_path, signing_identity)
-      if exit_code == 0:
-        entitlements_path = self._InstantiateUIRunnerEntitlements()
-        if entitlements_path:
-          exit_code = self._ResignBundle(
-              self.codesigning_folder_path,
-              signing_identity,
-              entitlements_path)
-        else:
-          _PrintXcodeError('Could not instantiate UI runner entitlements.')
-          exit_code = 800
+      operations.append(resigner.FrameworksResigningOperation(
+          self.codesigning_folder_path, signing_identity))
+      entitlements_path = self._InstantiateUIRunnerEntitlements()
+      if entitlements_path:
+        operations.append(resigner.BundleResigningOperation(
+            self.codesigning_folder_path, signing_identity,
+            entitlements_path))
+      else:
+        _PrintXcodeError('Could not instantiate UI runner entitlements.')
+        exit_code = 800
 
-    timer.End()
-    return exit_code
+    return (exit_code, operations)
 
-  def _ResignXcodeTestFrameworks(self, bundle, signing_identity):
-    """Re-signs the support frameworks injected by Xcode in the given bundle."""
+  def _PossibleTestFrameworksPaths(self, bundle):
+    """Returns a list of potential paths of Xcode injected test frameworks."""
     if not self.codesigning_allowed:
-      return 0
-
-    for framework in XCODE_INJECTED_FRAMEWORKS:
-      framework_path = os.path.join(
-          bundle, 'Frameworks', framework)
-      if os.path.isdir(framework_path) or os.path.isfile(framework_path):
-        exit_code = self._ResignBundle(framework_path, signing_identity)
-        if exit_code != 0:
-          return exit_code
-    return 0
+      return []
+    return [os.path.join(bundle, 'Frameworks', f) for f
+            in resigner.XCODE_INJECTED_FRAMEWORKS]
 
   def _InstantiateUIRunnerEntitlements(self):
     """Substitute team and bundle identifiers into UI runner entitlements.
