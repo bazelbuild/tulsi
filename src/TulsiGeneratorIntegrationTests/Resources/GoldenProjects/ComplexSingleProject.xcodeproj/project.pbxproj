@@ -553,7 +553,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4A42893600000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				978262ABC642309A00000000 /* ShellScript */,
+				978262ABC642309A00000000 /* build //tulsi_e2e_complex:Application */,
 			);
 			buildRules = (
 			);
@@ -585,8 +585,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED6042BF8400000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				978262AB0C8B8F3600000000 /* ShellScript */,
-				978262AB11B0EB1700000000 /* ShellScript */,
+				978262AB0C8B8F3600000000 /* build //tulsi_e2e_complex:XCTest */,
+				978262AB11B0EB1700000000 /* Objective-C dummy file generation */,
 				04BFD5160000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -623,7 +623,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDAD38E80000000000 /* Build configuration list for PBXNativeTarget "TodayExtension" */;
 			buildPhases = (
-				978262AB5E42831100000000 /* ShellScript */,
+				978262AB5E42831100000000 /* build //tulsi_e2e_complex:TodayExtension */,
 			);
 			buildRules = (
 			);
@@ -693,7 +693,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB0C8B8F3600000000 /* ShellScript */ = {
+		978262AB0C8B8F3600000000 /* build //tulsi_e2e_complex:XCTest */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -701,6 +701,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_complex:XCTest";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -708,13 +709,14 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB11B0EB1700000000 /* ShellScript */ = {
+		978262AB11B0EB1700000000 /* Objective-C dummy file generation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Objective-C dummy file generation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,7 +724,7 @@
 			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(SrcsHeader src5 src1 src2 src3 src4 HdrsHeader defaultTestSource)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
-		978262AB5E42831100000000 /* ShellScript */ = {
+		978262AB5E42831100000000 /* build //tulsi_e2e_complex:TodayExtension */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -730,6 +732,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_complex:TodayExtension";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -737,7 +740,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_complex:TodayExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABC642309A00000000 /* ShellScript */ = {
+		978262ABC642309A00000000 /* build //tulsi_e2e_complex:Application */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -745,6 +748,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_complex:Application";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

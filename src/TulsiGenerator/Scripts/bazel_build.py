@@ -515,11 +515,7 @@ class BazelBuildBridge(object):
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
 
     self.is_simulator = self.platform_name.endswith('simulator')
-    # Check to see if code signing actions should be skipped or not.
-    if self.is_simulator:
-      self.codesigning_allowed = False
-    else:
-      self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
+    self.codesigning_allowed = not self.is_simulator
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag. Note that Xcode will set multiple values in
