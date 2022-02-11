@@ -53,6 +53,9 @@ class XcodeProjectGeneratorTests: XCTestCase {
       fileURLWithPath: "/generatedProjectResources/StubWatchOS2InfoPlist.plist"),
     stubWatchOS2AppExInfoPlist: URL(
       fileURLWithPath: "/generatedProjectResources/StubWatchOS2AppExInfoPlist.plist"),
+    stubClang: URL(fileURLWithPath:  "/generatedProjectResources/stub_clang"),
+    stubSwiftc: URL(fileURLWithPath:  "/generatedProjectResources/stub_swiftc"),
+    stubLd: URL(fileURLWithPath:  "/generatedProjectResources/stub_ld"),
     bazelWorkspaceFile: URL(fileURLWithPath: "/WORKSPACE"),
     tulsiPackageFiles: [URL(fileURLWithPath: "/tulsi/tulsi_aspects.bzl")])
 
@@ -593,6 +596,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     project: PBXProject,
     buildScriptPath: String,
     stubInfoPlistPaths: StubInfoPlistPaths,
+    stubBinaryPaths: StubBinaryPaths,
     tulsiVersion: String,
     options: TulsiOptionSet,
     localizedMessageLogger: LocalizedMessageLogger,

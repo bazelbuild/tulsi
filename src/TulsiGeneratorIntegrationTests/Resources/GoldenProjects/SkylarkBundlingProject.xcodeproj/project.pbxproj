@@ -177,7 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED7CF658EB00000000 /* Build configuration list for PBXNativeTarget "tvOSApplication" */;
 			buildPhases = (
-				978262ABFF52015900000000 /* ShellScript */,
+				978262ABFF52015900000000 /* build //tulsi_e2e_tvos_project:tvOSApplication */,
 			);
 			buildRules = (
 			);
@@ -193,7 +193,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDF074E9CB00000000 /* Build configuration list for PBXNativeTarget "tvOSExtension" */;
 			buildPhases = (
-				978262AB36BEF64500000000 /* ShellScript */,
+				978262AB36BEF64500000000 /* build //tulsi_e2e_tvos_project:tvOSExtension */,
 			);
 			buildRules = (
 			);
@@ -248,7 +248,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB36BEF64500000000 /* ShellScript */ = {
+		978262AB36BEF64500000000 /* build //tulsi_e2e_tvos_project:tvOSExtension */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -256,6 +256,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_tvos_project:tvOSExtension";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,7 +264,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_tvos_project:tvOSExtension --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABFF52015900000000 /* ShellScript */ = {
+		978262ABFF52015900000000 /* build //tulsi_e2e_tvos_project:tvOSApplication */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -271,6 +272,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_tvos_project:tvOSApplication";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -274,7 +274,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4A42893600000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				978262AB6DF6956400000000 /* ShellScript */,
+				978262AB6DF6956400000000 /* build //tulsi_e2e_swift:Application */,
 			);
 			buildRules = (
 			);
@@ -331,7 +331,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB6DF6956400000000 /* ShellScript */ = {
+		978262AB6DF6956400000000 /* build //tulsi_e2e_swift:Application */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -339,6 +339,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_swift:Application";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

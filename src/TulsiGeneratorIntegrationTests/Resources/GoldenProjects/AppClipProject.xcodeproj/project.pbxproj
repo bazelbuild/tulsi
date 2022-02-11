@@ -192,7 +192,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4A42893600000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				978262AB42F08E9300000000 /* ShellScript */,
+				978262AB42F08E9300000000 /* build //tulsi_e2e_app_clip:Application */,
 			);
 			buildRules = (
 			);
@@ -208,7 +208,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDAA907B3200000000 /* Build configuration list for PBXNativeTarget "AppClip" */;
 			buildPhases = (
-				978262AB0C9444F000000000 /* ShellScript */,
+				978262AB0C9444F000000000 /* build //tulsi_e2e_app_clip:AppClip */,
 			);
 			buildRules = (
 			);
@@ -263,7 +263,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB0C9444F000000000 /* ShellScript */ = {
+		978262AB0C9444F000000000 /* build //tulsi_e2e_app_clip:AppClip */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -271,6 +271,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_app_clip:AppClip";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,7 +279,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_app_clip:AppClip --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB42F08E9300000000 /* ShellScript */ = {
+		978262AB42F08E9300000000 /* build //tulsi_e2e_app_clip:Application */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -286,6 +287,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_app_clip:Application";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

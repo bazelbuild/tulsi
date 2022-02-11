@@ -605,6 +605,7 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
   let outputPaths: [String]
   let shellPath: String
   let shellScript: String
+  let name: String?
   var showEnvVarsInLog = false
 
   override var isa: String {
@@ -615,17 +616,19 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
   private let _hashValue: Int
 
   override var comment: String? {
-    return "ShellScript"
+    return name ?? "ShellScript"
   }
 
   init(shellScript: String,
        shellPath: String = "/bin/sh",
+       name: String?,
        inputPaths: [String] = [String](),
        outputPaths: [String] = [String](),
        buildActionMask: Int = 0,
        runOnlyForDeploymentPostprocessing: Bool = false) {
     self.shellScript = shellScript
     self.shellPath = shellPath
+    self.name = name
     self.inputPaths = inputPaths
     self.outputPaths = outputPaths
     self._hashValue = shellPath.hashValue &+ shellScript.hashValue
@@ -638,6 +641,7 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
     try super.serializeInto(serializer)
     try serializer.addField("inputPaths", inputPaths)
     try serializer.addField("outputPaths", outputPaths)
+    try serializer.addField("name", name)
     try serializer.addField("shellPath", shellPath)
     try serializer.addField("shellScript", shellScript)
     try serializer.addField("showEnvVarsInLog", showEnvVarsInLog)

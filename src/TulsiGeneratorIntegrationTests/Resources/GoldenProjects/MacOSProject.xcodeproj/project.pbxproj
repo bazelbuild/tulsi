@@ -247,7 +247,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDD87197C000000000 /* Build configuration list for PBXNativeTarget "MyMacOSApp" */;
 			buildPhases = (
-				978262AB36CF34B400000000 /* ShellScript */,
+				978262AB36CF34B400000000 /* build //tulsi_e2e_mac:MyMacOSApp */,
 			);
 			buildRules = (
 			);
@@ -279,7 +279,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDA2017DE800000000 /* Build configuration list for PBXNativeTarget "MyCommandLineApp" */;
 			buildPhases = (
-				978262AB64B4CDBE00000000 /* ShellScript */,
+				978262AB64B4CDBE00000000 /* build //tulsi_e2e_mac:MyCommandLineApp */,
 			);
 			buildRules = (
 			);
@@ -295,7 +295,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED3523018D00000000 /* Build configuration list for PBXNativeTarget "MyTodayExtension" */;
 			buildPhases = (
-				978262ABB2E139A200000000 /* ShellScript */,
+				978262ABB2E139A200000000 /* build //tulsi_e2e_mac:MyTodayExtension */,
 			);
 			buildRules = (
 			);
@@ -335,7 +335,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB36CF34B400000000 /* ShellScript */ = {
+		978262AB36CF34B400000000 /* build //tulsi_e2e_mac:MyMacOSApp */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -343,6 +343,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:MyMacOSApp";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,7 +351,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_mac:MyMacOSApp --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB64B4CDBE00000000 /* ShellScript */ = {
+		978262AB64B4CDBE00000000 /* build //tulsi_e2e_mac:MyCommandLineApp */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -358,6 +359,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:MyCommandLineApp";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,7 +367,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_mac:MyCommandLineApp --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABB2E139A200000000 /* ShellScript */ = {
+		978262ABB2E139A200000000 /* build //tulsi_e2e_mac:MyTodayExtension */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -373,6 +375,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:MyTodayExtension";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
