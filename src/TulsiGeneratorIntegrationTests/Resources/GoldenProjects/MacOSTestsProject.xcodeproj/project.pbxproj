@@ -289,7 +289,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDD87197C000000000 /* Build configuration list for PBXNativeTarget "MyMacOSApp" */;
 			buildPhases = (
-				978262AB36CF34B400000000 /* ShellScript */,
+				978262AB36CF34B400000000 /* build //tulsi_e2e_mac:MyMacOSApp */,
 			);
 			buildRules = (
 			);
@@ -321,8 +321,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDEC67875D00000000 /* Build configuration list for PBXNativeTarget "UnitTestsNoHost" */;
 			buildPhases = (
-				978262AB7494A9B700000000 /* ShellScript */,
-				978262AB3C07559600000000 /* ShellScript */,
+				978262AB7494A9B700000000 /* build //tulsi_e2e_mac:UnitTestsNoHost */,
+				978262AB3C07559600000000 /* Objective-C dummy file generation */,
 				04BFD5160000000000000002 /* Sources */,
 			);
 			buildRules = (
@@ -339,8 +339,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDE993F33E00000000 /* Build configuration list for PBXNativeTarget "UnitTests" */;
 			buildPhases = (
-				978262AB8536FCD700000000 /* ShellScript */,
-				978262AB849093BB00000000 /* ShellScript */,
+				978262AB8536FCD700000000 /* build //tulsi_e2e_mac:UnitTests */,
+				978262AB849093BB00000000 /* Objective-C dummy file generation */,
 				04BFD5160000000000000001 /* Sources */,
 			);
 			buildRules = (
@@ -358,8 +358,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED1478E90F00000000 /* Build configuration list for PBXNativeTarget "UITests" */;
 			buildPhases = (
-				978262AB6D7A83AC00000000 /* ShellScript */,
-				978262AB6890D86300000000 /* ShellScript */,
+				978262AB6D7A83AC00000000 /* build //tulsi_e2e_mac:UITests */,
+				978262AB6890D86300000000 /* Objective-C dummy file generation */,
 				04BFD5160000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -410,7 +410,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB36CF34B400000000 /* ShellScript */ = {
+		978262AB36CF34B400000000 /* build //tulsi_e2e_mac:MyMacOSApp */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -418,6 +418,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:MyMacOSApp";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,13 +426,14 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_mac:MyMacOSApp --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB3C07559600000000 /* ShellScript */ = {
+		978262AB3C07559600000000 /* Objective-C dummy file generation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Objective-C dummy file generation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -439,13 +441,14 @@
 			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(UnitTestsNoHost)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
-		978262AB6890D86300000000 /* ShellScript */ = {
+		978262AB6890D86300000000 /* Objective-C dummy file generation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Objective-C dummy file generation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,7 +456,7 @@
 			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(UITests)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
-		978262AB6D7A83AC00000000 /* ShellScript */ = {
+		978262AB6D7A83AC00000000 /* build //tulsi_e2e_mac:UITests */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -461,6 +464,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:UITests";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,7 +472,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_mac:UITests --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB7494A9B700000000 /* ShellScript */ = {
+		978262AB7494A9B700000000 /* build //tulsi_e2e_mac:UnitTestsNoHost */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -476,6 +480,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:UnitTestsNoHost";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,13 +488,14 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_mac:UnitTestsNoHost --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262AB849093BB00000000 /* ShellScript */ = {
+		978262AB849093BB00000000 /* Objective-C dummy file generation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Objective-C dummy file generation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,7 +503,7 @@
 			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(UnitTests)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
-		978262AB8536FCD700000000 /* ShellScript */ = {
+		978262AB8536FCD700000000 /* build //tulsi_e2e_mac:UnitTests */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -505,6 +511,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_mac:UnitTests";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
