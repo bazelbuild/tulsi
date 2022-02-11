@@ -35,6 +35,7 @@ final class XcodeProjectGenerator {
   /// the generated Xcode project.
   struct ResourceSourcePathURLs {
     let buildScript: URL  // The script to run on "build" actions.
+    let resignerScript: URL  // The script to run for test resigning.
     let cleanScript: URL  // The script to run on "clean" actions.
     let extraBuildScripts: [URL] // Any additional scripts to install into the project bundle.
     let iOSUIRunnerEntitlements: URL  // Entitlements file template for iOS UI Test runner apps.
@@ -71,6 +72,7 @@ final class XcodeProjectGenerator {
   static let ConfigDirectorySubpath = "\(TulsiArtifactDirectory)/Configs"
   static let ProjectResourcesDirectorySubpath = "\(TulsiArtifactDirectory)/Resources"
   private static let BuildScript = "bazel_build.py"
+  private static let ResignerScript = "resigner.py"
   private static let SettingsScript = "bazel_build_settings.py"
   private static let CleanScript = "bazel_clean.sh"
   private static let ShellCommandsUtil = "bazel_cache_reader"
@@ -447,12 +449,14 @@ final class XcodeProjectGenerator {
     }
 
     let buildScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.BuildScript)"
+    let resignerScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.ResignerScript)"
     let cleanScriptPath = "${PROJECT_FILE_PATH}/\(XcodeProjectGenerator.ScriptDirectorySubpath)/\(XcodeProjectGenerator.CleanScript)"
 
     let generator = pbxTargetGeneratorType.init(bazelPath: config.bazelURL.path,
                                                 bazelBinPath: workspaceInfoExtractor.bazelBinPath,
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
+                                                resignerScriptPath: resignerScriptPath,
                                                 stubInfoPlistPaths: stubInfoPlistPaths,
                                                 stubBinaryPaths: stubBinaryPaths,
                                                 tulsiVersion: tulsiVersion,
@@ -923,7 +927,7 @@ final class XcodeProjectGenerator {
       // a single target will be created.
       repeat {
         var filename = String()
-        var additionalBuildTargets = target.buildActionDependencies.map() {
+        var additionalBuildTargets = target.schemeBuildDependencies.map() {
           ($0, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes())
         }
 
@@ -1355,6 +1359,7 @@ final class XcodeProjectGenerator {
       localizedMessageLogger.infoMessage("Installing scripts")
       installFiles([(resourceURLs.buildScript, XcodeProjectGenerator.BuildScript),
                     (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
+                    (resourceURLs.resignerScript, XcodeProjectGenerator.ResignerScript),
                    ],
                    toDirectory: scriptDirectoryURL)
       installFiles([

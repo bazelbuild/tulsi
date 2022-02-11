@@ -880,7 +880,7 @@ class PBXTarget: PBXObjectProtocol, Hashable {
   /// The targets on which this target depends.
   var dependencies = [PBXTargetDependency]()
   /// Any targets which must be built by XCSchemes generated for this target.
-  var buildActionDependencies = Set<PBXTarget>()
+  var schemeBuildDependencies = Set<PBXTarget>()
   /// The build phases to be executed to generate this target.
   var buildPhases = [PBXBuildPhase]()
   /// Deployment target for this target, if available.
@@ -923,10 +923,11 @@ class PBXTarget: PBXObjectProtocol, Hashable {
     }
   }
 
-  /// Creates a BuildAction-only dependency on the given target. Unlike a true dependency, this
-  /// linkage is only intended to affect generated XCSchemes.
-  func createBuildActionDependencyOn(_ target: PBXTarget) {
-    buildActionDependencies.insert(target)
+  /// Creates a scheme BuildAction-only dependency on the given target. Unlike
+  /// a true dependency, this linkage is only intended to affect generated
+  /// XCSchemes.
+  func createSchemeBuildDependencyOn(_ target: PBXTarget) {
+    schemeBuildDependencies.insert(target)
   }
 
   func serializeInto(_ serializer: PBXProjFieldSerializer) throws {
@@ -973,7 +974,7 @@ final class PBXNativeTarget: PBXTarget {
 }
 
 
-/// Models a target that executes an arbitrary binary.
+/// Models a target that executes an arbitrary build tool.
 final class PBXLegacyTarget: PBXTarget {
   let buildArgumentsString: String
   let buildToolPath: String
@@ -1004,6 +1005,17 @@ final class PBXLegacyTarget: PBXTarget {
   }
 }
 
+/// Models an aggregate target representing an arbitrary binary with no
+/// configuration.
+final class PBXAggregateTarget: PBXTarget {
+  override var isa: String {
+    return "PBXAggregateTarget"
+  }
+
+  override init(name: String, deploymentTarget: DeploymentTarget?) {
+    super.init(name: name, deploymentTarget: deploymentTarget)
+  }
+}
 
 /// Models a link to a target or output file which may be in a different project.
 final class PBXContainerItemProxy: PBXObjectProtocol, Hashable {
@@ -1192,6 +1204,16 @@ final class PBXProject: PBXObjectProtocol {
                                 buildToolPath: buildToolPath,
                                 buildArguments: buildArguments,
                                 buildWorkingDirectory: buildWorkingDirectory)
+    targetByName[name] = value
+    return value
+  }
+
+
+  func createAggregateTarget(
+    _ name: String,
+    deploymentTarget: DeploymentTarget?
+  ) -> PBXAggregateTarget {
+    let value = PBXAggregateTarget(name: name, deploymentTarget: deploymentTarget)
     targetByName[name] = value
     return value
   }

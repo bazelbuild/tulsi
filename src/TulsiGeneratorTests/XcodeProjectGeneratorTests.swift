@@ -40,6 +40,7 @@ class XcodeProjectGeneratorTests: XCTestCase {
 
   let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
     buildScript: URL(fileURLWithPath: "/scripts/Build"),
+    resignerScript: URL(fileURLWithPath: "/scripts/Resigner"),
     cleanScript: URL(fileURLWithPath: "/scripts/Clean"),
     extraBuildScripts: [URL(fileURLWithPath: "/scripts/Logging")],
     iOSUIRunnerEntitlements: URL(
@@ -595,6 +596,7 @@ final class MockPBXTargetGenerator: PBXTargetGeneratorProtocol {
     bazelBinPath: String,
     project: PBXProject,
     buildScriptPath: String,
+    resignerScriptPath: String,
     stubInfoPlistPaths: StubInfoPlistPaths,
     stubBinaryPaths: StubBinaryPaths,
     tulsiVersion: String,

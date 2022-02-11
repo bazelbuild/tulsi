@@ -44,6 +44,7 @@ class PBXTargetGeneratorTests: XCTestCase {
       bazelBinPath: "bazel-bin",
       project: project,
       buildScriptPath: "",
+      resignerScriptPath: "",
       stubInfoPlistPaths: stubPlistPaths,
       stubBinaryPaths: stubBinaryPaths,
       tulsiVersion: testTulsiVersion,
@@ -174,6 +175,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       bazelBinPath: "bazel-bin",
       project: project,
       buildScriptPath: "",
+      resignerScriptPath: "",
       stubInfoPlistPaths: stubPlistPaths,
       stubBinaryPaths: stubBinaryPaths,
       tulsiVersion: testTulsiVersion,
@@ -2635,7 +2637,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       inTargets: targets)
   }
 
-  func testGenerateIndexerWithXCDataModel() {
+  func testGenerateIndexerSkipsXCDataModel() {
     let dataModel = "test.xcdatamodeld"
     let ruleAttributes = [
       "datamodels": [
@@ -2660,13 +2662,11 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       processedEntries: &proccessedEntries)
     targetGenerator.generateIndexerTargets()
 
-    var allSourceFiles = sourceFileNames
-    allSourceFiles.append(dataModel)
     let targets = project.targetByName
     XCTAssertEqual(targets.count, 1)
     validateIndexerTarget(
       indexerTargetName,
-      sourceFileNames: allSourceFiles,
+      sourceFileNames: sourceFileNames,
       inTargets: targets)
   }
 
