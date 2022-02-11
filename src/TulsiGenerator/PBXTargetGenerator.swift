@@ -74,6 +74,7 @@ protocol PBXTargetGeneratorProtocol: AnyObject {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
+       resignerScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
        stubBinaryPaths: StubBinaryPaths,
        tulsiVersion: String,
@@ -222,6 +223,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
   let project: PBXProject
   let buildScriptPath: String
+  let resignerScriptPath: String
   let stubInfoPlistPaths: StubInfoPlistPaths
   let stubBinaryPaths: StubBinaryPaths
   let tulsiVersion: String
@@ -467,6 +469,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        bazelBinPath: String,
        project: PBXProject,
        buildScriptPath: String,
+       resignerScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
        stubBinaryPaths: StubBinaryPaths,
        tulsiVersion: String,
@@ -478,6 +481,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.bazelBinPath = bazelBinPath
     self.project = project
     self.buildScriptPath = buildScriptPath
+    self.resignerScriptPath = resignerScriptPath
     self.stubInfoPlistPaths = stubInfoPlistPaths
     self.stubBinaryPaths = stubBinaryPaths
     self.tulsiVersion = tulsiVersion
@@ -643,16 +647,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       fileReferences.append(contentsOf: generateFileReferencesForFileInfos(frameworkFileInfos))
       fileReferences.append(contentsOf: nonARCFiles)
 
-      var buildPhaseReferences: [PBXReference]
-      if nonSourceVersionedFileInfos.isEmpty {
-        buildPhaseReferences = [PBXReference]()
-      } else {
-        let versionedFileReferences = createReferencesForVersionedFileTargets(nonSourceVersionedFileInfos)
-        buildPhaseReferences = versionedFileReferences as [PBXReference]
+      if !nonSourceVersionedFileInfos.isEmpty {
+        createReferencesForVersionedFileTargets(nonSourceVersionedFileInfos)
       }
-      buildPhaseReferences.append(contentsOf: fileReferences as [PBXReference])
-
-      let buildPhase = createBuildPhaseForReferences(buildPhaseReferences,
+      let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
 
       if !buildPhase.files.isEmpty {
@@ -1013,7 +1011,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     frameworkIndexers = mergeIndexers(frameworkIndexers.values)
   }
 
-  private func generateFileReferencesForFileInfos(_ infos: [BazelFileInfo]) -> [PBXFileReference] {
+  private func generateFileReferencesForFileInfos(
+    _ infos: [BazelFileInfo],
+    includeGenfiles: Bool = false
+  ) -> [PBXFileReference] {
     guard !infos.isEmpty else { return [] }
     var generatedFilePaths = [String]()
     var sourceFilePaths = [String]()
@@ -1031,14 +1032,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     let (_, generatedFileReferences) = project.getOrCreateGroupsAndFileReferencesForPaths(generatedFilePaths)
     generatedFileReferences.forEach() { $0.isInputFile = false }
 
-    fileReferences.append(contentsOf: generatedFileReferences)
+    if includeGenfiles {
+      fileReferences.append(contentsOf: generatedFileReferences)
+    }
     return fileReferences
   }
 
   /// Generates file references for the given infos, and returns a settings dictionary to be passed
   /// to createBuildPhaseForReferences:withPerFileSettings:.
-  private func generateFileReferencesAndSettingsForNonARCFileInfos(_ infos: [BazelFileInfo]) -> ([PBXFileReference], [PBXFileReference: [String: String]]) {
-    let nonARCFileReferences = generateFileReferencesForFileInfos(infos)
+  private func generateFileReferencesAndSettingsForNonARCFileInfos(
+    _ infos: [BazelFileInfo],
+    includeGenfiles: Bool = true
+  ) -> ([PBXFileReference], [PBXFileReference: [String: String]]) {
+    let nonARCFileReferences = generateFileReferencesForFileInfos(infos, includeGenfiles: includeGenfiles)
     var settings = [PBXFileReference: [String: String]]()
     let disableARCSetting = ["COMPILER_FLAGS": "-fno-objc-arc"]
     nonARCFileReferences.forEach() {
@@ -1156,7 +1162,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   }
 
   /// Adds the given file targets to a versioned group.
-  private func createReferencesForVersionedFileTargets(_ fileInfos: [BazelFileInfo]) -> [XCVersionGroup] {
+  private func createReferencesForVersionedFileTargets(_ fileInfos: [BazelFileInfo]) {
     var groups = [String: XCVersionGroup]()
 
     for info in fileInfos {
@@ -1176,7 +1182,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     for (sourcePath, group) in groups {
       setCurrentVersionForXCVersionGroup(group, atPath: sourcePath)
     }
-    return Array(groups.values)
   }
 
   // Attempt to read the .xccurrentversion plists in the xcdatamodeld's and sync up the
@@ -1338,6 +1343,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
                                            ruleEntry: RuleEntry,
                                            ruleEntryMap: RuleEntryMap,
                                            pathFilters: Set<String>?) {
+    let needDummyPhases = options.useLegacyBuildSystem
     let includePathInProject = pathFilterFunc(pathFilters)
     func includeFileInProject(_ info: BazelFileInfo) -> Bool {
       return includePathInProject(info.fullPath)
@@ -1348,21 +1354,23 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // For the Swift dummy files phase to work, it has to be placed before the Compile Sources build
     // phase.
-    if containsSwift {
+    if needDummyPhases && containsSwift {
       let testBuildPhase = createGenerateSwiftDummyFilesTestBuildPhase()
       target.buildPhases.append(testBuildPhase)
     }
     if !testSourceFileInfos.isEmpty || !testNonArcSourceFileInfos.isEmpty {
-      // Create dummy dependency files for non-Swift code as Xcode expects Clang to generate them.
-      let allSources = testSourceFileInfos + testNonArcSourceFileInfos
-      let nonSwiftSources = allSources.filter { !$0.subPath.hasSuffix(".swift") }
-      if !nonSwiftSources.isEmpty {
-        let testBuildPhase = createGenerateDummyDependencyFilesTestBuildPhase(nonSwiftSources)
-        target.buildPhases.append(testBuildPhase)
+      if needDummyPhases {
+        // Create dummy dependency files for non-Swift code as Xcode expects Clang to generate them.
+        let allSources = testSourceFileInfos + testNonArcSourceFileInfos
+        let nonSwiftSources = allSources.filter { !$0.subPath.hasSuffix(".swift") }
+        if !nonSwiftSources.isEmpty {
+          let testBuildPhase = createGenerateDummyDependencyFilesTestBuildPhase(nonSwiftSources)
+          target.buildPhases.append(testBuildPhase)
+        }
       }
-      var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos)
+      var fileReferences = generateFileReferencesForFileInfos(testSourceFileInfos, includeGenfiles: false)
       let (nonARCFiles, nonARCSettings) =
-          generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos)
+          generateFileReferencesAndSettingsForNonARCFileInfos(testNonArcSourceFileInfos, includeGenfiles: false)
       fileReferences.append(contentsOf: nonARCFiles)
       let buildPhase = createBuildPhaseForReferences(fileReferences,
                                                      withPerFileSettings: nonARCSettings)
@@ -1684,6 +1692,22 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     var buildSettings = options.buildSettingsForTarget(name)
     buildSettings["TULSI_BUILD_PATH"] = entry.label.packageName!
 
+    // iOS test targets need to resign the test dylibs/frameworks that Xcode
+    // injects, otherwise they won't be signed properly for running on device.
+    //
+    // For UI tests with the new build system, we can't resign from within the
+    // same target, so instead we resign from a `PBXAggregateTarget`. To track
+    // which artifacts need to be resigned between the two targets, we use the
+    // resigning manifest below.
+    if !options.useLegacyBuildSystem && entry.pbxTargetType == .UIUnitTest &&
+        entry.deploymentTarget?.platform == PlatformType.ios  {
+      let manifest = "tulsi_resign_manifest.json"
+      self.createResignerTargetForUITestTarget(
+          target, buildSettings: ["TULSI_RESIGN_MANIFEST":
+              "$(CONFIGURATION_TEMP_DIR)/\(name).build/\(manifest)"])
+
+      buildSettings["TULSI_RESIGN_MANIFEST"] = "$(TARGET_TEMP_DIR)/\(manifest)"
+    }
 
     buildSettings["PRODUCT_NAME"] = name
     if let bundleID = entry.bundleID {
@@ -1734,7 +1758,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     createBuildConfigurationsForList(target.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(target.buildConfigurationList)
 
-    if let buildPhase = createBuildPhaseForRuleEntry(entry) {
+    if let buildPhase = createBazelBuildPhaseForRuleEntry(entry) {
       target.buildPhases.append(buildPhase)
     }
 
@@ -1800,7 +1824,7 @@ done
     return buildPhase
   }
 
-  private func createBuildPhaseForRuleEntry(_ entry: RuleEntry)
+  private func createBazelBuildPhaseForRuleEntry(_ entry: RuleEntry)
       -> PBXShellScriptBuildPhase? {
     let buildLabel = entry.label.value
     let commandLine = buildScriptCommandlineForBuildLabels(buildLabel)
@@ -1826,6 +1850,57 @@ done
     )
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "BazelBuild"
+    return buildPhase
+  }
+
+  /// Create a `PBXAggregateTarget` which calls the resigner script to resign
+  /// the given UI test target's artifacts so the artifacts are properly signed
+  /// for running on device.
+  ///
+  /// Ideally we could have a regular `PBXShellScriptBuildPhase` for the UI test
+  /// target itself, but due to FB5418543 the new build system does not allow
+  /// run scripts to depend upon test frameworks/to have the script always run
+  /// after the test artifacts are copied over (only for UI tests, regular unit
+  /// tests do allow this behavior in Xcode 13).
+  ///
+  /// To work around this, we need a separate target which can depend upon the
+  /// test frameworks by depending upon the UI test target *and* including this
+  /// new target in all schemes containing the UI test target.
+  private func createResignerTargetForUITestTarget(
+    _ testTarget: PBXNativeTarget,
+    buildSettings: Dictionary<String, String>
+  ) {
+    let aggregate = project.createAggregateTarget(
+        testTarget.name + "_Resigner", deploymentTarget: testTarget.deploymentTarget)
+    // The resigner depends upon the test target since it needs to resign the test bundle.
+    aggregate.createDependencyOn(
+        testTarget, proxyType: .targetReference, inProject: project, first: true)
+    aggregate.buildPhases.append(self.createResignerBuildPhase())
+
+    // The test target's scheme needs to depend upon the aggregate resigner
+    // target in order for the resigner to run during the build.
+    testTarget.createSchemeBuildDependencyOn(aggregate)
+
+    let buildConfigurationList = aggregate.buildConfigurationList
+    for (testName, baseName) in PBXTargetGenerator.testRunnerEnabledBuildConfigNames {
+      let testConfig = buildConfigurationList.getOrCreateBuildConfiguration(testName)
+      testConfig.buildSettings = buildSettings
+
+      let baseConfig = buildConfigurationList.getOrCreateBuildConfiguration(baseName)
+      baseConfig.buildSettings = buildSettings
+    }
+  }
+
+  private func createResignerBuildPhase() -> PBXShellScriptBuildPhase {
+    let shellScript = "set -e\nexec \"\(resignerScriptPath)\""
+
+    let buildPhase = PBXShellScriptBuildPhase(
+      shellScript: shellScript,
+      shellPath: "/bin/bash",
+      name: "Resign test artifacts"
+    )
+    buildPhase.showEnvVarsInLog = true
+    buildPhase.mnemonic = "Resigner"
     return buildPhase
   }
 

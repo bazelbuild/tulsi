@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		952C886D15A44EDA00000000 /* src1.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C15A44EDA00000000 /* src1.m */; };
-		952C886D3EFFE63100000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */ = {isa = PBXBuildFile; fileRef = D0BE1A9D3EFFE63100000000 /* SimpleTest.xcdatamodeld */; };
 		952C886D3FA06FD800000000 /* src2.c in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C3FA06FD800000000 /* src2.c */; };
 		952C886D433D88E100000000 /* src3.m in srcs */ = {isa = PBXBuildFile; fileRef = 25889F7C433D88E100000000 /* src3.m */; };
 		952C886D43A42F6800000000 /* primaryTest.cc in Test */ = {isa = PBXBuildFile; fileRef = 25889F7C43A42F6800000000 /* primaryTest.cc */; };
@@ -581,7 +580,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				952C886D3EFFE63100000000 /* SimpleTest.xcdatamodeld in tulsi_e2e_simple */,
 				952C886D6709162600000000 /* main.m in srcs */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

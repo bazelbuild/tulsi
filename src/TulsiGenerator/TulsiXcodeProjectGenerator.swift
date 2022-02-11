@@ -48,6 +48,7 @@ public final class TulsiXcodeProjectGenerator {
 
     let resourceURLs = XcodeProjectGenerator.ResourceSourcePathURLs(
         buildScript: bundle.url(forResource: "bazel_build", withExtension: "py")!,
+        resignerScript: bundle.url(forResource: "resigner", withExtension: "py")!,
         cleanScript: bundle.url(forResource: "bazel_clean", withExtension: "sh")!,
         extraBuildScripts: [bundle.url(forResource: "tulsi_logging", withExtension: "py")!,
                             bundle.url(forResource: "bazel_options", withExtension: "py")!,

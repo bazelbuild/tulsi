@@ -225,6 +225,7 @@ final class OpenStepSerializer: PBXProjFieldSerializer {
       let oldIndent = indent
       indent += "\t"
 
+      try encodeSerializedPBXObjectArray("PBXAggregateTarget", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXBuildFile", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXContainerItemProxy", into: data, indented: indent)
       try encodeSerializedPBXObjectArray("PBXFileReference", into: data, indented: indent)
