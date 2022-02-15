@@ -594,6 +594,12 @@ final class XcodeProjectGenerator {
       }
 
       buildSettings["TULSI_PROJECT"] = config.projectName
+        
+      if let developmentTeam = config.options[.DevelopmentTeam].commonValue {
+        buildSettings["DEVELOPMENT_TEAM"] = developmentTeam
+        buildSettings["CODE_SIGN_STYLE"] = "Automatic"
+      }
+
       generator.generateTopLevelBuildConfigurations(buildSettings)
     }
     var targetsByLabel = [BuildLabel: PBXNativeTarget]()
