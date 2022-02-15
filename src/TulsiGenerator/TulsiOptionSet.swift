@@ -93,8 +93,11 @@ public enum TulsiOptionKey: String {
       PostBuildPhaseRunScript,
 
       // Option to use a fallback approach to finding dSYMs.
-      UseBazelCacheReader
+      UseBazelCacheReader,
 
+      // Useful for enabling automatic code signing.
+      DevelopmentTeam
+    
   // Options for build invocations.
   case BazelBuildOptionsDebug,
        BazelBuildOptionsRelease
@@ -376,6 +379,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.BuildActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.LaunchActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.TestActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
+    addStringOption(.DevelopmentTeam, [.BuildSetting])
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])
