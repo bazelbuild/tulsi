@@ -5,6 +5,9 @@
 /* Error when the Aspect returns multiple RuleEntries for a given target. The target label is in %1$@, the rule type is in %2$@. */
 "AmbiguousBuildTarget" = "Multiple configurations found for target %1$@. Is this %2$@ being built at the root level? Or do you have a root-level library somewhere that depends on this target?";
 
+/* Accessibility label for the announcement banner dismiss button */
+"AnnouncementBanner_DismissButtonAccessibilityLabel" = "Close the announcement banner";
+
 /* Message to show at the top of the Tulsi project save as panel, explaining what to do. */
 "Document_SelectTulsiProjectOutputFolderMessage" = "Select a location to save this Tulsi project.";
 
