@@ -29,6 +29,7 @@ filegroup(
         [
             "*.lproj/*",
             "Assets.xcassets/**/*",
+            "Config/*",
         ],
         exclude = [
             "Assets.xcassets/AppIcon.appiconset/*",
