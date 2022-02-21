@@ -8,7 +8,7 @@ on:
         default: latest
       xcode_version:
         type: string
-        default: "13.0"
+        default: "13.2.1"
       build_targets:
         type: string
         default: //:tulsi
