@@ -39,4 +39,8 @@ enum HeadlessModeError: Error {
   case invalidProjectBundleName
   /// Tulsi failed to identify any valid build targets out of the set of specified targets.
   case bazelTargetProcessingFailed
+  /// No announcement ID was given to Tulsi to mark as read.
+  case missingAnnouncementId
+  /// An announcement ID was given to Tulsi to mark as read, but it doesn't exist.
+  case invalidAnnouncementId
 }
