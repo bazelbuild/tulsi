@@ -141,47 +141,29 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
       return nil
     }
 
-    guard let jsonPath = Bundle.main.url(forResource: "AnnouncementConfig", withExtension: "json")
+    guard let announcementBanner = try? Announcement.getNextUnreadAnnouncement()?.createBanner()
     else {
       return nil
     }
 
-    do {
-      let data = try Data(contentsOf: jsonPath)
-      let decoder = JSONDecoder()
-      let announcements = try decoder.decode([Announcement].self, from: data)
+    view.addSubview(announcementBanner)
 
-      for announcement in announcements {
-        guard !announcement.hasBeenDismissed() else {
-          continue
-        }
+    // Banner view constraints
+    let bannerWidthConstraint = NSLayoutConstraint(
+      item: announcementBanner, attribute: .width, relatedBy: .equal, toItem: view,
+      attribute: .width, multiplier: 1, constant: 0)
+    let bannerCenterXConstraint = NSLayoutConstraint(
+      item: announcementBanner, attribute: .leading, relatedBy: .equal, toItem: view,
+      attribute: .leading, multiplier: 1, constant: 0)
+    let bannerTopConstraint = NSLayoutConstraint(
+      item: announcementBanner, attribute: .top, relatedBy: .equal, toItem: view,
+      attribute: .top, multiplier: 1, constant: 0)
 
-        let announcementBanner = announcement.createBanner()
+    NSLayoutConstraint.activate([
+      bannerWidthConstraint, bannerCenterXConstraint,
+      bannerTopConstraint,
+    ])
 
-        view.addSubview(announcementBanner)
-
-        // Banner view constraints
-        let bannerWidthConstraint = NSLayoutConstraint(
-          item: announcementBanner, attribute: .width, relatedBy: .equal, toItem: view,
-          attribute: .width, multiplier: 1, constant: 0)
-        let bannerCenterXConstraint = NSLayoutConstraint(
-          item: announcementBanner, attribute: .leading, relatedBy: .equal, toItem: view,
-          attribute: .leading, multiplier: 1, constant: 0)
-        let bannerTopConstraint = NSLayoutConstraint(
-          item: announcementBanner, attribute: .top, relatedBy: .equal, toItem: view,
-          attribute: .top, multiplier: 1, constant: 0)
-
-        NSLayoutConstraint.activate([
-          bannerWidthConstraint, bannerCenterXConstraint,
-          bannerTopConstraint,
-        ])
-
-        return announcementBanner
-      }
-    } catch {
-      print("Failed to find and decode configuration file for announcements")
-    }
-
-    return nil
+    return announcementBanner
   }
 }
