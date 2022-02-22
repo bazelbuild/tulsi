@@ -35,17 +35,21 @@ private func main() {
   queue.async {
     do {
       switch commandlineParser.mode {
-        case .invalid:
-          print("Missing mode parameter. Please see the help message.")
-          exit(2)
+      case .invalid:
+        print("Missing mode parameter. Please see the help message.")
+        exit(2)
 
-        case .tulsiProjectCreator:
-          let generator = HeadlessTulsiProjectCreator(arguments: commandlineParser.arguments)
-          try generator.generate()
+      case .tulsiProjectCreator:
+        let generator = HeadlessTulsiProjectCreator(arguments: commandlineParser.arguments)
+        try generator.generate()
 
-        case .xcodeProjectGenerator:
-          let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
-          try generator.generate()
+      case .xcodeProjectGenerator:
+        let generator = HeadlessXcodeProjectGenerator(arguments: commandlineParser.arguments)
+        try generator.generate()
+
+      case .markAnnouncementRead:
+        let readMarker = HeadlessAnnouncementReadMarker(arguments: commandlineParser.arguments)
+        try readMarker.markRead()
       }
     } catch HeadlessModeError.invalidConfigPath(let reason) {
       print("Invalid \(TulsiCommandlineParser.ParamGeneratorConfigLong) param: \(reason)")
@@ -76,6 +80,17 @@ private func main() {
       exit(21)
     } catch HeadlessModeError.missingBuildTargets {
       print("At least one build target must be specified with the \(TulsiCommandlineParser.ParamBuildTargetLong) parameter.")
+      exit(22)
+    } catch HeadlessModeError.missingAnnouncementId {
+      print(
+        "An announcement ID must be specified after the "
+          + "\(TulsiCommandlineParser.ParamMarkAnnouncementRead) parameter to mark an "
+          + "announcement as read.")
+      exit(22)
+    } catch HeadlessModeError.invalidAnnouncementId {
+      print(
+        "The announcement ID given is invalid. It must match the ID of a currently active "
+          + "announcement.")
       exit(22)
     } catch HeadlessModeError.invalidProjectBundleName {
       print("The parameter given to \(TulsiCommandlineParser.ParamCreateTulsiProj) is invalid. " +

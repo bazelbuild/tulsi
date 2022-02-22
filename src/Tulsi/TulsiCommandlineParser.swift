@@ -27,12 +27,15 @@ class TulsiCommandlineParser {
     case tulsiProjectCreator
     /// An xcodeproj bundle should be created.
     case xcodeProjectGenerator
+    /// Nothing should be created. Used only to permanently dismiss announcements.
+    case markAnnouncementRead
   }
 
   struct Arguments {
     let bazel: String?
     let generatorConfig: String?
     let tulsiprojName: String?
+    let announcementId: String?
     let outputFolder: String?
     let workspaceRootOverride: String?
     let verboseLevel: TulsiMessageLevel
@@ -47,6 +50,7 @@ class TulsiCommandlineParser {
       bazel = nil
       generatorConfig = nil
       tulsiprojName = nil
+      announcementId = nil
       outputFolder = nil
       workspaceRootOverride = nil
       verboseLevel = .Info
@@ -70,6 +74,7 @@ class TulsiCommandlineParser {
       bazel = standardizedPath(TulsiCommandlineParser.ParamBazel)
       generatorConfig = standardizedPath(TulsiCommandlineParser.ParamGeneratorConfigLong)
       tulsiprojName = standardizedPath(TulsiCommandlineParser.ParamCreateTulsiProj)
+      announcementId = dict[TulsiCommandlineParser.ParamMarkAnnouncementRead] as? String
       outputFolder = standardizedPath(TulsiCommandlineParser.ParamOutputFolderLong)
 
       if (dict[TulsiCommandlineParser.ParamVerboseLong] as? Bool == true) {
@@ -121,6 +126,9 @@ class TulsiCommandlineParser {
   static let ParamBuildTargetShort = "-t"
   static let ParamBuildTargetLong = "--target"
 
+  // Mark announcement read mode:
+  static let ParamMarkAnnouncementRead = "--mark-read"
+
   static let ParamLogToFile = "--log-to-file"
 
   let arguments: Arguments
@@ -130,6 +138,7 @@ class TulsiCommandlineParser {
     if arguments.generatorConfig != nil && arguments.tulsiprojName != nil { return .invalid }
     if arguments.generatorConfig != nil { return .xcodeProjectGenerator }
     if arguments.tulsiprojName != nil { return .tulsiProjectCreator }
+    if arguments.announcementId != nil { return .markAnnouncementRead }
     return .invalid
   }
 
@@ -252,6 +261,12 @@ class TulsiCommandlineParser {
           storeValueAt(i, forArgument: TulsiCommandlineParser.ParamBuildTargetLong, append: true)
           i += 1
 
+        // Mark announcement read:
+
+        case TulsiCommandlineParser.ParamMarkAnnouncementRead:
+          storeValueAt(i, forArgument: TulsiCommandlineParser.ParamMarkAnnouncementRead)
+          i += 1
+
       case TulsiCommandlineParser.ParamLogToFile:
         parsedArguments[TulsiCommandlineParser.ParamLogToFile] = true as AnyObject?
 
@@ -272,6 +287,8 @@ class TulsiCommandlineParser {
         "Tulsi will operate in one of two modes based on the mode_option:",
         "  - \(ParamGeneratorConfigLong): generates an Xcode project.",
         "  - \(ParamCreateTulsiProj): generates a basic Tulsi project.",
+        "  - \(ParamMarkAnnouncementRead): Marks an announcement as read so it will not be shown",
+        "      again.",
         "",
         "Xcode project generation specific options:",
         "  \(ParamGeneratorConfigLong) <config>:",

@@ -33,15 +33,15 @@ class AnnouncementBanner: NSView {
     layer?.opacity = 1
     translatesAutoresizingMaskIntoConstraints = false
 
-    messageLabel.stringValue = announcement.message
-    messageLabel.setAccessibilityLabel(announcement.message)
+    messageLabel.stringValue = announcement.bannerMessage
+    messageLabel.setAccessibilityLabel(announcement.bannerMessage)
     messageLabel.isBezeled = false
     messageLabel.isEditable = false
     messageLabel.isSelectable = false
     messageLabel.backgroundColor = NSColor.clear
     messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
-    if let link = announcement.link {
+    if announcement.link != nil {
       let gestureRecognizer = NSClickGestureRecognizer(
         target: self,
         action: #selector(openUrl(_:)))
