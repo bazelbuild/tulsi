@@ -780,8 +780,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Bazel takes care of signing the generated applications, so Xcode's signing must be disabled.
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
-    buildSettings["CODE_SIGN_IDENTITY"] = ""
-
+      
     // Explicitly setting the FRAMEWORK_SEARCH_PATHS will allow Xcode to resolve references to the
     // XCTest framework when performing Live issues analysis.
     buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
