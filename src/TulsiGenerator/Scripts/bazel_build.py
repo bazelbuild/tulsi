@@ -732,11 +732,7 @@ class BazelBuildBridge(object):
         '--noexperimental_build_event_json_file_path_conversion',
         '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
-    if self.is_test and self.gen_runfiles:
-      bazel_command.append('--output_groups=+tulsi_outputs')
-    else:
-      bazel_command.append('--output_groups=tulsi_outputs,default')
-
+    bazel_command.append('--output_groups=+tulsi_outputs')
     bazel_command.extend(options.targets)
 
     extra_options = bazel_options.BazelOptions(os.environ)
