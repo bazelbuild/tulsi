@@ -234,16 +234,27 @@ def _is_file_external(f):
     """Returns True if the given file is an external file."""
     return f.owner.workspace_root != ""
 
+def _fixup_short_path(file):
+    # File.short_path will return a relative path of ../ for external sources,
+    # which is incorrect for the purposes of mapping generated files to their original
+    # sources in bazel-out.
+    #
+    # Fixup external short_paths by replacing "../" with an extra "x/" to account for the 
+    # additional level of nesting under "external/"
+    # 
+    # i.e. "../my_external_source/Foo.modulemap -> "x/my_external_source/Foo.modulemap"
+    short_path = file.short_path
+    if short_path.startswith("../"):
+        short_path = short_path.replace("../", "x/")
+    return short_path
+
 def _file_metadata(f):
     """Returns metadata about a given File."""
     if not f:
         return None
 
-    # Special case handling for external files.
-    is_external = _is_file_external(f)
-
-    out_path = f.path if is_external else f.short_path
-    if not f.is_source and not is_external:
+    out_path = _fixup_short_path(f)
+    if not f.is_source:
         root_path = f.root.path
         symlink_path = _convert_outpath_to_symlink_path(root_path)
         if symlink_path == root_path:
@@ -1224,7 +1235,7 @@ def _tulsi_outputs_aspect(target, ctx):
         artifact = artifact,
         archive_root = archive_root,
         dsym_path = dsym_path,
-        generated_sources = [(x.path, x.short_path) for x in generated_files.to_list()],
+        generated_sources = [(x.path, _fixup_short_path(x)) for x in generated_files.to_list()],
         bundle_name = bundle_name,
         embedded_bundles = embedded_bundles.to_list(),
         has_dsym = has_dsym,
