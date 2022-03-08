@@ -594,7 +594,6 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
           nonARCSourceFileInfos.isEmpty &&
           frameworkFileInfos.isEmpty &&
           nonSourceVersionedFileInfos.isEmpty)
-        || ruleEntry.pbxTargetType?.isTest ?? false
         || ruleEntry.type == "filegroup"
         || ruleEntryLabelsToSkipForIndexing.contains(ruleEntry.label) {
         addBuildFileForRule(ruleEntry)
