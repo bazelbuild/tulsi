@@ -104,6 +104,8 @@ _GENERATED_SOURCE_FILE_EXTENSIONS = [
     "mm",
     "swift",
     "swiftmodule",
+    "swiftsourceinfo",
+    "swiftdoc",
 ]
 
 TulsiSourcesAspectInfo = provider(
