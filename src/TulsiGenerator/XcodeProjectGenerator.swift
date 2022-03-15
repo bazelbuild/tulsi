@@ -943,6 +943,7 @@ final class XcodeProjectGenerator {
                                  project: info.project,
                                  projectBundleName: projectBundleName,
                                  testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                                 launchActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                  profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                  appExtension: appExtension,
                                  extensionType: extensionType,
