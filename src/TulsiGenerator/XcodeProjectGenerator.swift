@@ -943,6 +943,7 @@ final class XcodeProjectGenerator {
                                  project: info.project,
                                  projectBundleName: projectBundleName,
                                  testActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
+                                 launchActionBuildConfig: runTestTargetBuildConfigPrefix + "Debug",
                                  profileActionBuildConfig: runTestTargetBuildConfigPrefix + "Release",
                                  appExtension: appExtension,
                                  extensionType: extensionType,
@@ -957,7 +958,17 @@ final class XcodeProjectGenerator {
                                  localizedMessageLogger: localizedMessageLogger)
         let xmlDocument = scheme.toXML()
 
-        filename += target.name + ".xcscheme"
+        // By removing "Tests" from the name of the scheme, we only return 1 scheme per target + test target
+        // Previously, there would be two schemes:
+        //
+        // Foo
+        // FooTests
+        //
+        // By removing `Tests` suffix from the second scheme (FooTests), the first scheme gets de-duped,
+        // and only the second (FooTests -> Foo) scheme gets returned.
+        // Command + B on the returned scheme => build target and tests
+        // Command + U on the returned scheme => runs the tests
+        filename += target.name.replacingOccurrences(of: "Tests", with: "") + ".xcscheme"
         let url = xcschemesURL.appendingPathComponent(filename)
 
         let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
