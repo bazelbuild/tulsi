@@ -964,10 +964,10 @@ final class XcodeProjectGenerator {
         // Foo
         // FooTests
         //
-        // By removing `Tests` from the second scheme, the first gets dropped, and only the second, test, scheme
-        // gets returned.
-        // Command + B on this scheme = build target and tests
-        // Command + U on this scheme = runs the tests
+        // By removing `Tests` suffix from the second scheme (FooTests), the first scheme gets de-duped,
+        // and only the second (FooTests -> Foo) scheme gets returned.
+        // Command + B on the returned scheme => build target and tests
+        // Command + U on the returned scheme => runs the tests
         filename += target.name.replacingOccurrences(of: "Tests", with: "") + ".xcscheme"
         let url = xcschemesURL.appendingPathComponent(filename)
 
