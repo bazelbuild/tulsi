@@ -7,3 +7,6 @@ src/build/
 
 # CI collected testlogs
 /testlogs
+
+# Generated Tulsi configs in golden projects
+/src/TulsiGeneratorIntegrationTests/Resources/GoldenProjects/*.xcodeproj/.tulsi/
