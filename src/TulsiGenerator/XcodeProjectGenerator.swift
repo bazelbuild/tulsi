@@ -957,7 +957,17 @@ final class XcodeProjectGenerator {
                                  localizedMessageLogger: localizedMessageLogger)
         let xmlDocument = scheme.toXML()
 
-        filename += target.name + ".xcscheme"
+        // By removing "Tests" from the name of the scheme, we only return 1 scheme per target + test target
+        // Previously, there would be two schemes:
+        //
+        // Foo
+        // FooTests
+        //
+        // By removing `Tests` from the second scheme, the first gets dropped, and only the second, test, scheme
+        // gets returned.
+        // Command + B on this scheme = build target and tests
+        // Command + U on this scheme = runs the tests
+        filename += target.name.replacingOccurrences(of: "Tests", with: "") + ".xcscheme"
         let url = xcschemesURL.appendingPathComponent(filename)
 
         let data = xmlDocument.xmlData(options: XMLNode.Options.nodePrettyPrint)
