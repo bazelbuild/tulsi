@@ -245,7 +245,7 @@ final class XcodeProjectGenerator {
     installGeneratorConfig(projectURL)
     installGeneratedProjectResources(projectURL)
     installStubExtensionPlistFiles(projectURL,
-                                   rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType?.isiOSAppExtension ?? false },
+                                   rules: projectInfo.buildRuleEntries.filter { $0.pbxTargetType!.isiOSAppExtension || $0.pbxTargetType! == .Application },
                                    plistPaths: plistPaths)
     linkTulsiWorkspace(projectURL)
     createUtilsDirectory(projectURL)
@@ -1469,8 +1469,13 @@ final class XcodeProjectGenerator {
     }
 
     for entry in rules {
-      plistTemplate.setValue(entry.extensionType, forKeyPath: "NSExtension.NSExtensionPointIdentifier")
-
+      if entry.pbxTargetType!.isiOSAppExtension {
+          plistTemplate.setValue(entry.extensionType, forKeyPath: "NSExtension.NSExtensionPointIdentifier")
+      }
+      if let imagePath = config.options[.IDEAppIcon].commonValue {
+        plistTemplate.setValue(imagePath, forKeyPath: "CFBundleIconFile")
+      }
+      
       let plistName = plistPaths.plistFilename(forRuleEntry: entry)
       let targetURL = URL(string: plistName, relativeTo: targetDirectoryURL)!
 

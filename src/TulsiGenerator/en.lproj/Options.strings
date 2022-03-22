@@ -79,3 +79,5 @@
 "IncludeBuildSources" = "Include Bazel sources in the generated project.";
 "IncludeBuildSources_DESC" = "Add .bzl and BUILD files related to selected targets in the generated Xcode project. This may slow down project generation significantly.";
 
+"DevelopmentTeam" = "Development Team"
+"IDEAppIcon" = "IDE App Icon"

@@ -36,6 +36,8 @@ struct StubInfoPlistPaths {
       fallthrough
     case .AppExtension:
       return stubProjectPath(forRuleEntry: entry)
+    case .Application:
+      return stubProjectPath(forRuleEntry: entry)
 
     default:
       return defaultStub

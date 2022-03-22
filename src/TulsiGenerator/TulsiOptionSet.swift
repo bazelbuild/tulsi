@@ -96,7 +96,10 @@ public enum TulsiOptionKey: String {
       UseBazelCacheReader,
 
       // Useful for enabling automatic code signing.
-      DevelopmentTeam
+      DevelopmentTeam,
+  
+      // App icon to add to the Info.plist stub for executable targets
+      IDEAppIcon
     
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -380,6 +383,7 @@ public class TulsiOptionSet: Equatable {
     addStringOption(.LaunchActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.TestActionPostActionScript, [.TargetSpecializable, .SupportsInheritKeyword])
     addStringOption(.DevelopmentTeam, [.BuildSetting])
+    addStringOption(.IDEAppIcon, [.BuildSetting])
 
     addStringOption(.BazelPath, [.Hidden, .PerUserOnly])
     addStringOption(.WorkspaceRootPath, [.Hidden, .PerUserOnly])
