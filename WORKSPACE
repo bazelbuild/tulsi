@@ -1,13 +1,9 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Using a newer revision of rules_apple to work around the drop of
-# `should_lipo` in `apple_common.link_multi_arch_binary`.
-# TODO: Switch back to a release once rules_apple gets a new release
 http_archive(
     name = "build_bazel_rules_apple",
-    sha256 = "1c883b02ac84abe42eb6e9ee0b99aa7f1bad8e1ebda5b2143d6d8cb2014ea4be",
-    strip_prefix = "rules_apple-2efc349db20823fc64f1487d80943aceee2a6195",
-    url = "https://github.com/bazelbuild/rules_apple/archive/2efc349db20823fc64f1487d80943aceee2a6195.tar.gz",
+    sha256 = "4161b2283f80f33b93579627c3bd846169b2d58848b0ffb29b5d4db35263156a",
+    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.34.0/rules_apple.0.34.0.tar.gz",
 )
 
 load(
