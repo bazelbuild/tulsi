@@ -11,7 +11,3 @@ build --strategy=SwiftCompile=local
 
 # This is required for re-invoking bazel in shell tests. CI adds it implicitly
 test --test_env=HOME
-
-# Workaround to make this builds with Xcode 13.3
-# TODO: Remove once https://github.com/bazelbuild/rules_swift/pull/781 gets released
-build --swiftcopt=-whole-module-optimization
