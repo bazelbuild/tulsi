@@ -36,7 +36,7 @@ public enum CPU: String {
     case .arm64: return true
     case .arm64e: return true
     case .arm64_32: return true
-    case .sim_arm64: return true
+    case .sim_arm64: return false
     }
   }
 
