@@ -14,9 +14,9 @@
 import Cocoa
 
 /// View controller for the "recent document" rows in the tableview in the splash screen.
-final class SplashScreenRecentDocumentViewController : NSViewController {
-  @IBOutlet weak var icon : NSImageView!
-  @IBOutlet weak var filename : NSTextField!
+final class SplashScreenRecentDocumentViewController: NSViewController {
+  @IBOutlet weak var icon: NSImageView!
+  @IBOutlet weak var filename: NSTextField!
   @IBOutlet weak var path: NSTextField!
   var url: URL?
 
@@ -26,15 +26,19 @@ final class SplashScreenRecentDocumentViewController : NSViewController {
 
   override func viewDidLoad() {
     guard let url = url else { return }
-    icon.image =  NSWorkspace.shared.icon(forFile: url.path)
+    icon.image = NSWorkspace.shared.icon(forFile: url.path)
     filename.stringValue = (url.lastPathComponent as NSString).deletingPathExtension
-    path.stringValue = ((url.path as NSString).deletingLastPathComponent as NSString).abbreviatingWithTildeInPath
+    path.stringValue =
+      ((url.path as NSString).deletingLastPathComponent as NSString).abbreviatingWithTildeInPath
   }
 }
 
 /// Window controller for the splash screen.
-final class SplashScreenWindowController: NSWindowController, NSTableViewDelegate, NSTableViewDataSource {
+final class SplashScreenWindowController: NSWindowController, NSTableViewDelegate,
+  NSTableViewDataSource, AnnouncementBannerDelegate
+{
 
+  @IBOutlet var mainContentView: NSView!
   @IBOutlet var recentDocumentsArrayController: NSArrayController!
   @IBOutlet weak var splashScreenImageView: NSImageView!
   @objc dynamic var applicationVersion: String = ""
@@ -77,13 +81,14 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
     let documentController = NSDocumentController.shared
     let viewController = recentDocumentViewControllers[clickedRow]
 
-    guard let url = viewController.url  else { return }
+    guard let url = viewController.url else { return }
     documentController.openDocument(withContentsOf: url, display: true) {
       (_: NSDocument?, _: Bool, _: Error?) in
     }
   }
 
-  func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+  func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?
+  {
     return recentDocumentViewControllers[row].view
   }
 
@@ -123,7 +128,7 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
         let projectComponents = [String](components.prefix(i + 1))
         projectURL = NSURL.fileURL(withPathComponents: projectComponents)! as URL
       }
-      if (recentDocumentURLs.contains(projectURL)) {
+      if recentDocumentURLs.contains(projectURL) {
         continue
       }
       recentDocumentURLs.insert(projectURL)
@@ -146,24 +151,33 @@ final class SplashScreenWindowController: NSWindowController, NSTableViewDelegat
       return nil
     }
 
+    announcementBanner.delegate = self
+
     view.addSubview(announcementBanner)
 
-    // Banner view constraints
-    let bannerWidthConstraint = NSLayoutConstraint(
-      item: announcementBanner, attribute: .width, relatedBy: .equal, toItem: view,
-      attribute: .width, multiplier: 1, constant: 0)
-    let bannerCenterXConstraint = NSLayoutConstraint(
-      item: announcementBanner, attribute: .leading, relatedBy: .equal, toItem: view,
-      attribute: .leading, multiplier: 1, constant: 0)
-    let bannerTopConstraint = NSLayoutConstraint(
-      item: announcementBanner, attribute: .top, relatedBy: .equal, toItem: view,
-      attribute: .top, multiplier: 1, constant: 0)
+    let views = ["banner": announcementBanner, "content": mainContentView!]
 
-    NSLayoutConstraint.activate([
-      bannerWidthConstraint, bannerCenterXConstraint,
-      bannerTopConstraint,
-    ])
+    view.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "V:|-0-[banner]-0-[content]-0-|", options: .alignAllCenterX,
+        metrics: nil, views: views))
+    view.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "H:|-0-[banner]-0-|",
+        options: .alignAllCenterY, metrics: nil, views: views))
 
     return announcementBanner
+  }
+
+  // MARK: - AnnouncementBannerDelegate
+  func announcementBannerWasDismissed(banner: AnnouncementBanner) {
+    guard let view = self.window?.contentView else {
+      return
+    }
+    let views = ["content": mainContentView!]
+    view.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "V:|-0-[content]-0-|",
+        options: .alignAllCenterX, metrics: nil, views: views))
   }
 }

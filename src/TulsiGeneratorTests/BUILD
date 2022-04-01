@@ -16,6 +16,6 @@ macos_unit_test(
         "//src/tools/bazel_cache_reader": "MacOS",
         "//src/tools/module_cache_pruner": "MacOS",
     },
-    minimum_os_version = "10.13",
+    minimum_os_version = "11.0",
     deps = [":TulsiGeneratorTestsLib"],
 )
