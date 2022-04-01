@@ -17,6 +17,6 @@ swift_library(
 # that is also generated in a build as an explicit module.
 macos_command_line_application(
     name = "module_cache_pruner",
-    minimum_os_version = "10.13",
+    minimum_os_version = "11.0",
     deps = [":module_cache_pruner_lib"],
 )

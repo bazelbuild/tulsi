@@ -18,6 +18,9 @@ import Cocoa
 class AnnouncementBanner: NSView {
   let announcement: Announcement
 
+  var delegate: AnnouncementBannerDelegate?
+
+  let messageView = NSView(frame: CGRect.zero)
   let messageLabel = NSTextField(wrappingLabelWithString: "Placeholder")
   let dismissButton = NSButton(frame: CGRect.zero)
 
@@ -30,22 +33,22 @@ class AnnouncementBanner: NSView {
 
     super.init(frame: CGRect.zero)
     wantsLayer = true
-    layer?.opacity = 1
     translatesAutoresizingMaskIntoConstraints = false
+
+    messageView.translatesAutoresizingMaskIntoConstraints = false
 
     messageLabel.stringValue = announcement.bannerMessage
     messageLabel.setAccessibilityLabel(announcement.bannerMessage)
     messageLabel.isBezeled = false
     messageLabel.isEditable = false
     messageLabel.isSelectable = false
-    messageLabel.backgroundColor = NSColor.clear
     messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
     if announcement.link != nil {
       let gestureRecognizer = NSClickGestureRecognizer(
         target: self,
         action: #selector(openUrl(_:)))
-      messageLabel.addGestureRecognizer(gestureRecognizer)
+      messageView.addGestureRecognizer(gestureRecognizer)
     }
 
     dismissButton.target = self
@@ -55,24 +58,19 @@ class AnnouncementBanner: NSView {
     dismissButton.isBordered = false
     dismissButton.translatesAutoresizingMaskIntoConstraints = false
 
+    let accessiblityComment = "Dismisses the announcement banner."
     let dismissButtonAccessibilityLabel = NSLocalizedString(
-      "AnnouncementBanner_DismissButtonAccessibilityLabel",
-      comment: "Accessibility label for the announcement banner dismiss button")
+      "AnnouncementBanner_DismissButtonAccessibilityLabel", comment: accessiblityComment)
     dismissButton.setAccessibilityLabel(dismissButtonAccessibilityLabel)
 
-    // If dark mode is supported, use a system color. Otherwise, default to
-    // colors that are suitable for light mode.
-    if #available(macOS 10.14, *) {
-      layer?.backgroundColor = NSColor.controlAccentColor.cgColor
-      messageLabel.textColor = NSColor.controlTextColor
-      dismissButton.attributedTitle = createTitle(withColor: NSColor.controlTextColor)
-    } else {
-      layer?.backgroundColor = NSColor.lightGray.cgColor
-      messageLabel.textColor = NSColor.black
-      dismissButton.attributedTitle = createTitle(withColor: NSColor.black)
-    }
+    dismissButton.image = NSImage(
+      systemSymbolName: "xmark.circle.fill", accessibilityDescription: accessiblityComment)
+    dismissButton.contentTintColor = NSColor.white
+    layer?.backgroundColor = NSColor.systemGray.cgColor
+    messageLabel.textColor = NSColor.white
 
-    self.addSubview(messageLabel)
+    self.addSubview(messageView)
+    messageView.addSubview(messageLabel)
     self.addSubview(dismissButton)
 
     activateConstraints()
@@ -89,9 +87,10 @@ class AnnouncementBanner: NSView {
   @objc func didClickDismissButton(_ sender: NSButton) {
     announcement.recordDismissal()
     self.removeFromSuperview()
+    self.delegate?.announcementBannerWasDismissed(banner: self)
   }
 
-  @objc func openUrl(_ sender: NSView) {
+  @objc func openUrl(_ sender: Any?) {
     if let link = announcement.link, let url = URL(string: link) {
       NSWorkspace.shared.open(url)
     }
@@ -102,45 +101,32 @@ class AnnouncementBanner: NSView {
   func activateConstraints() {
     removeConstraints(self.constraints)
 
-    // Message label constraints
-    let messageLabelCenterYContstraint = NSLayoutConstraint(
-      item: messageLabel, attribute: .centerY, relatedBy: .equal, toItem: self,
-      attribute: .centerY, multiplier: 1, constant: 0)
-    let messageLabelLeadingConstraint = NSLayoutConstraint(
-      item: messageLabel, attribute: .leading, relatedBy: .equal, toItem: self,
-      attribute: .leading, multiplier: 1, constant: margin)
-    let messageLabelTrailingConstraint = NSLayoutConstraint(
-      item: messageLabel, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: dismissButton,
-      attribute: .leading, multiplier: 1, constant: -margin)
-    let messageLabelTopConstraint = NSLayoutConstraint(
-      item: messageLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top,
-      multiplier: 1, constant: margin)
+    let views = ["view": messageView, "btn": dismissButton]
+    let labels = ["msg": messageLabel]
 
-    // Dismiss button constraints
-    let dismissButtonTrailingConstraint = NSLayoutConstraint(
-      item: dismissButton, attribute: .trailing, relatedBy: .equal, toItem: self,
-      attribute: .trailing, multiplier: 1, constant: -margin)
-    let dismissButtonTopConstraint = NSLayoutConstraint(
-      item: dismissButton, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top,
-      multiplier: 1, constant: margin)
-    let dismissButtonCenterYConstraint = NSLayoutConstraint(
-      item: dismissButton, attribute: .centerY, relatedBy: .equal, toItem: self,
-      attribute: .centerY, multiplier: 1, constant: 0)
+    messageView.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "H:|-8-[msg]-8-|", options: .alignAllCenterX, metrics: nil,
+        views: labels))
+    messageView.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "V:|-8-[msg]-8-|", options: .directionLeadingToTrailing, metrics: nil,
+        views: labels))
 
-    NSLayoutConstraint.activate([
-      messageLabelCenterYContstraint, messageLabelLeadingConstraint,
-      messageLabelTrailingConstraint, messageLabelTopConstraint, dismissButtonTrailingConstraint,
-      dismissButtonTopConstraint, dismissButtonCenterYConstraint,
-    ])
+    self.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "H:|-0-[view]-0-[btn]-8-|",
+        options: NSLayoutConstraint.FormatOptions.alignAllCenterY, metrics: nil, views: views))
+    messageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    dismissButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+    self.addConstraints(
+      NSLayoutConstraint.constraints(
+        withVisualFormat: "V:|-0-[view]-0-|", options: .directionLeadingToTrailing, metrics: nil,
+        views: views))
   }
+}
 
-  private func createTitle(withColor color: NSColor) -> NSAttributedString {
-    let pstyle = NSMutableParagraphStyle()
-
-    pstyle.alignment = .center
-
-    return NSAttributedString(
-      string: "X",
-      attributes: [.foregroundColor: color, .paragraphStyle: pstyle])
-  }
+protocol AnnouncementBannerDelegate {
+  func announcementBannerWasDismissed(banner: AnnouncementBanner)
 }

@@ -68,7 +68,7 @@ macos_application(
     bundle_id = "com.google.Tulsi",
     bundle_name = "Tulsi",
     infoplists = [":Info.plist"],
-    minimum_os_version = "10.13",
+    minimum_os_version = "11.0",
     strings = [":strings"],
     version = ":AppVersion",
     visibility = ["//visibility:public"],
