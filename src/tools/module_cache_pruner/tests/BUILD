@@ -16,6 +16,6 @@ swift_library(
 
 macos_unit_test(
     name = "module_cache_pruner_tests",
-    minimum_os_version = "10.13",
+    minimum_os_version = "11.0",
     deps = [":module_cache_pruner_tests_lib"],
 )
