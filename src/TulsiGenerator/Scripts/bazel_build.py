@@ -101,6 +101,15 @@ def _BEPFileExitCleanup(bep_file_path):
     _PrintXcodeWarning('Failed to remove BEP file from %s. Error: %s' %
                        (bep_file_path, e.strerror))
 
+def _BEPTextFileExitCleanup(bep_file_path, exported_environ):
+  if not CLEANUP_BEP_FILE_AT_EXIT:
+    return
+  try:
+    os.remove(bep_file_path)
+    os.environ.remove(exported_environ)
+  except OSError as e:
+    _PrintXcodeWarning('Failed to remove BEP file from %s. Error: %s' %
+                       (bep_file_path, e.strerror))
 
 def _InterruptHandler(signum, frame):
   """Gracefully exit on SIGINT."""
@@ -429,6 +438,8 @@ class BazelBuildBridge(object):
   """Handles invoking Bazel and unpacking generated binaries."""
 
   BUILD_EVENTS_FILE = 'build_events.json'
+  BUILD_EVENTS_TEXT_FILE = 'build_events.txt'
+  BUILD_EVENTS_TEXT_FILE_ENVIRON = 'BAZEL_BUILD_EVENT_TEXT_FILENAME'
 
   XCODE_MODULE_CACHE_DIRECTORY = os.path.expanduser(
       '~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex')
@@ -583,6 +594,15 @@ class BazelBuildBridge(object):
         '.tulsi',
         filename)
 
+    # Writing to the BEP text file, and exporting it to BAZEL_BUILD_EVENT_TEXT_FILENAME, is
+    # a Slack-specific feature to support backwards compatibility with build time tracing.
+    filename = '%d_%s' % (os.getpid(), BazelBuildBridge.BUILD_EVENTS_TEXT_FILE)
+    self.build_events_text_file_path = os.path.join(
+        self.project_file_path,
+        '.tulsi',
+        filename)
+    os.environ[BUILD_EVENTS_TEXT_FILE_ENVIRON] = self.build_events_text_file_path
+
     (command, retval) = self._BuildBazelCommand(parser)
     if retval:
       return retval
@@ -729,6 +749,7 @@ class BazelBuildBridge(object):
         # caching.
         '--tool_tag=tulsi:bazel_build',
         '--build_event_json_file=%s' % self.build_events_file_path,
+        '--build_event_text_file=%s' % self.build_events_text_file_path,
         '--noexperimental_build_event_json_file_path_conversion',
         '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
@@ -840,6 +861,8 @@ class BazelBuildBridge(object):
 
     # Register atexit function to clean up BEP file.
     atexit.register(_BEPFileExitCleanup, self.build_events_file_path)
+    atexit.register(_BEPTextFileExitCleanup, self.build_events_text_file_path, BUILD_EVENTS_TEXT_FILE_ENVIRON)
+
     global CLEANUP_BEP_FILE_AT_EXIT
     CLEANUP_BEP_FILE_AT_EXIT = True
 
