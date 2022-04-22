@@ -87,6 +87,7 @@ def _Fatal(msg, fatal_frame=None):
 
 
 CLEANUP_BEP_FILE_AT_EXIT = False
+BUILD_EVENTS_TEXT_FILE_ENVIRON = 'BAZEL_BUILD_EVENT_TEXT_FILENAME'
 
 
 # Function to be called atexit to clean up the BEP file if one is present.
@@ -439,7 +440,6 @@ class BazelBuildBridge(object):
 
   BUILD_EVENTS_FILE = 'build_events.json'
   BUILD_EVENTS_TEXT_FILE = 'build_events.txt'
-  BUILD_EVENTS_TEXT_FILE_ENVIRON = 'BAZEL_BUILD_EVENT_TEXT_FILENAME'
 
   XCODE_MODULE_CACHE_DIRECTORY = os.path.expanduser(
       '~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex')
