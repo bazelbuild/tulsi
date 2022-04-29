@@ -99,6 +99,17 @@ struct HeadlessXcodeProjectGenerator {
       workspaceRootURL = projectWorkspaceRootURL as URL
     }
 
+    if let announcementIdToMarkRead = arguments.announcementId {
+      guard
+        let announcement = try Announcement.loadAnnouncement(byId: announcementIdToMarkRead)
+      else {
+        throw HeadlessModeError.invalidAnnouncementId
+      }
+
+      announcement.recordDismissal()
+      print("\(announcementIdToMarkRead) has been marked read and will not appear again.")
+    }
+
     let announcement = try? Announcement.getNextUnreadAnnouncement()
 
     if let announcementToDisplay = announcement, announcementToDisplay.shouldAppearAtTopOfCLIOutput

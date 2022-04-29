@@ -287,8 +287,6 @@ class TulsiCommandlineParser {
         "Tulsi will operate in one of two modes based on the mode_option:",
         "  - \(ParamGeneratorConfigLong): generates an Xcode project.",
         "  - \(ParamCreateTulsiProj): generates a basic Tulsi project.",
-        "  - \(ParamMarkAnnouncementRead): Marks an announcement as read so it will not be shown",
-        "      again.",
         "",
         "Xcode project generation specific options:",
         "  \(ParamGeneratorConfigLong) <config>:",
@@ -322,6 +320,8 @@ class TulsiCommandlineParser {
         "  \(ParamAdditionalPathFilters) \"<paths>\": Space-delimited source filters to be included in the generated project.",
         "  \(ParamLogToFile): Enable logging to ~/Library/Application Support/Tulsi/*.txt.",
         "       Ignores specified verbosity; everything will be logged to file.",
+        "  \(ParamMarkAnnouncementRead): Marks an announcement as read so it will not be shown again.",
+        "    This only needs to be used once per announcement.",
         ""
     ]
     print(usage.joined(separator: "\n") + "\n")
