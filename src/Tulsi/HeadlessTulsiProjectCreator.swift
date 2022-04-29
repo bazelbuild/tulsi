@@ -27,6 +27,17 @@ struct HeadlessTulsiProjectCreator {
 
   /// Performs project generation.
   func generate() throws {
+    if let announcementIdToMarkRead = arguments.announcementId {
+      guard
+        let announcement = try Announcement.loadAnnouncement(byId: announcementIdToMarkRead)
+      else {
+        throw HeadlessModeError.invalidAnnouncementId
+      }
+
+      announcement.recordDismissal()
+      print("\(announcementIdToMarkRead) has been marked read and will not appear again.")
+    }
+
     guard let bazelPath = arguments.bazel else {
       throw HeadlessModeError.missingBazelPath
     }
