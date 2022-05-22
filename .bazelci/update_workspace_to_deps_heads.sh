@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+sudo xcodebuild -runFirstLaunch
+
 # Modify the WORKSPACE to pull in the master branches of some deps.
 /usr/bin/sed \
   -i "" \
