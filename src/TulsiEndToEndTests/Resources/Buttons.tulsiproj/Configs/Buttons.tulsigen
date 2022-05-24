@@ -13,7 +13,7 @@
   ],
   "optionSet" : {
     "BazelBuildOptionsDebug" : {
-      "p" : "$(inherited) --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1 --strategy=SwiftCompile=local"
+      "p" : "$(inherited)"
     },
     "BazelBuildOptionsRelease" : {
       "p" : "$(inherited)"
