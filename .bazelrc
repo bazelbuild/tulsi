@@ -4,10 +4,5 @@ common --incompatible_allow_tags_propagation
 build --cpu=darwin_x86_64
 build --apple_platform_type=macos
 
-# Disable the Swift compilation worker when running integration tests, since it
-# requires the protobuf dependency which is infeasible to get working on Bazel.
-build --define=RULES_SWIFT_BUILD_DUMMY_WORKER=1
-build --strategy=SwiftCompile=local
-
 # This is required for re-invoking bazel in shell tests. CI adds it implicitly
 test --test_env=HOME

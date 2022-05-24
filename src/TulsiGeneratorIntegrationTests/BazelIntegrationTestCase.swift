@@ -91,10 +91,6 @@ class BazelIntegrationTestCase: XCTestCase {
     // won't match.
     bazelBuildOptions.append("--xcode_version=13.2.1")
 
-    // Disable the Swift worker as it adds extra dependencies.
-    bazelBuildOptions.append("--define=RULES_SWIFT_BUILD_DUMMY_WORKER=1")
-    bazelBuildOptions.append("--strategy=SwiftCompile=local")
-
     // We rely on dynamic execution in the tests, so we can't disable it for
     // the clean builds.
     // TODO(b/203094728): Remove this when it is removed from the ox bazelrc.
