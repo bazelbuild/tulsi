@@ -230,6 +230,7 @@ ios_unit_test(
 apple_static_framework_import(
     name = "ObjCFramework",
     framework_imports = [
+        "ObjCFramework/test.framework/test",
         "ObjCFramework/test.framework/file1",
         "ObjCFramework/test.framework/file2.txt",
         "ObjCFramework/test.framework/file3.m",
