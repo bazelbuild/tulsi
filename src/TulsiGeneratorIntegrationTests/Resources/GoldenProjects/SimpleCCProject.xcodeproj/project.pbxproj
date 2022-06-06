@@ -162,7 +162,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4700556B00000000 /* Build configuration list for PBXNativeTarget "ccBinary" */;
 			buildPhases = (
-				978262AB7728766F00000000 /* ShellScript */,
+				978262AB7728766F00000000 /* build //tulsi_e2e_ccsimple:ccBinary */,
 			);
 			buildRules = (
 			);
@@ -217,7 +217,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB7728766F00000000 /* ShellScript */ = {
+		978262AB7728766F00000000 /* build //tulsi_e2e_ccsimple:ccBinary */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -225,6 +225,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_ccsimple:ccBinary";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,7 +331,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -411,7 +412,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -492,7 +493,7 @@
 				PRODUCT_NAME = ccBinary;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -560,7 +561,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_ccsimple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

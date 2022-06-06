@@ -27,6 +27,10 @@ class PBXTargetGeneratorTests: XCTestCase {
     defaultStub: "TestInfo.plist",
     watchOSStub: "TestWatchOS2Info.plist",
     watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
+  let stubBinaryPaths = StubBinaryPaths(
+    clang: "stub_clang",
+    swiftc: "stub_swiftc",
+    ld: "stub_ld")
 
   let testTulsiVersion = "9.99.999.9999"
   var project: PBXProject! = nil
@@ -41,6 +45,7 @@ class PBXTargetGeneratorTests: XCTestCase {
       project: project,
       buildScriptPath: "",
       stubInfoPlistPaths: stubPlistPaths,
+      stubBinaryPaths: stubBinaryPaths,
       tulsiVersion: testTulsiVersion,
       options: TulsiOptionSet(),
       localizedMessageLogger: MockLocalizedMessageLogger(),
@@ -138,6 +143,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     defaultStub: "TestInfo.plist",
     watchOSStub: "TestWatchOS2Info.plist",
     watchOSAppExStub: "TestWatchOS2AppExInfo.plist")
+  let stubBinaryPaths = StubBinaryPaths(
+    clang: "stub_clang",
+    swiftc: "stub_swiftc",
+    ld: "stub_ld")
 
   let testTulsiVersion = "9.99.999.9999"
 
@@ -166,6 +175,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       project: project,
       buildScriptPath: "",
       stubInfoPlistPaths: stubPlistPaths,
+      stubBinaryPaths: stubBinaryPaths,
       tulsiVersion: testTulsiVersion,
       options: options,
       localizedMessageLogger: messageLogger,

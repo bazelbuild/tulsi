@@ -27,6 +27,11 @@ load(
     "IosExtensionBundleInfo",
     "SwiftInfo",
 )
+load(
+    ":tulsi/tulsi_aspects_propagation_attrs.bzl",
+    "TULSI_COMPILE_DEPS",
+    "attrs_for_target_kind",
+)
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
 ObjcInfo = apple_common.Objc
@@ -40,31 +45,6 @@ UNSUPPORTED_FEATURES = [
     "use_header_modules",
     "fdo_instrument",
     "fdo_optimize",
-]
-
-# List of all of the attributes that can link from a Tulsi-supported rule to a
-# Tulsi-supported dependency of that rule.
-# For instance, an ios_application's "binary" attribute might link to an
-# objc_binary rule which in turn might have objc_library's in its "deps"
-# attribute.
-_TULSI_COMPILE_DEPS = [
-    "app_clips",  # For ios_application which can include app clips.
-    "bundles",
-    "deps",
-    "extension",
-    "extensions",
-    "frameworks",
-    "settings_bundle",
-    "srcs",  # To propagate down onto rules which generate source files.
-    "tests",  # for test_suite when the --noexpand_test_suites flag is used.
-    "_implicit_tests",  # test_suites without a `tests` attr have an '$implicit_tests' attr instead.
-    "test_host",
-    "additional_contents",  # macos_application can specify a dict with supported rules as keys.
-    # Special attribute name which serves as an escape hatch intended for custom
-    # rule creators who use non-standard attribute names for rule dependencies
-    # and want those dependencies to show up in Xcode.
-    "tulsi_deps",
-    "watch_application",
 ]
 
 # These are attributes that contain bundles but should not be considered as
@@ -394,10 +374,18 @@ def _collect_bundle_imports(rule_attr):
 
 def _collect_framework_imports(rule_attr):
     """Extracts framework directories from the given rule attributes."""
-    return _collect_bundle_paths(
+    return _collect_xcframework_imports(rule_attr) + _collect_bundle_paths(
         rule_attr,
         ["framework_imports"],
         ".framework",
+    )
+
+def _collect_xcframework_imports(rule_attr):
+    """Extracts xcframework directories from the given rule attributes."""
+    return _collect_bundle_paths(
+        rule_attr,
+        ["xcframework_imports"],
+        ".xcframework",
     )
 
 def _collect_xcdatamodeld_files(obj, attr_path):
@@ -748,12 +736,13 @@ def _tulsi_sources_aspect(target, ctx):
     """Extracts information from a given rule, emitting it as a JSON struct."""
     rule = ctx.rule
     target_kind = rule.kind
+    attrs = attrs_for_target_kind(ctx.rule.kind)
     rule_attr = _get_opt_attr(rule, "attr")
     filter = _filter_for_rule(rule)
 
     transitive_info_files = []
     transitive_attributes = dict()
-    for attr_name in _TULSI_COMPILE_DEPS:
+    for attr_name in attrs:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in _filter_deps(filter, deps):
             if TulsiSourcesAspectInfo in dep:
@@ -795,7 +784,7 @@ def _tulsi_sources_aspect(target, ctx):
 
     # Collect the dependencies of this rule, dropping any .jar files (which may be
     # created as artifacts of java/j2objc rules).
-    dep_labels = _collect_dependency_labels(rule, filter, _TULSI_COMPILE_DEPS)
+    dep_labels = _collect_dependency_labels(rule, filter, attrs)
     compile_deps = [str(d) for d in dep_labels if not d.name.endswith(".jar")]
 
     supporting_files = (_collect_supporting_files(rule_attr) +
@@ -1114,6 +1103,7 @@ def _tulsi_outputs_aspect(target, ctx):
 
     rule = ctx.rule
     target_kind = rule.kind
+    attrs = attrs_for_target_kind(ctx.rule.kind)
     rule_attr = _get_opt_attr(rule, "attr")
     transitive_generated_files = []
 
@@ -1129,7 +1119,7 @@ def _tulsi_outputs_aspect(target, ctx):
     # A list of all explicit modules that have been built from this targets dependencies.
     transitive_explicit_modules = []
 
-    for attr_name in _TULSI_COMPILE_DEPS:
+    for attr_name in attrs:
         deps = _collect_dependencies(rule_attr, attr_name)
         for dep in deps:
             if TulsiOutputAspectInfo in dep:
@@ -1257,7 +1247,7 @@ def _tulsi_outputs_aspect(target, ctx):
     ]
 
 tulsi_sources_aspect = aspect(
-    attr_aspects = _TULSI_COMPILE_DEPS,
+    attr_aspects = TULSI_COMPILE_DEPS,
     attrs = {
         "_tulsi_xcode_config": attr.label(default = configuration_field(
             name = "xcode_config_label",
@@ -1279,7 +1269,7 @@ tulsi_sources_aspect = aspect(
 # This aspect does not propagate past the top-level target because we only need
 # the top target outputs.
 tulsi_outputs_aspect = aspect(
-    attr_aspects = _TULSI_COMPILE_DEPS,
+    attr_aspects = TULSI_COMPILE_DEPS,
     attrs = {
         "_cc_toolchain": attr.label(
             default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),

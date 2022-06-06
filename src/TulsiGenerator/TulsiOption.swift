@@ -168,6 +168,16 @@ public class TulsiOption: Equatable, CustomStringConvertible {
     return nil
   }
 
+  /// Append or set the project value of this option.
+  public func appendProjectValue(_ value: String) {
+    guard !value.isEmpty else { return }
+    guard let previous = projectValue ?? defaultValue, !previous.isEmpty else {
+      projectValue = value
+      return
+    }
+    projectValue = "\(previous) \(value)"
+  }
+
   public func sanitizeValue(_ value: String?) -> String? {
     switch (valueType) {
       case .bool:

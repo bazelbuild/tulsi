@@ -44,6 +44,10 @@ final class XcodeProjectGenerator {
     let stubWatchOS2InfoPlist: URL  // Stub Info.plist (needed for watchOS2 app targets).
     let stubWatchOS2AppExInfoPlist: URL  // Stub Info.plist (needed for watchOS2 appex targets).
 
+    let stubClang: URL   // Stub clang to create expected .d output files.
+    let stubSwiftc: URL  // Stub swiftc to create expected swift output files.
+    let stubLd: URL      // Stub ld to create expected .dat output files.
+
     // In order to load tulsi_aspects, Tulsi constructs a Bazel repository inside of the generated
     // Xcode project. Its structure looks like this:
     // ├── Bazel
@@ -80,6 +84,11 @@ final class XcodeProjectGenerator {
   private static let StubInfoPlistFilename = "StubInfoPlist.plist"
   private static let StubWatchOS2InfoPlistFilename = "StubWatchOS2InfoPlist.plist"
   private static let StubWatchOS2AppExInfoPlistFilename = "StubWatchOS2AppExInfoPlist.plist"
+
+  private static let StubClang = "clang_stub.sh"
+  private static let StubSwiftc = "swiftc_stub.py"
+  private static let StubLd = "ld_stub.sh"
+
   private static let CachedExecutionRootFilename = "execroot_path.py"
   private static let DefaultSwiftVersion = "4"
   private static let SupportScriptsPath = "Library/Application Support/Tulsi/Scripts"
@@ -210,8 +219,15 @@ final class XcodeProjectGenerator {
       watchOSStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2InfoPlistFilename)",
       watchOSAppExStub: "\(projectResourcesDirectory)/\(XcodeProjectGenerator.StubWatchOS2AppExInfoPlistFilename)")
 
+    let stubBinaryDirectory = "$(PROJECT_FILE_PATH)/\(XcodeProjectGenerator.ScriptDirectorySubpath)"
+    let binaryPaths = StubBinaryPaths(
+      clang: "\(stubBinaryDirectory)/\(XcodeProjectGenerator.StubClang)",
+      swiftc: "\(stubBinaryDirectory)/\(XcodeProjectGenerator.StubSwiftc)",
+      ld: "\(stubBinaryDirectory)/\(XcodeProjectGenerator.StubLd)")
+
     let projectInfo = try buildXcodeProjectWithMainGroup(mainGroup,
-                                                         stubInfoPlistPaths: plistPaths)
+                                                         stubInfoPlistPaths: plistPaths,
+                                                         stubBinaryPaths: binaryPaths)
 
     let serializingProgressNotifier = ProgressNotifier(name: SerializingXcodeProject,
                                                        maxValue: 1,
@@ -422,7 +438,8 @@ final class XcodeProjectGenerator {
 
   // Generates a PBXProject and a returns it along with a set of build, test and indexer targets.
   private func buildXcodeProjectWithMainGroup(_ mainGroup: PBXGroup,
-                                              stubInfoPlistPaths: StubInfoPlistPaths) throws -> GeneratedProjectInfo {
+                                              stubInfoPlistPaths: StubInfoPlistPaths,
+                                              stubBinaryPaths: StubBinaryPaths) throws -> GeneratedProjectInfo {
     let xcodeProject = PBXProject(name: config.projectName, mainGroup: mainGroup)
 
     if let enabled = config.options[.SuppressSwiftUpdateCheck].commonValueAsBool, enabled {
@@ -437,6 +454,7 @@ final class XcodeProjectGenerator {
                                                 project: xcodeProject,
                                                 buildScriptPath: buildScriptPath,
                                                 stubInfoPlistPaths: stubInfoPlistPaths,
+                                                stubBinaryPaths: stubBinaryPaths,
                                                 tulsiVersion: tulsiVersion,
                                                 options: config.options,
                                                 localizedMessageLogger: localizedMessageLogger,
@@ -1364,6 +1382,11 @@ final class XcodeProjectGenerator {
                     (resourceURLs.cleanScript, XcodeProjectGenerator.CleanScript),
                    ],
                    toDirectory: scriptDirectoryURL)
+      installFiles([
+        (resourceURLs.stubClang, XcodeProjectGenerator.StubClang),
+        (resourceURLs.stubSwiftc, XcodeProjectGenerator.StubSwiftc),
+        (resourceURLs.stubLd, XcodeProjectGenerator.StubLd),
+      ], toDirectory: scriptDirectoryURL)
       installFiles(resourceURLs.extraBuildScripts.map { ($0, $0.lastPathComponent) },
                    toDirectory: scriptDirectoryURL)
       generateBuildSettingsFile(projectInfo.buildRuleEntries, scriptDirectoryURL)

@@ -337,7 +337,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED264D630800000000 /* Build configuration list for PBXNativeTarget "TargetApplication" */;
 			buildPhases = (
-				978262ABE919C2CE00000000 /* ShellScript */,
+				978262ABE919C2CE00000000 /* build //tulsi_e2e_simple:TargetApplication */,
 			);
 			buildRules = (
 			);
@@ -386,7 +386,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4A42893600000000 /* Build configuration list for PBXNativeTarget "Application" */;
 			buildPhases = (
-				978262ABE22EC94700000000 /* ShellScript */,
+				978262ABE22EC94700000000 /* build //tulsi_e2e_simple:Application */,
 			);
 			buildRules = (
 			);
@@ -402,7 +402,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DEDF60B122100000000 /* Build configuration list for PBXNativeTarget "ccTest" */;
 			buildPhases = (
-				978262ABC9A216BB00000000 /* ShellScript */,
+				978262ABC9A216BB00000000 /* build //tulsi_e2e_simple:ccTest */,
 			);
 			buildRules = (
 			);
@@ -418,8 +418,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED6042BF8400000000 /* Build configuration list for PBXNativeTarget "XCTest" */;
 			buildPhases = (
-				978262AB3770BC3300000000 /* ShellScript */,
-				978262AB07BD82CE00000000 /* ShellScript */,
+				978262AB3770BC3300000000 /* build //tulsi_e2e_simple:XCTest */,
+				978262AB07BD82CE00000000 /* Objective-C dummy file generation */,
 				04BFD5160000000000000000 /* Sources */,
 			);
 			buildRules = (
@@ -487,13 +487,14 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		978262AB07BD82CE00000000 /* ShellScript */ = {
+		978262AB07BD82CE00000000 /* Objective-C dummy file generation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Objective-C dummy file generation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,7 +502,7 @@
 			shellScript = "# Script to generate dependency files Xcode expects when running tests.\nset -eu\nARCH_ARRAY=($ARCHS)\nFILES=(src1)\nfor ARCH in \"${ARCH_ARRAY[@]}\"\ndo\n  mkdir -p \"$OBJECT_FILE_DIR_normal/$ARCH/\"\n  rm -f \"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  printf '\\x00\\x31\\x00' >\"$OBJECT_FILE_DIR_normal/$ARCH/${PRODUCT_NAME}_dependency_info.dat\"\n  for FILE in \"${FILES[@]}\"\n  do\n    touch \"$OBJECT_FILE_DIR_normal/$ARCH/$FILE.d\"\n  done\ndone";
 			showEnvVarsInLog = 1;
 		};
-		978262AB3770BC3300000000 /* ShellScript */ = {
+		978262AB3770BC3300000000 /* build //tulsi_e2e_simple:XCTest */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -509,6 +510,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_simple:XCTest";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,7 +518,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:XCTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABC9A216BB00000000 /* ShellScript */ = {
+		978262ABC9A216BB00000000 /* build //tulsi_e2e_simple:ccTest */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -524,6 +526,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_simple:ccTest";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,7 +534,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:ccTest --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABE22EC94700000000 /* ShellScript */ = {
+		978262ABE22EC94700000000 /* build //tulsi_e2e_simple:Application */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -539,6 +542,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_simple:Application";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +550,7 @@
 			shellScript = "set -e\ncd \"${SRCROOT}/..\"\nexec \"${PROJECT_FILE_PATH}/.tulsi/Scripts/bazel_build.py\" //tulsi_e2e_simple:Application --bazel \"/fake/tulsi_test_bazel\" --bazel_bin_path \"bazel-bin\" --verbose ";
 			showEnvVarsInLog = 1;
 		};
-		978262ABE919C2CE00000000 /* ShellScript */ = {
+		978262ABE919C2CE00000000 /* build //tulsi_e2e_simple:TargetApplication */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 0;
 			files = (
@@ -554,6 +558,7 @@
 			inputPaths = (
 				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "build //tulsi_e2e_simple:TargetApplication";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,7 +671,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -691,7 +696,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -759,7 +764,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -783,7 +788,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -804,7 +809,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -821,7 +826,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -876,7 +881,7 @@
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -945,7 +950,7 @@
 				PRODUCT_NAME = ccTest;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Debug;
 		};
@@ -966,7 +971,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -983,7 +988,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -1038,7 +1043,7 @@
 				PRODUCT_NAME = TargetApplication;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -1107,7 +1112,7 @@
 				PRODUCT_NAME = ccTest;
 				SDKROOT = macosx;
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = Release;
 		};
@@ -1135,7 +1140,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Application.app/Application";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
 				TULSI_TEST_RUNNER_ONLY = YES;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1160,7 +1165,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1228,7 +1233,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
@@ -1252,7 +1257,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_simple;
-				TULSI_XCODE_VERSION = 13.0.0.13A233;
+				TULSI_XCODE_VERSION = 13.2.1.13C100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};

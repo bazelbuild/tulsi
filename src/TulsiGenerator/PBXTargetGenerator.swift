@@ -14,7 +14,8 @@
 
 import Foundation
 
-/// Provides a set of project paths to stub Info.plist files to be used by generated targets.
+/// Provides a set of project paths to stub Info.plist files to be used by
+/// generated targets.
 struct StubInfoPlistPaths {
   let resourcesDirectory: String
   let defaultStub: String
@@ -54,6 +55,14 @@ struct StubInfoPlistPaths {
   }
 }
 
+/// Provides a set of project paths to stub binary files to use in the generated
+/// Xcode project.
+struct StubBinaryPaths {
+  let clang: String
+  let swiftc: String
+  let ld: String
+}
+
 /// Defines an object that can populate a PBXProject based on RuleEntry's.
 protocol PBXTargetGeneratorProtocol: AnyObject {
   static func getRunTestTargetBuildConfigPrefix() -> String
@@ -68,6 +77,7 @@ protocol PBXTargetGeneratorProtocol: AnyObject {
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
+       stubBinaryPaths: StubBinaryPaths,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -215,6 +225,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
   let project: PBXProject
   let buildScriptPath: String
   let stubInfoPlistPaths: StubInfoPlistPaths
+  let stubBinaryPaths: StubBinaryPaths
   let tulsiVersion: String
   let options: TulsiOptionSet
   let localizedMessageLogger: LocalizedMessageLogger
@@ -459,6 +470,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
        project: PBXProject,
        buildScriptPath: String,
        stubInfoPlistPaths: StubInfoPlistPaths,
+       stubBinaryPaths: StubBinaryPaths,
        tulsiVersion: String,
        options: TulsiOptionSet,
        localizedMessageLogger: LocalizedMessageLogger,
@@ -469,6 +481,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     self.project = project
     self.buildScriptPath = buildScriptPath
     self.stubInfoPlistPaths = stubInfoPlistPaths
+    self.stubBinaryPaths = stubBinaryPaths
     self.tulsiVersion = tulsiVersion
     self.options = options
     self.localizedMessageLogger = localizedMessageLogger
@@ -536,7 +549,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       if let data = processedEntries[ruleEntry] {
         return data
       }
-      var frameworkSearchPaths = NSMutableOrderedSet()
+      let frameworkSearchPaths = NSMutableOrderedSet()
 
       defer {
         processedEntries[ruleEntry] = (frameworkSearchPaths)
@@ -782,7 +795,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
     // Bazel takes care of signing the generated applications, so Xcode's signing must be disabled.
     buildSettings["CODE_SIGNING_REQUIRED"] = "NO"
-      
+    buildSettings["CODE_SIGN_IDENTITY"] = ""
+    // This is required to disable code signing with the new build system.
+    if !options.useLegacyBuildSystem {
+      buildSettings["CODE_SIGNING_ALLOWED"] = "NO"
+    }
+
     // Explicitly setting the FRAMEWORK_SEARCH_PATHS will allow Xcode to resolve references to the
     // XCTest framework when performing Live issues analysis.
     buildSettings["FRAMEWORK_SEARCH_PATHS"] = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
@@ -826,6 +844,15 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
     // protocol buffers) make use of system-style includes.
     buildSettings["HEADER_SEARCH_PATHS"] = searchPaths.joined(separator: " ")
 
+    // Configure our binary stubs if we're targetting the new build system.
+    if !options.useLegacyBuildSystem {
+      buildSettings["CC"] = stubBinaryPaths.clang
+      buildSettings["CXX"] = stubBinaryPaths.clang
+      buildSettings["LD"] = stubBinaryPaths.ld
+      buildSettings["LDPLUSPLUS"] = stubBinaryPaths.ld
+      buildSettings["SWIFT_EXEC"] = stubBinaryPaths.swiftc
+    }
+
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
     addTestRunnerBuildConfigurationToBuildConfigurationList(project.buildConfigurationList)
   }
@@ -854,13 +881,19 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       targetsByLabel[entry.label] = target
 
       if let script = options[.PreBuildPhaseRunScript, entry.label.value] {
-        let runScript = PBXShellScriptBuildPhase(shellScript: script, shellPath: "/bin/bash")
+        let runScript = PBXShellScriptBuildPhase(
+          shellScript: script,
+          shellPath: "/bin/bash",
+          name: "Pre-build Run Script")
         runScript.showEnvVarsInLog = true
         target.buildPhases.insert(runScript, at: 0)
       }
 
       if let script = options[.PostBuildPhaseRunScript, entry.label.value] {
-        let runScript = PBXShellScriptBuildPhase(shellScript: script, shellPath: "/bin/bash")
+        let runScript = PBXShellScriptBuildPhase(
+          shellScript: script,
+          shellPath: "/bin/bash",
+          name: "Post-build Run Script")
         runScript.showEnvVarsInLog = true
         target.buildPhases.append(runScript)
       }
@@ -1733,7 +1766,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "  done\n" +
         "done\n"
 
-    let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
+    let buildPhase = PBXShellScriptBuildPhase(
+      shellScript: shellScript,
+      shellPath: "/bin/bash",
+      name: "Swift dummy file generation")
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "SwiftDummy"
     return buildPhase
@@ -1757,7 +1793,10 @@ do
   done
 done
 """
-    let buildPhase = PBXShellScriptBuildPhase(shellScript: shellScript, shellPath: "/bin/bash")
+    let buildPhase = PBXShellScriptBuildPhase(
+      shellScript: shellScript,
+      shellPath: "/bin/bash",
+      name: "Objective-C dummy file generation")
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "ObjcDummy"
     return buildPhase
@@ -1784,6 +1823,7 @@ done
     let buildPhase = PBXShellScriptBuildPhase(
       shellScript: shellScript,
       shellPath: "/bin/bash",
+      name: "build \(entry.label)",
       inputPaths: inputPaths
     )
     buildPhase.showEnvVarsInLog = true

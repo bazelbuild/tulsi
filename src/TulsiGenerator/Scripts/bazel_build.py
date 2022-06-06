@@ -526,11 +526,7 @@ class BazelBuildBridge(object):
         os.environ['TARGET_BUILD_DIR'], os.environ['EXECUTABLE_PATH'])
 
     self.is_simulator = self.platform_name.endswith('simulator')
-    # Check to see if code signing actions should be skipped or not.
-    if self.is_simulator:
-      self.codesigning_allowed = False
-    else:
-      self.codesigning_allowed = os.environ.get('CODE_SIGNING_ALLOWED') == 'YES'
+    self.codesigning_allowed = not self.is_simulator
 
     # Target architecture.  Must be defined for correct setting of
     # the --cpu flag. Note that Xcode will set multiple values in
@@ -753,11 +749,7 @@ class BazelBuildBridge(object):
         '--noexperimental_build_event_json_file_path_conversion',
         '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'])
 
-    if self.is_test and self.gen_runfiles:
-      bazel_command.append('--output_groups=+tulsi_outputs')
-    else:
-      bazel_command.append('--output_groups=tulsi_outputs,default')
-
+    bazel_command.append('--output_groups=+tulsi_outputs')
     bazel_command.extend(options.targets)
 
     extra_options = bazel_options.BazelOptions(os.environ)
