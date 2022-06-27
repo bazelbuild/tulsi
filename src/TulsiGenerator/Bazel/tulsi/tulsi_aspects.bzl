@@ -534,10 +534,14 @@ def _extract_compiler_defines(ctx):
         cxx = cpp_fragment.cxx_options([])
         defines += _extract_defines_from_option_list(cxx)
 
-    objc_fragment = _get_opt_attr(ctx.fragments, "objc")
-    if objc_fragment:
-        objc_copts = _get_opt_attr(objc_fragment, "copts")
+    if hasattr(cpp_fragment, "objccopts"):
+        objc_copts = _get_opt_attr(cpp_fragment, "objccopts")
         defines += _extract_defines_from_option_list(objc_copts)
+    else:
+        objc_fragment = _get_opt_attr(ctx.fragments, "objc")
+        if objc_fragment:
+            objc_copts = _get_opt_attr(cpp_fragment, "copts")
+            defines += _extract_defines_from_option_list(objc_copts)
 
     return defines
 
