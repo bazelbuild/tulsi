@@ -1070,6 +1070,12 @@ final class XcodeProjectGenerator {
       }
 
       let filename = suiteName + "_Suite.xcscheme"
+      var additionalBuildTargets: [(PBXTarget, String, XcodeScheme.BuildActionEntryAttributes)] = []
+      for test in validTests {
+        for dep in test.schemeBuildDependencies {
+          additionalBuildTargets.append((dep, projectBundleName, XcodeScheme.makeBuildActionEntryAttributes()))
+        }
+      }
 
       let url = xcschemesURL.appendingPathComponent(filename)
       let scheme = XcodeScheme(target: extractedHostTarget,
@@ -1080,6 +1086,7 @@ final class XcodeProjectGenerator {
                                customLLDBInitFile: customLLDBInitFile,
                                launchStyle: .Normal,
                                explicitTests: Array(validTests),
+                               additionalBuildTargets: additionalBuildTargets,
                                commandlineArguments: commandlineArguments(for: suite),
                                environmentVariables: environmentVariables(for: suite),
                                preActionScripts: preActionScripts(for: suite),

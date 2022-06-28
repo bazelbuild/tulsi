@@ -250,6 +250,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB36BEF64500000000 /* build //tulsi_e2e_tvos_project:tvOSExtension */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -266,6 +267,7 @@
 		};
 		978262ABFF52015900000000 /* build //tulsi_e2e_tvos_project:tvOSApplication */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);

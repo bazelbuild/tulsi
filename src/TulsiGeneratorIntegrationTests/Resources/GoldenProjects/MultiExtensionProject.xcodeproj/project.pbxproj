@@ -232,6 +232,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB2925DEB500000000 /* build //tulsi_e2e_multi_extension:ApplicationOne */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -248,6 +249,7 @@
 		};
 		978262AB521E8B4C00000000 /* build //tulsi_e2e_multi_extension:TodayExtension */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -264,6 +266,7 @@
 		};
 		978262AB977812D500000000 /* build //tulsi_e2e_multi_extension:ApplicationTwo */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
