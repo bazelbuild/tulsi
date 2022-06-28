@@ -265,6 +265,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB0C9444F000000000 /* build //tulsi_e2e_app_clip:AppClip */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -281,6 +282,7 @@
 		};
 		978262AB42F08E9300000000 /* build //tulsi_e2e_app_clip:Application */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);

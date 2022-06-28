@@ -333,6 +333,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB6DF6956400000000 /* build //tulsi_e2e_swift:Application */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);

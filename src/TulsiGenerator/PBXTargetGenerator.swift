@@ -847,6 +847,10 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
       buildSettings["LD"] = stubBinaryPaths.ld
       buildSettings["LDPLUSPLUS"] = stubBinaryPaths.ld
       buildSettings["SWIFT_EXEC"] = stubBinaryPaths.swiftc
+      // We must disable the integrated driver in order for Xcode 14 to
+      // use our $SWIFT_EXEC stub. Without this, Xcode 14 uses swift-frontend
+      // with no other way to stub it.
+      buildSettings["SWIFT_USE_INTEGRATED_DRIVER"] = "NO"
     }
 
     createBuildConfigurationsForList(project.buildConfigurationList, buildSettings: buildSettings)
@@ -1708,6 +1712,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
 
       buildSettings["TULSI_RESIGN_MANIFEST"] = "$(TARGET_TEMP_DIR)/\(manifest)"
     }
+    // For the new build system, we do want to enable code-signing specifically
+    // for simulator test targets. This will let Xcode adhoc codesign the
+    // test runner.
+    if !options.useLegacyBuildSystem && entry.pbxTargetType?.isTest ?? false {
+      buildSettings["CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]"] = "YES"
+    }
 
     buildSettings["PRODUCT_NAME"] = name
     if let bundleID = entry.bundleID {
@@ -1846,7 +1856,8 @@ done
       shellScript: shellScript,
       shellPath: "/bin/bash",
       name: "build \(entry.label)",
-      inputPaths: inputPaths
+      inputPaths: inputPaths,
+      alwaysOutOfDate: true
     )
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "BazelBuild"
@@ -1897,7 +1908,8 @@ done
     let buildPhase = PBXShellScriptBuildPhase(
       shellScript: shellScript,
       shellPath: "/bin/bash",
-      name: "Resign test artifacts"
+      name: "Resign test artifacts",
+      alwaysOutOfDate: true
     )
     buildPhase.showEnvVarsInLog = true
     buildPhase.mnemonic = "Resigner"
