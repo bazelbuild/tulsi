@@ -29,6 +29,7 @@ XCODE_INJECTED_FRAMEWORKS = [
     'XCTAutomationSupport.framework',
     'XCTest.framework',
     'XCTestCore.framework',
+    'XCTestSupport.framework',
     'XCUnit.framework',
     'XCUIAutomation.framework',
 ]

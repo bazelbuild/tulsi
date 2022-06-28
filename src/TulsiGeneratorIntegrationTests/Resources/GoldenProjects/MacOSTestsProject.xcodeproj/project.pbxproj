@@ -412,6 +412,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB36CF34B400000000 /* build //tulsi_e2e_mac:MyMacOSApp */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -458,6 +459,7 @@
 		};
 		978262AB6D7A83AC00000000 /* build //tulsi_e2e_mac:UITests */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -474,6 +476,7 @@
 		};
 		978262AB7494A9B700000000 /* build //tulsi_e2e_mac:UnitTestsNoHost */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -505,6 +508,7 @@
 		};
 		978262AB8536FCD700000000 /* build //tulsi_e2e_mac:UnitTests */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);

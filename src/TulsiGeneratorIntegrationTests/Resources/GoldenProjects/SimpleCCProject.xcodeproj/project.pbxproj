@@ -219,6 +219,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		978262AB7728766F00000000 /* build //tulsi_e2e_ccsimple:ccBinary */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);

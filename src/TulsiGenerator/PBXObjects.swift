@@ -625,6 +625,7 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
   let shellScript: String
   let name: String?
   var showEnvVarsInLog = false
+  var alwaysOutOfDate: Bool
 
   override var isa: String {
     return "PBXShellScriptBuildPhase"
@@ -643,12 +644,14 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
        inputPaths: [String] = [String](),
        outputPaths: [String] = [String](),
        buildActionMask: Int = 0,
-       runOnlyForDeploymentPostprocessing: Bool = false) {
+       runOnlyForDeploymentPostprocessing: Bool = false,
+       alwaysOutOfDate: Bool = false) {
     self.shellScript = shellScript
     self.shellPath = shellPath
     self.name = name
     self.inputPaths = inputPaths
     self.outputPaths = outputPaths
+    self.alwaysOutOfDate = alwaysOutOfDate
     self._hashValue = shellPath.hashValue &+ shellScript.hashValue
 
     super.init(buildActionMask: buildActionMask,
@@ -663,6 +666,9 @@ final class PBXShellScriptBuildPhase: PBXBuildPhase {
     try serializer.addField("shellPath", shellPath)
     try serializer.addField("shellScript", shellScript)
     try serializer.addField("showEnvVarsInLog", showEnvVarsInLog)
+    if alwaysOutOfDate {
+      try serializer.addField("alwaysOutOfDate", 1)
+    }
   }
 }
 

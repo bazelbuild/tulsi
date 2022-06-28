@@ -503,6 +503,7 @@
 		};
 		978262AB3770BC3300000000 /* build //tulsi_e2e_simple:XCTest */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -519,6 +520,7 @@
 		};
 		978262ABC9A216BB00000000 /* build //tulsi_e2e_simple:ccTest */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -535,6 +537,7 @@
 		};
 		978262ABE22EC94700000000 /* build //tulsi_e2e_simple:Application */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
@@ -551,6 +554,7 @@
 		};
 		978262ABE919C2CE00000000 /* build //tulsi_e2e_simple:TargetApplication */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 0;
 			files = (
 			);
