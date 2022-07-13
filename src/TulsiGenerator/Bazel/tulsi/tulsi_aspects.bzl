@@ -32,7 +32,7 @@ load(
     "TULSI_COMPILE_DEPS",
     "attrs_for_target_kind",
 )
-load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
+load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain", "use_cpp_toolchain")
 
 ObjcInfo = apple_common.Objc
 
@@ -1234,7 +1234,7 @@ tulsi_sources_aspect = aspect(
             "@bazel_tools//tools/cpp:current_cc_toolchain",
         )),
     },
-    toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
+    toolchains = use_cpp_toolchain(),
     fragments = [
         "apple",
         "cpp",
@@ -1258,4 +1258,5 @@ tulsi_outputs_aspect = aspect(
         "objc",
     ],
     implementation = _tulsi_outputs_aspect,
+    toolchains = use_cpp_toolchain(),
 )
