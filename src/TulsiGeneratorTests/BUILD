@@ -17,5 +17,6 @@ macos_unit_test(
         "//src/tools/module_cache_pruner": "MacOS",
     },
     minimum_os_version = "11.0",
+    shard_count = 5,
     deps = [":TulsiGeneratorTestsLib"],
 )
