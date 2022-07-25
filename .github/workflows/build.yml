@@ -23,6 +23,6 @@ jobs:
     name: macos_latest_head_deps
     uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
     with:
-      bazel: latest
+      bazel: rolling
       name: macos_latest_head_deps
       shell_commands: .bazelci/update_workspace_to_deps_heads.sh
