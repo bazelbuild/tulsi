@@ -32,10 +32,6 @@ load(
     "TULSI_COMPILE_DEPS",
     "attrs_for_target_kind",
 )
-load(
-    "@build_bazel_rules_apple//apple/internal:cc_toolchain_info_support.bzl",
-    "cc_toolchain_info_support",
-)
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
@@ -948,7 +944,7 @@ def _tulsi_sources_aspect(target, ctx):
         module_name = None
 
     cc_toolchain = find_cpp_toolchain(ctx)
-    target_triplet = cc_toolchain_info_support.get_apple_clang_triplet(cc_toolchain)
+    target_triplet = _get_apple_clang_triplet(cc_toolchain)
     framework_imports = _collect_framework_imports(rule_attr) + \
                         _collect_framework_imports_from_xcframework_imports(
                             rule_attr,
@@ -1119,6 +1115,52 @@ def _filter_deps(filter, deps):
         if not info or _tags_conform_to_filter(info.tags, filter):
             kept_deps.append(dep)
     return kept_deps
+
+# Copied from https://github.com/bazelbuild/rules_apple/blob/8533494fa029f0fc44009c4532c191f349acf193/apple/internal/cc_toolchain_info_support.bzl
+# TODO: Remove once rules_apple has been updated to include that.
+def _get_apple_clang_triplet(cc_toolchain):
+    """Parses and performs normalization on Clang target triplet string reference.
+
+    The C++ ToolchainInfo provider `target_gnu_system_name` field references an LLVM target triple.
+    This support method parses this target triplet and normalizes information for Apple targets.
+
+    See: https://clang.llvm.org/docs/CrossCompilation.html#target-triple
+
+    Args:
+        cc_toolchain: CcToolchainInfo provider.
+    Returns:
+        A normalized Clang target triplet struct for Apple targets.
+    """
+    components = cc_toolchain.target_gnu_system_name.split("-")
+    raw_triplet = struct(
+        architecture = components[0],
+        vendor = components[1],
+        os = components[2],
+        environment = components[3] if len(components) > 3 else None,
+    )
+
+    if raw_triplet.vendor != "apple":
+        return raw_triplet
+
+    environment = "device" if (raw_triplet.environment == None) else "simulator"
+
+    # strip version from Apple platforms
+    os = raw_triplet.os
+    for index in range(len(raw_triplet.os)):
+        if raw_triplet.os[index].isdigit():
+            os = raw_triplet.os[:index]
+            break
+
+    # normalize MacOS names
+    if os in ("macos", "macosx", "darwin"):
+        os = "macos"
+
+    return struct(
+        architecture = raw_triplet.architecture,
+        vendor = raw_triplet.vendor,
+        os = os,
+        environment = environment,
+    )
 
 def _tulsi_outputs_aspect(target, ctx):
     """Collects outputs of each build invocation."""
