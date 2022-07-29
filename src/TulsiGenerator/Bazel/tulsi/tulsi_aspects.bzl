@@ -32,6 +32,11 @@ load(
     "TULSI_COMPILE_DEPS",
     "attrs_for_target_kind",
 )
+load(
+    "@build_bazel_rules_apple//apple/internal:cc_toolchain_info_support.bzl",
+    "cc_toolchain_info_support",
+)
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
 ObjcInfo = apple_common.Objc
@@ -202,9 +207,11 @@ def _convert_outpath_to_symlink_path(path):
 
 def _is_file_a_directory(f):
     """Returns True is the given file is a directory."""
+
     # Starting Bazel 3.3.0, the File type as a is_directory attribute.
     if getattr(f, "is_directory", None):
         return f.is_directory
+
     # If is_directory is not in the File type, fall back to the old method:
     # As of Oct. 2016, Bazel disallows most files without extensions.
     # As a temporary hack, Tulsi treats File instances pointing at extension-less
@@ -363,19 +370,37 @@ def _collect_bundle_imports(rule_attr):
 
 def _collect_framework_imports(rule_attr):
     """Extracts framework directories from the given rule attributes."""
-    return _collect_xcframework_imports(rule_attr) + _collect_bundle_paths(
+    return _collect_bundle_paths(
         rule_attr,
         ["framework_imports"],
         ".framework",
     )
 
-def _collect_xcframework_imports(rule_attr):
-    """Extracts xcframework directories from the given rule attributes."""
-    return _collect_bundle_paths(
+def _collect_framework_imports_from_xcframework_imports(
+        rule_attr,
+        target_triplet):
+    """Extracts framework directories from xcframework imports for the current target platform."""
+    all_framework_paths = _collect_bundle_paths(
         rule_attr,
         ["xcframework_imports"],
-        ".xcframework",
+        ".framework",
     )
+
+    framework_imports = []
+    for p in all_framework_paths:
+        path = p.path
+        library_identifier = paths.basename(paths.dirname(path))
+        if not library_identifier.startswith(target_triplet.os):
+            continue
+        if target_triplet.architecture not in library_identifier:
+            continue
+        if target_triplet.environment != "simulator" and library_identifier.endswith("-simulator"):
+            continue
+        if target_triplet.environment == "simulator" and not library_identifier.endswith("-simulator"):
+            continue
+        framework_imports.append(p)
+
+    return framework_imports
 
 def _collect_xcdatamodeld_files(obj, attr_path):
     """Returns artifact_location's for xcdatamodeld's for attr_path in obj."""
@@ -922,6 +947,14 @@ def _tulsi_sources_aspect(target, ctx):
         test_deps = None
         module_name = None
 
+    cc_toolchain = find_cpp_toolchain(ctx)
+    target_triplet = cc_toolchain_info_support.get_apple_clang_triplet(cc_toolchain)
+    framework_imports = _collect_framework_imports(rule_attr) + \
+                        _collect_framework_imports_from_xcframework_imports(
+                            rule_attr,
+                            target_triplet,
+                        )
+
     info = _struct_omitting_none(
         artifacts = artifacts,
         attr = _struct_omitting_none(**all_attributes),
@@ -934,7 +967,7 @@ def _tulsi_sources_aspect(target, ctx):
         test_deps = test_deps,
         extensions = extensions,
         app_clips = app_clips,
-        framework_imports = _collect_framework_imports(rule_attr),
+        framework_imports = framework_imports,
         generated_files = generated_files,
         generated_non_arc_files = generated_non_arc_files,
         includes = target_includes,
