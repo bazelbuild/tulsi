@@ -30,8 +30,8 @@ else
 fi
 
 if [[ "${app_bundle_path}" == "" ]]; then
-  if [[ -f "/Applications/Tulsi.app/Contents/MacOS/Tulsi" ]]; then
-    readonly app_bundle_path="/Applications/Tulsi.app"
+  if [[ -f "$HOME/Applications/Tulsi.app/Contents/MacOS/Tulsi" ]]; then
+    readonly app_bundle_path="$HOME/Applications/Tulsi.app"
   else
     echo "Tulsi.app could not be located. Please ensure that you have built\
  Tulsi and that it exists in an accessible location."
