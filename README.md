@@ -13,6 +13,58 @@ To use Tulsi, clone this repository and run `build_and_run.sh`. By default this 
 * `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
 * `-x`: The Xcode version Tulsi should be built for (Default is `13.2.1`)
 
+## Integrating into your project
+
+If your project can be built with Bazel 5.0.0 or newer, you can integrate Tulsi
+into your project.
+
+Put the following content into your WORKSPACE file:
+
+```
+TULSI_COMMIT_HASH = "518f18da4948192c72074e07fa1dfe15858d40f4"
+
+http_archive(
+    name = "tulsi",
+    url = "https://github.com/bazelbuild/tulsi/archive/{0}.tar.gz".format(TULSI_COMMIT_HASH),
+    strip_prefix = "tulsi-{0}".format(TULSI_COMMIT_HASH),
+    sha256 = "92c89fcabfefc313dafea1cbc96c9f68d6f2025f2436ee11f7a4e4eb640fa151",
+)
+```
+
+Now you can run Tulsi with the following command:
+
+```bash
+bazel run @tulsi//:tulsi
+```
+
+You can also generate an Xcode project with the following command:
+
+```bash
+bazel run  -- @tulsi//:tulsi -- --genconfig "/path/to/your.tulsiproj:target" --outputfolder="/path/to/output"
+```
+
+Replace `"/path/to/your.tulsiproj:target` with the location of your Tulsi
+project and the target you want to generate the Xcode project for. Replace the
+`/path/to/output` with the directory's path where you want the generated Xcode
+project to be. Both paths need to be absolute path since` bazel run` will change
+the execution directory.
+
+
+The `TULSI_COMMIT_HASH` is the git commit hash of the Tulsi you want to use.
+When you want to update Tulsi, you can replace the value of `TULSI_COMMIT_HASH`
+with the new commit hash you want. In this way, you can easily update Tulsi
+across the whole team.
+
+If you do not know the `sha256` of the new Tulsi archive you want to use, you
+can remove the `sha256` attribute. Then when you do `bazel run @tulsi//:tulsi`
+you will say a debug log like this:
+
+```bash
+DEBUG: Rule 'tulsi' indicated that a canonical reproducible form can be obtained by modifying arguments sha256 = "92c89fcabfefc313dafea1cbc96c9f68d6f2025f2436ee11f7a4e4eb640fa151"
+```
+
+If you trust the source, you can then use the `sha256` value in the log.
+
 
 ## Notes
 
