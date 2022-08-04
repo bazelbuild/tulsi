@@ -37,15 +37,15 @@ Now you can run Tulsi with the following command:
 bazel run @tulsi//:tulsi
 ```
 
-You can also generate an XCode project with the following command:
+You can also generate an Xcode project with the following command:
 
 ```bash
 bazel run  -- @tulsi//:tulsi -- --genconfig "/path/to/your.tulsiproj:target" --outputfolder="/path/to/output"
 ```
 
 Replace `"/path/to/your.tulsiproj:target` with the location of your Tulsi
-project and the target you want to generate the XCode project for. Replace the
-`/path/to/output` with the directory's path where you want the generated XCode
+project and the target you want to generate the Xcode project for. Replace the
+`/path/to/output` with the directory's path where you want the generated Xcode
 project to be. Both paths need to be absolute path since` bazel run` will change
 the execution directory.
 
