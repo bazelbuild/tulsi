@@ -9,6 +9,7 @@ test_suite(
 
 swift_library(
     name = "BazelIntegrationTestCase",
+    testonly = True,
     srcs = [
         "BazelFakeWorkspace.swift",
         "BazelIntegrationTestCase.swift",
@@ -40,6 +41,7 @@ tulsi_integration_test(
 
 swift_library(
     name = "EndToEndIntegrationTestCase",
+    testonly = True,
     srcs = ["EndToEndIntegrationTestCase.swift"],
     module_name = "EndToEndIntegrationTestCase",
     deps = [":BazelIntegrationTestCase"],
