@@ -137,7 +137,8 @@ public final class ProcessRunner {
                                 arguments: [String],
                                 environment: [String: String]? = nil,
                                 messageLogger: LocalizedMessageLogger? = nil,
-                                loggingIdentifier: String? = nil) -> CompletionInfo {
+                                loggingIdentifier: String? = nil,
+                                currentDirectoryURL: URL? = nil ) -> CompletionInfo {
     let semaphore = DispatchSemaphore(value: 0)
     var completionInfo: CompletionInfo! = nil
     let process = defaultInstance.createProcess(launchPath,
@@ -148,6 +149,10 @@ public final class ProcessRunner {
       processCompletionInfo in
         completionInfo = processCompletionInfo
         semaphore.signal()
+    }
+
+    if currentDirectoryURL != nil {
+        process.currentDirectoryURL = currentDirectoryURL
     }
 
     process.launch()

@@ -7,7 +7,7 @@ test_suite(name = "TulsiEndToEndTests")
 
 swift_library(
     name = "TulsiEndToEndTestBase",
-    testonly = True,
+    testonly = 1,
     srcs = [
         "TulsiEndToEndTest.swift",
     ],
@@ -21,6 +21,7 @@ swift_library(
 tulsi_integration_test(
     name = "TulsiEndToEndTest",
     size = "large",
+    testonly = 1,
     srcs = [
         "ButtonsEndToEndTest.swift",
     ],

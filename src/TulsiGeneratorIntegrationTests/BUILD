@@ -9,7 +9,7 @@ test_suite(
 
 swift_library(
     name = "BazelIntegrationTestCase",
-    testonly = True,
+    testonly = 1,
     srcs = [
         "BazelFakeWorkspace.swift",
         "BazelIntegrationTestCase.swift",
@@ -32,6 +32,7 @@ tulsi_integration_test(
 tulsi_integration_test(
     name = "EndToEndGenerationTests",
     timeout = "eternal",
+    testonly = 1,
     srcs = ["EndToEndGenerationTests.swift"],
     env = {
         "SWIFT_DETERMINISTIC_HASHING": "1",
@@ -41,7 +42,7 @@ tulsi_integration_test(
 
 swift_library(
     name = "EndToEndIntegrationTestCase",
-    testonly = True,
+    testonly = 1,
     srcs = ["EndToEndIntegrationTestCase.swift"],
     module_name = "EndToEndIntegrationTestCase",
     deps = [":BazelIntegrationTestCase"],

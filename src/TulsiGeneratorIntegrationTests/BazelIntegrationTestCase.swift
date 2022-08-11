@@ -44,8 +44,11 @@ class BazelIntegrationTestCase: XCTestCase {
     let tempdir = ProcessInfo.processInfo.environment["TEST_TMPDIR"] ?? NSTemporaryDirectory()
     let tempdirURL = URL(fileURLWithPath: tempdir,
                          isDirectory: true)
+    localizedMessageLogger = DirectLocalizedMessageLogger()
+    localizedMessageLogger.startLogging()
     fakeBazelWorkspace = BazelFakeWorkspace(runfilesURL: runfilesURL,
-                                            tempDirURL: tempdirURL).setup()
+                                            tempDirURL: tempdirURL,
+                                            messageLogger: localizedMessageLogger).setup()
     pathsToCleanOnTeardown.formUnion(fakeBazelWorkspace.pathsToCleanOnTeardown)
     workspaceRootURL = fakeBazelWorkspace.workspaceRootURL
     bazelURL = fakeBazelWorkspace.bazelURL
@@ -111,8 +114,6 @@ class BazelIntegrationTestCase: XCTestCase {
         "--override_repository=tulsi=\(bazelWorkspace.path)"
     ])
 
-    localizedMessageLogger = DirectLocalizedMessageLogger()
-    localizedMessageLogger.startLogging()
     workspaceInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
                                                          workspaceRootURL: workspaceRootURL,
                                                          bazelUniversalFlags: bazelUniversalFlags,

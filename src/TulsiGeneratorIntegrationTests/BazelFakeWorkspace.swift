@@ -27,7 +27,8 @@ class BazelFakeWorkspace {
   var canaryBazelURL: URL?
   var pathsToCleanOnTeardown = Set<URL>()
 
-  init(runfilesURL: URL, tempDirURL: URL) {
+  // NOTE: messageLogger is unused here, but used within Google
+  init(runfilesURL: URL, tempDirURL: URL, messageLogger: LocalizedMessageLogger) {
     self.runfilesURL = runfilesURL
     self.runfilesWorkspaceURL = runfilesURL.appendingPathComponent("__main__", isDirectory: true)
     self.fakeExecroot = tempDirURL.appendingPathComponent("fake_execroot", isDirectory: true)
