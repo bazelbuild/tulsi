@@ -17,7 +17,7 @@ set -eu
 
 # Update this whenever the version of Xcode needed to generate the goldens
 # changes.
-readonly XCODE_VERSION=13.2.1
+readonly XCODE_VERSION=13.4.1
 
 readonly WORKSPACE=$(bazel info workspace)
 readonly TEST_PATH="src/TulsiGeneratorIntegrationTests"

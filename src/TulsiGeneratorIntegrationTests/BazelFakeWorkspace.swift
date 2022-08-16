@@ -14,7 +14,7 @@
 
 import Foundation
 import XCTest
-import TulsiGenerator
+@testable import TulsiGenerator
 
 class BazelFakeWorkspace {
   let resourcesPathBase = "src/TulsiGeneratorIntegrationTests/Resources"
