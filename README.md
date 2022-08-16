@@ -11,7 +11,7 @@ To use Tulsi, clone this repository and run `build_and_run.sh`. By default this 
 
 * `-b`: Bazel binary that Tulsi should use to build and install the app (Default is `bazel`)
 * `-d`: The folder where to install the Tulsi app into (Default is `$HOME/Applications`)
-* `-x`: The Xcode version Tulsi should be built for (Default is `13.2.1`)
+* `-x`: The Xcode version Tulsi should be built for (Default is `13.4.1`)
 
 ## Integrating into your project
 

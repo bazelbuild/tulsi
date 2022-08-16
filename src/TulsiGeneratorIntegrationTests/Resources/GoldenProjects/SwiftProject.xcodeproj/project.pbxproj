@@ -466,7 +466,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.2.1.13C100;
+				TULSI_XCODE_VERSION = 13.4.1.13F100;
 			};
 			name = __TulsiTestRunner_Release;
 		};
@@ -523,7 +523,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.2.1.13C100;
+				TULSI_XCODE_VERSION = 13.4.1.13F100;
 			};
 			name = Debug;
 		};
@@ -636,7 +636,7 @@
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.2.1.13C100;
+				TULSI_XCODE_VERSION = 13.4.1.13F100;
 			};
 			name = Release;
 		};
@@ -762,7 +762,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(PRODUCT_NAME).h";
 				TULSI_BUILD_PATH = tulsi_e2e_swift;
-				TULSI_XCODE_VERSION = 13.2.1.13C100;
+				TULSI_XCODE_VERSION = 13.4.1.13F100;
 			};
 			name = __TulsiTestRunner_Debug;
 		};
