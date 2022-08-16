@@ -92,7 +92,7 @@ class BazelIntegrationTestCase: XCTestCase {
 
     // Explicitly set Xcode version to use. Must use the same version or the golden files
     // won't match.
-    bazelBuildOptions.append("--xcode_version=13.2.1")
+    bazelBuildOptions.append("--xcode_version=13.4.1")
 
     // We rely on dynamic execution in the tests, so we can't disable it for
     // the clean builds.
