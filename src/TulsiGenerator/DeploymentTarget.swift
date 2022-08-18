@@ -118,7 +118,7 @@ public enum PlatformType: String {
     case .ios: return [.i386, .x86_64, .armv7, .arm64, .arm64e, .sim_arm64]
     case .macos: return  [.x86_64, .arm64, .arm64e]
     case .tvos: return [.x86_64, .arm64]
-    case .watchos: return [.i386, .x86_64, .armv7k, .arm64_32]
+    case .watchos: return [.i386,  .x86_64, .armv7k, .arm64_32, .arm64]
     }
   }
 

@@ -527,8 +527,15 @@ class BazelBuildBridge(object):
                        'set.  Please file a bug against Tulsi.')
       sys.exit(1)
     arch = archs.split()[-1]
-    if self.is_simulator and arch == "arm64":
-      self.arch = "sim_" + arch
+    if self.is_simulator and arch == 'arm64':
+      self.arch = 'sim_' + arch
+    # Xcode sets the ARCHS environment variable to both x86_64 and arm64 when
+    # building for watchOS simulator. Simulators have the same architecture as
+    # the host machine so we avoid picking the wrong one here by directly
+    # looking up the host architecture.
+    elif self.platform_name == 'watchsimulator':
+      host_arch = os.uname().machine
+      self.arch = host_arch
     else:
       self.arch = arch
 
