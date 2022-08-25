@@ -12,7 +12,7 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_application")
 
 package(default_visibility = ["//:__subpackages__"])
 
-licenses(["notice"])  # Apache 2.0
+licenses(["notice"])
 
 exports_files(["LICENSE"])
 

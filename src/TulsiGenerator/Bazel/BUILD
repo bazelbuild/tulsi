@@ -1,6 +1,6 @@
 load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
 
-licenses(["notice"])  # Apache 2.0
+licenses(["notice"])
 
 package(default_visibility = ["//:__subpackages__"])
 
