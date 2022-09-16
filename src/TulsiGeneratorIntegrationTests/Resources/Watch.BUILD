@@ -75,23 +75,6 @@ watchos_application(
     infoplists = ["Watch2Extension/app_infoplists/Info.plist"],
     minimum_os_version = "3.0",
     storyboards = ["Watch2Extension/Interface.storyboard"],
-    deps = [":WatchApplicationResources"],
-)
-
-objc_library(
-    name = "WatchApplicationResources",
-    data = [
-        "Watch2Extension/app_asset_catalogs.xcassets/app_asset_file.png",
-        "Watch2Extension/ext_resources.file",
-        ":WatchApplicationStructuredResources",
-    ],
-)
-
-apple_resource_group(
-    name = "WatchApplicationStructuredResources",
-    structured_resources = [
-        "Watch2Extension/ext_structured_resources.file",
-    ],
 )
 
 watchos_extension(
