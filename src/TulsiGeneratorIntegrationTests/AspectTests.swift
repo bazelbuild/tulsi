@@ -372,7 +372,6 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
 
     checker.assertThat("//tulsi_test:WatchApplication")
       .dependsOn("//tulsi_test:WatchExtension")
-      .dependsOn("//tulsi_test:WatchApplicationResources")
 
     checker.assertThat("//tulsi_test:WatchExtension")
       .dependsTransitivelyOn("//tulsi_test:WatchExtensionLibrary")
