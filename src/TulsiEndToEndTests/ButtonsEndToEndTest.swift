@@ -16,6 +16,7 @@ import XCTest
 
 @testable import BazelIntegrationTestCase
 @testable import TulsiEndToEndTestBase
+@testable import TulsiGenerator
 
 // End to end test that generates the Buttons project and runs its unit tests.
 class ButtonsEndToEndTest: TulsiEndToEndTest {
@@ -50,8 +51,35 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
     XCTAssertFalse(debugBuildOutput.contains(installingDsymBundlesOutput))
   }
 
-  /// Verifies that all of the _idx_ targets in the project build.
-  func testIndexingTargetsBuild() throws {
+  func indexXcodeScheme(_ xcodeProjectURL: URL, _ scheme: String) {
+    let completionInfo = ProcessRunner.launchProcessSync(
+      "/usr/bin/xcrun",
+      arguments: [
+        "xcindex-test",
+        "-project",
+        xcodeProjectURL.path,
+        "--",
+        "create-build-description",
+        "-scheme",
+        scheme,
+        "--",
+        "index-files",
+        "-targets-of-scheme",
+        scheme,
+        "--",
+        "quit",
+      ])
+
+    let stdout = String(data: completionInfo.stdout, encoding: .utf8) ?? ""
+    let stderr = String(data: completionInfo.stderr, encoding: .utf8) ?? ""
+    print("Index exit code \(completionInfo.terminationStatus), output:\n\(stdout)\nerror:\n\(stderr)")
+    if (completionInfo.terminationStatus != 0) {
+      XCTFail("Indexing operation failed for \(xcodeProjectURL):\(scheme).")
+    }
+  }
+
+  /// Verifies that all of the indexer targets in the project can be indexed.
+  func testIndexingTargetsIndexInvocations() throws {
     let xcodeProjectURL = generateXcodeProject(
       tulsiProject: buttonsProjectPath,
       config: "Buttons")
@@ -60,9 +88,7 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
     let targets = targetsOfXcodeProject(xcodeProjectURL)
     let indexTargets = targets.filter { $0.hasPrefix("_idx_") }
     XCTAssertEqual(indexTargets.count, 6)
-    for target in indexTargets {
-      _ = buildXcodeTarget(xcodeProjectURL, target: target)
-    }
+    indexXcodeScheme(xcodeProjectURL, "_idx_Scheme")
   }
 
   func testInvalidConfig() throws {

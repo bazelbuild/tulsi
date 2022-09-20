@@ -255,6 +255,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
       "ALWAYS_SEARCH_USER_PATHS": "NO",
+      "CC": stubBinaryPaths.clang,
       "CLANG_CXX_LANGUAGE_STANDARD": "gnu++17",
       "CLANG_ENABLE_OBJC_ARC": "YES",
       "CLANG_WARN_BOOL_CONVERSION": "YES",
@@ -264,8 +265,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "CLANG_WARN_INT_CONVERSION": "YES",
       "CLANG_WARN_UNREACHABLE_CODE": "YES",
       "CLANG_WARN__DUPLICATE_METHOD_MATCH": "YES",
+      "CODE_SIGNING_ALLOWED": "NO",
       "CODE_SIGNING_REQUIRED": "NO",
       "CODE_SIGN_IDENTITY": "",
+      "CXX": stubBinaryPaths.clang,
       "DONT_RUN_SWIFT_STDLIB_TOOL": "YES",
       "ENABLE_TESTABILITY": "YES",
       "FRAMEWORK_SEARCH_PATHS": "$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -277,11 +280,16 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "GCC_WARN_UNUSED_VARIABLE": "YES",
       "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
         + "$(TULSI_BWRS)/\(PBXTargetGenerator.tulsiIncludesPath)",
+      "LD": stubBinaryPaths.ld,
+      "LDPLUSPLUS": stubBinaryPaths.ld,
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
+      "SWIFT_EXEC": stubBinaryPaths.swiftc,
+      "SWIFT_USE_INTEGRATED_DRIVER": "NO",
+      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
+      "TULSI_NEW_BUILD_SYSTEM": "YES",
       "TULSI_VERSION": testTulsiVersion,
       "TULSI_WR": "$(SRCROOT)",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -311,6 +319,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
 
     let topLevelBuildSettings = [
       "ALWAYS_SEARCH_USER_PATHS": "NO",
+      "CC": stubBinaryPaths.clang,
       "CLANG_CXX_LANGUAGE_STANDARD": "gnu++17",
       "CLANG_ENABLE_OBJC_ARC": "YES",
       "CLANG_WARN_BOOL_CONVERSION": "YES",
@@ -320,8 +329,10 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "CLANG_WARN_INT_CONVERSION": "YES",
       "CLANG_WARN_UNREACHABLE_CODE": "YES",
       "CLANG_WARN__DUPLICATE_METHOD_MATCH": "YES",
+      "CODE_SIGNING_ALLOWED": "NO",
       "CODE_SIGNING_REQUIRED": "NO",
       "CODE_SIGN_IDENTITY": "",
+      "CXX": stubBinaryPaths.clang,
       "DONT_RUN_SWIFT_STDLIB_TOOL": "YES",
       "ENABLE_TESTABILITY": "YES",
       "FRAMEWORK_SEARCH_PATHS": "$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -333,12 +344,17 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "GCC_WARN_UNUSED_VARIABLE": "YES",
       "HEADER_SEARCH_PATHS": "$(TULSI_BWRS) $(TULSI_WR)/bazel-bin $(TULSI_WR)/bazel-genfiles "
         + "$(TULSI_BWRS)/\(PBXTargetGenerator.tulsiIncludesPath)",
-      "SDKROOT": projectSDKROOT,
+      "LD": stubBinaryPaths.ld,
+      "LDPLUSPLUS": stubBinaryPaths.ld,
       "ONLY_ACTIVE_ARCH": "YES",
       "PYTHONIOENCODING": "utf8",
+      "SDKROOT": projectSDKROOT,
+      "SWIFT_EXEC": stubBinaryPaths.swiftc,
+      "SWIFT_USE_INTEGRATED_DRIVER": "NO",
+      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
+      "TULSI_NEW_BUILD_SYSTEM": "YES",
       "TULSI_VERSION": testTulsiVersion,
       "TULSI_WR": "$(SRCROOT)",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -656,6 +672,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
         "BUNDLE_LOADER": "$(TEST_HOST)",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -726,7 +743,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssertEqual(topLevelConfigs.count, 0)
 
     let targets = project.targetByName
-    XCTAssertEqual(targets.count, 2)
+    // 3 targets since the test gets a resigner.
+    XCTAssertEqual(targets.count, 3)
 
     do {
       let expectedBuildSettings = [
@@ -768,6 +786,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -775,6 +794,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": rule2BuildPath,
+        "TULSI_RESIGN_MANIFEST": "$(TARGET_TEMP_DIR)/tulsi_resign_manifest.json",
         "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
       let expectedTarget = TargetDefinition(
@@ -887,6 +907,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
         "BUNDLE_LOADER": "$(TEST_HOST)",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "MACOSX_DEPLOYMENT_TARGET": "10.11",
@@ -1006,6 +1027,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "MACOSX_DEPLOYMENT_TARGET": "10.11",
@@ -1075,6 +1097,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "MACOSX_DEPLOYMENT_TARGET": "10.11",
@@ -1147,6 +1170,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "MACOSX_DEPLOYMENT_TARGET": "10.11",
@@ -1178,7 +1202,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         expectedBuildPhases: [
           BazelShellScriptBuildPhaseDefinition(bazelPath: bazelPath, buildTarget: rule1BuildTarget),
           SourcesBuildPhaseDefinition(files: projectTestSources, mainGroup: project.mainGroup),
-          ObjcDummyShellScriptBuildPhaseDefinition(),
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1270,6 +1293,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:Tests",
         "BUNDLE_LOADER": "$(TEST_HOST)",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -1304,7 +1328,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           BazelShellScriptBuildPhaseDefinition(
             bazelPath: bazelPath,
             buildTarget: testRuleBuildTarget),
-          ObjcDummyShellScriptBuildPhaseDefinition(),
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1356,6 +1379,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
       "BAZEL_TARGET": "test/app:Tests",
       "BUNDLE_LOADER": "$(TEST_HOST)",
+      "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
       "DEBUG_INFORMATION_FORMAT": "dwarf",
       "INFOPLIST_FILE": stubPlistPaths.defaultStub,
       "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -1390,7 +1414,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         BazelShellScriptBuildPhaseDefinition(
           bazelPath: bazelPath,
           buildTarget: "\(testRulePackage):\(testRuleTargetName)"),
-        ObjcDummyShellScriptBuildPhaseDefinition(),
       ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -1444,6 +1467,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
       "BAZEL_TARGET": "test/app:Tests",
       "BUNDLE_LOADER": "$(TEST_HOST)",
+      "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
       "DEBUG_INFORMATION_FORMAT": "dwarf",
       "INFOPLIST_FILE": stubPlistPaths.defaultStub,
       "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -1478,7 +1502,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         BazelShellScriptBuildPhaseDefinition(
           bazelPath: bazelPath,
           buildTarget: "\(testRulePackage):\(testRuleTargetName)"),
-        SwiftDummyShellScriptBuildPhaseDefinition(),
       ]
     )
     assertTarget(expectedTarget, inTargets: targets)
@@ -1525,7 +1548,8 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     XCTAssert(!messageLogger.warningMessageKeys.contains("MissingTestHost"))
 
     let targets = project.targetByName
-    XCTAssertEqual(targets.count, 2)
+    // 3 targets since the test gets a resigner.
+    XCTAssertEqual(targets.count, 3)
     do {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
@@ -1568,6 +1592,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "IPHONEOS_DEPLOYMENT_TARGET": "8.0",
@@ -1575,6 +1600,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
         "SDKROOT": "iphoneos",
         "TEST_TARGET_NAME": rule1TargetName,
         "TULSI_BUILD_PATH": testRuleBuildPath,
+        "TULSI_RESIGN_MANIFEST": "$(TARGET_TEMP_DIR)/tulsi_resign_manifest.json",
         "TULSI_TEST_RUNNER_ONLY": "YES",
       ]
       let expectedTarget = TargetDefinition(
@@ -1602,7 +1628,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
           BazelShellScriptBuildPhaseDefinition(
             bazelPath: bazelPath,
             buildTarget: testRuleBuildTarget),
-          ObjcDummyShellScriptBuildPhaseDefinition(),
         ]
       )
       assertTarget(expectedTarget, inTargets: targets)
@@ -1693,7 +1718,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       type: testRuleType,
       attributes: testRuleAttributes as [String: AnyObject],
       sourceFiles: testSources,
-      productType: .Application)
+      productType: .UnitTest)
     do {
       _ = try targetGenerator.generateBuildTargetsForRuleEntries(
         [testRule], ruleEntryMap: RuleEntryMap(), pathFilters: pathFilters)
@@ -1709,6 +1734,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       let expectedBuildSettings = [
         "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
         "BAZEL_TARGET": "test/testbundle:TestBundle",
+        "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
         "DEBUG_INFORMATION_FORMAT": "dwarf",
         "INFOPLIST_FILE": stubPlistPaths.defaultStub,
         "PRODUCT_NAME": testRuleTargetName,
@@ -3012,7 +3038,7 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       type: targetType,
       attributes: ["has_swift_dependency": true as AnyObject],
       dependencies: Set([BuildLabel(swiftTarget)]),
-      productType: .Application)
+      productType: .UnitTest)
     let swiftLibraryRule = makeTestRuleEntry(swiftTarget, type: "swift_library")
     let ruleEntryMap = makeRuleEntryMap(withRuleEntries: [swiftLibraryRule])
 
@@ -3032,11 +3058,13 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
     let expectedBuildSettings = [
       "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": "Stub Launch Image",
       "BAZEL_TARGET": target,
+      "CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]": "YES",
       "DEBUG_INFORMATION_FORMAT": "dwarf",
       "INFOPLIST_FILE": "TestInfo.plist",
       "PRODUCT_NAME": targetName,
       "SDKROOT": "iphoneos",
       "TULSI_BUILD_PATH": package,
+      "TULSI_TEST_RUNNER_ONLY": "YES",
     ]
     let expectedTarget = TargetDefinition(
       name: "TestTarget",
@@ -3418,44 +3446,6 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       XCTAssert(
         script.contains(buildTarget),
         "Build script does not contain build target \(buildTarget)",
-        line: line)
-    }
-  }
-
-  private class SwiftDummyShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
-    init() {
-      super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "SwiftDummy")
-    }
-
-    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
-      super.validate(phase, line: line)
-
-      // Guaranteed by the test infrastructure below, failing this indicates a programming error in
-      // the test fixture, not in the code being tested.
-      let scriptBuildPhase = phase as! PBXShellScriptBuildPhase
-
-      let script = scriptBuildPhase.shellScript
-      XCTAssert(
-        script.contains("touch"), "Build script does not contain 'touch'.",
-        line: line)
-    }
-  }
-
-  private class ObjcDummyShellScriptBuildPhaseDefinition: BuildPhaseDefinition {
-    init() {
-      super.init(isa: "PBXShellScriptBuildPhase", files: [], mnemonic: "ObjcDummy")
-    }
-
-    override func validate(_ phase: PBXBuildPhase, line: UInt = #line) {
-      super.validate(phase, line: line)
-
-      // Guaranteed by the test infrastructure below, failing this indicates a programming error in
-      // the test fixture, not in the code being tested.
-      let scriptBuildPhase = phase as! PBXShellScriptBuildPhase
-
-      let script = scriptBuildPhase.shellScript
-      XCTAssert(
-        script.contains("touch"), "Build script does not contain 'touch'.",
         line: line)
     }
   }

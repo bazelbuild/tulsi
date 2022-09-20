@@ -452,6 +452,14 @@ class BazelBuildBridge(object):
       xcode_build_version = os.environ['XCODE_PRODUCT_BUILD_VERSION']
       _PrintXcodeWarning('Tulsi officially supports Xcode 9+. You are using an '
                          'earlier Xcode, build %s.' % xcode_build_version)
+    if (int(os.environ['XCODE_VERSION_MAJOR']) >= 1400 and not
+        os.environ.get('TULSI_NEW_BUILD_SYSTEM')):
+      _PrintXcodeError(
+          'This project was generated for the legacy build system, '
+          'but this version of Xcode only supports the new build system. '
+          'Please regenerate your project with the "UseLegacyBuildSystem" '
+          'option set to NO.'
+      )
 
     self.tulsi_version = os.environ.get('TULSI_VERSION', 'UNKNOWN')
 
@@ -1425,8 +1433,6 @@ class BazelBuildBridge(object):
 
   def _PossibleTestFrameworksPaths(self, bundle):
     """Returns a list of potential paths of Xcode injected test frameworks."""
-    if not self.codesigning_allowed:
-      return []
     return [os.path.join(bundle, 'Frameworks', f) for f
             in resigner.XCODE_INJECTED_FRAMEWORKS]
 
