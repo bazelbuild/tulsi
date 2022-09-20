@@ -825,6 +825,12 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         "$(PROJECT_FILE_PATH)/\(PBXTargetGenerator.TulsiOutputBaseSymlinkPath)"
 
     buildSettings["TULSI_VERSION"] = tulsiVersion
+    if !options.useLegacyBuildSystem {
+      // Mark that this project was generated with new build system support.
+      // We'll check this in bazel_build.py to issue a warning if you try
+      // to use the legacy integration with Xcode 14 or later.
+      buildSettings["TULSI_NEW_BUILD_SYSTEM"] = "YES"
+    }
 
     // Set default Python STDOUT encoding of scripts run by Xcode (such as bazel_build.py) to UTF-8.
     // Otherwise, this would be the Python 2 default of ASCII, causing various encoding errors when
