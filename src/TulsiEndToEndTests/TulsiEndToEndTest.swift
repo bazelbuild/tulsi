@@ -21,7 +21,7 @@ import XCTest
 // generated xcodeproj by running the projects unit tests.
 class TulsiEndToEndTest: BazelIntegrationTestCase {
   fileprivate static let simulatorName = "tulsie2e-\(UUID().uuidString.prefix(8))"
-  fileprivate static let targetVersion = "14.5"
+  fileprivate static let targetVersion = "15.5"
 
   let fileManager = FileManager.default
   var runfilesWorkspaceURL: URL! = nil

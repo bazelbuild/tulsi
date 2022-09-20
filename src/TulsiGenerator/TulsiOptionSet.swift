@@ -281,7 +281,7 @@ public class TulsiOptionSet: Equatable {
 
   /// Whether the legacy build system should be used instead of the new build system.
   var useLegacyBuildSystem: Bool {
-    return self[.UseLegacyBuildSystem].commonValueAsBool ?? true
+    return self[.UseLegacyBuildSystem].commonValueAsBool ?? false
   }
 
   // MARK: - Private methods.
@@ -351,7 +351,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.Use64BitWatchSimulator, .Generic, false)
     addBoolOption(.DisableCustomLLDBInit, .Generic, false)
     addBoolOption(.UseBazelCacheReader, .Generic, false)
-    addBoolOption(.UseLegacyBuildSystem, .Generic, true)
+    addBoolOption(.UseLegacyBuildSystem, .Generic, false)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }
