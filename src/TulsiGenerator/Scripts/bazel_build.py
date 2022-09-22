@@ -1591,6 +1591,13 @@ class BazelBuildBridge(object):
       out.write(
           'settings set -- target.swift-extra-clang-flags "-fimplicit-module-maps"\n'
       )
+      if int(os.environ['XCODE_VERSION_MINOR']) >= 1330:
+        out.write('# This ensures LLDB\'s AST context never has this flag set '
+                  'which would make the AST incompatible with the AST\'s '
+                  'serialized in our precompiled modules.\n')
+        out.write(
+            'settings append target.swift-extra-clang-flags " -fno-ptrauth-objc-class-ro"\n'
+        )
 
       if clear_source_map:
         out.write('settings clear target.source-map\n')
