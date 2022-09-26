@@ -1,4 +1,4 @@
-load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("@build_bazel_rules_swift//swift:swift_library.bzl", "swift_library")
 load(":tulsi_integration_test.bzl", "tulsi_integration_test")
 
 licenses(["notice"])
