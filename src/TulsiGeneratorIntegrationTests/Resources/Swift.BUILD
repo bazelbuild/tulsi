@@ -18,7 +18,7 @@ load(
     "@build_bazel_rules_apple//apple:ios.bzl",
     "ios_application",
 )
-load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("@build_bazel_rules_swift//swift:swift_library.bzl", "swift_library")
 
 ios_application(
     name = "Application",
