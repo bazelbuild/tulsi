@@ -42,6 +42,7 @@ import bazel_build_settings
 import bazel_options
 from bootstrap_lldbinit import BootstrapLLDBInit
 from bootstrap_lldbinit import TULSI_LLDBINIT_FILE
+import pkg_resources
 import resigner
 import tulsi_logging
 from update_symbol_cache import UpdateSymbolCache
@@ -1067,6 +1068,18 @@ class BazelBuildBridge(object):
         bundle_path = self._FindEmbeddedBundleInMain(bundle_name,
                                                      bundle_extension)
         if bundle_path:
+          # Incremental installation can fail if an embedded bundle is
+          # recompiled but the Info.plist is not updated. This causes the delta
+          # bundle that Xcode actually installs to not have a bundle ID for the
+          # embedded bundle. Avoid this potential issue by always including the
+          # Info.plist in the delta bundle. For some unknown reason, this issue
+          # only occurs in iOS 16.
+          os_version = pkg_resources.parse_version(
+              os.environ['TARGET_DEVICE_OS_VERSION'])
+          if (self.platform_name.startswith('macos') or self.is_simulator) and (
+              os_version >= pkg_resources.parse_version('16')):
+            bundle_info_plist = os.path.join(bundle_path, 'Info.plist')
+            os.utime(bundle_info_plist, None)
           self._RsyncBundle(full_name, bundle_path, output_path)
         else:
           _PrintXcodeWarning('Could not find bundle %s in main bundle. ' %
