@@ -33,7 +33,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     watch_application = ":WatchApplication",
     deps = [
         ":ApplicationLibrary",
@@ -73,7 +73,7 @@ watchos_application(
     entitlements = "Watch2Extension/app_entitlements.entitlements",
     extension = ":WatchExtension",
     infoplists = ["Watch2Extension/app_infoplists/Info.plist"],
-    minimum_os_version = "3.0",
+    minimum_os_version = "4.0",
     storyboards = ["Watch2Extension/Interface.storyboard"],
 )
 
@@ -82,7 +82,7 @@ watchos_extension(
     bundle_id = "application.watch.ext.bundle-id",
     entitlements = "Watch2Extension/ext_entitlements.entitlements",
     infoplists = ["Watch2Extension/ext_infoplists/Info.plist"],
-    minimum_os_version = "3.0",
+    minimum_os_version = "4.0",
     deps = [
         ":WatchExtensionLibrary",
         ":WatchExtensionResources",

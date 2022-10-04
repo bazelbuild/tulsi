@@ -36,7 +36,7 @@ objc_library(
 
 ios_unit_test(
     name = "XCTest",
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = "//TestSuite:TestApplication",
     deps = [":XCTestLib"],
@@ -49,7 +49,7 @@ objc_library(
 
 ios_unit_test(
     name = "LogicTest",
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     deps = [":LogicTestLib"],
 )

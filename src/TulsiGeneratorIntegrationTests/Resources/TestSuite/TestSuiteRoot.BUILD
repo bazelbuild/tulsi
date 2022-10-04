@@ -55,7 +55,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Info.plist"],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [
         ":ApplicationLibrary",
     ],
@@ -82,7 +82,7 @@ objc_library(
 
 ios_unit_test(
     name = "TestSuiteXCTest",
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     tags = ["tagged"],
     test_host = ":TestApplication",
@@ -91,7 +91,7 @@ ios_unit_test(
 
 ios_unit_test(
     name = "TestSuiteXCTestNotTagged",
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":TestApplication",
     deps = [":TestSuiteXCTestNotTaggedLib"],

@@ -87,7 +87,7 @@ class ButtonsEndToEndTest: TulsiEndToEndTest {
       fileManager.fileExists(atPath: xcodeProjectURL.path), "Xcode project was not generated.")
     let targets = targetsOfXcodeProject(xcodeProjectURL)
     let indexTargets = targets.filter { $0.hasPrefix("_idx_") }
-    XCTAssertEqual(indexTargets.count, 6)
+    XCTAssertEqual(indexTargets.count, 5)
     indexXcodeScheme(xcodeProjectURL, "_idx_Scheme")
   }
 

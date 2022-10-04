@@ -28,7 +28,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Info.plist"],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [":ApplicationLibrary"],
 )
 

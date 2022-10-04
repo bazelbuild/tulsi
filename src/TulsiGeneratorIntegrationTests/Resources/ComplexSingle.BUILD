@@ -55,7 +55,7 @@ ios_application(
         "ipad",
     ],
     infoplists = ["Application/Info.plist"],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [
         ":ApplicationLibrary",
     ],
@@ -218,7 +218,7 @@ objc_library(
 
 ios_unit_test(
     name = "XCTest",
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     runner = "@build_bazel_rules_apple//apple/testing/default_runner:ios_default_runner",
     test_host = ":Application",
     deps = [
@@ -248,7 +248,7 @@ ios_extension(
     infoplists = [
         "TodayExtension/Plist1.plist",
     ],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [
         ":TodayExtensionLibrary",
         ":TodayExtensionResources",
@@ -308,7 +308,7 @@ tvos_application(
     infoplists = [
         "tvOSApplication/Info.plist",
     ],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [":tvOSLibrary"],
 )
 
@@ -318,7 +318,7 @@ tvos_extension(
     infoplists = [
         "tvOSExtension/Info.plist",
     ],
-    minimum_os_version = "10.0",
+    minimum_os_version = "11.0",
     deps = [":tvOSLibrary"],
 )
 
