@@ -11,13 +11,16 @@ x_defaults:
     # when --sandbox_writable_path supports relative paths.
     # https://github.com/bazelbuild/bazel/issues/10304
     - "--sandbox_writable_path=/Users/buildkite/Library/Application Support"
-    test_targets:
-    - "//:tests"
+    # TODO: Re-enable testing once
+    # https://github.com/bazelbuild/continuous-integration/issues/1273 is fixed
+    # We use GitHub Actions to run tests in the meantime.
+    # test_targets:
+    # - "//:tests"
 
 tasks:
-  macos_latest:
-    name: "Latest Bazel"
-    bazel: latest
+  macos_rolling:
+    name: "Latest rolling release Bazel"
+    bazel: rolling
     <<: *common
 
   macos_last_green:
@@ -25,9 +28,9 @@ tasks:
     bazel: last_green
     <<: *common
 
-  macos_latest_head_deps:
-    name: "Latest Bazel with Head Deps"
-    bazel: latest
+  macos_rolling_head_deps:
+    name: "Latest rolling release Bazel with Head Deps"
+    bazel: rolling
     shell_commands:
     # Update the WORKSPACE to use head versions of some deps to ensure nothing
     # has landed on them breaking this project.

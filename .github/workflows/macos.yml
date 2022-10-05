@@ -5,7 +5,7 @@ on:
         type: string
       bazel:
         type: string
-        default: latest
+        default: rolling
       xcode_version:
         type: string
         default: "13.2.1"
