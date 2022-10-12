@@ -96,6 +96,9 @@ class BazelIntegrationTestCase: XCTestCase {
     // TODO(b/203094728): Remove this when it is removed from the ox bazelrc.
     bazelBuildOptions.append("--noexperimental_dynamic_skip_first_build")
 
+    // TODO: Fix cases that relied on the old behavior and remove this flag.
+    bazelBuildOptions.append("--incompatible_unambiguous_label_stringification=false")
+
     guard let workspaceRootURL = workspaceRootURL else {
       fatalError("Failed to find workspaceRootURL.")
     }

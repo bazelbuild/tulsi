@@ -7,6 +7,7 @@ test_suite(name = "TulsiEndToEndTests")
 
 swift_library(
     name = "TulsiEndToEndTestBase",
+    testonly = True,
     srcs = [
         "TulsiEndToEndTest.swift",
     ],

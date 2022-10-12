@@ -11,7 +11,7 @@ jobs:
     name: macos_latest
     uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
     with:
-      bazel: latest
+      bazel: rolling
       name: macos_latest
   macos_last_green:
     name: macos_last_green
