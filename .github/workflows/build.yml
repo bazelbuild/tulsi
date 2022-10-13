@@ -22,7 +22,7 @@ jobs:
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
         --nocheck_visibility
-        --remote_cache=grpcs://remote.buildbuddy.io --
+        --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
         --test_env=USE_BAZEL_VERSION
         --
@@ -39,7 +39,7 @@ jobs:
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
         --nocheck_visibility
-        --remote_cache=grpcs://remote.buildbuddy.io --
+        --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
         --test_env=USE_BAZEL_VERSION
         --
@@ -57,7 +57,7 @@ jobs:
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
         --nocheck_visibility
-        --remote_cache=grpcs://remote.buildbuddy.io --
+        --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
         --test_env=USE_BAZEL_VERSION
         --
