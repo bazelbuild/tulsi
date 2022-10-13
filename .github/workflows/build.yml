@@ -10,8 +10,8 @@ env:
   xcode_version: "13.4.1"
 
 jobs:
-  macos_latest:
-    name: macos_latest
+  macos_rolling:
+    name: Latest rolling release Bazel
     runs-on: macos-12
     env:
       USE_BAZEL_VERSION: rolling
@@ -26,7 +26,7 @@ jobs:
         --
         //:tests
   macos_last_green:
-    name: macos_last_green
+    name: Last Green Bazel
     runs-on: macos-12
     env:
       USE_BAZEL_VERSION: last_green
@@ -40,8 +40,8 @@ jobs:
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
         --
         //:tests
-  macos_latest_head_deps:
-    name: macos_latest_head_deps
+  macos_rolling_head_deps:
+    name: Latest rolling release Bazel with Head Deps
     runs-on: macos-12
     env:
       USE_BAZEL_VERSION: rolling
