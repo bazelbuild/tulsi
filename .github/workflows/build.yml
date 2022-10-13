@@ -21,10 +21,8 @@ jobs:
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
-        --nocheck_visibility
         --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
-        --test_env=USE_BAZEL_VERSION
         --
         //:tests
   macos_last_green:
@@ -38,10 +36,8 @@ jobs:
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
-        --nocheck_visibility
         --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
-        --test_env=USE_BAZEL_VERSION
         --
         //:tests
   macos_latest_head_deps:
@@ -56,9 +52,7 @@ jobs:
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
     - run: bazel test
-        --nocheck_visibility
         --remote_cache=grpcs://remote.buildbuddy.io
         --sandbox_writable_path=/Users/runner/Library/Application\ Support
-        --test_env=USE_BAZEL_VERSION
         --
         //:tests

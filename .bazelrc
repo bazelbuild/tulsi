@@ -4,6 +4,13 @@ common --incompatible_allow_tags_propagation
 build --cpu=darwin_x86_64
 build --apple_platform_type=macos
 
+# Tulsi tests don't have enough visibility
+test --nocheck_visibility
+
+# Tulsi runs bazel in the integration tests, that also has to be the same bazel
+# that is used to build and run tests.
+test --test_env=USE_BAZEL_VERSION
+
 # This is required for re-invoking bazel in shell tests. CI adds it implicitly
 test --test_env=HOME
 
