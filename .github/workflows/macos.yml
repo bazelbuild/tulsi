@@ -37,9 +37,9 @@ jobs:
     - name: Xcode select
       run: sudo xcode-select -s /Applications/Xcode_${{ inputs.xcode_version }}.app/Contents/Developer
     - name: Build
-      run: bazel build -- ${{ inputs.build_targets }}
+      run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- ${{ inputs.build_targets }}
     - name: Test
-      run: bazel test ${{ inputs.test_flags }} --test_env=USE_BAZEL_VERSION -- ${{ inputs.test_targets }}
+      run: bazel test ${{ inputs.test_flags }} --test_env=USE_BAZEL_VERSION --remote_cache=grpcs://remote.buildbuddy.io -- ${{ inputs.test_targets }}
     - name: Copy testlogs
       run: rsync -rmL --include "*/" --include "test.log" --exclude "*" bazel-testlogs testlogs
       if: failure()
