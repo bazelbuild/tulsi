@@ -20,12 +20,12 @@ jobs:
     - run: mv -f `which bazelisk` `which bazel`
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
-    - run: bazel test \
-        --nocheck_visibility \
-        --remote_cache=grpcs://remote.buildbuddy.io -- \
-        --sandbox_writable_path=/Users/runner/Library/Application\ Support \
-        --test_env=USE_BAZEL_VERSION \
-        -- \
+    - run: bazel test
+        --nocheck_visibility
+        --remote_cache=grpcs://remote.buildbuddy.io --
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --test_env=USE_BAZEL_VERSION
+        --
         //:tests
   macos_last_green:
     name: macos_last_green
@@ -37,12 +37,12 @@ jobs:
     - run: mv -f `which bazelisk` `which bazel`
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
-    - run: bazel test \
-        --nocheck_visibility \
-        --remote_cache=grpcs://remote.buildbuddy.io -- \
-        --sandbox_writable_path=/Users/runner/Library/Application\ Support \
-        --test_env=USE_BAZEL_VERSION \
-        -- \
+    - run: bazel test
+        --nocheck_visibility
+        --remote_cache=grpcs://remote.buildbuddy.io --
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --test_env=USE_BAZEL_VERSION
+        --
         //:tests
   macos_latest_head_deps:
     name: macos_latest_head_deps
@@ -55,10 +55,10 @@ jobs:
     - run: .bazelci/update_workspace_to_deps_heads.sh
     - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
     - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
-    - run: bazel test \
-        --nocheck_visibility \
-        --remote_cache=grpcs://remote.buildbuddy.io -- \
-        --sandbox_writable_path=/Users/runner/Library/Application\ Support \
-        --test_env=USE_BAZEL_VERSION \
-        -- \
+    - run: bazel test
+        --nocheck_visibility
+        --remote_cache=grpcs://remote.buildbuddy.io --
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --test_env=USE_BAZEL_VERSION
+        --
         //:tests
