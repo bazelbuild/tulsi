@@ -286,14 +286,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "PYTHONIOENCODING": "utf8",
       "SWIFT_EXEC": stubBinaryPaths.swiftc,
       "SWIFT_USE_INTEGRATED_DRIVER": "NO",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
       "TULSI_NEW_BUILD_SYSTEM": "YES",
       "TULSI_VERSION": testTulsiVersion,
       PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
       PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelExecutionRootSymlinkLegacyVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
-      "TULSI_WR": "$(SRCROOT)",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
@@ -355,14 +353,12 @@ class PBXTargetGeneratorTestsWithFiles: XCTestCase {
       "SDKROOT": projectSDKROOT,
       "SWIFT_EXEC": stubBinaryPaths.swiftc,
       "SWIFT_USE_INTEGRATED_DRIVER": "NO",
-      "TULSI_BWRS": "$(PROJECT_FILE_PATH)/.tulsi/tulsi-workspace",
       "TULSI_NEW_BUILD_SYSTEM": "YES",
       "TULSI_VERSION": testTulsiVersion,
       PBXTargetGenerator.WorkspaceRootVarName: "$(SRCROOT)",
       PBXTargetGenerator.BazelExecutionRootSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelExecutionRootSymlinkLegacyVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiExecutionRootSymlinkPath,
       PBXTargetGenerator.BazelOutputBaseSymlinkVarName: "$(PROJECT_FILE_PATH)/" + PBXTargetGenerator.TulsiOutputBaseSymlinkPath,
-      "TULSI_WR": "$(SRCROOT)",
     ]
 
     XCTAssertNotNil(topLevelConfigs["Debug"])
