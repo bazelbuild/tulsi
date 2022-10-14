@@ -3,7 +3,7 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_468DE48B_ios_min10.0.a" BlueprintName="_idx_ApplicationLibrary_468DE48B_ios_min10.0" BlueprintIdentifier="7E9AFE62BC40BFA200000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BuildableName="lib_idx_ApplicationLibrary_468DE48B_ios_min11.0.a" BlueprintName="_idx_ApplicationLibrary_468DE48B_ios_min11.0" BlueprintIdentifier="7E9AFE6238C3B75A00000000" ReferencedContainer="container:TestSuiteRecursiveTestSuiteProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>

@@ -17,35 +17,35 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		30E8372A16D2A34500000000 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9034464BC8C52B7700000000 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7E9AFE6216D2A34400000000;
-		};
 		30E8372A9734745D00000000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9034464BC8C52B7700000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 01F2CBCF9734745C00000000;
 		};
+		30E8372ABDD34D0D00000000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9034464BC8C52B7700000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E9AFE62BDD34D0C00000000;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		25889F7C2F4161CE00000000 /* c.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = c.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SubSwiftLibrary/srcs/c.swift"; sourceTree = SOURCE_ROOT; };
+		25889F7C407AE04000000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min11.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0.framework; path = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C5A7F7A8600000000 /* _idx_SwiftLibrary_77A8D266_ios_min11.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_77A8D266_ios_min11.0.framework; path = _idx_SwiftLibrary_77A8D266_ios_min11.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C771DF59700000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibrary/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7C8291613A00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV4/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
-		25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; path = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C889EFE9900000000 /* BUILD */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD; path = tulsi_e2e_swift/BUILD; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
-		25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; path = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7C8E0BD87B00000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV3/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
-		25889F7CAAC072EA00000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibrary_77A8D266_ios_min10.0.framework; path = _idx_SwiftLibrary_77A8D266_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7C90D62B5400000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0.framework; path = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CAAD5E37A00000000 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist; name = Info.plist; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/bazel-tulsi-includes/x/x/tulsi_e2e_swift/Application-intermediates/Info.plist"; sourceTree = SOURCE_ROOT; };
 		25889F7CAB5E399B00000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibrary/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7CC30E4A2200000000 /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = a.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV3/srcs/a.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7CC680F8C400000000 /* b.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = b.swift; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/SwiftLibraryV4/srcs/b.swift"; sourceTree = SOURCE_ROOT; };
 		25889F7CCCCE004E00000000 /* Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; name = Application.app; path = Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework; path = _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25889F7CCD344CBC00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min11.0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = _idx_SwiftLibraryV4_B3719410_ios_min11.0.framework; path = _idx_SwiftLibraryV4_B3719410_ios_min11.0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25889F7CFD30C2C500000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "SwiftProject.xcodeproj/.tulsi/tulsi-execution-root/tulsi_e2e_swift/Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -137,10 +137,10 @@
 		45D05629C0087DBE00000000 /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
-				25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */,
-				25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */,
-				25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */,
-				25889F7CAAC072EA00000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0.framework */,
+				25889F7C407AE04000000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min11.0.framework */,
+				25889F7C90D62B5400000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0.framework */,
+				25889F7CCD344CBC00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min11.0.framework */,
+				25889F7C5A7F7A8600000000 /* _idx_SwiftLibrary_77A8D266_ios_min11.0.framework */,
 			);
 			name = Indexer;
 			sourceTree = "<group>";
@@ -221,55 +221,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		7E9AFE6207D4F0E800000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DED54B4CFB700000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min10.0" */;
-			buildPhases = (
-				04BFD5160000000000000002 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				89B1AEB39734745D00000000 /* PBXTargetDependency */,
-			);
-			name = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
-			productName = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
-			productReference = 25889F7CD678C71C00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		7E9AFE6216D2A34400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DEDECEC06AF00000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min10.0" */;
-			buildPhases = (
-				04BFD5160000000000000000 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				89B1AEB39734745D00000000 /* PBXTargetDependency */,
-			);
-			name = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
-			productName = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
-			productReference = 25889F7C8A02DDE400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		7E9AFE623891B9E600000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DED12883A4100000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min10.0" */;
-			buildPhases = (
-				04BFD5160000000000000003 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				89B1AEB39734745D00000000 /* PBXTargetDependency */,
-				89B1AEB316D2A34500000000 /* PBXTargetDependency */,
-			);
-			name = _idx_SwiftLibrary_77A8D266_ios_min10.0;
-			productName = _idx_SwiftLibrary_77A8D266_ios_min10.0;
-			productReference = 25889F7CAAC072EA00000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		7E9AFE6267D9455000000000 /* Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4222DED4A42893600000000 /* Build configuration list for PBXNativeTarget "Application" */;
@@ -286,9 +237,25 @@
 			productReference = 25889F7CCCCE004E00000000 /* Application.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7E9AFE6270DB4CE200000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0 */ = {
+		7E9AFE628436F3C600000000 /* _idx_SwiftLibraryV4_B3719410_ios_min11.0 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4222DEDDDE8563D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0" */;
+			buildConfigurationList = F4222DED70F5362F00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min11.0" */;
+			buildPhases = (
+				04BFD5160000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+			);
+			name = _idx_SwiftLibraryV4_B3719410_ios_min11.0;
+			productName = _idx_SwiftLibraryV4_B3719410_ios_min11.0;
+			productReference = 25889F7CCD344CBC00000000 /* _idx_SwiftLibraryV4_B3719410_ios_min11.0.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7E9AFE628E5AF31400000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DED19E0BE8C00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min11.0" */;
 			buildPhases = (
 				04BFD5160000000000000001 /* Sources */,
 			);
@@ -297,9 +264,42 @@
 			dependencies = (
 				89B1AEB39734745D00000000 /* PBXTargetDependency */,
 			);
-			name = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
-			productName = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
-			productReference = 25889F7C85BADF0E00000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0.framework */;
+			name = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0;
+			productName = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0;
+			productReference = 25889F7C90D62B5400000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7E9AFE62B761FC0200000000 /* _idx_SwiftLibrary_77A8D266_ios_min11.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DED1E37CBF600000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min11.0" */;
+			buildPhases = (
+				04BFD5160000000000000003 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+				89B1AEB3BDD34D0D00000000 /* PBXTargetDependency */,
+			);
+			name = _idx_SwiftLibrary_77A8D266_ios_min11.0;
+			productName = _idx_SwiftLibrary_77A8D266_ios_min11.0;
+			productReference = 25889F7C5A7F7A8600000000 /* _idx_SwiftLibrary_77A8D266_ios_min11.0.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7E9AFE62BDD34D0C00000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min11.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4222DEDCD4631F200000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min11.0" */;
+			buildPhases = (
+				04BFD5160000000000000000 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B1AEB39734745D00000000 /* PBXTargetDependency */,
+			);
+			name = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0;
+			productName = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0;
+			productReference = 25889F7C407AE04000000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min11.0.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -322,10 +322,10 @@
 			targets = (
 				7E9AFE6267D9455000000000 /* Application */,
 				01F2CBCF9734745C00000000 /* _bazel_clean_ */,
-				7E9AFE6216D2A34400000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min10.0 */,
-				7E9AFE6270DB4CE200000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0 */,
-				7E9AFE6207D4F0E800000000 /* _idx_SwiftLibraryV4_B3719410_ios_min10.0 */,
-				7E9AFE623891B9E600000000 /* _idx_SwiftLibrary_77A8D266_ios_min10.0 */,
+				7E9AFE62BDD34D0C00000000 /* _idx_SubSwiftLibrary_1CB322B5_ios_min11.0 */,
+				7E9AFE628E5AF31400000000 /* _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0 */,
+				7E9AFE628436F3C600000000 /* _idx_SwiftLibraryV4_B3719410_ios_min11.0 */,
+				7E9AFE62B761FC0200000000 /* _idx_SwiftLibrary_77A8D266_ios_min11.0 */,
 			);
 		};
 /* End PBXProject section */
@@ -389,13 +389,13 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		89B1AEB316D2A34500000000 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			targetProxy = 30E8372A16D2A34500000000 /* PBXContainerItemProxy */;
-		};
 		89B1AEB39734745D00000000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			targetProxy = 30E8372A9734745D00000000 /* PBXContainerItemProxy */;
+		};
+		89B1AEB3BDD34D0D00000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 30E8372ABDD34D0D00000000 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -463,7 +463,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "--version";
 				OTHER_LDFLAGS = "--version";
@@ -534,7 +534,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -548,10 +548,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
-				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -562,10 +562,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
-				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -576,10 +576,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
-				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -590,10 +590,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
-				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -655,7 +655,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.invalid;
 				PRODUCT_NAME = Application;
 				SDKROOT = iphoneos;
@@ -669,10 +669,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DSUB_LIBRARY_DEFINE";
-				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min10.0;
+				PRODUCT_NAME = _idx_SubSwiftLibrary_1CB322B5_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -683,10 +683,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V3";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 3 -DLIBRARY_DEFINE_V3";
-				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibraryV3_46A0CA4F_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -697,10 +697,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE_V4";
 				OTHER_SWIFT_FLAGS = "$(inherited) -swift-version 4 -DLIBRARY_DEFINE_V4";
-				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibraryV4_B3719410_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -711,10 +711,10 @@
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = "$(inherited) $(TULSI_WR)/. $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/ ";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DLIBRARY_DEFINE -DSUB_LIBRARY_DEFINE";
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift/SubSwiftLibrary.swift.modulemap -DSUB_LIBRARY_DEFINE -DLIBRARY_DEFINE";
-				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min10.0;
+				PRODUCT_NAME = _idx_SwiftLibrary_77A8D266_ios_min11.0;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TULSI_EXECUTION_ROOT)/bazel-tulsi-includes/x/x/tulsi_e2e_swift";
 			};
@@ -783,7 +783,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "${PROJECT_FILE_PATH}/.tulsi/Resources/StubInfoPlist.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "--version";
 				OTHER_LDFLAGS = "--version";
@@ -801,7 +801,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4222DED12883A4100000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min10.0" */ = {
+		F4222DED19E0BE8C00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min11.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0207AA2838C3D90E00000003 /* Debug */,
+				0207AA28616216BF00000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F4222DED1E37CBF600000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibrary_77A8D266_ios_min11.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0207AA2838C3D90E00000005 /* Debug */,
@@ -835,7 +843,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		F4222DED54B4CFB700000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min10.0" */ = {
+		F4222DED70F5362F00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV4_B3719410_ios_min11.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0207AA2838C3D90E00000004 /* Debug */,
@@ -843,15 +851,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		F4222DEDDDE8563D00000000 /* Build configuration list for PBXNativeTarget "_idx_SwiftLibraryV3_46A0CA4F_ios_min10.0" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0207AA2838C3D90E00000003 /* Debug */,
-				0207AA28616216BF00000003 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		F4222DEDECEC06AF00000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min10.0" */ = {
+		F4222DEDCD4631F200000000 /* Build configuration list for PBXNativeTarget "_idx_SubSwiftLibrary_1CB322B5_ios_min11.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0207AA2838C3D90E00000002 /* Debug */,

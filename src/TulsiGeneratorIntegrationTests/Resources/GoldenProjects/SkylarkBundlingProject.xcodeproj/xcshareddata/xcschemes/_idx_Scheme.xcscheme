@@ -3,7 +3,7 @@
     <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
         <BuildActionEntries>
             <BuildActionEntry buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForTesting="YES">
-                <BuildableReference BuildableName="lib_idx_tvOSLibrary_4AB12B40_tvos_min10.0.a" BlueprintName="_idx_tvOSLibrary_4AB12B40_tvos_min10.0" BlueprintIdentifier="7E9AFE6294F456E000000000" ReferencedContainer="container:SkylarkBundlingProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
+                <BuildableReference BuildableName="lib_idx_tvOSLibrary_4AB12B40_tvos_min11.0.a" BlueprintName="_idx_tvOSLibrary_4AB12B40_tvos_min11.0" BlueprintIdentifier="7E9AFE62CD59E74800000000" ReferencedContainer="container:SkylarkBundlingProject.xcodeproj" BuildableIdentifier="primary"></BuildableReference>
             </BuildActionEntry>
         </BuildActionEntries>
     </BuildAction>
