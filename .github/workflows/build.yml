@@ -6,23 +6,53 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  xcode_version: "13.4.1"
+
 jobs:
-  macos_latest:
-    name: macos_latest
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
-    with:
-      bazel: rolling
-      name: macos_latest
+  macos_rolling:
+    name: Latest rolling release Bazel
+    runs-on: macos-12
+    env:
+      USE_BAZEL_VERSION: rolling
+    steps:
+    - uses: actions/checkout@v2
+    - run: mv -f `which bazelisk` `which bazel`
+    - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
+    - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
+    - run: bazel test
+        --remote_cache=grpcs://remote.buildbuddy.io
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --
+        //:tests
   macos_last_green:
-    name: macos_last_green
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
-    with:
-      bazel: last_green
-      name: macos_last_green
-  macos_latest_head_deps:
-    name: macos_latest_head_deps
-    uses: bazelbuild/tulsi/.github/workflows/macos.yml@master
-    with:
-      bazel: rolling
-      name: macos_latest_head_deps
-      shell_commands: .bazelci/update_workspace_to_deps_heads.sh
+    name: Last Green Bazel
+    runs-on: macos-12
+    env:
+      USE_BAZEL_VERSION: last_green
+    steps:
+    - uses: actions/checkout@v2
+    - run: mv -f `which bazelisk` `which bazel`
+    - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
+    - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
+    - run: bazel test
+        --remote_cache=grpcs://remote.buildbuddy.io
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --
+        //:tests
+  macos_rolling_head_deps:
+    name: Latest rolling release Bazel with Head Deps
+    runs-on: macos-12
+    env:
+      USE_BAZEL_VERSION: rolling
+    steps:
+    - uses: actions/checkout@v2
+    - run: mv -f `which bazelisk` `which bazel`
+    - run: .bazelci/update_workspace_to_deps_heads.sh
+    - run: sudo xcode-select -s /Applications/Xcode_${{ env.xcode_version }}.app/Contents/Developer
+    - run: bazel build --remote_cache=grpcs://remote.buildbuddy.io -- //:tulsi
+    - run: bazel test
+        --remote_cache=grpcs://remote.buildbuddy.io
+        --sandbox_writable_path=/Users/runner/Library/Application\ Support
+        --
+        //:tests
