@@ -198,7 +198,12 @@ def _convert_outpath_to_symlink_path(path):
     if (len(components) > 2 and
         first_dash >= 0 and
         first_dash < len(components[0])):
-        return "bazel-tulsi-includes/x/x/" + "/".join(components[3:])
+        if (len(components) > 3 and
+            components[3] == "external"):
+            last_component = "../" + "/".join(components[4:])
+        else:
+            last_component = "/".join(components[3:])
+        return "bazel-tulsi-includes/x/x/" + last_component
     return path
 
 def _is_file_a_directory(f):

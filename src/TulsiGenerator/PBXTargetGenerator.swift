@@ -1414,7 +1414,7 @@ final class PBXTargetGenerator: PBXTargetGeneratorProtocol {
         }
         return rootedPath
       }
-      includes.addObjects(from: rootedPaths)
+      includes.addObjects(from: rootedPaths + ["$(\(PBXTargetGenerator.BazelOutputBaseSymlinkVarName))"])
     }
   }
 
