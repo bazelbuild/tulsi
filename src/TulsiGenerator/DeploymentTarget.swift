@@ -65,8 +65,12 @@ public struct PlatformConfiguration {
   public let platform: PlatformType
   public let cpu: CPU
 
-  /// Default to iOS 64-bit simulator.
+  /// Default to iOS 64-bit simulator, arm64 or x86_64 depending on what we're running on.
+#if arch(arm64)
+  public static let defaultConfiguration = PlatformConfiguration(platform: .ios, cpu: .sim_arm64)
+#else
   public static let defaultConfiguration = PlatformConfiguration(platform: .ios, cpu: .x86_64)
+#endif
 
   /// Returns all valid PlatformConfiguration identifiers.
   public static var allValidConfigurations: [PlatformConfiguration] {
