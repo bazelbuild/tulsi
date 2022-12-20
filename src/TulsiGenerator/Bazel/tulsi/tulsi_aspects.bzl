@@ -477,7 +477,7 @@ def _extract_defines_from_option_list(lst):
             defines.append(item[2:])
     return defines
 
-def _extract_compiler_defines(ctx):
+def _extract_compiler_defines(target, ctx):
     """Extracts preprocessor defines from compiler fragments."""
     defines = []
 
@@ -493,6 +493,7 @@ def _extract_compiler_defines(ctx):
         feature_configuration = cc_common.configure_features(
             ctx = ctx,
             cc_toolchain = cc_toolchain,
+            language = "objc" if ObjcInfo in target or CcInfo not in target else "c++",
             requested_features = ctx.features,
             unsupported_features = ctx.disabled_features + UNSUPPORTED_FEATURES,
         )
@@ -790,7 +791,7 @@ def _tulsi_sources_aspect(target, ctx):
     # example).
     inheritable_attributes = _dict_omitting_none(
         bridging_header = _collect_first_file(rule_attr, "bridging_header"),
-        compiler_defines = _extract_compiler_defines(ctx),
+        compiler_defines = _extract_compiler_defines(target, ctx),
         enable_modules = _get_opt_attr(rule_attr, "enable_modules"),
         launch_storyboard = _collect_first_file(rule_attr, "launch_storyboard"),
         pch = _collect_first_file(rule_attr, "pch"),
