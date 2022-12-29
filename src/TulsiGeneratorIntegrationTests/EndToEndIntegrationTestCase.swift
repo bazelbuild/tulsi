@@ -225,6 +225,7 @@ class EndToEndIntegrationTestCase : BazelIntegrationTestCase {
 
     options[.BazelBuildOptionsDebug].projectValue = debugBuildOptions.joined(separator: " ")
     options[.BazelBuildOptionsRelease].projectValue = releaseBuildOptions.joined(separator: " ")
+    options[.RunAspectsFromWorkspace].projectValue = "YES"
 
     let bazelURLParam = TulsiParameter(value: fakeBazelURL, source: .explicitlyProvided)
     let config = TulsiGeneratorConfig(projectName: projectName,

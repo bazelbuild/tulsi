@@ -75,7 +75,8 @@ public final class TulsiXcodeProjectGenerator {
     // BUILD files (or add new files to glob's) and regenerate without restarting Tulsi.
     let extractor = BazelWorkspaceInfoExtractor(bazelURL: extractorBazelURL,
                                                 workspaceRootURL: workspaceRootURL,
-                                                localizedMessageLogger: localizedMessageLogger)
+                                                localizedMessageLogger: localizedMessageLogger,
+                                                runAspectsFromWorkspace: config.options.runAspectsFromWorkspace)
 
     xcodeProjectGenerator = XcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
                                                   config: config,

@@ -40,6 +40,7 @@ class MockBazelSettingsProvider: BazelSettingsProviderProtocol {
     return BazelBuildSettings(
       bazel: bazel,
       bazelExecRoot: bazelExecRoot,
+      aspectsBzlLabel: options.aspectsBzlLabel,
       defaultPlatformConfigIdentifier: "",
       platformConfigurationFlags: nil,
       swiftTargets: [],
@@ -76,13 +77,7 @@ class MockWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
 
   func ruleEntriesForLabels(
     _ labels: [BuildLabel],
-    startupOptions: TulsiOption,
-    extraStartupOptions: TulsiOption,
-    buildOptions: TulsiOption,
-    compilationModeOption: TulsiOption,
-    platformConfigOption: TulsiOption,
-    prioritizeSwiftOption: TulsiOption,
-    use64BitWatchSimulatorOption: TulsiOption,
+    options: TulsiOptionSet,
     features: Set<BazelSettingFeature>
   ) throws -> RuleEntryMap {
     invalidLabels.removeAll(keepingCapacity: true)

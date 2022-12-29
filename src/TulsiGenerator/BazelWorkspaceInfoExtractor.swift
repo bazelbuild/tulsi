@@ -51,21 +51,29 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   // Cache of all RuleEntry instances loaded for the associated project.
   private var ruleEntryCache = RuleEntryMap()
 
-  init(bazelURL: URL, workspaceRootURL: URL, localizedMessageLogger: LocalizedMessageLogger) {
+  init(
+    bazelURL: URL,
+    workspaceRootURL: URL,
+    localizedMessageLogger: LocalizedMessageLogger,
+    runAspectsFromWorkspace: Bool
+  ) {
     let universalFlags: BazelFlags
-    // Install to ~/Library/Application Support when not running inside a test.
-    if let applicationSupport = ApplicationSupport() {
-      let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
-      let aspectPath = try! applicationSupport.copyTulsiAspectFiles(tulsiVersion: tulsiVersion)
-      universalFlags = BazelFlags(
-        // TODO(tulsi-team): See if we can avoid using --override_repository.
-        build: ["--override_repository=tulsi=\(aspectPath)"]
-      )
-    } else {  // Running inside a test, just refer to the files directly from TulsiGenerator.
-      let bundle = Bundle(for: type(of: self))
-      let bazelWorkspace =
-        bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()
-      universalFlags = BazelFlags(build: ["--override_repository=tulsi=\(bazelWorkspace.path)"])
+      if runAspectsFromWorkspace {
+        // No need for any additional flags.
+        universalFlags = BazelFlags()
+      } else if let applicationSupport = ApplicationSupport() {
+        // Install to ~/Library/Application Support when not running inside a test.
+        let tulsiVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "UNKNOWN"
+        let aspectPath = try! applicationSupport.copyTulsiAspectFiles(tulsiVersion: tulsiVersion)
+        universalFlags = BazelFlags(
+          // TODO(tulsi-team): See if we can avoid using --override_repository.
+          build: ["--override_repository=tulsi=\(aspectPath)"]
+        )
+      } else {  // Running inside a test, just refer to the files directly from TulsiGenerator.
+        let bundle = Bundle(for: type(of: self))
+        let bazelWorkspace =
+          bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()
+        universalFlags = BazelFlags(build: ["--override_repository=tulsi=\(bazelWorkspace.path)"])
     }
 
     bazelSettingsProvider = BazelSettingsProvider(universalFlags: universalFlags)
@@ -95,13 +103,7 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
   }
 
   func ruleEntriesForLabels(_ labels: [BuildLabel],
-                            startupOptions: TulsiOption,
-                            extraStartupOptions: TulsiOption,
-                            buildOptions: TulsiOption,
-                            compilationModeOption: TulsiOption,
-                            platformConfigOption: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption,
-                            use64BitWatchSimulatorOption: TulsiOption,
+                            options: TulsiOptionSet,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     func isLabelMissing(_ label: BuildLabel) -> Bool {
       return !ruleEntryCache.hasAnyRuleEntry(withBuildLabel: label)
@@ -115,19 +117,20 @@ final class BazelWorkspaceInfoExtractor: BazelWorkspaceInfoExtractorProtocol {
       return commandLineSplitter.splitCommandLine(options) ?? []
     }
 
-    let startupOptions = splitOptionString(startupOptions.commonValue) + splitOptionString(extraStartupOptions.commonValue)
-    let buildOptions = splitOptionString(buildOptions.commonValue)
-    let compilationMode = compilationModeOption.commonValue
-    let platformConfig = platformConfigOption.commonValue
-    let prioritizeSwift = prioritizeSwiftOption.commonValueAsBool
+    let startupOptions = splitOptionString(options[.BazelBuildStartupOptionsDebug].commonValue) + splitOptionString(options[.ProjectGenerationBazelStartupOptions].commonValue)
+    let buildOptions = splitOptionString(options[.BazelBuildOptionsDebug].commonValue)
+    let compilationMode = options[.ProjectGenerationCompilationMode].commonValue
+    let platformConfig = options[.ProjectGenerationPlatformConfiguration].commonValue
+    let prioritizeSwift = options[.ProjectPrioritizesSwift].commonValueAsBool
 
-    if let use64BitWatchSimulatorOption = use64BitWatchSimulatorOption.commonValueAsBool {
+    if let use64BitWatchSimulatorOption = options[.Use64BitWatchSimulator].commonValueAsBool {
       PlatformConfiguration.use64BitWatchSimulator = use64BitWatchSimulatorOption
     }
 
     do {
       let ruleEntryMap =
         try aspectExtractor.extractRuleEntriesForLabels(labels,
+                                                        aspectBzlLabel: options.aspectsBzlLabel,
                                                         startupOptions: startupOptions,
                                                         buildOptions: buildOptions,
                                                         compilationMode: compilationMode,

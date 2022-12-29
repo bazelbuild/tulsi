@@ -43,9 +43,12 @@ public final class TulsiProjectInfoExtractor {
     let bundle = Bundle(for: type(of: self))
     localizedMessageLogger = LocalizedMessageLogger(bundle: bundle)
 
-    workspaceInfoExtractor = BazelWorkspaceInfoExtractor(bazelURL: bazelURL,
-                                                         workspaceRootURL: project.workspaceRootURL,
-                                                         localizedMessageLogger: localizedMessageLogger)
+    workspaceInfoExtractor = BazelWorkspaceInfoExtractor(
+      bazelURL: bazelURL,
+      workspaceRootURL: project.workspaceRootURL,
+      localizedMessageLogger: localizedMessageLogger,
+      runAspectsFromWorkspace: project.options.runAspectsFromWorkspace
+    )
   }
 
   public func extractTargetRules() -> [RuleInfo] {
@@ -53,43 +56,19 @@ public final class TulsiProjectInfoExtractor {
   }
 
   public func ruleEntriesForInfos(_ infos: [RuleInfo],
-                                  startupOptions: TulsiOption,
-                                  extraStartupOptions: TulsiOption,
-                                  buildOptions: TulsiOption,
-                                  compilationModeOption: TulsiOption,
-                                  platformConfigOption: TulsiOption,
-                                  prioritizeSwiftOption: TulsiOption,
-                                  use64BitWatchSimulatorOption: TulsiOption,
+                                  options: TulsiOptionSet,
                                   features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     return try ruleEntriesForLabels(infos.map({ $0.label }),
-                                    startupOptions: startupOptions,
-                                    extraStartupOptions: extraStartupOptions,
-                                    buildOptions: buildOptions,
-                                    compilationModeOption: compilationModeOption,
-                                    platformConfigOption: platformConfigOption,
-                                    prioritizeSwiftOption: prioritizeSwiftOption,
-                                    use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
+                                    options: options,
                                     features: features)
   }
 
   public func ruleEntriesForLabels(_ labels: [BuildLabel],
-                                   startupOptions: TulsiOption,
-                                   extraStartupOptions: TulsiOption,
-                                   buildOptions: TulsiOption,
-                                   compilationModeOption: TulsiOption,
-                                   platformConfigOption: TulsiOption,
-                                   prioritizeSwiftOption: TulsiOption,
-                                   use64BitWatchSimulatorOption: TulsiOption,
+                                   options: TulsiOptionSet,
                                    features: Set<BazelSettingFeature>) throws -> RuleEntryMap {
     do {
       return try workspaceInfoExtractor.ruleEntriesForLabels(labels,
-                                                             startupOptions: startupOptions,
-                                                             extraStartupOptions: extraStartupOptions,
-                                                             buildOptions: buildOptions,
-                                                             compilationModeOption: compilationModeOption,
-                                                             platformConfigOption: platformConfigOption,
-                                                             prioritizeSwiftOption: prioritizeSwiftOption,
-                                                             use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
+                                                             options: options,
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ExtractorError.ruleEntriesFailed(info)

@@ -130,6 +130,7 @@ BazelFlagsSet(
   func testBazelBuildSettingsPythonable() {
     let bazel = "/path/to/bazel"
     let bazelExecRoot = "__MOCK_EXEC_ROOT__"
+    let aspectsBzlLabel = "@tulsi//:fake_aspects_path.bzl"
     let defaultIdentifier = "fake_config"
     let platformConfigurationFlags = [
       "fake_config": ["a", "b"],
@@ -157,6 +158,7 @@ BazelFlagsSet(
     let settings = BazelBuildSettings(
       bazel: bazel,
       bazelExecRoot: bazelExecRoot,
+      aspectsBzlLabel: aspectsBzlLabel,
       defaultPlatformConfigIdentifier: defaultIdentifier,
       platformConfigurationFlags: platformConfigurationFlags,
       swiftTargets: swiftTargets,
@@ -174,6 +176,7 @@ BazelFlagsSet(
 BazelBuildSettings(
     '\(bazel)',
     '\(bazelExecRoot)',
+    '\(aspectsBzlLabel)',
     '\(defaultIdentifier)',
     \(platformConfigurationFlags.toPython("    ")),
     \(swiftTargets.toPython("    ")),

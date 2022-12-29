@@ -15,7 +15,7 @@
 import Foundation
 
 
-/// Provides methods to locate the default Bazel instance.
+/// Provides methods to locate the default Bazel instance and Tulsi bazel files.
 public struct BazelLocator {
 
   /// NSUserDefaults key for the default Bazel path if one is not found in the opened project's
@@ -58,6 +58,10 @@ public struct BazelLocator {
 
     UserDefaults.standard.set(bazelURL, forKey: BazelLocator.DefaultBazelURLKey)
     return bazelURL
+  }
+
+  public static func tulsiAspectsBzlPath(inWorkspace: Bool) -> String {
+    return inWorkspace ? "//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl" : "@tulsi//:tulsi/tulsi_aspects.bzl"
   }
 
   // MARK: - Private methods

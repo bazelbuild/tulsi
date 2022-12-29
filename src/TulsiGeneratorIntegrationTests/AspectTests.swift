@@ -36,6 +36,7 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
   // Utility function to fetch RuleEntries for the given labels.
   func extractRuleEntriesForLabels(_ labels: [BuildLabel]) throws -> RuleEntryMap {
     return try aspectInfoExtractor.extractRuleEntriesForLabels(labels,
+                                                               aspectBzlLabel: BazelLocator.tulsiAspectsBzlPath(inWorkspace: true),
                                                                startupOptions: bazelStartupOptions,
                                                                buildOptions: bazelBuildOptions)
   }
@@ -48,9 +49,11 @@ class TulsiSourcesAspectTests: BazelIntegrationTestCase {
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE")
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_VALUE=1")
     buildOptions.append("--copt=-DA_COMMANDLINE_DEFINE_WITH_SPACE_VALUE='this has a space'")
-    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels([BuildLabel("//tulsi_test:XCTest")],
-                                                                           startupOptions: bazelStartupOptions,
-                                                                           buildOptions: buildOptions)
+    let ruleEntryMap = try aspectInfoExtractor.extractRuleEntriesForLabels(
+      [BuildLabel("//tulsi_test:XCTest")],
+      aspectBzlLabel: BazelLocator.tulsiAspectsBzlPath(inWorkspace: true),
+      startupOptions: bazelStartupOptions,
+      buildOptions: buildOptions)
 
     let checker = InfoChecker(ruleEntryMap: ruleEntryMap)
 
@@ -480,6 +483,7 @@ class TulsiSourcesAspect_TestSuiteTests: BazelIntegrationTestCase {
   func extractRuleEntriesForLabels(_ labels: [BuildLabel]) throws -> RuleEntryMap {
     return try aspectInfoExtractor.extractRuleEntriesForLabels(
       labels,
+      aspectBzlLabel: BazelLocator.tulsiAspectsBzlPath(inWorkspace: true),
       startupOptions: bazelStartupOptions,
       buildOptions: bazelBuildOptions)
   }

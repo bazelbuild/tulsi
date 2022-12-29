@@ -47,6 +47,9 @@
     },
     "TestActionPreActionScript" : {
       "p" : "$(inherited)"
+    },
+    "RunAspectsFromWorkspace" : {
+      "p": "YES"
     }
   },
   "projectName" : "Buttons",

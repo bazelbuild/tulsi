@@ -25,3 +25,14 @@ apple_resource_group(
         "tulsi/tulsi_aspects_propagation_attrs.bzl",
     ],
 )
+
+filegroup(
+    name = "for_bazel_tests",
+    testonly = 1,
+    srcs = [
+        "BUILD",
+        "tulsi/tulsi_aspects.bzl",
+        "tulsi/tulsi_aspects_paths.bzl",
+        "tulsi/tulsi_aspects_propagation_attrs.bzl",
+    ],
+)

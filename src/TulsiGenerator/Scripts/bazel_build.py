@@ -288,6 +288,10 @@ class _OptionsParser(object):
         is_debug,
         self.bazel_build_config)
 
+  def GetAspectLabel(self):
+    """Returns a string label for the aspects bzl file."""
+    return self.build_settings.aspectsBzlLabel
+
   def GetEnabledFeatures(self):
     """Returns a list of enabled Bazel features for the active target."""
     return self.build_settings.features_for_target(self.targets[0])
@@ -733,7 +737,9 @@ class BazelBuildBridge(object):
         '--tool_tag=tulsi:bazel_build',
         '--build_event_json_file=%s' % self.build_events_file_path,
         '--noexperimental_build_event_json_file_path_conversion',
-        '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'])
+        '--aspects',
+        '{}%tulsi_outputs_aspect'.format(options.GetAspectLabel())
+    ])
 
     if self.is_test and self.gen_runfiles:
       bazel_command.append('--output_groups=+tulsi_outputs')

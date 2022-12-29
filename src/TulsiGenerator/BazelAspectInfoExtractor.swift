@@ -68,6 +68,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   /// Builds a map of RuleEntry instances keyed by their labels with information extracted from the
   /// Bazel workspace for the given set of Bazel targets.
   func extractRuleEntriesForLabels(_ targets: [BuildLabel],
+                                   aspectBzlLabel: String,
                                    startupOptions: [String] = [],
                                    buildOptions: [String] = [],
                                    compilationMode: String? = nil,
@@ -79,6 +80,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     }
 
     return try extractRuleEntriesUsingBEP(targets,
+                                          aspectBzlLabel: aspectBzlLabel,
                                           startupOptions: startupOptions,
                                           buildOptions: buildOptions,
                                           compilationMode: compilationMode,
@@ -90,6 +92,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   // MARK: - Private methods
 
   private func extractRuleEntriesUsingBEP(_ targets: [BuildLabel],
+                                          aspectBzlLabel: String,
                                           startupOptions: [String],
                                           buildOptions: [String],
                                           compilationMode: String?,
@@ -110,7 +113,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
     var extractedEntries = RuleEntryMap()
     var processDebugInfo: String? = nil
     let process = bazelAspectProcessForTargets(targets.map({ $0.value }),
-                                               aspect: "tulsi_sources_aspect",
+                                               aspectLabel: "\(aspectBzlLabel)%tulsi_sources_aspect",
                                                startupOptions: startupOptions,
                                                buildOptions: buildOptions,
                                                compilationMode: compilationMode,
@@ -169,7 +172,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
   // Generates a Process that will run the given aspect against the given Bazel targets, capturing
   // the output data and passing it to the terminationHandler.
   private func bazelAspectProcessForTargets(_ targets: [String],
-                                            aspect: String,
+                                            aspectLabel: String,
                                             startupOptions: [String] = [],
                                             buildOptions: [String] = [],
                                             compilationMode: String?,
@@ -235,7 +238,7 @@ final class BazelAspectInfoExtractor: QueuedLogging {
         // The following flags WILL affect Bazel analysis caching.
         // Keep this consistent with bazel_build.py.
         "--aspects",
-        "@tulsi//:tulsi/tulsi_aspects.bzl%\(aspect)",
+        aspectLabel,
         // Build only the aspect artifacts. We explicitly disable the
         // rules_apple `dsyms` output group since it may trigger a full build
         // and we've seen some folks enabling it in their rc file.

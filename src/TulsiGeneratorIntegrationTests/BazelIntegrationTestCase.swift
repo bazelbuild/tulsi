@@ -107,14 +107,7 @@ class BazelIntegrationTestCase: XCTestCase {
       fatalError("Failed to find workspaceRootURL.")
     }
 
-    let bundle = Bundle(for: TulsiXcodeProjectGenerator.self)
-    let bazelWorkspace =
-      bundle.url(forResource: "WORKSPACE", withExtension: nil)!.deletingLastPathComponent()
-
-    bazelUniversalFlags = BazelFlags(build: [
-        "--override_repository=tulsi=\(bazelWorkspace.path)"
-    ])
-
+    bazelUniversalFlags = BazelFlags()
     workspaceInfoFetcher = BazelWorkspacePathInfoFetcher(bazelURL: bazelURL,
                                                          workspaceRootURL: workspaceRootURL,
                                                          bazelUniversalFlags: bazelUniversalFlags,

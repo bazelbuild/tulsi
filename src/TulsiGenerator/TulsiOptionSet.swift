@@ -93,7 +93,10 @@ public enum TulsiOptionKey: String {
       PostBuildPhaseRunScript,
 
       // Option to use a fallback approach to finding dSYMs.
-      UseBazelCacheReader
+      UseBazelCacheReader,
+
+      // Run aspects from the main workspace instead of @tulsi/the override repository.
+      RunAspectsFromWorkspace
 
   // Options for build invocations.
   case BazelBuildOptionsDebug,
@@ -284,6 +287,17 @@ public class TulsiOptionSet: Equatable {
     return self[.UseLegacyBuildSystem].commonValueAsBool ?? false
   }
 
+  /// Whethers aspects should be run from the workspace instead of an override
+  // repository.
+  var runAspectsFromWorkspace: Bool {
+    return self[.RunAspectsFromWorkspace].commonValueAsBool ?? false
+  }
+
+  /// Label to refer to Tulsi's aspects bzl file.
+  var aspectsBzlLabel: String {
+    return BazelLocator.tulsiAspectsBzlPath(inWorkspace: self.runAspectsFromWorkspace)
+  }
+
   // MARK: - Private methods.
 
   private func saveToDictionary(_ filter: (TulsiOptionKey, TulsiOption) -> Bool) -> PersistenceType {
@@ -352,6 +366,7 @@ public class TulsiOptionSet: Equatable {
     addBoolOption(.DisableCustomLLDBInit, .Generic, false)
     addBoolOption(.UseBazelCacheReader, .Generic, false)
     addBoolOption(.UseLegacyBuildSystem, .Generic, false)
+    addBoolOption(.RunAspectsFromWorkspace, .Generic, false)
 
     let defaultIdentifier = PlatformConfiguration.defaultConfiguration.identifier
     let platformCPUIdentifiers = PlatformConfiguration.allValidConfigurations.map { $0.identifier }

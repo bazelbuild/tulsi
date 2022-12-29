@@ -27,13 +27,7 @@ protocol BazelWorkspaceInfoExtractorProtocol {
   /// each given label to the resolved RuleEntry if it resolved correctly (invalid labels will be
   /// omitted from the returned dictionary).
   func ruleEntriesForLabels(_ labels: [BuildLabel],
-                            startupOptions: TulsiOption,
-                            extraStartupOptions: TulsiOption,
-                            buildOptions: TulsiOption,
-                            compilationModeOption: TulsiOption,
-                            platformConfigOption: TulsiOption,
-                            prioritizeSwiftOption: TulsiOption,
-                            use64BitWatchSimulatorOption: TulsiOption,
+                            options: TulsiOptionSet,
                             features: Set<BazelSettingFeature>) throws -> RuleEntryMap
 
   /// Extracts labels for the files referenced by the build infrastructure for the given set of

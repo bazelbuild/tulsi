@@ -719,13 +719,7 @@ final class XcodeProjectGenerator {
     do {
       let features = BazelBuildSettingsFeatures.enabledFeatures(options: config.options)
       return try workspaceInfoExtractor.ruleEntriesForLabels(config.buildTargetLabels,
-                                                             startupOptions: config.options[.BazelBuildStartupOptionsDebug],
-                                                             extraStartupOptions: config.options[.ProjectGenerationBazelStartupOptions],
-                                                             buildOptions: config.options[.BazelBuildOptionsDebug],
-                                                             compilationModeOption: config.options[.ProjectGenerationCompilationMode],
-                                                             platformConfigOption: config.options[.ProjectGenerationPlatformConfiguration],
-                                                             prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift],
-                                                             use64BitWatchSimulatorOption: config.options[.Use64BitWatchSimulator],
+                                                             options: config.options,
                                                              features: features)
     } catch BazelWorkspaceInfoExtractorError.aspectExtractorFailed(let info) {
       throw ProjectGeneratorError.labelAspectFailure(info)

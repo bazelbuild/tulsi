@@ -277,6 +277,7 @@ class BazelSettingsProvider: BazelSettingsProviderProtocol {
 
     return BazelBuildSettings(bazel: bazel,
                               bazelExecRoot: bazelExecRoot,
+                              aspectsBzlLabel: options.aspectsBzlLabel,
                               defaultPlatformConfigIdentifier: defaultConfig.identifier,
                               platformConfigurationFlags: nil,
                               swiftTargets: swiftTargets,

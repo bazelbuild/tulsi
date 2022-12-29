@@ -452,21 +452,8 @@ final class TulsiGeneratorConfigDocument: NSDocument,
       }
       let ruleEntryMap: RuleEntryMap
       do {
-        let startupOptions = optionSet[.BazelBuildStartupOptionsDebug]
-        let extraStartupOptions = optionSet[.ProjectGenerationBazelStartupOptions]
-        let buildOptions = optionSet[.BazelBuildOptionsDebug]
-        let compilationModeOption = optionSet[.ProjectGenerationCompilationMode]
-        let platformConfigOption = optionSet[.ProjectGenerationPlatformConfiguration]
-        let prioritizeSwiftOption = optionSet[.ProjectPrioritizesSwift]
-        let use64BitWatchSimulatorOption = optionSet[.Use64BitWatchSimulator]
         ruleEntryMap = try self.infoExtractor.ruleEntriesForLabels(selectedLabels,
-                                                                   startupOptions: startupOptions,
-                                                                   extraStartupOptions: extraStartupOptions,
-                                                                   buildOptions: buildOptions,
-                                                                   compilationModeOption: compilationModeOption,
-                                                                   platformConfigOption: platformConfigOption,
-                                                                   prioritizeSwiftOption: prioritizeSwiftOption,
-                                                                   use64BitWatchSimulatorOption: use64BitWatchSimulatorOption,
+                                                                   options: optionSet,
                                                                    features: self.enabledFeatures(options: optionSet))
       } catch TulsiProjectInfoExtractor.ExtractorError.ruleEntriesFailed(let info) {
         LogMessage.postError("Label resolution failed: \(info)")
@@ -790,13 +777,7 @@ final class TulsiGeneratorConfigDocument: NSDocument,
 
     let options = optionSet!
     let ruleEntryMap = try infoExtractor.ruleEntriesForLabels(concreteBuildTargetLabels,
-                                                              startupOptions: options[.BazelBuildStartupOptionsDebug],
-                                                              extraStartupOptions: options[.ProjectGenerationBazelStartupOptions],
-                                                              buildOptions: options[.BazelBuildOptionsDebug],
-                                                              compilationModeOption: options[.ProjectGenerationCompilationMode],
-                                                              platformConfigOption: options[.ProjectGenerationPlatformConfiguration],
-                                                              prioritizeSwiftOption: options[.ProjectPrioritizesSwift],
-                                                              use64BitWatchSimulatorOption: options[.Use64BitWatchSimulator],
+                                                              options: options,
                                                               features: enabledFeatures(options: options))
     var unresolvedLabels = Set<BuildLabel>()
     var ruleInfos = [UIRuleInfo]()
