@@ -283,7 +283,7 @@ public class TulsiOptionSet: Equatable {
   // MARK: - Public Getters
 
   /// Whether the legacy build system should be used instead of the new build system.
-  var useLegacyBuildSystem: Bool {
+  public var useLegacyBuildSystem: Bool {
     return self[.UseLegacyBuildSystem].commonValueAsBool ?? false
   }
 

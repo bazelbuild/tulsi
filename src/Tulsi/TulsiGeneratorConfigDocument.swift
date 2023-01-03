@@ -264,7 +264,15 @@ final class TulsiGeneratorConfigDocument: NSDocument,
     } else {
       tulsiVersion = ""
     }
-    let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: workspaceRootURL,
+    var realWorkspaceURL = workspaceRootURL
+    if !config.options.useLegacyBuildSystem {
+      let resolved = workspaceRootURL.resolvingSymlinksInPath()
+      if realWorkspaceURL != resolved {
+        realWorkspaceURL = resolved
+        LogMessage.postInfo("Using realpath of Bazel workspace, now at '\(realWorkspaceURL.path)'")
+      }
+    }
+    let projectGenerator = TulsiXcodeProjectGenerator(workspaceRootURL: realWorkspaceURL,
                                                       config: config,
                                                       tulsiVersion: tulsiVersion)
     let errorInfo: String
