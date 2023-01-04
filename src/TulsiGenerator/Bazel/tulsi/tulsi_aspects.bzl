@@ -22,6 +22,7 @@ load(
     ":tulsi/tulsi_aspects_paths.bzl",
     "AppleBinaryInfo",
     "AppleBundleInfo",
+    "AppleSdkModuleInfo",
     "AppleTestInfo",
     "IosApplicationBundleInfo",
     "IosExtensionBundleInfo",
@@ -579,7 +580,13 @@ def _get_deployment_info(target, ctx):
         return (platform_type, minimum_os_version)
 
     attr_platform_type = _get_platform_type(ctx)
-    return (attr_platform_type, _minimum_os_for_platform(ctx, attr_platform_type))
+
+    minimum_os_version = None
+    if not AppleSdkModuleInfo in target:
+        minimum_os_version = _get_opt_attr(ctx, "rule.attr.minimum_os_version")
+    if not minimum_os_version:
+        minimum_os_version = _minimum_os_for_platform(ctx, attr_platform_type)
+    return (attr_platform_type, minimum_os_version)
 
 def _get_xcode_version(ctx):
     """Returns the current Xcode version as a string."""
@@ -596,10 +603,6 @@ def _get_platform_type(ctx):
 
 def _minimum_os_for_platform(ctx, platform_type_str):
     """Extracts the minimum OS version for the given apple_common.platform."""
-    min_os = _get_opt_attr(ctx, "rule.attr.minimum_os_version")
-    if min_os:
-        return min_os
-
     platform_type = getattr(apple_common.platform_type, platform_type_str)
     min_os = (ctx.attr._tulsi_xcode_config[apple_common.XcodeVersionConfig].minimum_os_for_platform_type(platform_type))
 

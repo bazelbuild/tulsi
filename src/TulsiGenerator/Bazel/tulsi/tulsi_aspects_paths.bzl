@@ -45,3 +45,5 @@ IosApplicationBundleInfo = _IosApplicationBundleInfo
 IosExtensionBundleInfo = _IosExtensionBundleInfo
 
 SwiftInfo = _SwiftInfo
+
+AppleSdkModuleInfo = provider("This is a stub provider without any fields.", fields = [])
